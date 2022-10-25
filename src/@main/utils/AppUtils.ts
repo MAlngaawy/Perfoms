@@ -10,7 +10,7 @@ class AppUtils {
 
     return mainArr.filter((itemObj) => this.searchInObj(itemObj, searchText));
   }
-  
+
   static searchInObj(itemObj, searchText) {
     if (!itemObj) {
       return false;

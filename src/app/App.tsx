@@ -5,7 +5,8 @@ import settingsConfig from "./configs/settingsConfig";
 import withAppProviders from "./withAppProviders";
 
 function App() {
-  const user = { role: [] };
+  const user = { role: ["User"] };
+
   return (
     <BrowserRouter>
       <AppAuthorization

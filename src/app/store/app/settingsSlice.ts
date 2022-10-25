@@ -68,14 +68,10 @@ const settingsSlice = createSlice({
 });
 
 export const selectAppCurrentSettings = ({ app }: any) => app.settings.current;
-
 export const selectAppCurrentLayoutConfig = ({ app }: any) =>
   app.settings.current.layout.config;
-
 export const selectAppDefaultSettings = ({ app }: any) => app.settings.defaults;
-
 export const selectAppThemesSettings = ({ app }: any) => app.settings.themes;
-
 export const { resetSettings, setInitialSettings, setSettings } =
   settingsSlice.actions;
 

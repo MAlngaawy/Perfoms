@@ -10,6 +10,7 @@ if (process.env.NODE_ENV === "development" && module.hot) {
   });
 }
 
+
 const middlewares: any[] = [userApi.middleware];
 
 if (process.env.NODE_ENV === "development") {
