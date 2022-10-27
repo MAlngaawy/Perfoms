@@ -5,20 +5,19 @@ import { useSigninMutation } from "app/store/user/userApi";
 type Props = {};
 
 const SignInPage = (props: Props) => {
-  const [signinHandler, { data, isSuccess, isError, error }] =
-    useSigninMutation();
+  const [signinHandler] = useSigninMutation();
   const {
     register,
     handleSubmit,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     formState: { errors },
   } = useForm({});
 
-  const submitHandler = (data: any) => {
-    signinHandler(data);
-  };
-
   return (
-    <form className="w-96" onSubmit={handleSubmit(submitHandler)}>
+    <form
+      className="w-96"
+      onSubmit={handleSubmit((data: any) => signinHandler(data))}
+    >
       <TextInput
         label="Mobile"
         placeholder="Mobile Number"
