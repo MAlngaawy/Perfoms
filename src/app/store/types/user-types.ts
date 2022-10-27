@@ -3,6 +3,22 @@ export type LoginUserBody = {
   password: string;
 };
 
+export type LoginResponse = {
+  message: string;
+  data: {
+    access: string;
+    refresh: string;
+    user_data: User;
+  };
+  players: any[];
+  error: boolean;
+};
+export type ProfileResponse = {
+  message: string;
+  data: User;
+  error: boolean;
+};
+
 export type User = {
   id: number;
   country: string;

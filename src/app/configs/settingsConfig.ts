@@ -6,7 +6,7 @@ const settingsConfig = {
   customScrollbars: true,
   theme: {},
   defaultAuth: ["Admin"],
-  loginRedirectUrl: "/sign-in",
+  loginRedirectUrl: "/",
 };
 
 export default settingsConfig;

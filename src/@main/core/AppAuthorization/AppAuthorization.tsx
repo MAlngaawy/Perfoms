@@ -49,7 +49,6 @@ class AppAuthorization extends Component<PropsWithChildren<Props>, any> {
     const { pathname } = location;
 
     const matchedRoutes = matchRoutes<AppRouteObject>(state.routes, pathname);
-
     const matched = matchedRoutes ? matchedRoutes[0] : false;
     return {
       accessGranted: matched

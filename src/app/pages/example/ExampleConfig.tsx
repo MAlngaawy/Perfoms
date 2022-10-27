@@ -1,8 +1,9 @@
+import authRoles from "app/auth/authRoles";
 import { PagesRouteConfig } from "app/configs/routesConfig";
 import Example from "./Example";
 
 const ExampleConfig: PagesRouteConfig = {
-  auth: ["User"],
+  auth: authRoles.Admin,
   routes: [
     {
       path: "example",
