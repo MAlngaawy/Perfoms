@@ -1,7 +1,8 @@
 import authRoles from "app/auth/authRoles";
+import { PagesRouteConfig } from "app/configs/routesConfig";
 import SignInPage from "./SignInPage";
 
-const SignInConfig = {
+const SignInConfig: PagesRouteConfig = {
   settings: {
     layout: {
       config: {

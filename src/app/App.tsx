@@ -1,20 +1,25 @@
 import AppAuthorization from "@main/core/AppAuthorization";
 import AppLayout from "@main/core/AppLayout";
 import BrowserRouter from "@main/core/BrowserRouter";
+import { AuthProvider } from "./auth/AuthContext";
 import settingsConfig from "./configs/settingsConfig";
+import { useUserQuery } from "./store/user/userApi";
 import withAppProviders from "./withAppProviders";
 
 function App() {
-  const user = { role: [] };
+  const { data: user } = useUserQuery(null);
+
   return (
-    <BrowserRouter>
-      <AppAuthorization
-        userRole={user.role}
-        loginRedirectUrl={settingsConfig.loginRedirectUrl}
-      >
-        <AppLayout />
-      </AppAuthorization>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <AppAuthorization
+          userRole={user?.data?.user_type ? [user?.data?.user_type] : []}
+          loginRedirectUrl={settingsConfig.loginRedirectUrl}
+        >
+          <AppLayout />
+        </AppAuthorization>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

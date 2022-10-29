@@ -1,7 +1,7 @@
 const authRoles = {
-  Admin: ["Admin"],
-  Parent: ["Admin", "Parent"],
-  User: ["Admin", "Parent", "User"],
+  Admin: ["Supervisor"],
+  Parent: ["Supervisor", "Parent"],
+  User: ["Supervisor", "Parent", "User"],
   OnlyGuest: [],
 };
 
