@@ -1,6 +1,6 @@
 import AppUtils from "@main/utils/AppUtils";
 import settingsConfig from "./settingsConfig";
-import { Navigate, RouteObject } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import Error404Page from "app/pages/404/Error404Page";
 import SignInConfig from "app/pages/sign-in/SignInConfig";
 import SignUpConfig from "app/pages/sign-up/SignUpConfig";
