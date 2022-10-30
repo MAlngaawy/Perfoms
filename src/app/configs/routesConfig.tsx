@@ -5,6 +5,7 @@ import Error404Page from "app/pages/404/Error404Page";
 import ExampleConfig from "app/pages/example/ExampleConfig";
 import SignInConfig from "app/pages/sign-in/SignInConfig";
 import SignUpConfig from "app/pages/sign-up/SignUpConfig";
+import ReportConfig from "app/pages/report-page/ReportConfig";
 
 export type AppRouteObject = RouteObject & {
   auth?: string[];
@@ -21,6 +22,7 @@ const routeConfigs: PagesRouteConfig[] = [
   SignInConfig,
   SignUpConfig,
   ExampleConfig,
+  ReportConfig,
 ];
 
 const routes: AppRouteObject[] = [
