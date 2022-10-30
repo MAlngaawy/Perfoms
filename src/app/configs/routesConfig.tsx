@@ -11,17 +11,7 @@ import MessagesConfig from "app/pages/messages/MessagesConfig";
 import NotificationsConfig from "app/pages/notifications/NotificationsConfig";
 import ReportsConfig from "app/pages/reports/ReportsConfig";
 import SubscriptionsConfig from "app/pages/subscriptions/SubscriptionsConfig";
-
-export type AppRouteObject = RouteObject & {
-  auth?: string[];
-  settings?: object;
-};
-
-export interface PagesRouteConfig {
-  settings?: object;
-  auth?: string[];
-  routes: AppRouteObject[];
-}
+import { AppRouteObject, PagesRouteConfig } from "@main/types/Config-Types";
 
 const routeConfigs: PagesRouteConfig[] = [
   SignInConfig,

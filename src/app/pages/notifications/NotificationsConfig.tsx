@@ -1,5 +1,5 @@
+import { PagesRouteConfig } from "@main/types/Config-Types";
 import authRoles from "app/auth/authRoles";
-import { PagesRouteConfig } from "app/configs/routesConfig";
 import NotificationsPage from "./NotificationsPage";
 
 const NotificationsConfig: PagesRouteConfig = {
