@@ -1,7 +1,8 @@
 import React from "react";
-// import { Controller } from "react-hook-form";
-import { Input, Select } from "@mantine/core";
-// import { object } from 'prop-types';
+import { Select } from "@mantine/core";
+import { Controller } from "react-hook-form";
+import { ClassNames } from "@emotion/react";
+import __ from "lodash";
 
 interface Option {
   label: string;
@@ -11,35 +12,49 @@ interface Option {
 interface inputTypes {
   placeHolder?: string;
   id?: string;
+  name: string;
   label?: string;
   error?: string;
   required?: boolean;
   data: Array<Option>;
+  className: string;
+  control: any;
 }
 
 const PerfSelect = ({
-  placeHolder,
   id,
+  name,
   label,
   error,
   required,
   data,
+  className,
+  control,
 }: inputTypes) => {
   return (
-    <Select
-      id={id}
-      error={error}
-      withAsterisk={required}
-      className="border-0 border-b"
-      sx={{
-        ".mantine-Select-input": {
-          border: 0,
-        },
-      }}
-      label={label}
-      placeholder={placeHolder}
-      data={data}
-      onChange={(e: string) => console.log(e)}
+    <Controller
+      render={({ field }) => (
+        <Select
+          id={id}
+          withAsterisk={required}
+          error={error}
+          sx={{
+            ".mantine-Input-input": {
+              border: 0,
+              padding: 0,
+              borderBottom: 1,
+              borderStyle: "solid",
+              borderRadius: 0,
+            },
+          }}
+          className={className}
+          label={label}
+          data={data}
+          {...field}
+        />
+      )}
+      name={name}
+      control={control}
     />
   );
 };

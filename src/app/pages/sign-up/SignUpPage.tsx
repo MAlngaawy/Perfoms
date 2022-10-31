@@ -9,6 +9,8 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { BASE_URL } from "app/configs/dataService";
 
+import PerfSelect from "@main/components/Select";
+
 type Props = {};
 
 const SignUpPage = (props: Props) => {
@@ -93,33 +95,18 @@ const SignUpPage = (props: Props) => {
           </div>
           <div className="inputs mb-10 gap-4 flex w-full flex-col justify-center items-center">
             {/* Select Role Input */}
-            <Controller
-              render={({ field }) => (
-                <Select
-                  id="userRole"
-                  withAsterisk
-                  error={errors.userRole && "Please select your Role"}
-                  sx={{
-                    ".mantine-Input-input": {
-                      border: 0,
-                      padding: 0,
-                      borderBottom: 1,
-                      borderStyle: "solid",
-                      borderRadius: 0,
-                    },
-                  }}
-                  className="w-full"
-                  label="Who are you"
-                  data={[
-                    { value: "Parent", label: "Parent" },
-                    { value: "Coach", label: "Coach" },
-                  ]}
-                  {...field}
-                />
-              )}
+            <PerfSelect
+              id="userRole"
+              required
+              error={errors.userRole && "Please select your Role"}
+              className="w-full"
+              label="Who are you"
+              data={[
+                { value: "Parent", label: "Parent" },
+                { value: "Coach", label: "Coach" },
+              ]}
               name="userRole"
               control={control}
-              defaultValue=""
             />
 
             {/* [First and Last Name] */}
