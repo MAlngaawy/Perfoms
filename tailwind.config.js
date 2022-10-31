@@ -19,12 +19,13 @@ module.exports = {
         red: "#EB5757",
         fadedGreen: "#27ae5f36",
         fadedYellow: "#f2c84c2f",
-        fadedRed: "#eb57572f"
+        fadedRed: "#eb57572f",
       },
       screens: {
         lg: "1200px",
         md: "767px",
         sm: "480px",
+        lg: "1200px",
       },
     },
   },
