@@ -29,7 +29,7 @@ const SignUpPage = (props: Props) => {
     userRole: yup.string(),
     firstName: yup.string().required(),
     lastName: yup.string(),
-    // country: yup.string().required(),
+    country: yup.string().required(),
     // city: yup.string(),
     // club: yup.string().required(),
     countryCode: yup.string().required(),
@@ -105,6 +105,7 @@ const SignUpPage = (props: Props) => {
               defaultValue="Test"
             />
 
+            {/* [First and Last Name] */}
             <div className="flex gap-2">
               {/* FirstName Input */}
               <Input.Wrapper
@@ -152,6 +153,61 @@ const SignUpPage = (props: Props) => {
                   id="lastName"
                 />
               </Input.Wrapper>
+            </div>
+
+            {/* Select country and city */}
+            <div className="flex gap-2">
+              <Controller
+                render={({ field }) => (
+                  <Select
+                    id="country"
+                    withAsterisk
+                    error={errors.country && "Please select your Role"}
+                    sx={{
+                      ".mantine-Input-input": {
+                        border: 0,
+                        padding: 0,
+                        borderBottom: 1,
+                        borderStyle: "solid",
+                        borderRadius: 0,
+                      },
+                    }}
+                    className="w-full"
+                    label="Country"
+                    data={[
+                      {
+                        label: "Egypt",
+                        value: "EG",
+                        country: "egypt",
+                      },
+                      {
+                        label: "United Arab Emirates",
+                        value: "AE",
+                        country: "United Arab Emirates",
+                      },
+                      {
+                        label: "Saudi Arabia",
+                        value: "SA",
+                        country: "Saudi Arabia",
+                      },
+                      {
+                        label: "South Korea",
+                        value: "KR",
+                        country: "South Korea",
+                      },
+                      {
+                        label: "Jordan",
+                        value: "JO",
+                        country: "Jordan",
+                      },
+                    ]}
+                    {...field}
+                  />
+                )}
+                name="country"
+                control={control}
+                defaultValue=""
+              />
             </div>
 
             <Grid grow gutter="sm">
