@@ -1,30 +1,30 @@
 import { PagesRouteConfig } from "@main/types/Config-Types";
 import authRoles from "app/auth/authRoles";
-import SignInPage from "./SignInPage";
+import MediaPage from "./MediaPage";
 
-const SignInConfig: PagesRouteConfig = {
+const MediaConfig: PagesRouteConfig = {
   settings: {
     layout: {
       config: {
         navbar: {
-          display: false,
+          display: true,
         },
         toolbar: {
-          display: false,
+          display: true,
         },
         footer: {
-          display: false,
+          display: true,
         },
       },
     },
   },
-  auth: authRoles.OnlyGuest,
+  auth: authRoles.User,
   routes: [
     {
-      path: "sign-in",
-      element: <SignInPage />,
+      path: "media",
+      element: <MediaPage />,
     },
   ],
 };
 
-export default SignInConfig;
+export default MediaConfig;

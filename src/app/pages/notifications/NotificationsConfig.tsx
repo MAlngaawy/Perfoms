@@ -1,30 +1,30 @@
 import { PagesRouteConfig } from "@main/types/Config-Types";
 import authRoles from "app/auth/authRoles";
-import SignInPage from "./SignInPage";
+import NotificationsPage from "./NotificationsPage";
 
-const SignInConfig: PagesRouteConfig = {
+const NotificationsConfig: PagesRouteConfig = {
   settings: {
     layout: {
       config: {
         navbar: {
-          display: false,
+          display: true,
         },
         toolbar: {
-          display: false,
+          display: true,
         },
         footer: {
-          display: false,
+          display: true,
         },
       },
     },
   },
-  auth: authRoles.OnlyGuest,
+  auth: authRoles.User,
   routes: [
     {
-      path: "sign-in",
-      element: <SignInPage />,
+      path: "notifications",
+      element: <NotificationsPage />,
     },
   ],
 };
 
-export default SignInConfig;
+export default NotificationsConfig;
