@@ -1,7 +1,6 @@
 import React from "react";
 // import { Controller } from "react-hook-form";
 import { Input } from "@mantine/core";
-import UseFormRegisterReturn from "react-hook-form";
 
 interface inputTypes {
   placeHolder?: string;
@@ -12,6 +11,7 @@ interface inputTypes {
   error?: string;
   required: boolean;
   register: any;
+  forWhat: string;
 }
 
 const PerfInput = ({
@@ -23,8 +23,8 @@ const PerfInput = ({
   error,
   required,
   register,
+  forWhat,
 }: inputTypes) => {
-  const { onChange, onBlur, name, ref } = register("firstName");
   return (
     <Input.Wrapper
       className="w-full"
@@ -42,10 +42,6 @@ const PerfInput = ({
           },
         }}
         className=" border-0 border-b border-black"
-        onChange={onChange} // assign onChange event
-        onBlur={onBlur} // assign onBlur event
-        name={name} // assign name prop
-        ref={ref} // assign ref prop
         id="input-demo"
         placeholder={placeHolder}
         type={type}

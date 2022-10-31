@@ -13,7 +13,7 @@ interface inputTypes {
   id?: string;
   label?: string;
   error?: string;
-  required: boolean;
+  required?: boolean;
   data: Array<Option>;
 }
 
@@ -25,19 +25,6 @@ const PerfSelect = ({
   required,
   data,
 }: inputTypes) => {
-  //   return (<Input.Wrapper
-  //   id={id}
-  //   withAsterisk={required}
-  //   label={label}
-  //   error={error}
-  // >
-  // <Select
-  //       label="Your favorite framework/library"
-  //       placeholder="Pick one"
-  //       data={data}
-  //     />
-  // </Input.Wrapper>
-  // )
   return (
     <Select
       id={id}
