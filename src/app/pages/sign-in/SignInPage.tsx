@@ -48,11 +48,9 @@ const SignInPage = (props: Props) => {
     console.log(newData);
   };
 
-  console.log(typeof errors.countryCode?.message);
-
   return (
     <div className="signIn h-screen flex items-center justify-center">
-      <div className="leftImage hidden md:block md:w-1/2">
+      <div className="leftImage hidden md:block md:w-1/2 h-full">
         <img
           className="w-full h-full object-cover "
           src="/assets/images/performs_login.jpg"
