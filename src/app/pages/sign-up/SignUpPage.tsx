@@ -13,8 +13,20 @@ import PerfSelect from "@main/components/Select";
 
 type Props = {};
 
+const schema = yup.object().shape({
+  userRole: yup.string().required(),
+  firstName: yup.string().required(),
+  lastName: yup.string(),
+  country: yup.string().required(),
+  city: yup.string(),
+  club: yup.string().required(),
+  countryCode: yup.string().required(),
+  phoneNumber: yup.number().required(),
+  password: yup.string().min(8).max(24).required(),
+});
+
 const SignUpPage = (props: Props) => {
-  const [signinHandler] = useSigninMutation();
+  const [signinHandler, {}] = useSigninMutation();
   const [clubs, setClubs] = useState([]);
 
   // User Effect to fetch our clubs
@@ -43,18 +55,6 @@ const SignUpPage = (props: Props) => {
     },
   });
 
-  // Yup schema
-  const schema = yup.object().shape({
-    userRole: yup.string().required(),
-    firstName: yup.string().required(),
-    lastName: yup.string(),
-    country: yup.string().required(),
-    city: yup.string(),
-    club: yup.string().required(),
-    countryCode: yup.string().required(),
-    phoneNumber: yup.number().required(),
-    password: yup.string().min(8).max(24).required(),
-  });
   const {
     register,
     handleSubmit,

@@ -45,7 +45,6 @@ const SignInPage = (props: Props) => {
       password: data.password,
     };
     signinHandler(newData);
-    console.log(newData);
   };
 
   return (

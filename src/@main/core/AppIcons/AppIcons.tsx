@@ -4,7 +4,9 @@ import * as HIconsOutline from "@heroicons/react/24/outline";
 
 export type IconName = keyof typeof HIconsSolid | keyof typeof HIconsOutline;
 
-const AppIcons: FC<{ icon: string }> = ({ icon }) => {
+const AppIcons: FC<{ icon: `${IconName}:${"outline" | "solid"}` }> = ({
+  icon,
+}) => {
   const [iconName, varient] = icon.split(":");
   const { ...icons } = varient === "outline" ? HIconsOutline : HIconsSolid;
   // @ts-ignore
