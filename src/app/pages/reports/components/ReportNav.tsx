@@ -1,5 +1,4 @@
 import { Button } from "@main/components/Button";
-import React from "react";
 
 function ReportNav() {
   return (
