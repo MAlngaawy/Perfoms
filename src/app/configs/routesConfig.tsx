@@ -40,6 +40,5 @@ const routes: AppRouteObject[] = [
   },
 ];
 
-console.log(routes);
 
 export default routes;
