@@ -49,7 +49,7 @@ const SignInPage = (props: Props) => {
   };
 
   return (
-    <div className="signIn h-screen flex items-center justify-center">
+    <div className="signIn min-h-screen flex items-center justify-center">
       <div className="leftImage hidden md:block md:w-1/2 h-full">
         <img
           className="w-full h-full object-cover "
@@ -57,7 +57,7 @@ const SignInPage = (props: Props) => {
           alt="Sign in"
         />
       </div>
-      <div className="form md:w-1/2 px-4 flex justify-center items-center">
+      <div className="py-10 form md:w-1/2 px-4 flex justify-center items-center">
         <form
           className="md:w-96 "
           onSubmit={handleSubmit((data: any) => submitFun(data))}
@@ -141,6 +141,9 @@ const SignInPage = (props: Props) => {
                   borderBottom: 1,
                   borderStyle: "solid",
                   borderRadius: 0,
+                },
+                ".mantine-PasswordInput-innerInput": {
+                  padding: 0,
                 },
               }}
               className="w-full"

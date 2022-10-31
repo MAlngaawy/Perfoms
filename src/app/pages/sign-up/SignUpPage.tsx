@@ -5,11 +5,28 @@ import { PasswordInput } from "@mantine/core";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useEffect } from "react";
+import { useState } from "react";
+import { BASE_URL } from "app/configs/dataService";
 
 type Props = {};
 
 const SignUpPage = (props: Props) => {
   const [signinHandler] = useSigninMutation();
+  const [clubs, setClubs] = useState([]);
+
+  // User Effect to fetch our clubs
+  useEffect(() => {
+    fetch(`${BASE_URL}/core/clubs/`)
+      .then((res) => res.json())
+      .then(({ data }) => {
+        const newClubs = data.map((club: { name: string; id: number }) => {
+          return { label: club.name, value: club.id };
+        });
+        setClubs(newClubs);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   // local schema
   yup.setLocale({
@@ -26,12 +43,12 @@ const SignUpPage = (props: Props) => {
 
   // Yup schema
   const schema = yup.object().shape({
-    userRole: yup.string(),
+    userRole: yup.string().required(),
     firstName: yup.string().required(),
     lastName: yup.string(),
     country: yup.string().required(),
-    // city: yup.string(),
-    // club: yup.string().required(),
+    city: yup.string(),
+    club: yup.string().required(),
     countryCode: yup.string().required(),
     phoneNumber: yup.number().required(),
     password: yup.string().min(8).max(24).required(),
@@ -55,7 +72,7 @@ const SignUpPage = (props: Props) => {
   };
 
   return (
-    <div className="signIn h-screen flex items-center justify-center">
+    <div className="signIn min-h-screen flex items-center justify-center">
       <div className="leftImage hidden md:block md:w-1/2 h-full">
         <img
           className="w-full h-full object-cover "
@@ -63,7 +80,7 @@ const SignUpPage = (props: Props) => {
           alt="Sign in"
         />
       </div>
-      <div className="form md:w-1/2 px-4 flex justify-center items-center">
+      <div className="form py-10 md:w-1/2 px-4 flex justify-center items-center">
         <form
           className="md:w-96 "
           onSubmit={handleSubmit((data: any) => submitFun(data))}
@@ -79,9 +96,9 @@ const SignUpPage = (props: Props) => {
             <Controller
               render={({ field }) => (
                 <Select
-                  id="userRolee"
+                  id="userRole"
                   withAsterisk
-                  error={errors.countryCode && "Please select your Role"}
+                  error={errors.userRole && "Please select your Role"}
                   sx={{
                     ".mantine-Input-input": {
                       border: 0,
@@ -102,7 +119,7 @@ const SignUpPage = (props: Props) => {
               )}
               name="userRole"
               control={control}
-              defaultValue="Test"
+              defaultValue=""
             />
 
             {/* [First and Last Name] */}
@@ -162,7 +179,7 @@ const SignUpPage = (props: Props) => {
                   <Select
                     id="country"
                     withAsterisk
-                    error={errors.country && "Please select your Role"}
+                    error={errors.country && "Please select your Country"}
                     sx={{
                       ".mantine-Input-input": {
                         border: 0,
@@ -208,7 +225,71 @@ const SignUpPage = (props: Props) => {
                 control={control}
                 defaultValue=""
               />
+
+              <Controller
+                render={({ field }) => (
+                  <Select
+                    id="city"
+                    error={errors.city && "Please select your City"}
+                    sx={{
+                      ".mantine-Input-input": {
+                        border: 0,
+                        padding: 0,
+                        borderBottom: 1,
+                        borderStyle: "solid",
+                        borderRadius: 0,
+                      },
+                    }}
+                    className="w-full"
+                    label="City"
+                    data={[
+                      {
+                        label: "Egypt",
+                        value: "EG",
+                        country: "egypt",
+                      },
+                      {
+                        label: "United Arab Emirates",
+                        value: "AE",
+                        country: "United Arab Emirates",
+                      },
+                    ]}
+                    {...field}
+                  />
+                )}
+                name="city"
+                control={control}
+                defaultValue=""
+              />
             </div>
+
+            {/* Select Club */}
+            <Controller
+              render={({ field }) => (
+                <Select
+                  id="club"
+                  withAsterisk
+                  error={errors.club && "Please select your Club"}
+                  sx={{
+                    ".mantine-Input-input": {
+                      border: 0,
+                      padding: 0,
+                      borderBottom: 1,
+                      borderStyle: "solid",
+                      borderRadius: 0,
+                    },
+                  }}
+                  className="w-full"
+                  label="Club"
+                  data={clubs}
+                  // data={clubs.map((oneClub): object =>  {label: "LOL", value: })}
+                  {...field}
+                />
+              )}
+              name="club"
+              control={control}
+              defaultValue=""
+            />
 
             <Grid grow gutter="sm">
               {/* Select Country code Input */}
@@ -281,6 +362,9 @@ const SignUpPage = (props: Props) => {
                   borderBottom: 1,
                   borderStyle: "solid",
                   borderRadius: 0,
+                },
+                ".mantine-PasswordInput-innerInput": {
+                  padding: 0,
                 },
               }}
               className="w-full"
