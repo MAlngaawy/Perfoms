@@ -8,7 +8,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect } from "react";
 import { useState } from "react";
 import { BASE_URL } from "app/configs/dataService";
-
+import { Country, State, City } from "country-state-city";
 import PerfSelect from "@main/components/Select";
 
 type Props = {};
@@ -19,14 +19,14 @@ const schema = yup.object().shape({
   lastName: yup.string(),
   country: yup.string().required(),
   city: yup.string(),
-  club: yup.string().required(),
+  club: yup.number().required(),
   countryCode: yup.string().required(),
   phoneNumber: yup.number().required(),
   password: yup.string().min(8).max(24).required(),
 });
 
 const SignUpPage = (props: Props) => {
-  const [signinHandler, {}] = useSigninMutation();
+  // const [signinHandler, {}] = useSigninMutation();
   const [clubs, setClubs] = useState([]);
 
   // User Effect to fetch our clubs
@@ -59,6 +59,7 @@ const SignUpPage = (props: Props) => {
     register,
     handleSubmit,
     formState: { errors },
+    getValues,
     control,
   } = useForm({
     resolver: yupResolver(schema),
@@ -66,6 +67,7 @@ const SignUpPage = (props: Props) => {
 
   const submitFun = (data: any) => {
     console.log(data);
+    // State.getStatesOfCountry(getValues("country"));
     // const newData = {
     //   mobile: data.countryCode + data.phoneNumber,
     //   password: data.password,
@@ -110,7 +112,7 @@ const SignUpPage = (props: Props) => {
             />
 
             {/* [First and Last Name] */}
-            <div className="flex gap-2">
+            <div className="flex gap-2 w-full">
               {/* FirstName Input */}
               <Input.Wrapper
                 className="w-full"
@@ -127,6 +129,8 @@ const SignUpPage = (props: Props) => {
                       borderBottom: 1,
                       borderStyle: "solid",
                       borderRadius: 0,
+                      height: 20,
+                      minHeight: 20,
                     },
                   }}
                   className="border-b"
@@ -150,6 +154,8 @@ const SignUpPage = (props: Props) => {
                       borderBottom: 1,
                       borderStyle: "solid",
                       borderRadius: 0,
+                      height: 20,
+                      minHeight: 20,
                     },
                   }}
                   className="border-b"
@@ -160,158 +166,87 @@ const SignUpPage = (props: Props) => {
             </div>
 
             {/* Select country and city */}
-            <div className="flex gap-2">
-              <Controller
-                render={({ field }) => (
-                  <Select
-                    id="country"
-                    withAsterisk
-                    error={errors.country && "Please select your Country"}
-                    sx={{
-                      ".mantine-Input-input": {
-                        border: 0,
-                        padding: 0,
-                        borderBottom: 1,
-                        borderStyle: "solid",
-                        borderRadius: 0,
-                      },
-                    }}
-                    className="w-full"
-                    label="Country"
-                    data={[
-                      {
-                        label: "Egypt",
-                        value: "EG",
-                        country: "egypt",
-                      },
-                      {
-                        label: "United Arab Emirates",
-                        value: "AE",
-                        country: "United Arab Emirates",
-                      },
-                      {
-                        label: "Saudi Arabia",
-                        value: "SA",
-                        country: "Saudi Arabia",
-                      },
-                      {
-                        label: "South Korea",
-                        value: "KR",
-                        country: "South Korea",
-                      },
-                      {
-                        label: "Jordan",
-                        value: "JO",
-                        country: "Jordan",
-                      },
-                    ]}
-                    {...field}
-                  />
-                )}
+            <div className="flex gap-2 w-full">
+              <PerfSelect
+                id="country"
+                required
+                error={errors.country && "Please select your country"}
+                className="w-full"
+                label="Country"
                 name="country"
                 control={control}
-                defaultValue=""
+                data={[
+                  {
+                    label: "🇪🇬 Egypt",
+                    value: "EG",
+                  },
+                  {
+                    label: "🇦🇪 United Arab Emirates",
+                    value: "AE",
+                  },
+                  {
+                    label: "🇸🇦 Saudi Arabia",
+                    value: "SA",
+                  },
+                  {
+                    label: "🇰🇷 South Korea",
+                    value: "KR",
+                  },
+                  {
+                    label: "🇯🇴 Jordan",
+                    value: "JO",
+                  },
+                ]}
               />
-
-              <Controller
-                render={({ field }) => (
-                  <Select
-                    id="city"
-                    error={errors.city && "Please select your City"}
-                    sx={{
-                      ".mantine-Input-input": {
-                        border: 0,
-                        padding: 0,
-                        borderBottom: 1,
-                        borderStyle: "solid",
-                        borderRadius: 0,
-                      },
-                    }}
-                    className="w-full"
-                    label="City"
-                    data={[
-                      {
-                        label: "Egypt",
-                        value: "EG",
-                        country: "egypt",
-                      },
-                      {
-                        label: "United Arab Emirates",
-                        value: "AE",
-                        country: "United Arab Emirates",
-                      },
-                    ]}
-                    {...field}
-                  />
-                )}
+              <PerfSelect
+                id="city"
+                required
+                error={errors.city && "Please select your City"}
+                className="w-full"
+                label="City"
                 name="city"
                 control={control}
-                defaultValue=""
+                data={State.getStatesOfCountry(getValues("country")).map(
+                  (item: { name: string }) => {
+                    return { label: item.name, value: item.name };
+                  }
+                )}
               />
             </div>
 
             {/* Select Club */}
-            <Controller
-              render={({ field }) => (
-                <Select
-                  id="club"
-                  withAsterisk
-                  error={errors.club && "Please select your Club"}
-                  sx={{
-                    ".mantine-Input-input": {
-                      border: 0,
-                      padding: 0,
-                      borderBottom: 1,
-                      borderStyle: "solid",
-                      borderRadius: 0,
-                    },
-                  }}
-                  className="w-full"
-                  label="Club"
-                  data={clubs}
-                  // data={clubs.map((oneClub): object =>  {label: "LOL", value: })}
-                  {...field}
-                />
-              )}
+            <PerfSelect
+              id="club"
+              required
+              error={errors.club && "Please select your Club"}
+              className="w-full"
+              label="Club"
               name="club"
               control={control}
-              defaultValue=""
+              data={clubs}
             />
 
             <Grid grow gutter="sm">
               {/* Select Country code Input */}
+
               <Grid.Col span={3}>
-                <Controller
-                  render={({ field }) => (
-                    <Select
-                      id="select-code"
-                      withAsterisk
-                      error={
-                        errors.countryCode && "Please select your country code"
-                      }
-                      sx={{
-                        ".mantine-Input-input": {
-                          border: 0,
-                          padding: 0,
-                          borderBottom: 1,
-                          borderStyle: "solid",
-                          borderRadius: 0,
-                        },
-                      }}
-                      label="code"
-                      data={[
-                        { value: "+20", label: "+20" },
-                        { value: "+971", label: "+971" },
-                        { value: "+966", label: "+966" },
-                        { value: "+82", label: "+82" },
-                        { value: "+962", label: "+962" },
-                      ]}
-                      {...field}
-                    />
-                  )}
-                  name="countryCode"
+                <PerfSelect
+                  id="select-code"
+                  required
+                  error={
+                    errors.countryCode && "Please select your country code"
+                  }
+                  className="w-full"
+                  label="code"
+                  name="code"
                   control={control}
-                  defaultValue=""
+                  data={[
+                    { value: "+20", label: "+20" },
+                    { value: "+971", label: "+971" },
+                    { value: "+966", label: "+966" },
+                    { value: "+82", label: "+82" },
+                    { value: "+962", label: "+962" },
+                  ]}
                 />
               </Grid.Col>
 
@@ -331,6 +266,8 @@ const SignUpPage = (props: Props) => {
                         borderBottom: 1,
                         borderStyle: "solid",
                         borderRadius: 0,
+                        height: 20,
+                        minHeight: 20,
                       },
                     }}
                     className="border-b"
@@ -349,6 +286,8 @@ const SignUpPage = (props: Props) => {
                   borderBottom: 1,
                   borderStyle: "solid",
                   borderRadius: 0,
+                  height: 20,
+                  minHeight: 20,
                 },
                 ".mantine-PasswordInput-innerInput": {
                   padding: 0,
