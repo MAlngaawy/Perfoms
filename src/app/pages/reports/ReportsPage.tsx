@@ -1,8 +1,6 @@
 import React from "react";
-import { User } from "app/store/types/user-types";
 import ReportNav from "./components/ReportNav";
 import Card from "@main/components/Card";
-import { Dropdown } from "@main/components/Dropdown";
 import "./styles.css";
 
 const playerSummary = [

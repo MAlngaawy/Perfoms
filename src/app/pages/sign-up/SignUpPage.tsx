@@ -1,6 +1,6 @@
 import { Select, Input, Grid } from "@mantine/core";
 import { useForm, Controller } from "react-hook-form";
-import { useSigninMutation } from "app/store/user/userApi";
+// import { useSigninMutation } from "app/store/user/userApi";
 import { PasswordInput } from "@mantine/core";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
@@ -24,7 +24,7 @@ const schema = yup.object().shape({
 });
 
 const SignUpPage = (props: Props) => {
-  const [signinHandler, {}] = useSigninMutation();
+  // const [signinHandler, {}] = useSigninMutation();
   const [clubs, setClubs] = useState([]);
 
   // User Effect to fetch our clubs
