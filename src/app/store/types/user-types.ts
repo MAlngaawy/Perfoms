@@ -51,8 +51,10 @@ export type UserSignup = {
   teams: number[];
 };
 
+// =====
+
 export type CardProps = {
-  type: 'action' | 'recommendation' | 'power' | 'playerInfo' | 'performanceSummary',
+  type: 'action' | 'recommendation' | 'power' | 'playerInfo' | 'performanceSummary' | 'teamInfo' | 'calendar' | 'upcomingEvents',
   header?: string,
   firstText?: string,
   secondText?: string,
@@ -80,11 +82,20 @@ export type InfoProps = {
 
 export type PlayerData = {
   name: string,
-  iconURL: string,
-  dob: string,
-  weight: string | number,
-  height: string | number,
-  sportName: string
+  icon_url?: string,
+  dob?: string,
+  weight?: string | number,
+  height?: string | number,
+  sport?: GeneralInfo,
+  gender?: 'M' | 'F',
+  coaches?: PersonData[],
+  team?: GeneralInfo
+}
+
+export type GeneralInfo = {
+  name?: string,
+  description?: string,
+  coaches?: PersonData[],
 }
 
 export type PerformanceCardProps = {
@@ -94,4 +105,10 @@ export type PerformanceCardProps = {
   textColor: string,
   children?: any,
   icon?: string
+}
+
+export type PersonData = {
+  first_name: string,
+  last_name: string,
+  avatar: string
 }
