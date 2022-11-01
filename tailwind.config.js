@@ -22,9 +22,11 @@ module.exports = {
         fadedRed: "#eb57572f",
       },
       screens: {
+        xs: "576px",
+        sm: "768px",
+        md: "992px",
         lg: "1200px",
-        md: "767px",
-        sm: "480px",
+        xl: "1400px",
       },
     },
   },
