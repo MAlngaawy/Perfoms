@@ -1,6 +1,6 @@
-import { Select, Input, Grid } from "@mantine/core";
-import { useForm, Controller } from "react-hook-form";
-import { useSigninMutation } from "app/store/user/userApi";
+import { Input, Grid } from "@mantine/core";
+import { useForm } from "react-hook-form";
+// import { useSigninMutation } from "app/store/user/userApi";
 import { PasswordInput } from "@mantine/core";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
@@ -8,7 +8,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect } from "react";
 import { useState } from "react";
 import { BASE_URL } from "app/configs/dataService";
-import { Country, State, City } from "country-state-city";
+import { State } from "country-state-city";
 import PerfSelect from "@main/components/Select";
 
 type Props = {};
@@ -29,8 +29,25 @@ const SignUpPage = (props: Props) => {
   // const [signinHandler, {}] = useSigninMutation();
   const [clubs, setClubs] = useState([]);
 
-  // User Effect to fetch our clubs
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    control,
+    setValue,
+    watch,
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  // access country value to use it to get it's cities
+  const country = watch("country");
+
   useEffect(() => {
+    // set city value to empty after change the country
+    setValue("city", "");
+
+    // fetch database clubs
     fetch(`${BASE_URL}/core/clubs/`)
       .then((res) => res.json())
       .then(({ data }) => {
@@ -40,48 +57,30 @@ const SignUpPage = (props: Props) => {
         setClubs(newClubs);
       })
       .catch((err) => console.log(err));
-  }, []);
-
-  // local schema
-  yup.setLocale({
-    // use constant translation keys for messages without values
-    mixed: {
-      default: "field_invalid",
-    },
-    // use functions to generate an error object that includes the value from the schema
-    number: {
-      min: ({ min }) => ({ key: "field_too_short", values: { min } }),
-      max: ({ max }) => ({ key: "field_too_big", values: { max } }),
-    },
-  });
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    getValues,
-    control,
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
+  }, [country, setValue]);
 
   const submitFun = (data: any) => {
-    console.log(data);
-    // State.getStatesOfCountry(getValues("country"));
-    // const newData = {
-    //   mobile: data.countryCode + data.phoneNumber,
-    //   password: data.password,
-    // };
-    // signinHandler(newData);
+    // handle The request body schema
+    const requestData = {
+      user_type: data.userRole,
+      first_name: data.firstName,
+      last_name: data.lastName,
+      country: data.country,
+      club: data.club,
+      mobile: data.countryCode + data.phoneNumber,
+      password: data.password,
+      city: data.city,
+    };
+    console.log(requestData);
   };
 
   return (
-    <div className="signIn min-h-screen flex items-center justify-center">
-      <div className="leftImage hidden md:block md:w-1/2 h-full">
+    <div className="signIn bg-perfOfWhite flex justify-center min-h-screen items-stretch">
+      <div className="leftImage hidden md:block md:w-1/2 self-stretch">
         <img
-          className="w-full h-full object-cover "
+          className="object-cover h-full max-h-full min-h-0"
           src="/assets/images/performs_signup.jpg"
-          alt="Sign in"
+          alt="Sign up"
         />
       </div>
       <div className="form py-10 md:w-1/2 px-4 flex justify-center items-center">
@@ -206,7 +205,7 @@ const SignUpPage = (props: Props) => {
                 label="City"
                 name="city"
                 control={control}
-                data={State.getStatesOfCountry(getValues("country")).map(
+                data={State.getStatesOfCountry(country).map(
                   (item: { name: string }) => {
                     return { label: item.name, value: item.name };
                   }
@@ -231,14 +230,14 @@ const SignUpPage = (props: Props) => {
 
               <Grid.Col span={3}>
                 <PerfSelect
-                  id="select-code"
+                  id="countryCode"
                   required
                   error={
                     errors.countryCode && "Please select your country code"
                   }
-                  className="w-full"
+                  className=""
                   label="code"
-                  name="code"
+                  name="countryCode"
                   control={control}
                   data={[
                     { value: "+20", label: "+20" },
