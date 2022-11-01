@@ -48,15 +48,15 @@ const SignInPage = (props: Props) => {
   };
 
   return (
-    <div className="signIn min-h-screen flex items-center justify-center">
-      <div className="leftImage hidden md:block md:w-1/2 h-full">
+    <div className="signIn bg-perfOfWhite flex justify-center min-h-screen items-stretch">
+      <div className="leftImage hidden md:block md:w-1/2 self-stretch">
         <img
-          className="w-full h-full object-cover "
+          className="object-cover h-full max-h-full min-h-0"
           src="/assets/images/performs_login.jpg"
           alt="Sign in"
         />
       </div>
-      <div className="py-10 form md:w-1/2 px-4 flex justify-center items-center">
+      <div className="form md:w-1/2 px-4 flex justify-center items-center">
         <form
           className="md:w-96 "
           onSubmit={handleSubmit((data: any) => submitFun(data))}
