@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import AppSuspense from "@main/core/AppSuspense";
 import AppContext from "app/AppContext";
 import { selectAppCurrentLayoutConfig } from "app/store/app/settingsSlice";
@@ -7,6 +8,7 @@ import { useRoutes } from "react-router-dom";
 import Footer from "./components/Footer";
 import Navigation from "./components/Navigation";
 import Toolbar from "./components/Toolbar";
+import { Grid } from "@mantine/core";
 
 type Props = {};
 
@@ -15,16 +17,23 @@ const Layout = (props: PropsWithChildren<Props>) => {
   const appContext = useContext(AppContext);
   const { routes } = appContext;
   console.log(config);
+  const [opened, setOpened] = useState(false);
   return (
-    <div>
-      {config.navbar.display && <Navigation />}
-      <main>
-        {config.toolbar.display && <Toolbar />}
-        <AppSuspense>{useRoutes(routes)}</AppSuspense>
-        {props.children}
-        {config.footer.display && <Footer />}
-      </main>
-    </div>
+    <Grid className="min-h-screen flex flex-nowrap">
+      {config.navbar.display && (
+        <Navigation opened={opened} setOpened={setOpened} />
+      )}
+      <Grid.Col xs={12} lg={10}>
+        <main>
+          {config.toolbar.display && (
+            <Toolbar opened={opened} setOpened={setOpened} />
+          )}
+          <AppSuspense>{useRoutes(routes)}</AppSuspense>
+          {props.children}
+          {config.footer.display && <Footer />}
+        </main>
+      </Grid.Col>
+    </Grid>
   );
 };
 
