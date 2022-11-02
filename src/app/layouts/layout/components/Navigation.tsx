@@ -19,13 +19,16 @@ const Navigation = ({ opened, setOpened }: Props) => {
     <>
       {/* Large Screens SideBar */}
       <Grid.Col
-        style={{
-          boxShadow: "4px 8px 14px 0px #2D43771F",
-        }}
-        className="hidden lg:block overflow-scroll h-screen p-0 pt-6"
+        className="hidden  lg:flex justify-center overflow-scroll h-screen p-0 pt-6"
         span={2}
       >
-        <div>
+        <div
+          style={{
+            boxShadow: "4px 8px 14px 0px #2D43771F",
+            width: "-webkit-fill-available",
+          }}
+          className="Test h-full flex flex-col overflow-scroll justify-center items-center gap-2 fixed"
+        >
           <Info />
           <NavList setOpened={setOpened} />
           <UserButton />
@@ -45,7 +48,6 @@ const Navigation = ({ opened, setOpened }: Props) => {
           padding="sm"
           size="sm"
           overlayOpacity={0.55}
-          overlayBlur={3}
           className="overflow-scroll"
         >
           <Info />
@@ -99,7 +101,7 @@ const Info = () => {
 
 const NavList = ({ setOpened }: any) => {
   return (
-    <div className="mx-8 flex flex-col gap-2">
+    <div className="flex w-full px-6 flex-col gap-2">
       {navigationConfig.map((i) => (
         <NavLink
           style={({ isActive }) =>
@@ -116,7 +118,7 @@ const NavList = ({ setOpened }: any) => {
           key={i.id}
           onClick={() => setOpened(false)}
           className={
-            "rounded-lg text-sm font-medium flex content-center items-center gap-2 py-3 w-full text-perfGray3"
+            "rounded-lg text-sm font-medium flex content-center items-center gap-2 py-3 xl:py-4 w-full text-perfGray3"
           }
         >
           <AppIcons className="w-5 h-5" icon={i.icon} />

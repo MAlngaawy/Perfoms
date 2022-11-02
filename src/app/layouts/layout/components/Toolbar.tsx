@@ -12,7 +12,7 @@ type Props = {
 const Toolbar = ({ setOpened }: Props) => {
   const dispatch = useDispatch();
   return (
-    <div className="bg-red w-full flex justify-between items-center">
+    <div className="bg-perfGray3 p-2 w-full flex justify-between items-center">
       <button
         className="block lg:hidden text-black border-0"
         onClick={() => setOpened(true)}

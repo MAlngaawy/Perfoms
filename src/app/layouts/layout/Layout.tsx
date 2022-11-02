@@ -30,7 +30,7 @@ const Layout = (props: PropsWithChildren<Props>) => {
           )}
           <AppSuspense>{useRoutes(routes)}</AppSuspense>
           {props.children}
-          {config.footer.display && <Footer />}
+          {/* {config.footer.display && <Footer />} */}
         </main>
       </Grid.Col>
     </Grid>
