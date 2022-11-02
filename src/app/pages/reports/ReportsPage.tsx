@@ -1,10 +1,10 @@
 import React from "react";
-import { User } from "app/store/types/user-types";
-import ReportNav from "./components/ReportNav";
-import Card from "@main/components/Card";
-import { Dropdown } from "@main/components/Dropdown";
 import "./styles.css";
+import { Grid } from '@mantine/core';
+import Card from '@main/components/Card'
 import FirstNav from "@main/components/FirstNav";
+
+// ===== dummy data =====
 
 const playerSummary = [
   {
@@ -37,10 +37,72 @@ const playerSummary = [
   },
 ];
 
+const scores = [
+  {
+    name:'kick',
+    score:'2'
+  },
+  {
+    name:'kick',
+    score:'2'
+  },
+  {
+    name:'kick',
+    score:'2'
+  },
+  {
+    name:'kick',
+    score:'2'
+  },
+  {
+    name:'kick',
+    score:'2'
+  },
+  {
+    name:'kick',
+    score:'2'
+  },
+]
+
+const text = {
+  firstText:'Name of the metric “ left leg” ',
+  secondText: 'Name of the action “ need more practicing” ',
+  detailedText: '10 Exercises to Improve Your Flexibility 1. Standing Quad Stretch. Stand with your feet together. ... 2. Standing Side Stretch. Standing with your feet together, lift your arms overhead. ... 3. Seated Hamstring Stretch. ... 4.'
+}
+// ==============
+
+
 const ReportPage = () => {
   return (
-    <div className="report-page flex flex-col gap-3">
-      
+    <div className="report-page bg-black px-5 mb-20">
+      <FirstNav pageName="Report" />
+      <Grid columns={12} gutter={20}>
+              <Grid.Col span={3}>
+                <Card type='playerInfo' />
+              </Grid.Col>
+              <Grid.Col span={9}>
+                <Card type='performanceSummary' playerSummary={playerSummary} />
+              </Grid.Col>
+            </Grid>
+            <Grid  columns={12} gutter={20} className="info mt-3">
+              <Grid.Col span={4}>
+                <Card type='power' powerType="Strength" scores={scores} />
+              </Grid.Col>
+              <Grid.Col span={4}>
+                <Card type='power' powerType="Strength" scores={scores} />
+              </Grid.Col>
+              <Grid.Col span={4}>
+                <Card type='power' powerType="Strength" scores={scores} />
+              </Grid.Col>
+            </Grid>
+            <Grid  columns={12} gutter={20} className="info mt-3">
+              <Grid.Col span={6}>
+                <Card type='action' firstText={text.firstText} secondText={text.secondText} detailedText={text.detailedText} />
+              </Grid.Col>
+              <Grid.Col span={6}>
+                <Card type='recommendation' firstText={text.firstText} secondText={text.secondText} detailedText={text.detailedText} />
+              </Grid.Col>
+            </Grid>
     </div>
   );
 };
