@@ -1,7 +1,10 @@
 import React from "react";
+import { User } from "app/store/types/user-types";
 import ReportNav from "./components/ReportNav";
 import Card from "@main/components/Card";
+import { Dropdown } from "@main/components/Dropdown";
 import "./styles.css";
+import FirstNav from "@main/components/FirstNav";
 
 const playerSummary = [
   {
@@ -36,9 +39,8 @@ const playerSummary = [
 
 const ReportPage = () => {
   return (
-    <div className="report-page">
-      <ReportNav />
-      <Card type="performanceSummary" playerSummary={playerSummary} />
+    <div className="report-page flex flex-col gap-3">
+      
     </div>
   );
 };
