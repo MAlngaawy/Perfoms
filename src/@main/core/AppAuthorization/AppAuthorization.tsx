@@ -4,7 +4,7 @@ import { Location, matchRoutes } from "react-router-dom";
 import withRouter from "@main/core/withRouter";
 import history from "@history";
 import AppUtils from "@main/utils/AppUtils";
-import { AppRouteObject } from "app/configs/routesConfig";
+import { AppRouteObject } from "@main/types/Config-Types";
 
 type Props = {
   location: Location;

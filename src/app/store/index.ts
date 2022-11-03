@@ -1,7 +1,9 @@
+import { attendanceApi } from "./attendance/attendanceApi";
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
 import rootReducer from "./rootReducer";
 import { userApi } from "./user/userApi";
+import { coachApi } from "./coach/coachApi";
 
 export interface SerializedError {
   name?: string;
@@ -17,7 +19,11 @@ if (process.env.NODE_ENV === "development" && module.hot) {
   });
 }
 
-const middlewares: any[] = [userApi.middleware];
+const middlewares: any[] = [
+  userApi.middleware,
+  attendanceApi.middleware,
+  coachApi.middleware,
+];
 
 if (process.env.NODE_ENV === "development") {
   const { createLogger } = require(`redux-logger`);
