@@ -19,12 +19,15 @@ const Navigation = ({ opened, setOpened }: Props) => {
     <>
       {/* Large Screens SideBar */}
       <Grid.Col
-        className="hidden  lg:flex justify-center overflow-scroll h-screen p-0 pt-6"
+        style={{
+          boxShadow: "4px 8px 14px 0px #2D43771F",
+        }}
+        className="hidden lg:flex justify-center overflow-scroll min-h-screen max-h-full p-0 pt-6 bg-white"
         span={2}
       >
         <div
           style={{
-            boxShadow: "4px 8px 14px 0px #2D43771F",
+            // boxShadow: "4px 8px 14px 0px #2D43771F",
             width: "-webkit-fill-available",
           }}
           className="Test h-full flex flex-col overflow-scroll justify-center items-center gap-2 fixed"
@@ -40,7 +43,7 @@ const Navigation = ({ opened, setOpened }: Props) => {
         style={{
           boxShadow: "4px 8px 14px 0px #2D43771F",
         }}
-        className="block lg:hidden h-screen p-0 pt-6"
+        className="block lg:hidden h-screen p-0 pt-6 bg-white"
       >
         <Drawer
           opened={opened}
