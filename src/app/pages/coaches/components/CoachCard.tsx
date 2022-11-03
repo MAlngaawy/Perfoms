@@ -20,13 +20,13 @@ const CoachCard = ({
   sport,
 }: Props) => {
   return (
-    <div className="coachCard transition-all group hover:bg-perfBlue hover:text-white bg-white text-perfLightBlack rounded-3xl text-center p-5 font-medium">
+    <div className="coachCard h-full transition-all group hover:bg-perfBlue hover:text-white bg-white text-perfLightBlack rounded-3xl text-center p-5 font-medium">
       <h3 className="text-base font-medium text-center">
         {role ? role : "Coach"}
       </h3>
       <div className="flex justify-center items-center">
         <img
-          className="my-4 w-32 h-32 transition-all delay-75 rounded-lg group-hover:border border-white box-border"
+          className="my-4 w-32 h-32 object-cover transition-all delay-75 rounded-lg group-hover:border border-white box-border"
           src={photo ? photo : "/assets/images/avatar.webp"}
           alt="Profile_Picture"
         />

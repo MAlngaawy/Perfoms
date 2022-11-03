@@ -19,11 +19,11 @@ const Layout = (props: PropsWithChildren<Props>) => {
   console.log(config);
   const [opened, setOpened] = useState(false);
   return (
-    <Grid className="min-h-screen flex flex-nowrap">
+    <Grid className="min-h-screen flex flex-nowrap  bg-pagesBg ">
       {config.navbar.display && (
         <Navigation opened={opened} setOpened={setOpened} />
       )}
-      <Grid.Col xs={12} lg={10}>
+      <Grid.Col xs={12} lg={10} className="p-0">
         <main>
           {config.toolbar.display && (
             <Toolbar opened={opened} setOpened={setOpened} />
