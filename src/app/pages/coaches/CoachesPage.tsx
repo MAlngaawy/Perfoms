@@ -28,7 +28,7 @@ const coachesDummyData = [
     sport: "Ride horse",
   },
   {
-    id: 2,
+    id: 3,
     role: "Coach",
     name: "Salma 3Amr",
     education: "Bachelor of Physical Education",
@@ -38,7 +38,7 @@ const coachesDummyData = [
     sport: "Swemming",
   },
   {
-    id: 1,
+    id: 4,
     role: "Coach",
     name: "Mohammed Ali",
     education: "Bachelor of Physical Education",
@@ -48,7 +48,7 @@ const coachesDummyData = [
     sport: "Taekwondo",
   },
   {
-    id: 2,
+    id: 5,
     role: "Supervisor",
     name: "Amr Mohammed",
     education: "Bachelor of Physical Education",
@@ -58,7 +58,7 @@ const coachesDummyData = [
     sport: "Ride horse",
   },
   {
-    id: 2,
+    id: 6,
     role: "Coach",
     name: "Salma 3Amr",
     education: "Bachelor of Physical Education",
