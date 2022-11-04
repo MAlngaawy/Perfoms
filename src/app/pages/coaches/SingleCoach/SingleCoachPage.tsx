@@ -3,8 +3,37 @@ import { Grid } from "@mantine/core";
 
 import CoachPersonalInfo from "./components/CoachPersonalInfo";
 import CoachExperince from "./components/CoachExperince";
+import CoachAchievements from "./components/CoachAchievements";
 
 type Props = {};
+
+const coachAchev = [
+  {
+    type: "Gold medal",
+    year: 2015,
+    place: "olymbec games",
+  },
+  {
+    type: "Gold medal",
+    year: 2015,
+    place: "olymbec games",
+  },
+  {
+    type: "Gold medal",
+    year: 2015,
+    place: "olymbec games",
+  },
+  {
+    type: "Gold medal",
+    year: 2015,
+    place: "olymbec games",
+  },
+  {
+    type: "Gold medal",
+    year: 2015,
+    place: "olymbec games",
+  },
+];
 
 const coachExp = {
   experinces: [
@@ -47,7 +76,7 @@ const coachExp = {
 
 const SingleCoachPage = (props: Props) => {
   return (
-    <Grid className="p-10" gutter="xl">
+    <Grid className="p-4" gutter="sm">
       <Grid.Col xs={12} md={3}>
         <CoachPersonalInfo
           id={1}
@@ -75,7 +104,9 @@ const SingleCoachPage = (props: Props) => {
       <Grid.Col xs={12} md={7}>
         <CoachExperince {...coachExp} />
       </Grid.Col>
-      <Grid.Col xs={12} md={2}></Grid.Col>
+      <Grid.Col xs={12} md={2}>
+        <CoachAchievements data={coachAchev} />
+      </Grid.Col>
     </Grid>
   );
 };

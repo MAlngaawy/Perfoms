@@ -24,7 +24,7 @@ const CoachPersonalInfo = (props: Props) => {
       <h3 className="text-base font-medium text-center">
         {props.role ? props.role : "Coach"}
       </h3>
-      <div className="flex flex-col justify-center items-center gap-2">
+      <div className="flex md:flex-col justify-center items-center gap-4">
         <div className="flex justify-center items-center">
           <img
             className="w-32 h-32 object-cover transition-all delay-75 rounded-lg group-hover:border border-white box-border"
@@ -32,13 +32,15 @@ const CoachPersonalInfo = (props: Props) => {
             alt="Profile_Picture"
           />
         </div>
-        <h2 className="text-xl uppercase">{props.name}</h2>
-        <h4 className="text-perfBlue group-hover:text-white text-xs">
-          {props.sport} Coach
-        </h4>
-        <Button className=" border border-perfBlue rounded-lg font-normal text-perfBlue hover:text-white">
-          Send Message
-        </Button>
+        <div className="flex flex-col justify-center items-center gap-2">
+          <h2 className="text-xl uppercase">{props.name}</h2>
+          <h4 className="text-perfBlue group-hover:text-white text-xs">
+            {props.sport} Coach
+          </h4>
+          <Button className=" border border-perfBlue rounded-lg font-normal text-perfBlue hover:text-white">
+            Send Message
+          </Button>
+        </div>
       </div>
       <div className="profile text-left">
         <h3 className="text-base font-medium text-perfLightBlack">Profile</h3>

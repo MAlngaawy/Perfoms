@@ -71,8 +71,8 @@ const coachesDummyData = [
 
 const CoachesPage = ({ coaches }: Props) => {
   return (
-    <div className="coaches my-10 px-6">
-      <Grid>
+    <div className="coaches p-6">
+      <Grid gutter="sm">
         {coachesDummyData.map((coach) => {
           return (
             <Grid.Col xs={6} sm={4} md={3}>

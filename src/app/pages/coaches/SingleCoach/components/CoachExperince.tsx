@@ -14,7 +14,7 @@ type Props = {
 
 const CoachExperince = (props: Props) => {
   return (
-    <div className="bg-white flex flex-col sm:flex-row gap-8 h-full rounded-lg md:rounded-2xl p-6">
+    <div className="bg-white flex flex-col sm:flex-row gap-8 h-full rounded-lg md:rounded-2xl p-4  pt-10">
       <div className="experinces">
         <TitleWithIcon name="Experinces" />
         {props.experinces.map((oneExp) => (
