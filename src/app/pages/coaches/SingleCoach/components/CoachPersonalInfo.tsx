@@ -27,7 +27,7 @@ const CoachPersonalInfo = (props: Props) => {
       <div className="flex flex-col justify-center items-center gap-2">
         <div className="flex justify-center items-center">
           <img
-            className="my-4 w-32 h-32 object-cover transition-all delay-75 rounded-lg group-hover:border border-white box-border"
+            className="w-32 h-32 object-cover transition-all delay-75 rounded-lg group-hover:border border-white box-border"
             src={props.photo ? props.photo : "/assets/images/avatar.webp"}
             alt="Profile_Picture"
           />
@@ -51,7 +51,7 @@ const CoachPersonalInfo = (props: Props) => {
         <Grid gutter={5}>
           {props.teams.map((team) => (
             <Grid.Col className="font-normal text-perfGray3 text-sm" span={6}>
-              {team}
+              <li>{team}</li>
             </Grid.Col>
           ))}
         </Grid>

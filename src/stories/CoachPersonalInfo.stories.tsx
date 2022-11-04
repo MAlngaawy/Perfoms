@@ -66,13 +66,3 @@ WithoutPhoto.args = {
     },
   ],
 };
-
-// export const WithoutPhoto = Template.bind({});
-// WithoutPhoto.args = {
-//   id: 2,
-//   role: "Coach",
-//   name: "Mohammed Ali",
-//   education: "Bachelor of Physical Education",
-//   teams: ["Team 1", "Team 2", "Team 3"],
-//   sport: "Taekwondo",
-// };
