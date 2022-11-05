@@ -1,6 +1,3 @@
-import { jsx } from "@emotion/react";
-import { type } from "os";
-
 export type LoginUserBody = {
   mobile: string;
   password: string;
@@ -16,6 +13,7 @@ export type LoginResponse = {
   players: any[];
   error: boolean;
 };
+
 export type ProfileResponse = {
   message: string;
   data: User;
@@ -137,4 +135,44 @@ export type SecondNavProps = {
   players: PlayerData[];
   selectedplayer: any;
   setSelectedPlayer: any;
+};
+
+export type NotificationsType = {
+  count: number;
+  next: string;
+  previous: string;
+  results: [
+    {
+      id: number;
+      sender: User;
+      receiver: User;
+      message: string;
+      created_at: Date;
+      notification_type: "Report" | "Certificate" | "Complement" | "Permission";
+      player: number;
+    }
+  ];
+};
+
+export type ProfileType = {
+  count: number;
+  next: string;
+  previous: string;
+  results: User[];
+};
+
+export type SendOtp = {
+  mobile: string;
+};
+
+export type OTPVerify = {
+  mobile: string;
+  otp: string;
+  token?: string;
+};
+
+export type UserDeviceId = {
+  device_id: string;
+  registration_token: string;
+  device_type: string;
 };

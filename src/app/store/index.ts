@@ -1,3 +1,6 @@
+import { parentsApi } from "./parent/parentApi";
+import { coreApi } from "./core/coreApi";
+import { eventsApi } from "./events/eventsApi";
 import { attendanceApi } from "./attendance/attendanceApi";
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
@@ -23,6 +26,9 @@ const middlewares: any[] = [
   userApi.middleware,
   attendanceApi.middleware,
   coachApi.middleware,
+  eventsApi.middleware,
+  coreApi.middleware,
+  parentsApi.middleware,
 ];
 
 if (process.env.NODE_ENV === "development") {
