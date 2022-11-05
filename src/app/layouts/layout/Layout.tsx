@@ -19,7 +19,7 @@ const Layout = (props: PropsWithChildren<Props>) => {
   console.log(config);
   const [opened, setOpened] = useState(false);
   return (
-    <Grid className="min-h-screen flex flex-nowrap  bg-pagesBg ">
+    <Grid className="min-h-screen max-w-full flex flex-nowrap m-0 bg-pagesBg ">
       {config.navbar.display && (
         <Navigation opened={opened} setOpened={setOpened} />
       )}
