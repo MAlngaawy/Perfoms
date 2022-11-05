@@ -25,12 +25,12 @@ const Toolbar = ({ setOpened }: Props) => {
     // <FirstNav pageName={routeName} />
     <div className="bg-fadedGray p-2 w-full flex justify-between items-center">
       <button
-        className="block  text-black border-0"
+        className="block md:hidden text-black border-0"
         onClick={() => setOpened(true)}
       >
         <AppIcons className="w-6 h-6 " icon="Bars3BottomLeftIcon:solid" />
       </button>
-      <Button
+      {/* <Button
         onClick={() => {
           Cookies.remove("token");
           dispatch(userApi.util.resetApiState());
@@ -38,7 +38,7 @@ const Toolbar = ({ setOpened }: Props) => {
         variant="default"
       >
         Logout
-      </Button>
+      </Button> */}
     </div>
   );
 };
