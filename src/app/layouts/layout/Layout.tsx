@@ -22,7 +22,7 @@ const Layout = (props: PropsWithChildren<Props>) => {
       {config.navbar.display && (
         <Navigation opened={opened} setOpened={setOpened} />
       )}
-      <Grid.Col xs={12} lg={10} className="p-0 max-w-full basis-full">
+      <Grid.Col xs={12} lg={config.navbar.display && 10} className="p-0">
         <main>
           {config.toolbar.display && (
             <Toolbar opened={opened} setOpened={setOpened} />
