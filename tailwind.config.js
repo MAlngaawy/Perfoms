@@ -22,6 +22,7 @@ module.exports = {
         fadedYellow: "#f2c84c2f",
         fadedRed: "#eb57572f",
         pagesBg: "#f3f5f8",
+        perfLightBlue: "#ECF4FF",
       },
       screens: {
         xs: "576px",
