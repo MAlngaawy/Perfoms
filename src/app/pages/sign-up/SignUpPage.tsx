@@ -37,6 +37,17 @@ const SignUpPage = (props: Props) => {
     setValue,
     watch,
   } = useForm({
+    defaultValues: {
+      userRole: "",
+      firstName: "",
+      lastName: "",
+      country: "EG",
+      club: 1,
+      countryCode: "+20",
+      phoneNumber: "",
+      password: "",
+      city: "",
+    },
     resolver: yupResolver(schema),
   });
 
@@ -128,7 +139,7 @@ const SignUpPage = (props: Props) => {
                       borderBottom: 1,
                       borderStyle: "solid",
                       borderRadius: 0,
-                      height: 20,
+
                       minHeight: 20,
                     },
                   }}
@@ -153,7 +164,7 @@ const SignUpPage = (props: Props) => {
                       borderBottom: 1,
                       borderStyle: "solid",
                       borderRadius: 0,
-                      height: 20,
+
                       minHeight: 20,
                     },
                   }}
@@ -225,10 +236,10 @@ const SignUpPage = (props: Props) => {
               data={clubs}
             />
 
-            <Grid grow gutter="sm">
+            <Grid grow gutter="sm" className="w-full">
               {/* Select Country code Input */}
 
-              <Grid.Col span={3}>
+              <Grid.Col span={3} className="px-0">
                 <PerfSelect
                   id="countryCode"
                   required
@@ -250,7 +261,7 @@ const SignUpPage = (props: Props) => {
               </Grid.Col>
 
               {/* Mobile Number Input */}
-              <Grid.Col span={9}>
+              <Grid.Col span={9} className="pr-0">
                 <Input.Wrapper
                   id="phoneNumber"
                   withAsterisk
@@ -265,7 +276,6 @@ const SignUpPage = (props: Props) => {
                         borderBottom: 1,
                         borderStyle: "solid",
                         borderRadius: 0,
-                        height: 20,
                         minHeight: 20,
                       },
                     }}
@@ -285,7 +295,6 @@ const SignUpPage = (props: Props) => {
                   borderBottom: 1,
                   borderStyle: "solid",
                   borderRadius: 0,
-                  height: 20,
                   minHeight: 20,
                 },
                 ".mantine-PasswordInput-innerInput": {

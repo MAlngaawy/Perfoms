@@ -30,7 +30,6 @@ export const userApi = createApi({
       async onQueryStarted(arg, { queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          console.log(data)
           Cookies.set("token", data?.data.access);
           eventInstance.emit("Login_Success");
         } catch (error) {

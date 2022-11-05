@@ -1,4 +1,5 @@
 import { Button } from "@mantine/core";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   id: number;
@@ -19,6 +20,7 @@ const CoachCard = ({
   photo,
   sport,
 }: Props) => {
+  const navigate = useNavigate();
   return (
     <div className="coachCard h-full transition-all group hover:bg-perfBlue hover:text-white bg-white text-perfLightBlack rounded-3xl text-center p-5 font-medium">
       <h3 className="text-base font-medium text-center">
@@ -60,9 +62,14 @@ const CoachCard = ({
           </div>
         </div>
       </div>
-      <Button className="text-perfBlue border border-perfBlue  group-hover:text-white group-hover:border-white font-normal text-base py-2 px-4 my-4 rounded-xl">
+      {/* <Link to={`${location.pathname}/single-coach/${id}`}> */}
+      <Button
+        onClick={() => navigate(`${id}`)}
+        className="text-perfBlue border border-perfBlue  group-hover:text-white group-hover:border-white font-normal text-base py-2 px-4 my-4 rounded-xl"
+      >
         View full profile
       </Button>
+      {/* </Link> */}
     </div>
   );
 };

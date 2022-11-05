@@ -1,15 +1,18 @@
-import { Select, Input, Grid } from "@mantine/core";
+import { Select, Input, Grid, Loader } from "@mantine/core";
 import { useForm, Controller } from "react-hook-form";
 import { useSigninMutation } from "app/store/user/userApi";
 import { PasswordInput } from "@mantine/core";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { ReactNode } from "react";
 
 type Props = {};
 
 const SignInPage = (props: Props) => {
-  const [signinHandler] = useSigninMutation();
+  const [signinHandler, { isLoading }] = useSigninMutation();
+
+  console.log(isLoading);
 
   // local schema
   yup.setLocale({
@@ -36,6 +39,7 @@ const SignInPage = (props: Props) => {
     formState: { errors },
     control,
   } = useForm({
+    defaultValues: { countryCode: "+20", phoneNumber: "", password: "" },
     resolver: yupResolver(schema),
   });
 
@@ -49,14 +53,14 @@ const SignInPage = (props: Props) => {
 
   return (
     <div className="signIn bg-perfOfWhite flex justify-center min-h-screen items-stretch">
-      <div className="leftImage hidden md:block md:w-1/2 self-stretch">
+      <div className="leftImage h-screen hidden md:block md:basis-1/2 self-stretch">
         <img
           className="object-cover h-full max-h-full min-h-0"
           src="/assets/images/performs_login.jpg"
           alt="Sign in"
         />
       </div>
-      <div className="form md:w-1/2 px-4 flex justify-center items-center">
+      <div className="form md:basis-1/2 px-4 flex justify-center items-center">
         <form
           className="md:w-96 "
           onSubmit={handleSubmit((data: any) => submitFun(data))}
@@ -65,10 +69,10 @@ const SignInPage = (props: Props) => {
             <h2 className="text-canter text-perfBlue text-3xl font-medium">
               Sign in.
             </h2>
-            <p className="text-perfGray text-base">Wlcome back.</p>
+            <p className="text-perfGray text-base">Welcome back.</p>
           </div>
           <div className="inputs mb-10 gap-4 flex w-full flex-col justify-center items-center">
-            <Grid grow gutter="sm">
+            <Grid grow gutter="sm" className="w-full">
               {/* Select Country code Input */}
               <Grid.Col span={3}>
                 <Controller
@@ -77,7 +81,8 @@ const SignInPage = (props: Props) => {
                       id="select-code"
                       withAsterisk
                       error={
-                        errors.countryCode && "Please select your country code"
+                        errors?.countryCode &&
+                        (errors.countryCode.message as ReactNode)
                       }
                       sx={{
                         ".mantine-Input-input": {
@@ -97,6 +102,7 @@ const SignInPage = (props: Props) => {
                         { value: "+962", label: "+962" },
                       ]}
                       {...field}
+                      defaultValue="+20"
                     />
                   )}
                   name="countryCode"
@@ -119,10 +125,12 @@ const SignInPage = (props: Props) => {
                         border: 0,
                         padding: 0,
                         borderBottom: 1,
+                        background: "none",
                         borderStyle: "solid",
                         borderRadius: 0,
                       },
                     }}
+                    autoComplete="phone"
                     className="border-b"
                     {...register("phoneNumber")}
                     id="phoneNumber"
@@ -138,6 +146,7 @@ const SignInPage = (props: Props) => {
                   border: 0,
                   padding: 0,
                   borderBottom: 1,
+                  background: "none",
                   borderStyle: "solid",
                   borderRadius: 0,
                 },
@@ -157,9 +166,10 @@ const SignInPage = (props: Props) => {
           </div>
           <button
             type="submit"
-            className="mx-auto block w-full bg-perfBlue rounded-lg text-white p-4 mt-10 mb-2"
+            disabled={isLoading}
+            className="mx-auto flex justify-center w-full disabled:bg-gray-500 bg-perfBlue rounded-lg items-center text-white h-12 mt-10 mb-2"
           >
-            Sign in
+            {!isLoading ? "Sign in" : <Loader variant="dots" color="white" />}
           </button>
           <p className="text-perfGray text-center text-base">
             You don't have an account?

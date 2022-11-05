@@ -46,7 +46,6 @@ const PerfSelect = ({
               borderStyle: "solid",
               borderRadius: 0,
               minHeight: 20,
-              height: 20,
             },
           }}
           className={className}

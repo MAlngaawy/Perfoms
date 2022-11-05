@@ -28,7 +28,7 @@ const coachesDummyData = [
     sport: "Ride horse",
   },
   {
-    id: 2,
+    id: 3,
     role: "Coach",
     name: "Salma 3Amr",
     education: "Bachelor of Physical Education",
@@ -38,7 +38,7 @@ const coachesDummyData = [
     sport: "Swemming",
   },
   {
-    id: 1,
+    id: 4,
     role: "Coach",
     name: "Mohammed Ali",
     education: "Bachelor of Physical Education",
@@ -48,7 +48,7 @@ const coachesDummyData = [
     sport: "Taekwondo",
   },
   {
-    id: 2,
+    id: 5,
     role: "Supervisor",
     name: "Amr Mohammed",
     education: "Bachelor of Physical Education",
@@ -58,7 +58,7 @@ const coachesDummyData = [
     sport: "Ride horse",
   },
   {
-    id: 2,
+    id: 6,
     role: "Coach",
     name: "Salma 3Amr",
     education: "Bachelor of Physical Education",
@@ -71,8 +71,8 @@ const coachesDummyData = [
 
 const CoachesPage = ({ coaches }: Props) => {
   return (
-    <div className="coaches my-10 px-6">
-      <Grid>
+    <div className="coaches p-6">
+      <Grid gutter="sm">
         {coachesDummyData.map((coach) => {
           return (
             <Grid.Col xs={6} sm={4} md={3}>
