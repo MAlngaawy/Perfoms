@@ -55,7 +55,7 @@ const SignInPage = (props: Props) => {
     <div className="signIn bg-perfOfWhite flex justify-center min-h-screen items-stretch">
       <div className="leftImage h-screen hidden md:block md:basis-1/2 self-stretch">
         <img
-          className="object-cover h-full max-h-full min-h-0"
+          className="object-cover h-full w-full max-h-full min-h-0"
           src="/assets/images/performs_login.jpg"
           alt="Sign in"
         />
