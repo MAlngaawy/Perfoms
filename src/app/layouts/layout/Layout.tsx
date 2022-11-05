@@ -16,7 +16,6 @@ const Layout = (props: PropsWithChildren<Props>) => {
   const config = useSelector(selectAppCurrentLayoutConfig);
   const appContext = useContext(AppContext);
   const { routes } = appContext;
-  console.log(config);
   const [opened, setOpened] = useState(false);
   return (
     <Grid className="min-h-screen max-w-full flex flex-nowrap m-0 bg-pagesBg ">
