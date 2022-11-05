@@ -172,7 +172,7 @@ const UserButton = () => {
               <p>View profile</p>
             </div>
           </Link>
-          <Link className="w-full hover:bg-slate-200 py-2" to="/profile">
+          <Link className="w-full hover:bg-slate-200 py-2" to="/settings">
             <div className="flex gap-2 mx-10">
               <AppIcons className="w-4 h-4" icon="Cog6ToothIcon:outline" />
               <p>Settings</p>
