@@ -1,8 +1,12 @@
-import React from "react";
+import React , { useState } from "react";
 import "./styles.css";
 import { Grid } from '@mantine/core';
 import Card from '@main/components/Card'
-import FirstNav from "@main/components/FirstNav";
+import { playerData } from "../home/HomePage";
+import SecondNav from "../home/organisms/SecondNav";
+import { players } from "../home/HomePage";
+import { Dropdown } from "@main/components/Dropdown";
+import AppIcons from "@main/core/AppIcons";
 
 // ===== dummy data =====
 
@@ -73,34 +77,48 @@ const text = {
 
 
 const ReportPage = () => {
+  const [selectedplayer, setSelectedPlayer] = useState<any>(null);
+
+
   return (
-    <div className="report-page bg-black px-5 mb-20">
-      <FirstNav pageName="Report" />
+    <div className="report-page px-5 mb-20">
+      <div className="flex flex-col md:flex-row justify-between items-center">
+        <SecondNav
+                players={players}
+                selectedplayer={selectedplayer}
+                setSelectedPlayer={setSelectedPlayer}
+                />
+          <div className="flex flex-col md:flex-row gap-3 justify-center items-center pt-3 md:pt-0">
+            <Dropdown label="Performance" styleType="primary" listItems={['Performance','Attendance','Matches']} />
+            <button className="text-perfBlue shadow-md border-perfBlue border-2 border-perfBlue rounded-full py-3 px-10 h-12 flex flex-row justify-center items-center gap-1"><AppIcons className="w-5" icon='PrinterIcon:outline' /> Exports</button>
+            <Dropdown label="This week" listItems={[]} />
+          </div>
+        </div>
       <Grid columns={12} gutter={20}>
-              <Grid.Col span={3}>
-                <Card type='playerInfo' />
+              <Grid.Col sm={3} span={12}>
+                <Card type='playerInfo' playerData={playerData} />
               </Grid.Col>
-              <Grid.Col span={9}>
+              <Grid.Col sm={9} span={12}>
                 <Card type='performanceSummary' playerSummary={playerSummary} />
               </Grid.Col>
             </Grid>
             <Grid  columns={12} gutter={20} className="info mt-3">
-              <Grid.Col span={4}>
-                <Card type='power' powerType="Strength" scores={scores} />
+              <Grid.Col sm={4} span={12}>
+                <Card type='power' color='text-[#27AE60]' bg="bg-fadedGreen" powerType="Strength" scores={scores} />
               </Grid.Col>
-              <Grid.Col span={4}>
-                <Card type='power' powerType="Strength" scores={scores} />
+              <Grid.Col sm={4} span={12}>
+                <Card type='power' color='text-[#F2C94C]' bg="bg-fadedYellow"  powerType="Strength" scores={scores} />
               </Grid.Col>
-              <Grid.Col span={4}>
-                <Card type='power' powerType="Strength" scores={scores} />
+              <Grid.Col sm={4} span={12}>
+                <Card type='power' color='text-[#EB5757]' bg="bg-fadedRed" powerType="Strength" scores={scores} />
               </Grid.Col>
             </Grid>
             <Grid  columns={12} gutter={20} className="info mt-3">
-              <Grid.Col span={6}>
-                <Card type='action' firstText={text.firstText} secondText={text.secondText} detailedText={text.detailedText} />
+              <Grid.Col sm={6} span={12}>
+                <Card type='action' header="Actions" firstText={text.firstText} secondText={text.secondText} detailedText={text.detailedText} />
               </Grid.Col>
-              <Grid.Col span={6}>
-                <Card type='recommendation' firstText={text.firstText} secondText={text.secondText} detailedText={text.detailedText} />
+              <Grid.Col sm={6} span={12}>
+                <Card type='recommendation' header="Recommendations" firstText={text.firstText} secondText={text.secondText} detailedText={text.detailedText} />
               </Grid.Col>
             </Grid>
     </div>

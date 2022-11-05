@@ -16,6 +16,7 @@ function App() {
           userRole={user?.data?.user_type ? [user?.data?.user_type] : []}
           loginRedirectUrl={settingsConfig.loginRedirectUrl}
         >
+          {console.log(window.location.href)}
           <AppLayout />
         </AppAuthorization>
       </BrowserRouter>

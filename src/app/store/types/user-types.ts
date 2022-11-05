@@ -1,3 +1,4 @@
+import { jsx } from "@emotion/react";
 import { type } from "os";
 
 export type LoginUserBody = {
@@ -62,7 +63,9 @@ export type CardProps = {
   powerType?: string,
   scores?: Scores[],
   playerData?: PlayerData,
-  playerSummary?: PerformanceCardProps[]
+  playerSummary?: PerformanceCardProps[],
+  bg?: string,
+  color?: string
 }
 
 export type Scores = {
@@ -72,7 +75,9 @@ export type Scores = {
 
 export type DropdownProps = {
   label: string,
-  listItems: string[]
+  listItems: string[],
+  icon?: any,
+  styleType?: 'primary' | 'borded' | 'basic'
 }
 
 export type InfoProps = {
@@ -82,7 +87,7 @@ export type InfoProps = {
 
 export type PlayerData = {
   name: string,
-  icon_url?: string,
+  icon_url: string,
   dob?: string,
   weight?: string | number,
   height?: string | number,
@@ -111,4 +116,17 @@ export type PersonData = {
   first_name: string,
   last_name: string,
   avatar: string
+}
+
+export type PlayerButtonProps = {
+  img: string,
+  name: string,
+  onClick:()=>void,
+  active:boolean,
+} 
+
+export type SecondNavProps = {
+  players:PlayerData[],
+  selectedplayer: any,
+  setSelectedPlayer:any,
 }

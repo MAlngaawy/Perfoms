@@ -21,12 +21,12 @@ const Card = ({
     powerType,
     scores,
     playerData,
-    playerSummary
+    playerSummary,
+    bg,
+    color
 }: CardProps) => {
     const theme = useMantineTheme();
     
-    const x = new Date()
-    console.log(x.getDate())
     
     // for test 
     const attended = ['4','6']
@@ -37,7 +37,7 @@ const Card = ({
     if(type === 'action' || type === 'recommendation'){
         // props { header , firstText , secondText , detailedText }
         return (
-            <div className='info-card flex flex-col p-6 bg-white gap-1 rounded-3xl'>
+            <div className='info-card flex flex-col p-6 pb-20 bg-white gap-1 rounded-3xl'>
                 <h2 className="text-perfGray1 text-base font-semibold">{header}</h2>
                 <p>{firstText}</p>
                 <p>{secondText}</p>
@@ -49,7 +49,7 @@ const Card = ({
     if(type === 'playerInfo'){
         // props { playerData }
         return (
-                <div className="p-6 bg-white h-full rounded-3xl">
+                <div className="p-6 h-full bg-white rounded-3xl">
                     <div className="playerName">
                         <h2>{playerData?.name.split(" ")[0]}'s info</h2>
                     </div>
@@ -76,7 +76,7 @@ const Card = ({
     if(type === 'performanceSummary'){
         // props { playerSummary:PerformanceCardProps[] } 
         return (
-            <div className="bg-white rounded-3xl p-6">
+            <div className="bg-white rounded-3xl px-6 py-2">
                 <div className="title">
                     <h1 className="text-lg font-normal">Performance Report summary</h1>
                 </div>
@@ -105,7 +105,7 @@ const Card = ({
     if(type === 'teamInfo'){
         // props { playerData } 
         return (
-            <div className="bg-white p-4 rounded-3xl h-full">
+            <div className="bg-white p-3 rounded-3xl h-full">
                 <h2 className="title text-lg text-perfGray1">Team Info.</h2>
                 <div className="flex justify-around mt-4">
                     <div className="left flex flex-col gap-3 text-perfGray1">
@@ -133,7 +133,7 @@ const Card = ({
                     {playerData?.team?.coaches?.map((coach:PersonData) => {
                         return (
                         <div className="coach flex items-center gap-2 cursor-pointer">
-                            <Avatar className=" w-8 h-8" src={coach.avatar} />
+                            <Avatar className="rounded-full w-6 h-8" src={coach.avatar} />
                             <h2 className="name text-base">
                             {coach.first_name + " " + coach.last_name}
                             </h2>
@@ -148,9 +148,9 @@ const Card = ({
 
     if(type === 'calendar') {
         return (
-            <div className="bg-white p-4 rounded-3xl h-full">
+            <div className="bg-white p-3 rounded-3xl h-full">
                 <h2 className="title text-lg text-perfGray1">Calendar.</h2>
-                <div className="flex justify-around flex-col md:flex-row 2xl:flex-row">
+                <div className="flex justify-around gap-3 flex-col md:flex-row 2xl:flex-row">
                     <div>
                     <div className="flex flex-col gap-2 justify-center h-full w-full  items-center mx-auto">
                         <div className="flex 2xl:flex-col md:flex-col justify-between my-6 gap-1 sm:gap-4">
@@ -169,21 +169,22 @@ const Card = ({
                         </div>
                     </div>
                     </div>
-                    <div className="border p-3 2xl:border-0 rounded-xl" style={{width:'fit-content'}}>
+                    <div className=" p-3 2xl:border-0 rounded-xl" style={{width:'250px',height:'290px'}}>
                         <Calendar
                             initialMonth={new Date()}
                             dayStyle={(date: Date) =>
                                 // attended days 
                                 (attended).includes(date.getDate().toString()) 
-                                ? { backgroundColor: theme.colors.red[9], color: theme.white , borderRadius: '50%' }
+                                ? { backgroundColor: '#C32B43', color: theme.white , borderRadius: '50%' }
                                 // absent dayes 
                                 :(absent).includes(date.getDate().toString()) ?
-                                { backgroundColor: theme.colors.blue[9], color: theme.white , borderRadius: '50%' }
+                                { backgroundColor: '#1976D2', color: theme.white , borderRadius: '50%' }
                                 // upcoming days 
                                 :(upcoming).includes(date.getDate().toString()) ?
-                                {color: '#495057' , borderRadius: '50%' , border: '1px solid blue'}
+                                {color: '#1976D2' , borderRadius: '50%' , border: '1px solid blue'}
                                 :{}
                             }
+                            fullWidth
                             styles={(theme:any) => ({
                                 day: {
                                     '&[data-selected]': {
@@ -191,6 +192,8 @@ const Card = ({
                                         borderRadius: 100,
                                         position: 'relative',
                                     },
+                                    height: 37,
+                                    width: 37
                                 },
                             })}
                             />
@@ -268,13 +271,13 @@ const Card = ({
     }
     
     return (
-        // props {scores}
-        <div className='flex flex-col bg-white p-2 rounded-3xl'>
+        // props {scores , bg , color}
+        <div className='flex flex-col bg-white py-2 rounded-3xl'>
             <div className='power_type px-5 py-2 flex flex-row justify-between'>
-                <span className={` font-semibold power_type_name`}>{powerType}</span>
+                <span className={` font-semibold power_type_name ${color}`}>{powerType}</span>
                 <p>Score is out of 5</p>
             </div>
-            <div className={`power_header  px-5 py-2 bg-white flex flex-row justify-between`}>
+            <div className={`power_header ${bg}  px-5 py-2 bg-white flex flex-row justify-between`}>
                 <h3 className="text-sm">Name</h3>
                 <h3 className="text-sm">Score</h3>
             </div>
@@ -282,7 +285,7 @@ const Card = ({
                     return (
                         <div key={index} className='power_score  px-5 py-2 flex flex-row justify-between'>
                             <h3 className="text-sm">{power.name}</h3>
-                            <h3 className={`font-semibold text-sm`}>{power.score}</h3>
+                            <h3 className={`font-semibold ${color} text-sm`}>{power.score}</h3>
                         </div>
                     )
                 })}
