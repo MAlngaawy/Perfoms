@@ -11,6 +11,7 @@ import { BASE_URL } from "app/configs/dataService";
 import { State } from "country-state-city";
 import PerfSelect from "@main/components/Select";
 import { Controller } from "react-hook-form";
+import OTPComponent from "./OTPComponent";
 
 type Props = {};
 
@@ -109,12 +110,13 @@ const SignUpPage = (props: Props) => {
     <div className="signIn bg-perfOfWhite flex justify-center min-h-screen items-stretch">
       <div className="leftImage hidden md:block md:w-1/2 self-stretch">
         <img
-          className="object-cover h-full max-h-full min-h-0"
+          className="object-cover h-full"
           src="/assets/images/performs_signup.jpg"
           alt="Sign up"
         />
       </div>
       <div className="form py-10 md:w-1/2 px-4 flex justify-center items-center">
+        {/* <OTPComponent /> */}
         <form
           className="md:w-96 "
           onSubmit={handleSubmit((data: any) => submitFun(data))}
