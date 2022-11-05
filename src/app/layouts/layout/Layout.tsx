@@ -18,11 +18,11 @@ const Layout = (props: PropsWithChildren<Props>) => {
   const { routes } = appContext;
   const [opened, setOpened] = useState(false);
   return (
-    <Grid className="min-h-screen max-w-full flex flex-nowrap m-0 bg-pagesBg ">
+    <Grid className=" min-h-screen max-w-full flex flex-nowrap m-0 bg-pagesBg ">
       {config.navbar.display && (
         <Navigation opened={opened} setOpened={setOpened} />
       )}
-      <Grid.Col xs={12} lg={10} className="p-0">
+      <Grid.Col xs={12} lg={10} className="p-0 max-w-full basis-full">
         <main>
           {config.toolbar.display && (
             <Toolbar opened={opened} setOpened={setOpened} />
