@@ -14,6 +14,7 @@ import SubscriptionsConfig from "app/pages/subscriptions/SubscriptionsConfig";
 import { AppRouteObject, PagesRouteConfig } from "@main/types/Config-Types";
 import SingleCoacheConfig from "app/pages/coaches/SingleCoach/SingleCoachConfig";
 import ProfilePageConfig from "app/pages/profile/ProfileConfig";
+import SettingsConfig from "app/pages/settings/SettingsConfig";
 
 const routeConfigs: PagesRouteConfig[] = [
   SignInConfig,
@@ -27,6 +28,7 @@ const routeConfigs: PagesRouteConfig[] = [
   SubscriptionsConfig,
   SingleCoacheConfig,
   ProfilePageConfig,
+  SettingsConfig,
 ];
 
 const routes: AppRouteObject[] = [

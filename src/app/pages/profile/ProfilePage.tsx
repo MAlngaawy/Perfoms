@@ -15,8 +15,8 @@ type Props = {
 
 const ProfilePage = (props: Props) => {
   return (
-    <div className="flex justify-center items-center pt-14">
-      <div className="content flex flex-col justify-center items-center gap-2 bg-white rounded-3xl p-12">
+    <div className="flex justify-center items-center pt-6 md:pt-14">
+      <div className="content flex flex-col justify-center items-center gap-2 bg-white rounded-3xl p-6 w-11/12 md:w-auto md:p-12">
         <div className="photo w-28 md:w-48 h-32 md:h-52">
           <img
             className="object-cover w-full h-full rounded-lg"
