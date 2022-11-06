@@ -1,6 +1,6 @@
-import AppAuthorization from "@main/core/AppAuthorization";
-import AppLayout from "@main/core/AppLayout";
-import BrowserRouter from "@main/core/BrowserRouter";
+import AppAuthorization from "~/@main/core/AppAuthorization";
+import AppLayout from "~/@main/core/AppLayout";
+import BrowserRouter from "~/@main/core/BrowserRouter";
 import { AuthProvider } from "./auth/AuthContext";
 import settingsConfig from "./configs/settingsConfig";
 import { useUserQuery } from "./store/user/userApi";

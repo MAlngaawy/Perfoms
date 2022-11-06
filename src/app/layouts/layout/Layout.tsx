@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import AppSuspense from "@main/core/AppSuspense";
-import AppContext from "app/AppContext";
-import { selectAppCurrentLayoutConfig } from "app/store/app/settingsSlice";
+import AppSuspense from "~/@main/core/AppSuspense";
+import AppContext from "~/app/AppContext";
+import { selectAppCurrentLayoutConfig } from "~/app/store/app/settingsSlice";
 import { memo, PropsWithChildren, useContext } from "react";
 import { useSelector } from "react-redux";
 import { useRoutes } from "react-router-dom";

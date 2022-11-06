@@ -4,7 +4,7 @@ import {
   UpdatePlayerPKM,
 } from "./../types/coach-types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { BASE_HEADERS, BASE_URL } from "app/configs/dataService";
+import { BASE_HEADERS, BASE_URL } from "~/app/configs/dataService";
 import {
   AllCoachesType,
   GeneratePdfDocs,

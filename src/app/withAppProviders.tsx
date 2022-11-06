@@ -1,7 +1,7 @@
 import Provider from "react-redux/es/components/Provider";
 import { NotificationsProvider } from "@mantine/notifications";
 import store from "./store";
-import routes from "app/configs/routesConfig";
+import routes from "~/app/configs/routesConfig";
 import AppContext from "./AppContext";
 import { FC } from "react";
 

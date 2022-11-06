@@ -1,10 +1,10 @@
-import AppContext from "app/AppContext";
+import AppContext from "~/app/AppContext";
 import { Component, PropsWithChildren } from "react";
 import { Location, matchRoutes } from "react-router-dom";
-import withRouter from "@main/core/withRouter";
-import history from "@history";
-import AppUtils from "@main/utils/AppUtils";
-import { AppRouteObject } from "@main/types/Config-Types";
+import withRouter from "~/@main/core/withRouter";
+import history from "~/@history";
+import AppUtils from "~/@main/utils/AppUtils";
+import { AppRouteObject } from "~/@main/types/Config-Types";
 
 type Props = {
   location: Location;

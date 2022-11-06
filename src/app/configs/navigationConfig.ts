@@ -1,4 +1,4 @@
-import { NavigationConfigTypes } from "@main/types/Config-Types";
+import { NavigationConfigTypes } from "~/@main/types/Config-Types";
 
 const navigationConfig: NavigationConfigTypes[] = [
   {

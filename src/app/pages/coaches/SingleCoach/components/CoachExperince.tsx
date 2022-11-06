@@ -1,5 +1,5 @@
 import React from "react";
-import AppIcons from "@main/core/AppIcons";
+import AppIcons from "~/@main/core/AppIcons";
 
 type Props = {
   experinces: {

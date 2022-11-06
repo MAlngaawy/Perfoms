@@ -1,4 +1,4 @@
-import { useTimeout } from "@main/hooks";
+import { useTimeout } from "~/@main/hooks";
 import { useState } from "react";
 import clsx from "clsx";
 

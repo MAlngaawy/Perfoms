@@ -1,10 +1,10 @@
 import { Button, Grid } from "@mantine/core";
-import { userApi } from "app/store/user/userApi";
+import { userApi } from "~/app/store/user/userApi";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
-import AppIcons from "@main/core/AppIcons";
-import HomeFirstNav from "app/pages/home/organisms/HomeFirstNav";
-import FirstNav from "@main/components/FirstNav";
+import AppIcons from "~/@main/core/AppIcons";
+import HomeFirstNav from "~/app/pages/home/organisms/HomeFirstNav";
+import FirstNav from "~/@main/components/FirstNav";
 
 type Props = {
   opened: boolean;

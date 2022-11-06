@@ -1,17 +1,18 @@
 import { Input, Grid, MultiSelect } from "@mantine/core";
 import { useForm } from "react-hook-form";
-// import { useSigninMutation } from "app/store/user/userApi";
+// import { useSigninMutation } from "~/app/store/user/userApi";
 import { PasswordInput } from "@mantine/core";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect } from "react";
 import { useState } from "react";
-import { BASE_URL } from "app/configs/dataService";
+import { BASE_URL } from "~/app/configs/dataService";
 import { State } from "country-state-city";
-import PerfSelect from "@main/components/Select";
+import PerfSelect, { Option } from "~/@main/components/Select";
 import { Controller } from "react-hook-form";
 import OTPComponent from "./OTPComponent";
+import { useAllClubsQuery } from "~/app/store/parent/parentApi";
 
 type Props = {};
 
@@ -29,9 +30,15 @@ const schema = yup.object().shape({
 });
 
 const SignUpPage = (props: Props) => {
-  // const [signinHandler, {}] = useSigninMutation();
-  const [clubs, setClubs] = useState([]);
   const [teams, setTeams] = useState([]);
+
+  const {
+    data: AllClubs,
+    isLoading,
+    isError,
+    error,
+  } = useAllClubsQuery({ page: 0 });
+  // const {} =
 
   const {
     register,
@@ -65,16 +72,7 @@ const SignUpPage = (props: Props) => {
     setValue("city", "");
     setValue("teams", []);
 
-    // fetch database clubs
-    fetch(`${BASE_URL}/core/clubs/`)
-      .then((res) => res.json())
-      .then(({ data }) => {
-        const newClubs = data.map((club: { name: string; id: number }) => {
-          return { label: club.name, value: club.id };
-        });
-        setClubs(newClubs);
-      })
-      .catch((err) => console.log(err));
+    // fetch database club
 
     //fetch database Teams
     if (userRole === "Coach") {
@@ -247,16 +245,23 @@ const SignUpPage = (props: Props) => {
             </div>
 
             {/* Select Club */}
-            <PerfSelect
-              id="club"
-              required
-              error={errors.club && "Please select your Club"}
-              className="w-full"
-              label="Club"
-              name="club"
-              control={control}
-              data={clubs}
-            />
+            {AllClubs && (
+              <PerfSelect
+                id="club"
+                required
+                error={errors.club && "Please select your Club"}
+                className="w-full"
+                label="Club"
+                name="club"
+                control={control}
+                data={
+                  AllClubs?.results?.map((i) => ({
+                    label: i.name,
+                    value: i.id,
+                  })) as unknown as Option[]
+                }
+              />
+            )}
 
             {/* Select Teams */}
             {userRole === "Coach" && (

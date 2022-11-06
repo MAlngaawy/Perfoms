@@ -1,5 +1,5 @@
-import AppIcons from "@main/core/AppIcons";
-import navigationConfig from "app/configs/navigationConfig";
+import AppIcons from "~/@main/core/AppIcons";
+import navigationConfig from "~/app/configs/navigationConfig";
 import React, { memo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Box, Drawer, Group, Button, Grid } from "@mantine/core";

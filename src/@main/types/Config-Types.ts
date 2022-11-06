@@ -1,4 +1,4 @@
-import { IconName } from "@main/core/AppIcons/AppIcons";
+import { IconName } from "~/@main/core/AppIcons/AppIcons";
 import { RouteObject } from "react-router-dom";
 
 export interface NavigationConfigTypes {

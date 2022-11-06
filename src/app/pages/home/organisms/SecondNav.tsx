@@ -1,5 +1,5 @@
 import { PlayerButton } from "../molecules/PlayerButton";
-import { SecondNavProps } from "app/store/types/user-types";
+import { SecondNavProps } from "~/app/store/types/user-types";
 
 const SecondNav = ({
   players,

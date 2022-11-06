@@ -4,7 +4,7 @@ import {
   UpdateAttendance,
 } from "./../types/attendance-types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { BASE_HEADERS, BASE_URL } from "app/configs/dataService";
+import { BASE_HEADERS, BASE_URL } from "~/app/configs/dataService";
 import { Attendance } from "../types/attendance-types";
 
 export const attendanceApi = createApi({

@@ -1,9 +1,9 @@
 import React from "react";
-import { CardProps, PersonData } from "app/store/types/user-types";
+import { CardProps, PersonData } from "~/app/store/types/user-types";
 import Info from "./Info";
-import { PerformanceCard } from "@main/components/PerformanceCard";
+import { PerformanceCard } from "~/@main/components/PerformanceCard";
 import { Avatar, useMantineTheme } from "@mantine/core";
-import AppIcons from "@main/core/AppIcons";
+import AppIcons from "~/@main/core/AppIcons";
 import { Calendar } from "@mantine/dates";
 import SaleStaticChart from "./SalesStaticChart";
 

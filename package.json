@@ -1,26 +1,28 @@
 {
-  "name": "performs-fe",
-  "version": "0.1.0",
+  "name": "performs-fe-vite",
   "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
+  },
   "dependencies": {
     "@emotion/react": "^11.10.5",
-    "@heroicons/react": "^2.0.12",
+    "@heroicons/react": "^2.0.13",
     "@hookform/resolvers": "^2.9.10",
-    "@mantine/carousel": "^5.6.3",
-    "@mantine/core": "^5.6.3",
-    "@mantine/dates": "^5.6.3",
-    "@mantine/dropzone": "^5.6.3",
-    "@mantine/hooks": "^5.6.3",
-    "@mantine/modals": "^5.6.3",
-    "@mantine/notifications": "^5.6.3",
-    "@mantine/nprogress": "^5.6.3",
-    "@reduxjs/toolkit": "^1.8.6",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
-    "@types/react": "^18.0.22",
-    "@types/react-dom": "^18.0.7",
+    "@mantine/carousel": "^5.7.1",
+    "@mantine/core": "^5.7.1",
+    "@mantine/dates": "^5.7.1",
+    "@mantine/dropzone": "^5.7.1",
+    "@mantine/hooks": "^5.7.1",
+    "@mantine/modals": "^5.7.1",
+    "@mantine/notifications": "^5.7.1",
+    "@mantine/nprogress": "^5.7.1",
+    "@reduxjs/toolkit": "^1.9.0",
     "axios": "^1.1.3",
     "classnames": "^2.3.2",
     "country-state-city": "^3.1.2",
@@ -29,74 +31,38 @@
     "history": "^5.3.0",
     "js-cookie": "^3.0.1",
     "moment": "^2.29.4",
+    "qs": "^6.11.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-hook-form": "^7.38.0",
+    "react-hook-form": "^7.39.1",
     "react-otp-input": "^2.4.0",
-    "react-redux": "^8.0.4",
-    "react-router-dom": "^6.4.2",
-    "react-scripts": "5.0.1",
+    "react-redux": "^8.0.5",
+    "react-router-dom": "^6.4.3",
     "recharts": "^2.1.16",
     "redux-logger": "^3.0.6",
-    "typescript": "^4.8.4",
-    "web-vitals": "^2.1.4",
     "yup": "^0.32.11"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ],
-    "overrides": [
-      {
-        "files": [
-          "**/*.stories.*"
-        ],
-        "rules": {
-          "import/no-anonymous-default-export": "off"
-        }
-      }
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
   "devDependencies": {
+    "@babel/core": "^7.20.2",
     "@storybook/addon-actions": "^6.5.13",
     "@storybook/addon-essentials": "^6.5.13",
     "@storybook/addon-interactions": "^6.5.13",
     "@storybook/addon-links": "^6.5.13",
-    "@storybook/builder-webpack5": "^6.5.13",
-    "@storybook/manager-webpack5": "^6.5.13",
-    "@storybook/node-logger": "^6.5.13",
-    "@storybook/preset-create-react-app": "^4.1.2",
+    "@storybook/builder-vite": "^0.2.5",
     "@storybook/react": "^6.5.13",
     "@storybook/testing-library": "^0.0.13",
     "@types/js-cookie": "^3.0.2",
-    "@types/node": "^18.11.5",
-    "@types/webpack-env": "^1.18.0",
-    "autoprefixer": "^10.4.12",
-    "babel-plugin-named-exports-order": "^0.0.2",
+    "@types/node": "^18.11.9",
+    "@types/qs": "^6.9.7",
+    "@types/react": "^18.0.22",
+    "@types/react-dom": "^18.0.7",
+    "@types/redux-logger": "^3.0.9",
+    "@vitejs/plugin-react": "^2.2.0",
+    "autoprefixer": "^10.4.13",
+    "babel-loader": "^8.3.0",
     "postcss": "^8.4.18",
-    "prop-types": "^15.8.1",
-    "tailwindcss": "^3.2.1",
-    "webpack": "^5.74.0"
+    "tailwindcss": "^3.2.2",
+    "typescript": "^4.6.4",
+    "vite": "^3.2.0"
   }
 }

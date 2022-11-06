@@ -1,8 +1,8 @@
 import { createContext, PropsWithChildren, useContext, useEffect } from "react";
-import AppSplashScreen from "@main/core/AppSplashScreen";
-import { useUserQuery } from "app/store/user/userApi";
+import AppSplashScreen from "~/@main/core/AppSplashScreen";
+import { useUserQuery } from "~/app/store/user/userApi";
 import { showNotification } from "@mantine/notifications";
-import { eventInstance } from "@main/utils/AppUtils";
+import { eventInstance } from "~/@main/utils/AppUtils";
 
 const AuthContext = createContext({});
 

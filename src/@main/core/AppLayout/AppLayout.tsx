@@ -1,17 +1,17 @@
-import { useDeepCompareEffect } from "@main/hooks";
-import AppContext from "app/AppContext";
-import _ from "@lodash";
+import { useDeepCompareEffect } from "~/@main/hooks";
+import AppContext from "~/app/AppContext";
+import _ from "~/@lodash";
 import {
   generateSettings,
   selectAppCurrentSettings,
   selectAppDefaultSettings,
   setSettings,
-} from "app/store/app/settingsSlice";
+} from "~/app/store/app/settingsSlice";
 import React, { memo, useCallback, useContext, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { matchRoutes, useLocation } from "react-router-dom";
-import Layout from "app/layouts/layout/Layout";
-import { AppRouteObject } from "@main/types/Config-Types";
+import Layout from "~/app/layouts/layout/Layout";
+import { AppRouteObject } from "~/@main/types/Config-Types";
 
 type Props = {};
 

@@ -1,5 +1,5 @@
-import { PagesRouteConfig } from "@main/types/Config-Types";
-import authRoles from "app/auth/authRoles";
+import { PagesRouteConfig } from "~/@main/types/Config-Types";
+import authRoles from "~/app/auth/authRoles";
 import MediaPage from "./MediaPage";
 
 const MediaConfig: PagesRouteConfig = {

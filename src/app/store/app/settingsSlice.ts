@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import _ from "@lodash";
-import settingsConfig from "app/configs/settingsConfig";
-import config from "app/layouts/layout/LayoutConfig";
+import _ from "~/@lodash";
+import settingsConfig from "~/app/configs/settingsConfig";
+import config from "~/app/layouts/layout/LayoutConfig";
 import {
   defaultSettings,
   getParsedQuerySettings,
-} from "@main/core/default-settings";
+} from "~/@main/core/default-settings";
 
 function getInitialSettings() {
   const layout = {

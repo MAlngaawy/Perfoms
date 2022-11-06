@@ -1,7 +1,7 @@
 import React from "react";
 import { Avatar } from "@mantine/core";
 import cn from "classnames";
-import { PlayerButtonProps } from "app/store/types/user-types";
+import { PlayerButtonProps } from "~/app/store/types/user-types";
 
 export const PlayerButton = ({
   img,
