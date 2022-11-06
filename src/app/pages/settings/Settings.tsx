@@ -34,7 +34,7 @@ const Settings = (props: Props) => {
 
   return (
     <div className="flex justify-center items-center pt-6 md:pt-14">
-      <div className="content flex flex-col justify-center items-center gap-2 bg-white rounded-3xl p-6 w-11/12 md:w-auto md:py-12 md:px-24">
+      <div className="content flex flex-col justify-center items-center gap-2 bg-white rounded-3xl p-6 w-11/12 sm:w-auto sm:py-12 sm:px-24">
         <h3>Settings</h3>
         <form
           className="flex flex-col justify-center items-center gap-4"
@@ -44,6 +44,7 @@ const Settings = (props: Props) => {
             error={errors.fullName?.message}
             id="fullName"
             label="Full name"
+            className="w-full"
           >
             <Input id="fullName" {...register("fullName")} />
           </Input.Wrapper>
@@ -51,6 +52,7 @@ const Settings = (props: Props) => {
             error={errors.phoneNumber?.message}
             id="phoneNumber"
             label="Phone number"
+            className="w-full"
           >
             <Input id="phoneNumber" {...register("phoneNumber")} />
           </Input.Wrapper>
