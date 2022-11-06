@@ -1,4 +1,4 @@
-import { Input, Grid } from "@mantine/core";
+import { Input, Grid, MultiSelect } from "@mantine/core";
 import { useForm } from "react-hook-form";
 // import { useSigninMutation } from "app/store/user/userApi";
 import { PasswordInput } from "@mantine/core";
@@ -10,6 +10,8 @@ import { useState } from "react";
 import { BASE_URL } from "app/configs/dataService";
 import { State } from "country-state-city";
 import PerfSelect from "@main/components/Select";
+import { Controller } from "react-hook-form";
+import OTPComponent from "./OTPComponent";
 
 type Props = {};
 
@@ -23,11 +25,13 @@ const schema = yup.object().shape({
   countryCode: yup.string().required(),
   phoneNumber: yup.number().required(),
   password: yup.string().min(8).max(24).required(),
+  teams: yup.array().required(),
 });
 
 const SignUpPage = (props: Props) => {
   // const [signinHandler, {}] = useSigninMutation();
   const [clubs, setClubs] = useState([]);
+  const [teams, setTeams] = useState([]);
 
   const {
     register,
@@ -47,16 +51,19 @@ const SignUpPage = (props: Props) => {
       phoneNumber: "",
       password: "",
       city: "",
+      teams: [],
     },
     resolver: yupResolver(schema),
   });
 
   // access country value to use it to get it's cities
   const country = watch("country");
+  const userRole = watch("userRole");
 
   useEffect(() => {
     // set city value to empty after change the country
     setValue("city", "");
+    setValue("teams", []);
 
     // fetch database clubs
     fetch(`${BASE_URL}/core/clubs/`)
@@ -68,7 +75,20 @@ const SignUpPage = (props: Props) => {
         setClubs(newClubs);
       })
       .catch((err) => console.log(err));
-  }, [country, setValue]);
+
+    //fetch database Teams
+    if (userRole === "Coach") {
+      fetch(`${BASE_URL}/core/teams/`)
+        .then((res) => res.json())
+        .then(({ data }) => {
+          const newTeams = data.map((team: { name: string; id: number }) => {
+            return { label: team.name, value: team.id };
+          });
+          setTeams(newTeams);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [country, setValue, userRole]);
 
   const submitFun = (data: any) => {
     // handle The request body schema
@@ -81,6 +101,7 @@ const SignUpPage = (props: Props) => {
       mobile: data.countryCode + data.phoneNumber,
       password: data.password,
       city: data.city,
+      teams: data.teams,
     };
     console.log(requestData);
   };
@@ -89,12 +110,13 @@ const SignUpPage = (props: Props) => {
     <div className="signIn bg-perfOfWhite flex justify-center min-h-screen items-stretch">
       <div className="leftImage hidden md:block md:w-1/2 self-stretch">
         <img
-          className="object-cover h-full max-h-full min-h-0"
+          className="object-cover h-full"
           src="/assets/images/performs_signup.jpg"
           alt="Sign up"
         />
       </div>
       <div className="form py-10 md:w-1/2 px-4 flex justify-center items-center">
+        {/* <OTPComponent /> */}
         <form
           className="md:w-96 "
           onSubmit={handleSubmit((data: any) => submitFun(data))}
@@ -236,6 +258,31 @@ const SignUpPage = (props: Props) => {
               data={clubs}
             />
 
+            {/* Select Teams */}
+            {userRole === "Coach" && (
+              <Controller
+                {...register("teams")}
+                render={({ field }) => (
+                  <MultiSelect
+                    className="w-full"
+                    sx={{
+                      ".mantine-MultiSelect-input": {
+                        background: "none",
+                        border: 0,
+                        borderBottom: "1px solid",
+                        borderRadius: 0,
+                      },
+                    }}
+                    data={teams}
+                    label="Select Your Teams"
+                    {...field}
+                    error={errors.teams ? errors.teams.message : undefined}
+                  />
+                )}
+                control={control}
+              />
+            )}
+
             <Grid grow gutter="sm" className="w-full">
               {/* Select Country code Input */}
 
@@ -296,6 +343,7 @@ const SignUpPage = (props: Props) => {
                   borderStyle: "solid",
                   borderRadius: 0,
                   minHeight: 20,
+                  background: "transparent",
                 },
                 ".mantine-PasswordInput-innerInput": {
                   padding: 0,
