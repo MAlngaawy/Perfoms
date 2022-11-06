@@ -1,10 +1,9 @@
 import React from "react";
 import { Select } from "@mantine/core";
 import { Controller } from "react-hook-form";
-import { ClassNames } from "@emotion/react";
 import __ from "lodash";
 
-interface Option {
+export interface Option {
   label: string;
   value: string;
 }
