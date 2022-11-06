@@ -1,5 +1,7 @@
-import React from "react";
-import { Avatar } from "@mantine/core";
+import React, { useState } from "react";
+import { Avatar, Modal } from "@mantine/core";
+import AppIcons from "@main/core/AppIcons";
+import EditForm from "./components/EditForm";
 
 type Props = {
   // name: string;
@@ -14,9 +16,26 @@ type Props = {
 };
 
 const ProfilePage = (props: Props) => {
+  const [opened, setOpened] = useState(false);
   return (
     <div className="flex justify-center items-center pt-6 md:pt-14">
-      <div className="content flex flex-col justify-center items-center gap-2 bg-white rounded-3xl p-6 w-11/12 md:w-auto md:p-12">
+      <div className="content relative flex flex-col justify-center items-center gap-2 bg-white rounded-3xl p-6 w-11/12 md:w-auto md:p-12">
+        <div
+          onClick={() => setOpened((o) => !o)}
+          className="absolute cursor-pointer right-6 top-6"
+        >
+          <AppIcons
+            className="w-5 h-5  text-perfGray3 hover:text-perfGray1"
+            icon="PencilSquareIcon:outline"
+          />
+          <Modal
+            opened={opened}
+            onClose={() => setOpened(false)}
+            title="Introduce yourself!"
+          >
+            <EditForm />
+          </Modal>
+        </div>
         <div className="photo w-28 md:w-48 h-32 md:h-52">
           <img
             className="object-cover w-full h-full rounded-lg"
