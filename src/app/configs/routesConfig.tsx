@@ -7,8 +7,8 @@ import SignUpConfig from "~/app/pages/sign-up/SignUpConfig";
 import HomeConfig from "~/app/pages/home/HomeConfig";
 import MediaConfig from "~/app/pages/media/MediaConfig";
 import CoachesConfig from "~/app/pages/coaches/CoachesConfig";
-import MessagesConfig from "~/app/pages/messages/MessagesConfig";
-import NotificationsConfig from "~/app/pages/notifications/NotificationsConfig";
+// import MessagesConfig from "~/app/pages/messages/MessagesConfig";
+// import NotificationsConfig from "~/app/pages/notifications/NotificationsConfig";
 import ReportsConfig from "~/app/pages/reports/ReportsConfig";
 import SubscriptionsConfig from "~/app/pages/subscriptions/SubscriptionsConfig";
 import { AppRouteObject, PagesRouteConfig } from "~/@main/types/Config-Types";
@@ -22,8 +22,8 @@ const routeConfigs: PagesRouteConfig[] = [
   HomeConfig,
   MediaConfig,
   CoachesConfig,
-  MessagesConfig,
-  NotificationsConfig,
+  // MessagesConfig,
+  // NotificationsConfig,
   ReportsConfig,
   SubscriptionsConfig,
   SingleCoacheConfig,

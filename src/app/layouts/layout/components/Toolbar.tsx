@@ -3,8 +3,7 @@ import { userApi } from "~/app/store/user/userApi";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import AppIcons from "~/@main/core/AppIcons";
-import HomeFirstNav from "~/app/pages/home/organisms/HomeFirstNav";
-import FirstNav from "~/@main/components/FirstNav";
+import { Link } from "react-router-dom";
 
 type Props = {
   opened: boolean;
@@ -17,15 +16,11 @@ const Toolbar = ({ setOpened }: Props) => {
   let href = window.location.href;
   let routeName = href.slice(href.lastIndexOf("/") + 1, href.length);
 
-  // if (routeName === "home") {
-  //   return <HomeFirstNav userName="Ahmed Kamal" />;
-  // }
-
   return (
     <nav className="w-full flex justify-between items-center shadow-md p-4 bg-white">
       <div className="bg-fadedGray p-2 w-full flex justify-between items-center">
         <button
-          className="block md:hidden text-black border-0"
+          className="block lg:hidden text-black border-0"
           onClick={() => setOpened(true)}
         >
           <AppIcons className="w-6 h-6 " icon="Bars3BottomLeftIcon:solid" />
@@ -38,7 +33,7 @@ const Toolbar = ({ setOpened }: Props) => {
           <Menu.Target>
             <Avatar className="cursor-pointer" radius="xl">
               <AppIcons
-                className="w-5 h-5 text-perfGray3"
+                className="w-5 h-5 text-black"
                 icon="BellIcon:outline"
               />
             </Avatar>
@@ -61,7 +56,7 @@ const Toolbar = ({ setOpened }: Props) => {
           <Menu.Target>
             <Avatar className="cursor-pointer" radius="xl">
               <AppIcons
-                className="w-5 h-5 text-perfGray3"
+                className="w-5 h-5 text-black"
                 icon="EnvelopeIcon:outline"
               />
             </Avatar>
@@ -75,6 +70,66 @@ const Toolbar = ({ setOpened }: Props) => {
             </Menu.Label>
             <Menu.Label>
               <div> Message Two </div>
+            </Menu.Label>
+          </Menu.Dropdown>
+        </Menu>
+
+        {/* User Menu */}
+        <Menu trigger="hover" shadow="md" width={200}>
+          <Menu.Target>
+            <Avatar
+              src="https://s.studiobinder.com/wp-content/uploads/2021/01/Best-black-and-white-portraits-by-Platon.jpg?resolution=2560,1"
+              alt="userImage"
+              className="cursor-pointer"
+              radius="xl"
+              size={"md"}
+            />
+          </Menu.Target>
+
+          <Menu.Dropdown className="p-0">
+            <Menu.Label className="p-0">
+              <div className="w-full hover:bg-slate-200 py-2">
+                <Link className="w-full h-full" to="profile">
+                  <div className="flex gap-2 mx-10">
+                    <AppIcons className="w-4 h-4 " icon="UserIcon:outline" />
+                    <p>Profile</p>
+                  </div>
+                </Link>
+              </div>
+            </Menu.Label>
+
+            <Menu.Label className="p-0">
+              <div className="w-full hover:bg-slate-200 py-2">
+                <Link className="w-full h-full" to="settings">
+                  <div className="flex gap-2 mx-10">
+                    <AppIcons
+                      className="w-4 h-4 "
+                      icon="Cog6ToothIcon:outline"
+                    />
+                    <p>Settings</p>
+                  </div>
+                </Link>
+              </div>
+            </Menu.Label>
+
+            <Menu.Label className="p-0">
+              <div>
+                <div
+                  onClick={() => {
+                    Cookies.remove("token");
+                    dispatch(userApi.util.resetApiState());
+                  }}
+                  className="w-full cursor-pointer hover:bg-slate-200 py-2"
+                >
+                  <div className="flex gap-2 mx-10">
+                    <AppIcons
+                      className="w-4 h-4 "
+                      icon="ArrowRightOnRectangleIcon:outline"
+                    />
+                    <p>Sign out</p>
+                  </div>
+                </div>
+              </div>
             </Menu.Label>
           </Menu.Dropdown>
         </Menu>

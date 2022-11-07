@@ -32,11 +32,11 @@ const Navigation = ({ opened, setOpened }: Props) => {
             // boxShadow: "4px 8px 14px 0px #2D43771F",
             width: "-webkit-fill-available",
           }}
-          className="Test h-full flex flex-col overflow-scroll justify-center items-center gap-2 fixed"
+          className="Test h-full flex flex-col overflow-scroll justify-start items-center gap-2 fixed"
         >
           <Info />
           <NavList setOpened={setOpened} />
-          <UserButton />
+          {/* <UserButton /> */}
         </div>
       </Grid.Col>
 
@@ -57,7 +57,7 @@ const Navigation = ({ opened, setOpened }: Props) => {
         >
           <Info />
           <NavList setOpened={setOpened} />
-          <UserButton />
+          {/* <UserButton /> */}
         </Drawer>
       </div>
     </>
@@ -136,64 +136,64 @@ const NavList = ({ setOpened }: any) => {
   );
 };
 
-// we will use this component later (https://mantine.dev/core/menu/#custom-component-as-target)
-const UserButton = () => {
-  const [opened, setOpened] = useState(false);
-  const dispatch = useDispatch();
-  return (
-    <div className="w-full bg-perfLightBlue text-perfGray3 mb-4">
-      <UnstyledButton
-        onClick={() => setOpened((o) => !o)}
-        className=" my-6 mx-auto flex justify-center items-center"
-      >
-        <Group>
-          <Avatar className="rounded-full" size={40}>
-            <img
-              src="https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?w=2000"
-              alt="avatar"
-            />
-          </Avatar>
-          <div>
-            <Text className="text-base text-perfGray3">My Profile</Text>
-            {!opened && (
-              <Text size="xs" color="blue">
-                Hassan Kamal
-              </Text>
-            )}
-          </div>
-        </Group>
-      </UnstyledButton>
-      <Collapse in={opened}>
-        <div className="flex flex-col gap-2 mb-10 w-full">
-          <Link className="w-full hover:bg-slate-200 py-2" to="profile">
-            <div className="flex gap-2 mx-10">
-              <AppIcons className="w-4 h-4" icon="UserIcon:outline" />
-              <p>View profile</p>
-            </div>
-          </Link>
-          <Link className="w-full hover:bg-slate-200 py-2" to="settings">
-            <div className="flex gap-2 mx-10">
-              <AppIcons className="w-4 h-4" icon="Cog6ToothIcon:outline" />
-              <p>Settings</p>
-            </div>
-          </Link>
-          <div
-            onClick={() => {
-              Cookies.remove("token");
-              dispatch(userApi.util.resetApiState());
-            }}
-            className="w-full cursor-pointer hover:bg-slate-200 py-2"
-          >
-            <div className="flex gap-2 mx-10">
-              <AppIcons
-                className="w-4 h-4"
-                icon="ArrowRightOnRectangleIcon:outline"
-              />
-              <p>Sign out</p>
-            </div>
-          </div>
-        </div>
-      </Collapse>
-    </div>
-  );
-};
+// // we will use this component later (https://mantine.dev/core/menu/#custom-component-as-target)
+// const UserButton = () => {
+//   const [opened, setOpened] = useState(false);
+//   const dispatch = useDispatch();
+//   return (
+//     <div className="w-full bg-perfLightBlue text-perfGray3 mb-4">
+//       <UnstyledButton
+//         onClick={() => setOpened((o) => !o)}
+//         className=" my-6 mx-auto flex justify-center items-center"
+//       >
+//         <Group>
+//           <Avatar className="rounded-full" size={40}>
+//             <img
+//               src="https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?w=2000"
+//               alt="avatar"
+//             />
+//           </Avatar>
+//           <div>
+//             <Text className="text-base text-perfGray3">My Profile</Text>
+//             {!opened && (
+//               <Text size="xs" color="blue">
+//                 Hassan Kamal
+//               </Text>
+//             )}
+//           </div>
+//         </Group>
+//       </UnstyledButton>
+//       <Collapse in={opened}>
+//         <div className="flex flex-col gap-2 mb-10 w-full">
+//           <Link className="w-full hover:bg-slate-200 py-2" to="profile">
+//             <div className="flex gap-2 mx-10">
+//               <AppIcons className="w-4 h-4" icon="UserIcon:outline" />
+//               <p>View profile</p>
+//             </div>
+//           </Link>
+//           <Link className="w-full hover:bg-slate-200 py-2" to="settings">
+//             <div className="flex gap-2 mx-10">
+//               <AppIcons className="w-4 h-4" icon="Cog6ToothIcon:outline" />
+//               <p>Settings</p>
+//             </div>
+//           </Link>
+//           <div
+//             onClick={() => {
+//               Cookies.remove("token");
+//               dispatch(userApi.util.resetApiState());
+//             }}
+//             className="w-full cursor-pointer hover:bg-slate-200 py-2"
+//           >
+//             <div className="flex gap-2 mx-10">
+//               <AppIcons
+//                 className="w-4 h-4"
+//                 icon="ArrowRightOnRectangleIcon:outline"
+//               />
+//               <p>Sign out</p>
+//             </div>
+//           </div>
+//         </div>
+//       </Collapse>
+//     </div>
+//   );
+// };
