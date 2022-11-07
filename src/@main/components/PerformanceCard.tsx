@@ -1,7 +1,5 @@
 import React from "react";
-import {PerformanceCardProps} from 'app/store/types/user-types'
-
-
+import { PerformanceCardProps } from "app/store/types/user-types";
 
 export const PerformanceCard = ({
   number,
@@ -9,7 +7,7 @@ export const PerformanceCard = ({
   bgColor,
   textColor,
   children,
-}:PerformanceCardProps) => {
+}: PerformanceCardProps) => {
   return (
     <div
       style={{ background: bgColor }}
@@ -17,8 +15,6 @@ export const PerformanceCard = ({
     >
       <div className="icon flex justify-center items-center">{children}</div>
       <div
-        // item
-        // xs={8}
         style={{ color: textColor }}
         className="info flex flex-col leading-4 text-xs"
       >

@@ -109,13 +109,17 @@ const HomePage = () => {
         />
         <div className="flex flex-col md:flex-row gap-3 justify-center items-center pt-3 md:pt-0">
           <Dropdown
-            label="Performance"
+            label="Teams"
             listItems={["Primary team", "Primary group"]}
           />
-          <Dropdown label="This week" listItems={[]} />
+          <Dropdown
+            label="This week"
+            styleType="basic"
+            listItems={["week1", "Week 2"]}
+          />
         </div>
       </div>
-      <Grid columns={12} gutter={20}>
+      <Grid columns={12} gutter={"sm"}>
         <Grid.Col sm={3} span={12}>
           <Card type="playerInfo" playerData={playerData} />
         </Grid.Col>
@@ -125,7 +129,7 @@ const HomePage = () => {
           </Link>
         </Grid.Col>
       </Grid>
-      <Grid columns={14} gutter={20} className="info mt-3">
+      <Grid columns={14} gutter={"sm"} className="info mt-3">
         <Grid.Col sm={4} span={14}>
           <Card type="teamInfo" playerData={playerData} />
         </Grid.Col>

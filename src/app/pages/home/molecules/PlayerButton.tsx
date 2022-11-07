@@ -13,11 +13,11 @@ export const PlayerButton = ({
     <div
       onClick={onClick}
       className={cn(
-        "player cursor-pointer transform hover:scale-105 py-3 px-4 flex justify-between items-center bg-white rounded-full opacity-60",
+        "player cursor-pointer transform hover:scale-105 py-2 px-4 flex justify-between items-center bg-white rounded-full opacity-60",
         { "opacity-100": active === true }
       )}
     >
-      <Avatar className="rounded-full" alt="Remy Sharp" src={img} />
+      <Avatar radius={"xl"} size="sm" alt="Remy Sharp" src={img} />
       <h2 className="name pl-2 text-base text-perfGray2">{name}</h2>
     </div>
   );
