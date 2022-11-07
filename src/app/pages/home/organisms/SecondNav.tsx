@@ -7,7 +7,7 @@ const SecondNav = ({
   setSelectedPlayer,
 }: SecondNavProps) => {
   return (
-    <div className="second_nav flex py-6 overflow-scroll">
+    <div className="second_nav flex">
       <div className="players flex gap-4">
         {players &&
           players?.map((player, index) => (
