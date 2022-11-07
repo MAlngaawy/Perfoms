@@ -13,15 +13,15 @@ function AuthProvider({ children }: PropsWithChildren) {
     eventInstance.on("Login_Success", () => refetch());
   }, [refetch]);
 
-  useEffect(() => {
-    if (isError)
-      showNotification({
-        title: "Auth notification",
-        //@ts-ignore
-        message: `${error.data.detail} 🤥`,
-        color: "red",
-      });
-  }, [isError, error]);
+  // useEffect(() => {
+  //   if (isError)
+  //     showNotification({
+  //       title: "Auth notification",
+  //       //@ts-ignore
+  //       message: `${error.data.detail} 🤥`,
+  //       color: "red",
+  //     });
+  // }, [isError, error]);
 
   return isLoading ? (
     <AppSplashScreen />
