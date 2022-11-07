@@ -96,7 +96,7 @@ const ReportPage = () => {
           <button className="text-perfBlue shadow-md border-perfBlue border-2 border-perfBlue rounded-full py-3 px-10 h-12 flex flex-row justify-center items-center gap-1">
             <AppIcons className="w-5" icon="PrinterIcon:outline" /> Exports
           </button>
-          <Dropdown label="This week" listItems={[]} />
+          <Dropdown label="This week" styleType="basic" listItems={[]} />
         </div>
       </div>
       <Grid columns={12} gutter={10}>

@@ -109,10 +109,10 @@ const HomePage = () => {
         />
         <div className="flex flex-col md:flex-row gap-3 justify-center items-center pt-3 md:pt-0">
           <Dropdown
-            label="Performance"
+            label="Primary team"
             listItems={["Primary team", "Primary group"]}
           />
-          <Dropdown label="This week" listItems={[]} />
+          <Dropdown label="This week" styleType="basic" listItems={[]} />
         </div>
       </div>
       <Grid columns={12} gutter={10}>
