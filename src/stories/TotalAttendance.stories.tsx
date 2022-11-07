@@ -9,7 +9,7 @@ export default {
 } as ComponentMeta<typeof TotalAttendance>;
 
 const Template: ComponentStory<typeof TotalAttendance> = (args) => (
-  <Grid className="h-screen w-full bg-pagesBg">
+  <Grid className="h-screen w-full bg-pagesBg p-4">
     <Grid.Col xs={12} md={4}>
       <TotalAttendance {...args} />
     </Grid.Col>

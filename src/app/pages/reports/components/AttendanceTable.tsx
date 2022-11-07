@@ -1,6 +1,6 @@
 import React from "react";
 import { Table } from "@mantine/core";
-import AppIcons from "@main/core/AppIcons";
+import AppIcons from "~/@main/core/AppIcons";
 
 type Props = {
   data: { day: string; attendance: "ATTENDED" | "ABSENT" | "UPCOMING" }[];
@@ -42,7 +42,7 @@ const AttendanceTable = ({ data }: Props) => {
   ));
 
   return (
-    <Table striped>
+    <Table>
       <thead>
         <tr>
           <th className="flex items-center gap-1 text-sm font-medium border-0 border-r">

@@ -6,8 +6,9 @@ import { playerData } from "../home/HomePage";
 import SecondNav from "../home/organisms/SecondNav";
 import { players } from "../home/HomePage";
 import AppIcons from "~/@main/core/AppIcons";
-// import { Dropdown } from "~/@main/components/Dropdown";
-// import AppIcons from "~/@main/core/AppIcons";
+import AttendanceTable from "./components/AttendanceTable";
+import TotalAttendance from "./components/TotalAttendance";
+import AttendanceCalender from "~/@main/components/AttendanceCalendar";
 
 // ===== dummy data =====
 
@@ -85,7 +86,7 @@ const ReportPage = () => {
 
   return (
     <div className="report-page px-5 mb-20">
-      <div className="flex flex-col sm:flex-row my-4 justify-between items-center">
+      <div className="flex flex-col gap-4 sm:flex-row my-4 justify-between items-center">
         <SecondNav
           players={players}
           selectedplayer={selectedplayer}
@@ -206,7 +207,7 @@ const ReportPage = () => {
                     <h2 className="text-lg mb-4">
                       Attendance Report summary - main team
                     </h2>
-                    <div className="flex gap-6">
+                    <div className="flex gap-6 flex-wrap">
                       <PerformanceCard
                         bgColor="rgba(0, 224, 150, 0.1)"
                         textColor="#27AE60"
@@ -245,6 +246,88 @@ const ReportPage = () => {
                           alt="weakness icon"
                         />
                       </PerformanceCard>
+                    </div>
+                  </div>
+                </Grid.Col>
+                {/* Attedance Summary Table */}
+                <Grid.Col span={12} sm={8}>
+                  <div className="bg-white flex flex-col xs:flex-row rounded-3xl p-4">
+                    <AttendanceTable
+                      data={[
+                        { day: "2/10/2017", attendance: "ATTENDED" },
+                        { day: "2/10/2017", attendance: "ATTENDED" },
+                        { day: "2/10/2017", attendance: "ATTENDED" },
+                        { day: "2/10/2017", attendance: "ATTENDED" },
+                        { day: "2/10/2017", attendance: "ABSENT" },
+                        { day: "2/10/2017", attendance: "ABSENT" },
+                        { day: "2/10/2017", attendance: "ABSENT" },
+                        { day: "2/10/2017", attendance: "ATTENDED" },
+                        { day: "2/10/2017", attendance: "UPCOMING" },
+                        { day: "2/10/2017", attendance: "UPCOMING" },
+                        { day: "2/10/2017", attendance: "ATTENDED" },
+                        { day: "2/10/2017", attendance: "ATTENDED" },
+                      ]}
+                    />
+                    <AttendanceTable
+                      data={[
+                        { day: "2/10/2017", attendance: "ATTENDED" },
+                        { day: "2/10/2017", attendance: "ATTENDED" },
+                        { day: "2/10/2017", attendance: "ATTENDED" },
+                        { day: "2/10/2017", attendance: "ATTENDED" },
+                        { day: "2/10/2017", attendance: "ABSENT" },
+                        { day: "2/10/2017", attendance: "ABSENT" },
+                        { day: "2/10/2017", attendance: "ABSENT" },
+                        { day: "2/10/2017", attendance: "ATTENDED" },
+                        { day: "2/10/2017", attendance: "UPCOMING" },
+                        { day: "2/10/2017", attendance: "UPCOMING" },
+                        { day: "2/10/2017", attendance: "ATTENDED" },
+                        { day: "2/10/2017", attendance: "ATTENDED" },
+                      ]}
+                    />
+                  </div>
+                </Grid.Col>
+
+                <Grid.Col span={12} sm={4}>
+                  <div className="flex flex-col gap-4">
+                    {/* Total Attendace Pie Chart  */}
+                    <div className="bg-white rounded-3xl">
+                      <TotalAttendance
+                        data={[
+                          { day: "2/10/2017", attendance: "ATTENDED" },
+                          { day: "2/10/2017", attendance: "ATTENDED" },
+                          { day: "2/10/2017", attendance: "ATTENDED" },
+                          { day: "2/10/2017", attendance: "ATTENDED" },
+                          { day: "2/10/2017", attendance: "ABSENT" },
+                          { day: "2/10/2017", attendance: "ABSENT" },
+                          { day: "2/10/2017", attendance: "ABSENT" },
+                          { day: "2/10/2017", attendance: "ATTENDED" },
+                          { day: "2/10/2017", attendance: "UPCOMING" },
+                          { day: "2/10/2017", attendance: "UPCOMING" },
+                          { day: "2/10/2017", attendance: "ATTENDED" },
+                          { day: "2/10/2017", attendance: "ATTENDED" },
+                        ]}
+                      />
+                    </div>
+
+                    {/* Attendance Calender */}
+                    <div className="bg-white">
+                      <Card type="calendar" />
+                      {/* <AttendanceCalender
+                        data={[
+                          { day: "2/10/2017", attendance: "ATTENDED" },
+                          { day: "2/10/2017", attendance: "ATTENDED" },
+                          { day: "2/10/2017", attendance: "ATTENDED" },
+                          { day: "2/10/2017", attendance: "ATTENDED" },
+                          { day: "2/10/2017", attendance: "ABSENT" },
+                          { day: "2/10/2017", attendance: "ABSENT" },
+                          { day: "2/10/2017", attendance: "ABSENT" },
+                          { day: "2/10/2017", attendance: "ATTENDED" },
+                          { day: "2/10/2017", attendance: "UPCOMING" },
+                          { day: "2/10/2017", attendance: "UPCOMING" },
+                          { day: "2/10/2017", attendance: "ATTENDED" },
+                          { day: "2/10/2017", attendance: "ATTENDED" },
+                        ]}
+                      /> */}
                     </div>
                   </div>
                 </Grid.Col>
