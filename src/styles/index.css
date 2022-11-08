@@ -98,3 +98,24 @@ select:-webkit-autofill:focus {
   align-items: center;
   cursor: pointer;
 }
+
+.mantine-Carousel-control,
+.mantine-Carousel-indicator{
+  background-color: #fff;
+}
+
+.mantine-Carousel-controls{
+  left: -50px;
+  right: -50px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+@media only screen and (max-width: 480px) {
+  .mantine-Carousel-controls{
+    left: 0px;
+    right: 0px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}

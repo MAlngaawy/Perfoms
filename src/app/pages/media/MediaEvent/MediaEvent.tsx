@@ -14,7 +14,7 @@ const MediaEvent = ({images}:{images:string[]}) => {
 
 
   const slides = images.map((url) => (
-    <Carousel.Slide key={url}>
+    <Carousel.Slide className='bg-white' key={url}>
       <Image src={url} />
     </Carousel.Slide>
   ));
@@ -22,7 +22,7 @@ const MediaEvent = ({images}:{images:string[]}) => {
   return (
     <>
         <FirstNav pageName='event' />
-        <Carousel  className='m-auto mt-10' sx={{ width: '50%' , minWidth:300 }} withIndicators loop getEmblaApi={setEmbla}>
+        <Carousel controlsOffset="xl" controlSize={36} className='m-auto mt-10' sx={{ width: '50%' , minWidth:300 }} withIndicators loop getEmblaApi={setEmbla}>
           {slides}
         </Carousel>
     </>
