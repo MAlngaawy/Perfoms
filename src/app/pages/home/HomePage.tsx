@@ -137,18 +137,13 @@ const HomePage = () => {
         <Grid.Col sm={7} span={14}>
           <CustomCalendar
             data={[
-              { day: "2/10/2017", attendance: "ATTENDED" },
-              { day: "2/10/2017", attendance: "ATTENDED" },
-              { day: "2/10/2017", attendance: "ATTENDED" },
-              { day: "2/10/2017", attendance: "ATTENDED" },
-              { day: "2/10/2017", attendance: "ABSENT" },
-              { day: "2/10/2017", attendance: "ABSENT" },
-              { day: "2/10/2017", attendance: "ABSENT" },
-              { day: "2/10/2017", attendance: "ATTENDED" },
-              { day: "2/10/2017", attendance: "UPCOMING" },
-              { day: "2/10/2017", attendance: "UPCOMING" },
-              { day: "2/10/2017", attendance: "ATTENDED" },
-              { day: "2/10/2017", attendance: "ATTENDED" },
+              { day: "11/4/2022", attendance: "ATTENDED" },
+              { day: "11/6/2022", attendance: "ABSENT" },
+              { day: "11/11/2022", attendance: "ATTENDED" },
+              { day: "11/15/2022", attendance: "ATTENDED" },
+              { day: "11/22/2022", attendance: "ABSENT" },
+              { day: "11/25/2022", attendance: "ATTENDED" },
+              { day: "11/29/2022", attendance: "UPCOMING" },
             ]}
           />
           {/* <Card type="calendar" /> */}
