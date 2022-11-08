@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import AppIcons from "~/@main/core/AppIcons";
 import { Link } from "react-router-dom";
+import Notification from "~/@main/components/Notification";
 
 type Props = {
   opened: boolean;
@@ -25,32 +26,16 @@ const Toolbar = ({ setOpened }: Props) => {
         >
           <AppIcons className="w-6 h-6 " icon="Bars3BottomLeftIcon:solid" />
         </button>
-        <div className="clubLogo hidden lg:block">Club Logo</div>
+        <div className="clubLogo gap-2 hidden lg:flex justify-center items-center">
+          <img
+            className="w-8"
+            src="https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/1200px-Real_Madrid_CF.svg.png"
+            alt="club logo"
+          />
+          <span>Royal Club</span>
+        </div>
       </div>
       <div className="right flex gap-2 justify-center items-center">
-        {/* Notifications Menu */}
-        <Menu trigger="hover" shadow="md" width={200}>
-          <Menu.Target>
-            <Avatar className="cursor-pointer" radius="xl">
-              <AppIcons
-                className="w-5 h-5 text-black"
-                icon="BellIcon:outline"
-              />
-            </Avatar>
-          </Menu.Target>
-
-          <Menu.Dropdown>
-            <h2 className="m-2 text-perfLightBlack text-sm">Notifications</h2>
-            <Divider />
-            <Menu.Label>
-              <div>This is The first Nvigation</div>
-            </Menu.Label>
-            <Menu.Label>
-              <div>This is The Second one </div>
-            </Menu.Label>
-          </Menu.Dropdown>
-        </Menu>
-
         {/* Messages Menu */}
         <Menu trigger="hover" shadow="md" width={200}>
           <Menu.Target>
@@ -66,10 +51,44 @@ const Toolbar = ({ setOpened }: Props) => {
             <h2 className="m-2 text-perfLightBlack text-sm">Messages</h2>
             <Divider />
             <Menu.Label>
-              <div>Message One</div>
+              <div>Message One Here</div>
             </Menu.Label>
             <Menu.Label>
-              <div> Message Two </div>
+              <div> Message Two Here</div>
+            </Menu.Label>
+          </Menu.Dropdown>
+        </Menu>
+
+        {/* Notifications Menu */}
+        <Menu trigger="hover" shadow="md" width={200}>
+          <Menu.Target>
+            <Avatar className="cursor-pointer" radius="xl">
+              <AppIcons
+                className="w-5 h-5 text-black"
+                icon="BellIcon:outline"
+              />
+            </Avatar>
+          </Menu.Target>
+
+          <Menu.Dropdown className="w-full sm:w-96">
+            <h2 className="m-2 text-perfLightBlack text-sm">Notifications</h2>
+            <Divider />
+            <Menu.Label className="p-0">
+              <Notification
+                created_at="11/11/2022"
+                newNotification
+                notification_type="Certificate"
+                senderAvatar="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoOhc4kExw8ulBPs32AELYOeYR5dgJjUd6Ug&usqp=CAU"
+                senderName="Ali Mohammed"
+              />
+            </Menu.Label>
+            <Menu.Label className="p-0">
+              <Notification
+                created_at="11/12/2022"
+                notification_type="Certificate"
+                senderAvatar="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoOhc4kExw8ulBPs32AELYOeYR5dgJjUd6Ug&usqp=CAU"
+                senderName="Ali Mohammed"
+              />
             </Menu.Label>
           </Menu.Dropdown>
         </Menu>

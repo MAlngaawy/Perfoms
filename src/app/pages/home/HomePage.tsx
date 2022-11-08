@@ -101,7 +101,7 @@ const HomePage = () => {
 
   return (
     <div className="home-page px-5 mb-20">
-      <div className="flex flex-col md:flex-row justify-between items-center">
+      <div className="flex my-4 flex-col md:flex-row justify-between items-center">
         <SecondNav
           players={players}
           selectedplayer={selectedplayer}
