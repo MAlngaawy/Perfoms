@@ -1,22 +1,35 @@
 import { Calendar } from "@mantine/dates";
+import classNames from "classnames";
 import { FC } from "react";
 
 type Props = {
   data: { day: string; attendance: "ATTENDED" | "ABSENT" | "UPCOMING" }[];
+  pageName?: string;
 };
 
-const testData2 = {
-  ATTENDED: ["11/2/2022", "11/7/2022"],
-  ABSENT: ["11/3/2022", "11/5/2022"],
-  UPCOMING: ["11/20/2022", "11/25/2022"],
-};
-
-const CustomCalendar = ({ data }: Props) => {
+const CustomCalendar = ({ data, pageName }: Props) => {
   return (
     <div className="bg-white rounded-3xl p-4">
       <h2 className="title text-lg text-perfGray1">Calendar.</h2>
-      <div className="calendar flex flex-col xs:flex-row w-full justify-center items-center xs:justify-around ">
-        <div className="details flex my-4 flex-wrap xs:flex-col gap-4 justify-center items-start">
+      <div
+        className={classNames(
+          "calendar flex  w-full justify-center items-center xs:justify-around",
+          {
+            "flex-col xs:flex-row sm:flex-col":
+              pageName && pageName === "reports",
+          },
+          { "flex-col xs:flex-row": pageName && pageName !== "reports" }
+        )}
+      >
+        <div
+          className={classNames(
+            "details flex my-4 flex-wrap  gap-4 justify-center items-start",
+            {
+              "xs:flex-col sm:flex-row": pageName && pageName === "reports",
+            },
+            { "xs:flex-col": pageName && pageName !== "reports" }
+          )}
+        >
           <div className="flex gap-1">
             <div className="dot w-5 h-5 rounded-full bg-perfBlue"></div>
             <h2>Attended</h2>
@@ -34,6 +47,7 @@ const CustomCalendar = ({ data }: Props) => {
           <Calendar
             initialMonth={new Date()}
             sx={{
+              padding: 10,
               ".mantine-Calendar-day": {
                 borderRadius: "50%",
                 color: "#000",
