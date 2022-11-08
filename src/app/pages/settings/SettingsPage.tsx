@@ -1,5 +1,4 @@
 import { Input, PasswordInput } from "@mantine/core";
-import React, { useEffect } from "react";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -14,10 +13,6 @@ const schema = yup.object().shape({
 });
 
 const Settings = (props: Props) => {
-  useEffect(() => {
-    console.log("Settings Page");
-  }, []);
-  console.log("Settings Page");
   const {
     register,
     handleSubmit,
