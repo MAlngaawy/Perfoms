@@ -2,8 +2,10 @@ import React from 'react'
 import { Card, Image, Text, Badge, Button, Group } from '@mantine/core';
 import AppIcons from '~/@main/core/AppIcons';
 import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 interface MediaCardProps {
+    id:number
     img:string,
     header:string,
     date: string,
@@ -11,18 +13,20 @@ interface MediaCardProps {
 }
 
 const MediaCard = ({
+                id,
                 img,
                 header,
                 date,
                 place
             }: MediaCardProps) => {
+  const navigate = useNavigate();
 
 
     return (
         <Card shadow="sm" className='rounded-b-xl' p={0} radius="md" withBorder>
             <Card.Section component="a" href="https://mantine.dev/">
                 <Image
-                src="https://images.unsplash.com/photo-1527004013197-933c4bb611b3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=720&q=80"
+                src={img}
                 height={160}
                 alt="Norway"
                 />
@@ -40,11 +44,9 @@ const MediaCard = ({
                 <AppIcons className='w-5 inline mb-3' icon='MapIcon:outline' /> {place}
             </Text>
 
-            <Link to={'/media/media-event'} >
-                <Button variant="light" className='bg-perfBlue text-white rounded-b-xl' fullWidth >
+                <Button onClick={() => navigate(`${id}`)} variant="light" className='bg-perfBlue text-white rounded-b-xl' fullWidth >
                     View full Profile
                 </Button>
-            </Link>
             </Card>
     )
 }
