@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import SecondNav from "./organisms/SecondNav";
 import AppIcons from "~/@main/core/AppIcons";
 import CustomCalendar from "../../../@main/components/Calendar";
+import AddPlayer from "./molecules/AddPlayer";
 
 // dummy data
 export const playerData: PlayerData = {
@@ -108,6 +109,7 @@ const HomePage = () => {
           selectedplayer={selectedplayer}
           setSelectedPlayer={setSelectedPlayer}
         />
+        <AddPlayer />
         <div className="flex flex-col md:flex-row gap-3 justify-center items-center pt-3 md:pt-0">
           <Dropdown
             label="Teams"
