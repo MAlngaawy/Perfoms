@@ -20,7 +20,7 @@ const ProfilePage = (props: Props) => {
   console.log(userData);
 
   return (
-    <div className="flex justify-center items-center pt-6 md:pt-14">
+    <div className="flex justify-center items-center py-2 md:pt-14">
       {userData && <UserInfo user={userData.data} />}
     </div>
   );

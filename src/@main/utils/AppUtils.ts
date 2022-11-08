@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { axios } from "axios";
+import axios from "axios";
 import _ from "~/@lodash";
 import { BASE_URL } from "~/app/configs/dataService";
 
