@@ -8,7 +8,6 @@ export const BASE_HEADERS = (headers: any, api: any) => {
   // headers.set("Content-Type", "application/json");
   Cookies.get("token") &&
     headers.set("Authorization", `Bearer ${Cookies.get("token")}`);
-  console.log(Cookies.get("token"));
   return headers;
 };
 

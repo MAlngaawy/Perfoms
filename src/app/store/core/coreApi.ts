@@ -16,7 +16,21 @@ export const coreApi = createApi({
       }),
       providesTags: ["Core"],
     }),
+    teams: query({
+      query: (params) => ({
+        url: "teams/",
+        params,
+      }),
+      providesTags: ["Core"],
+    }),
+    publicClubs: query({
+      query: (params) => ({
+        url: "clubs/",
+        params,
+      }),
+      providesTags: ["Core"],
+    }),
   }),
 });
 
-export const { useRefreshQuery } = coreApi;
+export const { useRefreshQuery, usePublicClubsQuery, useTeamsQuery } = coreApi;

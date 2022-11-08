@@ -3,6 +3,13 @@ export type LoginUserBody = {
   password: string;
 };
 
+export type SignupRes = {
+  data: {
+    access: string;
+    refresh: string;
+  };
+};
+
 export type LoginResponse = {
   message: string;
   data: {
