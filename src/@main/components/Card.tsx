@@ -145,10 +145,10 @@ const Card = ({
     return (
       <div className="bg-white p-3 rounded-3xl h-full">
         <h2 className="title text-lg text-perfGray1">Calendar.</h2>
-        <div className="flex justify-around gap-3 flex-col md:flex-row 2xl:flex-row">
+        <div className="flex justify-around gap-3  flex-col 2xl:flex-row">
           <div>
             <div className="flex flex-col gap-2 justify-center h-full w-full  items-center mx-auto">
-              <div className="flex 2xl:flex-col md:flex-col justify-between my-6 gap-1 sm:gap-4">
+              <div className="flex sm:flex-col md:flex-row xl:flex-col justify-between my-6 gap-1 sm:gap-4">
                 <div className="flex gap-1">
                   <div className="dot w-5 h-5 rounded-full bg-perfBlue"></div>
                   <h2>Attended</h2>

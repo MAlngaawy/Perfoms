@@ -1,10 +1,12 @@
 import AppIcons from "~/@main/core/AppIcons";
 import navigationConfig from "~/app/configs/navigationConfig";
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Box, Drawer, Group, Button, Grid } from "@mantine/core";
+import { Box, Drawer, Group, Grid, Collapse } from "@mantine/core";
 import { NavLink } from "react-router-dom";
-import cn from "classnames";
+import Cookies from "js-cookie";
+import { userApi } from "~/app/store/user/userApi";
+import { useDispatch } from "react-redux";
 
 // import { IconChevronRight, IconChevronLeft } from "@tabler/icons";
 import { UnstyledButton, Avatar, Text } from "@mantine/core";
@@ -30,11 +32,11 @@ const Navigation = ({ opened, setOpened }: Props) => {
             // boxShadow: "4px 8px 14px 0px #2D43771F",
             width: "-webkit-fill-available",
           }}
-          className="Test h-full flex flex-col overflow-scroll justify-center items-center gap-2 fixed"
+          className="Test h-full flex flex-col overflow-scroll justify-start items-center gap-2 fixed"
         >
           <Info />
           <NavList setOpened={setOpened} />
-          <UserButton />
+          {/* <UserButton /> */}
         </div>
       </Grid.Col>
 
@@ -55,7 +57,7 @@ const Navigation = ({ opened, setOpened }: Props) => {
         >
           <Info />
           <NavList setOpened={setOpened} />
-          <UserButton />
+          {/* <UserButton /> */}
         </Drawer>
       </div>
     </>
@@ -107,21 +109,23 @@ const NavList = ({ setOpened }: any) => {
     <div className="flex w-full px-6 flex-col gap-2">
       {navigationConfig.map((i) => (
         <NavLink
-          style={({ isActive }) =>
-            isActive
-              ? {
-                  backgroundColor: "#2F80ED",
-                  color: "#fff",
-                  justifyContent: "center",
-                  boxShadow: "0px 5px 20px 0px #13234B42",
-                }
-              : undefined
-          }
           to={i.url}
           key={i.id}
           onClick={() => setOpened(false)}
           className={
-            "rounded-lg text-sm font-medium flex content-center items-center gap-2 py-3 xl:py-4 w-full text-perfGray3"
+            "rounded-lg text-sm font-medium flex content-center items-center gap-2 py-3 xl:py-4 w-full "
+          }
+          style={({ isActive }) =>
+            isActive
+              ? {
+                  backgroundColor: "#2F80ED",
+                  color: "#ffffff",
+                  justifyContent: "center",
+                  boxShadow: "0px 5px 20px 0px #13234B42",
+                }
+              : {
+                  color: "#828282",
+                }
           }
         >
           <AppIcons className="w-5 h-5" icon={i.icon} />
@@ -132,24 +136,64 @@ const NavList = ({ setOpened }: any) => {
   );
 };
 
-// we will use this component later (https://mantine.dev/core/menu/#custom-component-as-target)
-const UserButton = () => {
-  return (
-    <UnstyledButton className=" my-6 mx-auto flex justify-center items-center">
-      <Group>
-        <Avatar className="rounded-full" size={40}>
-          <img
-            src="https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?w=2000"
-            alt="avatar"
-          />
-        </Avatar>
-        <div>
-          <Text className="text-base text-perfGray3">My Profile</Text>
-          <Text size="xs" color="blue">
-            Hassan Kamal
-          </Text>
-        </div>
-      </Group>
-    </UnstyledButton>
-  );
-};
+// // we will use this component later (https://mantine.dev/core/menu/#custom-component-as-target)
+// const UserButton = () => {
+//   const [opened, setOpened] = useState(false);
+//   const dispatch = useDispatch();
+//   return (
+//     <div className="w-full bg-perfLightBlue text-perfGray3 mb-4">
+//       <UnstyledButton
+//         onClick={() => setOpened((o) => !o)}
+//         className=" my-6 mx-auto flex justify-center items-center"
+//       >
+//         <Group>
+//           <Avatar className="rounded-full" size={40}>
+//             <img
+//               src="https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?w=2000"
+//               alt="avatar"
+//             />
+//           </Avatar>
+//           <div>
+//             <Text className="text-base text-perfGray3">My Profile</Text>
+//             {!opened && (
+//               <Text size="xs" color="blue">
+//                 Hassan Kamal
+//               </Text>
+//             )}
+//           </div>
+//         </Group>
+//       </UnstyledButton>
+//       <Collapse in={opened}>
+//         <div className="flex flex-col gap-2 mb-10 w-full">
+//           <Link className="w-full hover:bg-slate-200 py-2" to="profile">
+//             <div className="flex gap-2 mx-10">
+//               <AppIcons className="w-4 h-4" icon="UserIcon:outline" />
+//               <p>View profile</p>
+//             </div>
+//           </Link>
+//           <Link className="w-full hover:bg-slate-200 py-2" to="settings">
+//             <div className="flex gap-2 mx-10">
+//               <AppIcons className="w-4 h-4" icon="Cog6ToothIcon:outline" />
+//               <p>Settings</p>
+//             </div>
+//           </Link>
+//           <div
+//             onClick={() => {
+//               Cookies.remove("token");
+//               dispatch(userApi.util.resetApiState());
+//             }}
+//             className="w-full cursor-pointer hover:bg-slate-200 py-2"
+//           >
+//             <div className="flex gap-2 mx-10">
+//               <AppIcons
+//                 className="w-4 h-4"
+//                 icon="ArrowRightOnRectangleIcon:outline"
+//               />
+//               <p>Sign out</p>
+//             </div>
+//           </div>
+//         </div>
+//       </Collapse>
+//     </div>
+//   );
+// };
