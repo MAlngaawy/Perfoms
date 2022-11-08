@@ -1,32 +1,33 @@
 import React , { useState } from 'react'
 import { Card, Image, SimpleGrid } from '@mantine/core';
 import AppIcons from '~/@main/core/AppIcons';
-
+import { Carousel, useAnimationOffsetEffect } from '@mantine/carousel';
+import FirstNav from '~/@main/components/FirstNav';
 
 
 
 const MediaEvent = ({images}:{images:string[]}) => {
-  const [viewImg , setViewImg] = useState(images[0])
+  const TRANSITION_DURATION = 200;
+  const [embla, setEmbla] = useState<any>(null);
 
+  useAnimationOffsetEffect(embla, TRANSITION_DURATION);
+
+
+  const slides = images.map((url) => (
+    <Carousel.Slide key={url}>
+      <Image src={url} />
+    </Carousel.Slide>
+  ));
 
   return (
-    <Card withBorder shadow="sm" radius="md" style={{width:'50%'}} className='m-auto mt-10'>
-      <Card.Section className='relative' mt="sm">
-        <Image className='opacity-50 bg-black' src={viewImg} />
-        <div className='play-icon absolute'>
-          <AppIcons icon='PlayIcon:solid' className='w-5 text-white' />
-        </div>
-      </Card.Section>
+    <>
+        <FirstNav pageName='event' />
+        <Carousel  className='m-auto mt-10' sx={{ width: '50%' , minWidth:300 }} withIndicators loop getEmblaApi={setEmbla}>
+          {slides}
+        </Carousel>
+    </>
+  );
 
-      <Card.Section mt="sm"  className='overflow-x-scroll'>
-          <div className='flex flex-row cursor-pointer w-[50rem] md:w-[80rem]'>
-            {images.map(( image ) => (
-              <Image onClick={()=>setViewImg(image)} className={`${viewImg === image?'':'opacity-50'} px-1`} src={image} key={image} radius="sm" />
-              ))}
-          </div>
-      </Card.Section>
-    </Card>
-  )
 }
 
 export default MediaEvent
