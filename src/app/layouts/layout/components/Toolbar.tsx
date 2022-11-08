@@ -1,4 +1,4 @@
-import { Avatar, Button, Divider, Grid, Menu, Text } from "@mantine/core";
+import { Avatar, Indicator, Divider, Grid, Menu, Text } from "@mantine/core";
 import { userApi } from "~/app/store/user/userApi";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
@@ -13,6 +13,7 @@ type Props = {
 
 const Toolbar = ({ setOpened }: Props) => {
   const dispatch = useDispatch();
+  const haveNotificaton = true;
 
   let href = window.location.href;
   let routeName = href.slice(href.lastIndexOf("/") + 1, href.length);
@@ -63,10 +64,24 @@ const Toolbar = ({ setOpened }: Props) => {
         <Menu trigger="hover" shadow="md" width={200}>
           <Menu.Target>
             <Avatar className="cursor-pointer" radius="xl">
-              <AppIcons
-                className="w-5 h-5 text-black"
-                icon="BellIcon:outline"
-              />
+              <Indicator
+                sx={{
+                  ".mantine-Indicator-indicator": {
+                    marginLeft: 2,
+                    marginTop: 2,
+                  },
+                }}
+                color="red"
+                position="top-start"
+                size={12}
+                withBorder
+                disabled={!haveNotificaton}
+              >
+                <AppIcons
+                  className="w-5 h-5 text-black"
+                  icon="BellIcon:outline"
+                />
+              </Indicator>
             </Avatar>
           </Menu.Target>
 
