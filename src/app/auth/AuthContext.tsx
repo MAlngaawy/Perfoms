@@ -2,7 +2,6 @@ import { createContext, PropsWithChildren, useContext, useEffect } from "react";
 import AppSplashScreen from "~/@main/core/AppSplashScreen";
 import { useUserQuery } from "~/app/store/user/userApi";
 import { eventInstance } from "~/@main/utils/AppUtils";
-import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext({});
 
