@@ -1,5 +1,7 @@
 //@ts-nocheck
+import { axios } from "axios";
 import _ from "~/@lodash";
+import { BASE_URL } from "~/app/configs/dataService";
 
 class EventEmitter {
   constructor() {
@@ -144,6 +146,46 @@ class AppUtils {
     });
 
     return [...routes];
+  }
+
+  static async UploadS3(
+    files: File[],
+    setIsLoading: { loading: boolean; progress: number },
+    folder: string
+  ) {
+    try {
+      const uploadPromis = files.map((item) =>
+        axios.get(
+          `${BASE_URL}/upload?contentType=${item.type}&filename=${item.name}&folder=${folder}`
+        )
+      );
+      const uploadurls = await Promise.all(uploadPromis);
+      const filesPromise = uploadurls.map(({ data }, i) =>
+        axios.put(data, files[i], {
+          headers: {
+            "Content-Type": files[i].type,
+          },
+          onUploadProgress: (e) => {
+            setIsLoading({
+              loading: true,
+              progress: Math.trunc((e.loaded / e.total) * 100),
+            });
+          },
+        })
+      );
+      await Promise.all(filesPromise);
+      setIsLoading({
+        loading: false,
+        progress: 0,
+      });
+      return uploadurls.map(({ data }) => data.split("?")[0]);
+    } catch (error) {
+      setIsLoading({
+        loading: false,
+        progress: 0,
+      });
+      throw error;
+    }
   }
 
   static generateRoutesFromConfigs(configs, defaultAuth) {

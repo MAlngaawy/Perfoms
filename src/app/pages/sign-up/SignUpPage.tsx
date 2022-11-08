@@ -1,4 +1,4 @@
-import { Input, Grid, MultiSelect } from "@mantine/core";
+import { Input, Grid, MultiSelect, Loader } from "@mantine/core";
 import { useForm } from "react-hook-form";
 // import { useSigninMutation } from "~/app/store/user/userApi";
 import { PasswordInput } from "@mantine/core";
@@ -6,13 +6,11 @@ import { Link } from "react-router-dom";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect } from "react";
-import { useState } from "react";
-import { BASE_URL } from "~/app/configs/dataService";
 import { State } from "country-state-city";
 import PerfSelect, { Option } from "~/@main/components/Select";
 import { Controller } from "react-hook-form";
-import OTPComponent from "./OTPComponent";
-import { useAllClubsQuery } from "~/app/store/parent/parentApi";
+import { usePublicClubsQuery, useTeamsQuery } from "~/app/store/core/coreApi";
+import { useSignupMutation } from "~/app/store/user/userApi";
 
 type Props = {};
 
@@ -30,15 +28,9 @@ const schema = yup.object().shape({
 });
 
 const SignUpPage = (props: Props) => {
-  const [teams, setTeams] = useState([]);
+  const [signupHandler, { isLoading }] = useSignupMutation();
 
-  const {
-    data: AllClubs,
-    isLoading,
-    isError,
-    error,
-  } = useAllClubsQuery({ page: 0 });
-  // const {} =
+  const { data: AllClubs } = usePublicClubsQuery(null);
 
   const {
     register,
@@ -62,30 +54,15 @@ const SignUpPage = (props: Props) => {
     },
     resolver: yupResolver(schema),
   });
-
-  // access country value to use it to get it's cities
   const country = watch("country");
   const userRole = watch("userRole");
+  const { data: teamsData } = useTeamsQuery(null, {
+    skip: userRole !== "Coach",
+  });
 
   useEffect(() => {
-    // set city value to empty after change the country
     setValue("city", "");
     setValue("teams", []);
-
-    // fetch database club
-
-    //fetch database Teams
-    if (userRole === "Coach") {
-      fetch(`${BASE_URL}/core/teams/`)
-        .then((res) => res.json())
-        .then(({ data }) => {
-          const newTeams = data.map((team: { name: string; id: number }) => {
-            return { label: team.name, value: team.id };
-          });
-          setTeams(newTeams);
-        })
-        .catch((err) => console.log(err));
-    }
   }, [country, setValue, userRole]);
 
   const submitFun = (data: any) => {
@@ -101,7 +78,7 @@ const SignUpPage = (props: Props) => {
       city: data.city,
       teams: data.teams,
     };
-    console.log(requestData);
+    signupHandler(requestData);
   };
 
   return (
@@ -263,7 +240,7 @@ const SignUpPage = (props: Props) => {
                 name="club"
                 control={control}
                 data={
-                  AllClubs?.results?.map((i) => ({
+                  AllClubs?.data?.map((i: any) => ({
                     label: i.name,
                     value: i.id,
                   })) as unknown as Option[]
@@ -272,7 +249,7 @@ const SignUpPage = (props: Props) => {
             )}
 
             {/* Select Teams */}
-            {userRole === "Coach" && (
+            {userRole === "Coach" && teamsData && (
               <Controller
                 {...register("teams")}
                 render={({ field }) => (
@@ -286,7 +263,12 @@ const SignUpPage = (props: Props) => {
                         borderRadius: 0,
                       },
                     }}
-                    data={teams}
+                    data={teamsData.data.map(
+                      (team: { name: string; id: number }) => ({
+                        label: team.name,
+                        value: team.id,
+                      })
+                    )}
                     label="Select Your Teams"
                     {...field}
                     error={errors.teams ? errors.teams.message : undefined}
@@ -374,9 +356,14 @@ const SignUpPage = (props: Props) => {
           </div>
           <button
             type="submit"
-            className="mx-auto block w-full bg-perfBlue rounded-lg text-white p-4 mt-10 mb-2"
+            disabled={isLoading}
+            className="mx-auto flex justify-center w-full disabled:bg-gray-500 bg-perfBlue rounded-lg items-center text-white h-12 mt-10 mb-2"
           >
-            Create Account
+            {!isLoading ? (
+              "Create Account"
+            ) : (
+              <Loader variant="dots" color="white" />
+            )}
           </button>
           <p className="text-perfGray text-center text-base">
             Already have an account?

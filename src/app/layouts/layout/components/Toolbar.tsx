@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import AppIcons from "~/@main/core/AppIcons";
 import { Link } from "react-router-dom";
 import Notification from "~/@main/components/Notification";
+import { eventInstance } from "~/@main/utils/AppUtils";
 
 type Props = {
   opened: boolean;
@@ -14,7 +15,6 @@ type Props = {
 const Toolbar = ({ setOpened }: Props) => {
   const dispatch = useDispatch();
   const haveNotificaton = true;
-
   let href = window.location.href;
   let routeName = href.slice(href.lastIndexOf("/") + 1, href.length);
 
@@ -152,6 +152,7 @@ const Toolbar = ({ setOpened }: Props) => {
                   onClick={() => {
                     Cookies.remove("token");
                     dispatch(userApi.util.resetApiState());
+                    eventInstance.emit("LogOut_Success");
                   }}
                   className="w-full cursor-pointer hover:bg-slate-200 py-2"
                 >

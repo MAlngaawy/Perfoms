@@ -1,13 +1,20 @@
+import { SerializedError } from "./../index";
 import {
   NotificationsType,
   OTPVerify,
   SendOtp,
+  SignupRes,
   User,
   UserDeviceId,
 } from "./../types/user-types";
 import { eventInstance } from "~/@main/utils/AppUtils";
 import { showNotification } from "@mantine/notifications";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {
+  BaseQueryFn,
+  createApi,
+  FetchArgs,
+  fetchBaseQuery,
+} from "@reduxjs/toolkit/query/react";
 import { BASE_HEADERS, BASE_URL } from "~/app/configs/dataService";
 import Cookies from "js-cookie";
 import {
@@ -22,11 +29,12 @@ export const userApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${BASE_URL}/user-generals`,
     prepareHeaders: BASE_HEADERS,
-  }),
+  }) as BaseQueryFn<string | FetchArgs, unknown, SerializedError, {}>,
   tagTypes: ["Users"],
   endpoints: ({ query, mutation }) => ({
     user: query<ProfileResponse, any>({
       query: () => `profile/`,
+      providesTags: ["Users"],
     }),
     signin: mutation<LoginResponse, LoginUserBody>({
       query: (body) => ({
@@ -49,12 +57,26 @@ export const userApi = createApi({
         }
       },
     }),
-    signup: mutation<UserSignup, UserSignup>({
+    signup: mutation<SignupRes, UserSignup>({
       query: (body) => ({
         url: "register/",
         method: "POST",
         body,
       }),
+      async onQueryStarted(arg, { queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          Cookies.set("token", data?.data.access);
+          eventInstance.emit("SignUp_Success");
+        } catch (error) {
+          showNotification({
+            title: "Auth notification",
+            //@ts-ignore
+            message: `${error.error.data.message} 🤥`,
+            color: "red",
+          });
+        }
+      },
     }),
     notifications: query<NotificationsType, { page: number }>({
       query: (params) => ({
