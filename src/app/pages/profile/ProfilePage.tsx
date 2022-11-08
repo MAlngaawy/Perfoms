@@ -18,7 +18,7 @@ type Props = {
 const ProfilePage = (props: Props) => {
   const [opened, setOpened] = useState(false);
   return (
-    <div className="flex justify-center items-center pt-6 md:pt-14">
+    <div className="flex justify-center items-center py-20 md:pt-14">
       <div className="content relative flex flex-col justify-center items-center gap-2 bg-white rounded-3xl p-6 w-11/12 md:w-auto md:p-12">
         <div
           onClick={() => setOpened((o) => !o)}
@@ -44,7 +44,7 @@ const ProfilePage = (props: Props) => {
           />
         </div>
         <h2 className="w-full text-center my-4 text-xl">Mohammed Ali</h2>
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 text-left sm:gap-12">
+        <div className="flex flex-row flex-wrap sm:justify-between sm:items-center gap-4 text-left sm:gap-12">
           <div className="age">
             <p className="title text-sm text-perfGray3">Age</p>
             <h2 className="val text-xl text-perfGray1">

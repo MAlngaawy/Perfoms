@@ -312,7 +312,7 @@ const ReportPage = () => {
 
                     {/* Attendance Calender */}
                     <CustomCalendar
-                      pageName="reports"
+                      pageName="report"
                       data={[
                         { day: "11/4/2022", attendance: "ATTENDED" },
                         { day: "11/6/2022", attendance: "ABSENT" },
