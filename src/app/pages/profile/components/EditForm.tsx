@@ -5,6 +5,8 @@ import { useUpdateProfileMutation } from "~/app/store/user/userApi";
 import { User } from "~/app/store/types/user-types";
 import { useEffect, useRef, useState } from "react";
 import { showNotification } from "@mantine/notifications";
+import SubmitButton from "~/@main/components/SubmitButton";
+
 type Props = {
   user: User;
   setOpened: any;
@@ -13,7 +15,7 @@ type Props = {
 const EditForm = ({ user, setOpened }: Props) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [userAvatar, setUserAvatar] = useState<File>();
-  const [updateProfile, { isSuccess, isError, error }] =
+  const [updateProfile, { isSuccess, isError, error, isLoading }] =
     useUpdateProfileMutation();
   const { register, handleSubmit, control } = useForm({
     defaultValues: { ...user, avatar: undefined },
@@ -94,12 +96,7 @@ const EditForm = ({ user, setOpened }: Props) => {
         />
       </Input.Wrapper>
 
-      <button
-        type="submit"
-        className=" w-full bg-perfBlue text-white font-medium py-3 mt-4 rounded-lg"
-      >
-        Save
-      </button>
+      <SubmitButton isLoading={isLoading} text="Save" />
     </form>
   );
 };

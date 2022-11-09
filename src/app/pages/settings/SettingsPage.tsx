@@ -2,6 +2,8 @@ import { Input, PasswordInput } from "@mantine/core";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import SubmitButton from "~/@main/components/SubmitButton";
+import { useState } from "react";
 
 type Props = {};
 
@@ -11,6 +13,9 @@ const schema = yup.object().shape({
 });
 
 const Settings = (props: Props) => {
+  // This will change when we cal the handler function
+  const [isLoading, setIsloading] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -48,12 +53,7 @@ const Settings = (props: Props) => {
             label="New password"
             error={errors.newPassword?.message}
           />
-          <button
-            type="submit"
-            className=" w-full bg-perfBlue text-white font-medium py-3 mt-4 rounded-lg"
-          >
-            Save
-          </button>
+          <SubmitButton isLoading={isLoading} text="Save" />
         </form>
       </div>
     </div>
