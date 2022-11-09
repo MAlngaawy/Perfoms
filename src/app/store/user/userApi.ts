@@ -97,6 +97,7 @@ export const userApi = createApi({
         method: "PATCH",
         body,
       }),
+      invalidatesTags: ["Users"],
     }),
     userDeviceId: mutation<UserDeviceId, UserDeviceId>({
       query: (body) => ({
