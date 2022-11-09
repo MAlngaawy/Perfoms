@@ -6,8 +6,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 type Props = {};
 
 const schema = yup.object().shape({
-  fullName: yup.string(),
-  phoneNumber: yup.string(),
   oldPassword: yup.string().min(8).max(24).required(),
   newPassword: yup.string().min(8).max(24),
 });
@@ -19,8 +17,6 @@ const Settings = (props: Props) => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      fullName: "Mohammed Ali",
-      phoneNumber: "+121212212",
       oldPassword: "",
       newPassword: "",
     },
@@ -33,28 +29,12 @@ const Settings = (props: Props) => {
 
   return (
     <div className="flex justify-center items-center py-20 md:pt-14">
-      <div className="content flex flex-col justify-center items-center gap-2 bg-white rounded-3xl p-6 w-11/12 sm:w-auto sm:py-12 sm:px-24">
+      <div className="content flex flex-col justify-center items-center gap-2 bg-white rounded-3xl p-6 w-11/12 sm:w-auto">
         <h3>Settings</h3>
         <form
-          className="flex flex-col justify-center items-center gap-4"
+          className="flex flex-col justify-center items-center gap-4 w-80 max-w-full"
           onSubmit={handleSubmit((data: any) => submitFun(data))}
         >
-          <Input.Wrapper
-            error={errors.fullName?.message}
-            id="fullName"
-            label="Full name"
-            className="w-full"
-          >
-            <Input id="fullName" {...register("fullName")} />
-          </Input.Wrapper>
-          <Input.Wrapper
-            error={errors.phoneNumber?.message}
-            id="phoneNumber"
-            label="Phone number"
-            className="w-full"
-          >
-            <Input id="phoneNumber" {...register("phoneNumber")} />
-          </Input.Wrapper>
           <PasswordInput
             className="w-full"
             {...register("oldPassword")}

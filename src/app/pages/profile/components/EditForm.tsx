@@ -6,9 +6,10 @@ import { User } from "~/app/store/types/user-types";
 import { useEffect } from "react";
 type Props = {
   user: User;
+  setOpened: any;
 };
 
-const EditForm = ({ user }: Props) => {
+const EditForm = ({ user, setOpened }: Props) => {
   const [updateProfile, {}] = useUpdateProfileMutation();
   const { register, handleSubmit, control } = useForm({
     defaultValues: { ...user, avatar: undefined },
@@ -16,10 +17,11 @@ const EditForm = ({ user }: Props) => {
 
   const onSubmit = (data: any) => {
     updateProfile(data);
+    setOpened(false);
   };
 
   return (
-    <form className="flex flex-col gap-4 " onSubmit={handleSubmit(onSubmit)}>
+    <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSubmit)}>
       {/* Image Upload Input */}
       <Controller
         name="avatar"
@@ -36,6 +38,17 @@ const EditForm = ({ user }: Props) => {
           />
         )}
       />
+
+      <Input.Wrapper id="firstName" label="First name" className="w-full">
+        <Input id="firstName" {...register("first_name")} />
+      </Input.Wrapper>
+      <Input.Wrapper id="lastName" label="Last name" className="w-full">
+        <Input id="lastName" {...register("last_name")} />
+      </Input.Wrapper>
+      <Input.Wrapper id="phoneNumber" label="Phone number" className="w-full">
+        <Input id="phoneNumber" {...register("mobile")} />
+      </Input.Wrapper>
+
       <Input.Wrapper id="job" label="Your job">
         <Input
           {...register("job")}
@@ -59,6 +72,7 @@ const EditForm = ({ user }: Props) => {
           type="date"
           {...register("dob")}
           id="dob"
+          placeholder="mm/dd/yyyy"
         />
       </Input.Wrapper>
 

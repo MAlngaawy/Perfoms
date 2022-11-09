@@ -25,20 +25,24 @@ const UserInfo = ({ user }: Props) => {
           onClose={() => setOpened(false)}
           title="Introduce yourself!"
         >
-          <EditForm user={user} />
+          <EditForm user={user} setOpened={setOpened} />
         </Modal>
       </div>
       <div className="photo w-28 md:w-48 h-32 md:h-52">
         <img
           className="object-cover w-full h-full rounded-lg"
-          src="https://blog.hahnemuehle.com/en/wp-content/uploads/sites/12/2015/07/Benedict-Cumberbatch-C-Mark-Mann.jpg"
+          src={
+            user.avatar ||
+            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
+          }
           alt="user-avatar"
         />
       </div>
       <h2 className="w-full text-center my-4 text-xl">{`${user.first_name} ${user.last_name}`}</h2>
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 text-left sm:gap-12">
         <div className="age">
-          <p className="title text-sm text-perfGray3">{user.bio}</p>
+          {/* <p className="title text-sm text-perfGray3">{user.bio}</p> */}
+          <p className="title text-sm text-perfGray3">Age</p>
           <h2 className="val text-xl text-perfGray1">
             {user.dob}{" "}
             <span className="ml-2 text-sm text-perfGray3">
