@@ -10,6 +10,9 @@ type Props = {};
 const schema = yup.object().shape({
   oldPassword: yup.string().min(8).max(24).required(),
   newPassword: yup.string().min(8).max(24),
+  confirmNewPassword: yup
+    .string()
+    .oneOf([yup.ref("newPassword"), null], "Passwords must match"),
 });
 
 const Settings = (props: Props) => {
@@ -24,6 +27,7 @@ const Settings = (props: Props) => {
     defaultValues: {
       oldPassword: "",
       newPassword: "",
+      confirmNewPassword: "",
     },
     resolver: yupResolver(schema),
   });
@@ -52,6 +56,12 @@ const Settings = (props: Props) => {
             {...register("newPassword")}
             label="New password"
             error={errors.newPassword?.message}
+          />
+          <PasswordInput
+            className="w-full"
+            {...register("confirmNewPassword")}
+            label="Confirm New password"
+            error={errors.confirmNewPassword?.message}
           />
           <SubmitButton isLoading={isLoading} text="Save" />
         </form>
