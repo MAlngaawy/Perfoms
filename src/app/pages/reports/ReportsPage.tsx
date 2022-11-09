@@ -16,7 +16,7 @@ import AddPlayer from "../home/molecules/AddPlayer";
 
 const playerSummary = [
   {
-    name: "Strengths",
+       name: "Strengths",
     number: 8,
     bgColor: "#00E0961A",
     textColor: "#27AE60",
