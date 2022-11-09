@@ -8,8 +8,6 @@ import withAppProviders from "./withAppProviders";
 
 function App() {
   const { data: user } = useUserQuery(null);
-  console.log(user);
-
   return (
     <AuthProvider>
       <BrowserRouter>
@@ -17,7 +15,6 @@ function App() {
           userRole={user?.data?.user_type ? [user?.data?.user_type] : []}
           loginRedirectUrl={settingsConfig.loginRedirectUrl}
         >
-          {console.log(window.location.href)}
           <AppLayout />
         </AppAuthorization>
       </BrowserRouter>
