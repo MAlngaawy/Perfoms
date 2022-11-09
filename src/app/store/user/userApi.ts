@@ -51,7 +51,7 @@ export const userApi = createApi({
           showNotification({
             title: "Auth notification",
             //@ts-ignore
-            message: `${error.error.data.message} 🤥`,
+            message: `${error.error.message} 🤥`,
             color: "red",
           });
         }
@@ -72,7 +72,7 @@ export const userApi = createApi({
           showNotification({
             title: "Auth notification",
             //@ts-ignore
-            message: `${error.error.data.message} 🤥`,
+            message: `${error.error.message} 🤥`,
             color: "red",
           });
         }
@@ -94,7 +94,7 @@ export const userApi = createApi({
     updateProfile: mutation<User, Partial<User>>({
       query: (body) => ({
         url: "update-profile/",
-        method: "POST",
+        method: "PATCH",
         body,
       }),
     }),

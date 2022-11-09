@@ -40,6 +40,8 @@ export type User = {
   details: object;
   avatar: string;
   city: string;
+  job: string;
+  dob: string;
   club: number;
 };
 

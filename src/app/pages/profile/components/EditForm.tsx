@@ -1,20 +1,28 @@
 import { useForm, Controller } from "react-hook-form";
 import { FileInput, Input } from "@mantine/core";
 import AppIcons from "~/@main/core/AppIcons";
-type Props = {};
+import { useUpdateProfileMutation } from "~/app/store/user/userApi";
+import { User } from "~/app/store/types/user-types";
+import { useEffect } from "react";
+type Props = {
+  user: User;
+};
 
-const EditForm = (props: Props) => {
-  const { register, handleSubmit, control } = useForm();
+const EditForm = ({ user }: Props) => {
+  const [updateProfile, {}] = useUpdateProfileMutation();
+  const { register, handleSubmit, control } = useForm({
+    defaultValues: { ...user, avatar: undefined },
+  });
 
   const onSubmit = (data: any) => {
-    console.log(data);
+    updateProfile(data);
   };
 
   return (
     <form className="flex flex-col gap-4 " onSubmit={handleSubmit(onSubmit)}>
       {/* Image Upload Input */}
       <Controller
-        name="image"
+        name="avatar"
         control={control}
         render={({ field }) => (
           <FileInput

@@ -25,7 +25,7 @@ const UserInfo = ({ user }: Props) => {
           onClose={() => setOpened(false)}
           title="Introduce yourself!"
         >
-          <EditForm />
+          <EditForm user={user} />
         </Modal>
       </div>
       <div className="photo w-28 md:w-48 h-32 md:h-52">
@@ -40,12 +40,15 @@ const UserInfo = ({ user }: Props) => {
         <div className="age">
           <p className="title text-sm text-perfGray3">{user.bio}</p>
           <h2 className="val text-xl text-perfGray1">
-            15/12/2006 <span className="ml-2 text-sm text-perfGray3">(12)</span>
+            {user.dob}{" "}
+            <span className="ml-2 text-sm text-perfGray3">
+              ( {new Date().getFullYear() - +user.dob?.split("-")?.[0] || 0})
+            </span>
           </h2>
         </div>
         <div className="job">
           <p className="title text-sm text-perfGray3">Job</p>
-          <h2 className="val text-xl text-perfGray1">Engineer</h2>
+          <h2 className="val text-xl text-perfGray1">{user.job || "NA"}</h2>
         </div>
         <div className="subscription">
           <p className="title text-sm text-perfGray3">Subscription</p>

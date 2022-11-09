@@ -30,7 +30,7 @@ const routeConfigs: PagesRouteConfig[] = [
   SingleCoacheConfig,
   ProfilePageConfig,
   SettingsConfig,
-  MediaEventConfig
+  MediaEventConfig,
 ];
 
 const routes: AppRouteObject[] = [
