@@ -2,7 +2,7 @@ import { PagesRouteConfig } from "~/@main/types/Config-Types";
 import authRoles from "~/app/auth/authRoles";
 import CoachHome from "./CoachHome";
 
-const HomeConfig: PagesRouteConfig = {
+const CoachHomeConfig: PagesRouteConfig = {
   settings: {
     layout: {
       config: {
@@ -21,10 +21,10 @@ const HomeConfig: PagesRouteConfig = {
   auth: authRoles.User,
   routes: [
     {
-      path: "home",
+      path: "coach-home",
       element: <CoachHome />,
     },
   ],
 };
 
-export default HomeConfig;
+export default CoachHomeConfig;
