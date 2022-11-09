@@ -33,7 +33,7 @@ const EditForm = ({ user, setOpened }: Props) => {
 
   return (
     <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSubmit)}>
-      <div className="relative photo place-self-center w-16 md:w-32 h-20 md:h-36">
+      <div className="relative photo place-self-center w-28 h-28">
         <img
           className="object-cover w-full h-full rounded-lg"
           src={
@@ -65,10 +65,6 @@ const EditForm = ({ user, setOpened }: Props) => {
       <Input.Wrapper id="lastName" label="Last name" className="w-full">
         <Input id="lastName" {...register("last_name")} />
       </Input.Wrapper>
-      <Input.Wrapper id="phoneNumber" label="Phone number" className="w-full">
-        <Input id="phoneNumber" {...register("mobile")} />
-      </Input.Wrapper>
-
       <Input.Wrapper id="job" label="Your job">
         <Input
           {...register("job")}

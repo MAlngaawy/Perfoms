@@ -34,7 +34,6 @@ export type User = {
   last_name: string;
   name: string;
   email: string;
-  mobile: string;
   is_active: boolean;
   user_type: string;
   bio: string;
