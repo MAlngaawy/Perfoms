@@ -3,6 +3,13 @@ export type LoginUserBody = {
   password: string;
 };
 
+export type SignupRes = {
+  data: {
+    access: string;
+    refresh: string;
+  };
+};
+
 export type LoginResponse = {
   message: string;
   data: {
@@ -33,6 +40,8 @@ export type User = {
   details: object;
   avatar: string;
   city: string;
+  job: string;
+  dob: string;
   club: number;
 };
 

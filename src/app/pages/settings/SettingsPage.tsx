@@ -32,7 +32,7 @@ const Settings = (props: Props) => {
   };
 
   return (
-    <div className="flex justify-center items-center pt-6 md:pt-14">
+    <div className="flex justify-center items-center py-20 md:pt-14">
       <div className="content flex flex-col justify-center items-center gap-2 bg-white rounded-3xl p-6 w-11/12 sm:w-auto sm:py-12 sm:px-24">
         <h3>Settings</h3>
         <form

@@ -6,6 +6,7 @@ import { PlayerData } from "~/app/store/types/user-types";
 import { Link } from "react-router-dom";
 import SecondNav from "./organisms/SecondNav";
 import AppIcons from "~/@main/core/AppIcons";
+import CustomCalendar from "../../../@main/components/Calendar";
 
 // dummy data
 export const playerData: PlayerData = {
@@ -134,7 +135,18 @@ const HomePage = () => {
           <Card type="teamInfo" playerData={playerData} />
         </Grid.Col>
         <Grid.Col sm={7} span={14}>
-          <Card type="calendar" />
+          <CustomCalendar
+            data={[
+              { day: "11/4/2022", attendance: "ATTENDED" },
+              { day: "11/6/2022", attendance: "ABSENT" },
+              { day: "11/11/2022", attendance: "ATTENDED" },
+              { day: "11/15/2022", attendance: "ATTENDED" },
+              { day: "11/22/2022", attendance: "ABSENT" },
+              { day: "11/25/2022", attendance: "ATTENDED" },
+              { day: "11/29/2022", attendance: "UPCOMING" },
+            ]}
+          />
+          {/* <Card type="calendar" /> */}
         </Grid.Col>
         <Grid.Col sm={3} span={14}>
           <Card type="upcomingEvents" />
