@@ -33,5 +33,5 @@ export type Attendance = {
 };
 
 export type PlayerAttendance = BaseGetAllType & {
-  results: Attendance[];
+  data: Attendance[];
 };

@@ -11,9 +11,10 @@ import { createLogger } from "redux-logger";
 
 export interface SerializedError {
   name?: string;
-  message?: string;
-  stack?: string;
-  code?: string;
+  data: {
+    message?: string;
+  };
+  status: number;
 }
 
 if (process.env.NODE_ENV === "development" && import.meta.hot) {

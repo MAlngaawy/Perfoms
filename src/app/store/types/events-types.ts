@@ -19,5 +19,5 @@ export type Event = {
 };
 
 export type AllEvents = BaseGetAllType & {
-  results: Event[];
+  data: Event[];
 };

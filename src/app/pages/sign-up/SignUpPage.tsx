@@ -11,6 +11,7 @@ import PerfSelect, { Option } from "~/@main/components/Select";
 import { Controller } from "react-hook-form";
 import { usePublicClubsQuery, useTeamsQuery } from "~/app/store/core/coreApi";
 import { useSignupMutation } from "~/app/store/user/userApi";
+import SubmitButton from "~/@main/components/SubmitButton";
 
 type Props = {};
 
@@ -29,9 +30,7 @@ const schema = yup.object().shape({
 
 const SignUpPage = (props: Props) => {
   const [signupHandler, { isLoading }] = useSignupMutation();
-
   const { data: AllClubs } = usePublicClubsQuery(null);
-
   const {
     register,
     handleSubmit,
@@ -354,17 +353,7 @@ const SignUpPage = (props: Props) => {
               {...register("password")}
             />
           </div>
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="mx-auto flex justify-center w-full disabled:bg-gray-500 bg-perfBlue rounded-lg items-center text-white h-12 mt-10 mb-2"
-          >
-            {!isLoading ? (
-              "Create Account"
-            ) : (
-              <Loader variant="dots" color="white" />
-            )}
-          </button>
+          <SubmitButton isLoading={isLoading} text="Create Account" />
           <p className="text-perfGray text-center text-base">
             Already have an account?
             <Link to="/sign-in">
