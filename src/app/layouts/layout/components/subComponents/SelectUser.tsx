@@ -1,5 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Menu, Button, Text, Avatar } from "@mantine/core";
+import { useMyPlayersQuery } from "~/app/store/parent/parentApi";
+import { Player } from "~/app/store/types/parent-types";
+import { useDispatch, useSelector } from "react-redux";
+import { selectedPlayerFn, selectPlayer } from "~/app/store/parent/parentSlice";
 
 type Props = {};
 
@@ -17,36 +21,50 @@ const playersData = [
 ];
 
 const SelectUser = (props: Props) => {
+  const { data: players, isLoading } = useMyPlayersQuery({});
+  const dispatch = useDispatch();
   //save selected player in a state -- it wil change to be a global state or context
-  const [selectedPlayer, setSelectedPlayer] = useState<{
-    avatar: string | null;
-    name: string;
-  }>({ avatar: null, name: "Player" });
+  const selectedPlayer = useSelector(selectedPlayerFn);
+
+  useEffect(() => {
+    if (players) dispatch(selectPlayer(players?.data?.[0]));
+  }, [players]);
 
   return (
     <div>
       <Menu shadow="md" width={200}>
         <Menu.Target>
-          <button className="flex border py-1 px-2 xs:px-4 rounded-full justify-center items-center gap-2">
-            {selectedPlayer.avatar && (
-              <Avatar size={"sm"} radius={"xl"} src={selectedPlayer.avatar} />
-            )}
-            <p className="text-xs sm:text-lg">
-              {selectedPlayer.name.substring(0, 8)}..
-            </p>
-          </button>
+          {selectedPlayer ? (
+            <button className="flex border py-1 px-2 xs:px-4 rounded-full justify-center items-center gap-2">
+              {selectedPlayer.icon && (
+                <Avatar size={"sm"} radius={"xl"} src={selectedPlayer.icon} />
+              )}
+              <p className="text-xs sm:text-lg">
+                {selectedPlayer.name.substring(0, 8)}..
+              </p>
+            </button>
+          ) : isLoading ? (
+            <button className="flex border py-1 px-2 xs:px-4 rounded-full justify-center items-center gap-2">
+              <p className="text-xs sm:text-lg">Loading ...</p>
+            </button>
+          ) : (
+            <button className="flex border py-1 px-2 xs:px-4 rounded-full justify-center items-center gap-2">
+              <p className="text-xs sm:text-lg">No Players...</p>
+            </button>
+          )}
         </Menu.Target>
 
         <Menu.Dropdown>
-          {playersData.map((player, idx) => (
-            <Menu.Item
-              key={idx}
-              onClick={() => setSelectedPlayer(player)}
-              icon={<Avatar size={"sm"} radius={"xl"} src={player.avatar} />}
-            >
-              <p className="text-xs sm:text-lg">{player.name}</p>
-            </Menu.Item>
-          ))}
+          {players &&
+            players.data.map((player, idx) => (
+              <Menu.Item
+                key={idx}
+                onClick={() => dispatch(selectPlayer(player))}
+                icon={<Avatar size={"sm"} radius={"xl"} src={player.icon} />}
+              >
+                <p className="text-xs sm:text-lg">{player.name}</p>
+              </Menu.Item>
+            ))}
         </Menu.Dropdown>
       </Menu>
     </div>

@@ -177,3 +177,8 @@ export type UserDeviceId = {
   registration_token: string;
   device_type: string;
 };
+
+export type ChangePassword = {
+  old_password: string;
+  new_password: string;
+};

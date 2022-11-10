@@ -4,6 +4,7 @@ import {
   AddPlayerType,
   AllClubs,
   AllParents,
+  AllPlayers,
   DocumentTypes,
   Player,
 } from "../types/parent-types";
@@ -16,6 +17,19 @@ export const parentsApi = createApi({
   }),
   tagTypes: ["Parent"],
   endpoints: ({ query, mutation }) => ({
+    myPlayers: query<AllPlayers, { page?: number }>({
+      query: (params) => ({
+        url: "my-players/",
+        params,
+      }),
+      providesTags: ["Parent"],
+    }),
+    onePlayer: query<AllPlayers, number>({
+      query: (id) => ({
+        url: `my-players/${id}`,
+      }),
+      providesTags: ["Parent"],
+    }),
     allParents: query<AllParents, { page: number }>({
       query: (params) => ({
         url: "all-parents/",
@@ -57,5 +71,7 @@ export const {
   useAllClubsQuery,
   useAllParentsQuery,
   useAddPlayerMutation,
+  useMyPlayersQuery,
+  useOnePlayerQuery,
   useClubQuery,
 } = parentsApi;

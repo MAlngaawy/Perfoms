@@ -1,5 +1,6 @@
 import { SerializedError } from "./../index";
 import {
+  ChangePassword,
   NotificationsType,
   OTPVerify,
   SendOtp,
@@ -91,6 +92,13 @@ export const userApi = createApi({
         body,
       }),
     }),
+    changePassword: mutation<null, ChangePassword>({
+      query: (body) => ({
+        url: "change-password/",
+        method: "PATCH",
+        body,
+      }),
+    }),
     updateProfile: mutation<User, Partial<User>>({
       query: (body) => ({
         url: "update-profile/",
@@ -120,6 +128,7 @@ export const {
   useUserQuery,
   useSigninMutation,
   useSignupMutation,
+  useChangePasswordMutation,
   useNotificationsQuery,
   useSendOtpMutation,
   useUserDeviceIdMutation,

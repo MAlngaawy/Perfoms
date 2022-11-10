@@ -1,15 +1,18 @@
 import { Avatar, Modal } from "@mantine/core";
 import { useState } from "react";
 import AppIcons from "~/@main/core/AppIcons";
-import { ProfileResponse, User } from "~/app/store/types/user-types";
+import { Player } from "~/app/store/types/parent-types";
+import { User } from "~/app/store/types/user-types";
 import EditForm from "./EditForm";
 
 type Props = {
   user: User;
+  players: Player[];
 };
 
-const UserInfo = ({ user }: Props) => {
+const UserInfo = ({ user, players }: Props) => {
   const [opened, setOpened] = useState(false);
+
   return (
     <div className="content relative flex flex-col justify-center items-center gap-2 bg-white rounded-3xl p-6 w-11/12 md:w-auto md:p-12">
       <div
@@ -62,25 +65,15 @@ const UserInfo = ({ user }: Props) => {
       <div className="flex justify-around w-full mt-4">
         <div className="playersNumber flex flex-col text-left">
           <p className="title text-sm text-perfGray3">Players</p>
-          <h2 className="val text-xl text-perfGray1">2</h2>
+          <h2 className="val text-xl text-perfGray1">{players.length || 0}</h2>
         </div>
         <div className="playersProfile flex flex-col gap-4">
-          <div className="player flex items-center gap-2 cursor-pointer">
-            <Avatar
-              radius={"xl"}
-              size="sm"
-              src="https://static9.depositphotos.com/1053646/1105/i/950/depositphotos_11058078-stock-photo-cute-boy-playing-football.jpg"
-            />
-            <h2 className="name text-base">Ali Mohamed</h2>
-          </div>
-          <div className="player flex items-center gap-2 cursor-pointer">
-            <Avatar
-              radius={"xl"}
-              size="sm"
-              src="https://media.istockphoto.com/photos/flag-football-player-picture-id182184005?k=20&m=182184005&s=612x612&w=0&h=g4-UBiBMAlW9bJJNKIPfmpjb2Us0-TPmjloNQhPUlP4="
-            />
-            <h2 className="name text-base">Amr Ali</h2>
-          </div>
+          {players?.map((player) => (
+            <div className="player flex items-center gap-2 cursor-pointer">
+              <Avatar radius={"xl"} size="sm" src={player.icon} />
+              <h2 className="name text-base">{player.name}</h2>
+            </div>
+          ))}
         </div>
       </div>
     </div>

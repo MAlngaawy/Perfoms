@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 import SecondNav from "./organisms/SecondNav";
 import AppIcons from "~/@main/core/AppIcons";
 import CustomCalendar from "../../../@main/components/Calendar";
+import { useSelector } from "react-redux";
+import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 
 // dummy data
 export const playerData: PlayerData = {
@@ -100,7 +102,7 @@ export const players: Players[] = [
 const HomePage = () => {
   const [team, setTeam] = useState("Team");
   const [week, setWeek] = useState("Week");
-
+  const selectedPlayer = useSelector(selectedPlayerFn);
   return (
     <div className="home-page px-5 mb-20">
       <div className="flex my-4 justify-between items-center w-full">
@@ -125,17 +127,17 @@ const HomePage = () => {
       </div>
       <Grid columns={12} gutter={"sm"}>
         <Grid.Col sm={3} span={12}>
-          <Card type="playerInfo" playerData={playerData} />
+          <Card type="playerInfo" playerData={selectedPlayer} />
         </Grid.Col>
         <Grid.Col sm={9} span={12}>
-          <Link to="/Reports">
-            <Card type="performanceSummary" playerSummary={playerSummary} />
-          </Link>
+          {/* <Link to="/Reports">
+            <Card type="performanceSummary" playerSummary={selectedPlayer} />
+          </Link> */}
         </Grid.Col>
       </Grid>
       <Grid columns={14} gutter={"sm"} className="info mt-3">
         <Grid.Col sm={4} span={14}>
-          <Card type="teamInfo" playerData={playerData} />
+          <Card type="teamInfo" playerData={selectedPlayer} />
         </Grid.Col>
         <Grid.Col sm={7} span={14}>
           <CustomCalendar

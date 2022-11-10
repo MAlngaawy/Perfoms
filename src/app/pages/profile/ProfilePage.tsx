@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useMyPlayersQuery } from "~/app/store/parent/parentApi";
 
 import { useUserQuery } from "~/app/store/user/userApi";
 import UserInfo from "./components/UserInfo";
@@ -17,10 +18,13 @@ type Props = {
 
 const ProfilePage = (props: Props) => {
   const { data: userData } = useUserQuery(null);
+  const { data: players } = useMyPlayersQuery({});
 
   return (
     <div className="flex justify-center items-center py-20 md:pt-14">
-      {userData && <UserInfo user={userData.data} />}
+      {userData && players && (
+        <UserInfo user={userData.data} players={players.data} />
+      )}
     </div>
   );
 };
