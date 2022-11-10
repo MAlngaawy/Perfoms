@@ -122,38 +122,44 @@ const HomePage = () => {
           />
         </div>
       </div>
-      <Grid columns={12} gutter={"sm"}>
-        <Grid.Col sm={3} span={12}>
-          <Card type="playerInfo" playerData={selectedPlayer} />
-        </Grid.Col>
-        <Grid.Col sm={9} span={12}>
-          {/* <Link to="/Reports">
+      {selectedPlayer ? (
+        <>
+          <Grid columns={12} gutter={"sm"}>
+            <Grid.Col sm={3} span={12}>
+              <Card type="playerInfo" playerData={selectedPlayer} />
+            </Grid.Col>
+            <Grid.Col sm={9} span={12}>
+              {/* <Link to="/Reports">
             <Card type="performanceSummary" playerSummary={selectedPlayer} />
           </Link> */}
-        </Grid.Col>
-      </Grid>
-      <Grid columns={14} gutter={"sm"} className="info mt-3">
-        <Grid.Col sm={4} span={14}>
-          <Card type="teamInfo" playerData={selectedPlayer} />
-        </Grid.Col>
-        <Grid.Col sm={7} span={14}>
-          <CustomCalendar
-            data={[
-              { day: "11/4/2022", attendance: "ATTENDED" },
-              { day: "11/6/2022", attendance: "ABSENT" },
-              { day: "11/11/2022", attendance: "ATTENDED" },
-              { day: "11/15/2022", attendance: "ATTENDED" },
-              { day: "11/22/2022", attendance: "ABSENT" },
-              { day: "11/25/2022", attendance: "ATTENDED" },
-              { day: "11/29/2022", attendance: "UPCOMING" },
-            ]}
-          />
-          {/* <Card type="calendar" /> */}
-        </Grid.Col>
-        <Grid.Col sm={3} span={14}>
-          <Card type="upcomingEvents" />
-        </Grid.Col>
-      </Grid>
+            </Grid.Col>
+          </Grid>
+          <Grid columns={14} gutter={"sm"} className="info mt-3">
+            <Grid.Col sm={4} span={14}>
+              <Card type="teamInfo" playerData={selectedPlayer} />
+            </Grid.Col>
+            <Grid.Col sm={7} span={14}>
+              <CustomCalendar
+                data={[
+                  { day: "11/4/2022", attendance: "ATTENDED" },
+                  { day: "11/6/2022", attendance: "ABSENT" },
+                  { day: "11/11/2022", attendance: "ATTENDED" },
+                  { day: "11/15/2022", attendance: "ATTENDED" },
+                  { day: "11/22/2022", attendance: "ABSENT" },
+                  { day: "11/25/2022", attendance: "ATTENDED" },
+                  { day: "11/29/2022", attendance: "UPCOMING" },
+                ]}
+              />
+              {/* <Card type="calendar" /> */}
+            </Grid.Col>
+            <Grid.Col sm={3} span={14}>
+              <Card type="upcomingEvents" />
+            </Grid.Col>
+          </Grid>
+        </>
+      ) : (
+        <p className="place-self-center">No Players Related To This User</p>
+      )}
     </div>
   );
 };
