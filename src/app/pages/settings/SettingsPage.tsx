@@ -3,21 +3,24 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import SubmitButton from "~/@main/components/SubmitButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useChangePasswordMutation } from "~/app/store/user/userApi";
+import { showNotification } from "@mantine/notifications";
 
 type Props = {};
 
 const schema = yup.object().shape({
-  oldPassword: yup.string().min(8).max(24).required(),
-  newPassword: yup.string().min(8).max(24),
+  old_password: yup.string().min(8).max(24).required(),
+  new_password: yup.string().min(8).max(24),
   confirmNewPassword: yup
     .string()
-    .oneOf([yup.ref("newPassword"), null], "Passwords must match"),
+    .oneOf([yup.ref("new_password"), null], "Passwords must match"),
 });
 
 const Settings = (props: Props) => {
   // This will change when we cal the handler function
-  const [isLoading, setIsloading] = useState(false);
+  const [changePasswordHandler, { isLoading, isSuccess, isError, error }] =
+    useChangePasswordMutation();
 
   const {
     register,
@@ -25,16 +28,33 @@ const Settings = (props: Props) => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      oldPassword: "",
-      newPassword: "",
+      old_password: "",
+      new_password: "",
       confirmNewPassword: "",
     },
     resolver: yupResolver(schema),
   });
 
   const submitFun = (data: any) => {
-    console.log(data);
+    changePasswordHandler(data);
   };
+
+  useEffect(() => {
+    if (isSuccess)
+      showNotification({
+        title: "Change Password",
+        message: "Password Changed Successfulty!",
+        color: "green",
+      });
+    if (isError)
+      showNotification({
+        title: "Change Password",
+        //@ts-ignore
+        message: error?.data.message,
+        color: "red",
+      });
+    console.log(error);
+  }, [isSuccess, isError]);
 
   return (
     <div className="flex justify-center items-center py-20 md:pt-14">
@@ -46,16 +66,16 @@ const Settings = (props: Props) => {
         >
           <PasswordInput
             className="w-full"
-            {...register("oldPassword")}
+            {...register("old_password")}
             label="Old password"
-            error={errors.oldPassword?.message}
+            error={errors.old_password?.message}
             withAsterisk
           />
           <PasswordInput
             className="w-full"
-            {...register("newPassword")}
+            {...register("new_password")}
             label="New password"
-            error={errors.newPassword?.message}
+            error={errors.new_password?.message}
           />
           <PasswordInput
             className="w-full"

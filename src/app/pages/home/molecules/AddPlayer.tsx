@@ -1,12 +1,6 @@
 import React from "react";
 import AppIcons from "~/@main/core/AppIcons/AppIcons";
-import {
-  Button,
-  TextInput,
-  MultiSelect,
-  Modal,
-  NumberInput,
-} from "@mantine/core";
+import { Dialog, Modal, Button, TextInput, Select } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";

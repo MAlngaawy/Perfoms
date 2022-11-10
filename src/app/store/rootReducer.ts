@@ -6,9 +6,11 @@ import { userApi } from "./user/userApi";
 import app from "./app";
 import { attendanceApi } from "./attendance/attendanceApi";
 import { coachApi } from "./coach/coachApi";
+import parent from "./parent/parentSlice";
 
 const rootReducer = combineReducers({
   app,
+  parent,
   [userApi.reducerPath]: userApi.reducer,
   [attendanceApi.reducerPath]: attendanceApi.reducer,
   [coachApi.reducerPath]: coachApi.reducer,

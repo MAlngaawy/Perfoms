@@ -27,7 +27,7 @@ export type Coach = {
 };
 
 export type AllCoachesType = BaseGetAllType & {
-  results: Coach[];
+  data: Coach[];
 };
 
 export type GeneratePdfDocs = {
@@ -60,7 +60,7 @@ export type Team = {
 };
 
 export type GetMyTeams = BaseGetAllType & {
-  results: Team[];
+  data: Team[];
 };
 
 export type SendBulkNotifications = {

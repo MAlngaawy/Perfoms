@@ -20,6 +20,7 @@ export type LoginResponse = {
   players: any[];
   error: boolean;
 };
+
 export type ProfileResponse = {
   message: string;
   data: User;
@@ -177,4 +178,9 @@ export type UserDeviceId = {
   device_id: string;
   registration_token: string;
   device_type: string;
+};
+
+export type ChangePassword = {
+  old_password: string;
+  new_password: string;
 };

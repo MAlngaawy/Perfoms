@@ -1,5 +1,5 @@
 export type BaseGetAllType = {
-  count: number;
-  next: string;
-  previous: string;
+  message: string;
+  total_count: number;
+  errors: boolean;
 };
