@@ -5,6 +5,8 @@ import { useUpdateProfileMutation } from "~/app/store/user/userApi";
 import { User } from "~/app/store/types/user-types";
 import { useEffect, useRef, useState } from "react";
 import { showNotification } from "@mantine/notifications";
+import SubmitButton from "~/@main/components/SubmitButton";
+
 type Props = {
   user: User;
   setOpened: any;
@@ -13,7 +15,7 @@ type Props = {
 const EditForm = ({ user, setOpened }: Props) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [userAvatar, setUserAvatar] = useState<File>();
-  const [updateProfile, { isSuccess, isError, error }] =
+  const [updateProfile, { isSuccess, isError, error, isLoading }] =
     useUpdateProfileMutation();
   const { register, handleSubmit, control } = useForm({
     defaultValues: { ...user, avatar: undefined },
@@ -26,12 +28,13 @@ const EditForm = ({ user, setOpened }: Props) => {
   useEffect(() => {
     if (isSuccess) setOpened(false);
     if (isError)
-      showNotification({ title: "Update Error", message: error?.message });
+      //@ts-ignore
+      showNotification({ title: "Update Error", message: error?.data.message });
   }, [isSuccess, isError]);
 
   return (
     <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSubmit)}>
-      <div className="relative photo place-self-center w-16 md:w-32 h-20 md:h-36">
+      <div className="relative photo place-self-center w-28 h-28">
         <img
           className="object-cover w-full h-full rounded-lg"
           src={
@@ -63,10 +66,6 @@ const EditForm = ({ user, setOpened }: Props) => {
       <Input.Wrapper id="lastName" label="Last name" className="w-full">
         <Input id="lastName" {...register("last_name")} />
       </Input.Wrapper>
-      <Input.Wrapper id="phoneNumber" label="Phone number" className="w-full">
-        <Input id="phoneNumber" {...register("mobile")} />
-      </Input.Wrapper>
-
       <Input.Wrapper id="job" label="Your job">
         <Input
           {...register("job")}
@@ -94,12 +93,7 @@ const EditForm = ({ user, setOpened }: Props) => {
         />
       </Input.Wrapper>
 
-      <button
-        type="submit"
-        className=" w-full bg-perfBlue text-white font-medium py-3 mt-4 rounded-lg"
-      >
-        Save
-      </button>
+      <SubmitButton isLoading={isLoading} text="Save" />
     </form>
   );
 };

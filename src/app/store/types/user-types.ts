@@ -20,6 +20,7 @@ export type LoginResponse = {
   players: any[];
   error: boolean;
 };
+
 export type ProfileResponse = {
   message: string;
   data: User;
@@ -34,7 +35,6 @@ export type User = {
   last_name: string;
   name: string;
   email: string;
-  mobile: string;
   is_active: boolean;
   user_type: string;
   bio: string;
@@ -86,13 +86,6 @@ export type CardProps = {
 export type Scores = {
   name: string;
   score: string;
-};
-
-export type DropdownProps = {
-  label: string;
-  listItems: string[];
-  icon?: any;
-  styleType?: "primary" | "borded" | "basic";
 };
 
 export type InfoProps = {
@@ -184,4 +177,9 @@ export type UserDeviceId = {
   device_id: string;
   registration_token: string;
   device_type: string;
+};
+
+export type ChangePassword = {
+  old_password: string;
+  new_password: string;
 };

@@ -7,6 +7,8 @@ import { Link, useNavigate } from "react-router-dom";
 import Notification from "~/@main/components/Notification";
 import { eventInstance } from "~/@main/utils/AppUtils";
 import Notifications from "./subComponents/Notifications";
+import SelectUser from "./subComponents/SelectUser";
+import useWindowSize from "~/@main/hooks/useWindowSize";
 
 type Props = {
   opened: boolean;
@@ -20,8 +22,8 @@ const Toolbar = ({ setOpened }: Props) => {
   let routeName = href.slice(href.lastIndexOf("/") + 1, href.length);
 
   return (
-    <nav className="w-full flex justify-between items-center shadow-md p-4 bg-white">
-      <div className="bg-fadedGray p-2 w-full flex justify-between items-center">
+    <nav className="w-full flex justify-between  items-center shadow-md p-4 bg-white">
+      <div className="bg-fadedGray p-2 flex w-fit gap-3 justify-between items-center">
         <button
           className="block lg:hidden text-black border-0"
           onClick={() => setOpened(true)}
@@ -36,6 +38,7 @@ const Toolbar = ({ setOpened }: Props) => {
           />
           <span>Royal Club</span>
         </div>
+        <SelectUser />
       </div>
       <div className="right flex gap-2 justify-center items-center">
         {/* Messages Menu */}

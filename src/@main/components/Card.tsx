@@ -128,7 +128,12 @@ const Card = ({
             {playerData?.team?.coaches?.map((coach: PersonData) => {
               return (
                 <div className="coach flex items-center gap-2 cursor-pointer">
-                  <Avatar className="rounded-full w-6 h-8" src={coach.avatar} />
+                  <Avatar
+                    size={"sm"}
+                    radius="xl"
+                    src={coach.avatar}
+                    alt="coach_Avatar"
+                  />
                   <h2 className="name text-base">
                     {coach.first_name + " " + coach.last_name}
                   </h2>
