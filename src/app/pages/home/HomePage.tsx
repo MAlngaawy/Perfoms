@@ -98,25 +98,28 @@ export const players: Players[] = [
 // ==================
 
 const HomePage = () => {
-  const [selectedplayer, setSelectedPlayer] = useState<any>(null);
+  const [team, setTeam] = useState("Team");
+  const [week, setWeek] = useState("Week");
 
   return (
     <div className="home-page px-5 mb-20">
-      <div className="flex my-4 flex-col md:flex-row justify-between items-center">
-        <SecondNav
+      <div className="flex my-4 justify-between items-center w-full">
+        {/* <SecondNav
           players={players}
           selectedplayer={selectedplayer}
           setSelectedPlayer={setSelectedPlayer}
-        />
-        <div className="flex flex-col md:flex-row gap-3 justify-center items-center pt-3 md:pt-0">
+        /> */}
+        <div className="flex gap-3 justify-center items-center pt-3 md:pt-0">
           <Dropdown
-            label="Teams"
-            listItems={["Primary team", "Primary group"]}
+            values={["team 1", "team 2", "team 3"]}
+            selected={team}
+            setSelected={setTeam}
           />
           <Dropdown
-            label="This week"
-            styleType="basic"
-            listItems={["week1", "Week 2"]}
+            values={["this week", "last week"]}
+            selected={week}
+            setSelected={setWeek}
+            className="bg-none bg-white p-2 rounded-full"
           />
         </div>
       </div>

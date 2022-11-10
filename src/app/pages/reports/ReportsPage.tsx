@@ -88,11 +88,11 @@ const ReportPage = () => {
   return (
     <div className="report-page px-5 mb-20">
       <div className="flex flex-col gap-4 sm:flex-row my-4 justify-between items-center">
-        <SecondNav
+        {/* <SecondNav
           players={players}
           selectedplayer={selectedplayer}
           setSelectedPlayer={setSelectedPlayer}
-        />
+        /> */}
         <div className="flex flex-col md:flex-row justify-center items-center md:pt-0">
           <Menu shadow="md" width={200}>
             <Menu.Target>
