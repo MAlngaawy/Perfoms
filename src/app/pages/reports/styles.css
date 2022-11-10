@@ -3,9 +3,8 @@
 }
 
 .dropdown-btn {
-  min-width: 150px;
   border-radius: 25px;
-  transition: all 0.5s;
+  /* transition: all 0.5s; */
 }
 .dropdown-btn.opened {
   background-color: #fff;
@@ -19,7 +18,6 @@
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   list-style-type: none;
   padding: 0;
-  width: 150px;
   overflow: hidden;
   border-radius: 0 0 10px 10px;
 }

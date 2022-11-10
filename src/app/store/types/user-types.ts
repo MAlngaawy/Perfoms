@@ -87,13 +87,6 @@ export type Scores = {
   score: string;
 };
 
-export type DropdownProps = {
-  label: string;
-  listItems: string[];
-  icon?: any;
-  styleType?: "primary" | "borded" | "basic";
-};
-
 export type InfoProps = {
   label: string;
   value?: string;
