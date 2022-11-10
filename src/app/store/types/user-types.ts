@@ -20,6 +20,7 @@ export type LoginResponse = {
   players: any[];
   error: boolean;
 };
+
 export type ProfileResponse = {
   message: string;
   data: User;

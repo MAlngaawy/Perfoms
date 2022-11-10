@@ -28,7 +28,8 @@ const EditForm = ({ user, setOpened }: Props) => {
   useEffect(() => {
     if (isSuccess) setOpened(false);
     if (isError)
-      showNotification({ title: "Update Error", message: error?.message });
+      //@ts-ignore
+      showNotification({ title: "Update Error", message: error?.data.message });
   }, [isSuccess, isError]);
 
   return (

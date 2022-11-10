@@ -30,9 +30,7 @@ const schema = yup.object().shape({
 
 const SignUpPage = (props: Props) => {
   const [signupHandler, { isLoading }] = useSignupMutation();
-
   const { data: AllClubs } = usePublicClubsQuery(null);
-
   const {
     register,
     handleSubmit,

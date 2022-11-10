@@ -1,5 +1,6 @@
 import { PlayerButton } from "../molecules/PlayerButton";
 import { SecondNavProps } from "~/app/store/types/user-types";
+import AddPlayer from "../molecules/AddPlayer";
 
 const SecondNav = ({
   players,
@@ -22,6 +23,7 @@ const SecondNav = ({
             />
           ))}
         {/* <AddPlayerButton /> */}
+        <AddPlayer />
       </div>
     </div>
   );

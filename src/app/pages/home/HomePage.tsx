@@ -1,11 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Dropdown } from "~/@main/components/Dropdown";
 import { Grid } from "@mantine/core";
 import Card from "~/@main/components/Card";
 import { PlayerData } from "~/app/store/types/user-types";
-import { Link } from "react-router-dom";
-import SecondNav from "./organisms/SecondNav";
-import AppIcons from "~/@main/core/AppIcons";
 import CustomCalendar from "../../../@main/components/Calendar";
 import { useSelector } from "react-redux";
 import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
