@@ -1,14 +1,35 @@
 import React from "react";
 import AppIcons from "~/@main/core/AppIcons/AppIcons";
-import { Button, TextInput, MultiSelect, Modal } from "@mantine/core";
+import {
+  Button,
+  TextInput,
+  MultiSelect,
+  Modal,
+  NumberInput,
+} from "@mantine/core";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import cn from "classnames";
 import { Controller } from "react-hook-form";
 import Resizer from "react-image-file-resizer";
+import PerfSelect from "~/@main/components/Select";
 
 type Props = {};
+
+const dummyData = {
+  sports: [
+    {
+      teamId: "1",
+    },
+    {
+      teamId: "2",
+    },
+    {
+      teamId: "3",
+    },
+  ],
+};
 
 const AddPlayer = (props: Props) => {
   const [open, setOpen] = React.useState(false);
@@ -22,10 +43,10 @@ const AddPlayer = (props: Props) => {
     image: yup.mixed().required("File is required"),
     name: yup.string().required("Your child name is Required!"),
     dob: yup.date().required("Your child Birthday is Required!"),
-    sport: yup.array().required("please select your child sport"),
-    team: yup.array().required("please select your child team"),
-    weight: yup.array().required("please add your child weight"),
-    height: yup.array().required("please add your child height"),
+    sport: yup.number().required("please select your child sport"),
+    team: yup.number().required("please select your child team"),
+    weight: yup.number().required("please add your child weight"),
+    height: yup.number().required("please add your child height"),
     phoneNumber: yup.string().required("please enter your mobile number!"),
   });
 
@@ -65,7 +86,7 @@ const AddPlayer = (props: Props) => {
   };
 
   function formatDate(date: unknown) {
-    if (typeof date === "string") {
+    if (date instanceof Date) {
       var d = new Date(date),
         month = "" + (d.getMonth() + 1),
         day = "" + d.getDate(),
@@ -111,16 +132,6 @@ const AddPlayer = (props: Props) => {
     };
 
     console.log(bodyParameters);
-    console.log({
-      name: data.name,
-      dob: formatDate(data.dob),
-      sport: data.sport,
-      team: data.team,
-      weight: data.weight,
-      height: data.height,
-      phone: data.phoneNumber,
-      icon: playerImage,
-    });
     setOpen(false);
     setPlayerImage(null);
     reset({
@@ -217,6 +228,7 @@ const AddPlayer = (props: Props) => {
                   id="name"
                   label="Name"
                   {...register("name")}
+                  withAsterisk
                   sx={{
                     ".mantine-TextInput-input": {
                       background: "none",
@@ -233,6 +245,7 @@ const AddPlayer = (props: Props) => {
                   id="dob"
                   label="Date of birth"
                   placeholder="yyyy-mm-dd"
+                  withAsterisk
                   {...register("dob")}
                   sx={{
                     ".mantine-TextInput-input": {
@@ -251,50 +264,34 @@ const AddPlayer = (props: Props) => {
           {/* Sport and team */}
           <div className="flex gap-4 w-full my-4">
             <div className="w-1/2">
-              <Controller
+              <PerfSelect
                 {...register("sport")}
-                render={({ field }) => (
-                  <MultiSelect
-                    className="w-full"
-                    sx={{
-                      ".mantine-MultiSelect-input": {
-                        background: "none",
-                        border: 0,
-                        borderBottom: "1px solid",
-                        borderRadius: 0,
-                      },
-                    }}
-                    data={["test"]}
-                    label="Sport"
-                    {...field}
-                    error={errors.sport && "please select your child sport"}
-                  />
-                )}
+                id="sport"
+                required
+                error={errors.city && "please select your child sport"}
+                className="w-full"
+                label="Sport"
+                name="sport"
                 control={control}
+                data={dummyData?.sports.map((item: { teamId: string }) => {
+                  return { label: item.teamId, value: item.teamId };
+                })}
               />
             </div>
 
             <div className="w-1/2">
-              <Controller
+              <PerfSelect
                 {...register("team")}
-                render={({ field }) => (
-                  <MultiSelect
-                    className="w-full"
-                    sx={{
-                      ".mantine-MultiSelect-input": {
-                        background: "none",
-                        border: 0,
-                        borderBottom: "1px solid",
-                        borderRadius: 0,
-                      },
-                    }}
-                    data={["test"]}
-                    label="Team"
-                    {...field}
-                    error={errors.team && "please select your child team"}
-                  />
-                )}
+                id="team"
+                required
+                error={errors.city && "please select your child team"}
+                className="w-full"
+                label="Team"
+                name="team"
                 control={control}
+                data={dummyData?.sports.map((item: { teamId: string }) => {
+                  return { label: item.teamId, value: item.teamId };
+                })}
               />
             </div>
           </div>
@@ -302,49 +299,37 @@ const AddPlayer = (props: Props) => {
           {/* Weight & Height */}
           <div className="flex gap-4 my-4">
             <div className="w-1/2">
-              <Controller
+              <TextInput
+                id="weight"
+                label="Weight"
                 {...register("weight")}
-                render={({ field }) => (
-                  <MultiSelect
-                    className="w-full"
-                    sx={{
-                      ".mantine-MultiSelect-input": {
-                        background: "none",
-                        border: 0,
-                        borderBottom: "1px solid",
-                        borderRadius: 0,
-                      },
-                    }}
-                    data={["test"]}
-                    label="Weight"
-                    {...field}
-                    error={errors.weight && "please add your child weight"}
-                  />
-                )}
-                control={control}
+                withAsterisk
+                error={errors.weight && "please add your child weight"}
+                sx={{
+                  ".mantine-TextInput-input": {
+                    background: "none",
+                    border: 0,
+                    borderBottom: "1px solid",
+                    borderRadius: 0,
+                  },
+                }}
               />
             </div>
             <div className="w-1/2">
-              <Controller
+              <TextInput
+                id="height"
+                label="Height"
                 {...register("height")}
-                render={({ field }) => (
-                  <MultiSelect
-                    className="w-full"
-                    sx={{
-                      ".mantine-MultiSelect-input": {
-                        background: "none",
-                        border: 0,
-                        borderBottom: "1px solid",
-                        borderRadius: 0,
-                      },
-                    }}
-                    data={["test"]}
-                    label="Height"
-                    {...field}
-                    error={errors.height && "please add your child height"}
-                  />
-                )}
-                control={control}
+                withAsterisk
+                error={errors.height && "please add your child height"}
+                sx={{
+                  ".mantine-TextInput-input": {
+                    background: "none",
+                    border: 0,
+                    borderBottom: "1px solid",
+                    borderRadius: 0,
+                  },
+                }}
               />
             </div>
           </div>
@@ -355,6 +340,7 @@ const AddPlayer = (props: Props) => {
               id="phoneNumber"
               label="phone number"
               {...register("phoneNumber")}
+              withAsterisk
               sx={{
                 ".mantine-TextInput-input": {
                   background: "none",
@@ -375,10 +361,6 @@ const AddPlayer = (props: Props) => {
       </Modal>
     </div>
   );
-};
-
-const ErrorP = ({ message }: { message: any }) => {
-  return <p className="text-red-500 text-xs text-left"> {message} </p>;
 };
 
 export default AddPlayer;
