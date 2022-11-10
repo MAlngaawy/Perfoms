@@ -17,10 +17,9 @@ type Props = {
 
 const ProfilePage = (props: Props) => {
   const { data: userData } = useUserQuery(null);
-  console.log(userData);
 
   return (
-    <div className="flex justify-center items-center py-2 md:pt-14">
+    <div className="flex justify-center items-center py-20 md:pt-14">
       {userData && <UserInfo user={userData.data} />}
     </div>
   );

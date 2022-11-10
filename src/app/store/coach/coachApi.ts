@@ -25,11 +25,9 @@ export const coachApi = createApi({
     myTeams: query<GetMyTeams, null>({
       query: () => "my-teams/",
     }),
-
     teamDetails: query<Team, number>({
       query: (id) => `team-details/${id}/`,
     }),
-
     generateDoc: mutation<GeneratePdfDocs, GeneratePdfDocs>({
       query: (body) => ({
         url: "generate-doc/",

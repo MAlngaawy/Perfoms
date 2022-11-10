@@ -40,6 +40,8 @@ export type User = {
   details: object;
   avatar: string;
   city: string;
+  job: string;
+  dob: string;
   club: number;
 };
 
@@ -83,13 +85,6 @@ export type CardProps = {
 export type Scores = {
   name: string;
   score: string;
-};
-
-export type DropdownProps = {
-  label: string;
-  listItems: string[];
-  icon?: any;
-  styleType?: "primary" | "borded" | "basic";
 };
 
 export type InfoProps = {

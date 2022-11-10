@@ -1,10 +1,7 @@
 import React, { useState } from "react";
-import "./styles.css";
 import { Grid, Menu, Button } from "@mantine/core";
 import Card from "~/@main/components/Card";
 import { playerData } from "../home/HomePage";
-import SecondNav from "../home/organisms/SecondNav";
-import { players } from "../home/HomePage";
 import AppIcons from "~/@main/core/AppIcons";
 import AttendanceTable from "./components/AttendanceTable";
 import TotalAttendance from "./components/TotalAttendance";
@@ -16,7 +13,7 @@ import AddPlayer from "../home/molecules/AddPlayer";
 
 const playerSummary = [
   {
-       name: "Strengths",
+    name: "Strengths",
     number: 8,
     bgColor: "#00E0961A",
     textColor: "#27AE60",
@@ -89,12 +86,7 @@ const ReportPage = () => {
   return (
     <div className="report-page px-5 mb-20">
       <div className="flex flex-col gap-4 sm:flex-row my-4 justify-between items-center">
-      <div className="flex gap-3 flex-col md:flex-row justify-between items-center">
-          <SecondNav
-            players={players}
-            selectedplayer={selectedplayer}
-            setSelectedPlayer={setSelectedPlayer}
-            />
+        <div className="flex gap-3 flex-col md:flex-row justify-between items-center">
           <AddPlayer />
         </div>
         <div className="flex flex-col md:flex-row justify-center items-center md:pt-0">
