@@ -1,10 +1,7 @@
 import React, { useState } from "react";
-import "./styles.css";
 import { Grid, Menu, Button } from "@mantine/core";
 import Card from "~/@main/components/Card";
 import { playerData } from "../home/HomePage";
-import SecondNav from "../home/organisms/SecondNav";
-import { players } from "../home/HomePage";
 import AppIcons from "~/@main/core/AppIcons";
 import AttendanceTable from "./components/AttendanceTable";
 import TotalAttendance from "./components/TotalAttendance";
@@ -93,8 +90,8 @@ const ReportPage = () => {
           selectedplayer={selectedplayer}
           setSelectedPlayer={setSelectedPlayer}
         /> */}
-        <div className="flex flex-col md:flex-row justify-center items-center md:pt-0">
-          <Menu shadow="md" width={200}>
+        <div className="flex justify-end items-center w-full md:pt-0">
+          <Menu trigger="hover" shadow="md" width={200}>
             <Menu.Target>
               <button className="flex gap-2 text-sm justify-center items-center text-white bg-perfBlue py-2 px-6 rounded-3xl">
                 <span>{reportType}</span>

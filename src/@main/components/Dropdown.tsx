@@ -16,7 +16,7 @@ export const Dropdown = ({
   className,
 }: Props) => {
   return (
-    <Menu shadow="md" width={200}>
+    <Menu trigger="hover" shadow="md" width={200}>
       <Menu.Target>
         <button
           className={

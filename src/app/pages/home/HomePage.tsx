@@ -109,7 +109,7 @@ const HomePage = () => {
           selectedplayer={selectedplayer}
           setSelectedPlayer={setSelectedPlayer}
         /> */}
-        <div className="flex gap-3 justify-center items-center pt-3 md:pt-0">
+        <div className="flex w-full gap-3 justify-end items-center pt-3 md:pt-0">
           <Dropdown
             values={["team 1", "team 2", "team 3"]}
             selected={team}
