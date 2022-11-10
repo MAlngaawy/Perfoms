@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ReactNode } from "react";
+import SubmitButton from "~/@main/components/SubmitButton";
 
 type Props = {};
 
@@ -172,13 +173,7 @@ const SignInPage = (props: Props) => {
               {...register("password")}
             />
           </div>
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="mx-auto flex justify-center w-full disabled:bg-gray-500 bg-perfBlue rounded-lg items-center text-white h-12 mt-10 mb-2"
-          >
-            {!isLoading ? "Sign in" : <Loader variant="dots" color="white" />}
-          </button>
+          <SubmitButton isLoading={isLoading} text="Sign in" />
           <p className="text-perfGray text-center text-base">
             You don't have an account?
             <Link to="/sign-up">
