@@ -116,10 +116,6 @@ const AddPlayer = (props: Props) => {
     });
 
   const onSubmit = (data: any) => {
-    // const config = {
-    //   headers: { Authorization: `Bearer ${user.access}` },
-    // };
-
     const bodyParameters = {
       name: data.name,
       dob: formatDate(data.dob),
