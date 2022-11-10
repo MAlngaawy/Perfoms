@@ -95,7 +95,7 @@ export type InfoProps = {
 
 export type PlayerData = {
   name: string;
-  icon_url: string;
+  icon_url?: string;
   dob?: string;
   weight?: string | number;
   height?: string | number;
@@ -103,6 +103,7 @@ export type PlayerData = {
   gender?: "M" | "F";
   coaches?: PersonData[];
   team?: GeneralInfo;
+  phoneNumber?:string | number
 };
 
 export type GeneralInfo = {

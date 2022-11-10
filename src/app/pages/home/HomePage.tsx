@@ -4,6 +4,7 @@ import { Grid } from "@mantine/core";
 import Card from "~/@main/components/Card";
 import { PlayerData } from "~/app/store/types/user-types";
 import CustomCalendar from "../../../@main/components/Calendar";
+import AddPlayer from "./molecules/AddPlayer";
 import { useSelector } from "react-redux";
 import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 
@@ -102,13 +103,11 @@ const HomePage = () => {
   const selectedPlayer = useSelector(selectedPlayerFn);
   return (
     <div className="home-page px-5 mb-20">
-      <div className="flex my-4 justify-between items-center w-full">
-        {/* <SecondNav
-          players={players}
-          selectedplayer={selectedplayer}
-          setSelectedPlayer={setSelectedPlayer}
-        /> */}
-        <div className="flex w-full gap-3 justify-end items-center pt-3 md:pt-0">
+      <div className="flex my-4 flex-col md:flex-row justify-between items-center">
+        <div className="flex gap-3 flex-col md:flex-row justify-between items-center">
+          <AddPlayer />
+        </div>
+        <div className="flex flex-col md:flex-row gap-3 justify-center items-center pt-3 md:pt-0">
           <Dropdown
             values={["team 1", "team 2", "team 3"]}
             selected={team}
