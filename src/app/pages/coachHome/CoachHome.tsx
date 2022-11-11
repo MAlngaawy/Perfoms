@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Radio } from "@mantine/core";
 import TopBar from "./components/TopBar";
+import AttendanceTable from "./components/AttendanceTable";
 
 type Props = {};
 
 const CoachHome = (props: Props) => {
   const [checked, setChecked] =
-    useState<"Attendance" | "Performance" | "Team info">("Performance");
+    useState<"Attendance" | "Performance" | "Team info">("Attendance");
 
   useEffect(() => {
     console.log(checked);
@@ -17,6 +18,7 @@ const CoachHome = (props: Props) => {
       <div className="flex gap-4">
         <TopBar checked={checked} setChecked={setChecked} />
       </div>
+      {checked === "Attendance" && <AttendanceTable />}
     </div>
   );
 };
