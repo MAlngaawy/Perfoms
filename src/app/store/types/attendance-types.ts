@@ -28,7 +28,7 @@ export type Attendance = {
   max_score: number;
   coverage: number;
   day: string;
-  status: string;
+  status: "ATTENDED" | "ABSENT" | "UPCOMING";
   team: number;
 };
 

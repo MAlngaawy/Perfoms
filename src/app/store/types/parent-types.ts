@@ -1,15 +1,18 @@
 import { Coach, Team } from "./coach-types";
 import { BaseGetAllType } from "./base-types";
 import { User } from "./user-types";
+import { Event } from "./events-types";
+import { Attendance } from "./attendance-types";
 
 export type AddPlayerType = {
   name: string;
-  dob: string;
+  dob?: string;
   sport: number;
   team: number;
   weight: number;
   height: number;
   phone: string;
+  icon?: string;
 };
 
 export type Sport = {
@@ -27,14 +30,24 @@ export type Sport = {
   club: number;
 };
 
+export type Kpi = {
+  coverage: number;
+  id: number;
+  kpi__icon_url: string;
+  kpi__max_score: number;
+  kpi__name: string;
+  kpi_id: number;
+  score: number;
+};
+
 export type Player = {
   id: 0;
-  attendances: string;
+  attendances: Attendance[];
   parent: User;
   sport: Sport;
   team: Team;
-  events: string;
-  kpis: string;
+  events: Partial<Event>[];
+  kpis: { data: Kpi[]; total_count: number };
   created_at: Date;
   updated_at: Date;
   order: number;
@@ -52,8 +65,22 @@ export type Player = {
   phone: string;
 };
 
+export type PlayerCoach = {
+  id: number;
+  teams: { id: number; name: string }[];
+  avatar: string;
+  first_name: string;
+  last_name: string;
+  details: {} & { education: string };
+  job: string;
+};
+
 export type AllPlayers = BaseGetAllType & {
   data: Player[];
+};
+
+export type AllPlayerCoaches = BaseGetAllType & {
+  data: PlayerCoach[];
 };
 
 export type AllParents = BaseGetAllType & {

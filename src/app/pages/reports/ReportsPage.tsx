@@ -7,6 +7,7 @@ import AttendanceTable from "./components/AttendanceTable";
 import TotalAttendance from "./components/TotalAttendance";
 import AttendanceCalender from "~/@main/components/AttendanceCalendar";
 import CustomCalendar from "~/@main/components/Calendar";
+import AddPlayer from "../home/molecules/AddPlayer";
 
 // ===== dummy data =====
 
@@ -85,13 +86,11 @@ const ReportPage = () => {
   return (
     <div className="report-page px-5 mb-20">
       <div className="flex flex-col gap-4 sm:flex-row my-4 justify-between items-center">
-        {/* <SecondNav
-          players={players}
-          selectedplayer={selectedplayer}
-          setSelectedPlayer={setSelectedPlayer}
-        /> */}
-        <div className="flex justify-end items-center w-full md:pt-0">
-          <Menu trigger="hover" shadow="md" width={200}>
+        <div className="flex gap-3 flex-col md:flex-row justify-between items-center">
+          <AddPlayer />
+        </div>
+        <div className="flex flex-col md:flex-row justify-center items-center md:pt-0">
+          <Menu shadow="md" width={200}>
             <Menu.Target>
               <button className="flex gap-2 text-sm justify-center items-center text-white bg-perfBlue py-2 px-6 rounded-3xl">
                 <span>{reportType}</span>

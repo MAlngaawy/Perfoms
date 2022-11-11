@@ -4,8 +4,11 @@ import { Grid } from "@mantine/core";
 import Card from "~/@main/components/Card";
 import { PlayerData } from "~/app/store/types/user-types";
 import CustomCalendar from "../../../@main/components/Calendar";
+import AddPlayer from "./molecules/AddPlayer";
 import { useSelector } from "react-redux";
 import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
+import { Link } from "react-router-dom";
+import { Player } from "~/app/store/types/parent-types";
 
 // dummy data
 export const playerData: PlayerData = {
@@ -99,16 +102,15 @@ export const players: Players[] = [
 const HomePage = () => {
   const [team, setTeam] = useState("Team");
   const [week, setWeek] = useState("Week");
-  const selectedPlayer = useSelector(selectedPlayerFn);
+  const selectedPlayer: Player = useSelector(selectedPlayerFn);
+
   return (
     <div className="home-page px-5 mb-20">
-      <div className="flex my-4 justify-between items-center w-full">
-        {/* <SecondNav
-          players={players}
-          selectedplayer={selectedplayer}
-          setSelectedPlayer={setSelectedPlayer}
-        /> */}
-        <div className="flex w-full gap-3 justify-end items-center pt-3 md:pt-0">
+      <div className="flex my-4 flex-col md:flex-row justify-between items-center">
+        <div className="flex gap-3 flex-col md:flex-row justify-between items-center">
+          <AddPlayer />
+        </div>
+        <div className="flex flex-col md:flex-row gap-3 justify-center items-center pt-3 md:pt-0">
           <Dropdown
             values={["team 1", "team 2", "team 3"]}
             selected={team}
@@ -129,9 +131,9 @@ const HomePage = () => {
               <Card type="playerInfo" playerData={selectedPlayer} />
             </Grid.Col>
             <Grid.Col sm={9} span={12}>
-              {/* <Link to="/Reports">
-            <Card type="performanceSummary" playerSummary={selectedPlayer} />
-          </Link> */}
+              <Link to="/Reports">
+                <Card type="performanceSummary" playerSummary={playerSummary} />
+              </Link>
             </Grid.Col>
           </Grid>
           <Grid columns={14} gutter={"sm"} className="info mt-3">
@@ -140,15 +142,12 @@ const HomePage = () => {
             </Grid.Col>
             <Grid.Col sm={7} span={14}>
               <CustomCalendar
-                data={[
-                  { day: "11/4/2022", attendance: "ATTENDED" },
-                  { day: "11/6/2022", attendance: "ABSENT" },
-                  { day: "11/11/2022", attendance: "ATTENDED" },
-                  { day: "11/15/2022", attendance: "ATTENDED" },
-                  { day: "11/22/2022", attendance: "ABSENT" },
-                  { day: "11/25/2022", attendance: "ATTENDED" },
-                  { day: "11/29/2022", attendance: "UPCOMING" },
-                ]}
+                data={
+                  selectedPlayer.attendances.map((item) => ({
+                    day: item.day,
+                    attendance: item.status,
+                  }))
+                }
               />
               {/* <Card type="calendar" /> */}
             </Grid.Col>
