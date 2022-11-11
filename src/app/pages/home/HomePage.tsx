@@ -142,12 +142,10 @@ const HomePage = () => {
             </Grid.Col>
             <Grid.Col sm={7} span={14}>
               <CustomCalendar
-                data={
-                  selectedPlayer.attendances.map((item) => ({
-                    day: item.day,
-                    attendance: item.status,
-                  }))
-                }
+                data={selectedPlayer.attendances.map((item) => ({
+                  day: item.day,
+                  attendance: item.status,
+                }))}
               />
               {/* <Card type="calendar" /> */}
             </Grid.Col>
