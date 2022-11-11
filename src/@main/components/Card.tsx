@@ -235,11 +235,14 @@ const Card = ({
               <div className="info flex flex-col gap-1">
                 <h2 className="text-sm text-perfGray1">{event.name}</h2>
                 <h3 className="flex items-center text-sm text-perfGray3">
-                  <span>
-                    <AppIcons icon="CalendarDaysIcon:outline" />
-                  </span>
-                  {event.date}
+                  <>
+                    <span>
+                      <AppIcons icon="CalendarDaysIcon:outline" />
+                    </span>
+                    {event.date}
+                  </>
                 </h3>
+
                 <h3 className="text-sm text-perfGray3">{event.description}</h3>
               </div>
             </div>
