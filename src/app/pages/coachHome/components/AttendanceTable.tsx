@@ -1,5 +1,5 @@
 import React from "react";
-import { Table } from "@mantine/core";
+import { Table, Checkbox } from "@mantine/core";
 
 type Props = {};
 
@@ -116,7 +116,10 @@ const elements = [
 
 const rows = elements.map((element, index) => (
   <>
-    <td onClick={() => console.log("Cheked")}>{element.check}</td>
+    <td onClick={() => console.log("Cheked")}>
+      {" "}
+      <Checkbox />{" "}
+    </td>
   </>
 ));
 
@@ -125,22 +128,22 @@ console.log("Days", days);
 
 const AttendanceTable = (props: Props) => {
   return (
-    <div className="overflow-scroll">
-      <Table className="bg-white" highlightOnHover verticalSpacing={"lg"}>
+    <div className="overflow-scroll max-h-screen relative m-6 bg-white rounded-lg text-center">
+      <Table highlightOnHover>
         <thead>
-          <tr className=" sticky top-0">
-            <th>Day</th>
+          <tr className="">
+            <th className="bg-white sticky  top-0 z-20 ">Day</th>
             {elements.map((element) => (
-              <th>{element.name}</th>
+              <th className="bg-white sticky top-0 z-20">{element.name}</th>
             ))}
           </tr>
         </thead>
-        <tbody>
+        <tbody className="overflow-scroll">
           {new Array(30).fill(1).map((item, idx) => {
             console.log(item);
             return (
-              <tr>
-                <td className="relative">
+              <tr className="">
+                <td className=" sticky left-0 bg-white z-10">
                   Friday {item}/{idx}/2022
                 </td>
                 {elements.map((element, index) => (
@@ -150,7 +153,7 @@ const AttendanceTable = (props: Props) => {
                         console.log("Cheked Item", element.check, " && ", idx)
                       }
                     >
-                      {element.check}
+                      <Checkbox />
                     </td>
                   </>
                 ))}
@@ -162,5 +165,4 @@ const AttendanceTable = (props: Props) => {
     </div>
   );
 };
-
 export default AttendanceTable;
