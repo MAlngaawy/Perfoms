@@ -1,12 +1,13 @@
 import { Button } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
+import { Team } from "~/app/store/types/coach-types";
 
 interface Props {
   id: number;
   role?: "Coach" | "Supervisor";
   name: string;
   education: string;
-  teams: string[];
+  teams: Partial<Team>[];
   photo?: string;
   sport?: string;
 }
@@ -52,10 +53,10 @@ const CoachCard = ({
               {teams.map((item) => (
                 <h4
                   className="text-perfGray3 group-hover:text-white text-xs font-normal"
-                  key={item}
+                  key={item.id}
                 >
                   {" "}
-                  {item}{" "}
+                  {item.name}{" "}
                 </h4>
               ))}
             </div>

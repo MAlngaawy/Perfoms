@@ -1,3 +1,4 @@
+import { Player } from "./parent-types";
 export type LoginUserBody = {
   mobile: string;
   password: string;
@@ -77,7 +78,7 @@ export type CardProps = {
   detailedText?: string;
   powerType?: string;
   scores?: Scores[];
-  playerData?: PlayerData;
+  playerData?: Player;
   playerSummary?: PerformanceCardProps[];
   bg?: string;
   color?: string;
@@ -103,7 +104,7 @@ export type PlayerData = {
   gender?: "M" | "F";
   coaches?: PersonData[];
   team?: GeneralInfo;
-  phoneNumber?:string | number
+  phoneNumber?: string | number;
 };
 
 export type GeneralInfo = {
