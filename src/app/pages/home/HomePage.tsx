@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Dropdown } from "~/@main/components/Dropdown";
-import { Grid } from "@mantine/core";
+import { Grid, Avatar } from "@mantine/core";
 import Card from "~/@main/components/Card";
 import { PlayerData } from "~/app/store/types/user-types";
 import CustomCalendar from "../../../@main/components/Calendar";
@@ -155,7 +155,23 @@ const HomePage = () => {
           </Grid>
         </>
       ) : (
-        <p className="place-self-center">No Players Related To This User</p>
+        <div className="flex justify-center items-center">
+          <div className="card bg-white rounded-xl flex flex-col gap-6 text-center p-8">
+            <Avatar
+              size={"xl"}
+              className="mx-auto"
+              src="/assets/images/noplayer.png"
+              alt="icon"
+            />
+            <h2 className="text-4xl text-perfBlue">Welcome on board</h2>
+            <p className=" text-lg font-bold text-gray-300">
+              Its about time to make a great player.
+            </p>
+            <div className="flex justify-center items-center">
+              <AddPlayer />
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
