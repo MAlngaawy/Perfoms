@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Radio } from "@mantine/core";
+import { useState, useEffect } from "react";
 import TopBar from "./components/TopBar";
 import AttendanceTable from "./components/AttendanceTable";
 import PerformanceTable from "./components/PerformanceTable";
+import TeamInfo from "./components/TeamInfo";
 
 type Props = {};
 
@@ -21,6 +21,7 @@ const CoachHome = (props: Props) => {
       </div>
       {checked === "Attendance" && <AttendanceTable />}
       {checked === "Performance" && <PerformanceTable />}
+      {checked === "Team info" && <TeamInfo />}
     </div>
   );
 };
