@@ -25,6 +25,7 @@ module.exports = {
         fadedRed: "#eb57572f",
         pagesBg: "#f3f5f8",
         perfLightBlue: "#ECF4FF",
+        perfLightGray: "#F6F6F6",
       },
       screens: {
         xs: "576px",

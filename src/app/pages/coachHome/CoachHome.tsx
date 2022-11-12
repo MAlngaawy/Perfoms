@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Radio } from "@mantine/core";
 import TopBar from "./components/TopBar";
 import AttendanceTable from "./components/AttendanceTable";
+import PerformanceTable from "./components/PerformanceTable";
 
 type Props = {};
 
@@ -19,6 +20,7 @@ const CoachHome = (props: Props) => {
         <TopBar checked={checked} setChecked={setChecked} />
       </div>
       {checked === "Attendance" && <AttendanceTable />}
+      {checked === "Performance" && <PerformanceTable />}
     </div>
   );
 };
