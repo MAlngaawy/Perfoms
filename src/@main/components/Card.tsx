@@ -48,7 +48,11 @@ const Card = ({
         </div>
         <div className="img my-2">
           <img
-            src={playerData?.icon_url}
+            src={
+              playerData?.icon
+                ? playerData?.icon
+                : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+            }
             className="w-1/2 h-28 rounded-lg object-cover"
             alt="player_image"
           />
@@ -100,7 +104,7 @@ const Card = ({
     return (
       <div className="bg-white p-3 rounded-3xl h-full">
         <h2 className="title text-lg text-perfGray1">Team Info.</h2>
-        <div className="flex justify-around mt-4">
+        <div className="flex justify-between mt-4 px-2">
           <div className="left flex flex-col gap-3 text-perfGray1">
             <div className="team flex flex-col gap-1">
               <h2 className="text-base font-semibold">
@@ -125,7 +129,18 @@ const Card = ({
           </div>
           <div className="right flex flex-col gap-5">
             <h2 className="mb-2">Coaches</h2>
-            {playerData?.team?.coaches?.map((coach: PersonData) => {
+            <div className="coach flex items-center gap-2 cursor-pointer">
+              <Avatar
+                size={"sm"}
+                radius="xl"
+                src={
+                  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                }
+                alt="coach_Avatar"
+              />
+              <h2 className="name text-base">Mohammed</h2>
+            </div>
+            {/* {playerData?.team?.coaches?.map((coach: PersonData) => {
               return (
                 <div className="coach flex items-center gap-2 cursor-pointer">
                   <Avatar
@@ -139,7 +154,7 @@ const Card = ({
                   </h2>
                 </div>
               );
-            })}
+            })} */}
           </div>
         </div>
       </div>
@@ -223,63 +238,38 @@ const Card = ({
       <div className="bg-white  p-4 rounded-3xl h-full">
         <h2 className="title text-lg text-perfGray1">Upcoming Events.</h2>
         <div className="flex flex-col gap-4 mt-4">
-          <div className="oneEvent flex items-center gap-2">
-            <div className="image w-16 h-16">
-              <img
-                className="w-full h-full object-cover rounded-lg"
-                src="http://www.event-29.com/wp-content/uploads/2021/07/college-students.jpg"
-                alt="eventImage"
-              />
+          {playerData?.events ? (
+            playerData?.events.map((event) => (
+              <div className="oneEvent flex items-center gap-2">
+                <div className="image w-16 h-16">
+                  <img
+                    className="w-full h-full object-cover rounded-lg"
+                    src={event.icon}
+                    alt="eventImage"
+                  />
+                </div>
+                <div className="info flex flex-col gap-1">
+                  <h2 className="text-sm text-perfGray1">{event.name}</h2>
+                  <h3 className="flex items-center text-sm text-perfGray3">
+                    <>
+                      <span>
+                        <AppIcons icon="CalendarDaysIcon:outline" />
+                      </span>
+                      {event.date}
+                    </>
+                  </h3>
+
+                  <h3 className="text-sm text-perfGray3">
+                    {event.description}
+                  </h3>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="flex justify-center items-center">
+              <span className="py-10">No Events Yet</span>
             </div>
-            <div className="info flex flex-col gap-1">
-              <h2 className="text-sm text-perfGray1">Event Name</h2>
-              <h3 className="flex items-center text-sm text-perfGray3">
-                <span>
-                  <AppIcons icon="CalendarDaysIcon:outline" />
-                </span>
-                Sunday, 15/SEP.
-              </h3>
-              <h3 className="text-sm text-perfGray3">Al - ahly club</h3>
-            </div>
-          </div>
-          <div className="oneEvent flex items-center gap-2">
-            <div className="image w-16 h-16">
-              <img
-                className="w-full h-full object-cover rounded-lg"
-                src="https://eagleexaminer.com/wp-content/uploads/2018/04/boston-marathon-900x600.jpg"
-                alt="eventImage"
-              />
-            </div>
-            <div className="info flex flex-col gap-1">
-              <h2 className="text-sm text-perfGray1">Event Name</h2>
-              <h3 className="flex items-center text-sm text-perfGray3">
-                <span>
-                  <AppIcons icon="CalendarDaysIcon:outline" />
-                </span>
-                Sunday, 15/SEP.
-              </h3>
-              <h3 className="text-sm text-perfGray3">Al - ahly club</h3>
-            </div>
-          </div>
-          <div className="oneEvent flex items-center gap-2">
-            <div className="image w-16 h-16">
-              <img
-                className="w-full h-full object-cover rounded-lg"
-                src="https://traveler.marriott.com/wp-content/uploads/2018/01/GI_867787028_CommonwealthGames.jpg"
-                alt="eventImage"
-              />
-            </div>
-            <div className="info flex flex-col gap-1">
-              <h2 className="text-sm text-perfGray1">Event Name</h2>
-              <h3 className="flex items-center text-sm text-perfGray3">
-                <span>
-                  <AppIcons icon="CalendarDaysIcon:outline" />
-                </span>
-                Sunday, 15/SEP.
-              </h3>
-              <h3 className="text-sm text-perfGray3">Al - ahly club</h3>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     );

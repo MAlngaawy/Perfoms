@@ -1,3 +1,4 @@
+import { AllPlayerCoaches } from "./../types/parent-types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BASE_HEADERS, BASE_URL } from "~/app/configs/dataService";
 import {
@@ -27,6 +28,13 @@ export const parentsApi = createApi({
     onePlayer: query<AllPlayers, number>({
       query: (id) => ({
         url: `my-players/${id}`,
+      }),
+      providesTags: ["Parent"],
+    }),
+    playerCoaches: query<AllPlayerCoaches, { id: number; page?: number }>({
+      query: ({ id, ...params }) => ({
+        url: `/all-coaches/${id}`,
+        params,
       }),
       providesTags: ["Parent"],
     }),
@@ -74,4 +82,5 @@ export const {
   useMyPlayersQuery,
   useOnePlayerQuery,
   useClubQuery,
+  usePlayerCoachesQuery,
 } = parentsApi;

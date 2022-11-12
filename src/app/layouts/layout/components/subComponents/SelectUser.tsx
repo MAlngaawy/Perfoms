@@ -7,19 +7,6 @@ import { selectedPlayerFn, selectPlayer } from "~/app/store/parent/parentSlice";
 
 type Props = {};
 
-const playersData = [
-  {
-    name: "Mohammed",
-    avatar:
-      "https://media.istockphoto.com/id/685132245/photo/mature-businessman-smiling-over-white-background.jpg?s=612x612&w=0&k=20&c=OJk6U-oCZ31F3TGmarAAg2jVli8ZWTagAcF4P-kNIqA=",
-  },
-  {
-    name: "Salma",
-    avatar:
-      "https://i.pinimg.com/originals/3e/2e/8c/3e2e8c6fa626636eb4e8bdfe78edab3b.jpg",
-  },
-];
-
 const SelectUser = (props: Props) => {
   const { data: players, isLoading } = useMyPlayersQuery({});
   const dispatch = useDispatch();

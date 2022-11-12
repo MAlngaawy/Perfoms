@@ -1,13 +1,14 @@
 import React from "react";
 import AppIcons from "~/@main/core/AppIcons/AppIcons";
-import { Dialog, Modal, Button, TextInput, Select } from "@mantine/core";
+import { Modal, Button, TextInput } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import cn from "classnames";
-import { Controller } from "react-hook-form";
+
 import Resizer from "react-image-file-resizer";
 import PerfSelect from "~/@main/components/Select";
+import { useAddPlayerMutation } from "~/app/store/parent/parentApi";
 
 type Props = {};
 
@@ -25,44 +26,26 @@ const dummyData = {
   ],
 };
 
+const schema = yup.object().shape({
+  image: yup.mixed().required("File is required"),
+  name: yup.string().required("Your child name is Required!"),
+  dob: yup.date().required("Your child Birthday is Required!"),
+  sport: yup.number().required("please select your child sport"),
+  team: yup.number().required("please select your child team"),
+  weight: yup.number().required("please add your child weight"),
+  height: yup.number().required("please add your child height"),
+  phoneNumber: yup.string().required("please enter your mobile number!"),
+});
+
 const AddPlayer = (props: Props) => {
+  const [addPlayerHandler, { isLoading, isSuccess, isError, error }] =
+    useAddPlayerMutation();
   const [open, setOpen] = React.useState(false);
   const [playerImage, setPlayerImage] = React.useState<string | unknown>("");
   const [playerImagePreview, setPlayerImagePreview] = React.useState("null");
   const [data, setData] = React.useState({});
   const [teams, setTeams] = React.useState([]);
   const [sports, setSports] = React.useState([]);
-
-  const schema = yup.object().shape({
-    image: yup.mixed().required("File is required"),
-    name: yup.string().required("Your child name is Required!"),
-    dob: yup.date().required("Your child Birthday is Required!"),
-    sport: yup.number().required("please select your child sport"),
-    team: yup.number().required("please select your child team"),
-    weight: yup.number().required("please add your child weight"),
-    height: yup.number().required("please add your child height"),
-    phoneNumber: yup.string().required("please enter your mobile number!"),
-  });
-
-  //   ========== Fetch user data ============
-
-  // React.useEffect(() => {
-  //     console.log("Fetch");
-
-  //     const config = {
-  //       headers: { Authorization: `Bearer ${user.access}` },
-  //     };
-
-  //     fetch("https://performs.pythonanywhere.com/core/teams/", config)
-  //       .then((res) => res.json())
-  //       .then((data) => setTeams(data.data))
-  //       .catch((err) => console.log(err));
-
-  //     fetch("https://performs.pythonanywhere.com/core/sports/", config)
-  //       .then((res) => res.json())
-  //       .then((data) => setSports(data.data))
-  //       .catch((err) => console.log(err));
-  //   }, [user.access]);
 
   const {
     register,
@@ -118,11 +101,9 @@ const AddPlayer = (props: Props) => {
       weight: data.weight,
       height: data.height,
       phone: data.phoneNumber,
-      icon: playerImage,
+      icon: playerImage as string,
     };
-
-    console.log(bodyParameters);
-    setOpen(false);
+    addPlayerHandler(bodyParameters);
     setPlayerImage(null);
     reset({
       image: "",

@@ -15,7 +15,7 @@ const SecondNav = ({
             <PlayerButton
               key={index}
               name={player.name}
-              img={player.icon_url}
+              img={player.icon_url || ""}
               active={player === selectedplayer}
               onClick={() => {
                 setSelectedPlayer(player);

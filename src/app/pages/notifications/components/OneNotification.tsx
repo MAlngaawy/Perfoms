@@ -1,6 +1,6 @@
 import React from "react";
 import cn from "classnames";
-import AppIcons from "~/@main/core/AppIcons";
+import AppIcons from "../../../../@main/core/AppIcons";
 type Props = {
   type: "Certificate" | "Permission" | string;
   name: string;

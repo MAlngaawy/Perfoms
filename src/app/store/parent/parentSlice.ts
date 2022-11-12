@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { Player } from "../types/parent-types";
 
 const initialState = {
   selectedPlayer: null,
@@ -15,5 +16,6 @@ const parentSlice = createSlice({
 });
 
 export const { selectPlayer } = parentSlice.actions;
-export const selectedPlayerFn = (state: any) => state.parent.selectedPlayer;
+export const selectedPlayerFn = (state: any): Player =>
+  state.parent.selectedPlayer;
 export default parentSlice.reducer;
