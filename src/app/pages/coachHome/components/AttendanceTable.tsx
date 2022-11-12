@@ -58,96 +58,6 @@ const players = [
       "https://images.squarespace-cdn.com/content/v1/5c2efbc95417fc1b3d3040ad/1623735675824-LXS5FG198B0MLQCKQC0P/Modern+School+Photos.jpg",
     id: 1,
   },
-  {
-    name: "Ahmed Salah",
-    avatar:
-      "https://images.squarespace-cdn.com/content/v1/5c2efbc95417fc1b3d3040ad/1623728514460-NKFH3X6TIK8JXUESNRQD/Modern+School+Portraits+Perth.jpg",
-    id: 2,
-  },
-  {
-    name: "Kareem Momen",
-    avatar:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjh6VSzXG8EgTqDjm0JJ7CTlDVFnIHh6X9dPgBDqxt2kUOGgH7NQy0Ey6oPhEn5TVQbvI&usqp=CAU",
-    id: 3,
-  },
-  {
-    name: "Khaled Momen",
-    avatar:
-      "https://www.anthropics.com/portraitpro/img/page-images/homepage/v22/what-can-it-do-5B.jpg",
-    id: 3,
-  },
-  {
-    name: "mohammed Ali",
-    avatar:
-      "https://images.squarespace-cdn.com/content/v1/5c2efbc95417fc1b3d3040ad/1623735675824-LXS5FG198B0MLQCKQC0P/Modern+School+Photos.jpg",
-    id: 1,
-  },
-  {
-    name: "Ahmed Salah",
-    avatar:
-      "https://images.squarespace-cdn.com/content/v1/5c2efbc95417fc1b3d3040ad/1623728514460-NKFH3X6TIK8JXUESNRQD/Modern+School+Portraits+Perth.jpg",
-    id: 2,
-  },
-  {
-    name: "Kareem Momen",
-    avatar:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjh6VSzXG8EgTqDjm0JJ7CTlDVFnIHh6X9dPgBDqxt2kUOGgH7NQy0Ey6oPhEn5TVQbvI&usqp=CAU",
-    id: 3,
-  },
-  {
-    name: "Khaled Momen",
-    avatar:
-      "https://www.anthropics.com/portraitpro/img/page-images/homepage/v22/what-can-it-do-5B.jpg",
-    id: 3,
-  },
-  {
-    name: "mohammed Ali",
-    avatar:
-      "https://images.squarespace-cdn.com/content/v1/5c2efbc95417fc1b3d3040ad/1623735675824-LXS5FG198B0MLQCKQC0P/Modern+School+Photos.jpg",
-    id: 1,
-  },
-  {
-    name: "Ahmed Salah",
-    avatar:
-      "https://images.squarespace-cdn.com/content/v1/5c2efbc95417fc1b3d3040ad/1623728514460-NKFH3X6TIK8JXUESNRQD/Modern+School+Portraits+Perth.jpg",
-    id: 2,
-  },
-  {
-    name: "Kareem Momen",
-    avatar:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjh6VSzXG8EgTqDjm0JJ7CTlDVFnIHh6X9dPgBDqxt2kUOGgH7NQy0Ey6oPhEn5TVQbvI&usqp=CAU",
-    id: 3,
-  },
-  {
-    name: "Khaled Momen",
-    avatar:
-      "https://www.anthropics.com/portraitpro/img/page-images/homepage/v22/what-can-it-do-5B.jpg",
-    id: 3,
-  },
-  {
-    name: "mohammed Ali",
-    avatar:
-      "https://images.squarespace-cdn.com/content/v1/5c2efbc95417fc1b3d3040ad/1623735675824-LXS5FG198B0MLQCKQC0P/Modern+School+Photos.jpg",
-    id: 1,
-  },
-  {
-    name: "Ahmed Salah",
-    avatar:
-      "https://images.squarespace-cdn.com/content/v1/5c2efbc95417fc1b3d3040ad/1623728514460-NKFH3X6TIK8JXUESNRQD/Modern+School+Portraits+Perth.jpg",
-    id: 2,
-  },
-  {
-    name: "Kareem Momen",
-    avatar:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjh6VSzXG8EgTqDjm0JJ7CTlDVFnIHh6X9dPgBDqxt2kUOGgH7NQy0Ey6oPhEn5TVQbvI&usqp=CAU",
-    id: 3,
-  },
-  {
-    name: "Khaled Momen",
-    avatar:
-      "https://www.anthropics.com/portraitpro/img/page-images/homepage/v22/what-can-it-do-5B.jpg",
-    id: 3,
-  },
 ];
 
 const AttendanceTable = (props: Props) => {
@@ -176,22 +86,25 @@ const AttendanceTable = (props: Props) => {
                   {thisDate.getDate()}/ {thisDate.getMonth()} /
                   {thisDate.getFullYear()}
                 </td>
-                {players.map((player, index) => (
-                  <>
-                    <td>
-                      <Checkbox
-                        onChange={(e) => {
-                          console.log({
-                            attended: e.currentTarget.checked,
-                            plaerId: player.id,
-                            plaerName: player.name,
-                            date: new Date(`${item}/${idx}/2022`),
-                          });
-                        }}
-                      />
-                    </td>
-                  </>
-                ))}
+                {players.map((player, index) => {
+                  console.log(player.id);
+                  return (
+                    <>
+                      <td>
+                        <Checkbox
+                          onChange={(e) => {
+                            console.log({
+                              attended: e.currentTarget.checked,
+                              plaerId: player.id,
+                              plaerName: player.name,
+                              date: new Date(`${item}/${idx}/2022`),
+                            });
+                          }}
+                        />
+                      </td>
+                    </>
+                  );
+                })}
               </tr>
             );
           })}
