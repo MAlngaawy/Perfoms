@@ -84,3 +84,14 @@ select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0px 1000px #f3f5f8 inset !important;
 }
+
+@media only screen and (min-width: 992px) {
+  .subscription-board{
+    height: 400px;
+  }
+  
+  .most-popular-card{
+    height: 430px;
+    bottom: 70px;
+  }
+}
