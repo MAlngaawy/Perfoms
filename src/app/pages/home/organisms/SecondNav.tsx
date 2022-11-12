@@ -1,5 +1,6 @@
 import { PlayerButton } from "../molecules/PlayerButton";
 import { SecondNavProps } from "~/app/store/types/user-types";
+import AddPlayer from "../molecules/AddPlayer";
 
 const SecondNav = ({
   players,
@@ -14,7 +15,7 @@ const SecondNav = ({
             <PlayerButton
               key={index}
               name={player.name}
-              img={player.icon_url}
+              img={player.icon_url || ""}
               active={player === selectedplayer}
               onClick={() => {
                 setSelectedPlayer(player);
@@ -22,6 +23,7 @@ const SecondNav = ({
             />
           ))}
         {/* <AddPlayerButton /> */}
+        <AddPlayer />
       </div>
     </div>
   );

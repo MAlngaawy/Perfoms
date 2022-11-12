@@ -12,7 +12,6 @@ function AuthProvider({ children }: PropsWithChildren) {
   useEffect(() => {
     eventInstance.on("Login_Success", () => refetch());
     eventInstance.on("SignUp_Success", () => refetch());
-    eventInstance.on("LogOut_Success", () => refetch());
   }, [refetch]);
 
   return isLoading ? (

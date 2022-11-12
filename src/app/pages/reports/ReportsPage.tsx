@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import "./styles.css";
 import { Grid, Menu, Button } from "@mantine/core";
 import Card from "~/@main/components/Card";
 import { playerData } from "../home/HomePage";
-import SecondNav from "../home/organisms/SecondNav";
-import { players } from "../home/HomePage";
 import AppIcons from "~/@main/core/AppIcons";
 import AttendanceTable from "./components/AttendanceTable";
 import TotalAttendance from "./components/TotalAttendance";
 import AttendanceCalender from "~/@main/components/AttendanceCalendar";
 import CustomCalendar from "~/@main/components/Calendar";
+import AddPlayer from "../home/molecules/AddPlayer";
+import { useSelector } from "react-redux";
+import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 
 // ===== dummy data =====
 
@@ -81,6 +81,7 @@ const text = {
 
 const ReportPage = () => {
   const [selectedplayer, setSelectedPlayer] = useState<any>(null);
+  const player = useSelector(selectedPlayerFn);
 
   const [reportType, setReportType] =
     useState<"Performances" | "Attendances">("Performances");
@@ -88,11 +89,9 @@ const ReportPage = () => {
   return (
     <div className="report-page px-5 mb-20">
       <div className="flex flex-col gap-4 sm:flex-row my-4 justify-between items-center">
-        <SecondNav
-          players={players}
-          selectedplayer={selectedplayer}
-          setSelectedPlayer={setSelectedPlayer}
-        />
+        <div className="flex gap-3 flex-col md:flex-row justify-between items-center">
+          <AddPlayer />
+        </div>
         <div className="flex flex-col md:flex-row justify-center items-center md:pt-0">
           <Menu shadow="md" width={200}>
             <Menu.Target>
@@ -120,7 +119,7 @@ const ReportPage = () => {
         <div>
           <Grid columns={12} gutter={"sm"}>
             <Grid.Col sm={3} span={12}>
-              <Card type="playerInfo" playerData={playerData} />
+              <Card type="playerInfo" playerData={player} />
             </Grid.Col>
             <Grid.Col sm={9} span={12}>
               <Card type="performanceSummary" playerSummary={playerSummary} />
@@ -182,7 +181,7 @@ const ReportPage = () => {
           <Grid gutter={"sm"}>
             <Grid.Col span={12} sm={3}>
               <div className="flex flex-col gap-2">
-                <Card type="playerInfo" playerData={playerData} />
+                <Card type="playerInfo" playerData={player} />
                 <div className="note bg-white rounded-3xl w-full p-4">
                   <h2 className="text-lg font-normal text-perfGray1 pb-4">
                     Overall notes

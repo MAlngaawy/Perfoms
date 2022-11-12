@@ -1,9 +1,11 @@
+import { AllPlayerCoaches } from "./../types/parent-types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BASE_HEADERS, BASE_URL } from "~/app/configs/dataService";
 import {
   AddPlayerType,
   AllClubs,
   AllParents,
+  AllPlayers,
   DocumentTypes,
   Player,
 } from "../types/parent-types";
@@ -16,6 +18,26 @@ export const parentsApi = createApi({
   }),
   tagTypes: ["Parent"],
   endpoints: ({ query, mutation }) => ({
+    myPlayers: query<AllPlayers, { page?: number }>({
+      query: (params) => ({
+        url: "my-players/",
+        params,
+      }),
+      providesTags: ["Parent"],
+    }),
+    onePlayer: query<AllPlayers, number>({
+      query: (id) => ({
+        url: `my-players/${id}`,
+      }),
+      providesTags: ["Parent"],
+    }),
+    playerCoaches: query<AllPlayerCoaches, { id: number; page?: number }>({
+      query: ({ id, ...params }) => ({
+        url: `/all-coaches/${id}`,
+        params,
+      }),
+      providesTags: ["Parent"],
+    }),
     allParents: query<AllParents, { page: number }>({
       query: (params) => ({
         url: "all-parents/",
@@ -57,5 +79,8 @@ export const {
   useAllClubsQuery,
   useAllParentsQuery,
   useAddPlayerMutation,
+  useMyPlayersQuery,
+  useOnePlayerQuery,
   useClubQuery,
+  usePlayerCoachesQuery,
 } = parentsApi;

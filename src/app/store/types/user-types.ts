@@ -1,3 +1,4 @@
+import { Player } from "./parent-types";
 export type LoginUserBody = {
   mobile: string;
   password: string;
@@ -20,6 +21,7 @@ export type LoginResponse = {
   players: any[];
   error: boolean;
 };
+
 export type ProfileResponse = {
   message: string;
   data: User;
@@ -40,6 +42,8 @@ export type User = {
   details: object;
   avatar: string;
   city: string;
+  job: string;
+  dob: string;
   club: number;
 };
 
@@ -74,7 +78,7 @@ export type CardProps = {
   detailedText?: string;
   powerType?: string;
   scores?: Scores[];
-  playerData?: PlayerData;
+  playerData?: Player;
   playerSummary?: PerformanceCardProps[];
   bg?: string;
   color?: string;
@@ -85,13 +89,6 @@ export type Scores = {
   score: string;
 };
 
-export type DropdownProps = {
-  label: string;
-  listItems: string[];
-  icon?: any;
-  styleType?: "primary" | "borded" | "basic";
-};
-
 export type InfoProps = {
   label: string;
   value?: string;
@@ -99,7 +96,7 @@ export type InfoProps = {
 
 export type PlayerData = {
   name: string;
-  icon_url: string;
+  icon_url?: string;
   dob?: string;
   weight?: string | number;
   height?: string | number;
@@ -107,6 +104,7 @@ export type PlayerData = {
   gender?: "M" | "F";
   coaches?: PersonData[];
   team?: GeneralInfo;
+  phoneNumber?: string | number;
 };
 
 export type GeneralInfo = {
@@ -181,4 +179,9 @@ export type UserDeviceId = {
   device_id: string;
   registration_token: string;
   device_type: string;
+};
+
+export type ChangePassword = {
+  old_password: string;
+  new_password: string;
 };

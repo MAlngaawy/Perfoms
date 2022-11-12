@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Dropdown } from "~/@main/components/Dropdown";
-import { Grid } from "@mantine/core";
+import { Grid, Avatar } from "@mantine/core";
 import Card from "~/@main/components/Card";
 import { PlayerData } from "~/app/store/types/user-types";
-import { Link } from "react-router-dom";
-import SecondNav from "./organisms/SecondNav";
-import AppIcons from "~/@main/core/AppIcons";
 import CustomCalendar from "../../../@main/components/Calendar";
+import AddPlayer from "./molecules/AddPlayer";
+import { useSelector } from "react-redux";
+import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
+import { Link } from "react-router-dom";
+import { Player } from "~/app/store/types/parent-types";
 
 // dummy data
 export const playerData: PlayerData = {
@@ -98,60 +100,79 @@ export const players: Players[] = [
 // ==================
 
 const HomePage = () => {
-  const [selectedplayer, setSelectedPlayer] = useState<any>(null);
+  const [team, setTeam] = useState("Team");
+  const [week, setWeek] = useState("Week");
+  const selectedPlayer: Player = useSelector(selectedPlayerFn);
 
   return (
     <div className="home-page px-5 mb-20">
       <div className="flex my-4 flex-col md:flex-row justify-between items-center">
-        <SecondNav
-          players={players}
-          selectedplayer={selectedplayer}
-          setSelectedPlayer={setSelectedPlayer}
-        />
+        <div className="flex gap-3 flex-col md:flex-row justify-between items-center">
+          <AddPlayer />
+        </div>
         <div className="flex flex-col md:flex-row gap-3 justify-center items-center pt-3 md:pt-0">
           <Dropdown
-            label="Teams"
-            listItems={["Primary team", "Primary group"]}
+            values={["team 1", "team 2", "team 3"]}
+            selected={team}
+            setSelected={setTeam}
           />
           <Dropdown
-            label="This week"
-            styleType="basic"
-            listItems={["week1", "Week 2"]}
+            values={["this week", "last week"]}
+            selected={week}
+            setSelected={setWeek}
+            className="bg-none bg-white p-2 rounded-full"
           />
         </div>
       </div>
-      <Grid columns={12} gutter={"sm"}>
-        <Grid.Col sm={3} span={12}>
-          <Card type="playerInfo" playerData={playerData} />
-        </Grid.Col>
-        <Grid.Col sm={9} span={12}>
-          <Link to="/Reports">
-            <Card type="performanceSummary" playerSummary={playerSummary} />
-          </Link>
-        </Grid.Col>
-      </Grid>
-      <Grid columns={14} gutter={"sm"} className="info mt-3">
-        <Grid.Col sm={4} span={14}>
-          <Card type="teamInfo" playerData={playerData} />
-        </Grid.Col>
-        <Grid.Col sm={7} span={14}>
-          <CustomCalendar
-            data={[
-              { day: "11/4/2022", attendance: "ATTENDED" },
-              { day: "11/6/2022", attendance: "ABSENT" },
-              { day: "11/11/2022", attendance: "ATTENDED" },
-              { day: "11/15/2022", attendance: "ATTENDED" },
-              { day: "11/22/2022", attendance: "ABSENT" },
-              { day: "11/25/2022", attendance: "ATTENDED" },
-              { day: "11/29/2022", attendance: "UPCOMING" },
-            ]}
-          />
-          {/* <Card type="calendar" /> */}
-        </Grid.Col>
-        <Grid.Col sm={3} span={14}>
-          <Card type="upcomingEvents" />
-        </Grid.Col>
-      </Grid>
+      {selectedPlayer ? (
+        <>
+          <Grid columns={12} gutter={"sm"}>
+            <Grid.Col sm={3} span={12}>
+              <Card type="playerInfo" playerData={selectedPlayer} />
+            </Grid.Col>
+            <Grid.Col sm={9} span={12}>
+              <Link to="/Reports">
+                <Card type="performanceSummary" playerSummary={playerSummary} />
+              </Link>
+            </Grid.Col>
+          </Grid>
+          <Grid columns={14} gutter={"sm"} className="info mt-3">
+            <Grid.Col sm={4} span={14}>
+              <Card type="teamInfo" playerData={selectedPlayer} />
+            </Grid.Col>
+            <Grid.Col sm={7} span={14}>
+              <CustomCalendar
+                data={selectedPlayer.attendances.map((item) => ({
+                  day: item.day,
+                  attendance: item.status,
+                }))}
+              />
+              {/* <Card type="calendar" /> */}
+            </Grid.Col>
+            <Grid.Col sm={3} span={14}>
+              <Card type="upcomingEvents" />
+            </Grid.Col>
+          </Grid>
+        </>
+      ) : (
+        <div className="flex justify-center items-center">
+          <div className="card bg-white rounded-xl flex flex-col gap-6 text-center p-8">
+            <Avatar
+              size={"xl"}
+              className="mx-auto"
+              src="/assets/images/noplayer.png"
+              alt="icon"
+            />
+            <h2 className="text-4xl text-perfBlue">Welcome on board</h2>
+            <p className=" text-lg font-bold text-gray-300">
+              Its about time to make a great player.
+            </p>
+            <div className="flex justify-center items-center">
+              <AddPlayer />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

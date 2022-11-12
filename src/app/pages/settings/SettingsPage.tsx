@@ -2,78 +2,88 @@ import { Input, PasswordInput } from "@mantine/core";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import SubmitButton from "~/@main/components/SubmitButton";
+import { useEffect, useState } from "react";
+import { useChangePasswordMutation } from "~/app/store/user/userApi";
+import { showNotification } from "@mantine/notifications";
 
 type Props = {};
 
 const schema = yup.object().shape({
-  fullName: yup.string(),
-  phoneNumber: yup.string(),
-  oldPassword: yup.string().min(8).max(24).required(),
-  newPassword: yup.string().min(8).max(24),
+  old_password: yup.string().min(8).max(24).required(),
+  new_password: yup.string().min(8).max(24),
+  confirmNewPassword: yup
+    .string()
+    .oneOf([yup.ref("new_password"), null], "Passwords must match"),
 });
 
 const Settings = (props: Props) => {
+  // This will change when we cal the handler function
+  const [changePasswordHandler, { isLoading, isSuccess, isError, error }] =
+    useChangePasswordMutation();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      fullName: "Mohammed Ali",
-      phoneNumber: "+121212212",
-      oldPassword: "",
-      newPassword: "",
+      old_password: "",
+      new_password: "",
+      confirmNewPassword: "",
     },
     resolver: yupResolver(schema),
   });
 
   const submitFun = (data: any) => {
-    console.log(data);
+    changePasswordHandler(data);
   };
+
+  useEffect(() => {
+    if (isSuccess)
+      showNotification({
+        title: "Change Password",
+        message: "Password Changed Successfulty!",
+        color: "green",
+      });
+    if (isError)
+      showNotification({
+        title: "Change Password",
+        //@ts-ignore
+        message: error?.data.message,
+        color: "red",
+      });
+    console.log(error);
+  }, [isSuccess, isError]);
 
   return (
     <div className="flex justify-center items-center py-20 md:pt-14">
-      <div className="content flex flex-col justify-center items-center gap-2 bg-white rounded-3xl p-6 w-11/12 sm:w-auto sm:py-12 sm:px-24">
+      <div className="content flex flex-col justify-center items-center gap-2 bg-white rounded-3xl p-6 w-11/12 sm:w-auto">
         <h3>Settings</h3>
         <form
-          className="flex flex-col justify-center items-center gap-4"
+          className="flex flex-col justify-center items-center gap-4 w-80 max-w-full"
           onSubmit={handleSubmit((data: any) => submitFun(data))}
         >
-          <Input.Wrapper
-            error={errors.fullName?.message}
-            id="fullName"
-            label="Full name"
-            className="w-full"
-          >
-            <Input id="fullName" {...register("fullName")} />
-          </Input.Wrapper>
-          <Input.Wrapper
-            error={errors.phoneNumber?.message}
-            id="phoneNumber"
-            label="Phone number"
-            className="w-full"
-          >
-            <Input id="phoneNumber" {...register("phoneNumber")} />
-          </Input.Wrapper>
           <PasswordInput
             className="w-full"
-            {...register("oldPassword")}
+            {...register("old_password")}
             label="Old password"
-            error={errors.oldPassword?.message}
+            error={errors.old_password?.message}
             withAsterisk
           />
           <PasswordInput
             className="w-full"
-            {...register("newPassword")}
+            {...register("new_password")}
             label="New password"
-            error={errors.newPassword?.message}
+            error={errors.new_password?.message}
           />
-          <button
-            type="submit"
-            className=" w-full bg-perfBlue text-white font-medium py-3 mt-4 rounded-lg"
-          >
-            Save
-          </button>
+          <PasswordInput
+            className="w-full"
+            {...register("confirmNewPassword")}
+            label="Confirm New password"
+            error={errors.confirmNewPassword?.message}
+          />
+          <SubmitButton isLoading={isLoading} text="Save" />
         </form>
       </div>
     </div>

@@ -86,12 +86,46 @@ select:-webkit-autofill:focus {
 }
 
 @media only screen and (min-width: 992px) {
-  .subscription-board{
+  .subscription-board {
     height: 400px;
   }
-  
-  .most-popular-card{
+
+  .most-popular-card {
     height: 430px;
     bottom: 70px;
+  }
+}
+.play-icon {
+  background-color: #eb5757;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  border-radius: 7px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.mantine-Carousel-control,
+.mantine-Carousel-indicator {
+  background-color: #fff;
+}
+
+.mantine-Carousel-controls {
+  left: -50px;
+  right: -50px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+@media only screen and (max-width: 480px) {
+  .mantine-Carousel-controls {
+    left: 0px;
+    right: 0px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 }

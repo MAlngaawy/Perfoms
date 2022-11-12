@@ -28,10 +28,10 @@ export type Attendance = {
   max_score: number;
   coverage: number;
   day: string;
-  status: string;
+  status: "ATTENDED" | "ABSENT" | "UPCOMING";
   team: number;
 };
 
 export type PlayerAttendance = BaseGetAllType & {
-  results: Attendance[];
+  data: Attendance[];
 };
