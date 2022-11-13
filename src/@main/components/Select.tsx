@@ -46,6 +46,9 @@ const PerfSelect = ({
               borderRadius: 0,
               minHeight: 20,
             },
+            ".mantine-Select-label": {
+              fontSize: 10,
+            },
           }}
           className={className}
           label={label}
