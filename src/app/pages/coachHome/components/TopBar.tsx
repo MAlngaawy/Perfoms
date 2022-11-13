@@ -1,5 +1,6 @@
 import React from "react";
 import { Radio } from "@mantine/core";
+import { Link } from "react-router-dom";
 
 type Props = {
   checked: "Attendance" | "Performance" | "Team info";
@@ -73,7 +74,7 @@ const TopBar = ({ checked, setChecked }: Props) => {
           label="Team info"
         />
         <button className="bg-perfBlue text-white text-xs py-2 px-10 rounded-3xl">
-          Certificate
+          <Link to="/certificate">Certificate</Link>
         </button>
       </Radio.Group>
     </div>

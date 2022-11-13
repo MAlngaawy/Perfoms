@@ -17,6 +17,7 @@ import ProfilePageConfig from "~/app/pages/profile/ProfileConfig";
 import SettingsConfig from "~/app/pages/settings/SettingsConfig";
 import MediaEventConfig from "../pages/media/MediaEvent/MediaEventConfig";
 import CoachHomeConfig from "../pages/coachHome/CoachHomeConfig";
+import CertificatePageConfig from "../pages/Certificate/CertificateConfig";
 
 const routeConfigs: PagesRouteConfig[] = [
   SignInConfig,
@@ -33,6 +34,7 @@ const routeConfigs: PagesRouteConfig[] = [
   SettingsConfig,
   MediaEventConfig,
   CoachHomeConfig,
+  CertificatePageConfig,
 ];
 
 const routes: AppRouteObject[] = [
