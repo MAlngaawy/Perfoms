@@ -13,6 +13,7 @@ export type AddPlayerType = {
   height: number;
   phone: string;
   icon?: string;
+  kpis?: {}; // Added this optional key to fix tye typescript error in the chart component
 };
 
 export type Sport = {
