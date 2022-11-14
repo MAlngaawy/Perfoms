@@ -1,7 +1,24 @@
-import React, { useState } from "react";
-import { Grid, Button, Modal, Group } from "@mantine/core";
-import AppIcons from "../core/AppIcons";
+import React, { useState, ReactNode } from "react";
+import {
+  Grid,
+  Button,
+  Modal,
+  Group,
+  Input,
+  Textarea,
+  MultiSelect,
+} from "@mantine/core";
+import { DatePicker } from "@mantine/dates";
 
+import AppIcons from "../core/AppIcons";
+import { Controller, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import Resizer from "react-image-file-resizer";
+import cn from "classnames";
+import SubmitButton from "~/@main/components/SubmitButton";
+
+// Props Types
 type Props = {
   id: number;
   role?: "Coach" | "Supervisor";
@@ -84,15 +101,192 @@ export default CoachPersonalInfo;
 // Edit Coach Personal Data Modal
 function EditCoachData() {
   const [opened, setOpened] = useState(false);
+  const [playerImage, setPlayerImage] = React.useState<string | unknown>("");
+  const [playerImagePreview, setPlayerImagePreview] = React.useState("null");
+
+  // Form Schema
+  const schema = yup.object().shape({
+    // image: yup.mixed().required("File is required"),
+    name: yup.string().required("Your child name is Required!"),
+    bio: yup.string(),
+    teams: yup.array().required(),
+    universty: yup.string(),
+    degree: yup.string(),
+    startYear: yup.date(),
+    endYear: yup.date(),
+  });
+
+  // use Form Config
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    control,
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  // Submit Form Function
+  const onSubmitFunction = (data: any) => {
+    console.log({ ...data, icon: playerImage });
+    setOpened(false);
+    setPlayerImage(null);
+    reset({
+      image: "",
+      name: "",
+      bio: "",
+      teams: [],
+      universty: "",
+      degree: "",
+      startYear: "",
+      endYear: "",
+    });
+  };
+
+  // Image Functions
+  // Resize the image size
+  const resizeFile = (file: any) =>
+    new Promise((resolve) => {
+      Resizer.imageFileResizer(
+        file,
+        100,
+        100,
+        "JPEG",
+        100,
+        0,
+        (uri: any) => {
+          resolve(uri);
+        },
+        "base64"
+      );
+    });
+
+  // function to access file uploaded then convert to base64 then add it to the data state
+  const uploadImage = async (e: any) => {
+    try {
+      const file = e.target.files[0];
+      const image = await resizeFile(file);
+      console.log(image);
+      setPlayerImage(image);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <>
-      <Modal
-        opened={opened}
-        onClose={() => setOpened(false)}
-        title="Introduce yourself!"
-      >
-        <h1>This is Modal Content</h1>
+      <Modal opened={opened} onClose={() => setOpened(false)}>
+        <form
+          className="flex flex-col gap-4 "
+          onSubmit={handleSubmit(onSubmitFunction)}
+        >
+          {/* Image Upload */}
+          <div className=" relative my-2 bg-gray-300 overflow-hidden flex justify-center  items-center  mx-auto w-28  h-28 rounded-lg ">
+            <Button
+              {...register("image")}
+              className="w-full h-full hover:bg-perfGray3"
+              component="label"
+            >
+              <img
+                className={cn("", {
+                  hidden: playerImage,
+                })}
+                src="/assets/images/Vector.png"
+                alt="upload icon"
+              />
+              <img
+                className={cn(
+                  " absolute rounded-lg w-full -h-full max-w-full max-h-full object-cover left-0 top-0",
+                  {
+                    hidden: !playerImage,
+                  }
+                )}
+                src={playerImagePreview && playerImagePreview}
+                alt="upload icon"
+              />
+              <input
+                hidden
+                accept="image/*"
+                multiple
+                type="file"
+                onChange={(e: any) => {
+                  console.log(e.target.files[0]);
+                  setPlayerImagePreview(URL.createObjectURL(e.target.files[0]));
+                  uploadImage(e);
+                }}
+              />
+            </Button>
+            {errors.image && (
+              <p className="text-red text-xs text-left">File is required!</p>
+            )}
+          </div>
+
+          {/*Name Input  */}
+          <Input.Wrapper
+            error={errors.name && (errors.name.message as ReactNode)}
+          >
+            <Input placeholder="Add Your Name" {...register("name")} />
+          </Input.Wrapper>
+
+          {/* Bio Input */}
+          <Textarea
+            placeholder="Your Bio"
+            withAsterisk
+            error={errors.bio && (errors.bio.message as ReactNode)}
+            {...register("bio")}
+          />
+
+          {/* Select Team MultiSelect Component */}
+          <Controller
+            {...register("teams")}
+            render={({ field }) => (
+              <MultiSelect
+                // className="w-full"
+                data={[
+                  { value: "1", label: "Tea One" },
+                  { value: "2", label: "Tea Two" },
+                ]}
+                placeholder="Select Your Teams"
+                {...field}
+                error={errors.teams && (errors.teams.message as ReactNode)}
+              />
+            )}
+            control={control}
+          />
+
+          {/*Degree Input  */}
+          <Input.Wrapper
+            error={errors.degree && (errors.degree.message as ReactNode)}
+          >
+            <Input placeholder="Degree" {...register("degree")} />
+          </Input.Wrapper>
+
+          {/*Universty Input  */}
+          <Input.Wrapper
+            error={errors.universty && (errors.universty.message as ReactNode)}
+          >
+            <Input placeholder="Universty Name" {...register("universty")} />
+          </Input.Wrapper>
+
+          {/* Start And End Year */}
+          <Controller
+            {...register("startYear")}
+            render={({ field }) => (
+              <DatePicker {...field} placeholder="Pick Start date" />
+            )}
+            control={control}
+          />
+          <Controller
+            {...register("endYear")}
+            render={({ field }) => (
+              <DatePicker {...field} placeholder="Pick End date" />
+            )}
+            control={control}
+          />
+
+          <SubmitButton isLoading={false} text="Send" />
+        </form>
       </Modal>
 
       <Group position="center">

@@ -82,7 +82,10 @@ function AddButton() {
     <>
       <Modal
         opened={opened}
-        onClose={() => setOpened(false)}
+        onClose={() => {
+          reset({ type: "", year: "", place: "" });
+          setOpened(false);
+        }}
         title="Introduce yourself!"
       >
         <form
