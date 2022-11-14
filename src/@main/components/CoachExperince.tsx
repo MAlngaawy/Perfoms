@@ -27,7 +27,7 @@ const CoachExperince = (props: Props) => {
             </h3>
             <ul className="list-disc list-outside ml-8">
               {oneExp.works.map((work) => (
-                <li className="text-xs font-normal text-perfGray3  my-1">
+                <li className="text-xs font-normal text-perfGray3  my-4">
                   {work}
                 </li>
               ))}
@@ -42,7 +42,7 @@ const CoachExperince = (props: Props) => {
             {props.qualifications.map((oneQualifications) => (
               <li
                 key={oneQualifications}
-                className="text-xs font-normal text-perfGray3 my-1"
+                className="text-xs font-normal text-perfGray3 my-4"
               >
                 {oneQualifications}
               </li>
@@ -54,7 +54,7 @@ const CoachExperince = (props: Props) => {
 
           <ul className="list-disc list-outside ml-8">
             {props.courses.map((course) => (
-              <li className="text-xs font-normal text-perfGray3 my-1">
+              <li className="text-xs font-normal text-perfGray3 my-4">
                 {course}
               </li>
             ))}
