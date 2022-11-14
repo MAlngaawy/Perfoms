@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { Modal, Group } from "@mantine/core";
 
 type Props = {
   data: {
@@ -6,9 +7,10 @@ type Props = {
     year: number;
     place: string;
   }[];
+  editMode?: boolean;
 };
 
-const CoachAchievements = ({ data }: Props) => {
+const CoachAchievements = ({ data, editMode }: Props) => {
   return (
     <div className="bg-white flex flex-col gap-4 h-full rounded-lg md:rounded-2xl p-4 pt-10">
       <div className="title">
@@ -36,9 +38,37 @@ const CoachAchievements = ({ data }: Props) => {
             </div>
           </div>
         ))}
+        {editMode && <AddButton />}
       </div>
     </div>
   );
 };
 
 export default CoachAchievements;
+
+// Add Achevment Form
+
+function AddButton() {
+  const [opened, setOpened] = useState(false);
+
+  return (
+    <>
+      <Modal
+        opened={opened}
+        onClose={() => setOpened(false)}
+        title="Introduce yourself!"
+      >
+        <h1>This is Modal Content</h1>
+      </Modal>
+
+      <Group position="center">
+        <button
+          onClick={() => setOpened(true)}
+          className="text-sm xl:text-base p-2 transform hover:scale-105 duration-100 bg-white border border-perfGray3 rounded-lg text-perfGray3"
+        >
+          + Add achievements
+        </button>
+      </Group>
+    </>
+  );
+}

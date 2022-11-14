@@ -1,6 +1,6 @@
-import { Grid } from "@mantine/core";
-
-import { Button } from "@mantine/core";
+import React, { useState } from "react";
+import { Grid, Button, Modal, Group } from "@mantine/core";
+import AppIcons from "../core/AppIcons";
 
 type Props = {
   id: number;
@@ -16,6 +16,7 @@ type Props = {
     degree: string;
     universty?: string;
   }[];
+  editMode?: boolean;
 };
 
 const CoachPersonalInfo = (props: Props) => {
@@ -72,8 +73,40 @@ const CoachPersonalInfo = (props: Props) => {
           </div>
         ))}
       </div>
+
+      {props.editMode && <EditCoachData />}
     </div>
   );
 };
 
 export default CoachPersonalInfo;
+
+// Edit Coach Personal Data Modal
+function EditCoachData() {
+  const [opened, setOpened] = useState(false);
+
+  return (
+    <>
+      <Modal
+        opened={opened}
+        onClose={() => setOpened(false)}
+        title="Introduce yourself!"
+      >
+        <h1>This is Modal Content</h1>
+      </Modal>
+
+      <Group position="center">
+        <button
+          onClick={() => setOpened(true)}
+          className="text-sm flex gap-2 xl:text-base p-2 transform hover:scale-105 duration-100 bg-white border border-perfGray3 rounded-lg text-perfGray3"
+        >
+          <AppIcons
+            className="w-5 h-5 text-perfGray3"
+            icon="PencilSquareIcon:outline"
+          />{" "}
+          <span>Edit Coach Data</span>
+        </button>
+      </Group>
+    </>
+  );
+}

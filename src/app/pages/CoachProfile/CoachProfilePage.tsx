@@ -3,6 +3,7 @@ import { Grid } from "@mantine/core";
 import CoachPersonalInfo from "~/@main/components/CoachPersonalInfo";
 import CoachExperince from "~/@main/components/CoachExperince";
 import CoachAchievements from "~/@main/components/CoachAchievements";
+import { useState } from "react";
 
 type Props = {};
 
@@ -74,10 +75,13 @@ const coachExp = {
 };
 
 const CoachProfilePage = (props: Props) => {
+  const [editMode, setEditMode] = useState(true);
+
   return (
     <Grid className="p-4" gutter="sm">
       <Grid.Col xs={12} md={3}>
         <CoachPersonalInfo
+          editMode={editMode}
           id={1}
           role="Coach"
           name="Mohammed Ali"
@@ -101,10 +105,10 @@ const CoachProfilePage = (props: Props) => {
         />
       </Grid.Col>
       <Grid.Col xs={12} md={7}>
-        <CoachExperince {...coachExp} />
+        <CoachExperince editMode={editMode} {...coachExp} />
       </Grid.Col>
       <Grid.Col xs={12} md={2}>
-        <CoachAchievements data={coachAchev} />
+        <CoachAchievements editMode={editMode} data={coachAchev} />
       </Grid.Col>
     </Grid>
   );
