@@ -1,6 +1,11 @@
-import React, { useState } from "react";
-import { Modal, Group } from "@mantine/core";
+import React, { useState, ReactNode } from "react";
+import { Modal, Group, Input, Textarea } from "@mantine/core";
 import AppIcons from "~/@main/core/AppIcons";
+import { Controller, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import SubmitButton from "~/@main/components/SubmitButton";
+import { DatePicker } from "@mantine/dates";
 
 type Props = {
   experinces: {
@@ -90,7 +95,36 @@ const TitleWithIcon = ({ name }: { name: string }) => {
 // Add Experinces Modal
 function AddExperinces() {
   const [opened, setOpened] = useState(false);
+  // Form Schema
+  const schema = yup.object().shape({
+    startYear: yup.date(),
+    endYear: yup.date(),
+    title: yup.string().required(),
+    works: yup.string(),
+  });
 
+  // use Form Config
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    control,
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  // Submit Form Function
+  const onSubmitFunction = (data: any) => {
+    console.log(data);
+    setOpened(false);
+    reset({
+      startYear: "",
+      endYear: "",
+      title: "",
+      works: "",
+    });
+  };
   return (
     <>
       <Modal
@@ -98,7 +132,43 @@ function AddExperinces() {
         onClose={() => setOpened(false)}
         title="Introduce yourself!"
       >
-        <h1>This is Modal Content</h1>
+        <form
+          className="flex flex-col gap-4 "
+          onSubmit={handleSubmit(onSubmitFunction)}
+        >
+          {/*Name Input  */}
+          <Input.Wrapper
+            error={errors.name && (errors.name.message as ReactNode)}
+          >
+            <Input placeholder="Add Title" {...register("title")} />
+          </Input.Wrapper>
+
+          {/* Start And End Year */}
+          <Controller
+            {...register("startYear")}
+            render={({ field }) => (
+              <DatePicker {...field} placeholder="Pick Start date" />
+            )}
+            control={control}
+          />
+          <Controller
+            {...register("endYear")}
+            render={({ field }) => (
+              <DatePicker {...field} placeholder="Pick End date" />
+            )}
+            control={control}
+          />
+
+          {/* Works Input */}
+          <Textarea
+            placeholder="Describe the experinces you got"
+            withAsterisk
+            error={errors.bio && (errors.bio.message as ReactNode)}
+            {...register("works")}
+          />
+
+          <SubmitButton isLoading={false} text="Send" />
+        </form>
       </Modal>
 
       <Group position="center">
@@ -117,14 +187,51 @@ function AddExperinces() {
 function AddQualifications() {
   const [opened, setOpened] = useState(false);
 
+  const schema = yup.object().shape({
+    qualification: yup
+      .string()
+      .required("Please add your qualifications to send"),
+  });
+
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const onSubmit = (data: any) => {
+    console.log(data);
+    reset({ qualification: "" });
+    setOpened(false);
+  };
+
   return (
     <>
       <Modal
         opened={opened}
-        onClose={() => setOpened(false)}
-        title="Introduce yourself!"
+        onClose={() => {
+          reset({ qualification: "" });
+          setOpened(false);
+        }}
       >
-        <h1>This is Modal Content</h1>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Input.Wrapper
+            error={
+              errors.qualification &&
+              (errors.qualification.message as ReactNode)
+            }
+          >
+            <Input
+              placeholder="Add Qualifiactions"
+              {...register("qualification")}
+            />
+          </Input.Wrapper>
+
+          <SubmitButton isLoading={false} text="Send" />
+        </form>
       </Modal>
 
       <Group position="center">
@@ -143,14 +250,43 @@ function AddQualifications() {
 function AddCourses() {
   const [opened, setOpened] = useState(false);
 
+  const schema = yup.object().shape({
+    course: yup.string().required("Please add your course to send"),
+  });
+
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const onSubmit = (data: any) => {
+    console.log(data);
+    reset({ course: "" });
+    setOpened(false);
+  };
+
   return (
     <>
       <Modal
         opened={opened}
-        onClose={() => setOpened(false)}
-        title="Introduce yourself!"
+        onClose={() => {
+          reset({ qualification: "" });
+          setOpened(false);
+        }}
       >
-        <h1>This is Modal Content</h1>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Input.Wrapper
+            error={errors.course && (errors.course.message as ReactNode)}
+          >
+            <Input placeholder="Add Course" {...register("course")} />
+          </Input.Wrapper>
+
+          <SubmitButton isLoading={false} text="Send" />
+        </form>
       </Modal>
 
       <Group position="center">
