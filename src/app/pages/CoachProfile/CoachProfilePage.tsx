@@ -78,39 +78,58 @@ const CoachProfilePage = (props: Props) => {
   const [editMode, setEditMode] = useState(true);
 
   return (
-    <Grid className="p-4" gutter="sm">
-      <Grid.Col xs={12} md={3}>
-        <CoachPersonalInfo
-          editMode={editMode}
-          id={1}
-          role="Coach"
-          name="Mohammed Ali"
-          teams={["Team 1", "Team 2", "Team 3", "Team 1", "Team 2", "Team 3"]}
-          sport="Taekwondo"
-          bio="Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic dolorum nihil sunt cum tempore numquam, alias laboriosam similique eaque perferendis temporibus repellat? Delectus deserunt aspernatur saepe voluptas ad. Deserunt, excepturi!"
-          education={[
-            {
-              from: "10/11/2022",
-              to: "11/11/2025",
-              degree: "Bachelor of Physical Education",
-              universty: "Universty of cairo",
-            },
-            {
-              from: "10/11/2022",
-              to: "11/11/2025",
-              degree: "Bachelor of Physical Education",
-              universty: "Universty of cairo",
-            },
-          ]}
-        />
-      </Grid.Col>
-      <Grid.Col xs={12} md={7}>
-        <CoachExperince editMode={editMode} {...coachExp} />
-      </Grid.Col>
-      <Grid.Col xs={12} md={2}>
-        <CoachAchievements editMode={editMode} data={coachAchev} />
-      </Grid.Col>
-    </Grid>
+    <>
+      <div className="edit w-full px-20 flex justify-end items-center mt-2">
+        {editMode ? (
+          <button
+            className="bg-perfBlue  border rounded-lg text-white py-2 px-6 cursor-pointer transform hover:scale-105"
+            onClick={() => setEditMode(false)}
+          >
+            Save
+          </button>
+        ) : (
+          <button
+            className="bg-transparent rounded-lg border-perfBlue border text-perfBlue py-2 px-6 cursor-pointer transform hover:scale-105"
+            onClick={() => setEditMode(true)}
+          >
+            Edit
+          </button>
+        )}
+      </div>
+      <Grid className="p-4" gutter="sm">
+        <Grid.Col xs={12} md={3}>
+          <CoachPersonalInfo
+            editMode={editMode}
+            id={1}
+            role="Coach"
+            name="Mohammed Ali"
+            teams={["Team 1", "Team 2", "Team 3", "Team 1", "Team 2", "Team 3"]}
+            sport="Taekwondo"
+            bio="Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic dolorum nihil sunt cum tempore numquam, alias laboriosam similique eaque perferendis temporibus repellat? Delectus deserunt aspernatur saepe voluptas ad. Deserunt, excepturi!"
+            education={[
+              {
+                from: "10/11/2022",
+                to: "11/11/2025",
+                degree: "Bachelor of Physical Education",
+                universty: "Universty of cairo",
+              },
+              {
+                from: "10/11/2022",
+                to: "11/11/2025",
+                degree: "Bachelor of Physical Education",
+                universty: "Universty of cairo",
+              },
+            ]}
+          />
+        </Grid.Col>
+        <Grid.Col xs={12} md={7}>
+          <CoachExperince editMode={editMode} {...coachExp} />
+        </Grid.Col>
+        <Grid.Col xs={12} md={2}>
+          <CoachAchievements editMode={editMode} data={coachAchev} />
+        </Grid.Col>
+      </Grid>
+    </>
   );
 };
 
