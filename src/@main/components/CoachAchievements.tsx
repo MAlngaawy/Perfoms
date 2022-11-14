@@ -1,5 +1,8 @@
-import React, { useState } from "react";
-import { Modal, Group } from "@mantine/core";
+import React, { useState, ReactNode } from "react";
+import { Modal, Group, Input } from "@mantine/core";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 type Props = {
   data: {
@@ -51,6 +54,30 @@ export default CoachAchievements;
 function AddButton() {
   const [opened, setOpened] = useState(false);
 
+  // Form Schema
+  const schema = yup.object().shape({
+    type: yup.string().required(),
+    year: yup.number().required(),
+    place: yup.string().required(),
+  });
+
+  // use Form Config
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  // Submit Form Function
+  const onSubmitFunction = (data: any) => {
+    console.log(data);
+    setOpened(false);
+    reset({ type: "", year: "", place: "" });
+  };
+
   return (
     <>
       <Modal
@@ -58,7 +85,38 @@ function AddButton() {
         onClose={() => setOpened(false)}
         title="Introduce yourself!"
       >
-        <h1>This is Modal Content</h1>
+        <form
+          className="flex flex-col gap-4 "
+          onSubmit={handleSubmit(onSubmitFunction)}
+        >
+          <Input.Wrapper
+            error={errors.type && (errors.type.message as ReactNode)}
+          >
+            <Input placeholder="Medal Type" {...register("type")} />
+          </Input.Wrapper>
+
+          <Input.Wrapper
+            error={errors.year && (errors.year.message as ReactNode)}
+          >
+            <Input
+              placeholder="in any year you got this modal"
+              {...register("year")}
+            />
+          </Input.Wrapper>
+
+          <Input.Wrapper
+            error={errors.place && (errors.place.message as ReactNode)}
+          >
+            <Input
+              placeholder="Where you got this medal"
+              {...register("place")}
+            />
+          </Input.Wrapper>
+
+          <button type="submit" className="bg-perfBlue text-white p-2">
+            Send
+          </button>
+        </form>
       </Modal>
 
       <Group position="center">
