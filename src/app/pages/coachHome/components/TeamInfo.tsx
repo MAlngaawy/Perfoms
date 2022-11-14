@@ -157,10 +157,10 @@ const TeamInfo = (props: Props) => {
           className="bg-white p-4 rounded-3xl flex gap-4 justify-start items-center flex-wrap"
           span={12}
         >
-          {dummyData.map((player) => {
+          {dummyData.map((player, idx) => {
             return (
               <div
-                key={player.id}
+                key={idx}
                 className="shadow-xl cursor-pointer transform hover:scale-105 rounded-lg w-28 text-center bg-white flex flex-col justify-center items-center"
                 onClick={() => navigate("/")}
               >
