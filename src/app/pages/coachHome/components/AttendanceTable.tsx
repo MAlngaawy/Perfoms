@@ -1,5 +1,6 @@
-import React from "react";
+import React, { memo } from "react";
 import { Table, Checkbox, Avatar } from "@mantine/core";
+// import memo from "../../../layouts/layout/components/Navigation";
 
 type Props = {};
 
@@ -87,7 +88,7 @@ const AttendanceTable = (props: Props) => {
                   {thisDate.getFullYear()}
                 </td>
                 {players.map((player, index) => {
-                  console.log(player.id);
+                  console.log("1231321231");
                   return (
                     <>
                       <td>
@@ -113,4 +114,4 @@ const AttendanceTable = (props: Props) => {
     </div>
   );
 };
-export default AttendanceTable;
+export default memo(AttendanceTable);
