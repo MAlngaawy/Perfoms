@@ -1,7 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { Grid } from "@mantine/core";
-import CoachAchievements from "../app/pages/coaches/SingleCoach/components/CoachAchievements";
+import CoachAchievements from "~/@main/components/CoachAchievements";
 
 export default {
   title: "Cards/Coah Achievements",

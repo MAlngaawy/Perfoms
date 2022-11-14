@@ -72,7 +72,7 @@ const SaleStaticChart = () => {
     <div className="py-5">
       <ResponsiveContainer width="100%" height={280}>
         <BarChart
-          data={player.kpis.data.map((i) => ({
+          data={player?.kpis?.data.map((i) => ({
             name: i.kpi__name,
             id: i.id,
             progress: i.kpi__max_score,
@@ -108,7 +108,7 @@ const SaleStaticChart = () => {
               cursor: "pointer",
             }}
           >
-            {player.kpis.data.map((metric, index) => (
+            {player?.kpis?.data.map((metric, index) => (
               <Cell
                 key={index}
                 fill={
@@ -130,7 +130,7 @@ const SaleStaticChart = () => {
               cursor: "pointer",
             }}
           >
-            {player.kpis.data.map((metric) => {
+            {player?.kpis?.data.map((metric) => {
               return <Cell key={metric.id} fill="#BDBDBD" />;
             })}
           </Bar>
