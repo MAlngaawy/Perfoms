@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import DeleteButton from "./SubComponents/DeleteButton";
 
 type Props = {
   data: {
@@ -19,10 +20,10 @@ const Teams = ({ data }: Props) => {
         return (
           <div
             key={index}
-            className="team-card w-72 bg-white p-8 rounded-xl flex flex-col justify-center items-center gap-4"
+            className="team-card relative w-72 bg-white p-8 rounded-xl flex flex-col justify-center items-center gap-4"
           >
             <Link
-              to={`/:${team.id}`}
+              to={`teams/${team.id}`}
               className="bg-pagesBg rounded-full w-32 h-32 flex justify-center items-center"
             >
               <img className="w-4/5" src={team.icon} alt="icon" />
@@ -44,6 +45,11 @@ const Teams = ({ data }: Props) => {
                 <span className=" text-sm text-perfGray3">Players</span>
                 <span className="text-xl text-perfGray1">{team.players}</span>
               </div>
+            </div>
+
+            {/* Edit and Delete Buttons */}
+            <div className="flex absolute right-5 top-5">
+              <DeleteButton teamName={team.name} teamId={team.id} />
             </div>
           </div>
         );
