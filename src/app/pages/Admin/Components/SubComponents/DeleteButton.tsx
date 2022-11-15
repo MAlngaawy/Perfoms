@@ -13,10 +13,22 @@ const DeleteButton = ({ teamId, teamName }: Props) => {
   return (
     <div>
       <Modal opened={opened} onClose={() => setOpened(false)} title="Confirm!">
-        <div className="flex flex-col m-10">
+        <div className="flex flex-col gap-6 m-2 xs:m-10">
           <h2 className="text-perfSecondary font-bold ">
-            Are You Sure You Want To Delete {teamName} Team ?
+            Are You Sure You Want To Delete <br /> ({teamName}) Team ?
           </h2>
+          <button
+            onClick={() => {
+              console.log({
+                teamId: teamId,
+                teamName: teamName,
+              });
+              setOpened(false);
+            }}
+            className="bg-perfSecondary text-white rounded-lg p-4"
+          >
+            Yes, Confirm
+          </button>
         </div>
       </Modal>
 
