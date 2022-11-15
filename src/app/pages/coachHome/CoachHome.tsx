@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import TopBar from "./components/TopBar";
+import AppRadioGroub from "../../../@main/components/AppRadioGroub";
 import AttendanceTable from "./components/AttendanceTable";
 import PerformanceTable from "./components/PerformanceTable";
 import TeamInfo from "./components/TeamInfo";
 import { Button } from "@mantine/core";
+import { Link } from "react-router-dom";
 
 type Props = {};
 
@@ -13,11 +14,18 @@ const CoachHome = (props: Props) => {
 
   return (
     <div className="coah-home">
-      <div className="flex gap-4 my-4 mx-8">
-        <TopBar checked={checked} setChecked={setChecked} />
+      <div className="flex items-center flex-wrap gap-4 my-4 mx-8">
+        <AppRadioGroub
+          values={["Attendance", "Performance", "Team info"]}
+          checked={checked}
+          setChecked={setChecked}
+        />
         {/* <Button onClick={() => setChecked("Attendance")}>Attendances</Button>
         <Button onClick={() => setChecked("Performance")}>Performance</Button>
         <Button onClick={() => setChecked("Team info")}>Team info</Button> */}
+        <button className="bg-perfBlue text-white text-xs py-2 px-10 rounded-3xl">
+          <Link to="/certificate">Certificate</Link>
+        </button>
       </div>
 
       <div className={checked !== "Attendance" ? "hidden" : "block"}>
