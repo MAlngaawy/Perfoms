@@ -7,6 +7,7 @@ module.exports = {
     extend: {
       colors: {
         perfBlue: "#2F80ED",
+        perfBlue2: "#0D65DB",
         perfGray: "#8D8D8D",
         perfGray1: "#333333",
         perfGray2: "#4f4f4f",
@@ -25,6 +26,7 @@ module.exports = {
         fadedRed: "#eb57572f",
         pagesBg: "#f3f5f8",
         perfLightBlue: "#ECF4FF",
+        perfLightGray: "#F6F6F6",
       },
       screens: {
         xs: "576px",

@@ -21,7 +21,7 @@ body {
   outline: none !important;
 }
 
-input {
+input:not([type="radio"]):not([type="checkbox"]) {
   background-color: transparent !important;
 }
 
@@ -85,11 +85,21 @@ select:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0px 1000px #f3f5f8 inset !important;
 }
 
-.play-icon{
-  background-color: #EB5757;
-  top:50%;
+@media only screen and (min-width: 992px) {
+  .subscription-board {
+    height: 400px;
+  }
+
+  .most-popular-card {
+    height: 430px;
+    bottom: 70px;
+  }
+}
+.play-icon {
+  background-color: #eb5757;
+  top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   width: 50px;
   border-radius: 7px;
   height: 30px;
@@ -100,11 +110,11 @@ select:-webkit-autofill:focus {
 }
 
 .mantine-Carousel-control,
-.mantine-Carousel-indicator{
+.mantine-Carousel-indicator {
   background-color: #fff;
 }
 
-.mantine-Carousel-controls{
+.mantine-Carousel-controls {
   left: -50px;
   right: -50px;
   padding-left: 0;
@@ -112,7 +122,7 @@ select:-webkit-autofill:focus {
 }
 
 @media only screen and (max-width: 480px) {
-  .mantine-Carousel-controls{
+  .mantine-Carousel-controls {
     left: 0px;
     right: 0px;
     padding-left: 20px;
