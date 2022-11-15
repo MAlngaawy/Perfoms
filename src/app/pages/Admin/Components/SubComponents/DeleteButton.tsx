@@ -12,14 +12,12 @@ const DeleteButton = ({ teamId, teamName }: Props) => {
 
   return (
     <div>
-      <Modal
-        opened={opened}
-        onClose={() => setOpened(false)}
-        title="Introduce yourself!"
-      >
-        <h2 className="text-perfSecondary font-bold m-10">
-          Are You Sure You Want To Delete {teamName} Team ?
-        </h2>
+      <Modal opened={opened} onClose={() => setOpened(false)} title="Confirm!">
+        <div className="flex flex-col m-10">
+          <h2 className="text-perfSecondary font-bold ">
+            Are You Sure You Want To Delete {teamName} Team ?
+          </h2>
+        </div>
       </Modal>
 
       <Group position="center">
