@@ -16,7 +16,7 @@ export default {
 } as ComponentMeta<typeof Teams>;
 
 const Template: ComponentStory<typeof Teams> = (args) => (
-  <div className="bg-pagesBg w-full h-screen">
+  <div className="bg-pagesBg w-full min-h-screen">
     <Teams {...args} />
   </div>
 );

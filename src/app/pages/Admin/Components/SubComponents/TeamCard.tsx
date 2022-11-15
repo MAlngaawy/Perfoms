@@ -15,7 +15,7 @@ type Props = {
 
 const TeamCard = ({ team }: Props) => {
   return (
-    <div className="team-card relative w-72 bg-white p-8 rounded-xl flex flex-col justify-center items-center gap-4">
+    <div className="team-card relative w-full xs:w-72 bg-white p-8 rounded-xl flex flex-col justify-center items-center gap-4">
       <Link
         to={`teams/${team.id}`}
         className="bg-pagesBg rounded-full w-32 h-32 flex justify-center items-center"
