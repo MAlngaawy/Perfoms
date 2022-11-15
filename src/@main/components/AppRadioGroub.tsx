@@ -1,15 +1,15 @@
 import React from "react";
 import { Radio } from "@mantine/core";
-import { Link } from "react-router-dom";
 
 type Props = {
-  checked: "Attendance" | "Performance" | "Team info";
+  checked: string;
   setChecked: any;
+  values: string[];
 };
 
-const TopBar = ({ checked, setChecked }: Props) => {
+const AppRadioGroub = ({ checked, setChecked, values }: Props) => {
   return (
-    <div className="m-2">
+    <div className="">
       <Radio.Group
         value={checked}
         onChange={(checkedValue: string) => setChecked(checkedValue)}
@@ -17,9 +17,36 @@ const TopBar = ({ checked, setChecked }: Props) => {
         spacing="sm"
         offset="md"
         size="xs"
-        className="flex-wrap justify-center"
+        sx={{
+          ".mantine-Group-root": {
+            paddingTop: 0,
+          },
+        }}
+        className="flex-wrap justify-center p-0"
       >
-        <Radio
+        {values.map((value, ids) => {
+          return (
+            <Radio
+              sx={{
+                ".mantine-Radio-body": {
+                  backgroundColor: "#fff",
+                  alignItems: "baseline",
+                  padding: "10px 25px",
+                  borderRadius: "50px",
+                },
+                ".mantine-Radio-label": {
+                  cursor: "pointer",
+                },
+                " .mantine-Radio-radio": {
+                  cursor: "pointer",
+                },
+              }}
+              value={value}
+              label={value}
+            />
+          );
+        })}
+        {/* <Radio
           sx={{
             ".mantine-Radio-body": {
               backgroundColor: "#fff",
@@ -72,13 +99,10 @@ const TopBar = ({ checked, setChecked }: Props) => {
           }}
           value="Team info"
           label="Team info"
-        />
-        <button className="bg-perfBlue text-white text-xs py-2 px-10 rounded-3xl">
-          <Link to="/certificate">Certificate</Link>
-        </button>
+        /> */}
       </Radio.Group>
     </div>
   );
 };
 
-export default TopBar;
+export default AppRadioGroub;
