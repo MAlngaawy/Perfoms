@@ -35,11 +35,11 @@ const DeleteButton = ({ id, name, type }: Props) => {
 
       <Group position="center">
         <button
-          className="transform hover:scale-150"
+          className="transform hover:scale-125"
           onClick={() => setOpened(true)}
         >
           <AppIcons
-            className="w-5 h-5 text-perfGray3"
+            className="w-5 h-5 text-perfGray3 hover:text-perfSecondary"
             icon="TrashIcon:outline"
           />
         </button>
