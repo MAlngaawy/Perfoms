@@ -15,6 +15,8 @@ const dates = [
 const TeamCalendar = ({ teamId }: Props) => {
   const [value, setValue] = useState(null);
 
+  console.log(value);
+
   return (
     <div>
       <h2>Team Calendar</h2>
@@ -34,6 +36,7 @@ const TeamCalendar = ({ teamId }: Props) => {
             const day = date.getDate();
             return (
               <div
+                onClick={() => console.log(date)}
                 className={classNames("", {
                   "border rounded-full border-perfBlue": dates.includes(
                     date.getTime()

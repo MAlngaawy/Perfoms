@@ -3,11 +3,12 @@ import { Modal, Group } from "@mantine/core";
 import AppIcons from "./../../../../../@main/core/AppIcons";
 
 type Props = {
-  teamName: string;
-  teamId: number;
+  name: string;
+  id: number;
+  type: string;
 };
 
-const DeleteButton = ({ teamId, teamName }: Props) => {
+const DeleteButton = ({ id, name, type }: Props) => {
   const [opened, setOpened] = useState(false);
 
   return (
@@ -15,13 +16,13 @@ const DeleteButton = ({ teamId, teamName }: Props) => {
       <Modal opened={opened} onClose={() => setOpened(false)} title="Confirm!">
         <div className="flex flex-col gap-6 m-2 xs:m-10">
           <h2 className="text-perfSecondary font-bold ">
-            Are You Sure You Want To Delete <br /> ({teamName}) Team ?
+            Are You Sure You Want To Delete {type} ({name}) ?
           </h2>
           <button
             onClick={() => {
               console.log({
-                teamId: teamId,
-                teamName: teamName,
+                name: name,
+                id: id,
               });
               setOpened(false);
             }}

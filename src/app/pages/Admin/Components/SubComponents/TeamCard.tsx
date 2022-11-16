@@ -43,7 +43,7 @@ const TeamCard = ({ team }: Props) => {
       {/* Edit and Delete Buttons */}
       <div className="flex absolute right-5 top-5 gap-2">
         <EditButton teamName={team.name} teamId={team.id} />
-        <DeleteButton teamName={team.name} teamId={team.id} />
+        <DeleteButton name={team.name} id={team.id} type="Coach" />
       </div>
     </div>
   );
