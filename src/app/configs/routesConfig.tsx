@@ -19,6 +19,9 @@ import MediaEventConfig from "../pages/media/MediaEvent/MediaEventConfig";
 import CoachHomeConfig from "../pages/coachHome/CoachHomeConfig";
 import PlayersConfig from "../pages/players/PlayersConfig";
 import PlayerCardConfig from "../pages/players/PlayerCard/PlayerCardConfig";
+import CertificatePageConfig from "../pages/Certificate/CertificateConfig";
+import CoachProfileConfig from "../pages/CoachProfile/CoachProfileConfig";
+import AdminPageConfig from "../pages/Admin/AdminPageConfig";
 
 const routeConfigs: PagesRouteConfig[] = [
   SignInConfig,
@@ -37,6 +40,9 @@ const routeConfigs: PagesRouteConfig[] = [
   CoachHomeConfig,
   PlayersConfig,
   PlayerCardConfig,
+  CertificatePageConfig,
+  CoachProfileConfig,
+  AdminPageConfig,
 ];
 
 const routes: AppRouteObject[] = [

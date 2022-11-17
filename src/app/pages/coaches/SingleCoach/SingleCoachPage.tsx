@@ -1,9 +1,9 @@
 import React from "react";
 import { Grid } from "@mantine/core";
 
-import CoachPersonalInfo from "./components/CoachPersonalInfo";
-import CoachExperince from "./components/CoachExperince";
-import CoachAchievements from "./components/CoachAchievements";
+import CoachPersonalInfo from "~/@main/components/CoachPersonalInfo";
+import CoachExperince from "~/@main/components/CoachExperince";
+import CoachAchievements from "~/@main/components/CoachAchievements";
 
 type Props = {};
 
