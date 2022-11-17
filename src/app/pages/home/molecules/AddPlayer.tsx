@@ -9,6 +9,7 @@ import cn from "classnames";
 import Resizer from "react-image-file-resizer";
 import PerfSelect from "~/@main/components/Select";
 import { useAddPlayerMutation } from "~/app/store/parent/parentApi";
+import SubmitButton from "~/@main/components/SubmitButton";
 
 type Props = {};
 
@@ -324,10 +325,7 @@ const AddPlayer = (props: Props) => {
             />
           </div>
 
-          <input
-            className=" cursor-pointer w-full bg-perfBlue rounded-lg text-white text-xl py-2"
-            type="submit"
-          />
+          <SubmitButton isLoading={isLoading} text="Add Player" />
         </form>
       </Modal>
     </div>
