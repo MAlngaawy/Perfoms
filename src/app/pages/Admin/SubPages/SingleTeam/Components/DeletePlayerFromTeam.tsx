@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Modal, Group } from "@mantine/core";
-import AppIcons from "./../../../../../@main/core/AppIcons";
+import AppIcons from "./../../../../../../@main/core/AppIcons";
 
 type Props = {
   name: string;
@@ -8,7 +8,7 @@ type Props = {
   type: string;
 };
 
-const DeleteButton = ({ id, name, type }: Props) => {
+const DeletePlayerFromTeam = ({ id, name, type }: Props) => {
   const [opened, setOpened] = useState(false);
 
   return (
@@ -18,7 +18,7 @@ const DeleteButton = ({ id, name, type }: Props) => {
           <h2 className="text-perfSecondary text-center">
             Are You Sure You Want To Delete {type} ({name}) ?
           </h2>
-          <div className="flex justify-center items-center mt-4">
+          <div className="flex justify-around items-center mt-4">
             <button
               onClick={() => {
                 setOpened(false);
@@ -44,18 +44,16 @@ const DeleteButton = ({ id, name, type }: Props) => {
       </Modal>
 
       <Group position="center">
-        <button
-          className="transform hover:scale-125"
+        <div
           onClick={() => setOpened(true)}
+          className="hidden group-hover:flex justify-center items-center text-white gap-2 cursor-pointer hover:bg-perfGray1/90 p-2 w-full"
         >
-          <AppIcons
-            className="w-4 h-4 text-perfGray3 hover:text-perfSecondary"
-            icon="TrashIcon:outline"
-          />
-        </button>
+          <AppIcons className="w-5 h-5 text-white" icon="TrashIcon:outline" />
+          <span className="text-white">Delete </span>
+        </div>
       </Group>
     </div>
   );
 };
 
-export default DeleteButton;
+export default DeletePlayerFromTeam;

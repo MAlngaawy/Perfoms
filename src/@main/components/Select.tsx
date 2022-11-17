@@ -15,7 +15,7 @@ interface inputTypes {
   label?: string;
   error?: string | undefined | null | ReactNode;
   required?: boolean;
-  data: Array<Option>;
+  data: Array<Option> | string[];
   className?: string;
   control: any;
   placeholder?: string;

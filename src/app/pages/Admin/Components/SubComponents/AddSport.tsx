@@ -1,44 +1,31 @@
 import { useState, ReactNode } from "react";
 import { Modal, Button, Group, Input } from "@mantine/core";
-import AppIcons from "./../../../../../@main/core/AppIcons";
+import AppIcons from "../../../../../@main/core/AppIcons";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Resizer from "react-image-file-resizer";
 import cn from "classnames";
-import SubmitButton from "./../../../../../@main/components/SubmitButton";
-import PerfSelect from "./../../../../../@main/components/Select";
+import SubmitButton from "../../../../../@main/components/SubmitButton";
+import PerfSelect from "../../../../../@main/components/Select";
 
-type Props = {
-  teamName: string;
-  teamId: number;
-};
+type Props = {};
 
-const EditButton = ({ teamName, teamId }: Props) => {
+const AddSport = (props: Props) => {
   const [opened, setOpened] = useState(false);
   const [playerImage, setPlayerImage] = useState<string | unknown>("");
   const [playerImagePreview, setPlayerImagePreview] = useState("null");
 
   const schema = yup.object().shape({
     image: yup.mixed(),
-    ratingSchedule: yup.string().required("please chose the rating schedule"),
-    name: yup.string().required("please add the team name"),
-    sport: yup.string().required("please choose the sport"),
-    maxPlayersNumber: yup.number(),
-    fromAge: yup.number(),
-    toAge: yup.number(),
+    name: yup.string().required("please add the Sport name"),
   });
 
   const resetFields = () => {
     setPlayerImage(null);
     reset({
       image: "",
-      ratingSchedule: "",
       name: "",
-      sport: "",
-      maxPlayersNumber: "",
-      fromAge: "",
-      toAge: "",
     });
   };
 
@@ -47,7 +34,6 @@ const EditButton = ({ teamName, teamId }: Props) => {
     register,
     formState: { errors },
     reset,
-    control,
   } = useForm({
     resolver: yupResolver(schema),
   });
@@ -55,10 +41,6 @@ const EditButton = ({ teamName, teamId }: Props) => {
   // Submit Form Function
   const onSubmitFunction = (data: any) => {
     console.log({ ...data, icon: playerImage });
-    console.log("Team Prop Date To use in the request", {
-      teamId,
-      teamName,
-    });
     setOpened(false);
     resetFields();
   };
@@ -102,7 +84,7 @@ const EditButton = ({ teamName, teamId }: Props) => {
             resetFields();
             setOpened(false);
           }}
-          title={`Edit (${teamName}) Team `}
+          title={`Add Sport `}
         >
           <form
             className="flex flex-col gap-4"
@@ -154,21 +136,6 @@ const EditButton = ({ teamName, teamId }: Props) => {
               )} */}
             </div>
 
-            <PerfSelect
-              control={control}
-              placeholder="Rating Schedule"
-              data={[
-                { label: "Every Week", value: "Every Week" },
-                { label: "Every 2 Week", value: "Every 2 Week" },
-                { label: "Every 1 Month", value: "Every 1 Month" },
-              ]}
-              name="ratingSchedule"
-              error={
-                errors.ratingSchedule &&
-                (errors.ratingSchedule.message as ReactNode)
-              }
-            />
-
             <Input.Wrapper
               id="name"
               withAsterisk
@@ -192,115 +159,27 @@ const EditButton = ({ teamName, teamId }: Props) => {
                 id="name"
               />
             </Input.Wrapper>
-
-            <PerfSelect
-              control={control}
-              placeholder="Select Sport"
-              data={[
-                { label: "Sport One", value: "Sport One" },
-                { label: "Sport Two", value: "Sport Two" },
-                { label: "Sport Three", value: "Sport Three" },
-              ]}
-              name="sport"
-              error={errors.sport && (errors.sport.message as ReactNode)}
-            />
-
-            <Input.Wrapper
-              id="maxPlayersNumber"
-              withAsterisk
-              // label="Name"
-              error={
-                errors.maxPlayersNumber &&
-                (errors.maxPlayersNumber.message as ReactNode)
-              }
-            >
-              <Input
-                placeholder="Max Players Number"
-                type="number"
-                sx={{
-                  ".mantine-Input-input	": {
-                    border: 0,
-                    padding: 0,
-                    borderBottom: 1,
-                    borderStyle: "solid",
-                    borderRadius: 0,
-                    minHeight: 20,
-                  },
-                }}
-                className="border-b"
-                {...register("maxPlayersNumber")}
-                id="maxPlayersNumber"
-              />
-            </Input.Wrapper>
-
-            <Input.Wrapper
-              id="fromAge"
-              withAsterisk
-              // label="Name"
-              error={errors.fromAge && (errors.fromAge.message as ReactNode)}
-            >
-              <Input
-                placeholder="From Age"
-                type="number"
-                sx={{
-                  ".mantine-Input-input	": {
-                    border: 0,
-                    padding: 0,
-                    borderBottom: 1,
-                    borderStyle: "solid",
-                    borderRadius: 0,
-                    minHeight: 20,
-                  },
-                }}
-                className="border-b"
-                {...register("fromAge")}
-                id="fromAge"
-              />
-            </Input.Wrapper>
-
-            <Input.Wrapper
-              id="toAge"
-              withAsterisk
-              // label="Name"
-              error={errors.fromAge && (errors.fromAge.message as ReactNode)}
-            >
-              <Input
-                placeholder="To Age"
-                type="number"
-                sx={{
-                  ".mantine-Input-input	": {
-                    border: 0,
-                    padding: 0,
-                    borderBottom: 1,
-                    borderStyle: "solid",
-                    borderRadius: 0,
-                    minHeight: 20,
-                  },
-                }}
-                className="border-b"
-                {...register("toAge")}
-                id="toAge"
-              />
-            </Input.Wrapper>
-
-            <SubmitButton isLoading={false} text="Add Team" />
+            <SubmitButton isLoading={false} text="Add Sport" />
           </form>
         </Modal>
 
-        <Group position="center">
-          <button
-            className="transform hover:scale-150"
+        <Group position="center" className="h-full">
+          <div
             onClick={() => setOpened(true)}
+            className="h-full group hover:bg-white cursor-pointer  relative w-full bg-slate-300 p-12 rounded-xl flex flex-col justify-center items-center gap-4"
           >
             <AppIcons
-              className="w-5 h-5 text-perfGray3"
-              icon="PencilSquareIcon:outline"
+              className="text-perfGray2 w-16 h-16 group-hover:text-perfBlue"
+              icon="PlusIcon:outline"
             />
-          </button>
+            <span className="text-perfGray2 text-xl group-hover:text-perfBlue">
+              Add Sport
+            </span>
+          </div>
         </Group>
       </>
     </div>
   );
 };
 
-export default EditButton;
+export default AddSport;
