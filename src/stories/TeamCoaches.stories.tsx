@@ -4,7 +4,7 @@ import TeamCoaches from "../app/pages/Admin/SubPages/SingleTeam/Components/TeamC
 import { Grid } from "@mantine/core";
 
 export default {
-  title: "Admin/Team Calendar",
+  title: "Admin/Team Coaches",
   component: TeamCoaches,
 } as ComponentMeta<typeof TeamCoaches>;
 

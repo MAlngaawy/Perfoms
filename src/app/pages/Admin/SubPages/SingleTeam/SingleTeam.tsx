@@ -1,6 +1,7 @@
 import { Grid } from "@mantine/core";
 import TeamCalendar from "./Components/TeamCalendar";
 import TeamCoaches from "./Components/TeamCoaches";
+import TeamUpcomingEvents from "./Components/TeamUpcomingEvents";
 
 type Props = {};
 
@@ -32,6 +33,30 @@ const coaches = [
   },
 ];
 
+const events = [
+  {
+    name: "Test",
+    date: "11/11/2022",
+    address: "ELHaram",
+    icon: "https://c.ndtvimg.com/2022-03/mm7k3hj8_ukraine-orphanage-escape-reuters-650_625x300_06_March_22.jpg",
+    id: 1,
+  },
+  {
+    name: "Test",
+    date: "11/11/2022",
+    address: "ELHaram",
+    icon: "https://c.ndtvimg.com/2022-03/mm7k3hj8_ukraine-orphanage-escape-reuters-650_625x300_06_March_22.jpg",
+    id: 1,
+  },
+  {
+    name: "Test",
+    date: "11/11/2022",
+    address: "ELHaram",
+    icon: "https://c.ndtvimg.com/2022-03/mm7k3hj8_ukraine-orphanage-escape-reuters-650_625x300_06_March_22.jpg",
+    id: 1,
+  },
+];
+
 const SingleTeam = (props: Props) => {
   return (
     <div className="py-6 px-2">
@@ -47,7 +72,9 @@ const SingleTeam = (props: Props) => {
           </CardDiv>
         </Grid.Col>
         <Grid.Col span={12} sm={7} lg={3}>
-          <CardDiv>Events</CardDiv>
+          <CardDiv>
+            <TeamUpcomingEvents events={events} />
+          </CardDiv>
         </Grid.Col>
         <Grid.Col span={12} sm={6} lg={2}>
           <CardDiv>Info</CardDiv>
