@@ -2,33 +2,34 @@ import React, { useState, ReactNode, LegacyRef, forwardRef } from "react";
 import { Modal, Group, Avatar, Text, Select } from "@mantine/core";
 import SubmitButton from "../../../../../../@main/components/SubmitButton";
 import { Controller, useForm } from "react-hook-form";
+import PerfSelect from "../../../../../../@main/components/Select";
 
 type Props = {};
 
-const coachesDate = [
+const playersDate = [
   {
-    label: "Coach One",
+    label: "Player One",
     image:
       "https://previews.123rf.com/images/blueskyimage/blueskyimage1311/blueskyimage131101911/23810213-sport-trainer-portrait-of-happy-young-coach.jpg",
     id: 1,
     value: "1",
   },
   {
-    label: "Coach Two",
+    label: "Player Two",
     image:
       "https://static.clubs.nfl.com/image/private/t_person_squared_mobile/f_auto/jaguars/gpvbkyjpty6w3kpdkv9m.jpg",
     id: 2,
     value: "2",
   },
   {
-    label: "Coach Three",
+    label: "Player Three",
     image:
       "https://previews.123rf.com/images/blueskyimage/blueskyimage1311/blueskyimage131101911/23810213-sport-trainer-portrait-of-happy-young-coach.jpg",
     id: 3,
     value: "3",
   },
   {
-    label: "Coach Four",
+    label: "Player Four",
     image:
       "https://static.clubs.nfl.com/image/private/t_person_squared_mobile/f_auto/jaguars/gpvbkyjpty6w3kpdkv9m.jpg",
     id: 4,
@@ -36,7 +37,7 @@ const coachesDate = [
   },
 ];
 
-const AddCoachForm = (props: Props) => {
+const AddPlayer = (props: Props) => {
   const [opened, setOpened] = useState(false);
 
   const {
@@ -50,7 +51,7 @@ const AddCoachForm = (props: Props) => {
   const onSubmit = (data: any) => {
     console.log(data);
     setOpened(false);
-    reset({ coach: "" });
+    reset({ player: "" });
   };
 
   interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
@@ -79,14 +80,14 @@ const AddCoachForm = (props: Props) => {
           opened={opened}
           onClose={() => {
             setOpened(false);
-            reset({ coach: "" });
+            reset({ player: "" });
           }}
           title="Introduce yourself!"
         >
           <form onSubmit={handleSubmit(onSubmit)}>
             <Controller
               control={control}
-              name="coach"
+              name="player"
               render={({ field }) => (
                 <Select
                   {...field}
@@ -96,7 +97,7 @@ const AddCoachForm = (props: Props) => {
                   maxDropdownHeight={400}
                   // {...register("coach")}
                   nothingFound="No options"
-                  data={coachesDate}
+                  data={playersDate}
                   filter={(value, item) =>
                     item.label
                       ?.toLowerCase()
@@ -105,16 +106,16 @@ const AddCoachForm = (props: Props) => {
                 />
               )}
             />
-            <SubmitButton isLoading={false} text="Add Coach" />
+            <SubmitButton isLoading={false} text="Add Player" />
           </form>
         </Modal>
 
-        <Group position="left">
+        <Group position="left" className="w-full h-full">
           <button
-            className="px-6 py-2 my-6 bg-slate-300 text-perfGray3 rounded-3xl"
+            className="w-full h-full p-4 bg-slate-300 text-perfGray3 rounded-lg"
             onClick={() => setOpened(true)}
           >
-            + Add Coach
+            + Add Player
           </button>
         </Group>
       </>
@@ -122,4 +123,4 @@ const AddCoachForm = (props: Props) => {
   );
 };
 
-export default AddCoachForm;
+export default AddPlayer;

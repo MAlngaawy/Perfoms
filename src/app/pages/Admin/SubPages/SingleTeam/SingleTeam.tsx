@@ -78,7 +78,7 @@ const SingleTeam = (props: Props) => {
             <TeamUpcomingEvents events={events} />
           </CardDiv>
         </Grid.Col>
-        <Grid.Col span={12} sm={6} lg={2}>
+        <Grid.Col span={12} sm={5} lg={2}>
           <CardDiv>
             <TeamInfoCard />
           </CardDiv>

@@ -1,4 +1,6 @@
 import AppIcons from "../../../../../../@main/core/AppIcons";
+import AddPlayer from "./AddPLayerToTeam";
+import DeletePlayerFromTeam from "./DeletePlayerFromTeam";
 
 type Props = {};
 
@@ -121,6 +123,7 @@ const TeamPlayers = (props: Props) => {
         {players.map((player) => {
           return <SinglePlayer {...player} />;
         })}
+        <AddPlayer />
       </div>
     </div>
   );
@@ -137,10 +140,11 @@ const SinglePlayer = ({ id, image, name }: any) => {
           <AppIcons className="w-5 h-5 text-white" icon="UserIcon:outline" />
           <span className="text-white">View profile</span>
         </div>
-        <div className="hidden group-hover:flex justify-center items-center text-white gap-2 cursor-pointer hover:bg-perfGray1/90 p-2 w-full">
+        <DeletePlayerFromTeam id={id} name={name} type="player" />
+        {/* <div className="hidden group-hover:flex justify-center items-center text-white gap-2 cursor-pointer hover:bg-perfGray1/90 p-2 w-full">
           <AppIcons className="w-5 h-5 text-white" icon="TrashIcon:outline" />
           <span className="text-white">Delete </span>
-        </div>
+        </div> */}
       </div>
       <img
         className="rounded-lg w-full h-32 object-cover"
