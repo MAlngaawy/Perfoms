@@ -2,6 +2,7 @@ import { Grid } from "@mantine/core";
 import TeamCalendar from "./Components/TeamCalendar";
 import TeamCoaches from "./Components/TeamCoaches";
 import TeamInfoCard from "./Components/TeamInfoCard";
+import TeamPlayers from "./Components/TeamPlayers";
 import TeamUpcomingEvents from "./Components/TeamUpcomingEvents";
 
 type Props = {};
@@ -80,6 +81,11 @@ const SingleTeam = (props: Props) => {
         <Grid.Col span={12} sm={6} lg={2}>
           <CardDiv>
             <TeamInfoCard />
+          </CardDiv>
+        </Grid.Col>
+        <Grid.Col span={12}>
+          <CardDiv>
+            <TeamPlayers />
           </CardDiv>
         </Grid.Col>
       </Grid>
