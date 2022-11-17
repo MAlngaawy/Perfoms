@@ -9,17 +9,9 @@ import SubmitButton from "../../../../../../@main/components/SubmitButton";
 import AppIcons from "../../../../../../@main/core/AppIcons";
 import { DatePicker } from "@mantine/dates";
 
-type Props = {
-  event: {
-    icon: string;
-    name: string;
-    date: string;
-    address: string;
-    id: number;
-  };
-};
+type Props = {};
 
-const EditEventForm = ({ event }: Props) => {
+const AddEventForm = (props: Props) => {
   const [opened, setOpened] = useState(false);
   const [playerImage, setPlayerImage] = useState<string | unknown>("");
   const [playerImagePreview, setPlayerImagePreview] = useState("null");
@@ -37,18 +29,17 @@ const EditEventForm = ({ event }: Props) => {
     control,
     reset,
   } = useForm({
-    defaultValues: {
-      eventName: event.name,
-      eventDate: event.date,
-      eventLocation: event.address,
-    },
     resolver: yupResolver(schema),
   });
 
   // Submit Form Function
   const onSubmitFunction = (data: any) => {
     console.log({ ...data, icon: playerImage });
-    reset;
+    setPlayerImagePreview("null");
+    reset({
+      eventName: "",
+      eventLocation: "",
+    });
     setOpened(false);
   };
 
@@ -221,15 +212,12 @@ const EditEventForm = ({ event }: Props) => {
           </form>
         </Modal>
 
-        <Group position="center">
+        <Group position="left">
           <button
-            className="transform hover:scale-125"
+            className="px-6 py-2 my-6 bg-slate-300 text-perfGray3 rounded-3xl"
             onClick={() => setOpened(true)}
           >
-            <AppIcons
-              className="w-5 h-5 text-perfGray3 hover:text-blue-300"
-              icon={"PencilSquareIcon:outline"}
-            />
+            + Add Event
           </button>
         </Group>
       </>
@@ -237,4 +225,4 @@ const EditEventForm = ({ event }: Props) => {
   );
 };
 
-export default EditEventForm;
+export default AddEventForm;

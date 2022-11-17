@@ -1,5 +1,6 @@
 import AppIcons from "../../../../../../@main/core/AppIcons";
 import DeleteButton from "../../../Components/SubComponents/DeleteButton";
+import AddEventForm from "./AddEventForm";
 import EditEventForm from "./EditEventForm";
 
 type Props = {
@@ -54,6 +55,7 @@ const TeamUpcomingEvents = ({ events }: Props) => {
           </div>
         ))}
       </div>
+      <AddEventForm />
     </div>
   );
 };
