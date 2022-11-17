@@ -1,55 +1,55 @@
 import { useState, ReactNode } from "react";
 import { Modal, Button, Group, Input } from "@mantine/core";
-import { Controller, useForm } from "react-hook-form";
+import AppIcons from "../../../../../@main/core/AppIcons";
+import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Resizer from "react-image-file-resizer";
 import cn from "classnames";
-import SubmitButton from "../../../../../../@main/components/SubmitButton";
-import AppIcons from "../../../../../../@main/core/AppIcons";
-import { DatePicker } from "@mantine/dates";
+import SubmitButton from "../../../../../@main/components/SubmitButton";
+import PerfSelect from "../../../../../@main/components/Select";
 
 type Props = {
-  event: {
-    icon: string;
-    name: string;
-    date: string;
-    address: string;
-    id: number;
-  };
+  sportName: string;
+  sportId: number;
 };
 
-const EditEventForm = ({ event }: Props) => {
+const EditSport = ({ sportName, sportId }: Props) => {
   const [opened, setOpened] = useState(false);
   const [playerImage, setPlayerImage] = useState<string | unknown>("");
   const [playerImagePreview, setPlayerImagePreview] = useState("null");
-  const [value, setValue] = useState<any>();
+
   const schema = yup.object().shape({
-    eventName: yup.string().required("please add the Event name"),
-    eventDate: yup.date().required("Please add the event date"),
-    eventLocation: yup.string().required("please add the Event Location"),
+    image: yup.mixed(),
+    name: yup.string().required("please add the Sport name"),
   });
+
+  const resetFields = () => {
+    setPlayerImage(null);
+    reset({
+      image: "",
+      name: "",
+    });
+  };
 
   const {
     handleSubmit,
     register,
     formState: { errors },
-    control,
     reset,
   } = useForm({
-    defaultValues: {
-      eventName: event.name,
-      eventDate: event.date,
-      eventLocation: event.address,
-    },
     resolver: yupResolver(schema),
   });
 
   // Submit Form Function
   const onSubmitFunction = (data: any) => {
     console.log({ ...data, icon: playerImage });
-    reset;
+    console.log("Team Prop Date To use in the request", {
+      sportId,
+      sportName,
+    });
     setOpened(false);
+    resetFields();
   };
 
   // Image Functions
@@ -87,8 +87,11 @@ const EditEventForm = ({ event }: Props) => {
       <>
         <Modal
           opened={opened}
-          onClose={() => setOpened(false)}
-          title="Introduce yourself!"
+          onClose={() => {
+            resetFields();
+            setOpened(false);
+          }}
+          title={`Edit (${sportName}) Sport `}
         >
           <form
             className="flex flex-col gap-4"
@@ -97,7 +100,7 @@ const EditEventForm = ({ event }: Props) => {
             {/* Image Upload */}
             <div className=" relative my-2 bg-gray-300 overflow-hidden flex justify-center  items-center  mx-auto w-28  h-28 rounded-lg ">
               <Button
-                // {...register("image")}
+                {...register("image")}
                 className="w-full h-full hover:bg-perfGray3"
                 component="label"
               >
@@ -121,7 +124,7 @@ const EditEventForm = ({ event }: Props) => {
                 <Input
                   hidden
                   accept="image/*"
-                  // {...register("image")}
+                  {...register("image")}
                   name="image"
                   multiple
                   type="file"
@@ -135,17 +138,19 @@ const EditEventForm = ({ event }: Props) => {
                   }}
                 />
               </Button>
+              {/* {errors.image && (
+                <p className="text-red text-xs text-left">File is required!</p>
+              )} */}
             </div>
 
             <Input.Wrapper
-              id="eventName"
+              id="name"
               withAsterisk
-              error={
-                errors.eventName && (errors.eventName.message as ReactNode)
-              }
+              // label="Name"
+              error={errors.name && (errors.name.message as ReactNode)}
             >
               <Input
-                placeholder="Event Name"
+                placeholder="Name"
                 sx={{
                   ".mantine-Input-input	": {
                     border: 0,
@@ -157,78 +162,22 @@ const EditEventForm = ({ event }: Props) => {
                   },
                 }}
                 className="border-b"
-                {...register("eventName")}
-                id="eventName"
+                {...register("name")}
+                id="name"
               />
             </Input.Wrapper>
-
-            <Controller
-              {...register("eventDate")}
-              control={control}
-              render={({ field }) => {
-                return (
-                  <DatePicker
-                    sx={{
-                      ".mantine-DatePicker-input": {
-                        border: 0,
-                        padding: 0,
-                        borderBottom: 1,
-                        borderStyle: "solid",
-                        borderRadius: 0,
-                        minHeight: 20,
-                      },
-                    }}
-                    name={field.name}
-                    onChange={field.onChange}
-                    value={new Date(field.value)}
-                    error={
-                      errors.eventDate &&
-                      (errors.eventDate.message as ReactNode)
-                    }
-                    placeholder="Pick the event date"
-                  />
-                );
-              }}
-            />
-
-            <Input.Wrapper
-              id="eventLocation"
-              withAsterisk
-              error={
-                errors.eventLocation &&
-                (errors.eventLocation.message as ReactNode)
-              }
-            >
-              <Input
-                placeholder="Event Location"
-                sx={{
-                  ".mantine-Input-input	": {
-                    border: 0,
-                    padding: 0,
-                    borderBottom: 1,
-                    borderStyle: "solid",
-                    borderRadius: 0,
-                    minHeight: 20,
-                  },
-                }}
-                className="border-b"
-                {...register("eventLocation")}
-                id="eventLocation"
-              />
-            </Input.Wrapper>
-
-            <SubmitButton isLoading={false} text="Add Team" />
+            <SubmitButton isLoading={false} text="Edit Sport" />
           </form>
         </Modal>
 
         <Group position="center">
           <button
-            className="transform hover:scale-125"
+            className="transform hover:scale-150"
             onClick={() => setOpened(true)}
           >
             <AppIcons
-              className="w-4 h-4 text-perfGray3 hover:text-blue-300"
-              icon={"PencilSquareIcon:outline"}
+              className="w-4 h-4 text-perfGray3"
+              icon="PencilSquareIcon:outline"
             />
           </button>
         </Group>
@@ -237,4 +186,4 @@ const EditEventForm = ({ event }: Props) => {
   );
 };
 
-export default EditEventForm;
+export default EditSport;

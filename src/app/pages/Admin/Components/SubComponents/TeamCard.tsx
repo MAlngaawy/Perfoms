@@ -1,7 +1,6 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import DeleteButton from "./DeleteButton";
-import EditButton from "./EditButton";
+import EditButton from "./EditTeamButton";
 
 type Props = {
   team: {

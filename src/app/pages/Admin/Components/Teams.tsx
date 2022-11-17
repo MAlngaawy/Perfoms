@@ -1,6 +1,3 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import DeleteButton from "./SubComponents/DeleteButton";
 import TeamCard from "./SubComponents/TeamCard";
 import AddTeamCardForm from "../Components/SubComponents/AddTeamCardForm";
 

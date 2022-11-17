@@ -49,7 +49,7 @@ const DeleteButton = ({ id, name, type }: Props) => {
           onClick={() => setOpened(true)}
         >
           <AppIcons
-            className="w-5 h-5 text-perfGray3 hover:text-perfSecondary"
+            className="w-4 h-4 text-perfGray3 hover:text-perfSecondary"
             icon="TrashIcon:outline"
           />
         </button>

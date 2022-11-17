@@ -19,7 +19,7 @@ const TeamUpcomingEvents = ({ events }: Props) => {
       <h2>Team Choaches</h2>
       <div className="flex flex-col mt-4 gap-2">
         {events.map((event) => (
-          <div className="flex justify-between hover:bg-pagesBg">
+          <div className="flex justify-between p-1 rounded-lg hover:bg-pagesBg">
             <div className="oneEvent flex items-center gap-2">
               <div className="image w-16 h-16">
                 <img
