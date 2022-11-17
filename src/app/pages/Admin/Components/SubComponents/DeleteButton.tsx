@@ -15,21 +15,31 @@ const DeleteButton = ({ id, name, type }: Props) => {
     <div>
       <Modal opened={opened} onClose={() => setOpened(false)} title="Confirm!">
         <div className="flex flex-col gap-6 m-2 xs:m-10">
-          <h2 className="text-perfSecondary font-bold ">
+          <h2 className="text-perfSecondary text-center">
             Are You Sure You Want To Delete {type} ({name}) ?
           </h2>
-          <button
-            onClick={() => {
-              console.log({
-                name: name,
-                id: id,
-              });
-              setOpened(false);
-            }}
-            className="bg-perfSecondary text-white rounded-lg p-4"
-          >
-            Yes, Confirm
-          </button>
+          <div className="flex justify-center items-center mt-4">
+            <button
+              onClick={() => {
+                setOpened(false);
+              }}
+              className="bg-transparent border border-perfBlue text-perfBlue mx-auto w-fit  rounded-lg py-2 px-4"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={() => {
+                console.log({
+                  name: name,
+                  id: id,
+                });
+                setOpened(false);
+              }}
+              className="bg-perfSecondary mx-auto w-fit text-white rounded-lg py-2 px-4"
+            >
+              Yes
+            </button>
+          </div>
         </div>
       </Modal>
 
