@@ -22,6 +22,7 @@ import CoachProfileConfig from "../pages/CoachProfile/CoachProfileConfig";
 import AdminPageConfig from "../pages/Admin/AdminPageConfig";
 import SingleTeamPageConfig from "../pages/Admin/SubPages/SingleTeam/SingleTeamConfig";
 import SportKpisPageConfig from "../pages/Admin/SubPages/SportKpis/SportKpisConfig";
+import KpiMetricsPageConfig from "../pages/Admin/SubPages/KpiMetrics/KpiMetricsConfig";
 
 const routeConfigs: PagesRouteConfig[] = [
   SignInConfig,
@@ -43,6 +44,7 @@ const routeConfigs: PagesRouteConfig[] = [
   AdminPageConfig,
   SingleTeamPageConfig,
   SportKpisPageConfig,
+  KpiMetricsPageConfig,
 ];
 
 const routes: AppRouteObject[] = [

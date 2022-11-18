@@ -35,7 +35,6 @@ const kpis = [
 ];
 
 const SportKpis = (props: Props) => {
-  console.log("Test");
   return (
     <div className="admin-teams  flex flex-col xs:flex-row flex-wrap items-stretch gap-4 sm:m-6 p-2 sm:p-6">
       {kpis.map((kpi) => {
