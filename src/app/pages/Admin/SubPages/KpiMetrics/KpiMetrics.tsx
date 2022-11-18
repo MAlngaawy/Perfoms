@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import DeleteButton from "./../../Components/SubComponents/DeleteButton";
 import AddMetric from "./Components/AddMetric";
+import CreateActionsAndRecomm from "./Components/CreateActionsAndRecomm";
 import EditMetric from "./Components/EditMetric";
 
 type Props = {};
@@ -45,9 +46,12 @@ const KpiMetrics = (props: Props) => {
             </div>
             <h2 className="text-xl text-perfBlue">{metric.name}</h2>
             {/* Edit and Delete Buttons */}
-            <div className="flex absolute right-2 top-5 gap-2">
+            <div className="flex absolute left-2 top-5 gap-2">
               <EditMetric metricName={metric.name} metricId={metric.id} />
               <DeleteButton name={metric.name} id={metric.id} type="Metric" />
+            </div>
+            <div className="flex absolute right-2 top-5 gap-2">
+              <CreateActionsAndRecomm />
             </div>
           </div>
         );

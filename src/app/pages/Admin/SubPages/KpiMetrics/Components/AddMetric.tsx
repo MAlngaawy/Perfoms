@@ -10,15 +10,14 @@ import SubmitButton from "../../../../../../@main/components/SubmitButton";
 
 type Props = {};
 
+const schema = yup.object().shape({
+  image: yup.mixed(),
+  name: yup.string().required("please add the metric name"),
+});
 const AddMetric = (props: Props) => {
   const [opened, setOpened] = useState(false);
   const [playerImage, setPlayerImage] = useState<string | unknown>("");
   const [playerImagePreview, setPlayerImagePreview] = useState("null");
-
-  const schema = yup.object().shape({
-    image: yup.mixed(),
-    name: yup.string().required("please add the metric name"),
-  });
 
   const resetFields = () => {
     setPlayerImage(null);
