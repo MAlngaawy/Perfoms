@@ -1,23 +1,23 @@
 import { useState, ReactNode } from "react";
 import { Modal, Button, Group, Input } from "@mantine/core";
-import AppIcons from "../../../../../@main/core/AppIcons";
+import AppIcons from "../../../../../../@main/core/AppIcons";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Resizer from "react-image-file-resizer";
 import cn from "classnames";
-import SubmitButton from "../../../../../@main/components/SubmitButton";
+import SubmitButton from "../../../../../../@main/components/SubmitButton";
 
 type Props = {};
 
-const AddSport = (props: Props) => {
+const AddKpi = (props: Props) => {
   const [opened, setOpened] = useState(false);
   const [playerImage, setPlayerImage] = useState<string | unknown>("");
   const [playerImagePreview, setPlayerImagePreview] = useState("null");
 
   const schema = yup.object().shape({
     image: yup.mixed(),
-    name: yup.string().required("please add the Sport name"),
+    name: yup.string().required("please add the Kpi name"),
   });
 
   const resetFields = () => {
@@ -83,7 +83,7 @@ const AddSport = (props: Props) => {
             resetFields();
             setOpened(false);
           }}
-          title={`Add Sport `}
+          title={`Add Kpi `}
         >
           <form
             className="flex flex-col gap-4"
@@ -158,7 +158,7 @@ const AddSport = (props: Props) => {
                 id="name"
               />
             </Input.Wrapper>
-            <SubmitButton isLoading={false} text="Add Sport" />
+            <SubmitButton isLoading={false} text="Add Kpi" />
           </form>
         </Modal>
 
@@ -172,7 +172,7 @@ const AddSport = (props: Props) => {
               icon="PlusIcon:outline"
             />
             <span className="text-perfGray2 text-xl group-hover:text-perfBlue">
-              Add Sport
+              Add Kpi
             </span>
           </div>
         </Group>
@@ -181,4 +181,4 @@ const AddSport = (props: Props) => {
   );
 };
 
-export default AddSport;
+export default AddKpi;

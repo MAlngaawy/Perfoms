@@ -1,23 +1,26 @@
 import { useState, ReactNode } from "react";
 import { Modal, Button, Group, Input } from "@mantine/core";
-import AppIcons from "../../../../../@main/core/AppIcons";
+import AppIcons from "../../../../../../@main/core/AppIcons";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Resizer from "react-image-file-resizer";
 import cn from "classnames";
-import SubmitButton from "../../../../../@main/components/SubmitButton";
+import SubmitButton from "../../../../../../@main/components/SubmitButton";
 
-type Props = {};
+type Props = {
+  kpiName: string;
+  kpiId: number;
+};
 
-const AddSport = (props: Props) => {
+const EditKpi = ({ kpiName, kpiId }: Props) => {
   const [opened, setOpened] = useState(false);
   const [playerImage, setPlayerImage] = useState<string | unknown>("");
   const [playerImagePreview, setPlayerImagePreview] = useState("null");
 
   const schema = yup.object().shape({
     image: yup.mixed(),
-    name: yup.string().required("please add the Sport name"),
+    name: yup.string().required("please add the kpi name"),
   });
 
   const resetFields = () => {
@@ -40,6 +43,10 @@ const AddSport = (props: Props) => {
   // Submit Form Function
   const onSubmitFunction = (data: any) => {
     console.log({ ...data, icon: playerImage });
+    console.log("Team Prop Date To use in the request", {
+      kpiId,
+      kpiName,
+    });
     setOpened(false);
     resetFields();
   };
@@ -83,7 +90,7 @@ const AddSport = (props: Props) => {
             resetFields();
             setOpened(false);
           }}
-          title={`Add Sport `}
+          title={`Edit (${kpiName}) Kpi `}
         >
           <form
             className="flex flex-col gap-4"
@@ -158,27 +165,24 @@ const AddSport = (props: Props) => {
                 id="name"
               />
             </Input.Wrapper>
-            <SubmitButton isLoading={false} text="Add Sport" />
+            <SubmitButton isLoading={false} text="Edit Kpi" />
           </form>
         </Modal>
 
-        <Group position="center" className="h-full">
-          <div
+        <Group position="center">
+          <button
+            className="transform hover:scale-150"
             onClick={() => setOpened(true)}
-            className="h-full group hover:bg-white cursor-pointer  relative w-full bg-slate-300 p-12 rounded-xl flex flex-col justify-center items-center gap-4"
           >
             <AppIcons
-              className="text-perfGray2 w-16 h-16 group-hover:text-perfBlue"
-              icon="PlusIcon:outline"
+              className="w-4 h-4 text-perfGray3"
+              icon="PencilSquareIcon:outline"
             />
-            <span className="text-perfGray2 text-xl group-hover:text-perfBlue">
-              Add Sport
-            </span>
-          </div>
+          </button>
         </Group>
       </>
     </div>
   );
 };
 
-export default AddSport;
+export default EditKpi;

@@ -14,29 +14,29 @@ const sports = [
   },
   {
     name: "Sport One",
-    id: 1,
+    id: 2,
     icon: "https://cdn-icons-png.flaticon.com/512/8618/8618018.png",
   },
   {
     name: "Sport One",
-    id: 1,
+    id: 3,
     icon: "https://cdn-icons-png.flaticon.com/512/8618/8618018.png",
   },
   {
     name: "Sport One",
-    id: 1,
+    id: 4,
     icon: "https://cdn-icons-png.flaticon.com/512/8618/8618018.png",
   },
   {
     name: "Sport One",
-    id: 1,
+    id: 5,
     icon: "https://cdn-icons-png.flaticon.com/512/8618/8618018.png",
   },
 ];
 
 const Sports = (props: Props) => {
   return (
-    <div className="admin-teams  flex flex-col xs:flex-row flex-wrap items-stretch gap-6 sm:m-6 p-2 sm:p-6">
+    <div className="admin-teams  flex flex-col xs:flex-row flex-wrap items-stretch gap-4 sm:m-6 p-2 sm:p-6">
       {sports.map((sport) => {
         return (
           <div className="sport-card relative bg-white rounded-3xl p-12 flex flex-col justify-center items-center gap-4">

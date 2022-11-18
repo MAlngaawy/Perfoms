@@ -21,6 +21,7 @@ import CertificatePageConfig from "../pages/Certificate/CertificateConfig";
 import CoachProfileConfig from "../pages/CoachProfile/CoachProfileConfig";
 import AdminPageConfig from "../pages/Admin/AdminPageConfig";
 import SingleTeamPageConfig from "../pages/Admin/SubPages/SingleTeam/SingleTeamConfig";
+import SportKpisPageConfig from "../pages/Admin/SubPages/SportKpis/SportKpisConfig";
 
 const routeConfigs: PagesRouteConfig[] = [
   SignInConfig,
@@ -41,6 +42,7 @@ const routeConfigs: PagesRouteConfig[] = [
   CoachProfileConfig,
   AdminPageConfig,
   SingleTeamPageConfig,
+  SportKpisPageConfig,
 ];
 
 const routes: AppRouteObject[] = [
