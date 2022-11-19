@@ -7,7 +7,6 @@ interface PlayerNavProps {
 }
 
 const PlayerNav = ({ showCard, setShowCard }: PlayerNavProps) => {
-  console.log(showCard);
   return (
     <div className="flex flex-col m-1 md:m-3 md:flex-row gap-3 md:gap-0 items-center justify-between">
       <div className="flex flex-col md:flex-row items-center gap-4">

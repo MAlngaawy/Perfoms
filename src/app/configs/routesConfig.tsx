@@ -22,6 +22,8 @@ import PlayerCardConfig from "../pages/players/PlayerCard/PlayerCardConfig";
 import CertificatePageConfig from "../pages/Certificate/CertificateConfig";
 import CoachProfileConfig from "../pages/CoachProfile/CoachProfileConfig";
 import AdminPageConfig from "../pages/Admin/AdminPageConfig";
+import ParentCardConfig from "../pages/players/parentCard/ParentConfig";
+import NotifyParentConfig from "../pages/players/notifyParent/NotifyParentConfig";
 
 const routeConfigs: PagesRouteConfig[] = [
   SignInConfig,
@@ -43,6 +45,8 @@ const routeConfigs: PagesRouteConfig[] = [
   CertificatePageConfig,
   CoachProfileConfig,
   AdminPageConfig,
+  ParentCardConfig,
+  NotifyParentConfig,
 ];
 
 const routes: AppRouteObject[] = [

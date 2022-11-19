@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import Info from "~/@main/components/Info";
 
 interface ParentInfoCardProps {
@@ -9,8 +10,15 @@ interface ParentInfoCardProps {
 }
 
 const ParentInfoCard = (parent: ParentInfoCardProps) => {
+  const navigate = useNavigate();
+
   return (
-    <div className="p-4 m-1 md:m-3 md:h-76 bg-white rounded-3xl flex flex-col items-center md:items-start gap-1">
+    <div
+      onClick={() => {
+        navigate("/players/parent");
+      }}
+      className="p-4 m-1 md:m-3 md:h-76 bg-white rounded-3xl flex flex-col items-center md:items-start gap-1"
+    >
       <div>
         <div className="playerName">
           <h2>Parent's info</h2>
