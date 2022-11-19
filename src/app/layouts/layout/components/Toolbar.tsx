@@ -58,9 +58,12 @@ const Toolbar = ({ setOpened }: Props) => {
             <Menu.Label>
               <div>Message One Here</div>
             </Menu.Label>
-            <Menu.Label>
-              <div> Message Two Here</div>
-            </Menu.Label>
+            <Link
+              to="messages"
+              className="flex w-full justify-center items-center p-2 hover:bg-pagesBg text-sm"
+            >
+              <span>All Messages</span>
+            </Link>
           </Menu.Dropdown>
         </Menu>
 
