@@ -18,9 +18,10 @@ const OneMessageBox = ({
   unreadMessagesNumber,
 }: Props) => {
   return (
-    <div className="p-4 flex justify-center items-center gap-2">
+    <div className="p-2 flex justify-center items-center gap-2 cursor-pointer hover:bg-pagesBg">
       <Group position="center">
         <Indicator
+          color={isActive ? "blue" : "gray"}
           size={12}
           withBorder
           sx={{
@@ -36,13 +37,13 @@ const OneMessageBox = ({
           />
         </Indicator>
       </Group>
-      <div className="data flex flex-col ">
+      <div className="data flex flex-col gap-1 ">
         <h2 className="text-base text-perfLightBlack">{name}</h2>
         <p className="text-perfBlack30 text-xs">
           {lastMessageText.substring(0, 30)}...
         </p>
       </div>
-      <div className="info flex flex-col">
+      <div className="info flex flex-col gap-1">
         {unreadMessagesNumber > 0 && (
           <span className="last text-white text-sm p-1 text-center w-6 h-6 flex justify-center items-center bg-perfBlue rounded-full">
             {unreadMessagesNumber}
