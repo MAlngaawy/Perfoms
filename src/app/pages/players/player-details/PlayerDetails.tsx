@@ -9,6 +9,8 @@ import AttendanceCheckBox from "../components/AttendanceCheckBox";
 import TotalDaysCard from "../components/TotalDaysCard";
 import Notes from "../components/Notes";
 import Performance from "../components/Performance";
+import { Link } from "react-router-dom";
+import TotalAttendance from "../../reports/components/TotalAttendance";
 
 // dummy data
 const playerSummary = [
@@ -121,13 +123,33 @@ const PlayerDetails = () => {
       {showCard === "attendance" && (
         <>
           <AttendanceCard />
-          <Grid columns={12}>
+          <Grid
+            sx={{
+              height: 600,
+            }}
+            columns={12}
+          >
             <Grid.Col sm={8} span={12}>
               <AttendanceCheckBox dates={days} />
             </Grid.Col>
             <Grid.Col sm={4} span={12}>
-              <div className="h-full flex flex-col gap-3">
-                <TotalDaysCard />
+              <div className="h-full flex flex-col gap-3 py-3">
+                <TotalAttendance
+                  data={[
+                    { day: "2/10/2017", attendance: "ATTENDED" },
+                    { day: "2/10/2017", attendance: "ATTENDED" },
+                    { day: "2/10/2017", attendance: "ATTENDED" },
+                    { day: "2/10/2017", attendance: "ATTENDED" },
+                    { day: "2/10/2017", attendance: "ABSENT" },
+                    { day: "2/10/2017", attendance: "ABSENT" },
+                    { day: "2/10/2017", attendance: "ABSENT" },
+                    { day: "2/10/2017", attendance: "ATTENDED" },
+                    { day: "2/10/2017", attendance: "UPCOMING" },
+                    { day: "2/10/2017", attendance: "UPCOMING" },
+                    { day: "2/10/2017", attendance: "ATTENDED" },
+                    { day: "2/10/2017", attendance: "ATTENDED" },
+                  ]}
+                />
                 <Notes />
               </div>
             </Grid.Col>

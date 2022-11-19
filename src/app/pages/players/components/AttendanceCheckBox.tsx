@@ -37,6 +37,7 @@ const AttendanceCheckBox = ({ dates }: DayProps) => {
                       marginRight: "20px",
                     },
                   }}
+                  onChange={() => console.log(day)}
                   labelPosition="left"
                   label={day}
                 />

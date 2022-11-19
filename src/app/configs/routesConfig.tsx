@@ -19,6 +19,8 @@ import MediaEventConfig from "../pages/media/MediaEvent/MediaEventConfig";
 import CoachHomeConfig from "../pages/coachHome/CoachHomeConfig";
 import PlayersConfig from "../pages/players/PlayersConfig";
 import PlayerCardConfig from "../pages/players/PlayerCard/PlayerCardConfig";
+import ParentCardConfig from "../pages/players/parentCard/ParentConfig";
+import NotifyParentConfig from "../pages/players/notifyParent/NotifyParentConfig";
 
 const routeConfigs: PagesRouteConfig[] = [
   SignInConfig,
@@ -37,6 +39,8 @@ const routeConfigs: PagesRouteConfig[] = [
   CoachHomeConfig,
   PlayersConfig,
   PlayerCardConfig,
+  ParentCardConfig,
+  NotifyParentConfig,
 ];
 
 const routes: AppRouteObject[] = [

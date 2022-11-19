@@ -29,7 +29,7 @@ const TotalDaysCard = (props: Props) => {
   return (
     <div className="p-4 m-1 md:m-3 bg-white rounded-3xl">
       <div className="flex flex-col md:flex-row items-center">
-        <div className="p-3 w-2/4">
+        <div className="p-3 w-2/4 text-center">
           <h2 className="font-medium pb-2">Total days</h2>
           <h1 className="text-4xl font-bold pb-2">21</h1>
         </div>
