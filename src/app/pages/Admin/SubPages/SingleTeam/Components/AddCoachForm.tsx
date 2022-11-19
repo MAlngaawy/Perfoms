@@ -81,7 +81,6 @@ const AddCoachForm = (props: Props) => {
             setOpened(false);
             reset({ coach: "" });
           }}
-          title="Introduce yourself!"
         >
           <form onSubmit={handleSubmit(onSubmit)}>
             <Controller

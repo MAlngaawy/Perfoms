@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import AppRadioGroub from "~/@main/components/AppRadioGroub";
 import Sports from "./Components/Sports";
 import Teams from "./Components/Teams";
+import Users from "./Components/Users";
 
 type Props = {};
 
@@ -47,7 +48,9 @@ const AdminPage = (props: Props) => {
         <Sports />
       </div>
       <div className={checked !== "Users" ? "hidden" : "block"}>
-        <h1>Uers Here</h1>
+        <h1>
+          <Users />
+        </h1>
       </div>
     </div>
   );

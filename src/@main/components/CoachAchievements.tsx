@@ -86,7 +86,6 @@ function AddButton() {
           reset({ type: "", year: "", place: "" });
           setOpened(false);
         }}
-        title="Introduce yourself!"
       >
         <form
           className="flex flex-col gap-4 "
