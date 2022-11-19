@@ -134,12 +134,14 @@ const AddPlayer = (props: Props) => {
     <div>
       <button
         onClick={handleClickOpen}
-        className="addPlayer cursor-pointer transform hover:scale-105 py-3 px-5 flex justify-between items-center bg-white rounded-full opacity-60 hover:opacity-100 h-full"
+        className="addPlayer cursor-pointer transform hover:scale-105 p-3 xs:px-5 flex justify-between items-center bg-white rounded-full opacity-60 hover:opacity-100 h-full"
       >
         <span>
-          <AppIcons icon="UserPlusIcon:outline" className="w-5" />
+          <AppIcons icon="UserPlusIcon:outline" className="w-5 h-5" />
         </span>
-        <h2 className="name pl-2 text-base text-perfGray2">Add Player</h2>
+        <h2 className="hidden xs:block pl-2 text-base text-perfGray2">
+          Add Player
+        </h2>
       </button>
       <Modal
         opened={open}

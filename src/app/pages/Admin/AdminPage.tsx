@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import AppRadioGroub from "~/@main/components/AppRadioGroub";
 import Sports from "./Components/Sports";
 import Teams from "./Components/Teams";
+import Users from "./Components/Users";
 
 type Props = {};
 
@@ -10,7 +11,7 @@ const AdminPage = (props: Props) => {
 
   return (
     <div>
-      <div className="flex gap-4 my-4 mx-8">
+      <div className="flex gap-2 xs:gap-4  p-2 sm:p-6 sm:pb-0">
         <AppRadioGroub
           values={["Teams", "Sports", "Users"]}
           checked={checked}
@@ -47,7 +48,9 @@ const AdminPage = (props: Props) => {
         <Sports />
       </div>
       <div className={checked !== "Users" ? "hidden" : "block"}>
-        <h1>Uers Here</h1>
+        <h1>
+          <Users />
+        </h1>
       </div>
     </div>
   );

@@ -23,11 +23,7 @@ const UserInfo = ({ user, players }: Props) => {
           className="w-5 h-5  text-perfGray3 hover:text-perfGray1"
           icon="PencilSquareIcon:outline"
         />
-        <Modal
-          opened={opened}
-          onClose={() => setOpened(false)}
-          title="Introduce yourself!"
-        >
+        <Modal opened={opened} onClose={() => setOpened(false)}>
           <EditForm user={user} setOpened={setOpened} />
         </Modal>
       </div>

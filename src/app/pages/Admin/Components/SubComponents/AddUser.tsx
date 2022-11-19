@@ -1,35 +1,37 @@
-import React, { useState, ReactNode, LegacyRef, forwardRef } from "react";
+import React, { useState, forwardRef } from "react";
 import { Modal, Group, Avatar, Text, Select } from "@mantine/core";
-import SubmitButton from "../../../../../../@main/components/SubmitButton";
+import SubmitButton from "../../../../../@main/components/SubmitButton";
 import { Controller, useForm } from "react-hook-form";
-import PerfSelect from "../../../../../../@main/components/Select";
 
-type Props = {};
+type Props = {
+  type: "Player" | "Coach" | "Supervisor";
+  // data: { name: string; image: string; id: number }[];
+};
 
-const playersDate = [
+const usersDate = [
   {
-    label: "Player One",
+    label: "User One",
     image:
       "https://previews.123rf.com/images/blueskyimage/blueskyimage1311/blueskyimage131101911/23810213-sport-trainer-portrait-of-happy-young-coach.jpg",
     id: 1,
     value: "1",
   },
   {
-    label: "Player Two",
+    label: "User Two",
     image:
       "https://static.clubs.nfl.com/image/private/t_person_squared_mobile/f_auto/jaguars/gpvbkyjpty6w3kpdkv9m.jpg",
     id: 2,
     value: "2",
   },
   {
-    label: "Player Three",
+    label: "User Three",
     image:
       "https://previews.123rf.com/images/blueskyimage/blueskyimage1311/blueskyimage131101911/23810213-sport-trainer-portrait-of-happy-young-coach.jpg",
     id: 3,
     value: "3",
   },
   {
-    label: "Player Four",
+    label: "User Four",
     image:
       "https://static.clubs.nfl.com/image/private/t_person_squared_mobile/f_auto/jaguars/gpvbkyjpty6w3kpdkv9m.jpg",
     id: 4,
@@ -37,7 +39,7 @@ const playersDate = [
   },
 ];
 
-const AddPlayer = (props: Props) => {
+const AddUserForm = ({ type }: Props) => {
   const [opened, setOpened] = useState(false);
 
   const {
@@ -49,9 +51,9 @@ const AddPlayer = (props: Props) => {
   } = useForm();
 
   const onSubmit = (data: any) => {
-    console.log(data);
+    console.log(type, data);
     setOpened(false);
-    reset({ player: "" });
+    reset({ user: "" });
   };
 
   interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
@@ -80,13 +82,13 @@ const AddPlayer = (props: Props) => {
           opened={opened}
           onClose={() => {
             setOpened(false);
-            reset({ player: "" });
+            reset({ user: "" });
           }}
         >
           <form onSubmit={handleSubmit(onSubmit)}>
             <Controller
               control={control}
-              name="player"
+              name="user"
               render={({ field }) => (
                 <Select
                   {...field}
@@ -94,9 +96,9 @@ const AddPlayer = (props: Props) => {
                   searchable
                   itemComponent={SelectItem}
                   maxDropdownHeight={400}
-                  // {...register("coach")}
+                  // {...register("user")}
                   nothingFound="No options"
-                  data={playersDate}
+                  data={usersDate}
                   filter={(value, item) =>
                     item.label
                       ?.toLowerCase()
@@ -105,16 +107,16 @@ const AddPlayer = (props: Props) => {
                 />
               )}
             />
-            <SubmitButton isLoading={false} text="Add Player" />
+            <SubmitButton isLoading={false} text={`Add ${type}`} />
           </form>
         </Modal>
 
-        <Group position="left" className="w-full h-full">
+        <Group position="left">
           <button
-            className="w-full h-full p-4 bg-slate-300 text-perfGray3 rounded-lg"
+            className="p-2 sm:px-6 sm:py-2 text-xs sm:text-base border border-perfGray3 text-perfGray3 rounded-3xl"
             onClick={() => setOpened(true)}
           >
-            + Add Player
+            + Add {type}
           </button>
         </Group>
       </>
@@ -122,4 +124,4 @@ const AddPlayer = (props: Props) => {
   );
 };
 
-export default AddPlayer;
+export default AddUserForm;

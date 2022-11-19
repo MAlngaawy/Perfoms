@@ -36,7 +36,7 @@ const sports = [
 
 const Sports = (props: Props) => {
   return (
-    <div className="admin-teams  flex flex-col xs:flex-row flex-wrap items-stretch gap-4 sm:m-6 p-2 sm:p-6">
+    <div className="admin-teams  flex flex-col xs:flex-row flex-wrap items-stretch gap-4 p-2 sm:p-6">
       {sports.map((sport) => {
         return (
           <div className="sport-card relative bg-white rounded-3xl p-12 flex flex-col justify-center items-center gap-4">
