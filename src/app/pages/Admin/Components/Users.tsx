@@ -200,7 +200,7 @@ const usersData = [
 
 const Users = (props: Props) => {
   return (
-    <div className="flex flex-col gap-6 sm:m-6 p-2 sm:p-6">
+    <div className="flex flex-col gap-6  p-2 sm:p-6">
       <UsersCard type="Coach" data={usersData} />
       <UsersCard type="Supervisor" data={usersData} />
       <UsersCard type="Player" data={usersData} />
