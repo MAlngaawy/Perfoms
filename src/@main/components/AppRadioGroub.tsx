@@ -14,7 +14,7 @@ const AppRadioGroub = ({ checked, setChecked, values }: Props) => {
         value={checked}
         onChange={(checkedValue: string) => setChecked(checkedValue)}
         name="favoriteFramework"
-        spacing="sm"
+        spacing="xs"
         offset="md"
         size="xs"
         sx={{
