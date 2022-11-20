@@ -127,11 +127,7 @@ function AddExperinces() {
   };
   return (
     <>
-      <Modal
-        opened={opened}
-        onClose={() => setOpened(false)}
-        title="Introduce yourself!"
-      >
+      <Modal opened={opened} onClose={() => setOpened(false)}>
         <form
           className="flex flex-col gap-4 "
           onSubmit={handleSubmit(onSubmitFunction)}

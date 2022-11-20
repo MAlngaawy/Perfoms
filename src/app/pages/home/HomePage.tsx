@@ -106,11 +106,11 @@ const HomePage = () => {
 
   return (
     <div className="home-page px-5 mb-20">
-      <div className="flex my-4 flex-col md:flex-row justify-between items-center">
+      <div className="flex my-2  justify-between items-center">
         <div className="flex gap-3 flex-col md:flex-row justify-between items-center">
           <AddPlayer />
         </div>
-        <div className="flex flex-col md:flex-row gap-3 justify-center items-center pt-3 md:pt-0">
+        <div className="flex gap-1 justify-center items-center pt-3 md:pt-0">
           <Dropdown
             values={["team 1", "team 2", "team 3"]}
             selected={team}

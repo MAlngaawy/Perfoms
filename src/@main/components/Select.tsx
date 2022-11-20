@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { Select } from "@mantine/core";
 import { Controller } from "react-hook-form";
 import __ from "lodash";
@@ -13,11 +13,12 @@ interface inputTypes {
   id?: string;
   name: string;
   label?: string;
-  error?: string;
+  error?: string | undefined | null | ReactNode;
   required?: boolean;
-  data: Array<Option>;
-  className: string;
+  data: Array<Option> | string[];
+  className?: string;
   control: any;
+  placeholder?: string;
 }
 
 const PerfSelect = ({
@@ -29,11 +30,13 @@ const PerfSelect = ({
   data,
   className,
   control,
+  placeholder,
 }: inputTypes) => {
   return (
     <Controller
       render={({ field }) => (
         <Select
+          placeholder={placeholder}
           id={id}
           withAsterisk={required}
           error={error}

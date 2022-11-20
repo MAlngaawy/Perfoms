@@ -13,7 +13,7 @@ module.exports = {
         perfGray2: "#4f4f4f",
         perfGray3: "#828282",
         perfGray4: "#BDBDBD",
-        perfOfWhite: "#f9fbfc00",
+        perfOfWhite: "#f9fbfc",
         perfLigtGray: "#fafafa",
         perfSecondary: "#C32B43",
         perfLightBlack: "#45464E",
