@@ -9,6 +9,9 @@ type Props = {
   lastMessageTime: string;
   unreadMessagesNumber: number;
   selected?: boolean;
+  id: number;
+  visibleChatUserID: number;
+  setVisibleChatUserID: any;
 };
 
 const OneMessageBox = ({
@@ -19,13 +22,17 @@ const OneMessageBox = ({
   lastMessageTime,
   unreadMessagesNumber,
   selected,
+  id,
+  visibleChatUserID,
+  setVisibleChatUserID,
 }: Props) => {
   return (
     <div
+      onClick={() => setVisibleChatUserID(id)}
       className={classNames(
         "p-2 flex justify-between items-center gap-2 cursor-pointer hover:bg-pagesBg",
         {
-          "border-r-4 bg-gray70 border-perfBlue": selected,
+          "border-r-4 bg-gray70 border-perfBlue": visibleChatUserID === id,
         }
       )}
     >

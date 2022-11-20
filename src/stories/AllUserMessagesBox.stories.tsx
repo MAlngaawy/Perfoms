@@ -1,6 +1,6 @@
 import { Grid } from "@mantine/core";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import AllUserMessagesBox from "../@main/components/AllUserMessagesBox";
+import AllUserMessagesBox from "../app/pages/messages/Components/AllUserMessagesBox";
 
 export default {
   title: "Message/ All Messages",

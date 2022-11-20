@@ -1,8 +1,8 @@
 import { useState } from "react";
 import classNames from "classnames";
 import { Input, Divider } from "@mantine/core";
-import AppIcons from "../../@main/core/AppIcons";
-import OneMessageBox from "./OneMessageBox";
+import AppIcons from "../../../../@main/core/AppIcons";
+import OneMessageBox from "../../../../@main/components/OneMessageBox";
 
 type Props = {};
 
@@ -17,6 +17,7 @@ const messages = [
     lastMessageTime: "10:30 am",
     unreadMessagesNumber: 0,
     selected: true,
+    id: 1,
   },
   {
     image:
@@ -26,6 +27,7 @@ const messages = [
     lastMessageText: "Lorem ipsum.",
     lastMessageTime: "10:30 am",
     unreadMessagesNumber: 5,
+    id: 2,
   },
   {
     image:
@@ -36,6 +38,7 @@ const messages = [
       "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda, voluptatum? Quos sed officiis assumenda officia modi, magnam odio saepe hic vel quisquam facere aspernatur dolorum ea consequatur eos, quae tenetur.",
     lastMessageTime: "10:30 am",
     unreadMessagesNumber: 0,
+    id: 3,
   },
   {
     image:
@@ -46,6 +49,7 @@ const messages = [
       "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda, voluptatum? Quos sed officiis assumenda officia modi, magnam odio saepe hic vel quisquam facere aspernatur dolorum ea consequatur eos, quae tenetur.",
     lastMessageTime: "10:30 am",
     unreadMessagesNumber: 0,
+    id: 4,
   },
   {
     image:
@@ -56,11 +60,13 @@ const messages = [
       "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda, voluptatum? Quos sed officiis assumenda officia modi, magnam odio saepe hic vel quisquam facere aspernatur dolorum ea consequatur eos, quae tenetur.",
     lastMessageTime: "10:30 am",
     unreadMessagesNumber: 0,
+    id: 5,
   },
 ];
 
 const AllUserMessagesBox = (props: Props) => {
   const [list, setList] = useState<"Coaches" | "Teams">("Coaches");
+  const [visibleChatUserID, setVisibleChatUserID] = useState<number>(0);
 
   return (
     <div className="bg-white p-4 rounded-xl flex flex-col gap-6">
@@ -100,7 +106,12 @@ const AllUserMessagesBox = (props: Props) => {
           messages.map((message) => {
             return (
               <>
-                <OneMessageBox {...message} /> <Divider />
+                <OneMessageBox
+                  visibleChatUserID={visibleChatUserID}
+                  setVisibleChatUserID={setVisibleChatUserID}
+                  {...message}
+                />{" "}
+                <Divider />
               </>
             );
           })}
@@ -108,7 +119,12 @@ const AllUserMessagesBox = (props: Props) => {
           messages.map((message) => {
             return (
               <>
-                <OneMessageBox {...message} /> <Divider />
+                <OneMessageBox
+                  visibleChatUserID={visibleChatUserID}
+                  setVisibleChatUserID={setVisibleChatUserID}
+                  {...message}
+                />{" "}
+                <Divider />
               </>
             );
           })}
