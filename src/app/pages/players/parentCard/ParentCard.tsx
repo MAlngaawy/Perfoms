@@ -1,6 +1,7 @@
 import React from "react";
 import Info from "~/@main/components/Info";
 import { playerData } from "../../home/HomePage";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const parentDummyData = {
   parentName: "Ahmed Salah Mustafa",
@@ -27,20 +28,29 @@ export const parentDummyData = {
 };
 
 const ParentCard = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  console.log(location.state.id);
+
   return (
     <div className="parent-page">
       <div className="flex flex-row justify-end p-5">
-        <button className="bg-perfBlue text-white text-sm py-1 px-5 shadow-lg md:self-end rounded-sm flex flex-row">
+        <button
+          onClick={() =>
+            navigate(`/players/${location.state.id}/notify-parent`)
+          }
+          className="bg-perfBlue text-white text-sm py-1 px-5 shadow-lg md:self-end rounded-sm flex flex-row"
+        >
           Notify parent
         </button>
       </div>
 
-      <div className="p-6 m-1 md:m-3 w-1/2  bg-white rounded-3xl flex flex-col md:flex-row items-center md:items-end gap-10">
-        <div className="self-start">
+      <div className="p-3 md:p-6 m-1 md:m-3 md:w-1/2  bg-white rounded-3xl flex flex-col md:flex-row items-center md:items-end gap-10">
+        <div className="self-start flex flex-col w-full">
           <div className="playerName">
             <h2>Parent's info</h2>
           </div>
-          <div className="img my-2">
+          <div className="img my-2 self-center md:self-start">
             <img
               src={
                 playerData?.icon_url
@@ -52,7 +62,7 @@ const ParentCard = () => {
             />
           </div>
         </div>
-        <div className="flex flex-row w-76 gap-10">
+        <div className="flex flex-row md:w-76 gap-3 md:gap-10">
           <div className=" flex flex-col gap-1">
             <Info label="Name" value={parentDummyData.parentName} />
             <Info label="Age" value={parentDummyData.dob} />
@@ -71,7 +81,6 @@ const ParentCard = () => {
                 />
               );
             })}
-            <div></div>
           </div>
         </div>
       </div>

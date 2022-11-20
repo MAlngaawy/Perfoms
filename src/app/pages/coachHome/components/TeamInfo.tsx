@@ -162,7 +162,7 @@ const TeamInfo = (props: Props) => {
               <div
                 key={player.id}
                 className="shadow-xl cursor-pointer transform hover:scale-105 rounded-lg w-28 text-center bg-white flex flex-col justify-center items-center"
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/players")}
               >
                 <img
                   className="rounded-lg w-full h-28 object-cover"

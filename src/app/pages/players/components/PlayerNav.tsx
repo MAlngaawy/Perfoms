@@ -1,5 +1,6 @@
 import React from "react";
 import { Flex, Radio } from "@mantine/core";
+import { useNavigate } from "react-router-dom";
 
 interface PlayerNavProps {
   showCard: string;
@@ -7,6 +8,8 @@ interface PlayerNavProps {
 }
 
 const PlayerNav = ({ showCard, setShowCard }: PlayerNavProps) => {
+  const navigate = useNavigate();
+
   return (
     <div className="flex flex-col m-1 md:m-3 md:flex-row gap-3 md:gap-0 items-center justify-between">
       <div className="flex flex-col md:flex-row items-center gap-4">
@@ -83,11 +86,17 @@ const PlayerNav = ({ showCard, setShowCard }: PlayerNavProps) => {
             onClick={() => setShowCard("performance")}
           />
         </Radio.Group>
-        <button className="bg-perfBlue text-white text-lg py-1 px-5 shadow-lg md:self-end rounded-full flex flex-row">
+        <button
+          onClick={() => navigate("")}
+          className="bg-perfBlue text-white text-lg py-1 px-5 shadow-lg md:self-end rounded-full flex flex-row"
+        >
           Certificate
         </button>
       </div>
-      <button className="bg-perfBlue text-white text-sm py-1 px-5 shadow-lg md:self-end rounded-sm flex flex-row">
+      <button
+        onClick={() => navigate("notify-parent")}
+        className="bg-perfBlue text-white text-sm py-1 px-5 shadow-lg md:self-end rounded-sm flex flex-row"
+      >
         Notify parent
       </button>
     </div>

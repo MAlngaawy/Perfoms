@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface PlayersProps {
   id: number;
@@ -8,17 +8,21 @@ interface PlayersProps {
 }
 
 const PlayerCard = (card: PlayersProps) => {
+  const navigate = useNavigate();
+
   return (
-    <Link to={`${card.id}`}>
-      <div className="md:w-28 shadow-xl rounded-md" key={card.id}>
-        <img
-          className="md:w-28 md:h-28 object-cover rounded-md"
-          src={card.icon_url}
-          alt={card.name}
-        />
-        <p className="text-center p-2 font-medium text-sm">{card.name}</p>
-      </div>
-    </Link>
+    <div
+      className="md:w-28 shadow-xl rounded-md hover:cursor-pointer"
+      key={card.id}
+      onClick={() => navigate(`${card.id}`, { state: { id: card.id } })}
+    >
+      <img
+        className="md:w-28 md:h-28 object-cover rounded-md"
+        src={card.icon_url}
+        alt={card.name}
+      />
+      <p className="text-center p-2 font-medium text-sm">{card.name}</p>
+    </div>
   );
 };
 

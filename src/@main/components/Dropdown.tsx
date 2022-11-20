@@ -24,8 +24,8 @@ export const Dropdown = ({
             className
           }
         >
-          <span>{selected}</span>
-          <AppIcons className="w-3 h-3" icon="ChevronDownIcon:outline" />{" "}
+          <span>{selected}</span>{" "}
+          <AppIcons className="inline w-3 h-3" icon="ChevronDownIcon:outline" />{" "}
         </button>
       </Menu.Target>
 
