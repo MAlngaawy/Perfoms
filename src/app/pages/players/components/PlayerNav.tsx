@@ -87,7 +87,7 @@ const PlayerNav = ({ showCard, setShowCard }: PlayerNavProps) => {
           />
         </Radio.Group>
         <button
-          onClick={() => navigate("")}
+          onClick={() => navigate("/certificate")}
           className="bg-perfBlue text-white text-lg py-1 px-5 shadow-lg md:self-end rounded-full flex flex-row"
         >
           Certificate
