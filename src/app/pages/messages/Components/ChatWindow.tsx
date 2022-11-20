@@ -1,7 +1,8 @@
-import { Avatar, Divider, Input } from "@mantine/core";
+import { Avatar, Divider, Textarea } from "@mantine/core";
 import React from "react";
 import classNames from "classnames";
 import AppIcons from "../../../../@main/core/AppIcons";
+import { useForm } from "react-hook-form";
 
 type Props = {
   image: string;
@@ -73,6 +74,13 @@ const messages = [
 ];
 
 const ChatWindow = ({ image, name, active }: Props) => {
+  const { register, reset, handleSubmit } = useForm();
+
+  const sendMessage = (data: any) => {
+    console.log(data.message);
+    reset({ message: "" });
+  };
+
   return (
     <div className="bg-white rounded-xl flex flex-col">
       <div className="userInfo p-4 flex gap-2">
@@ -126,14 +134,13 @@ const ChatWindow = ({ image, name, active }: Props) => {
       </div>
       <div className="m-6">
         <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            console.log("data");
-          }}
+          onSubmit={handleSubmit(sendMessage)}
           className="border border-gray-300 rounded-lg px-2 flex gap-6  "
         >
-          <Input
+          <Textarea
+            {...register("message")}
             variant="unstyled"
+            minRows={1}
             sx={{
               margin: 0,
               text: "#eee",

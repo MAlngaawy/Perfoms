@@ -10,8 +10,8 @@ type Props = {
   unreadMessagesNumber: number;
   selected?: boolean;
   id: number;
-  visibleChatUserID: number;
-  setVisibleChatUserID: any;
+  visibleChatUserID?: number;
+  setVisibleChatUserID?: any;
 };
 
 const OneMessageBox = ({

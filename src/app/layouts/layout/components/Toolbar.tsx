@@ -59,6 +59,7 @@ const Toolbar = ({ setOpened }: Props) => {
             <Menu.Label>
               <OneMessageBox
                 image="https://www.anthropics.com/portraitpro/img/page-images/homepage/v22/what-can-it-do-2A.jpg"
+                id={1}
                 isActive={true}
                 name="John Doue"
                 lastMessageText="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda, voluptatum? Quos sed officiis assumenda officia modi, magnam odio saepe hic vel quisquam facere aspernatur dolorum ea consequatur eos, quae tenetur."
@@ -66,6 +67,7 @@ const Toolbar = ({ setOpened }: Props) => {
                 unreadMessagesNumber={2}
               />
               <OneMessageBox
+                id={2}
                 image="https://www.anthropics.com/portraitpro/img/page-images/homepage/v22/what-can-it-do-2A.jpg"
                 isActive={false}
                 name="Mohammed Mon'em"
