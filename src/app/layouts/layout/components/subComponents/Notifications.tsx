@@ -30,7 +30,7 @@ const Notifications = (props: Props) => {
         </Avatar>
       </Menu.Target>
 
-      <Menu.Dropdown className="w-full sm:w-96">
+      <Menu.Dropdown className="w-96 max-w-full">
         <h2 className="m-2 text-perfLightBlack text-sm">Notifications</h2>
         <Divider />
         <Menu.Label className="p-0">
