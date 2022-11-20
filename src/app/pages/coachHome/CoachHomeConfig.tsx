@@ -18,10 +18,10 @@ const CoachHomeConfig: PagesRouteConfig = {
       },
     },
   },
-  auth: authRoles.User,
+  auth: authRoles.Coach,
   routes: [
     {
-      path: "coach-home",
+      path: "/",
       element: <CoachHome />,
     },
   ],
