@@ -1,7 +1,8 @@
 import React from "react";
-import { Avatar, Indicator, Divider, Grid, Menu, Text } from "@mantine/core";
+import { Avatar, Indicator, Divider, Menu, Text } from "@mantine/core";
 import Notification from "~/@main/components/Notification";
 import AppIcons from "~/@main/core/AppIcons";
+import { Link } from "react-router-dom";
 
 type Props = {};
 
@@ -29,7 +30,7 @@ const Notifications = (props: Props) => {
         </Avatar>
       </Menu.Target>
 
-      <Menu.Dropdown className="w-full sm:w-96">
+      <Menu.Dropdown className="w-96 max-w-full">
         <h2 className="m-2 text-perfLightBlack text-sm">Notifications</h2>
         <Divider />
         <Menu.Label className="p-0">
@@ -49,6 +50,12 @@ const Notifications = (props: Props) => {
             senderName="Ali Mohammed"
           />
         </Menu.Label>
+        <Link
+          to="notifications"
+          className="flex w-full justify-center items-center p-2 hover:bg-pagesBg text-sm"
+        >
+          <span>All Notifications</span>
+        </Link>
       </Menu.Dropdown>
     </Menu>
   );
