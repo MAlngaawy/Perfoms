@@ -1,7 +1,6 @@
 import { PagesRouteConfig } from "~/@main/types/Config-Types";
 import authRoles from "~/app/auth/authRoles";
 import ParentCard from "./ParentCard";
-
 const ParentCardConfig: PagesRouteConfig = {
   settings: {
     layout: {
@@ -21,7 +20,7 @@ const ParentCardConfig: PagesRouteConfig = {
   auth: authRoles.User,
   routes: [
     {
-      path: "/players/parent",
+      path: "/players/:id" + "/parent",
       element: <ParentCard />,
     },
   ],

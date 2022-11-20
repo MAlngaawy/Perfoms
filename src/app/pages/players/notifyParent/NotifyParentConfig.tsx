@@ -21,7 +21,7 @@ const NotifyParentConfig: PagesRouteConfig = {
   auth: authRoles.User,
   routes: [
     {
-      path: "/players/notify-parent",
+      path: "/players/:id" + "/notify-parent",
       element: <NotifyParent />,
     },
   ],

@@ -9,8 +9,8 @@ import AttendanceCheckBox from "../components/AttendanceCheckBox";
 import TotalDaysCard from "../components/TotalDaysCard";
 import Notes from "../components/Notes";
 import Performance from "../components/Performance";
-import { Link } from "react-router-dom";
 import TotalAttendance from "../../reports/components/TotalAttendance";
+import { useLocation } from "react-router-dom";
 
 // dummy data
 const playerSummary = [
@@ -103,6 +103,7 @@ const parent = {
 
 const PlayerDetails = () => {
   const [showCard, setShowCard] = useState("playerInfo");
+  const location = useLocation();
 
   return (
     <div>
@@ -116,7 +117,7 @@ const PlayerDetails = () => {
             />
           </Grid.Col>
           <Grid.Col sm={3} span={12}>
-            <ParentInfoCard {...parent} />
+            <ParentInfoCard id={location.state} {...parent} />
           </Grid.Col>
         </Grid>
       )}
