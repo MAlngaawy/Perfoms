@@ -1,6 +1,7 @@
-import { Avatar, Divider } from "@mantine/core";
+import { Avatar, Divider, Input } from "@mantine/core";
 import React from "react";
 import classNames from "classnames";
+import AppIcons from "../../../../@main/core/AppIcons";
 
 type Props = {
   image: string;
@@ -122,6 +123,35 @@ const ChatWindow = ({ image, name, active }: Props) => {
             </>
           );
         })}
+      </div>
+      <div className="m-6">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            console.log("data");
+          }}
+          className="border border-gray-300 rounded-lg px-2 flex gap-6  "
+        >
+          <Input
+            variant="unstyled"
+            sx={{
+              margin: 0,
+              text: "#eee",
+              width: "100%",
+            }}
+            placeholder="Your message"
+          />
+          <button
+            type="submit"
+            className="bg-blue-200 text-gray-700 flex gap-1 justify-center items-center px-2 rounded-lg my-1"
+          >
+            <span className="text-sm">Send</span>
+            <AppIcons
+              className="w-4 h-4 transform -rotate-45"
+              icon="PaperAirplaneIcon:solid"
+            />
+          </button>
+        </form>
       </div>
     </div>
   );
