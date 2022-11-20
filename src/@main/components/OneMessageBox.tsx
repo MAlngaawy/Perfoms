@@ -21,7 +21,6 @@ const OneMessageBox = ({
   lastMessageText,
   lastMessageTime,
   unreadMessagesNumber,
-  selected,
   id,
   visibleChatUserID,
   setVisibleChatUserID,
