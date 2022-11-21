@@ -1,8 +1,7 @@
 import { PagesRouteConfig } from "~/@main/types/Config-Types";
 import authRoles from "~/app/auth/authRoles";
-import CoachHome from "./CoachHome";
-
-const CoachHomeConfig: PagesRouteConfig = {
+import ParentCard from "./ParentCard";
+const ParentCardConfig: PagesRouteConfig = {
   settings: {
     layout: {
       config: {
@@ -18,13 +17,13 @@ const CoachHomeConfig: PagesRouteConfig = {
       },
     },
   },
-  auth: authRoles.Coach,
+  auth: authRoles.User,
   routes: [
     {
-      path: "coach-home",
-      element: <CoachHome />,
+      path: "/players/:id" + "/parent",
+      element: <ParentCard />,
     },
   ],
 };
 
-export default CoachHomeConfig;
+export default ParentCardConfig;

@@ -292,11 +292,11 @@ const SignUpPage = (props: Props) => {
                   name="countryCode"
                   control={control}
                   data={[
-                    { value: "+20", label: "+20" },
-                    { value: "+971", label: "+971" },
-                    { value: "+966", label: "+966" },
-                    { value: "+82", label: "+82" },
-                    { value: "+962", label: "+962" },
+                    { value: "🇪🇬 +20", label: "🇪🇬 +20" },
+                    { value: "🇦🇪 +971", label: "🇦🇪 +971" },
+                    { value: "🇸🇦 +966", label: "🇸🇦 +966" },
+                    { value: "🇰🇷 +82", label: "🇰🇷 +82" },
+                    { value: "🇯🇴 +962", label: "🇯🇴 +962" },
                   ]}
                 />
               </Grid.Col>
