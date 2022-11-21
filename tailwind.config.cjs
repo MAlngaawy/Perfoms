@@ -38,6 +38,9 @@ module.exports = {
         lg: "1200px",
         xl: "1400px",
       },
+      rotate: {
+        '320': '320deg',
+      }
     },
   },
   plugins: [
