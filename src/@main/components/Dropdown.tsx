@@ -20,12 +20,12 @@ export const Dropdown = ({
       <Menu.Target>
         <button
           className={
-            "flex gap-2 text-sm justify-center items-center  py-2 px-6 rounded-3xl" +
+            "flex gap-2 text-sm justify-center items-center  py-2 px-6 rounded-3xl " +
             className
           }
         >
-          <span>{selected}</span>
-          <AppIcons className="w-3 h-3" icon="ChevronDownIcon:outline" />{" "}
+          <span>{selected}</span>{" "}
+          <AppIcons className="inline w-3 h-3" icon="ChevronDownIcon:outline" />{" "}
         </button>
       </Menu.Target>
 
