@@ -1,91 +1,56 @@
-import { Input, PasswordInput } from "@mantine/core";
-import * as yup from "yup";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import SubmitButton from "~/@main/components/SubmitButton";
-import { useEffect, useState } from "react";
-import { useChangePasswordMutation } from "~/app/store/user/userApi";
-import { showNotification } from "@mantine/notifications";
+import ChangePass from "./Components/ChangePass";
+import { useState } from "react";
+import { Input } from "@mantine/core";
+import AppIcons from "~/@main/core/AppIcons";
+import ChangePhone from "./Components/ChangePhone";
 
 type Props = {};
 
-const schema = yup.object().shape({
-  old_password: yup.string().min(8).max(24).required(),
-  new_password: yup.string().min(8).max(24),
-  confirmNewPassword: yup
-    .string()
-    .oneOf([yup.ref("new_password"), null], "Passwords must match"),
-});
-
 const Settings = (props: Props) => {
-  // This will change when we cal the handler function
-  const [changePasswordHandler, { isLoading, isSuccess, isError, error }] =
-    useChangePasswordMutation();
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      old_password: "",
-      new_password: "",
-      confirmNewPassword: "",
-    },
-    resolver: yupResolver(schema),
-  });
-
-  const submitFun = (data: any) => {
-    changePasswordHandler(data);
-  };
-
-  useEffect(() => {
-    if (isSuccess)
-      showNotification({
-        title: "Change Password",
-        message: "Password Changed Successfulty!",
-        color: "green",
-      });
-    if (isError)
-      showNotification({
-        title: "Change Password",
-        //@ts-ignore
-        message: error?.data.message,
-        color: "red",
-      });
-    console.log(error);
-  }, [isSuccess, isError]);
+  const [change, setChange] = useState<"Password" | "Mobile" | null>(null);
 
   return (
-    <div className="flex justify-center items-center py-20 md:pt-14">
-      <div className="content flex flex-col justify-center items-center gap-2 bg-white rounded-3xl p-6 w-11/12 sm:w-auto">
-        <h3>Settings</h3>
-        <form
-          className="flex flex-col justify-center items-center gap-4 w-80 max-w-full"
-          onSubmit={handleSubmit((data: any) => submitFun(data))}
+    <div className="relative flex justify-center items-center py-20 md:pt-14">
+      {change && (
+        <div
+          onClick={() => setChange(null)}
+          className="absolute cursor-pointer flex gap-2 text-perfGray3 text-sm top-4 left-4 pointer transform hover:scale-110"
         >
-          <PasswordInput
-            className="w-full"
-            {...register("old_password")}
-            label="Old password"
-            error={errors.old_password?.message}
-            withAsterisk
+          <AppIcons
+            className="w-4 h-4 text-perfGray3"
+            icon="ArrowLeftIcon:outline"
           />
-          <PasswordInput
-            className="w-full"
-            {...register("new_password")}
-            label="New password"
-            error={errors.new_password?.message}
-          />
-          <PasswordInput
-            className="w-full"
-            {...register("confirmNewPassword")}
-            label="Confirm New password"
-            error={errors.confirmNewPassword?.message}
-          />
-          <SubmitButton isLoading={isLoading} text="Save" />
-        </form>
-      </div>
+          <span>Back</span>
+        </div>
+      )}
+
+      {change === null && (
+        <>
+          <div className="content flex flex-col justify-center items-center gap-4 bg-white rounded-3xl p-6 w-11/12 sm:w-96">
+            <h2>Settings</h2>
+            <Input.Wrapper className="w-full" label="Phobe Number">
+              <Input placeholder="+2011111111" disabled />
+            </Input.Wrapper>
+            <Input.Wrapper className="w-full" label="Password">
+              <Input placeholder="**********" disabled />
+            </Input.Wrapper>
+            <button
+              onClick={() => setChange("Password")}
+              className="border border-perfBlue w-full py-2 mt-6 rounded-lg text-perfBlue hover:bg-perfBlue hover:text-white"
+            >
+              Edit Password
+            </button>
+            <button
+              onClick={() => setChange("Mobile")}
+              className="border border-perfBlue w-full py-2 rounded-lg text-perfBlue hover:bg-perfBlue hover:text-white"
+            >
+              Edit Phone Number
+            </button>
+          </div>
+        </>
+      )}
+      {change === "Password" && <ChangePass setChange={setChange} />}
+      {change === "Mobile" && <ChangePhone setChange={setChange} />}
     </div>
   );
 };
