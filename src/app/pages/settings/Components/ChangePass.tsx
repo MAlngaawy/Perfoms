@@ -63,7 +63,8 @@ const ChangePass = ({ setChange }: Props) => {
   }, [isSuccess, isError]);
 
   return (
-    <div className="content flex flex-col justify-center items-center gap-2 bg-white rounded-3xl p-6 w-11/12 sm:w-auto">
+    <div className=" flex flex-col justify-center items-center gap-2 bg-white rounded-3xl p-6 w-11/12 sm:w-auto">
+      <h2 className="my-2">Change Password</h2>
       <form
         className="flex flex-col justify-center items-center gap-4 w-80 max-w-full"
         onSubmit={handleSubmit((data: any) => submitFun(data))}

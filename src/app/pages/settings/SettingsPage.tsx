@@ -2,6 +2,7 @@ import ChangePass from "./Components/ChangePass";
 import { useState } from "react";
 import { Input } from "@mantine/core";
 import AppIcons from "~/@main/core/AppIcons";
+import ChangePhone from "./Components/ChangePhone";
 
 type Props = {};
 
@@ -49,7 +50,7 @@ const Settings = (props: Props) => {
         </>
       )}
       {change === "Password" && <ChangePass setChange={setChange} />}
-      {change === "Mobile" && <h2>Change Mobile</h2>}
+      {change === "Mobile" && <ChangePhone setChange={setChange} />}
     </div>
   );
 };
