@@ -8,6 +8,8 @@ import withAppProviders from "./withAppProviders";
 
 function App() {
   const { data: user } = useUserQuery(null);
+  console.log(user);
+
   return (
     <AuthProvider>
       <BrowserRouter>

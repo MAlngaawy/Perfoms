@@ -34,6 +34,14 @@ const navigationConfig: NavigationConfigTypes[] = [
     url: "coaches",
   },
   {
+    id: "chat-page",
+    title: "Chat",
+    translate: "CHAT",
+    type: "item",
+    icon: "EnvelopeIcon:outline",
+    url: "chat",
+  },
+  {
     id: "reports-page",
     title: "Reports",
     translate: "REPORTS",

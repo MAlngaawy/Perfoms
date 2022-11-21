@@ -23,6 +23,7 @@ import AdminPageConfig from "../pages/Admin/AdminPageConfig";
 import SingleTeamPageConfig from "../pages/Admin/SubPages/SingleTeam/SingleTeamConfig";
 import SportKpisPageConfig from "../pages/Admin/SubPages/SportKpis/SportKpisConfig";
 import KpiMetricsPageConfig from "../pages/Admin/SubPages/KpiMetrics/KpiMetricsConfig";
+import ChatConfig from "../pages/chat/ChatConfig";
 
 const routeConfigs: PagesRouteConfig[] = [
   SignInConfig,
@@ -30,6 +31,7 @@ const routeConfigs: PagesRouteConfig[] = [
   HomeConfig,
   MediaConfig,
   CoachesConfig,
+  ChatConfig,
   // MessagesConfig,
   // NotificationsConfig,
   ReportsConfig,
