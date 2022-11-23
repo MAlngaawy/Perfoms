@@ -23,7 +23,7 @@ const Toolbar = ({ setOpened }: Props) => {
   let routeName = href.slice(href.lastIndexOf("/") + 1, href.length);
 
   return (
-    <nav className="w-full flex justify-between  items-center shadow-md p-4 bg-white">
+    <nav className="w-full flex justify-between  items-center shadow-md p-4 bg-white overflow-scroll">
       <div className="bg-fadedGray p-2 flex w-fit gap-3 justify-between items-center">
         <button
           className="block lg:hidden text-black border-0"
