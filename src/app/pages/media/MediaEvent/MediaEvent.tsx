@@ -12,6 +12,11 @@ import {
   Text,
   List,
 } from "@mantine/core";
+import authRoles from "~/app/auth/authRoles";
+
+// dummy data
+const user_type = "Supervisor";
+const sliderVideo = "https://www.youtube.com/embed/1nJOku-FPV8";
 
 const TRANSITION_DURATION = 200;
 
@@ -69,6 +74,16 @@ const MediaEvent = ({ images }: { images: string[] }) => {
         loop
         getEmblaApi={setEmbla}
       >
+        <Carousel.Slide className="bg-white">
+          <iframe
+            className="w-full h-full mx-auto pb-4 bg-black"
+            src={sliderVideo}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            title="Embedded youtube"
+          />
+        </Carousel.Slide>
         {slides}
       </Carousel>
       <div className="hidden xs:flex flex-row justify-between xs:w-1/2 mx-auto pt-3 items-start">
@@ -85,13 +100,15 @@ const MediaEvent = ({ images }: { images: string[] }) => {
             {location.state.place}
           </p>
         </div>
-        <Button
-          label="Add Event"
-          onClick={() => setOpened(true)}
-          style="bordered"
-          className="w-32 mx-0 mt-0 h-8 rounded-full"
-          icon="plus icon"
-        />
+        {authRoles.Admin.includes(user_type) ? (
+          <Button
+            label="Add Event"
+            onClick={() => setOpened(true)}
+            style="bordered"
+            className="w-32 mx-0 mt-0 h-8 rounded-full"
+            icon="plus icon"
+          />
+        ) : null}
         <Modal
           sx={{
             ".mantine-Modal-modal": {
