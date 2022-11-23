@@ -67,7 +67,7 @@ const playerSummary = [
 
 const days = [
   "Saturday., 30 / 7 / 15",
-  "Saturday., 30 / 7 / 15",
+  "Saturday., 30 / 8 / 15",
   "Saturday., 30 / 7 / 15",
   "Saturday., 30 / 7 / 15",
   "Saturday., 30 / 7 / 15",
@@ -106,7 +106,7 @@ const PlayerDetails = () => {
   const location = useLocation();
 
   return (
-    <div>
+    <div className="p-4">
       <PlayerNav showCard={showCard} setShowCard={setShowCard} />
       {showCard === "playerInfo" && (
         <Grid columns={12}>
@@ -134,25 +134,31 @@ const PlayerDetails = () => {
               <AttendanceCheckBox dates={days} />
             </Grid.Col>
             <Grid.Col sm={4} span={12}>
-              <div className="h-full flex flex-col gap-3 py-3">
-                <TotalAttendance
-                  data={[
-                    { day: "2/10/2017", attendance: "ATTENDED" },
-                    { day: "2/10/2017", attendance: "ATTENDED" },
-                    { day: "2/10/2017", attendance: "ATTENDED" },
-                    { day: "2/10/2017", attendance: "ATTENDED" },
-                    { day: "2/10/2017", attendance: "ABSENT" },
-                    { day: "2/10/2017", attendance: "ABSENT" },
-                    { day: "2/10/2017", attendance: "ABSENT" },
-                    { day: "2/10/2017", attendance: "ATTENDED" },
-                    { day: "2/10/2017", attendance: "UPCOMING" },
-                    { day: "2/10/2017", attendance: "UPCOMING" },
-                    { day: "2/10/2017", attendance: "ATTENDED" },
-                    { day: "2/10/2017", attendance: "ATTENDED" },
-                  ]}
-                />
-                <Notes />
-              </div>
+              <Grid>
+                <Grid.Col span={12}>
+                  <TotalAttendance
+                    data={[
+                      { day: "2/10/2017", attendance: "ATTENDED" },
+                      { day: "2/10/2017", attendance: "ATTENDED" },
+                      { day: "2/10/2017", attendance: "ATTENDED" },
+                      { day: "2/10/2017", attendance: "ATTENDED" },
+                      { day: "2/10/2017", attendance: "ABSENT" },
+                      { day: "2/10/2017", attendance: "ABSENT" },
+                      { day: "2/10/2017", attendance: "ABSENT" },
+                      { day: "2/10/2017", attendance: "ATTENDED" },
+                      { day: "2/10/2017", attendance: "UPCOMING" },
+                      { day: "2/10/2017", attendance: "UPCOMING" },
+                      { day: "2/10/2017", attendance: "ATTENDED" },
+                      { day: "2/10/2017", attendance: "ATTENDED" },
+                    ]}
+                  />
+                </Grid.Col>
+                <Grid.Col span={12}>
+                  <div>
+                    <Notes />
+                  </div>
+                </Grid.Col>
+              </Grid>
             </Grid.Col>
           </Grid>
         </>

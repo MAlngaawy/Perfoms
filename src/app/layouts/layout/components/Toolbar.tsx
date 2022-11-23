@@ -9,6 +9,7 @@ import { eventInstance } from "~/@main/utils/AppUtils";
 import Notifications from "./subComponents/Notifications";
 import SelectUser from "./subComponents/SelectUser";
 import useWindowSize from "~/@main/hooks/useWindowSize";
+import OneMessageBox from "~/@main/components/OneMessageBox";
 
 type Props = {
   opened: boolean;
@@ -52,15 +53,35 @@ const Toolbar = ({ setOpened }: Props) => {
             </Avatar>
           </Menu.Target>
 
-          <Menu.Dropdown>
+          <Menu.Dropdown className="w-96 max-w-full">
             <h2 className="m-2 text-perfLightBlack text-sm">Messages</h2>
             <Divider />
             <Menu.Label>
-              <div>Message One Here</div>
+              <OneMessageBox
+                image="https://www.anthropics.com/portraitpro/img/page-images/homepage/v22/what-can-it-do-2A.jpg"
+                id={1}
+                isActive={true}
+                name="John Doue"
+                lastMessageText="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda, voluptatum? Quos sed officiis assumenda officia modi, magnam odio saepe hic vel quisquam facere aspernatur dolorum ea consequatur eos, quae tenetur."
+                lastMessageTime="10:30 am"
+                unreadMessagesNumber={2}
+              />
+              <OneMessageBox
+                id={2}
+                image="https://www.anthropics.com/portraitpro/img/page-images/homepage/v22/what-can-it-do-2A.jpg"
+                isActive={false}
+                name="Mohammed Mon'em"
+                lastMessageText="Lorem ipsum ."
+                lastMessageTime="11:43 pm"
+                unreadMessagesNumber={3}
+              />
             </Menu.Label>
-            <Menu.Label>
-              <div> Message Two Here</div>
-            </Menu.Label>
+            <Link
+              to="messages"
+              className="flex w-full justify-center items-center p-2 hover:bg-pagesBg text-sm"
+            >
+              <span>All Messages</span>
+            </Link>
           </Menu.Dropdown>
         </Menu>
 

@@ -30,7 +30,17 @@ export const coreApi = createApi({
       }),
       providesTags: ["Core"],
     }),
+    chatToken: query({
+      query: () => ({
+        url: "generate_chat_token/",
+      }),
+    }),
   }),
 });
 
-export const { useRefreshQuery, usePublicClubsQuery, useTeamsQuery } = coreApi;
+export const {
+  useRefreshQuery,
+  usePublicClubsQuery,
+  useTeamsQuery,
+  useChatTokenQuery,
+} = coreApi;

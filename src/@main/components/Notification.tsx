@@ -21,7 +21,7 @@ const Notification = ({
   return (
     <div
       className={cn(
-        "w-full p-1 flex cursor-pointer hover:bg-blue-100 justify-start items-center gap-2 shadow-md",
+        "w-full p-1 flex cursor-pointer hover:bg-blue-100 justify-start items-center gap-2",
         {
           "bg-perfLigtGray": newNotification,
           "bg-white ": !newNotification,

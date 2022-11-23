@@ -38,9 +38,6 @@ const PlayerNav = ({ showCard, setShowCard }: PlayerNavProps) => {
               showCard === "playerInfo" && "shadow-lg"
             } rounded-full flex flex-row`}
             sx={{
-              ".mantine-Radio-icon": {
-                color: "#2F80ED",
-              },
               ".mantine-Radio-label": {
                 fontSize: 18,
                 color: showCard === "playerInfo" ? "#2F80ED" : "#000",
@@ -56,9 +53,6 @@ const PlayerNav = ({ showCard, setShowCard }: PlayerNavProps) => {
               showCard === "attendance" && "shadow-lg"
             } rounded-full flex flex-row`}
             sx={{
-              ".mantine-Radio-icon": {
-                color: "#2F80ED",
-              },
               ".mantine-Radio-label": {
                 fontSize: 18,
                 color: showCard === "attendance" ? "#2F80ED" : "#000",
@@ -74,9 +68,6 @@ const PlayerNav = ({ showCard, setShowCard }: PlayerNavProps) => {
               showCard === "performance" && "shadow-lg"
             } rounded-full flex flex-row`}
             sx={{
-              ".mantine-Radio-icon": {
-                color: "#2F80ED",
-              },
               ".mantine-Radio-label": {
                 fontSize: 18,
                 color: showCard === "performance" ? "#2F80ED" : "#000",
@@ -87,7 +78,7 @@ const PlayerNav = ({ showCard, setShowCard }: PlayerNavProps) => {
           />
         </Radio.Group>
         <button
-          onClick={() => navigate("")}
+          onClick={() => navigate("/certificate")}
           className="bg-perfBlue text-white text-lg py-1 px-5 shadow-lg md:self-end rounded-full flex flex-row"
         >
           Certificate

@@ -18,7 +18,7 @@ interface Player {
 const AttendanceReport = ({ playerSummary, player }: AttendanceReportProps) => {
   return (
     <div className="flex flex-col gap-3 md:flex-row m-1 md:m-3">
-      <div className="flex flex-row gap-3 md:w-72">
+      <div className="flex items-center gap-3 md:w-72">
         <img
           className="w-32 h-32 object-cover rounded-lg"
           src={player.icon_url}

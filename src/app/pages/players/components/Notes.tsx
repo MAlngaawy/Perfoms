@@ -5,7 +5,7 @@ type Props = {};
 
 const Notes = (props: Props) => {
   return (
-    <div className="p-4 m-1 md:m-3 h-1/3 bg-white rounded-3xl">
+    <div className=" my-4 p-4 bg-white rounded-3xl">
       <Textarea
         placeholder="Write your notes about his attendance"
         label="Overall Notes"
