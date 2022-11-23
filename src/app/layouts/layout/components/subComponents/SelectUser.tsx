@@ -23,8 +23,10 @@ const SelectUser = (props: Props) => {
         <Menu.Target>
           {selectedPlayer ? (
             <button className="flex border py-1 px-2 xs:px-4 rounded-full justify-center items-center gap-2">
-              {selectedPlayer.icon && (
+              {selectedPlayer.icon ? (
                 <Avatar size={"sm"} radius={"xl"} src={selectedPlayer.icon} />
+              ) : (
+                <Avatar size={"sm"} radius={"xl"} src={"/assets/avatar.webp"} />
               )}
               <p className="text-xs sm:text-lg">
                 {selectedPlayer.name.substring(0, 8)}..
