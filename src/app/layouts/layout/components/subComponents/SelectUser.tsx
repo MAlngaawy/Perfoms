@@ -19,7 +19,7 @@ const SelectUser = (props: Props) => {
   }, [players]);
 
   return (
-    <div className="flex gap-1">
+    <div className="flex gap-1 mx-2">
       {/* <Menu shadow="md" width={200}> */}
       {/* <Menu.Target>
           {selectedPlayer ? (

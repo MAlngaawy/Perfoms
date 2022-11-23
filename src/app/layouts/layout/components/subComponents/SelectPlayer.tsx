@@ -13,7 +13,7 @@ const SelectPlayer = ({ selected, image, name, selectFun }: Props) => {
   return (
     <div
       className={classNames(
-        "flex gap-2 p-1 cursor-pointer bg-slate-100 w-fit rounded-full justify-center items-center",
+        "flex gap-1 p-1 cursor-pointer bg-slate-100 rounded-full justify-center items-center",
         {
           "": selected,
         }
@@ -26,8 +26,8 @@ const SelectPlayer = ({ selected, image, name, selectFun }: Props) => {
           block: selected,
         })}
       >
-        {/* {name.length > 10 ? name.substring(0, 10) + "..." : name} */}
-        {name}
+        {name.length > 10 ? name.substring(0, 10) + "..." : name}
+        {/* {name} */}
       </h2>
     </div>
   );
