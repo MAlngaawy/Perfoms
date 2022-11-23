@@ -55,6 +55,7 @@ const routeConfigs: PagesRouteConfig[] = [
   SingleTeamPageConfig,
   SportKpisPageConfig,
   KpiMetricsPageConfig,
+  ChatConfig,
 ];
 
 const routes: AppRouteObject[] = [
