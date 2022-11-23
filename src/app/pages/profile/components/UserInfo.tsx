@@ -14,7 +14,7 @@ const UserInfo = ({ user, players }: Props) => {
   const [opened, setOpened] = useState(false);
 
   return (
-    <div className="content relative flex flex-col justify-center items-center gap-2 bg-white rounded-3xl p-6 w-11/12 md:w-auto md:p-12">
+    <div className="content relative flex flex-col justify-center items-center gap-2 bg-white rounded-3xl p-6 w-80">
       <div
         onClick={() => setOpened((o) => !o)}
         className="absolute cursor-pointer right-6 top-6"
@@ -38,38 +38,39 @@ const UserInfo = ({ user, players }: Props) => {
         />
       </div>
       <h2 className="w-full text-center my-4 text-xl">{`${user.first_name} ${user.last_name}`}</h2>
-      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 text-left sm:gap-12">
-        <div className="age">
-          {/* <p className="title text-sm text-perfGray3">{user.bio}</p> */}
+      <div className="w-full flex flex-col justify-start ml-10">
+        <div className="flex gap-4 text-left w-full sm:gap-12">
+          {/* <div className="age">
           <p className="title text-sm text-perfGray3">Age</p>
           <h2 className="val text-xl text-perfGray1">
-            {user.dob}{" "}
-            <span className="ml-2 text-sm text-perfGray3">
+          {user.dob}{" "}
+          <span className="ml-2 text-sm text-perfGray3">
               ( {new Date().getFullYear() - +user.dob?.split("-")?.[0] || 0})
             </span>
           </h2>
-        </div>
-        <div className="job">
+        </div> */}
+          {/* <div className="job">
           <p className="title text-sm text-perfGray3">Job</p>
           <h2 className="val text-xl text-perfGray1">{user.job || "NA"}</h2>
+        </div> */}
+          <div className="subscription">
+            <p className="title text-sm text-perfGray3">Subscription</p>
+            <h2 className="val text-xl text-perfGray1">Golden</h2>
+          </div>
         </div>
-        <div className="subscription">
-          <p className="title text-sm text-perfGray3">Subscription</p>
-          <h2 className="val text-xl text-perfGray1">Golden</h2>
-        </div>
-      </div>
-      <div className="flex justify-around w-full mt-4">
-        <div className="playersNumber flex flex-col text-left">
+        <div className="flex w-full mt-4">
+          {/* <div className="playersNumber flex flex-col text-left">
           <p className="title text-sm text-perfGray3">Players</p>
           <h2 className="val text-xl text-perfGray1">{players.length || 0}</h2>
-        </div>
-        <div className="playersProfile flex flex-col gap-4">
-          {players?.map((player) => (
-            <div className="player flex items-center gap-2 cursor-pointer">
-              <Avatar radius={"xl"} size="sm" src={player.icon} />
-              <h2 className="name text-base">{player.name}</h2>
-            </div>
-          ))}
+        </div> */}
+          <div className="playersProfile flex flex-col gap-4">
+            {players?.map((player) => (
+              <div className="player flex items-center gap-2 cursor-pointer">
+                <Avatar radius={"xl"} size="sm" src={player.icon} />
+                <h2 className="name text-base">{player.name}</h2>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>

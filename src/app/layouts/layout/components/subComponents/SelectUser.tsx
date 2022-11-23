@@ -4,6 +4,7 @@ import { useMyPlayersQuery } from "~/app/store/parent/parentApi";
 import { Player } from "~/app/store/types/parent-types";
 import { useDispatch, useSelector } from "react-redux";
 import { selectedPlayerFn, selectPlayer } from "~/app/store/parent/parentSlice";
+import SelectPlayer from "./SelectPlayer";
 
 type Props = {};
 
@@ -18,13 +19,15 @@ const SelectUser = (props: Props) => {
   }, [players]);
 
   return (
-    <div>
-      <Menu shadow="md" width={200}>
-        <Menu.Target>
+    <div className="flex gap-1 mx-2">
+      {/* <Menu shadow="md" width={200}> */}
+      {/* <Menu.Target>
           {selectedPlayer ? (
             <button className="flex border py-1 px-2 xs:px-4 rounded-full justify-center items-center gap-2">
-              {selectedPlayer.icon && (
+              {selectedPlayer.icon ? (
                 <Avatar size={"sm"} radius={"xl"} src={selectedPlayer.icon} />
+              ) : (
+                <Avatar size={"sm"} radius={"xl"} src={"/assets/avatar.webp"} />
               )}
               <p className="text-xs sm:text-lg">
                 {selectedPlayer.name.substring(0, 8)}..
@@ -39,21 +42,28 @@ const SelectUser = (props: Props) => {
               <p className="text-xs sm:text-lg">No Players...</p>
             </button>
           )}
-        </Menu.Target>
+        </Menu.Target> */}
 
-        <Menu.Dropdown>
-          {players &&
-            players.data.map((player, idx) => (
-              <Menu.Item
-                key={idx}
-                onClick={() => dispatch(selectPlayer(player))}
-                icon={<Avatar size={"sm"} radius={"xl"} src={player.icon} />}
-              >
-                <p className="text-xs sm:text-lg">{player.name}</p>
-              </Menu.Item>
-            ))}
-        </Menu.Dropdown>
-      </Menu>
+      {/* <Menu.Dropdown> */}
+      {players &&
+        players.data.map((player, idx) => (
+          <SelectPlayer
+            name={player.name}
+            image={player.icon}
+            key={idx}
+            selected={player === selectedPlayer}
+            selectFun={() => dispatch(selectPlayer(player))}
+          />
+          // <Menu.Item
+          //   key={idx}
+          //   onClick={() => dispatch(selectPlayer(player))}
+          //   icon={<Avatar size={"sm"} radius={"xl"} src={player.icon} />}
+          // >
+          //   <p className="text-xs sm:text-lg">{player.name}</p>
+          // </Menu.Item>
+        ))}
+      {/* </Menu.Dropdown> */}
+      {/* </Menu> */}
     </div>
   );
 };

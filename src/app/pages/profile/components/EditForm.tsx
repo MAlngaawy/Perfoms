@@ -66,7 +66,7 @@ const EditForm = ({ user, setOpened }: Props) => {
       <Input.Wrapper id="lastName" label="Last name" className="w-full">
         <Input id="lastName" {...register("last_name")} />
       </Input.Wrapper>
-      <Input.Wrapper id="job" label="Your job">
+      {/* <Input.Wrapper id="job" label="Your job">
         <Input
           {...register("job")}
           id="job"
@@ -77,9 +77,9 @@ const EditForm = ({ user, setOpened }: Props) => {
             />
           }
         />
-      </Input.Wrapper>
+      </Input.Wrapper> */}
 
-      <Input.Wrapper id="dob" label="Your date of birth">
+      {/* <Input.Wrapper id="dob" label="Your date of birth">
         <Input
           sx={{
             ".mantine-Input-input": {
@@ -91,7 +91,7 @@ const EditForm = ({ user, setOpened }: Props) => {
           id="dob"
           placeholder="mm/dd/yyyy"
         />
-      </Input.Wrapper>
+      </Input.Wrapper> */}
 
       <SubmitButton isLoading={isLoading} text="Save" />
     </form>

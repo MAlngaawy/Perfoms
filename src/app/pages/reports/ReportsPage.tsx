@@ -88,8 +88,8 @@ const ReportPage = () => {
 
   return (
     <div className="report-page px-5 mb-20">
-      <div className="flex flex-col gap-4 sm:flex-row my-4 justify-between items-center">
-        <div className="flex gap-3 flex-col md:flex-row justify-between items-center">
+      <div className="flex gap-4 my-4 justify-between items-center">
+        <div className="flex justify-between items-center">
           <AddPlayer />
         </div>
         <div className="flex flex-col md:flex-row justify-center items-center md:pt-0">
