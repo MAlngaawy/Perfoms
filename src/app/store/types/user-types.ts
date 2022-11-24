@@ -47,6 +47,8 @@ export type User = {
   club: number;
 };
 
+export type UpdateProfile = Partial<User>;
+
 export type UserSignup = {
   id?: number;
   user_type: string;
