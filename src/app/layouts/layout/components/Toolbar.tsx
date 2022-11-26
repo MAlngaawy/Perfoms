@@ -21,6 +21,7 @@ const Toolbar = ({ setOpened }: Props) => {
   const dispatch = useDispatch();
   let href = window.location.href;
   let routeName = href.slice(href.lastIndexOf("/") + 1, href.length);
+  const windowSize = useWindowSize();
 
   return (
     <nav className="w-full flex justify-between items-center shadow-md p-2 lg:p-4 bg-perfBlue lg:bg-white overflow-scroll">
@@ -45,9 +46,13 @@ const Toolbar = ({ setOpened }: Props) => {
         {/* Messages Menu */}
         <Menu trigger="hover" shadow="md" width={200}>
           <Menu.Target>
-            <Avatar className="cursor-pointer" radius="xl">
+            <Avatar
+              className="cursor-pointer"
+              size={windowSize.width && windowSize.width < 400 ? "sm" : "md"}
+              radius="xl"
+            >
               <AppIcons
-                className="w-5 h-5 text-black"
+                className="w-4 xs:w-5 text-black"
                 icon="EnvelopeIcon:outline"
               />
             </Avatar>
@@ -92,11 +97,11 @@ const Toolbar = ({ setOpened }: Props) => {
         <Menu trigger="hover" shadow="md" width={200}>
           <Menu.Target>
             <Avatar
+              size={windowSize.width && windowSize.width < 400 ? "sm" : "md"}
               src="https://s.studiobinder.com/wp-content/uploads/2021/01/Best-black-and-white-portraits-by-Platon.jpg?resolution=2560,1"
               alt="userImage"
               className="cursor-pointer"
               radius="xl"
-              size={"md"}
             />
           </Menu.Target>
 

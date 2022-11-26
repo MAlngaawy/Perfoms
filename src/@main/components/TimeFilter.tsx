@@ -111,7 +111,7 @@ const TimeFilter = (props: Props) => {
         onChange={setOpened}
       >
         <Menu.Target>
-          <button className="flex gap-10 items-center bg-white rounded-full px-6 py-2">
+          <button className="flex gap-4 xs:gap-10 items-center bg-white rounded-full px-4 xs:px-6 py-2">
             <AppIcons
               icon="CalendarDaysIcon:outline"
               className="w-4 h-4 text-black"

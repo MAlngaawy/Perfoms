@@ -113,7 +113,7 @@ const HomePage = () => {
   );
   return (
     <div className="home-page px-5 mb-20">
-      <div className="flex my-2  justify-between items-center">
+      <div className="my-4 flex flex-col xs:flex-row gap-2 justify-between items-center">
         <div className="flex gap-3 items-center">
           <AddPlayer />
         </div>
