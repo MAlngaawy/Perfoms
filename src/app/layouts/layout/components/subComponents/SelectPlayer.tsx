@@ -21,7 +21,7 @@ const SelectPlayer = ({ selected, image, name, selectFun }: Props) => {
     >
       <Avatar onClick={() => selectFun()} src={image} size="sm" radius={"xl"} />
       <h2
-        className={classNames("mr-1 text-sm  w-16", {
+        className={classNames("mr-1 text-sm", {
           hidden: !selected,
           block: selected,
         })}

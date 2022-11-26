@@ -10,6 +10,7 @@ import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 import { Link } from "react-router-dom";
 import { Player } from "~/app/store/types/parent-types";
 import { usePlayerAttendanceQuery } from "~/app/store/attendance/attendanceApi";
+import TimeFilter from "~/@main/components/TimeFilter";
 
 // dummy data
 export const playerData: PlayerData = {
@@ -122,12 +123,7 @@ const HomePage = () => {
             selected={team}
             setSelected={setTeam}
           />
-          <Dropdown
-            values={["this week", "last week"]}
-            selected={week}
-            setSelected={setWeek}
-            className="bg-none bg-white p-2 rounded-full"
-          />
+          <TimeFilter />
         </div>
       </div>
       {selectedPlayer ? (

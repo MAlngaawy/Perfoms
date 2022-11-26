@@ -77,6 +77,18 @@ const lastYear = () => {
   return { firstday, lastday };
 };
 
+const formatDate = (date: Date) => {
+  const today = date;
+  const yyyy = today.getFullYear();
+  let mm: string | number = today.getMonth() + 1; // Months start at 0!
+  let dd: string | number = today.getDate();
+
+  if (dd < 10) dd = "0" + dd;
+  if (mm < 10) mm = "0" + mm;
+
+  return dd + "/" + mm + "/" + yyyy;
+};
+
 const TimeFilter = (props: Props) => {
   const [value, setValue] = useState<[Date | null, Date | null]>([null, null]);
   const [opened, setOpened] = useState(false);
@@ -84,8 +96,8 @@ const TimeFilter = (props: Props) => {
   const windwSize = useWindowSize();
 
   useEffect(() => {
-    if (value[1]) {
-      console.log(value);
+    if (value[1] && value[0]) {
+      // setTextValue(`${formatDate(value[0])} - ${formatDate(value[1])}`);
       setOpened(false);
     }
   }, [value]);
@@ -99,7 +111,7 @@ const TimeFilter = (props: Props) => {
         onChange={setOpened}
       >
         <Menu.Target>
-          <button className="flex gap-6 items-center bg-white rounded-full px-6 py-2 m-10">
+          <button className="flex gap-10 items-center bg-white rounded-full px-6 py-2">
             <AppIcons
               icon="CalendarDaysIcon:outline"
               className="w-4 h-4 text-black"
@@ -109,8 +121,8 @@ const TimeFilter = (props: Props) => {
         </Menu.Target>
 
         <Menu.Dropdown>
-          <div className="flex flex-col sm:flex-row gap-2">
-            <div className="dates flex flex-col items-center justify-center gap-2 sm:border-r border-neutral-700">
+          <div className="flex flex-col xs:flex-row gap-2">
+            <div className="dates flex flex-col items-center justify-center gap-2 sm:border-r  border-neutral-200">
               <FilterType
                 type="This Week"
                 setTextValue={setTextValue}
@@ -158,7 +170,7 @@ const TimeFilter = (props: Props) => {
                 setTextValue={setTextValue}
                 setValue={setValue}
                 textValue={textValue}
-                filterFun={thisYear}
+                filterFun={lastYear}
               />
             </div>
 
