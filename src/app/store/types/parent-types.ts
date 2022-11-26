@@ -28,7 +28,7 @@ export type ActiveSubscription = {
 
 export type AddPlayerType = {
   name: string;
-  dob: string;
+  dob?: string;
   team: number[];
   weight: number;
   height: number;
