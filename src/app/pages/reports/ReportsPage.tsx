@@ -11,6 +11,8 @@ import AddPlayer from "../home/molecules/AddPlayer";
 import { useSelector } from "react-redux";
 import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 import TimeFilter from "~/@main/components/TimeFilter";
+import TeamFilter from "../../../@main/components/TeamFilter";
+import useWindowSize from "~/@main/hooks/useWindowSize";
 
 // ===== dummy data =====
 
@@ -82,18 +84,22 @@ const text = {
 
 const ReportPage = () => {
   const player = useSelector(selectedPlayerFn);
+  const widowSize = useWindowSize();
 
   const [reportType, setReportType] =
     useState<"Performances" | "Attendances">("Performances");
 
   return (
     <div className="report-page px-5 mb-20">
-      <div className="flex gap-4 my-4 justify-between items-center">
-        <AddPlayer />
-        <div className="flex gap-4 flex-col xs:flex-row">
+      <div className="flex flex-col sm:flex-row gap-4 my-4 justify-between items-center">
+        <div className="flex gap-4">
+          <AddPlayer />
+          {widowSize.width && widowSize.width < 768 && <TimeFilter />}
+        </div>
+        <div className="flex gap-4">
           <Menu shadow="md" width={200}>
             <Menu.Target>
-              <button className="flex gap-2 text-sm justify-center items-center text-white bg-perfBlue py-2 px-6 rounded-3xl">
+              <button className="flex gap-2 text-xs sm:text-sm justify-center items-center text-white bg-perfBlue py-2 px-4 xs:px-6 rounded-3xl">
                 <span>{reportType}</span>
                 <AppIcons
                   className="w-3 h-3"
@@ -111,7 +117,8 @@ const ReportPage = () => {
               </Menu.Item>
             </Menu.Dropdown>
           </Menu>
-          <TimeFilter />
+          <TeamFilter />
+          {widowSize.width && widowSize.width >= 768 && <TimeFilter />}
         </div>
       </div>
       {reportType === "Performances" ? (

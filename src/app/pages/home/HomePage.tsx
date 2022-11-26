@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import { Player } from "~/app/store/types/parent-types";
 import { usePlayerAttendanceQuery } from "~/app/store/attendance/attendanceApi";
 import TimeFilter from "~/@main/components/TimeFilter";
+import TeamFilter from "~/@main/components/TeamFilter";
 
 // dummy data
 export const playerData: PlayerData = {
@@ -117,11 +118,7 @@ const HomePage = () => {
           <AddPlayer />
         </div>
         <div className="flex gap-1 justify-center items-center md:pt-0">
-          <Dropdown
-            values={["team 1", "team 2", "team 3"]}
-            selected={team}
-            setSelected={setTeam}
-          />
+          <TeamFilter />
           <TimeFilter />
         </div>
       </div>
