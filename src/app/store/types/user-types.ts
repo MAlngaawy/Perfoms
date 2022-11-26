@@ -12,20 +12,12 @@ export type SignupRes = {
 };
 
 export type LoginResponse = {
-  message: string;
-  data: {
-    access: string;
-    refresh: string;
-    user_data: User;
-  };
-  players: any[];
-  error: boolean;
+  access: string;
+  refresh: string;
 };
 
 export type ProfileResponse = {
-  message: string;
   data: User;
-  error: boolean;
 };
 
 export type User = {
