@@ -14,7 +14,7 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <AppAuthorization
-          userRole={user?.data?.user_type ? [user?.data?.user_type] : []}
+          userRole={user?.user_type ? [user?.user_type] : []}
           loginRedirectUrl={settingsConfig.loginRedirectUrl}
         >
           <AppLayout />
