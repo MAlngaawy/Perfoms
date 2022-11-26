@@ -10,7 +10,7 @@ const ProfilePage = () => {
   return (
     <div className="flex justify-center items-center py-20 md:pt-14">
       {userData && players && (
-        <UserInfo user={userData.data} players={players.data} />
+        <UserInfo user={userData} players={players.results} />
       )}
     </div>
   );
