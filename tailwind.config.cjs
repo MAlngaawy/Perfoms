@@ -17,6 +17,9 @@ module.exports = {
         perfLigtGray: "#fafafa",
         perfSecondary: "#C32B43",
         perfLightBlack: "#45464E",
+        perfBlack30: "#8B8D97",
+        perfBlack90: "#2C2D33",
+        gray70: "#F7F7FC",
         green: "#27AE60",
         yellow: "#F2C94C",
         red: "#EB5757",
@@ -35,6 +38,9 @@ module.exports = {
         lg: "1200px",
         xl: "1400px",
       },
+      rotate: {
+        '320': '320deg',
+      }
     },
   },
   plugins: [

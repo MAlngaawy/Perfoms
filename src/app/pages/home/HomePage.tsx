@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 import { Link } from "react-router-dom";
 import { Player } from "~/app/store/types/parent-types";
+import { usePlayerAttendanceQuery } from "~/app/store/attendance/attendanceApi";
 
 // dummy data
 export const playerData: PlayerData = {
@@ -103,14 +104,19 @@ const HomePage = () => {
   const [team, setTeam] = useState("Team");
   const [week, setWeek] = useState("Week");
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
-
+  const { data: playerAttendance } = usePlayerAttendanceQuery(
+    selectedPlayer?.id,
+    {
+      skip: !selectedPlayer?.id,
+    }
+  );
   return (
     <div className="home-page px-5 mb-20">
       <div className="flex my-2  justify-between items-center">
-        <div className="flex gap-3 flex-col md:flex-row justify-between items-center">
+        <div className="flex gap-3 items-center">
           <AddPlayer />
         </div>
-        <div className="flex gap-1 justify-center items-center pt-3 md:pt-0">
+        <div className="flex gap-1 justify-center items-center md:pt-0">
           <Dropdown
             values={["team 1", "team 2", "team 3"]}
             selected={team}
@@ -141,12 +147,14 @@ const HomePage = () => {
               <Card type="teamInfo" playerData={selectedPlayer} />
             </Grid.Col>
             <Grid.Col sm={7} span={14}>
-              <CustomCalendar
-                data={selectedPlayer.attendances.map((item) => ({
-                  day: item.day,
-                  attendance: item.status,
-                }))}
-              />
+              {playerAttendance && (
+                <CustomCalendar
+                  data={playerAttendance.results.map((item) => ({
+                    day: item.day,
+                    attendance: item.status,
+                  }))}
+                />
+              )}
               {/* <Card type="calendar" /> */}
             </Grid.Col>
             <Grid.Col sm={3} span={14}>

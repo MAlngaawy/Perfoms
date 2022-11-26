@@ -4,11 +4,11 @@ import { Team } from "~/app/store/types/coach-types";
 import classNames from "classnames";
 
 interface Props {
-  id: number;
+  id: number | undefined;
   role?: "Coach" | "Supervisor";
   name: string;
   education: string;
-  teams: Partial<Team>[];
+  teams: Partial<Team>[] | undefined;
   photo?: string;
   sport?: string;
 }
@@ -74,10 +74,9 @@ const CoachCard = ({
           <div className="teams flex flex-col">
             <h3 className="text-base ">Teams</h3>
             <div className="flex flex-col">
-              {teams.map((item) => (
+              {teams?.map((item) => (
                 <h4 className="text-xs font-normal" key={item.id}>
-                  {" "}
-                  {item.name}{" "}
+                  {item.name}
                 </h4>
               ))}
             </div>
