@@ -33,7 +33,12 @@ const ChatPage = () => {
       initChat();
     }
   }, [isSuccess, user]);
-  return <Common></Common>;
+  return (
+    <div className="m-4">
+      {" "}
+      <Common></Common>{" "}
+    </div>
+  );
 };
 
 export default ChatPage;

@@ -70,7 +70,7 @@ export default memo(Navigation);
 const Info = () => {
   const navigate = useNavigate();
   return (
-    <div className="mb-4">
+    <div className="mb-4 flex flex-col gap-2">
       {/* Logo */}
       <Box
         sx={{
@@ -95,12 +95,7 @@ const Info = () => {
       </Box>
 
       {/* Info */}
-      <div className="info pt-2 flex flex-col justify-center items-center gap-2">
-        <h1 className="app_name font-semibold text-perfBlue text-lg">
-          Performs
-        </h1>
-        <h3 className="text-xs">Maximize Players Full Potential.</h3>
-      </div>
+      <h3 className="text-xs">Maximize Players Full Potential.</h3>
     </div>
   );
 };
