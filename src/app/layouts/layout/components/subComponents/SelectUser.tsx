@@ -10,12 +10,14 @@ type Props = {};
 
 const SelectUser = (props: Props) => {
   const { data: players, isLoading } = useMyPlayersQuery({});
+  console.log(players);
+
   const dispatch = useDispatch();
   //save selected player in a state -- it wil change to be a global state or context
   const selectedPlayer = useSelector(selectedPlayerFn);
 
   useEffect(() => {
-    if (players) dispatch(selectPlayer(players?.data?.[0]));
+    if (players) dispatch(selectPlayer(players?.results?.[0]));
   }, [players]);
 
   return (
@@ -46,7 +48,7 @@ const SelectUser = (props: Props) => {
 
       {/* <Menu.Dropdown> */}
       {players &&
-        players.data.map((player, idx) => (
+        players.results?.map((player, idx) => (
           <SelectPlayer
             name={player.name}
             image={player.icon}

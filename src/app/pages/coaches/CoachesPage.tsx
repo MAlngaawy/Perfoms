@@ -1,7 +1,7 @@
 import { Grid } from "@mantine/core";
 import React from "react";
 import { useSelector } from "react-redux";
-import { usePlayerCoachesQuery } from "~/app/store/parent/parentApi";
+import { useTeamCoachesQuery } from "~/app/store/parent/parentApi";
 import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 import CoachCard from "./components/CoachCard";
 
@@ -74,29 +74,30 @@ const coachesDummyData = [
 
 const CoachesPage = ({ coaches }: Props) => {
   const player = useSelector(selectedPlayerFn);
-  const { data: playerCoaches, isLoading } = usePlayerCoachesQuery(
-    { id: player?.id },
+  const { data: playerCoaches, isLoading } = useTeamCoachesQuery(
+    { teamId: player?.id },
     { skip: !player }
   );
   return (
     <div className="coaches p-2">
       <Grid gutter={10}>
-        {playerCoaches?.data?.map((coach) => {
-          return (
-            <Grid.Col xs={6} sm={4} md={3}>
-              <CoachCard
-                key={coach.id}
-                id={coach.id}
-                role={"Coach"}
-                name={`${coach.first_name} ${coach.last_name}`}
-                education={coach.details.education || "NA"}
-                teams={coach.teams}
-                photo={coach.avatar}
-                sport={coach.job}
-              />
-            </Grid.Col>
-          );
-        })}
+        {playerCoaches &&
+          playerCoaches.results.map((coach) => {
+            return (
+              <Grid.Col xs={6} sm={4} md={3}>
+                <CoachCard
+                  key={coach.id}
+                  id={coach.id}
+                  role={"Coach"}
+                  name={`${coach.first_name} ${coach.last_name}`}
+                  education={coach.details?.education || "NA"}
+                  teams={coach.teams}
+                  photo={coach.avatar}
+                  sport={coach.job}
+                />
+              </Grid.Col>
+            );
+          })}
       </Grid>
     </div>
   );
