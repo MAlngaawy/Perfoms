@@ -103,7 +103,6 @@ export const players: Players[] = [
 
 const HomePage = () => {
   const [team, setTeam] = useState("Team");
-  const [week, setWeek] = useState("Week");
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
   const { data: playerAttendance } = usePlayerAttendanceQuery(
     selectedPlayer?.id,

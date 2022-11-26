@@ -92,7 +92,7 @@ const formatDate = (date: Date) => {
 const TimeFilter = (props: Props) => {
   const [value, setValue] = useState<[Date | null, Date | null]>([null, null]);
   const [opened, setOpened] = useState(false);
-  const [textValue, setTextValue] = useState<string>("Select The Time");
+  const [textValue, setTextValue] = useState<string>("Select Time");
   const windwSize = useWindowSize();
 
   useEffect(() => {
@@ -116,7 +116,10 @@ const TimeFilter = (props: Props) => {
               icon="CalendarDaysIcon:outline"
               className="w-4 h-4 text-black"
             />
-            <span>{textValue}</span>
+            <span className="flex items-center gap-1">
+              {textValue}{" "}
+              <AppIcons className="w-3" icon="ChevronDownIcon:outline" />{" "}
+            </span>
           </button>
         </Menu.Target>
 

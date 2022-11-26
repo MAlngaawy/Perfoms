@@ -10,6 +10,7 @@ import CustomCalendar from "~/@main/components/Calendar";
 import AddPlayer from "../home/molecules/AddPlayer";
 import { useSelector } from "react-redux";
 import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
+import TimeFilter from "~/@main/components/TimeFilter";
 
 // ===== dummy data =====
 
@@ -80,7 +81,6 @@ const text = {
 // ==============
 
 const ReportPage = () => {
-  const [selectedplayer, setSelectedPlayer] = useState<any>(null);
   const player = useSelector(selectedPlayerFn);
 
   const [reportType, setReportType] =
@@ -89,10 +89,8 @@ const ReportPage = () => {
   return (
     <div className="report-page px-5 mb-20">
       <div className="flex gap-4 my-4 justify-between items-center">
-        <div className="flex justify-between items-center">
-          <AddPlayer />
-        </div>
-        <div className="flex flex-col md:flex-row justify-center items-center md:pt-0">
+        <AddPlayer />
+        <div className="flex gap-4 flex-col xs:flex-row">
           <Menu shadow="md" width={200}>
             <Menu.Target>
               <button className="flex gap-2 text-sm justify-center items-center text-white bg-perfBlue py-2 px-6 rounded-3xl">
@@ -113,6 +111,7 @@ const ReportPage = () => {
               </Menu.Item>
             </Menu.Dropdown>
           </Menu>
+          <TimeFilter />
         </div>
       </div>
       {reportType === "Performances" ? (
