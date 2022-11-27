@@ -12,7 +12,7 @@ const Notifications = (props: Props) => {
 
   const haveNotificaton = true;
   return (
-    <Menu trigger="hover" shadow="md" width={200}>
+    <Menu shadow="md" width={200}>
       <Menu.Target>
         <Avatar
           className="cursor-pointer"

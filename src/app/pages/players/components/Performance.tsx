@@ -16,7 +16,7 @@ const Performance = ({ data }: Props) => {
   return (
     <div className="bg-white rounded-2xl p-4 sm:mx-4 ">
       <h2>Performances</h2>
-      <div className="flex flex-col gap-4 gap-x-12 md:gap-x-40 sm:flex-wrap h-800px overflow-scroll  mt-6">
+      <div className="flex flex-col gap-4 gap-x-12 md:gap-x-40 sm:flex-wrap h-700 overflow-scroll  mt-6">
         {data.map((item, idx) => {
           return (
             <div className="flex gap-6 justify-between xs:px-6" key={idx}>

@@ -5,11 +5,8 @@ module.exports = {
   important: true,
   theme: {
     extend: {
-      space: {
-        800: 800,
-      },
       height: {
-        "800px": 800,
+        700: 700,
       },
       colors: {
         perfBlue: "#2F80ED",
