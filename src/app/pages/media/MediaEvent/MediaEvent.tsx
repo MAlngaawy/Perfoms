@@ -113,12 +113,12 @@ const MediaEvent = ({ images }: { images: string[] }) => {
             {location.state.place}
           </p>
         </div>
-        {user?.data?.user_type !== "Parent" && (
+        {user?.user_type !== "Parent" && (
           <Button
             label={window.innerWidth > 567 ? "Add Media" : "Media"}
             onClick={() => setOpened(true)}
             style="primary"
-            className="h-20 shadow-xl w-20 xs:h-8 xs:w-32 mx-0 mt-0 h-8 rounded-full xs:border self-end xs:self-start xs:border-perfBlue xs:text-perfBlue xs:bg-transparent xs:hover:shadow-lg"
+            className="h-20 shadow-xl w-20 xs:h-8 xs:w-32 mx-0 mt-0 rounded-full xs:border self-end xs:self-start xs:border-perfBlue xs:text-perfBlue xs:bg-transparent xs:hover:shadow-lg"
             icon="plus icon"
           />
         )}
