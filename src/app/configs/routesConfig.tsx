@@ -34,6 +34,7 @@ const routeConfigs: PagesRouteConfig[] = [
   SignUpConfig,
   HomeConfig,
   MediaConfig,
+  ChatConfig,
   CoachesConfig,
   MessagesConfig,
   NotificationsConfig,

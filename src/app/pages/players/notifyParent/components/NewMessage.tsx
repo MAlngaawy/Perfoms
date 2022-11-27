@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import InputEmoji from "react-input-emoji";
+// import InputEmoji from "react-input-emoji";
 import AppIcons from "~/@main/core/AppIcons";
 
 type Props = {};
@@ -17,13 +17,13 @@ const NewMessage = (props: Props) => {
       <button className="bg-perfLightGray p-1 rounded-sm">
         <AppIcons className="w-5 font-light" icon="PlusIcon:outline" />
       </button>
-      <InputEmoji
+      {/* <InputEmoji
         value={text}
         onChange={setText}
         cleanOnEnter
         placeholder="Your message"
         borderColor="#fff"
-      />
+      /> */}
       <button
         className="w-24 bg-perfLightGray py-1 ml-1 rounded-sm"
         onClick={handleClick}

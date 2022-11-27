@@ -23,9 +23,9 @@ const ChatPage = () => {
         await zimKit.init(appConfig.appID);
         await zimKit.connectUser(
           {
-            userID: user.data.id.toString(),
-            userName: user.data.first_name,
-            userAvatarUrl: user.data.avatar,
+            userID: user.id.toString(),
+            userName: user.first_name,
+            userAvatarUrl: user.avatar,
           },
           data.data
         );
@@ -33,7 +33,12 @@ const ChatPage = () => {
       initChat();
     }
   }, [isSuccess, user]);
-  return <Common></Common>;
+  return (
+    <div className="m-4">
+      {" "}
+      <Common></Common>{" "}
+    </div>
+  );
 };
 
 export default ChatPage;

@@ -1,12 +1,26 @@
-import { AllPlayerCoaches } from "./../types/parent-types";
+import {
+  ParentClub,
+  ParentClubs,
+  PlayerActions,
+  PlayerAttendances,
+  PlayerCoach,
+  PlayerCoachTeams,
+  PlayerDocuments,
+  PlayerRecommendations,
+  PlayerTeams,
+  SportTeams,
+  TeamCoaches,
+  TeamEvent,
+  TeamEvents,
+  TeamSupervisors,
+} from "./../types/parent-types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BASE_HEADERS, BASE_URL } from "~/app/configs/dataService";
 import {
+  ActiveSubscription,
   AddPlayerType,
-  AllClubs,
   AllParents,
   AllPlayers,
-  DocumentTypes,
   Player,
 } from "../types/parent-types";
 
@@ -16,71 +30,186 @@ export const parentsApi = createApi({
     baseUrl: `${BASE_URL}/parent`,
     prepareHeaders: BASE_HEADERS,
   }),
-  tagTypes: ["Parent"],
+  tagTypes: ["Parent", "Player"],
   endpoints: ({ query, mutation }) => ({
-    myPlayers: query<AllPlayers, { page?: number }>({
+    ActiveSubscription: query<ActiveSubscription, { page?: number }>({
       query: (params) => ({
-        url: "my-players/",
+        url: "active-subscription/",
         params,
       }),
       providesTags: ["Parent"],
     }),
-    onePlayer: query<AllPlayers, number>({
-      query: (id) => ({
-        url: `my-players/${id}`,
-      }),
-      providesTags: ["Parent"],
-    }),
-    playerCoaches: query<AllPlayerCoaches, { id: number; page?: number }>({
-      query: ({ id, ...params }) => ({
-        url: `/all-coaches/${id}`,
-        params,
-      }),
-      providesTags: ["Parent"],
-    }),
-    allParents: query<AllParents, { page: number }>({
-      query: (params) => ({
-        url: "all-parents/",
-        params,
-      }),
-      providesTags: ["Parent"],
-    }),
-    allClubs: query<AllClubs, { page: number }>({
-      query: (params) => ({
-        url: "clubs/",
-        params,
-      }),
-      providesTags: ["Parent"],
-    }),
-    club: query<AllClubs, { id: number }>({
-      query: (id) => ({
-        url: `clubs/${id}/`,
-      }),
-      providesTags: ["Parent"],
-    }),
-    playerDocs: query<DocumentTypes, { player_id: number }>({
-      query: (id) => ({
-        url: `clubs/${id}/`,
-      }),
-      providesTags: ["Parent"],
-    }),
+
     addPlayer: mutation<Player, AddPlayerType>({
       query: (body) => ({
         url: "add-player/",
         method: "POST",
         body,
       }),
-      invalidatesTags: ["Parent"],
+      invalidatesTags: ["Player"],
+    }),
+
+    playerClubs: query<ParentClubs, { page?: number }>({
+      query: (params) => ({
+        url: "clubs/",
+        params,
+      }),
+      providesTags: ["Parent"],
+    }),
+
+    playerCoach: query<PlayerCoach, { id: number; page?: number }>({
+      query: ({ id, ...params }) => ({
+        url: `/coaches/${id}/`,
+        params,
+      }),
+      providesTags: ["Parent"],
+    }),
+
+    playerCoachTeams: query<PlayerCoachTeams, { id: number; page?: number }>({
+      query: ({ id, ...params }) => ({
+        url: `coaches/${id}/teams/`,
+        params,
+      }),
+      providesTags: ["Parent"],
+    }),
+
+    myPlayers: query<AllPlayers, { page?: number }>({
+      query: (params) => ({
+        url: `my-players/`,
+        params,
+      }),
+      providesTags: ["Parent"],
+    }),
+
+    onePlayer: query<AllPlayers, { id: number; page?: number }>({
+      query: ({ id, ...params }) => ({
+        url: `my-players/${id}/`,
+        params,
+      }),
+      providesTags: ["Parent"],
+    }),
+
+    playerActions: query<PlayerActions, { id: number; page?: number }>({
+      query: ({ id, ...params }) => ({
+        url: `${id}/actions/`,
+        params,
+      }),
+      providesTags: ["Parent"],
+    }),
+
+    playerCalender: query<PlayerAttendances, { id: number; page?: number }>({
+      query: ({ id, ...params }) => ({
+        url: `${id}/calender/`,
+        params,
+      }),
+      providesTags: ["Parent"],
+    }),
+
+    playerClub: query<ParentClub, { id: number; page?: number }>({
+      query: ({ id, ...params }) => ({
+        url: `clubs/${id}/`,
+        params,
+      }),
+      providesTags: ["Parent"],
+    }),
+
+    playerTeams: query<PlayerTeams, { id: number; page?: number }>({
+      query: ({ id, ...params }) => ({
+        url: `${id}/player-teams/`,
+        params,
+      }),
+      providesTags: ["Parent"],
+    }),
+
+    playerRecommendations: query<
+      PlayerRecommendations,
+      { id: number; page?: number }
+    >({
+      query: ({ id, ...params }) => ({
+        url: `${id}/recommendations/`,
+        params,
+      }),
+      providesTags: ["Parent"],
+    }),
+
+    playerTeamDocs: query<
+      PlayerDocuments,
+      { playerId: number; teamId: number }
+    >({
+      query: ({ playerId, teamId, ...params }) => ({
+        url: `${playerId}/${teamId}/docs/`,
+        params,
+      }),
+      providesTags: ["Parent"],
+    }),
+    // playerTeamKpisMetrics: query<
+    //   PlayerDocuments,
+    //   { playerId: number; teamId: number }
+    // >({
+    //   query: ({ playerId, teamId, ...params }) => ({
+    //     url: `${playerId}/${teamId}/player-kpis-metrics`,
+    //     params,
+    //   }),
+    //   providesTags: ["Parent"],
+    // }),
+    playerSportTeams: query<SportTeams, { sportId: number; page?: number }>({
+      query: ({ sportId, ...params }) => ({
+        url: `${sportId}/player-kpis-metrics/`,
+        params,
+      }),
+      providesTags: ["Parent"],
+    }),
+    teamCoaches: query<TeamCoaches, { teamId: number; page?: number }>({
+      query: ({ teamId, ...params }) => ({
+        url: `${teamId}/coaches/`,
+        params,
+      }),
+      providesTags: ["Parent"],
+    }),
+    teamEvents: query<TeamEvents, { teamId: number; page?: number }>({
+      query: ({ teamId, ...params }) => ({
+        url: `${teamId}/events/`,
+        params,
+      }),
+      providesTags: ["Parent"],
+    }),
+    teamEvent: query<
+      TeamEvent,
+      { teamId: number; eventId: number; page?: number }
+    >({
+      query: ({ teamId, eventId, ...params }) => ({
+        url: `${teamId}/events/${eventId}/`,
+        params,
+      }),
+      providesTags: ["Parent"],
+    }),
+    teamSupervisors: query<TeamSupervisors, { teamId: number; page?: number }>({
+      query: ({ teamId, ...params }) => ({
+        url: `${teamId}/supervisors/`,
+        params,
+      }),
+      providesTags: ["Parent"],
     }),
   }),
 });
 
 export const {
-  useAllClubsQuery,
-  useAllParentsQuery,
-  useAddPlayerMutation,
+  useActiveSubscriptionQuery,
   useMyPlayersQuery,
+  useAddPlayerMutation,
+  usePlayerClubQuery,
+  usePlayerCoachQuery,
+  usePlayerCoachTeamsQuery,
   useOnePlayerQuery,
-  useClubQuery,
-  usePlayerCoachesQuery,
+  usePlayerActionsQuery,
+  usePlayerCalenderQuery,
+  usePlayerRecommendationsQuery,
+  usePlayerSportTeamsQuery,
+  usePlayerTeamDocsQuery,
+  usePlayerTeamsQuery,
+  useTeamCoachesQuery,
+  useTeamEventQuery,
+  useTeamEventsQuery,
+  useTeamSupervisorsQuery,
+  usePlayerClubsQuery,
 } = parentsApi;

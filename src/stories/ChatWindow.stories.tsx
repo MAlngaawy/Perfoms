@@ -27,5 +27,5 @@ Primary.args = {
   name: "Mohammed",
   image:
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkZpsavKh2V2yqCyGQQNZt_BrhRAtcIuNWTw&usqp=CAU",
-  active: true,
+  // active: true,
 };

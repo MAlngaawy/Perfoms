@@ -33,7 +33,7 @@ export const userApi = createApi({
   }) as BaseQueryFn<string | FetchArgs, unknown, SerializedError, {}>,
   tagTypes: ["Users"],
   endpoints: ({ query, mutation }) => ({
-    user: query<ProfileResponse, any>({
+    user: query<User, any>({
       query: () => `profile/`,
       providesTags: ["Users"],
     }),
@@ -46,7 +46,7 @@ export const userApi = createApi({
       async onQueryStarted(arg, { queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          Cookies.set("token", data?.data.access);
+          Cookies.set("token", data.access);
           eventInstance.emit("Login_Success");
         } catch (error) {
           showNotification({
