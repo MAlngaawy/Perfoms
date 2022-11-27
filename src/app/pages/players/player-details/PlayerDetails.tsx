@@ -8,7 +8,7 @@ import AttendanceCard from "../components/AttendanceCard";
 import AttendanceCheckBox from "../components/AttendanceCheckBox";
 import TotalDaysCard from "../components/TotalDaysCard";
 import Notes from "../components/Notes";
-import Performance from "../components/Performance";
+import Performances from "../components/Performance";
 import TotalAttendance from "../../reports/components/TotalAttendance";
 import { useLocation } from "react-router-dom";
 
@@ -93,6 +93,129 @@ const days = [
   "Saturday., 30 / 7 / 15",
 ];
 
+const performancesDate = [
+  {
+    icon: "https://static.thenounproject.com/png/3194184-200.png",
+    metric: "Pushing",
+    score: 2,
+  },
+  {
+    icon: "https://static.thenounproject.com/png/3194184-200.png",
+    metric: "LOL",
+    score: 3,
+  },
+  {
+    icon: "https://static.thenounproject.com/png/3194184-200.png",
+    metric: "LOL33",
+    score: 4,
+  },
+  {
+    icon: "https://static.thenounproject.com/png/3194184-200.png",
+    metric: "Pushing",
+    score: 2,
+  },
+  {
+    icon: "https://static.thenounproject.com/png/3194184-200.png",
+    metric: "LOL",
+    score: 1,
+  },
+  {
+    icon: "https://static.thenounproject.com/png/3194184-200.png",
+    metric: "LOL33",
+    score: 4,
+  },
+  {
+    icon: "https://static.thenounproject.com/png/3194184-200.png",
+    metric: "Pushing",
+    score: 2,
+  },
+  {
+    icon: "https://static.thenounproject.com/png/3194184-200.png",
+    metric: "LOL",
+    score: 1,
+  },
+  {
+    icon: "https://static.thenounproject.com/png/3194184-200.png",
+    metric: "LOL33",
+    score: 3,
+  },
+  {
+    icon: "https://static.thenounproject.com/png/3194184-200.png",
+    metric: "Pushing",
+    score: 3,
+  },
+  {
+    icon: "https://static.thenounproject.com/png/3194184-200.png",
+    metric: "LOL",
+    score: 1,
+  },
+  {
+    icon: "https://static.thenounproject.com/png/3194184-200.png",
+    metric: "LOL33",
+    score: 4,
+  },
+  {
+    icon: "https://static.thenounproject.com/png/3194184-200.png",
+    metric: "Pushing",
+    score: 2,
+  },
+  {
+    icon: "https://static.thenounproject.com/png/3194184-200.png",
+    metric: "LOL",
+    score: 1,
+  },
+  {
+    icon: "https://static.thenounproject.com/png/3194184-200.png",
+    metric: "LOL33",
+    score: 4,
+  },
+  {
+    icon: "https://static.thenounproject.com/png/3194184-200.png",
+    metric: "Pushing",
+    score: 3,
+  },
+  {
+    icon: "https://static.thenounproject.com/png/3194184-200.png",
+    metric: "LOL",
+    score: 1,
+  },
+  {
+    icon: "https://static.thenounproject.com/png/3194184-200.png",
+    metric: "LOL33",
+    score: 4,
+  },
+  {
+    icon: "https://static.thenounproject.com/png/3194184-200.png",
+    metric: "Pushing",
+    score: 3,
+  },
+  {
+    icon: "https://static.thenounproject.com/png/3194184-200.png",
+    metric: "LOL",
+    score: 1,
+  },
+  {
+    icon: "https://static.thenounproject.com/png/3194184-200.png",
+    metric: "LOL33",
+    score: 4,
+  },
+  {
+    icon: "https://static.thenounproject.com/png/3194184-200.png",
+    metric: "Pushing",
+    score: 2,
+  },
+  {
+    icon: "https://static.thenounproject.com/png/3194184-200.png",
+    metric: "LOL",
+    score: 1,
+  },
+  {
+    icon: "https://static.thenounproject.com/png/3194184-200.png",
+    metric: "LOL33",
+    score: 4,
+  },
+];
+
 const parent = {
   icon_url:
     "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
@@ -166,7 +289,7 @@ const PlayerDetails = () => {
       {showCard === "performance" && (
         <>
           <AttendanceCard />
-          <Performance />
+          <Performances data={performancesDate} />
         </>
       )}
     </div>
