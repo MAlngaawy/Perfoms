@@ -12,10 +12,9 @@ import {
   Text,
   List,
 } from "@mantine/core";
-import authRoles from "~/app/auth/authRoles";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 // dummy data
-const user_type = "Supervisor";
 const sliderVideo = "https://www.youtube.com/embed/1nJOku-FPV8";
 
 const TRANSITION_DURATION = 200;
@@ -32,10 +31,14 @@ const MediaEvent = ({ images }: { images: string[] }) => {
 
   useAnimationOffsetEffect(embla, TRANSITION_DURATION);
 
+  const { data: user } = useUserQuery(null);
+
   const handleSaveClick = () => {
     setOpened(false);
     console.log(files);
     console.log(youtubeLink);
+    setFiles([]);
+    setYoutubeLink("");
   };
 
   const handleYoutubeLinkInput = () => {
@@ -100,7 +103,8 @@ const MediaEvent = ({ images }: { images: string[] }) => {
             {location.state.place}
           </p>
         </div>
-        {authRoles.Admin.includes(user_type) ? (
+
+        {user?.data?.user_type === "Supervisor" && (
           <Button
             label="Add Event"
             onClick={() => setOpened(true)}
@@ -108,7 +112,7 @@ const MediaEvent = ({ images }: { images: string[] }) => {
             className="w-32 mx-0 mt-0 h-8 rounded-full"
             icon="plus icon"
           />
-        ) : null}
+        )}
         <Modal
           sx={{
             ".mantine-Modal-modal": {
