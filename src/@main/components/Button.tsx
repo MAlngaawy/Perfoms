@@ -1,5 +1,4 @@
 import React from "react";
-import { Primary } from "~/stories/AttendanceTable.stories";
 import AppIcons from "../core/AppIcons";
 
 interface ButtonProps {
@@ -29,7 +28,7 @@ export const Button = ({
             : style === "basic"
             ? "text-black border-0"
             : ""
-        } ${className} flex justify-center px-3 disabled:bg-gray-500 items-center`}
+        } ${className} flex xs:flex-row flex-col justify-center px-3 disabled:bg-gray-500 items-center`}
         onClick={onClick}
       >
         {icon && (
@@ -42,7 +41,7 @@ export const Button = ({
                 : style === "basic"
                 ? "text-black"
                 : ""
-            }`}
+            } xs:text-perfBlue`}
             icon="PlusIcon:outline"
           />
         )}

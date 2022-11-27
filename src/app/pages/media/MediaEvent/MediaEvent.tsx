@@ -26,6 +26,7 @@ const MediaEvent = ({ images }: { images: string[] }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [youtubeLink, setYoutubeLink] = useState("");
   const [videoID, setVideoID] = useState("");
+  const [size, setSize] = useState(window.innerWidth);
 
   const location = useLocation();
 
@@ -55,6 +56,15 @@ const MediaEvent = ({ images }: { images: string[] }) => {
       }
     }
   };
+
+  useEffect(() => {
+    function handleResize() {
+      setSize(window.innerWidth);
+    }
+    console.log(size);
+
+    window.addEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     handleYoutubeLinkInput();
@@ -89,7 +99,7 @@ const MediaEvent = ({ images }: { images: string[] }) => {
         </Carousel.Slide>
         {slides}
       </Carousel>
-      <div className="hidden xs:flex flex-row justify-between xs:w-1/2 mx-auto pt-3 items-start">
+      <div className="flex flex-col xs:flex-row gap-16 xs:gap-0 justify-between min-w-[300px] w-1/2 mx-auto pt-3 items-start">
         <div className="flex flex-col gap-1 text-perfGray2 text-sm font-medium">
           <p className="text-lg md:text-2xl pb-1 text-black">
             {location.state.header}
@@ -103,16 +113,15 @@ const MediaEvent = ({ images }: { images: string[] }) => {
             {location.state.place}
           </p>
         </div>
-
-        {user?.data?.user_type === "Supervisor" && (
-          <Button
-            label="Add Event"
-            onClick={() => setOpened(true)}
-            style="bordered"
-            className="w-32 mx-0 mt-0 h-8 rounded-full"
-            icon="plus icon"
-          />
-        )}
+        {/* {user?.data?.user_type !== "Parent" && ( */}
+        <Button
+          label={window.innerWidth > 567 ? "Add Media" : "Media"}
+          onClick={() => setOpened(true)}
+          style="primary"
+          className="h-20 shadow-xl w-20 xs:h-8 xs:w-32 mx-0 mt-0 h-8 rounded-full xs:border self-end xs:self-start xs:border-perfBlue xs:text-perfBlue xs:bg-transparent xs:hover:shadow-lg"
+          icon="plus icon"
+        />
+        {/* )} */}
         <Modal
           sx={{
             ".mantine-Modal-modal": {
