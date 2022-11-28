@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import React from "react";
+import { useParentSubscriptionsQuery } from "~/app/store/parent/parentApi";
 import SubscriptionCard from "./molecules/SubscriptionCard";
 
 const dummyData = [
@@ -34,7 +34,7 @@ const dummyData = [
 
 const SubscriptionsPage = () => {
   const [currentPlan, setCurrentPlan] = useState("");
-
+  const { data: subscriptions } = useParentSubscriptionsQuery({});
   useEffect(() => {
     dummyData.map((plan) => {
       plan.currentPlan ? setCurrentPlan(plan.title) : null;
@@ -54,15 +54,10 @@ const SubscriptionsPage = () => {
         </p>
       </div>
       <div className="subscription-board flex flex-col md:flex-row bg-white p-3 md:p-10 rounded-3xl gap-10">
-        {dummyData.map((plan: any) => {
-          return (
-            <SubscriptionCard
-              {...plan}
-              currentPlan={currentPlan}
-              setCurrentPlan={setCurrentPlan}
-            />
-          );
-        })}
+        {subscriptions &&
+          subscriptions.results.map((plan: any) => {
+            return <SubscriptionCard plan={plan} />;
+          })}
       </div>
     </div>
   );

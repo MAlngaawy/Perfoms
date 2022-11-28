@@ -13,6 +13,7 @@ export type Subscription = {
   title: string;
   description: string;
   price: string;
+  current_plan: boolean;
 };
 
 export type ActiveSubscription = {
@@ -207,7 +208,7 @@ export type PlayerDocument = {
   id: number;
   coach: Coach;
   pdf_file: string;
-  created_at: "2022-11-05T13:11:46.674Z";
+  created_at: Date;
   doc_about: "Performance" | "Attendance" | "Matches";
   doc_type: "Report" | "Certificate";
   player: number;

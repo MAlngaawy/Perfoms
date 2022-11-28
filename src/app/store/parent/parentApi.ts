@@ -9,6 +9,7 @@ import {
   PlayerRecommendations,
   PlayerTeams,
   SportTeams,
+  Subscriptions,
   TeamCoaches,
   TeamEvent,
   TeamEvents,
@@ -121,6 +122,14 @@ export const parentsApi = createApi({
       providesTags: ["Parent"],
     }),
 
+    parentSubscriptions: query<Subscriptions, { page?: number }>({
+      query: (params) => ({
+        url: `subscriptions/`,
+        params,
+      }),
+      providesTags: ["Parent"],
+    }),
+
     playerRecommendations: query<
       PlayerRecommendations,
       { id: number; page?: number }
@@ -212,4 +221,5 @@ export const {
   useTeamEventsQuery,
   useTeamSupervisorsQuery,
   usePlayerClubsQuery,
+  useParentSubscriptionsQuery,
 } = parentsApi;
