@@ -6,7 +6,7 @@ export type Metric = {
   id: number;
   name: string;
   icon: string;
-  kpi: number;
+  kpi?: number;
 };
 
 export type kpi = {
@@ -41,7 +41,7 @@ export type AddRecommendation = {
 
 export type TeamCoach = {
   team_id: number;
-  ciach_id: number;
+  coach_id: number;
 };
 
 export type TeamPlayer = {
@@ -54,10 +54,11 @@ export type Team = {
   icon: string;
   name: string;
   from_age: number;
-  pillar: number;
   to_age: number;
   rate_per: RatePer;
   players_count: number;
+  pillar?: number;
+  sport?: string;
 };
 
 export type coaches = BaseGetAllType & {
