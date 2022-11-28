@@ -12,6 +12,7 @@ import { Player } from "~/app/store/types/parent-types";
 import { usePlayerAttendanceQuery } from "~/app/store/attendance/attendanceApi";
 import TimeFilter from "~/@main/components/TimeFilter";
 import TeamFilter from "~/@main/components/TeamFilter";
+import { usePlayerCalenderQuery } from "~/app/store/parent/parentApi";
 
 // dummy data
 export const playerData: PlayerData = {
@@ -105,8 +106,10 @@ export const players: Players[] = [
 const HomePage = () => {
   const [team, setTeam] = useState("Team");
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
-  const { data: playerAttendance } = usePlayerAttendanceQuery(
-    selectedPlayer?.id,
+  const { data: playerAttendance } = usePlayerCalenderQuery(
+    {
+      id: selectedPlayer?.id,
+    },
     {
       skip: !selectedPlayer?.id,
     }

@@ -55,11 +55,13 @@ const SignInPage = (props: Props) => {
   return (
     <div className="signIn bg-perfOfWhite flex justify-center min-h-screen items-stretch">
       <div className=" relative leftImage h-screen hidden md:block md:basis-1/2 self-stretch">
-        <img
-          className="absolute left-4 top-4 w-24 h-24"
-          src="/assets/images/auth_logo.png"
-          alt="logo"
-        />
+        <div className="">
+          <img
+            className="absolute left-4 top-4 w-24 h-24"
+            src="/assets/images/logo/logo.png"
+            alt="logo"
+          />
+        </div>
         <div className=" text-perfBlue p-2 absolute right-4 bottom-4 bg-perfGray text-xl">
           Maximize Players Full Potential.
         </div>
