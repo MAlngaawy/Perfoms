@@ -3,16 +3,13 @@ import { Card, Image, Text, Badge, Button, Group } from "@mantine/core";
 import AppIcons from "~/@main/core/AppIcons";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { TeamEvent } from "~/app/store/types/parent-types";
 
-interface MediaCardProps {
-  id: number;
-  img: string;
-  header: string;
-  date: string;
-  place: string;
-}
+type props = {
+  event: TeamEvent;
+};
 
-const MediaCard = ({ id, img, header, date, place }: MediaCardProps) => {
+const MediaCard = ({ event }: props) => {
   const navigate = useNavigate();
 
   return (
@@ -24,32 +21,25 @@ const MediaCard = ({ id, img, header, date, place }: MediaCardProps) => {
       withBorder
     >
       <Card.Section component="a">
-        <Image src={img} height={160} alt="Norway" />
+        <Image src={event.icon_url} height={160} alt="Norway" />
       </Card.Section>
 
       <Group position="apart" className="mx-4" mt="md" mb="xs">
-        <Text weight={500}>{header}</Text>
+        <Text weight={500}>{event.name}</Text>
       </Group>
 
       <Text size="sm" className="mx-4" color="dimmed">
         <AppIcons className="w-5 inline mb-4" icon="CalendarIcon:outline" />{" "}
-        {date}
+        {event.date}
       </Text>
 
       <Text size="sm" className="mx-4" color="dimmed">
-        <AppIcons className="w-5 inline mb-4" icon="MapIcon:outline" /> {place}
+        <AppIcons className="w-5 inline mb-4" icon="MapIcon:outline" />
+        {event.club.name}
       </Text>
 
       <Button
-        onClick={() =>
-          navigate(`/media/${id}`, {
-            state: {
-              header,
-              date,
-              place,
-            },
-          })
-        }
+        onClick={() => navigate(`/media/${event.id}`)}
         variant="light"
         className="bg-perfBlue text-white rounded-b-xl"
         fullWidth

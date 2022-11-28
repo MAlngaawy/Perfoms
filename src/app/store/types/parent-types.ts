@@ -13,6 +13,7 @@ export type Subscription = {
   title: string;
   description: string;
   price: string;
+  current_plan: boolean;
 };
 
 export type ActiveSubscription = {
@@ -117,8 +118,13 @@ export type PlayerActions = BaseGetAllType & {
 };
 
 export type SelectSubscription = {
-  subscription: 0;
+  subscription: number;
   subscription_type: "Monthly" | "Annual";
+};
+export type SelectSubscriptionRes = {
+  data: string;
+  errors: boolean;
+  message: string;
 };
 
 export type Subscriptions = BaseGetAllType & {
@@ -207,7 +213,7 @@ export type PlayerDocument = {
   id: number;
   coach: Coach;
   pdf_file: string;
-  created_at: "2022-11-05T13:11:46.674Z";
+  created_at: Date;
   doc_about: "Performance" | "Attendance" | "Matches";
   doc_type: "Report" | "Certificate";
   player: number;

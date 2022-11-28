@@ -1,4 +1,6 @@
+import { SerializedError } from "./../index";
 import {
+  EventFiles,
   ParentClub,
   ParentClubs,
   PlayerActions,
@@ -8,13 +10,21 @@ import {
   PlayerDocuments,
   PlayerRecommendations,
   PlayerTeams,
+  SelectSubscription,
+  SelectSubscriptionRes,
   SportTeams,
+  Subscriptions,
   TeamCoaches,
   TeamEvent,
   TeamEvents,
   TeamSupervisors,
 } from "./../types/parent-types";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {
+  BaseQueryFn,
+  createApi,
+  FetchArgs,
+  fetchBaseQuery,
+} from "@reduxjs/toolkit/query/react";
 import { BASE_HEADERS, BASE_URL } from "~/app/configs/dataService";
 import {
   ActiveSubscription,
@@ -29,15 +39,15 @@ export const parentsApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${BASE_URL}/parent`,
     prepareHeaders: BASE_HEADERS,
-  }),
-  tagTypes: ["Parent", "Player"],
+  }) as BaseQueryFn<string | FetchArgs, unknown, SerializedError, {}>,
+  tagTypes: ["Parent", "Player", "Subscriptions"],
   endpoints: ({ query, mutation }) => ({
     ActiveSubscription: query<ActiveSubscription, { page?: number }>({
       query: (params) => ({
         url: "active-subscription/",
         params,
       }),
-      providesTags: ["Parent"],
+      providesTags: ["Subscriptions"],
     }),
 
     addPlayer: mutation<Player, AddPlayerType>({
@@ -121,6 +131,14 @@ export const parentsApi = createApi({
       providesTags: ["Parent"],
     }),
 
+    parentSubscriptions: query<Subscriptions, { page?: number }>({
+      query: (params) => ({
+        url: `subscriptions/`,
+        params,
+      }),
+      providesTags: ["Subscriptions"],
+    }),
+
     playerRecommendations: query<
       PlayerRecommendations,
       { id: number; page?: number }
@@ -183,12 +201,27 @@ export const parentsApi = createApi({
       }),
       providesTags: ["Parent"],
     }),
+    eventFiles: query<EventFiles, { eventId: number; page?: number }>({
+      query: ({ eventId, ...params }) => ({
+        url: `${eventId}/files/`,
+        params,
+      }),
+      providesTags: ["Parent"],
+    }),
     teamSupervisors: query<TeamSupervisors, { teamId: number; page?: number }>({
       query: ({ teamId, ...params }) => ({
         url: `${teamId}/supervisors/`,
         params,
       }),
       providesTags: ["Parent"],
+    }),
+    selectSubscription: mutation<SelectSubscriptionRes, SelectSubscription>({
+      query: (body) => ({
+        url: "/select-subscription/",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Subscriptions"],
     }),
   }),
 });
@@ -212,4 +245,7 @@ export const {
   useTeamEventsQuery,
   useTeamSupervisorsQuery,
   usePlayerClubsQuery,
+  useParentSubscriptionsQuery,
+  useEventFilesQuery,
+  useSelectSubscriptionMutation,
 } = parentsApi;
