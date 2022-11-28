@@ -3,15 +3,22 @@ import { Avatar, Indicator, Divider, Menu, Text } from "@mantine/core";
 import Notification from "~/@main/components/Notification";
 import AppIcons from "~/@main/core/AppIcons";
 import { Link } from "react-router-dom";
+import useWindowSize from "~/@main/hooks/useWindowSize";
 
 type Props = {};
 
 const Notifications = (props: Props) => {
+  const windowSize = useWindowSize();
+
   const haveNotificaton = true;
   return (
-    <Menu trigger="hover" shadow="md" width={200}>
+    <Menu shadow="md" width={200}>
       <Menu.Target>
-        <Avatar className="cursor-pointer" radius="xl">
+        <Avatar
+          className="cursor-pointer"
+          radius="xl"
+          size={windowSize.width && windowSize.width < 400 ? "sm" : "md"}
+        >
           <Indicator
             sx={{
               ".mantine-Indicator-indicator": {
@@ -21,7 +28,7 @@ const Notifications = (props: Props) => {
             }}
             color="red"
             position="top-start"
-            size={12}
+            size={windowSize.width && windowSize.width < 400 ? 10 : 12}
             withBorder
             disabled={!haveNotificaton}
           >

@@ -81,9 +81,9 @@ const SignInPage = (props: Props) => {
             <p className="text-perfGray text-base">Welcome back.</p>
           </div>
           <div className="inputs mb-10 gap-4 flex w-full flex-col justify-center items-center">
-            <Grid grow gutter="sm" className="w-full">
-              {/* Select Country code Input */}
-              <Grid.Col span={3}>
+            {/* <Grid grow gutter="sm" className="w-full"> */}
+            {/* Select Country code Input */}
+            {/* <Grid.Col span={3}>
                 <Controller
                   render={({ field }) => (
                     <Select
@@ -118,35 +118,36 @@ const SignInPage = (props: Props) => {
                   control={control}
                   defaultValue=""
                 />
-              </Grid.Col>
+              </Grid.Col> */}
 
-              {/* Mobile Number Input */}
-              <Grid.Col span={9}>
-                <Input.Wrapper
-                  id="phoneNumber"
-                  withAsterisk
-                  label="phone number"
-                  error={errors.phoneNumber && "Please add your mobile"}
-                >
-                  <Input
-                    sx={{
-                      ".mantine-Input-input	": {
-                        border: 0,
-                        padding: 0,
-                        borderBottom: 1,
-                        background: "none",
-                        borderStyle: "solid",
-                        borderRadius: 0,
-                      },
-                    }}
-                    autoComplete="phone"
-                    className="border-b"
-                    {...register("phoneNumber")}
-                    id="phoneNumber"
-                  />
-                </Input.Wrapper>
-              </Grid.Col>
-            </Grid>
+            {/* Mobile Number Input */}
+            {/* <Grid.Col span={9}> */}
+            <Input.Wrapper
+              id="phoneNumber"
+              withAsterisk
+              label="phone number"
+              error={errors.phoneNumber && "Please add your mobile"}
+              className="w-full"
+            >
+              <Input
+                sx={{
+                  ".mantine-Input-input	": {
+                    border: 0,
+                    padding: 0,
+                    borderBottom: 1,
+                    background: "none",
+                    borderStyle: "solid",
+                    borderRadius: 0,
+                  },
+                }}
+                autoComplete="phone"
+                className="border-b"
+                {...register("phoneNumber")}
+                id="phoneNumber"
+              />
+            </Input.Wrapper>
+            {/* </Grid.Col>
+            </Grid> */}
 
             {/* Password Input */}
             <PasswordInput

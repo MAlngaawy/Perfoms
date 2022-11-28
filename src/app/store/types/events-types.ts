@@ -1,4 +1,5 @@
 import { BaseGetAllType } from "./base-types";
+import { RatePer } from "./supervisor-types";
 
 export type Event = {
   id: number;
@@ -13,6 +14,7 @@ export type Event = {
   score: number;
   max_score: number;
   coverage: number;
+  ratePer?: RatePer;
   date: Date;
   team: number;
   club: number;
