@@ -2,10 +2,7 @@ import { Grid } from "@mantine/core";
 import React from "react";
 import { useSelector } from "react-redux";
 import { useTeamCoachesQuery } from "~/app/store/parent/parentApi";
-import {
-  selectedPlayerFn,
-  selectedPlayerTeamFn,
-} from "~/app/store/parent/parentSlice";
+import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 import CoachCard from "./components/CoachCard";
 import TeamFilter from "../../../@main/components/TeamFilter";
 
