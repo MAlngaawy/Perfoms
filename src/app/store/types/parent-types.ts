@@ -229,7 +229,15 @@ export type PlayerKpiMetric = {
   kpi: string;
   metric: string;
   level: "z" | "w" | "i" | "s";
-  score_avg: string;
+  score_avg: number;
+};
+
+export type PlayerKpiMetrics = {
+  player_kpi_metrics: PlayerKpiMetric[];
+  total_count: number;
+  weakness_count: number;
+  intermediate_count: number;
+  strength_count: number;
 };
 
 export type SportTeam = {
