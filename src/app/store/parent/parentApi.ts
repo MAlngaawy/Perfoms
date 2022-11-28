@@ -169,9 +169,12 @@ export const parentsApi = createApi({
     //   }),
     //   providesTags: ["Parent"],
     // }),
-    playerSportTeams: query<SportTeams, { sportId: number; page?: number }>({
-      query: ({ sportId, ...params }) => ({
-        url: `${sportId}/player-kpis-metrics/`,
+    playerSportTeams: query<
+      SportTeams,
+      { player_id: number; team_id: number; page?: number }
+    >({
+      query: ({ player_id, team_id, ...params }) => ({
+        url: `${player_id}/${team_id}/player-kpis-metrics/`,
         params,
       }),
       providesTags: ["Parent"],

@@ -6,13 +6,19 @@ import { PlayerData } from "~/app/store/types/user-types";
 import CustomCalendar from "../../../@main/components/Calendar";
 import AddPlayer from "./molecules/AddPlayer";
 import { useSelector } from "react-redux";
-import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
+import {
+  selectedPlayerFn,
+  selectedPlayerTeamFn,
+} from "~/app/store/parent/parentSlice";
 import { Link } from "react-router-dom";
 import { Player } from "~/app/store/types/parent-types";
 import { usePlayerAttendanceQuery } from "~/app/store/attendance/attendanceApi";
 import TimeFilter from "~/@main/components/TimeFilter";
 import TeamFilter from "~/@main/components/TeamFilter";
-import { usePlayerCalenderQuery } from "~/app/store/parent/parentApi";
+import {
+  usePlayerCalenderQuery,
+  usePlayerSportTeamsQuery,
+} from "~/app/store/parent/parentApi";
 
 // dummy data
 export const playerData: PlayerData = {
@@ -104,8 +110,8 @@ export const players: Players[] = [
 // ==================
 
 const HomePage = () => {
-  const [team, setTeam] = useState("Team");
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
+  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const { data: playerAttendance } = usePlayerCalenderQuery(
     {
       id: selectedPlayer?.id,
@@ -114,6 +120,19 @@ const HomePage = () => {
       skip: !selectedPlayer?.id,
     }
   );
+
+  const { data: playerSportTeam } = usePlayerSportTeamsQuery(
+    {
+      player_id: selectedPlayer?.id,
+      team_id: selectedPlayerTeam?.id,
+    },
+    {
+      skip: !selectedPlayer?.id || !selectedPlayerTeam?.id,
+    }
+  );
+
+  console.log("LOLLLLLLLLL", playerSportTeam);
+
   return (
     <div className="home-page px-5 mb-20">
       <div className="my-4 flex flex-col xs:flex-row gap-2 justify-between items-center">
