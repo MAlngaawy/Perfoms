@@ -4,7 +4,7 @@ import { FC } from "react";
 
 type Props = {
   data: { day: string; attendance: "ATTENDED" | "ABSENT" | "UPCOMING" }[];
-  pageName?: string;
+  pageName?: "reports";
 };
 
 const CustomCalendar = ({ data, pageName }: Props) => {
@@ -50,6 +50,10 @@ const CustomCalendar = ({ data, pageName }: Props) => {
               ".mantine-Calendar-day": {
                 borderRadius: "50%",
                 color: "#000",
+                width: 30,
+                height: 30,
+                lineHeight: "30px",
+                margin: 2,
               },
             }}
             dayStyle={(date) => testFun(date, data)}

@@ -185,8 +185,8 @@ const ReportPage = () => {
         <div className="attendances">
           {/* Left Columns ( User Info And Note ) */}
           <Grid gutter={"sm"}>
-            <Grid.Col span={12} sm={3}>
-              <div className="flex flex-col gap-2">
+            <Grid.Col span={12} md={3}>
+              <div className="flex flex-col xs:flex-row md:flex-col gap-2">
                 <Card type="playerInfo" playerData={player} />
                 <div className="note bg-white rounded-3xl w-full p-4">
                   <h2 className="text-lg font-normal text-perfGray1 pb-4">
@@ -206,7 +206,7 @@ const ReportPage = () => {
             </Grid.Col>
 
             {/* Right Column Attendance Charts And numbers */}
-            <Grid.Col span={12} sm={9}>
+            <Grid.Col span={12} md={9}>
               <Grid gutter={"sm"}>
                 <Grid.Col span={12}>
                   <div className="main-teams bg-white p-4 rounded-3xl">
@@ -317,7 +317,7 @@ const ReportPage = () => {
 
                     {/* Attendance Calender */}
                     <CustomCalendar
-                      pageName="report"
+                      pageName="reports"
                       data={[
                         { day: "11/4/2022", attendance: "ATTENDED" },
                         { day: "11/6/2022", attendance: "ABSENT" },
