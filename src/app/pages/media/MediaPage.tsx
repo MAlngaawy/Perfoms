@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { useTeamEventsQuery } from "~/app/store/parent/parentApi";
+import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 import MediaCard from "./molecules/MediaCard";
 
 const dummyData = [
@@ -68,6 +71,11 @@ const dummyData = [
 ];
 
 const MediaPage = () => {
+  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
+  const { data: teamEvents } = useTeamEventsQuery(
+    { teamId: selectedPlayerTeam?.id },
+    { skip: !selectedPlayerTeam }
+  );
   const [opened, setOpened] = useState(false);
   const [events, setEvents] = useState(dummyData);
 
@@ -88,9 +96,10 @@ const MediaPage = () => {
   return (
     <div>
       <div className="flex flex-col xs:flex-row justify-center xs:items-center flex-wrap gap-2 m-1">
-        {events.map((data) => {
-          return <MediaCard key={data.id} {...data} />;
-        })}
+        {teamEvents &&
+          teamEvents.results.map((data) => {
+            return <MediaCard key={data.id} event={data} />;
+          })}
       </div>
     </div>
   );

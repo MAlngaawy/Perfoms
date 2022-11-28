@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { useParentSubscriptionsQuery } from "~/app/store/parent/parentApi";
+import {
+  useParentSubscriptionsQuery,
+  useSelectSubscriptionMutation,
+} from "~/app/store/parent/parentApi";
 import SubscriptionCard from "./molecules/SubscriptionCard";
 
 const dummyData = [
@@ -41,6 +44,13 @@ const SubscriptionsPage = () => {
     });
   }, []);
 
+  const [selectPlan, { data, isError, isLoading, isSuccess }] =
+    useSelectSubscriptionMutation();
+
+  useEffect(() => {
+    if (data && isSuccess) window.location.replace(data.data);
+  }, [data, isSuccess]);
+
   return (
     <div className="subscriptions-page px-1 py-5 md:w-3/4 mx-auto md:my-20">
       <div>
@@ -55,9 +65,9 @@ const SubscriptionsPage = () => {
       </div>
       <div className="subscription-board flex flex-col md:flex-row bg-white p-3 md:p-10 rounded-3xl gap-10">
         {subscriptions &&
-          subscriptions.results.map((plan: any) => {
-            return <SubscriptionCard plan={plan} />;
-          })}
+          subscriptions.results.map((plan: any) => (
+            <SubscriptionCard plan={plan} selectPlan={selectPlan} />
+          ))}
       </div>
     </div>
   );

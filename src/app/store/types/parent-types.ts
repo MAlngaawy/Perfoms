@@ -118,8 +118,13 @@ export type PlayerActions = BaseGetAllType & {
 };
 
 export type SelectSubscription = {
-  subscription: 0;
+  subscription: number;
   subscription_type: "Monthly" | "Annual";
+};
+export type SelectSubscriptionRes = {
+  data: string;
+  errors: boolean;
+  message: string;
 };
 
 export type Subscriptions = BaseGetAllType & {

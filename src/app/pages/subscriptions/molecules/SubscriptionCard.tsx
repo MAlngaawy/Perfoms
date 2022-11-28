@@ -1,17 +1,33 @@
 import AppIcons from "~/@main/core/AppIcons";
-import React from "react";
-import { Subscription } from "~/app/store/types/parent-types";
+import React, { useEffect } from "react";
+import {
+  SelectSubscription,
+  SelectSubscriptionRes,
+  Subscription,
+} from "~/app/store/types/parent-types";
+import { useSelectSubscriptionMutation } from "~/app/store/parent/parentApi";
+import {
+  BaseQueryFn,
+  FetchArgs,
+  MutationDefinition,
+} from "@reduxjs/toolkit/dist/query";
+import { MutationTrigger } from "@reduxjs/toolkit/dist/query/react/buildHooks";
+import { SerializedError } from "~/app/store";
 
 interface SubscripionCardProps {
   plan: Subscription;
-  // setCurrentPlan: (plan: string) => void;
+  selectPlan: MutationTrigger<
+    MutationDefinition<
+      SelectSubscription,
+      BaseQueryFn<string | FetchArgs, unknown, SerializedError, {}, {}>,
+      "Parent" | "Player" | "Subscriptions",
+      SelectSubscriptionRes,
+      "parentsApi"
+    >
+  >;
 }
 
-const SubscriptionCard = ({
-  plan,
-}: // currentPlan,
-// setCurrentPlan,
-SubscripionCardProps) => {
+const SubscriptionCard = ({ plan, selectPlan }: SubscripionCardProps) => {
   return (
     <div
       className={`${
@@ -52,7 +68,9 @@ SubscripionCardProps) => {
         className={`${
           true ? "bg-green" : "bg-perfBlue text-white"
         } h-12 w-48 mx-auto rounded-full disabled:bg-perfGray3`}
-        // onClick={() => setCurrentPlan(title)}
+        onClick={() =>
+          selectPlan({ subscription: plan.id, subscription_type: "Monthly" })
+        }
         disabled={plan.current_plan}
       >
         {plan.current_plan ? "Current plan" : "Choose plan"}

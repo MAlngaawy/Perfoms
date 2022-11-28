@@ -2,7 +2,10 @@ import { Grid } from "@mantine/core";
 import React from "react";
 import { useSelector } from "react-redux";
 import { useTeamCoachesQuery } from "~/app/store/parent/parentApi";
-import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
+import {
+  selectedPlayerFn,
+  selectedPlayerTeamFn,
+} from "~/app/store/parent/parentSlice";
 import CoachCard from "./components/CoachCard";
 import TeamFilter from "../../../@main/components/TeamFilter";
 
@@ -11,10 +14,10 @@ type Props = {
 };
 
 const CoachesPage = ({ coaches }: Props) => {
-  const player = useSelector(selectedPlayerFn);
+  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const { data: playerCoaches, isLoading } = useTeamCoachesQuery(
-    { teamId: player?.id },
-    { skip: !player }
+    { teamId: selectedPlayerTeam?.id },
+    { skip: !selectedPlayerTeam }
   );
   return (
     <div className="coaches p-2">
