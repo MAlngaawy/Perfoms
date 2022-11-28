@@ -95,7 +95,9 @@ const Info = () => {
       </Box>
 
       {/* Info */}
-      <h3 className="text-xs">Maximize Players Full Potential.</h3>
+      <h3 className="text-xs text-center text-perfGray2 mt-2">
+        Maximize Players Full Potential.
+      </h3>
     </div>
   );
 };

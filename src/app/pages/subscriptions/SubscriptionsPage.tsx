@@ -52,7 +52,7 @@ const SubscriptionsPage = () => {
   }, [data, isSuccess]);
 
   return (
-    <div className="subscriptions-page px-1 py-5 md:w-3/4 mx-auto md:my-20">
+    <div className="subscriptions-page px-1 py-5 m-6 sm:mx-20">
       <div>
         <h1 className="text-3xl md:text-4xl pb-5">Plans & Pricing</h1>
         <p className="opacity-75 font-medium pb-5">
@@ -63,11 +63,13 @@ const SubscriptionsPage = () => {
           <span className="font-medium text-perfBlue">{currentPlan}</span>
         </p>
       </div>
-      <div className="subscription-board flex flex-col md:flex-row bg-white p-3 md:p-10 rounded-3xl gap-10">
-        {subscriptions &&
-          subscriptions.results.map((plan: any) => (
-            <SubscriptionCard plan={plan} selectPlan={selectPlan} />
-          ))}
+      <div className="bg-white rounded-3xl ">
+        <div className="subscription-board flex flex-col md:flex-row  p-6 md:p-10 sm:mx-20 gap-10">
+          {subscriptions &&
+            subscriptions.results.map((plan: any) => (
+              <SubscriptionCard plan={plan} selectPlan={selectPlan} />
+            ))}
+        </div>
       </div>
     </div>
   );
