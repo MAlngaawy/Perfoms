@@ -13,6 +13,8 @@ import { usePlayerCalenderQuery } from "~/app/store/parent/parentApi";
 import UpcomingEventsCard from "~/@main/components/UpcomingEventsCard";
 import HomeLoading from "./organisms/HomeLoading";
 import HomePlayerInfoCard from "../../../@main/components/HomePlayerInfoCard";
+import HomeTeamInfoCard from "../../../@main/components/HomeTeamInfoCard";
+import { selectedPlayerTeamFn } from "../../store/parent/parentSlice";
 
 // dummy data
 export const playerData: PlayerData = {
@@ -105,7 +107,7 @@ export const players: Players[] = [
 
 const HomePage = () => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
-  // const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
+  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const { data: playerAttendance } = usePlayerCalenderQuery(
     { id: selectedPlayer?.id },
     { skip: !selectedPlayer?.id }
@@ -131,7 +133,7 @@ const HomePage = () => {
           <TimeFilter />
         </div>
       </div>
-      {selectedPlayer ? (
+      {selectedPlayer && selectedPlayerTeam ? (
         <>
           <Grid columns={12} gutter={"sm"}>
             <Grid.Col sm={3} span={12}>
@@ -145,7 +147,7 @@ const HomePage = () => {
           </Grid>
           <Grid columns={12} gutter={"sm"}>
             <Grid.Col sm={4} span={12}>
-              <Card type="teamInfo" playerData={selectedPlayer} />
+              <HomeTeamInfoCard />
             </Grid.Col>
             <Grid.Col sm={5} span={12}>
               {playerAttendance && (

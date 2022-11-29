@@ -35,6 +35,7 @@ import {
   Player,
 } from "../types/parent-types";
 import { CoachPlayerInfo } from "../types/coach-types";
+import { Team } from "~/app/store/types/coach-types";
 
 export const parentsApi = createApi({
   reducerPath: "parentsApi",
@@ -127,6 +128,14 @@ export const parentsApi = createApi({
     playerTeams: query<PlayerTeams, { id: number; page?: number }>({
       query: ({ id, ...params }) => ({
         url: `${id}/player-teams/`,
+        params,
+      }),
+      providesTags: ["Parent"],
+    }),
+
+    TeamInfo: query<Team, { team_id: number; page?: number }>({
+      query: ({ team_id, ...params }) => ({
+        url: `${team_id}/info`,
         params,
       }),
       providesTags: ["Parent"],
@@ -254,6 +263,7 @@ export const {
   usePlayerSportTeamsQuery,
   usePlayerTeamDocsQuery,
   usePlayerTeamsQuery,
+  useTeamInfoQuery,
   useTeamCoachesQuery,
   useTeamEventQuery,
   useTeamEventsQuery,
