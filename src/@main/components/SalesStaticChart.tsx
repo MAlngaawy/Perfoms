@@ -63,17 +63,17 @@ const SaleStaticChart = () => {
           />
           <YAxis dataKey="progress" />
           <Tooltip labelStyle={{ color: "black" }} />
-          <Legend />
+          {/* <Legend /> */}
           <Bar dataKey="progress" fill="#333" barSize={10} radius={2}>
             {playerKpis?.player_kpi_metrics.map((metric, index) => (
               <Cell
                 key={index}
                 fill={
-                  metric.score_avg > 80
-                    ? "#00E096"
-                    : metric.score_avg < 50
-                    ? "#EB5757"
-                    : "#F2C94C"
+                  metric.score_avg >= 60
+                    ? "#00E096" // green more than 60
+                    : metric.score_avg <= 40
+                    ? "#EB5757" // red less than 40
+                    : "#F2C94C" // yallow
                 }
               />
             ))}

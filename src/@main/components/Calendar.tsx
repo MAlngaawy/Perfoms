@@ -1,12 +1,21 @@
 import { Calendar } from "@mantine/dates";
 import classNames from "classnames";
+import { Player } from "~/app/store/types/parent-types";
+import { useSelector } from "react-redux";
+import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
+import { usePlayerCalenderQuery } from "~/app/store/parent/parentApi";
 
 type Props = {
-  data: { day: string; attendance: "ATTENDED" | "ABSENT" | "UPCOMING" }[];
   pageName?: "reports";
 };
 
-const CustomCalendar = ({ data, pageName }: Props) => {
+const CustomCalendar = ({ pageName }: Props) => {
+  const selectedPlayer: Player = useSelector(selectedPlayerFn);
+  const { data: playerAttendance } = usePlayerCalenderQuery(
+    { id: selectedPlayer?.id },
+    { skip: !selectedPlayer?.id }
+  );
+
   return (
     <div className="bg-white rounded-3xl p-4">
       <h2 className="title text-lg text-perfGray1">Calendar.</h2>
@@ -58,7 +67,13 @@ const CustomCalendar = ({ data, pageName }: Props) => {
                 margin: 2,
               },
             }}
-            dayStyle={(date) => testFun(date, data)}
+            dayStyle={(date) => {
+              if (playerAttendance) {
+                return testFun(date, playerAttendance?.results);
+              } else {
+                return { background: "#fff" };
+              }
+            }}
           />
         </div>
       </div>
@@ -70,7 +85,7 @@ export default CustomCalendar;
 
 const testFun = (
   thisDate: Date,
-  data: { day: string; attendance: "ATTENDED" | "ABSENT" | "UPCOMING" }[]
+  data: { day: string; status: "ATTENDED" | "ABSENT" | "UPCOMING" }[]
 ): { background?: string; border?: string; color?: string } => {
   for (let oneDate of data) {
     if (
@@ -78,11 +93,11 @@ const testFun = (
       new Date(oneDate.day).getMonth() === thisDate.getMonth() &&
       new Date(oneDate.day).getFullYear() === thisDate.getFullYear()
     ) {
-      if (oneDate.attendance === "ATTENDED") {
+      if (oneDate.status === "ATTENDED") {
         return { background: "#1976D2", color: "#fff" };
-      } else if (oneDate.attendance === "ABSENT") {
+      } else if (oneDate.status === "ABSENT") {
         return { background: "#C32B43", color: "#fff" };
-      } else if (oneDate.attendance === "UPCOMING") {
+      } else if (oneDate.status === "UPCOMING") {
         return { border: "1px solid #00f" };
       } else {
         return {};

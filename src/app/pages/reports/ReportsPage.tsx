@@ -19,37 +19,6 @@ import ReportsPageLoading from "./components/ReportsPageLoading";
 import PerformanceSummaryCard from "~/@main/components/PerformanceSummaryCard";
 // ===== dummy data =====
 
-const playerSummary = [
-  {
-    name: "Strengths",
-    number: 8,
-    bgColor: "#00E0961A",
-    textColor: "#27AE60",
-    icon: "/assets/images/gym.png",
-  },
-  {
-    name: "Weaknesses",
-    number: 8,
-    bgColor: "#EB57571A",
-    textColor: "#EB5757",
-    icon: "/assets/images/weakness.png",
-  },
-  {
-    name: "Actions",
-    number: 8,
-    bgColor: "#2F80ED1A",
-    textColor: "#2F80ED",
-    icon: "/assets/images/tasks.png",
-  },
-  {
-    name: "Recommendations",
-    number: 8,
-    bgColor: "#00A1FF1A",
-    textColor: "#00A1FF",
-    icon: "/assets/images/discussion.png",
-  },
-];
-
 const scores = [
   {
     name: "kick",
@@ -77,12 +46,6 @@ const scores = [
   },
 ];
 
-const text = {
-  firstText: "Name of the metric “ left leg” ",
-  secondText: "Name of the action “ need more practicing” ",
-  detailedText:
-    "10 Exercises to Improve Your Flexibility 1. Standing Quad Stretch. Stand with your feet together. ... 2. Standing Side Stretch. Standing with your feet together, lift your arms overhead. ... 3. Seated Hamstring Stretch. ... 4.",
-};
 // ==============
 
 const ReportPage = () => {
@@ -128,10 +91,10 @@ const ReportPage = () => {
           {reportType === "Performances" ? (
             <div>
               <Grid columns={12} gutter={"sm"}>
-                <Grid.Col sm={3} span={12}>
+                <Grid.Col sm={3} md={2.5} span={12}>
                   <HomePlayerInfoCard />
                 </Grid.Col>
-                <Grid.Col sm={9} span={12}>
+                <Grid.Col sm={9} md={9.5} span={12}>
                   <PerformanceSummaryCard />
                 </Grid.Col>
               </Grid>
@@ -177,7 +140,7 @@ const ReportPage = () => {
             <div className="attendances">
               {/* Left Columns ( User Info And Note ) */}
               <Grid gutter={"sm"}>
-                <Grid.Col span={12} md={3}>
+                <Grid.Col span={12} md={2.5}>
                   <div className="flex flex-col xs:flex-row md:flex-col gap-2">
                     <HomePlayerInfoCard />
                     <div className="note bg-white rounded-3xl w-full p-4">
@@ -198,7 +161,7 @@ const ReportPage = () => {
                 </Grid.Col>
 
                 {/* Right Column Attendance Charts And numbers */}
-                <Grid.Col span={12} md={9}>
+                <Grid.Col span={12} md={9.5}>
                   <Grid gutter={"sm"}>
                     <Grid.Col span={12}>
                       <div className="main-teams bg-white p-4 rounded-3xl">
@@ -249,39 +212,8 @@ const ReportPage = () => {
                     </Grid.Col>
                     {/* Attedance Summary Table */}
                     <Grid.Col span={12} sm={8}>
-                      <div className="bg-white flex flex-col xs:flex-row rounded-3xl p-4">
-                        <AttendanceTable
-                          data={[
-                            { day: "2/10/2017", attendance: "ATTENDED" },
-                            { day: "2/10/2017", attendance: "ATTENDED" },
-                            { day: "2/10/2017", attendance: "ATTENDED" },
-                            { day: "2/10/2017", attendance: "ATTENDED" },
-                            { day: "2/10/2017", attendance: "ABSENT" },
-                            { day: "2/10/2017", attendance: "ABSENT" },
-                            { day: "2/10/2017", attendance: "ABSENT" },
-                            { day: "2/10/2017", attendance: "ATTENDED" },
-                            { day: "2/10/2017", attendance: "UPCOMING" },
-                            { day: "2/10/2017", attendance: "UPCOMING" },
-                            { day: "2/10/2017", attendance: "ATTENDED" },
-                            { day: "2/10/2017", attendance: "ATTENDED" },
-                          ]}
-                        />
-                        <AttendanceTable
-                          data={[
-                            { day: "2/10/2017", attendance: "ATTENDED" },
-                            { day: "2/10/2017", attendance: "ATTENDED" },
-                            { day: "2/10/2017", attendance: "ATTENDED" },
-                            { day: "2/10/2017", attendance: "ATTENDED" },
-                            { day: "2/10/2017", attendance: "ABSENT" },
-                            { day: "2/10/2017", attendance: "ABSENT" },
-                            { day: "2/10/2017", attendance: "ABSENT" },
-                            { day: "2/10/2017", attendance: "ATTENDED" },
-                            { day: "2/10/2017", attendance: "UPCOMING" },
-                            { day: "2/10/2017", attendance: "UPCOMING" },
-                            { day: "2/10/2017", attendance: "ATTENDED" },
-                            { day: "2/10/2017", attendance: "ATTENDED" },
-                          ]}
-                        />
+                      <div className="bg-white h-full rounded-3xl p-4">
+                        <AttendanceTable />
                       </div>
                     </Grid.Col>
 
@@ -289,37 +221,11 @@ const ReportPage = () => {
                       <div className="flex flex-col gap-4">
                         {/* Total Attendace Pie Chart  */}
                         <div className="bg-white rounded-3xl">
-                          <TotalAttendance
-                            data={[
-                              { day: "2/10/2017", attendance: "ATTENDED" },
-                              { day: "2/10/2017", attendance: "ATTENDED" },
-                              { day: "2/10/2017", attendance: "ATTENDED" },
-                              { day: "2/10/2017", attendance: "ATTENDED" },
-                              { day: "2/10/2017", attendance: "ABSENT" },
-                              { day: "2/10/2017", attendance: "ABSENT" },
-                              { day: "2/10/2017", attendance: "ABSENT" },
-                              { day: "2/10/2017", attendance: "ATTENDED" },
-                              { day: "2/10/2017", attendance: "UPCOMING" },
-                              { day: "2/10/2017", attendance: "UPCOMING" },
-                              { day: "2/10/2017", attendance: "ATTENDED" },
-                              { day: "2/10/2017", attendance: "ATTENDED" },
-                            ]}
-                          />
+                          <TotalAttendance />
                         </div>
 
                         {/* Attendance Calender */}
-                        <CustomCalendar
-                          pageName="reports"
-                          data={[
-                            { day: "11/4/2022", attendance: "ATTENDED" },
-                            { day: "11/6/2022", attendance: "ABSENT" },
-                            { day: "11/11/2022", attendance: "ATTENDED" },
-                            { day: "11/15/2022", attendance: "ATTENDED" },
-                            { day: "11/22/2022", attendance: "ABSENT" },
-                            { day: "11/25/2022", attendance: "ATTENDED" },
-                            { day: "11/29/2022", attendance: "UPCOMING" },
-                          ]}
-                        />
+                        <CustomCalendar pageName="reports" />
                       </div>
                     </Grid.Col>
                   </Grid>

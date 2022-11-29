@@ -26,11 +26,10 @@ export type Players = {
 const HomePage = () => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
-  const { data: playerAttendance } = usePlayerCalenderQuery(
-    { id: selectedPlayer?.id },
-    { skip: !selectedPlayer?.id }
-  );
-  const timeFilterValue = useSelector(timeFilterFn);
+  // const { data: playerAttendance } = usePlayerCalenderQuery(
+  //   { id: selectedPlayer?.id },
+  //   { skip: !selectedPlayer?.id }
+  // );
 
   // const { data: playerSportTeam } = usePlayerSportTeamsQuery(
   //   { player_id: selectedPlayer?.id, team_id: selectedPlayerTeam?.id },
@@ -55,11 +54,11 @@ const HomePage = () => {
       {selectedPlayer && selectedPlayerTeam ? (
         <div className="flex flex-col gap-4">
           <Grid columns={12} gutter={"md"}>
-            <Grid.Col sm={3} span={12}>
+            <Grid.Col sm={3} md={2.5} span={12}>
               <HomePlayerInfoCard />
             </Grid.Col>
-            <Grid.Col sm={9} span={12}>
-              <Link to="/Reports">
+            <Grid.Col sm={9} md={9.5} span={12}>
+              <Link to="/reports">
                 <PerformanceSummaryCard />
               </Link>
             </Grid.Col>
@@ -69,14 +68,7 @@ const HomePage = () => {
               <HomeTeamInfoCard />
             </Grid.Col>
             <Grid.Col sm={5} span={12}>
-              {playerAttendance && (
-                <CustomCalendar
-                  data={playerAttendance.results.map((item) => ({
-                    day: item.day,
-                    attendance: item.status,
-                  }))}
-                />
-              )}
+              <CustomCalendar />
             </Grid.Col>
             <Grid.Col sm={3} span={12}>
               <UpcomingEventsCard />
