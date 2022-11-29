@@ -1,11 +1,7 @@
-import { Avatar, Indicator, Divider, Grid, Menu, Text } from "@mantine/core";
-import { userApi } from "~/app/store/user/userApi";
+import { Avatar, Divider, Menu } from "@mantine/core";
 import Cookies from "js-cookie";
-import { useDispatch } from "react-redux";
 import AppIcons from "~/@main/core/AppIcons";
 import { Link, useNavigate } from "react-router-dom";
-import Notification from "~/@main/components/Notification";
-import { eventInstance } from "~/@main/utils/AppUtils";
 import Notifications from "./subComponents/Notifications";
 import SelectUser from "./subComponents/SelectUser";
 import useWindowSize from "~/@main/hooks/useWindowSize";
@@ -17,10 +13,7 @@ type Props = {
 };
 
 const Toolbar = ({ setOpened }: Props) => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
   let href = window.location.href;
-  let routeName = href.slice(href.lastIndexOf("/") + 1, href.length);
   const windowSize = useWindowSize();
 
   return (

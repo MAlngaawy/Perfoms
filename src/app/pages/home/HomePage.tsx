@@ -114,21 +114,21 @@ export const players: Players[] = [
 
 const HomePage = () => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
-  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
+  // const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const { data: playerAttendance } = usePlayerCalenderQuery(
     { id: selectedPlayer?.id },
     { skip: !selectedPlayer?.id }
   );
 
-  const { data: playerSportTeam } = usePlayerSportTeamsQuery(
-    { player_id: selectedPlayer?.id, team_id: selectedPlayerTeam?.id },
-    { skip: !selectedPlayer?.id || !selectedPlayerTeam?.id }
-  );
+  // const { data: playerSportTeam } = usePlayerSportTeamsQuery(
+  //   { player_id: selectedPlayer?.id, team_id: selectedPlayerTeam?.id },
+  //   { skip: !selectedPlayer?.id || !selectedPlayerTeam?.id }
+  // );
 
-  const { data: upcomingEvents } = useUpcomingEventsQuery(
-    { team_id: selectedPlayerTeam?.id },
-    { skip: !selectedPlayerTeam?.id }
-  );
+  // const { data: upcomingEvents } = useUpcomingEventsQuery(
+  //   { team_id: selectedPlayerTeam?.id },
+  //   { skip: !selectedPlayerTeam?.id }
+  // );
   return (
     <div className="home-page px-5 mb-20">
       <div className="my-4 flex xs:flex-row gap-2 justify-between items-center">

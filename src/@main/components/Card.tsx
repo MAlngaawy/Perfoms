@@ -38,8 +38,14 @@ const Card = ({
           <Info label="Name" value={playerData?.name} />
           <Info label="Age" value={playerData?.dob} />
           <div className="flex justify-between">
-            <Info label="Weight" value={`${playerData?.weight} kgm`} />
-            <Info label="height" value={`${playerData?.height} cm`} />
+            <Info
+              label="Weight"
+              value={`${playerData?.weight ? playerData?.weight : "NA"} kgm`}
+            />
+            <Info
+              label="height"
+              value={`${playerData?.height ? playerData?.height : "NA"} cm`}
+            />
           </div>
           <Info label="Sport" value={playerData?.sport?.name} />
         </div>
