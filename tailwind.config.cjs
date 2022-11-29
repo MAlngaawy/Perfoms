@@ -8,6 +8,9 @@ module.exports = {
       height: {
         700: 700,
       },
+      width: {
+        700: 700,
+      },
       colors: {
         perfBlue: "#2F80ED",
         perfBlue2: "#0D65DB",

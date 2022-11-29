@@ -39,6 +39,7 @@ const PerfSelect = ({
           placeholder={placeholder}
           id={id}
           withAsterisk={required}
+          searchable
           error={error}
           sx={{
             ".mantine-Input-input": {

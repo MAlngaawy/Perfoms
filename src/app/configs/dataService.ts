@@ -2,6 +2,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 export const BASE_URL = "http://20.151.65.27";
+//  This is the staging backend url ==> http://20.63.114.93
 
 export const BASE_HEADERS = (headers: any, api: any) => {
   // headers.set("Accept", "application/json");

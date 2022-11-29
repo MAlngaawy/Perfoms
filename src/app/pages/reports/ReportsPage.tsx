@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { Grid, Menu, Button } from "@mantine/core";
 import Card from "~/@main/components/Card";
-import { playerData } from "../home/HomePage";
 import AppIcons from "~/@main/core/AppIcons";
 import AttendanceTable from "./components/AttendanceTable";
 import TotalAttendance from "./components/TotalAttendance";
-import AttendanceCalender from "~/@main/components/AttendanceCalendar";
+// import AttendanceCalender from "~/@main/components/AttendanceCalendar";
 import CustomCalendar from "~/@main/components/Calendar";
 import AddPlayer from "../home/molecules/AddPlayer";
 import { useSelector } from "react-redux";
@@ -17,6 +16,7 @@ import ActionsCard from "~/@main/components/ActionsCard";
 import RecommendationsCard from "~/@main/components/RecommendationsCard";
 import HomePlayerInfoCard from "../../../@main/components/HomePlayerInfoCard";
 import ReportsPageLoading from "./components/ReportsPageLoading";
+import PerformanceSummaryCard from "~/@main/components/PerformanceSummaryCard";
 // ===== dummy data =====
 
 const playerSummary = [
@@ -132,10 +132,7 @@ const ReportPage = () => {
                   <HomePlayerInfoCard />
                 </Grid.Col>
                 <Grid.Col sm={9} span={12}>
-                  <Card
-                    type="performanceSummary"
-                    playerSummary={playerSummary}
-                  />
+                  <PerformanceSummaryCard />
                 </Grid.Col>
               </Grid>
               <Grid columns={12} gutter={"sm"} className="info mt-3">

@@ -15,96 +15,12 @@ import HomeLoading from "./organisms/HomeLoading";
 import HomePlayerInfoCard from "../../../@main/components/HomePlayerInfoCard";
 import HomeTeamInfoCard from "../../../@main/components/HomeTeamInfoCard";
 import { selectedPlayerTeamFn } from "../../store/parent/parentSlice";
-
-// dummy data
-export const playerData: PlayerData = {
-  name: "Ahmed Saleh Mostafa",
-  dob: "15/12/2006",
-  weight: 50,
-  height: 150,
-  icon_url:
-    "https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?w=2000",
-  sport: {
-    name: "kickboxing",
-  },
-  team: {
-    name: "14Th team",
-    description: "12-14 years",
-    coaches: [
-      {
-        first_name: "Ahmed",
-        last_name: "Saleh",
-        avatar:
-          "https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?w=2000",
-      },
-      {
-        first_name: "Ahmed",
-        last_name: "Saleh",
-        avatar:
-          "https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?w=2000",
-      },
-      {
-        first_name: "Ahmed",
-        last_name: "Saleh",
-        avatar:
-          "https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?w=2000",
-      },
-    ],
-  },
-  gender: "M",
-};
-
-const playerSummary = [
-  {
-    name: "Strengths",
-    number: 8,
-    bgColor: "#00E0961A",
-    textColor: "#27AE60",
-    icon: "/assets/images/gym.png",
-  },
-  {
-    name: "Weaknesses",
-    number: 8,
-    bgColor: "#EB57571A",
-    textColor: "#EB5757",
-    icon: "/assets/images/weakness.png",
-  },
-  {
-    name: "Actions",
-    number: 8,
-    bgColor: "#2F80ED1A",
-    textColor: "#2F80ED",
-    icon: "/assets/images/tasks.png",
-  },
-  {
-    name: "Recommendations",
-    number: 8,
-    bgColor: "#00A1FF1A",
-    textColor: "#00A1FF",
-    icon: "/assets/images/discussion.png",
-  },
-];
+import PerformanceSummaryCard from "~/@main/components/PerformanceSummaryCard";
 
 export type Players = {
   name: string;
   icon_url: string;
 };
-
-export const players: Players[] = [
-  {
-    name: "Ahmed Sadek",
-    icon_url:
-      "https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?w=2000",
-  },
-  {
-    name: "Ahmed Sadek",
-    icon_url:
-      "https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?w=2000",
-  },
-];
-
-// ==================
-
 const HomePage = () => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
@@ -141,7 +57,7 @@ const HomePage = () => {
             </Grid.Col>
             <Grid.Col sm={9} span={12}>
               <Link to="/Reports">
-                <Card type="performanceSummary" playerSummary={playerSummary} />
+                <PerformanceSummaryCard />
               </Link>
             </Grid.Col>
           </Grid>
@@ -158,7 +74,6 @@ const HomePage = () => {
                   }))}
                 />
               )}
-              {/* <Card type="calendar" /> */}
             </Grid.Col>
             <Grid.Col sm={3} span={12}>
               <UpcomingEventsCard />

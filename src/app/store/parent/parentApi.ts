@@ -19,6 +19,7 @@ import {
   TeamEvents,
   TeamSupervisors,
   ParentUpcomingEvents,
+  PlayerKpiMetrics,
 } from "./../types/parent-types";
 import {
   BaseQueryFn,
@@ -180,6 +181,18 @@ export const parentsApi = createApi({
     //   }),
     //   providesTags: ["Parent"],
     // }),
+
+    playerKpisMetrics: query<
+      PlayerKpiMetrics,
+      { player_id: number; team_id: number; from_date: string; to_date: string }
+    >({
+      query: ({ player_id, team_id, from_date, to_date }) => ({
+        url: `${player_id}/${team_id}/player-kpis-metrics/`,
+        params: { from_date, to_date },
+      }),
+      providesTags: ["Parent"],
+    }),
+
     playerSportTeams: query<
       SportTeams,
       { player_id: number; team_id: number; page?: number }
@@ -260,6 +273,7 @@ export const {
   usePlayerActionsQuery,
   usePlayerCalenderQuery,
   usePlayerRecommendationsQuery,
+  usePlayerKpisMetricsQuery,
   usePlayerSportTeamsQuery,
   usePlayerTeamDocsQuery,
   usePlayerTeamsQuery,

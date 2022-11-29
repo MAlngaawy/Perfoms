@@ -10,35 +10,6 @@ const Card = ({
   bg,
   color,
 }: CardProps) => {
-  if (type === "performanceSummary") {
-    // props { playerSummary:PerformanceCardProps[] }
-    return (
-      <div className="bg-white rounded-3xl px-6 py-2 h-full">
-        <div className="title">
-          <h1 className="text-lg font-normal">Performance Report summary</h1>
-        </div>
-        <div className="mt-2 flex flex-col sm:flex-row justify-between gap-4">
-          {playerSummary?.map((item, idx: number) => {
-            return (
-              <div key={idx} className="w-full sm:w-1/2">
-                <PerformanceCard
-                  name={item.name}
-                  number={item.number}
-                  bgColor={item.bgColor}
-                  textColor={item.textColor}
-                >
-                  <img className=" w-6 max-w-full" src={item.icon} alt="icon" />
-                </PerformanceCard>
-                {/* under progress ========  */}
-              </div>
-            );
-          })}
-        </div>
-        <SaleStaticChart />
-      </div>
-    );
-  }
-
   return (
     // props {scores , bg , color}
     <div className="flex flex-col bg-white py-2 rounded-3xl">
