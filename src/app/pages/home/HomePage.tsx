@@ -1,10 +1,13 @@
 import { Grid } from "@mantine/core";
 import Card from "~/@main/components/Card";
-import { PlayerData } from "~/app/store/types/user-types";
 import CustomCalendar from "../../../@main/components/Calendar";
 import AddPlayer from "./molecules/AddPlayer";
 import { useSelector } from "react-redux";
-import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
+import {
+  selectedPlayerFn,
+  selectedPlayerTeamFn,
+  timeFilterFn,
+} from "~/app/store/parent/parentSlice";
 import { Link } from "react-router-dom";
 import { Player } from "~/app/store/types/parent-types";
 import TimeFilter from "~/@main/components/TimeFilter";
@@ -14,7 +17,6 @@ import UpcomingEventsCard from "~/@main/components/UpcomingEventsCard";
 import HomeLoading from "./organisms/HomeLoading";
 import HomePlayerInfoCard from "../../../@main/components/HomePlayerInfoCard";
 import HomeTeamInfoCard from "../../../@main/components/HomeTeamInfoCard";
-import { selectedPlayerTeamFn } from "../../store/parent/parentSlice";
 import PerformanceSummaryCard from "~/@main/components/PerformanceSummaryCard";
 
 export type Players = {
@@ -28,6 +30,7 @@ const HomePage = () => {
     { id: selectedPlayer?.id },
     { skip: !selectedPlayer?.id }
   );
+  const timeFilterValue = useSelector(timeFilterFn);
 
   // const { data: playerSportTeam } = usePlayerSportTeamsQuery(
   //   { player_id: selectedPlayer?.id, team_id: selectedPlayerTeam?.id },
@@ -50,8 +53,8 @@ const HomePage = () => {
         </div>
       </div>
       {selectedPlayer && selectedPlayerTeam ? (
-        <>
-          <Grid columns={12} gutter={"sm"}>
+        <div className="flex flex-col gap-4">
+          <Grid columns={12} gutter={"md"}>
             <Grid.Col sm={3} span={12}>
               <HomePlayerInfoCard />
             </Grid.Col>
@@ -61,7 +64,7 @@ const HomePage = () => {
               </Link>
             </Grid.Col>
           </Grid>
-          <Grid columns={12} gutter={"sm"}>
+          <Grid columns={12} gutter={"md"}>
             <Grid.Col sm={4} span={12}>
               <HomeTeamInfoCard />
             </Grid.Col>
@@ -79,7 +82,7 @@ const HomePage = () => {
               <UpcomingEventsCard />
             </Grid.Col>
           </Grid>
-        </>
+        </div>
       ) : (
         <>
           <HomeLoading />

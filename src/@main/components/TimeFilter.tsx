@@ -4,6 +4,8 @@ import { Menu, Button } from "@mantine/core";
 import AppIcons from "./../../@main/core/AppIcons";
 import useWindowSize from "../hooks/useWindowSize";
 import classNames from "classnames";
+import { useDispatch, useSelector } from "react-redux";
+import { timeFilter, timeFilterFn } from "~/app/store/parent/parentSlice";
 
 type Props = {};
 
@@ -86,7 +88,7 @@ const formatDate = (date: Date) => {
   if (dd < 10) dd = "0" + dd;
   if (mm < 10) mm = "0" + mm;
 
-  return dd + "/" + mm + "/" + yyyy;
+  return yyyy + "-" + mm + "-" + dd;
 };
 
 const TimeFilter = (props: Props) => {
@@ -94,11 +96,22 @@ const TimeFilter = (props: Props) => {
   const [opened, setOpened] = useState(false);
   const [textValue, setTextValue] = useState<string>("Select Time");
   const windwSize = useWindowSize();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (value[1] && value[0]) {
       // setTextValue(`${formatDate(value[0])} - ${formatDate(value[1])}`);
       setOpened(false);
+      dispatch(
+        timeFilter(
+          localStorage.getItem("TimeFilter")
+            ? JSON.parse(localStorage.getItem("TimeFilter") || "")
+            : {
+                from_date: formatDate(value[0]),
+                to_date: formatDate(value[1]),
+              }
+        )
+      );
     }
   }, [value]);
 

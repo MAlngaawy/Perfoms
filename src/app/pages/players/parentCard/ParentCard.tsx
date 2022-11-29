@@ -1,7 +1,44 @@
 import React from "react";
 import Info from "~/@main/components/Info";
-import { playerData } from "../../home/HomePage";
 import { useLocation, useNavigate } from "react-router-dom";
+import { PlayerData } from "~/app/store/types/user-types";
+
+const playerData: PlayerData = {
+  name: "Ahmed Saleh Mostafa",
+  dob: "15/12/2006",
+  weight: 50,
+  height: 150,
+  icon_url:
+    "https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?w=2000",
+  sport: {
+    name: "kickboxing",
+  },
+  team: {
+    name: "14Th team",
+    description: "12-14 years",
+    coaches: [
+      {
+        first_name: "Ahmed",
+        last_name: "Saleh",
+        avatar:
+          "https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?w=2000",
+      },
+      {
+        first_name: "Ahmed",
+        last_name: "Saleh",
+        avatar:
+          "https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?w=2000",
+      },
+      {
+        first_name: "Ahmed",
+        last_name: "Saleh",
+        avatar:
+          "https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?w=2000",
+      },
+    ],
+  },
+  gender: "M",
+};
 
 export const parentDummyData = {
   parentName: "Ahmed Salah Mustafa",

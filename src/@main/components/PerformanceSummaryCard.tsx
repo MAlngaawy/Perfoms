@@ -1,34 +1,33 @@
 import { PerformanceCard } from "./PerformanceCard";
 import SaleStaticChart from "./SalesStaticChart";
-import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
+import {
+  selectedPlayerFn,
+  selectedPlayerTeamFn,
+} from "~/app/store/parent/parentSlice";
 import { useSelector } from "react-redux";
-import { selectedPlayerTeamFn } from "../../app/store/parent/parentSlice";
 import { Player } from "~/app/store/types/parent-types";
 import { usePlayerKpisMetricsQuery } from "~/app/store/parent/parentApi";
 
 type Props = {};
 
 const PerformanceSummaryCard = (props: Props) => {
-  const selectedPlayer: Player = useSelector(selectedPlayerFn);
-  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
+  // const selectedPlayer: Player = useSelector(selectedPlayerFn);
+  // const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
 
-  const { data: playerKpisMetrics } = usePlayerKpisMetricsQuery(
-    {
-      team_id: selectedPlayerTeam.id,
-      player_id: selectedPlayer.id,
-      from_date: "2010-10-15",
-      to_date: "2010-12-15",
-    },
+  // const { data: playerKpisMetrics } = usePlayerKpisMetricsQuery(
+  //   {
+  //     team_id: selectedPlayerTeam.id,
+  //     player_id: selectedPlayer.id,
+  //     from_date: "2010-10-15",
+  //     to_date: "2010-12-15",
+  //   },
 
-    {
-      skip: !selectedPlayerTeam.id || !selectedPlayer.id,
-    }
-  );
+  //   {
+  //     skip: !selectedPlayerTeam.id || !selectedPlayer.id,
+  //   }
+  // );
 
-  console.log(
-    "playerKpisMetricsssssssssssssssssssssssssssssssssssssssssss",
-    playerKpisMetrics
-  );
+  // console.log(playerKpisMetrics);
 
   return (
     <div className="bg-white rounded-3xl px-6 py-2 h-full cursor-pointer">

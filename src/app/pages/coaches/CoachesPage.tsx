@@ -1,5 +1,4 @@
 import { Grid } from "@mantine/core";
-import React from "react";
 import { useSelector } from "react-redux";
 import { useTeamCoachesQuery } from "~/app/store/parent/parentApi";
 import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
