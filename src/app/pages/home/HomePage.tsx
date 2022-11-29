@@ -129,12 +129,9 @@ const HomePage = () => {
     { team_id: selectedPlayerTeam?.id },
     { skip: !selectedPlayerTeam?.id }
   );
-
-  console.log("LOLLLLLLLLL", upcomingEvents);
-
   return (
     <div className="home-page px-5 mb-20">
-      <div className="my-4 flex flex-col xs:flex-row gap-2 justify-between items-center">
+      <div className="my-4 flex xs:flex-row gap-2 justify-between items-center">
         <div className="flex gap-3 items-center">
           <AddPlayer />
         </div>
