@@ -16,47 +16,10 @@ const Card = ({
   bg,
   color,
 }: CardProps) => {
-  if (type === "playerInfo") {
-    // props { playerData }
-    return (
-      <div className="p-6 h-full bg-white rounded-3xl">
-        <div className="playerName">
-          <h2>{playerData?.name.split(" ")[0]}'s info</h2>
-        </div>
-        <div className="img my-2">
-          <img
-            src={
-              playerData?.icon
-                ? playerData?.icon
-                : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-            }
-            className="w-1/2 h-28 rounded-lg object-cover"
-            alt="player_image"
-          />
-        </div>
-        <div className="infos">
-          <Info label="Name" value={playerData?.name} />
-          <Info label="Age" value={playerData?.dob} />
-          <div className="flex justify-between">
-            <Info
-              label="Weight"
-              value={`${playerData?.weight ? playerData?.weight : "NA"} kgm`}
-            />
-            <Info
-              label="height"
-              value={`${playerData?.height ? playerData?.height : "NA"} cm`}
-            />
-          </div>
-          <Info label="Sport" value={playerData?.sport?.name} />
-        </div>
-      </div>
-    );
-  }
-
   if (type === "performanceSummary") {
     // props { playerSummary:PerformanceCardProps[] }
     return (
-      <div className="bg-white rounded-3xl px-6 py-2">
+      <div className="bg-white rounded-3xl px-6 py-2 h-full">
         <div className="title">
           <h1 className="text-lg font-normal">Performance Report summary</h1>
         </div>

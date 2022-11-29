@@ -21,7 +21,7 @@ const UpcomingEventsCard = (props: Props) => {
       <div className="flex flex-col gap-4 mt-4">
         {events ? (
           events.map((event) => (
-            <div className="oneEvent flex items-center gap-2">
+            <div key={event.id} className="oneEvent flex items-center gap-2">
               <div className="image w-16 h-16">
                 <img
                   className="w-full h-full object-cover rounded-lg"

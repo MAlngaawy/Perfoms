@@ -17,7 +17,7 @@ const RecommendationsCard = ({ player_id }: Props) => {
       </h2>
       <div className="flex flex-col gap-4">
         {recommendations?.results.map((recommendation) => (
-          <div>
+          <div key={recommendation.id}>
             <p>{recommendation.metric.name}</p>
             <p>{recommendation.name}</p>
             <p className=" text-perfGray3 text-sm">

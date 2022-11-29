@@ -15,7 +15,7 @@ const ActionsCard = ({ player_id }: Props) => {
       <h2 className="text-perfGray1 text-base font-semibold">Actions</h2>
       <div className="flex flex-col gap-4">
         {actions?.results.map((action) => (
-          <div>
+          <div key={action.id}>
             <p>{action.metric.name}</p>
             <p>{action.name}</p>
             <p className=" text-perfGray3 text-sm">{action.description}</p>

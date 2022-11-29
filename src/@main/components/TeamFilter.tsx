@@ -47,6 +47,7 @@ const TeamFilter = (props: Props) => {
         {playerTeams &&
           playerTeams.results.map((value) => (
             <Menu.Item
+              key={value.id}
               onClick={() =>
                 dispatch(selectPlayerTeam({ id: value.id, name: value.name }))
               }

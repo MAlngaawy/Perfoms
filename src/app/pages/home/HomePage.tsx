@@ -1,27 +1,18 @@
-import { useState } from "react";
-import { Dropdown } from "~/@main/components/Dropdown";
-import { Grid, Avatar } from "@mantine/core";
+import { Grid } from "@mantine/core";
 import Card from "~/@main/components/Card";
 import { PlayerData } from "~/app/store/types/user-types";
 import CustomCalendar from "../../../@main/components/Calendar";
 import AddPlayer from "./molecules/AddPlayer";
 import { useSelector } from "react-redux";
-import {
-  selectedPlayerFn,
-  selectedPlayerTeamFn,
-} from "~/app/store/parent/parentSlice";
+import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 import { Link } from "react-router-dom";
 import { Player } from "~/app/store/types/parent-types";
-import { usePlayerAttendanceQuery } from "~/app/store/attendance/attendanceApi";
 import TimeFilter from "~/@main/components/TimeFilter";
 import TeamFilter from "~/@main/components/TeamFilter";
-import {
-  usePlayerCalenderQuery,
-  usePlayerSportTeamsQuery,
-  useUpcomingEventsQuery,
-} from "~/app/store/parent/parentApi";
+import { usePlayerCalenderQuery } from "~/app/store/parent/parentApi";
 import UpcomingEventsCard from "~/@main/components/UpcomingEventsCard";
 import HomeLoading from "./organisms/HomeLoading";
+import HomePlayerInfoCard from "../../../@main/components/HomePlayerInfoCard";
 
 // dummy data
 export const playerData: PlayerData = {
@@ -144,7 +135,7 @@ const HomePage = () => {
         <>
           <Grid columns={12} gutter={"sm"}>
             <Grid.Col sm={3} span={12}>
-              <Card type="playerInfo" playerData={selectedPlayer} />
+              <HomePlayerInfoCard />
             </Grid.Col>
             <Grid.Col sm={9} span={12}>
               <Link to="/Reports">
