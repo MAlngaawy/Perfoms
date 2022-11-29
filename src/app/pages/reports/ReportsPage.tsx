@@ -13,8 +13,8 @@ import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 import TimeFilter from "~/@main/components/TimeFilter";
 import TeamFilter from "../../../@main/components/TeamFilter";
 import useWindowSize from "~/@main/hooks/useWindowSize";
-import ActionsAndRecommendationsCard from "../../../@main/components/ActionsAndRecommendationsCard";
-
+import ActionsCard from "~/@main/components/ActionsCard";
+import RecommendationsCard from "~/@main/components/RecommendationsCard";
 // ===== dummy data =====
 
 const playerSummary = [
@@ -89,7 +89,6 @@ const ReportPage = () => {
 
   const [reportType, setReportType] =
     useState<"Performances" | "Attendances">("Performances");
-
   return (
     <div className="report-page px-5 mb-20">
       <div className="flex flex-col sm:flex-row gap-4 my-4 justify-between items-center">
@@ -163,20 +162,10 @@ const ReportPage = () => {
           </Grid>
           <Grid columns={12} gutter={"sm"} className="info mt-3">
             <Grid.Col sm={6} span={12}>
-              <ActionsAndRecommendationsCard
-                header="Actions"
-                firstText={text.firstText}
-                secondText={text.secondText}
-                detailedText={text.detailedText}
-              />
+              <ActionsCard player_id={player?.id} />
             </Grid.Col>
             <Grid.Col sm={6} span={12}>
-              <ActionsAndRecommendationsCard
-                header="Recommendations"
-                firstText={text.firstText}
-                secondText={text.secondText}
-                detailedText={text.detailedText}
-              />
+              <RecommendationsCard player_id={player?.id} />
             </Grid.Col>
           </Grid>{" "}
         </div>

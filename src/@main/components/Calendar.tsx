@@ -1,6 +1,5 @@
 import { Calendar } from "@mantine/dates";
 import classNames from "classnames";
-import { FC } from "react";
 
 type Props = {
   data: { day: string; attendance: "ATTENDED" | "ABSENT" | "UPCOMING" }[];
