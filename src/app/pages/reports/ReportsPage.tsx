@@ -13,6 +13,7 @@ import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 import TimeFilter from "~/@main/components/TimeFilter";
 import TeamFilter from "../../../@main/components/TeamFilter";
 import useWindowSize from "~/@main/hooks/useWindowSize";
+import ActionsAndRecommendationsCard from "../../../@main/components/ActionsAndRecommendationsCard";
 
 // ===== dummy data =====
 
@@ -162,8 +163,7 @@ const ReportPage = () => {
           </Grid>
           <Grid columns={12} gutter={"sm"} className="info mt-3">
             <Grid.Col sm={6} span={12}>
-              <Card
-                type="action"
+              <ActionsAndRecommendationsCard
                 header="Actions"
                 firstText={text.firstText}
                 secondText={text.secondText}
@@ -171,8 +171,7 @@ const ReportPage = () => {
               />
             </Grid.Col>
             <Grid.Col sm={6} span={12}>
-              <Card
-                type="recommendation"
+              <ActionsAndRecommendationsCard
                 header="Recommendations"
                 firstText={text.firstText}
                 secondText={text.secondText}

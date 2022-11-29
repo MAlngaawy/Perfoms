@@ -288,3 +288,15 @@ export type Kpi = {
   kpi_id: number;
   score: number;
 };
+
+export type ParentUpcomingEvents = BaseGetAllType & {
+  results: {
+    id: number;
+    name: string;
+    icon: string;
+    icon_url: string;
+    date: string;
+    club: ParentClub;
+    upcoming: boolean;
+  }[];
+};

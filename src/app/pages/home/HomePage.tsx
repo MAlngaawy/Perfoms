@@ -18,7 +18,10 @@ import TeamFilter from "~/@main/components/TeamFilter";
 import {
   usePlayerCalenderQuery,
   usePlayerSportTeamsQuery,
+  useUpcomingEventsQuery,
 } from "~/app/store/parent/parentApi";
+import UpcomingEventsCard from "~/@main/components/UpcomingEventsCard";
+import HomeLoading from "./organisms/HomeLoading";
 
 // dummy data
 export const playerData: PlayerData = {
@@ -113,25 +116,21 @@ const HomePage = () => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const { data: playerAttendance } = usePlayerCalenderQuery(
-    {
-      id: selectedPlayer?.id,
-    },
-    {
-      skip: !selectedPlayer?.id,
-    }
+    { id: selectedPlayer?.id },
+    { skip: !selectedPlayer?.id }
   );
 
   const { data: playerSportTeam } = usePlayerSportTeamsQuery(
-    {
-      player_id: selectedPlayer?.id,
-      team_id: selectedPlayerTeam?.id,
-    },
-    {
-      skip: !selectedPlayer?.id || !selectedPlayerTeam?.id,
-    }
+    { player_id: selectedPlayer?.id, team_id: selectedPlayerTeam?.id },
+    { skip: !selectedPlayer?.id || !selectedPlayerTeam?.id }
   );
 
-  console.log("LOLLLLLLLLL", playerSportTeam);
+  const { data: upcomingEvents } = useUpcomingEventsQuery(
+    { team_id: selectedPlayerTeam?.id },
+    { skip: !selectedPlayerTeam?.id }
+  );
+
+  console.log("LOLLLLLLLLL", upcomingEvents);
 
   return (
     <div className="home-page px-5 mb-20">
@@ -156,11 +155,11 @@ const HomePage = () => {
               </Link>
             </Grid.Col>
           </Grid>
-          <Grid columns={14} gutter={"sm"} className="info mt-3">
-            <Grid.Col sm={4} span={14}>
+          <Grid columns={12} gutter={"sm"}>
+            <Grid.Col sm={4} span={12}>
               <Card type="teamInfo" playerData={selectedPlayer} />
             </Grid.Col>
-            <Grid.Col sm={7} span={14}>
+            <Grid.Col sm={5} span={12}>
               {playerAttendance && (
                 <CustomCalendar
                   data={playerAttendance.results.map((item) => ({
@@ -171,29 +170,32 @@ const HomePage = () => {
               )}
               {/* <Card type="calendar" /> */}
             </Grid.Col>
-            <Grid.Col sm={3} span={14}>
-              <Card type="upcomingEvents" />
+            <Grid.Col sm={3} span={12}>
+              <UpcomingEventsCard />
             </Grid.Col>
           </Grid>
         </>
       ) : (
-        <div className="flex justify-center items-center">
-          <div className="card bg-white rounded-xl flex flex-col gap-6 text-center p-8">
-            <Avatar
-              size={"xl"}
-              className="mx-auto"
-              src="/assets/images/noplayer.png"
-              alt="icon"
-            />
-            <h2 className="text-4xl text-perfBlue">Welcome on board</h2>
-            <p className=" text-lg font-bold text-gray-300">
-              Its about time to make a great player.
-            </p>
-            <div className="flex justify-center items-center">
-              <AddPlayer />
+        <>
+          <HomeLoading />
+          {/* <div className="flex justify-center items-center">
+            <div className="card bg-white rounded-xl flex flex-col gap-6 text-center p-8">
+              <Avatar
+                size={"xl"}
+                className="mx-auto"
+                src="/assets/images/noplayer.png"
+                alt="icon"
+              />
+              <h2 className="text-4xl text-perfBlue">Welcome on board</h2>
+              <p className=" text-lg font-bold text-gray-300">
+                Its about time to make a great player.
+              </p>
+              <div className="flex justify-center items-center">
+                <AddPlayer />
+              </div>
             </div>
-          </div>
-        </div>
+          </div> */}
+        </>
       )}
     </div>
   );

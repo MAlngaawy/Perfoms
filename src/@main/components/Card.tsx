@@ -9,10 +9,6 @@ import SaleStaticChart from "./SalesStaticChart";
 
 const Card = ({
   type,
-  header,
-  firstText,
-  secondText,
-  detailedText,
   powerType,
   scores,
   playerData,
@@ -20,25 +16,6 @@ const Card = ({
   bg,
   color,
 }: CardProps) => {
-  const theme = useMantineTheme();
-
-  // for test
-  const attended = ["4", "6"];
-  const absent = ["18", "22"];
-  const upcoming = ["13", "26"];
-
-  if (type === "action" || type === "recommendation") {
-    // props { header , firstText , secondText , detailedText }
-    return (
-      <div className="info-card flex flex-col p-6 pb-20 bg-white gap-1 rounded-3xl">
-        <h2 className="text-perfGray1 text-base font-semibold">{header}</h2>
-        <p>{firstText}</p>
-        <p>{secondText}</p>
-        <p className=" text-perfGray3 text-sm">{detailedText}</p>
-      </div>
-    );
-  }
-
   if (type === "playerInfo") {
     // props { playerData }
     return (
@@ -156,120 +133,6 @@ const Card = ({
               );
             })} */}
           </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (type === "calendar") {
-    return (
-      <div className="bg-white p-3 rounded-3xl h-full">
-        <h2 className="title text-lg text-perfGray1">Calendar.</h2>
-        <div className="flex justify-around gap-3  flex-col 2xl:flex-row">
-          <div>
-            <div className="flex flex-col gap-2 justify-center h-full w-full  items-center mx-auto">
-              <div className="flex sm:flex-col md:flex-row xl:flex-col justify-between my-6 gap-1 sm:gap-4">
-                <div className="flex gap-1">
-                  <div className="dot w-5 h-5 rounded-full bg-perfBlue"></div>
-                  <h2>Attended</h2>
-                </div>
-                <div className=" flex gap-1">
-                  <div className="dot w-5 h-5 rounded-full bg-perfSecondary"></div>
-                  <h2>Absent</h2>
-                </div>
-                <div className=" flex gap-1">
-                  <div className="dot w-5 h-5 rounded-full border border-perfBlue"></div>
-                  <h2>Upcoming</h2>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            className=" p-3 2xl:border-0 rounded-xl"
-            style={{ width: "250px", height: "290px" }}
-          >
-            <Calendar
-              initialMonth={new Date()}
-              dayStyle={(date: Date) =>
-                // attended days
-                attended.includes(date.getDate().toString())
-                  ? {
-                      backgroundColor: "#C32B43",
-                      color: theme.white,
-                      borderRadius: "50%",
-                    }
-                  : // absent dayes
-                  absent.includes(date.getDate().toString())
-                  ? {
-                      backgroundColor: "#1976D2",
-                      color: theme.white,
-                      borderRadius: "50%",
-                    }
-                  : // upcoming days
-                  upcoming.includes(date.getDate().toString())
-                  ? {
-                      color: "#1976D2",
-                      borderRadius: "50%",
-                      border: "1px solid blue",
-                    }
-                  : {}
-              }
-              fullWidth
-              styles={(theme: any) => ({
-                day: {
-                  "&[data-selected]": {
-                    backgroundColor: theme.colors.cyan[7],
-                    borderRadius: 100,
-                    position: "relative",
-                  },
-                  height: 37,
-                  width: 37,
-                },
-              })}
-            />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (type === "upcomingEvents") {
-    return (
-      <div className="bg-white  p-4 rounded-3xl h-full">
-        <h2 className="title text-lg text-perfGray1">Upcoming Events.</h2>
-        <div className="flex flex-col gap-4 mt-4">
-          {playerData?.events ? (
-            playerData?.events.map((event) => (
-              <div className="oneEvent flex items-center gap-2">
-                <div className="image w-16 h-16">
-                  <img
-                    className="w-full h-full object-cover rounded-lg"
-                    src={event.icon}
-                    alt="eventImage"
-                  />
-                </div>
-                <div className="info flex flex-col gap-1">
-                  <h2 className="text-sm text-perfGray1">{event.name}</h2>
-                  <h3 className="flex items-center text-sm text-perfGray3">
-                    <>
-                      <span>
-                        <AppIcons icon="CalendarDaysIcon:outline" />
-                      </span>
-                      {event.date}
-                    </>
-                  </h3>
-
-                  <h3 className="text-sm text-perfGray3">
-                    {event.description}
-                  </h3>
-                </div>
-              </div>
-            ))
-          ) : (
-            <div className="flex justify-center items-center">
-              <span className="py-10">No Events Yet</span>
-            </div>
-          )}
         </div>
       </div>
     );

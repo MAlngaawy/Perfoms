@@ -3,6 +3,7 @@ import React from "react";
 import CustomCalendar from "~/@main/components/Calendar";
 import Card from "~/@main/components/Card";
 import { useNavigate } from "react-router-dom";
+import UpcomingEventsCard from "~/@main/components/UpcomingEventsCard";
 
 type Props = {};
 
@@ -151,7 +152,7 @@ const TeamInfo = (props: Props) => {
           />
         </Grid.Col>
         <Grid.Col span={12} xs={4} sm={3}>
-          <Card type="upcomingEvents" />
+          <UpcomingEventsCard />
         </Grid.Col>
         <Grid.Col
           className="bg-white p-4 rounded-3xl flex gap-4 justify-start items-center flex-wrap"

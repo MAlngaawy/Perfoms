@@ -18,7 +18,10 @@ const CustomCalendar = ({ data, pageName }: Props) => {
             "flex-col xs:flex-row sm:flex-col":
               pageName && pageName === "reports",
           },
-          { "flex-col xs:flex-row": pageName !== "reports" }
+          {
+            "flex-col xs:flex-row sm:flex-col md:flex-row":
+              pageName !== "reports",
+          }
         )}
       >
         <div
@@ -27,7 +30,7 @@ const CustomCalendar = ({ data, pageName }: Props) => {
             {
               "xs:flex-col sm:flex-row": pageName && pageName === "reports",
             },
-            { "xs:flex-col": pageName !== "reports" }
+            { "xs:flex-col sm:flex-row md:flex-col": pageName !== "reports" }
           )}
         >
           <div className="flex gap-1">

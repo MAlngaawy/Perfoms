@@ -18,6 +18,7 @@ import {
   TeamEvent,
   TeamEvents,
   TeamSupervisors,
+  ParentUpcomingEvents,
 } from "./../types/parent-types";
 import {
   BaseQueryFn,
@@ -210,6 +211,16 @@ export const parentsApi = createApi({
       }),
       providesTags: ["Parent"],
     }),
+    upcomingEvents: query<
+      ParentUpcomingEvents,
+      { team_id: number; page?: number }
+    >({
+      query: ({ team_id, ...params }) => ({
+        url: `${team_id}/upcoming-events/`,
+        params,
+      }),
+      providesTags: ["Parent"],
+    }),
     teamSupervisors: query<TeamSupervisors, { teamId: number; page?: number }>({
       query: ({ teamId, ...params }) => ({
         url: `${teamId}/supervisors/`,
@@ -249,5 +260,6 @@ export const {
   usePlayerClubsQuery,
   useParentSubscriptionsQuery,
   useEventFilesQuery,
+  useUpcomingEventsQuery,
   useSelectSubscriptionMutation,
 } = parentsApi;
