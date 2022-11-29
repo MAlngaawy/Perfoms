@@ -19,7 +19,7 @@ import {
   TeamEvents,
   TeamSupervisors,
   ParentUpcomingEvents,
-  PlayerKpiMetrics,
+  PlayerKpis,
 } from "./../types/parent-types";
 import {
   BaseQueryFn,
@@ -183,7 +183,7 @@ export const parentsApi = createApi({
     // }),
 
     playerKpisMetrics: query<
-      PlayerKpiMetrics,
+      PlayerKpis,
       { player_id: number; team_id: number; from_date: string; to_date: string }
     >({
       query: ({ player_id, team_id, from_date, to_date }) => ({

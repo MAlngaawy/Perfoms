@@ -43,7 +43,7 @@ const SaleStaticChart = () => {
     <div className="py-5 h-80 overflow-scroll ">
       <ResponsiveContainer width={"100%"} height="100%" className="min-w-700">
         <BarChart
-          data={playerKpis?.player_kpi_metrics.map((i) => ({
+          data={playerKpis?.player_kpi.map((i) => ({
             name: i.kpi,
             id: i.id,
             progress: i.score_avg,
@@ -65,7 +65,7 @@ const SaleStaticChart = () => {
           <Tooltip labelStyle={{ color: "black" }} />
           {/* <Legend /> */}
           <Bar dataKey="progress" fill="#333" barSize={10} radius={2}>
-            {playerKpis?.player_kpi_metrics.map((metric, index) => (
+            {playerKpis?.player_kpi.map((metric, index) => (
               <Cell
                 key={index}
                 fill={

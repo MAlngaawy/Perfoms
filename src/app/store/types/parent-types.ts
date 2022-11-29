@@ -224,19 +224,18 @@ export type PlayerDocuments = BaseGetAllType & {
   results: PlayerDocument[];
 };
 
-export type PlayerKpiMetric = {
+export type PlayerKpi = {
   id: number;
   kpi: string;
-  metric: string;
-  level: "z" | "w" | "i" | "s";
   score_avg: number;
 };
 
-export type PlayerKpiMetrics = {
-  player_kpi_metrics: PlayerKpiMetric[];
-  total_count: number;
-  weakness_count: number;
+export type PlayerKpis = {
+  action_count: number;
   intermediate_count: number;
+  player_kpi: PlayerKpi[];
+  recommendation_count: number;
+  weakness_count: number;
   strength_count: number;
 };
 

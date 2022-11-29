@@ -17,6 +17,7 @@ import RecommendationsCard from "~/@main/components/RecommendationsCard";
 import HomePlayerInfoCard from "../../../@main/components/HomePlayerInfoCard";
 import ReportsPageLoading from "./components/ReportsPageLoading";
 import PerformanceSummaryCard from "~/@main/components/PerformanceSummaryCard";
+import AttendancesSmallCards from "./components/AttendancesSmallCards";
 // ===== dummy data =====
 
 const scores = [
@@ -141,20 +142,16 @@ const ReportPage = () => {
               {/* Left Columns ( User Info And Note ) */}
               <Grid gutter={"sm"}>
                 <Grid.Col span={12} md={2.5}>
-                  <div className="flex flex-col xs:flex-row md:flex-col gap-2">
+                  <div className="flex flex-col xs:flex-row md:flex-col gap-2 h-full">
                     <HomePlayerInfoCard />
-                    <div className="note bg-white rounded-3xl w-full p-4">
+                    <div className="note bg-white rounded-3xl w-full p-4 h-full">
                       <h2 className="text-lg font-normal text-perfGray1 pb-4">
                         Overall notes
                       </h2>
                       <p className=" text-base font-normal text-perfGray3">
                         Fitness Flexibility 10 Exercises to Improve Your
                         Flexibility 1. Standing Quad Stretch. Stand with your
-                        feet together. ... 2. Standing Side Stretch. Standing
-                        with your feet together, lift your arms overhead. ... 3.
-                        Seated Hamstring Stretch. ... 4. Standing Calf Stretch.
-                        ... 5. Shoulder Stretch. ... 6. The Forward Hang. ... 7.
-                        Back stretch. ... 8. Butterfly Groin Stretch.
+                        feet together. ... 2. Standing Side Stretch
                       </p>
                     </div>
                   </div>
@@ -164,51 +161,7 @@ const ReportPage = () => {
                 <Grid.Col span={12} md={9.5}>
                   <Grid gutter={"sm"}>
                     <Grid.Col span={12}>
-                      <div className="main-teams bg-white p-4 rounded-3xl">
-                        <h2 className="text-lg mb-4">
-                          Attendance Report summary - main team
-                        </h2>
-                        <div className="flex gap-6 flex-wrap">
-                          <PerformanceCard
-                            bgColor="rgba(0, 224, 150, 0.1)"
-                            textColor="#27AE60"
-                            name="Attendance"
-                            number={16}
-                          >
-                            <img
-                              className="w-8 h-8"
-                              src="/assets/images/gym_1.png"
-                              alt="gym icon"
-                            />
-                          </PerformanceCard>
-
-                          <PerformanceCard
-                            bgColor="rgba(235, 87, 87, 0.1)"
-                            textColor="#EB5757"
-                            name="Absence"
-                            number={3}
-                          >
-                            <img
-                              className="w-8 h-8"
-                              src="/assets/images/weakness_1.png"
-                              alt="weakness icon"
-                            />
-                          </PerformanceCard>
-
-                          <PerformanceCard
-                            bgColor="rgba(47, 128, 237, 0.1)"
-                            textColor="#2F80ED"
-                            name="Total"
-                            number={19}
-                          >
-                            <img
-                              className="w-8 h-8"
-                              src="/assets/images/tasks.png"
-                              alt="weakness icon"
-                            />
-                          </PerformanceCard>
-                        </div>
-                      </div>
+                      <AttendancesSmallCards />
                     </Grid.Col>
                     {/* Attedance Summary Table */}
                     <Grid.Col span={12} sm={8}>
@@ -242,33 +195,3 @@ const ReportPage = () => {
 };
 
 export default ReportPage;
-
-export const PerformanceCard = ({
-  number,
-  name,
-  bgColor,
-  textColor,
-  children,
-}: {
-  number: number;
-  name: string;
-  bgColor: string;
-  textColor: string;
-  children: any;
-}) => {
-  return (
-    <div
-      style={{ background: bgColor }}
-      className="card flex items-start py-1 px-8 gap-4 font-semibold rounded-full cursor-pointer"
-    >
-      <div className="icon flex justify-center items-center">{children}</div>
-      <div
-        style={{ color: textColor }}
-        className="info flex flex-col leading-4 text-xs"
-      >
-        <h2>{number}</h2>
-        <h2>{name}</h2>
-      </div>
-    </div>
-  );
-};
