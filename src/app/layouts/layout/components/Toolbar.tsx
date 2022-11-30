@@ -6,6 +6,10 @@ import Notifications from "./subComponents/Notifications";
 import SelectUser from "./subComponents/SelectUser";
 import useWindowSize from "~/@main/hooks/useWindowSize";
 import OneMessageBox from "~/@main/components/OneMessageBox";
+import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
+import { useSelector } from "react-redux";
+import { Player } from "~/app/store/types/parent-types";
+import { usePlayerClubQuery } from "~/app/store/parent/parentApi";
 
 type Props = {
   opened: boolean;
@@ -13,8 +17,13 @@ type Props = {
 };
 
 const Toolbar = ({ setOpened }: Props) => {
-  let href = window.location.href;
   const windowSize = useWindowSize();
+
+  const selectedPlayer: Player = useSelector(selectedPlayerFn);
+  const { data: playerClub } = usePlayerClubQuery(
+    { id: selectedPlayer?.id },
+    { skip: !selectedPlayer?.id }
+  );
 
   return (
     <nav className="w-full flex justify-between items-center shadow-md p-2 lg:p-4 bg-perfBlue lg:bg-white overflow-scroll">
@@ -28,10 +37,13 @@ const Toolbar = ({ setOpened }: Props) => {
         <div className="clubLogo gap-2 hidden lg:flex justify-center items-center">
           <img
             className="w-8"
-            src="https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/1200px-Real_Madrid_CF.svg.png"
+            src={
+              playerClub?.icon ||
+              "https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/1200px-Real_Madrid_CF.svg.png"
+            }
             alt="club logo"
           />
-          <span>Royal Club</span>
+          <span>{playerClub?.name || "Royal Club"}</span>
         </div>
         <SelectUser />
       </div>

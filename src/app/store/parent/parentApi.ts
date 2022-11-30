@@ -120,7 +120,7 @@ export const parentsApi = createApi({
 
     playerClub: query<ParentClub, { id: number; page?: number }>({
       query: ({ id, ...params }) => ({
-        url: `clubs/${id}/`,
+        url: `${id}/club`,
         params,
       }),
       providesTags: ["Parent"],
