@@ -3,10 +3,13 @@ import AppIcons from "../core/AppIcons";
 
 interface ButtonProps {
   label: string;
-  onClick: () => any;
+  onClick?: () => any;
   className?: string;
   style?: "bordered" | "primary" | "basic";
   icon?: string;
+  primary?: boolean;
+  size?: "small" | "large";
+  styles?: {};
 }
 
 export const Button = ({
