@@ -3,7 +3,6 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { Button } from "../@main/components/Button";
 
-
 export default {
   title: "Example/Button",
   component: Button,
@@ -11,7 +10,6 @@ export default {
     backgroundColor: { control: "color" },
   },
 } as ComponentMeta<typeof Button>;
-
 
 const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />;
 
@@ -44,8 +42,8 @@ export const Basic = Template.bind({});
 Basic.args = {
   label: "< Back",
   styles: {
-    border: 'unset',
-    boxShadow: 'unset',
+    border: "unset",
+    boxShadow: "unset",
   },
 };
 
@@ -55,8 +53,8 @@ BorderButton.args = {
   // icon: JSX react icon placeholder ,
   label: "Button",
   styles: {
-    boxShadow: 'unset',
-    border: '2px solid #2F80ED',
-    color: '#2F80ED'
-  }
+    boxShadow: "unset",
+    border: "2px solid #2F80ED",
+    color: "#2F80ED",
+  },
 };
