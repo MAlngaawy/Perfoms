@@ -108,7 +108,7 @@ export type GeneralInfo = {
 };
 
 export type PerformanceCardProps = {
-  number: number | string;
+  number: number;
   name: string;
   bgColor: string;
   textColor: string;

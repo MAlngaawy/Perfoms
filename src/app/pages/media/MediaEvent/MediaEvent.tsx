@@ -122,15 +122,16 @@ const MediaEvent = () => {
           </Carousel>
         ) : (
           <Carousel
+            sx={{
+              maxWidth: 700,
+            }}
             slideSize="70%"
             // align="start"
             slideGap="lg"
-            controlsOffset="xs"
-            controlSize={19}
-            loop
+            controlSize={30}
+            // loop
             // dragFree
             withIndicators
-            sx={{ maxWidth: 700 }}
             mx="auto"
             height={300}
           >
@@ -278,6 +279,10 @@ export default MediaEvent;
 
 const SlideImage = ({ link }: { link: string }) => {
   return (
-    <img className="w-full h-4/5 object-cover" src={link} alt="event image" />
+    <img
+      className="w-full h-4/5 object-cover rounded-md"
+      src={link}
+      alt="event image"
+    />
   );
 };

@@ -43,7 +43,7 @@ const Toolbar = ({ setOpened }: Props) => {
             }
             alt="club logo"
           />
-          <span>{playerClub?.name || "Royal Club"}</span>
+          <span>{playerClub?.name || "Alam alryada"}</span>
         </div>
         <SelectUser />
       </div>

@@ -16,7 +16,7 @@ const HomePlayerInfoCard = (props: Props) => {
   );
 
   return (
-    <div className="p-6 h-fit bg-white rounded-3xl">
+    <div className="p-6 h-full bg-white rounded-3xl">
       <div className="playerName">
         <h2>{playerInfoData?.name.split(" ")[0]}'s info</h2>
       </div>
