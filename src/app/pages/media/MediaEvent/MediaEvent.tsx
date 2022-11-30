@@ -20,6 +20,7 @@ import {
 import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 import { useSelector } from "react-redux";
 import TeamFilter from "~/@main/components/TeamFilter";
+import useWindowSize from "../../../../@main/hooks/useWindowSize";
 
 const TRANSITION_DURATION = 200;
 
@@ -31,10 +32,14 @@ const MediaEvent = () => {
     { skip: !id || !selectedPlayerTeam }
   );
 
+  const windowSize = useWindowSize();
+
   const { data: eventFiles } = useEventFilesQuery(
     { eventId: id ? +id : 0 },
     { skip: !id }
   );
+
+  console.log(eventFiles);
 
   const [embla, setEmbla] = useState<any>(null);
   const [opened, setOpened] = useState(false);
@@ -86,16 +91,65 @@ const MediaEvent = () => {
     handleYoutubeLinkInput();
   }, [youtubeLink]);
 
-  // const slides = images.map((url, index) => (
-  //   <Carousel.Slide className="bg-white" key={index}>
-  //     <Image src={url} />
-  //   </Carousel.Slide>
-  // ));
+  const slides = eventFiles?.results.map((file, index) => (
+    <Carousel.Slide className="bg-white" key={index}>
+      <Image src={file.file} />
+    </Carousel.Slide>
+  ));
 
   return (
-    <div>
-      <TeamFilter />
-    </div>
+    <>
+      <div className="h-full flex justify-center items-center mt-32">
+        {eventFiles && eventFiles.results.length > 0 ? (
+          <Carousel
+            slideSize="70%"
+            // align="start"
+            slideGap="lg"
+            controlsOffset="xs"
+            controlSize={19}
+            loop
+            // dragFree
+            withIndicators
+            sx={{ maxWidth: 700 }}
+            mx="auto"
+            height={300}
+          >
+            {eventFiles?.results.map((file) => (
+              <Carousel.Slide key={file.id}>
+                <SlideImage link={file.file} />
+              </Carousel.Slide>
+            ))}
+          </Carousel>
+        ) : (
+          <Carousel
+            slideSize="70%"
+            // align="start"
+            slideGap="lg"
+            controlsOffset="xs"
+            controlSize={19}
+            loop
+            // dragFree
+            withIndicators
+            sx={{ maxWidth: 700 }}
+            mx="auto"
+            height={300}
+          >
+            <Carousel.Slide>
+              <SlideImage link="https://and1.com.au/wp-content/uploads/2021/08/kids-sports.jpeg" />
+            </Carousel.Slide>
+            <Carousel.Slide>
+              <SlideImage link="https://www.signupgenius.com/cms/images/sports/team-building-activities-soccer-article-600x400.jpg" />
+            </Carousel.Slide>
+            <Carousel.Slide>
+              <SlideImage link="https://studiousguy.com/wp-content/uploads/2022/03/Team-Building-Games-for-Kids.jpg" />
+            </Carousel.Slide>
+          </Carousel>
+        )}
+      </div>
+    </>
+    // <div>
+    //   <TeamFilter />
+    // </div>
     // <>
     //   <Carousel
     //     controlsOffset="xl"
@@ -221,3 +275,9 @@ const MediaEvent = () => {
 };
 
 export default MediaEvent;
+
+const SlideImage = ({ link }: { link: string }) => {
+  return (
+    <img className="w-full h-4/5 object-cover" src={link} alt="event image" />
+  );
+};

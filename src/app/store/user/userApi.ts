@@ -79,7 +79,7 @@ export const userApi = createApi({
         }
       },
     }),
-    notifications: query<NotificationsType, { page: number }>({
+    notifications: query<NotificationsType, { page?: number }>({
       query: (params) => ({
         url: "notifications/",
         params,
