@@ -10,6 +10,7 @@ import PerfSelect from "~/@main/components/Select";
 
 type Props = {
   setChange: any;
+  mobile: string | undefined;
 };
 
 const schema = yup.object().shape({
@@ -18,7 +19,7 @@ const schema = yup.object().shape({
   password: yup.string().min(8).max(24).required(),
 });
 
-const ChangePhone = ({ setChange }: Props) => {
+const ChangePhone = ({ setChange, mobile }: Props) => {
   const {
     register,
     handleSubmit,
@@ -56,7 +57,7 @@ const ChangePhone = ({ setChange }: Props) => {
                     minHeight: 20,
                   },
                 }}
-                placeholder="+2011111111"
+                placeholder={mobile}
                 disabled
               />
             </Input.Wrapper>
@@ -83,7 +84,7 @@ const ChangePhone = ({ setChange }: Props) => {
             <Input.Wrapper
               id="phoneNumber"
               withAsterisk
-              label="phone number"
+              label="new phone number"
               error={errors.new_phone && errors.new_phone.message}
             >
               <Input

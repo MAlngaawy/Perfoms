@@ -10,6 +10,7 @@ import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 import { useSelector } from "react-redux";
 import { Player } from "~/app/store/types/parent-types";
 import { usePlayerClubQuery } from "~/app/store/parent/parentApi";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {
   opened: boolean;
@@ -24,6 +25,8 @@ const Toolbar = ({ setOpened }: Props) => {
     { id: selectedPlayer?.id },
     { skip: !selectedPlayer?.id }
   );
+
+  const { data: user } = useUserQuery(null);
 
   return (
     <nav className="w-full flex justify-between items-center shadow-md p-2 lg:p-4 bg-perfBlue lg:bg-white overflow-scroll">
@@ -103,7 +106,7 @@ const Toolbar = ({ setOpened }: Props) => {
           <Menu.Target>
             <Avatar
               size={windowSize.width && windowSize.width < 400 ? "sm" : "md"}
-              src="https://s.studiobinder.com/wp-content/uploads/2021/01/Best-black-and-white-portraits-by-Platon.jpg?resolution=2560,1"
+              src={user?.avatar}
               alt="userImage"
               className="cursor-pointer"
               radius="xl"

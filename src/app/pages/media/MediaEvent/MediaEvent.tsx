@@ -132,7 +132,6 @@ const MediaEvent = () => {
             // loop
             // dragFree
             withIndicators
-            mx="auto"
             height={300}
           >
             <Carousel.Slide>

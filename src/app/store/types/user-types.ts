@@ -30,6 +30,7 @@ export type User = {
   email: string;
   is_active: boolean;
   user_type: string;
+  mobile: string;
   bio: string;
   details: object;
   avatar: string;
