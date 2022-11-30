@@ -58,9 +58,9 @@ const HomePage = () => {
               <HomePlayerInfoCard />
             </Grid.Col>
             <Grid.Col sm={9} md={9.5} span={12}>
-              <Link to="/reports">
-                <PerformanceSummaryCard />
-              </Link>
+              {/* <Link to="/reports"> */}
+              <PerformanceSummaryCard />
+              {/* </Link> */}
             </Grid.Col>
           </Grid>
           <Grid columns={12} gutter={"md"}>

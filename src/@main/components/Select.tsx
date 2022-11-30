@@ -6,6 +6,7 @@ import __ from "lodash";
 export interface Option {
   label: string;
   value: string;
+  image?: string;
 }
 
 interface inputTypes {

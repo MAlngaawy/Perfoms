@@ -76,7 +76,7 @@ const coachExp = {
 
 const SingleCoachPage = (props: Props) => {
   return (
-    <Grid className="p-4" gutter="sm">
+    <Grid className="p-1 m-2" gutter="sm">
       <Grid.Col xs={12} md={3}>
         <CoachPersonalInfo
           id={1}

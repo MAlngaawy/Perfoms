@@ -83,11 +83,13 @@ const SignUpPage = (props: Props) => {
   return (
     <div className="signIn bg-perfOfWhite flex justify-center min-h-screen items-stretch">
       <div className="relative leftImage h-screen hidden md:block md:basis-1/2 self-stretch">
-        <img
-          className="absolute left-4 top-4 w-24 h-24"
-          src="/assets/images/auth_logo.png"
-          alt="logo"
-        />
+        <div className="absolute left-4 top-4  bg-white/60 rounded-2xl p-4">
+          <img
+            className="w-20 h-20"
+            src="/assets/images/logo/logo.png"
+            alt="logo"
+          />
+        </div>
         <div className=" text-perfBlue p-2 absolute right-4 bottom-4 bg-slate-200 text-xl">
           Maximize Players Full Potential.
         </div>
@@ -118,8 +120,18 @@ const SignUpPage = (props: Props) => {
               className="w-full"
               label="Who are you"
               data={[
-                { value: "Parent", label: "Parent" },
-                { value: "Coach", label: "Coach" },
+                {
+                  value: "Parent",
+                  image:
+                    "https://cdn-icons-png.flaticon.com/512/437/437501.png",
+                  label: "Parent",
+                },
+                {
+                  value: "Coach",
+                  image:
+                    "https://cdn-icons-png.flaticon.com/512/3564/3564504.png",
+                  label: "Coach",
+                },
               ]}
               name="userRole"
               control={control}

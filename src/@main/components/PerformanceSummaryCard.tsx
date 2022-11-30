@@ -30,9 +30,9 @@ const PerformanceSummaryCard = (props: Props) => {
   // console.log(playerKpisMetrics);
 
   return (
-    <div className="bg-white rounded-3xl px-6 py-2 h-full">
+    <div className="bg-white rounded-3xl p-6 h-full">
       <div className="title">
-        <h1 className="text-lg font-normal">Performance Report summary</h1>
+        <h1 className="text-sm font-normal">Performance Report summary</h1>
       </div>
       <SaleStaticChart />
     </div>
