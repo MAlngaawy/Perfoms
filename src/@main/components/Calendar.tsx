@@ -65,6 +65,7 @@ const CustomCalendar = ({ pageName }: Props) => {
                 height: 30,
                 lineHeight: "30px",
                 margin: 2,
+                cursor: "unset",
               },
             }}
             dayStyle={(date) => {

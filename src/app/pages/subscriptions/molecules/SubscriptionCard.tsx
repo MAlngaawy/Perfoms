@@ -31,8 +31,8 @@ const SubscriptionCard = ({ plan, selectPlan }: SubscripionCardProps) => {
   return (
     <div
       className={`${
-        true
-          ? "most-popular-card bg-perfBlue text-white p-3 px-5 rounded-3xl"
+        plan.most_popular
+          ? "most-popular-card bg-perfBlue text-white p-3 px-5 rounded-3xl shadow-sm"
           : "gap-5 p-3 px-5 md:px-0 md:p-0"
       } flex flex-col justify-between relative`}
     >
@@ -66,7 +66,7 @@ const SubscriptionCard = ({ plan, selectPlan }: SubscripionCardProps) => {
       </div>
       <button
         className={`${
-          true ? "bg-green" : "bg-perfBlue text-white"
+          plan.most_popular ? "bg-green" : "bg-perfBlue text-white"
         } h-12 w-48 mx-auto rounded-full disabled:bg-perfGray3`}
         onClick={() =>
           selectPlan({ subscription: plan.id, subscription_type: "Monthly" })

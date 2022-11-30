@@ -14,6 +14,7 @@ export type Subscription = {
   description: string;
   price: string;
   current_plan: boolean;
+  most_popular: boolean;
 };
 
 export type ActiveSubscription = {

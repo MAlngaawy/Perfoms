@@ -5,6 +5,7 @@ import PerformanceTable from "./components/PerformanceTable";
 import TeamInfo from "./components/TeamInfo";
 import { Button } from "@mantine/core";
 import { Link } from "react-router-dom";
+import TeamFilter from "~/@main/components/TeamFilter";
 
 type Props = {};
 
@@ -14,6 +15,7 @@ const CoachHome = (props: Props) => {
 
   return (
     <div className="coah-home">
+      <TeamFilter />
       <div className="flex items-center flex-wrap gap-4 my-4 mx-8">
         <AppRadioGroub
           values={["Attendance", "Performance", "Team info"]}

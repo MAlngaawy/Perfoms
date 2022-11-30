@@ -10,6 +10,7 @@ import {
   GeneratePdfDocs,
   GetMyTeams,
 } from "../types/coach-types";
+import { TeamPlayers } from "../types/clubManager-types";
 
 export const coachApi = createApi({
   reducerPath: "coachApi",
@@ -52,6 +53,12 @@ export const coachApi = createApi({
         body,
       }),
     }),
+    GetTeamPlayers: query<TeamPlayers, { team_id: number; page?: number }>({
+      query: ({ team_id, ...params }) => ({
+        url: `${team_id}/players`,
+        params,
+      }),
+    }),
   }),
 });
 
@@ -62,4 +69,5 @@ export const {
   useSendBulkNotificationsMutation,
   useTeamDetailsQuery,
   useUpdatePlayerPKMMutation,
+  useGetTeamPlayersQuery,
 } = coachApi;

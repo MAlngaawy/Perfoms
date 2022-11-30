@@ -130,7 +130,7 @@ const SaleStaticChart = () => {
                 <Cell
                   key={index}
                   fill={
-                    metric.score_avg >= 60
+                    metric.score_avg > 60
                       ? "#00E096" // green more than 60
                       : metric.score_avg <= 40
                       ? "#EB5757" // red less than 40
