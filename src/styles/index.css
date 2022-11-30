@@ -39,6 +39,10 @@ input:not([type="radio"]):not([type="checkbox"]) {
     monospace;
 } */
 
+.performancesCards::-webkit-scrollbar {
+  height: 2px;
+}
+
 @media only screen and (min-width: 992px) {
   ::-webkit-scrollbar {
     width: 8px;

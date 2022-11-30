@@ -43,7 +43,7 @@ const SaleStaticChart = () => {
 
   return (
     <div>
-      <div className="mx-4 py-4 flex justify-between gap-4 overflow-scroll">
+      <div className="xs:mx-4 py-4 flex justify-between gap-4 overflow-scroll performancesCards">
         <PerformanceCard
           name="Strengths"
           number={playerKpis ? playerKpis.strength_count : 0}
@@ -101,7 +101,7 @@ const SaleStaticChart = () => {
         </PerformanceCard>
       </div>
 
-      <div className="py-5 h-80 overflow-scroll ">
+      <div className="py-5 h-80 overflow-scroll performancesCards">
         <ResponsiveContainer width={"100%"} height="100%" className="min-w-700">
           <BarChart
             data={playerKpis?.player_kpi.map((i) => ({
