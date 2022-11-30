@@ -3,11 +3,13 @@ import { useState } from "react";
 import { Input } from "@mantine/core";
 import AppIcons from "~/@main/core/AppIcons";
 import ChangePhone from "./Components/ChangePhone";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {};
 
 const Settings = (props: Props) => {
   const [change, setChange] = useState<"Password" | "Mobile" | null>(null);
+  const { data: user } = useUserQuery(null);
 
   return (
     <div className="relative flex justify-center items-center py-20 md:pt-14">
@@ -29,7 +31,7 @@ const Settings = (props: Props) => {
           <div className="content flex flex-col justify-center items-center gap-4 bg-white rounded-3xl p-6 w-11/12 sm:w-96">
             <h2>Settings</h2>
             <Input.Wrapper className="w-full" label="Phobe Number">
-              <Input placeholder="+2011111111" disabled />
+              <Input placeholder={user?.mobile} disabled />
             </Input.Wrapper>
             <Input.Wrapper className="w-full" label="Password">
               <Input placeholder="**********" disabled />
@@ -50,7 +52,9 @@ const Settings = (props: Props) => {
         </>
       )}
       {change === "Password" && <ChangePass setChange={setChange} />}
-      {change === "Mobile" && <ChangePhone setChange={setChange} />}
+      {change === "Mobile" && (
+        <ChangePhone mobile={user?.mobile} setChange={setChange} />
+      )}
     </div>
   );
 };

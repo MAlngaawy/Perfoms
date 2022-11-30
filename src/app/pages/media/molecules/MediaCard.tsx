@@ -13,30 +13,38 @@ const MediaCard = ({ event }: props) => {
   const navigate = useNavigate();
 
   return (
-    <Card
-      shadow="sm"
-      className="rounded-b-xl h-80"
-      p={0}
-      radius="md"
-      withBorder
-    >
+    <Card shadow="sm" className="rounded-b-xl" p={0} radius="md" withBorder>
       <Card.Section component="a">
-        <Image src={event.icon_url} height={160} alt="Norway" />
+        <img
+          src={event.icon_url}
+          className="w-64 h-56 min-w-full object-cover"
+          alt="Norway"
+        />
       </Card.Section>
+      <div className="flex flex-col gap-2 my-2">
+        <Group position="apart" className="mx-4">
+          <Text weight={500} className="text-perfLightBlack">
+            {event.name}
+          </Text>
+        </Group>
 
-      <Group position="apart" className="mx-4" mt="md" mb="xs">
-        <Text weight={500}>{event.name}</Text>
-      </Group>
+        <Text
+          size="sm"
+          className="mx-4 flex items-center gap-2 "
+          color="dimmed"
+        >
+          <AppIcons
+            className="w-5 text-perfGray2"
+            icon="CalendarIcon:outline"
+          />{" "}
+          <span>{event.date}</span>
+        </Text>
 
-      <Text size="sm" className="mx-4" color="dimmed">
-        <AppIcons className="w-5 inline mb-4" icon="CalendarIcon:outline" />{" "}
-        {event.date}
-      </Text>
-
-      <Text size="sm" className="mx-4" color="dimmed">
-        <AppIcons className="w-5 inline mb-4" icon="MapIcon:outline" />
-        {event.club.name}
-      </Text>
+        <Text size="sm" className="mx-4 flex items-center gap-2" color="dimmed">
+          <AppIcons className="w-5 text-perfGray2" icon="MapIcon:outline" />
+          <span>{event.club.name}</span>
+        </Text>
+      </div>
 
       <Button
         onClick={() => navigate(`/media/${event.id}`)}

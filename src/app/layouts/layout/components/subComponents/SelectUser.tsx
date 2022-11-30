@@ -27,7 +27,7 @@ const SelectUser = (props: Props) => {
   return (
     <div className="flex gap-1 mx-2">
       {players &&
-        players.results?.map((player, idx) => (
+        players.results?.map((player: Player, idx: number) => (
           <SelectPlayer
             name={player.name}
             image={player.icon}

@@ -103,6 +103,7 @@ export type Team = {
   players_count: number;
   from_age: number;
   to_age: number;
+  gender: string;
 };
 
 export type GetMyTeams = BaseGetAllType & {

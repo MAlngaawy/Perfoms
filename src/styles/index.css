@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-body {
+* {
   font-family: "Poppins", sans-serif;
 }
 
@@ -38,6 +38,10 @@ input:not([type="radio"]):not([type="checkbox"]) {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 } */
+
+.performancesCards::-webkit-scrollbar {
+  height: 2px;
+}
 
 @media only screen and (min-width: 992px) {
   ::-webkit-scrollbar {
@@ -86,10 +90,6 @@ select:-webkit-autofill:focus {
 }
 
 @media only screen and (min-width: 992px) {
-  .subscription-board {
-    height: 400px;
-  }
-
   .most-popular-card {
     height: 430px;
     bottom: 70px;

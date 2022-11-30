@@ -33,8 +33,8 @@ const SelectPlayer = ({ selected, image, name, selectFun }: Props) => {
         })}
       >
         {windowSize.width && windowSize.width < 600
-          ? name.length > 10
-            ? name.substring(0, 10) + "..."
+          ? name.length > 5
+            ? name.substring(0, 5) + ".."
             : name
           : name}
         {/* {name} */}

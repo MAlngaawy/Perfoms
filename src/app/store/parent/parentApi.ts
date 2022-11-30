@@ -18,6 +18,8 @@ import {
   TeamEvent,
   TeamEvents,
   TeamSupervisors,
+  ParentUpcomingEvents,
+  PlayerKpis,
 } from "./../types/parent-types";
 import {
   BaseQueryFn,
@@ -33,6 +35,8 @@ import {
   AllPlayers,
   Player,
 } from "../types/parent-types";
+import { CoachPlayerInfo } from "../types/coach-types";
+import { Team } from "~/app/store/types/coach-types";
 
 export const parentsApi = createApi({
   reducerPath: "parentsApi",
@@ -91,9 +95,9 @@ export const parentsApi = createApi({
       providesTags: ["Parent"],
     }),
 
-    onePlayer: query<AllPlayers, { id: number; page?: number }>({
+    onePlayer: query<CoachPlayerInfo, { id: number; page?: number }>({
       query: ({ id, ...params }) => ({
-        url: `my-players/${id}/`,
+        url: `${id}/`,
         params,
       }),
       providesTags: ["Parent"],
@@ -116,7 +120,7 @@ export const parentsApi = createApi({
 
     playerClub: query<ParentClub, { id: number; page?: number }>({
       query: ({ id, ...params }) => ({
-        url: `clubs/${id}/`,
+        url: `${id}/club`,
         params,
       }),
       providesTags: ["Parent"],
@@ -125,6 +129,14 @@ export const parentsApi = createApi({
     playerTeams: query<PlayerTeams, { id: number; page?: number }>({
       query: ({ id, ...params }) => ({
         url: `${id}/player-teams/`,
+        params,
+      }),
+      providesTags: ["Parent"],
+    }),
+
+    TeamInfo: query<Team, { team_id: number; page?: number }>({
+      query: ({ team_id, ...params }) => ({
+        url: `${team_id}/info`,
         params,
       }),
       providesTags: ["Parent"],
@@ -169,9 +181,24 @@ export const parentsApi = createApi({
     //   }),
     //   providesTags: ["Parent"],
     // }),
-    playerSportTeams: query<SportTeams, { sportId: number; page?: number }>({
-      query: ({ sportId, ...params }) => ({
-        url: `${sportId}/player-kpis-metrics/`,
+
+    playerKpisMetrics: query<
+      PlayerKpis,
+      { player_id: number; team_id: number; from_date: string; to_date: string }
+    >({
+      query: ({ player_id, team_id, from_date, to_date }) => ({
+        url: `${player_id}/${team_id}/player-kpis-metrics/`,
+        params: { from_date, to_date },
+      }),
+      providesTags: ["Parent"],
+    }),
+
+    playerSportTeams: query<
+      SportTeams,
+      { player_id: number; team_id: number; page?: number }
+    >({
+      query: ({ player_id, team_id, ...params }) => ({
+        url: `${player_id}/${team_id}/player-kpis-metrics/`,
         params,
       }),
       providesTags: ["Parent"],
@@ -207,6 +234,16 @@ export const parentsApi = createApi({
       }),
       providesTags: ["Parent"],
     }),
+    upcomingEvents: query<
+      ParentUpcomingEvents,
+      { team_id: number; page?: number }
+    >({
+      query: ({ team_id, ...params }) => ({
+        url: `${team_id}/upcoming-events/`,
+        params,
+      }),
+      providesTags: ["Parent"],
+    }),
     teamSupervisors: query<TeamSupervisors, { teamId: number; page?: number }>({
       query: ({ teamId, ...params }) => ({
         url: `${teamId}/supervisors/`,
@@ -236,9 +273,11 @@ export const {
   usePlayerActionsQuery,
   usePlayerCalenderQuery,
   usePlayerRecommendationsQuery,
+  usePlayerKpisMetricsQuery,
   usePlayerSportTeamsQuery,
   usePlayerTeamDocsQuery,
   usePlayerTeamsQuery,
+  useTeamInfoQuery,
   useTeamCoachesQuery,
   useTeamEventQuery,
   useTeamEventsQuery,
@@ -246,5 +285,6 @@ export const {
   usePlayerClubsQuery,
   useParentSubscriptionsQuery,
   useEventFilesQuery,
+  useUpcomingEventsQuery,
   useSelectSubscriptionMutation,
 } = parentsApi;

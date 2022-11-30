@@ -1,22 +1,32 @@
 import React from "react";
 import { ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 import useWindowSize from "~/@main/hooks/useWindowSize";
+import { Player } from "~/app/store/types/parent-types";
+import { useSelector } from "react-redux";
+import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
+import { usePlayerCalenderQuery } from "~/app/store/parent/parentApi";
 
-type Props = {
-  data: { day: string; attendance: "ATTENDED" | "ABSENT" | "UPCOMING" }[];
-};
+type Props = {};
 
-const TotalAttendance = ({ data }: Props) => {
+const TotalAttendance = (props: Props) => {
+  const selectedPlayer: Player = useSelector(selectedPlayerFn);
+  const { data: playerAttendance } = usePlayerCalenderQuery(
+    { id: selectedPlayer?.id },
+    { skip: !selectedPlayer?.id }
+  );
+
   const newData = [
     { name: "Attended", value: 0, color: "#1B59F8" },
     { name: "Absent", value: 0, color: "#EB5757" },
   ];
 
-  for (let i = 0; i < data.length; i++) {
-    if (data[i].attendance === "ATTENDED") {
-      newData[0].value += 1;
-    } else if (data[i].attendance === "ABSENT") {
-      newData[1].value += 1;
+  if (playerAttendance) {
+    for (let i = 0; i < playerAttendance?.results?.length; i++) {
+      if (playerAttendance?.results[i].status === "ATTENDED") {
+        newData[0].value += 1;
+      } else if (playerAttendance?.results[i].status === "ABSENT") {
+        newData[1].value += 1;
+      }
     }
   }
 

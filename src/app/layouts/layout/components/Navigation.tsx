@@ -95,7 +95,9 @@ const Info = () => {
       </Box>
 
       {/* Info */}
-      <h3 className="text-xs">Maximize Players Full Potential.</h3>
+      <h3 className="text-xs text-center text-perfGray2 mt-2">
+        Maximize Players Full Potential.
+      </h3>
     </div>
   );
 };
@@ -109,7 +111,7 @@ const NavList = ({ setOpened }: any) => {
           key={i.id}
           onClick={() => setOpened(false)}
           className={
-            "rounded-lg text-sm font-medium flex content-center items-center gap-2 py-3 xl:py-4 w-full "
+            "rounded-lg text-sm font-medium flex content-center items-center gap-2 py-3 xl:py-4 w-full hover:bg-perfBlue hover:text-white hover:justify-center "
           }
           style={({ isActive }) =>
             isActive

@@ -6,6 +6,7 @@ import __ from "lodash";
 export interface Option {
   label: string;
   value: string;
+  image?: string;
 }
 
 interface inputTypes {
@@ -39,6 +40,7 @@ const PerfSelect = ({
           placeholder={placeholder}
           id={id}
           withAsterisk={required}
+          searchable
           error={error}
           sx={{
             ".mantine-Input-input": {

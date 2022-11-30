@@ -11,7 +11,7 @@ export const PerformanceCard = ({
   return (
     <div
       style={{ background: bgColor }}
-      className="card w-full flex py-2 px-4 gap-4 font-semibold rounded-full cursor-pointer"
+      className="card w-fit flex py-2 pr-10 pl-4 gap-4 font-semibold rounded-full"
     >
       <div className="icon flex justify-center items-center">{children}</div>
       <div
