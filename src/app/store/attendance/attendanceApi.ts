@@ -16,16 +16,16 @@ export const attendanceApi = createApi({
   tagTypes: ["Attendance"],
   endpoints: ({ query, mutation }) => ({
     attendance: query<Attendance, number>({
-      query: (id) => `attendance-day-details/${id}`,
+      query: (id) => `attendance-day-details/${id}/`,
       providesTags: ["Attendance"],
     }),
     playerAttendance: query<PlayerAttendance, number>({
-      query: (id) => `player-attendance/${id}`,
+      query: (id) => `player-attendance/${id}/`,
       providesTags: ["Attendance"],
     }),
     addAttendance: mutation<Attendance, AddAttendance>({
       query: (body) => ({
-        url: "add-team-calender",
+        url: "add-team-calender/",
         method: "POST",
         body,
       }),
@@ -33,7 +33,7 @@ export const attendanceApi = createApi({
     }),
     updateAttendance: mutation<Attendance, UpdateAttendance>({
       query: ({ id, ...body }) => ({
-        url: `update-attendance-day/${id}`,
+        url: `update-attendance-day/${id}/`,
         method: "PATCH",
         body,
       }),
@@ -41,7 +41,7 @@ export const attendanceApi = createApi({
     }),
     deleteAttendance: mutation<null, number>({
       query: (id) => ({
-        url: `delete-attendance-day/${id}`,
+        url: `delete-attendance-day/${id}/`,
         method: "DELETE",
       }),
       invalidatesTags: ["Attendance"],

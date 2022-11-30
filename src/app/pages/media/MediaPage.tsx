@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import FirstNav from "~/@main/components/FirstNav";
-import SecondNav from "../home/organisms/SecondNav";
+import { useSelector } from "react-redux";
+import { useTeamEventsQuery } from "~/app/store/parent/parentApi";
+import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 import MediaCard from "./molecules/MediaCard";
-import { players } from "../home/HomePage";
 
 const dummyData = [
   {
@@ -68,31 +68,39 @@ const dummyData = [
     date: "Sunday, 15/SEP",
     place: "Al - ahly club",
   },
-  {
-    id: 9,
-    img: "https://images.unsplash.com/photo-1527004013197-933c4bb611b3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=720&q=80",
-    header: "Kickboxing -under 12",
-    date: "Sunday, 15/SEP",
-    place: "Al - ahly club",
-  },
 ];
+
 const MediaPage = () => {
-  const [selectedplayer, setSelectedPlayer] = useState<any>(null);
+  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
+  const { data: teamEvents } = useTeamEventsQuery(
+    { teamId: selectedPlayerTeam?.id },
+    { skip: !selectedPlayerTeam }
+  );
+  const [opened, setOpened] = useState(false);
+  const [events, setEvents] = useState(dummyData);
+
+  const handleClick = () => {
+    setOpened(false);
+    setEvents([
+      ...events,
+      {
+        id: events.length,
+        img: "https://images.unsplash.com/photo-1527004013197-933c4bb611b3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=720&q=80",
+        header: "Kickboxing -under 12",
+        date: "Sunday, 15/SEP",
+        place: "Al - ahly club",
+      },
+    ]);
+  };
 
   return (
     <div>
-      <FirstNav pageName="Media" />
-      {/* <SecondNav
-          players={players}
-          selectedplayer={selectedplayer}
-          setSelectedPlayer={setSelectedPlayer}
-        /> */}
-      <div className="flex flex-row justify-center items-center flex-wrap gap-2 m-1">
-        {dummyData.map((data) => {
-          return <MediaCard {...data} />;
-        })}
+      <div className="flex flex-col xs:flex-row justify-center xs:items-center flex-wrap gap-2 m-1">
+        {teamEvents &&
+          teamEvents.results.map((data) => {
+            return <MediaCard key={data.id} event={data} />;
+          })}
       </div>
-      ;
     </div>
   );
 };

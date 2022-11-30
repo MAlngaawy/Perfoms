@@ -10,6 +10,9 @@ import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 import { Link } from "react-router-dom";
 import { Player } from "~/app/store/types/parent-types";
 import { usePlayerAttendanceQuery } from "~/app/store/attendance/attendanceApi";
+import TimeFilter from "~/@main/components/TimeFilter";
+import TeamFilter from "~/@main/components/TeamFilter";
+import { usePlayerCalenderQuery } from "~/app/store/parent/parentApi";
 
 // dummy data
 export const playerData: PlayerData = {
@@ -102,32 +105,24 @@ export const players: Players[] = [
 
 const HomePage = () => {
   const [team, setTeam] = useState("Team");
-  const [week, setWeek] = useState("Week");
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
-  const { data: playerAttendance } = usePlayerAttendanceQuery(
-    selectedPlayer?.id,
+  const { data: playerAttendance } = usePlayerCalenderQuery(
+    {
+      id: selectedPlayer?.id,
+    },
     {
       skip: !selectedPlayer?.id,
     }
   );
   return (
     <div className="home-page px-5 mb-20">
-      <div className="flex my-2  justify-between items-center">
+      <div className="my-4 flex flex-col xs:flex-row gap-2 justify-between items-center">
         <div className="flex gap-3 items-center">
           <AddPlayer />
         </div>
         <div className="flex gap-1 justify-center items-center md:pt-0">
-          <Dropdown
-            values={["team 1", "team 2", "team 3"]}
-            selected={team}
-            setSelected={setTeam}
-          />
-          <Dropdown
-            values={["this week", "last week"]}
-            selected={week}
-            setSelected={setWeek}
-            className="bg-none bg-white p-2 rounded-full"
-          />
+          <TeamFilter />
+          <TimeFilter />
         </div>
       </div>
       {selectedPlayer ? (

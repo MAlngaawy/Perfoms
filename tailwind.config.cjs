@@ -5,6 +5,9 @@ module.exports = {
   important: true,
   theme: {
     extend: {
+      height: {
+        700: 700,
+      },
       colors: {
         perfBlue: "#2F80ED",
         perfBlue2: "#0D65DB",
@@ -39,8 +42,8 @@ module.exports = {
         xl: "1400px",
       },
       rotate: {
-        '320': '320deg',
-      }
+        320: "320deg",
+      },
     },
   },
   plugins: [

@@ -1,6 +1,6 @@
 import { Avatar } from "@mantine/core";
-import React from "react";
 import classNames from "classnames";
+import useWindowSize from "~/@main/hooks/useWindowSize";
 
 type Props = {
   selected: boolean;
@@ -10,6 +10,7 @@ type Props = {
 };
 
 const SelectPlayer = ({ selected, image, name, selectFun }: Props) => {
+  const windowSize = useWindowSize();
   return (
     <div
       className={classNames(
@@ -19,14 +20,23 @@ const SelectPlayer = ({ selected, image, name, selectFun }: Props) => {
         }
       )}
     >
-      <Avatar onClick={() => selectFun()} src={image} size="sm" radius={"xl"} />
+      <Avatar
+        onClick={() => selectFun()}
+        src={image}
+        size={"sm"}
+        radius={"xl"}
+      />
       <h2
-        className={classNames("mr-1 text-sm  w-16", {
+        className={classNames("mr-1 text-xs", {
           hidden: !selected,
           block: selected,
         })}
       >
-        {name.length > 10 ? name.substring(0, 10) + "..." : name}
+        {windowSize.width && windowSize.width < 600
+          ? name.length > 10
+            ? name.substring(0, 10) + "..."
+            : name
+          : name}
         {/* {name} */}
       </h2>
     </div>
