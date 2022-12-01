@@ -148,6 +148,7 @@ const TeamInfo = (props: Props) => {
         </Grid.Col>
         <Grid.Col span={12} xs={8} sm={5}>
           <CustomCalendar
+            //@ts-ignore
             data={[{ attendance: "ABSENT", day: "11-11-2022" }]}
           />
         </Grid.Col>
