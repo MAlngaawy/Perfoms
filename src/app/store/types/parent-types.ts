@@ -229,6 +229,7 @@ export type PlayerKpi = {
   id: number;
   kpi: string;
   score_avg: number;
+  old_score_avg: number;
 };
 
 export type PlayerKpis = {
