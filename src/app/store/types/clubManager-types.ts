@@ -94,7 +94,7 @@ export type TeamPlayer = {
 
 export type plaerParent = PlayerCoach;
 
-export type TeamAttendance = BaseGetAllType & {
+export type CoachAttendance = {
   id: number;
   day: string;
   status: "ATTENDED" | "ABSENT" | "UPCOMING";
@@ -103,6 +103,10 @@ export type TeamAttendance = BaseGetAllType & {
     name: string;
     icon: string;
   };
+};
+
+export type CoachTeamAttendance = BaseGetAllType & {
+  results: CoachAttendance[];
 };
 
 export type TeamPlayers = BaseGetAllType & {

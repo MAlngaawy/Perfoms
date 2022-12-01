@@ -1,10 +1,15 @@
 import React, { memo } from "react";
-import { Table, Checkbox, Avatar } from "@mantine/core";
-import { useGetTeamPlayersQuery } from "~/app/store/coach/coachApi";
+import { Table, Checkbox, Avatar, Skeleton } from "@mantine/core";
+import {
+  useCoachUpdateAttendanceMutation,
+  useGetTeamAttendanceQuery,
+  useGetTeamPlayersQuery,
+} from "~/app/store/coach/coachApi";
 // import memo from "../../../layouts/layout/components/Navigation";
 import { useSelector } from "react-redux";
 import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 import TeamFilter from "~/@main/components/TeamFilter";
+import { useUpdateAttendanceMutation } from "~/app/store/attendance/attendanceApi";
 
 type Props = {};
 
@@ -73,50 +78,74 @@ const AttendanceTable = (props: Props) => {
     { skip: !selectedPlayerTeam }
   );
 
+  const { data: teamAttendance } = useGetTeamAttendanceQuery(
+    { team_id: selectedPlayerTeam?.id },
+    { skip: !selectedPlayerTeam }
+  );
+
+  const [updateAttend, { isLoading: isUpdating }] =
+    useCoachUpdateAttendanceMutation();
+
   console.log("coahcTeamPlayers", coahcTeamPlayers);
 
   return (
     <>
-      {selectedPlayerTeam && coahcTeamPlayers ? (
+      {selectedPlayerTeam && teamAttendance ? (
         <div className="overflow-scroll max-h-screen relative m-6 bg-white rounded-lg text-center">
           {/* <TeamFilter /> */}
           <Table highlightOnHover horizontalSpacing="xl">
             <thead>
               <tr className="">
                 <th className="bg-white sticky  top-0 z-20 ">Day</th>
-                {coahcTeamPlayers?.results.map((player) => (
+                {teamAttendance?.results.map((attend) => (
                   <th
-                    key={player.id}
+                    key={attend.id}
                     className="bg-white sticky top-0 z-20 text-center "
                   >
                     <div className="flex  flex-col justify-center items-center">
-                      <Avatar radius={"xl"} size="md" src={player.icon} />
-                      <span>{player.name}</span>
+                      <Avatar
+                        radius={"xl"}
+                        size="md"
+                        src={attend.player.icon}
+                      />
+                      <span>{attend.player.name}</span>
                     </div>
                   </th>
                 ))}
               </tr>
             </thead>
             <tbody className="overflow-scroll">
-              {new Array(30).fill(5).map((item, idx) => {
-                const thisDate = new Date(`${item}/${idx + 1}/2022`);
+              {teamAttendance.results.map((item) => {
+                const thisDate = new Date(item.day);
                 return (
-                  <tr className="" key={idx}>
-                    <td className="text-xs font-semibold w-36 text-center sticky left-0 bg-white z-10 text-perfGray2 px-1">
+                  <tr className="" key={item.id}>
+                    <td className="text-xs font-semibold text-center px-0 sticky left-0 bg-white z-10 text-perfGray3">
                       {thisDate.getDate() - 1}/ {thisDate.getMonth() + 1} /
                       {thisDate.getFullYear()}
                     </td>
-                    {coahcTeamPlayers?.results.map((player, index) => {
-                      console.log("1231321231");
+                    {teamAttendance?.results.map((attend, index) => {
                       return (
-                        <td key={player.id}>
+                        <td key={attend.id}>
                           <Checkbox
+                            disabled={attend.status === "UPCOMING"}
+                            checked={attend.status === "ATTENDED"}
                             onChange={(e) => {
+                              updateAttend({
+                                id: attend.id,
+                                status:
+                                  attend.status !== "ATTENDED"
+                                    ? "ATTENDED"
+                                    : "ABSENT",
+                              });
                               console.log({
-                                attended: e.currentTarget.checked,
-                                plaerId: player.id,
-                                plaerName: player.name,
-                                date: new Date(`${item}/${idx}/2022`),
+                                attended: `becomes ${
+                                  e.currentTarget.checked
+                                    ? "ATTENDED"
+                                    : "ABSENT"
+                                }`,
+                                plaerId: attend.id,
+                                plaerName: attend.player.name,
+                                date: new Date(attend.day),
                               });
                             }}
                           />
@@ -130,7 +159,7 @@ const AttendanceTable = (props: Props) => {
           </Table>
         </div>
       ) : (
-        "Loading"
+        <Skeleton height="100%" width="100%" radius="lg" />
       )}
     </>
   );

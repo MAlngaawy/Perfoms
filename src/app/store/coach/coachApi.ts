@@ -10,7 +10,8 @@ import {
   GeneratePdfDocs,
   GetMyTeams,
 } from "../types/coach-types";
-import { TeamPlayers } from "../types/clubManager-types";
+import { CoachTeamAttendance, TeamPlayers } from "../types/clubManager-types";
+import { Attendance, UpdateAttendance } from "../types/attendance-types";
 
 export const coachApi = createApi({
   reducerPath: "coachApi",
@@ -59,6 +60,24 @@ export const coachApi = createApi({
         params,
       }),
     }),
+
+    GetTeamAttendance: query<
+      CoachTeamAttendance,
+      { team_id: number; page?: number }
+    >({
+      query: ({ team_id, ...params }) => ({
+        url: `team-attendance/${team_id}`,
+        params,
+      }),
+    }),
+    coachUpdateAttendance: mutation<Attendance, UpdateAttendance>({
+      query: ({ id, ...body }) => ({
+        url: `update-attendance-day/${id}/`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["Attendance"],
+    }),
   }),
 });
 
@@ -70,4 +89,6 @@ export const {
   useTeamDetailsQuery,
   useUpdatePlayerPKMMutation,
   useGetTeamPlayersQuery,
+  useGetTeamAttendanceQuery,
+  useCoachUpdateAttendanceMutation,
 } = coachApi;

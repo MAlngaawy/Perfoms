@@ -1,3 +1,4 @@
+import { Attendance } from "./attendance-types";
 import { BaseGetAllType } from "./base-types";
 import { TeamPlayer } from "./clubManager-types";
 import { RatePer } from "./supervisor-types";
@@ -145,7 +146,6 @@ export type PlayerAttendance = BaseGetAllType & {
     };
   }[];
 };
-export type TeamAttendance = PlayerAttendance;
 
 export type CoachPlayerInfo = {
   id: number;
