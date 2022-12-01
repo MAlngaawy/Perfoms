@@ -1,6 +1,9 @@
 import React from "react";
 import { Table, Checkbox, Avatar, Box } from "@mantine/core";
 import cn from "classnames";
+import { useGetTeamPerformancesQuery } from "~/app/store/coach/coachApi";
+import { useSelector } from "react-redux";
+import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 
 type Props = {};
 
@@ -58,61 +61,70 @@ const players = [
 ];
 
 const PerformanceTable = (props: Props) => {
+  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
+  const { data: teamPerformance } = useGetTeamPerformancesQuery(
+    { team_id: selectedPlayerTeam?.id },
+    { skip: !selectedPlayerTeam }
+  );
+
   return (
     <div className="overflow-scroll max-h-screen relative m-6 bg-white rounded-lg text-center">
       <Table highlightOnHover horizontalSpacing="xl">
         <thead>
           <tr className="">
             <th className="bg-white sticky  top-0 z-20 ">Day</th>
-            {players.map((player) => (
+            {teamPerformance?.results.map((item) => (
               <th className="bg-white sticky top-0 z-20 text-center ">
                 <div className="flex  flex-col justify-center items-center">
-                  <Avatar radius={"xl"} size="md" src={player.avatar} />
-                  <span>{player.name}</span>
+                  <Avatar
+                    radius={"xl"}
+                    size="md"
+                    src={item.player_kpi.player.icon}
+                  />
+                  <span>{item.player_kpi.player.name}</span>
                 </div>
               </th>
             ))}
           </tr>
         </thead>
         <tbody className="overflow-scroll">
-          {new Array(30).fill("Push").map((item, idx) => {
-            const thisDate = new Date(`${item}/${idx + 1}/2022`);
+          {teamPerformance?.results.map((item) => {
             return (
-              <tr className="">
+              <tr className="" key={item.id}>
                 <td className="text-sm w-48 sticky left-0 bg-white z-10 text-perfGray2">
-                  {item}
+                  {item.metric.name}
                 </td>
-                {players.map((player, index) => (
-                  <>
-                    <td>
-                      <div className="flex gap-2 justify-center items-center">
-                        {[1, 2, 3, 4, 5].map((number) => (
-                          <span
-                            onClick={() =>
-                              console.log({
-                                playerId: player.id,
-                                playerName: player.name,
-                                metric: item,
-                              })
+                {teamPerformance?.results.map((item) => (
+                  <td key={item.id}>
+                    <div className="flex gap-2 justify-center items-center">
+                      {[1, 2, 3, 4, 5].map((number) => (
+                        <span
+                          onClick={() =>
+                            console.log({
+                              id: item.id,
+                              team_id: selectedPlayerTeam,
+                              playerName: item.player_kpi.player.name,
+                              score: number,
+                              max_score: item.max_score,
+                            })
+                          }
+                          className={cn(
+                            "px-3 p-1 bg-perfLigtGray rounded-md cursor-pointer",
+                            {
+                              "bg-green text-white":
+                                item.score > 3 && item.score === number,
+                              "bg-red text-white":
+                                item.score < 3 && item.score === number,
+                              "bg-yellow text-white":
+                                item.score === 3 && item.score === number,
                             }
-                            className={cn(
-                              "px-3 p-1 bg-perfLigtGray rounded-md cursor-pointer",
-                              {
-                                "bg-green text-white":
-                                  player.score > 3 && player.score === number,
-                                "bg-red text-white":
-                                  player.score < 3 && player.score === number,
-                                "bg-yellow text-white":
-                                  player.score === 3 && player.score === number,
-                              }
-                            )}
-                          >
-                            {number}
-                          </span>
-                        ))}
-                      </div>
-                    </td>
-                  </>
+                          )}
+                        >
+                          {number}
+                        </span>
+                      ))}
+                    </div>
+                  </td>
                 ))}
               </tr>
             );

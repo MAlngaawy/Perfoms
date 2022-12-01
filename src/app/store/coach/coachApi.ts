@@ -1,4 +1,6 @@
 import {
+  CoachTeamAttendance,
+  CoachTeamPerformance,
   SendBulkNotifications,
   Team,
   UpdatePlayerPKM,
@@ -10,7 +12,7 @@ import {
   GeneratePdfDocs,
   GetMyTeams,
 } from "../types/coach-types";
-import { CoachTeamAttendance, TeamPlayers } from "../types/clubManager-types";
+import { TeamPlayers } from "../types/clubManager-types";
 import { Attendance, UpdateAttendance } from "../types/attendance-types";
 
 export const coachApi = createApi({
@@ -78,8 +80,20 @@ export const coachApi = createApi({
       }),
       invalidatesTags: ["Attendance"],
     }),
+
+    getTeamPerformances: query<
+      CoachTeamPerformance,
+      { team_id: number; page?: number }
+    >({
+      query: ({ team_id, ...params }) => ({
+        url: `team-performance/${team_id}`,
+        params,
+      }),
+    }),
   }),
 });
+
+//CoachTeamPerformance
 
 export const {
   useCoachesQuery,
@@ -91,4 +105,5 @@ export const {
   useGetTeamPlayersQuery,
   useGetTeamAttendanceQuery,
   useCoachUpdateAttendanceMutation,
+  useGetTeamPerformancesQuery,
 } = coachApi;

@@ -147,6 +147,21 @@ export type PlayerAttendance = BaseGetAllType & {
   }[];
 };
 
+export type CoachAttendance = {
+  id: number;
+  day: string;
+  status: "ATTENDED" | "ABSENT" | "UPCOMING";
+  player: {
+    id: number;
+    name: string;
+    icon: string;
+  };
+};
+
+export type CoachTeamAttendance = BaseGetAllType & {
+  results: CoachAttendance[];
+};
+
 export type CoachPlayerInfo = {
   id: number;
   name: string;
