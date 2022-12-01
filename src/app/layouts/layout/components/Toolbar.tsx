@@ -38,12 +38,10 @@ const Toolbar = ({ setOpened }: Props) => {
           <AppIcons className="w-6 h-6 " icon="Bars3BottomLeftIcon:solid" />
         </button>
         <div className="clubLogo gap-2 hidden lg:flex justify-center items-center">
-          <img
+          <Avatar
+            radius={"xl"}
             className="w-8"
-            src={
-              playerClub?.icon ||
-              "https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/1200px-Real_Madrid_CF.svg.png"
-            }
+            src={playerClub?.icon}
             alt="club logo"
           />
           <span>{playerClub?.name || "Alam alryada"}</span>
