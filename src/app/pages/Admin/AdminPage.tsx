@@ -1,13 +1,18 @@
 import React, { useState } from "react";
 import AppRadioGroub from "~/@main/components/AppRadioGroub";
-import Sports from "./Components/Sports";
-import Teams from "./Components/Teams";
-import Users from "./Components/Users";
+import { useKpisQuery } from "~/app/store/Supervisor/supervisorApi";
+import Sports from "../../../@main/components/ManagerComponents/Sports";
+import Teams from "../../../@main/components/ManagerComponents/Teams";
+import Users from "../../../@main/components/ManagerComponents/Users";
 
 type Props = {};
 
 const AdminPage = (props: Props) => {
   const [checked, setChecked] = useState<"Teams" | "Sports" | "Users">("Teams");
+
+  const data = useKpisQuery({ page: 1 });
+
+  console.log(data);
 
   return (
     <div>

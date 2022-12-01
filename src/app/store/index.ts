@@ -8,6 +8,7 @@ import rootReducer from "./rootReducer";
 import { userApi } from "./user/userApi";
 import { coachApi } from "./coach/coachApi";
 import { createLogger } from "redux-logger";
+import { supervisorApi } from "./Supervisor/supervisorApi";
 
 export interface SerializedError {
   name?: string;
@@ -31,6 +32,7 @@ const middlewares: any[] = [
   eventsApi.middleware,
   coreApi.middleware,
   parentsApi.middleware,
+  supervisorApi.middleware,
 ];
 
 if (process.env.NODE_ENV === "development") {
