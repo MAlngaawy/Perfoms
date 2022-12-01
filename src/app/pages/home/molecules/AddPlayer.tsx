@@ -17,6 +17,8 @@ import {
 import SubmitButton from "~/@main/components/SubmitButton";
 import { useUserQuery } from "~/app/store/user/userApi";
 import { PlayerSport, SportTeam } from "~/app/store/types/parent-types";
+import { BASE_URL } from "~/app/configs/dataService";
+import Cookies from "js-cookie";
 
 type Props = {};
 
@@ -122,8 +124,16 @@ const AddPlayer = (props: Props) => {
       icon: playerImage,
     };
 
-    console.log(bodyParameters);
-    addPlayerHandler(bodyParameters);
+    console.log(bodyParameters, Cookies.get("token"));
+
+    axios.post(`${BASE_URL}/parent/add-player/`, {
+      data: bodyParameters,
+      headers: {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+    });
+
+    // addPlayerHandler(bodyParameters);
     // setPlayerImage(null);
     // reset({
     //   name: "",
