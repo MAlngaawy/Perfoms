@@ -15,14 +15,17 @@ const players = [
     id: 1,
     scores: [
       {
+        id: 9,
         score: 1,
         metric: "ATTACK",
       },
       {
+        id: 8,
         score: 3,
         metric: "PUSH",
       },
       {
+        id: 7,
         score: 5,
         metric: "BOXING",
       },
@@ -35,14 +38,17 @@ const players = [
     id: 2,
     scores: [
       {
+        id: 6,
         score: 3,
         metric: "BOXING",
       },
       {
+        id: 5,
         score: 4,
         metric: "PUSH",
       },
       {
+        id: 4,
         score: 2,
         metric: "ATTACK",
       },
@@ -56,14 +62,17 @@ const players = [
     id: 2,
     scores: [
       {
+        id: 1,
         score: 2,
         metric: "PUSH",
       },
       {
+        id: 2,
         score: 1,
         metric: "BOXING",
       },
       {
+        id: 3,
         score: 2,
         metric: "ATTACK",
       },
@@ -109,11 +118,11 @@ const PerformanceTable = (props: Props) => {
                   {metric.name}
                 </td>
                 {players.map((player) => {
-                  let theMetric = "";
+                  let theMetric = 0;
                   let theScore = 0;
                   for (let i of player.scores) {
                     if (i.metric === metric.name) {
-                      theMetric = i.metric;
+                      theMetric = i.id || 0;
                       theScore = i.score || 0;
                     }
                   }
@@ -125,7 +134,7 @@ const PerformanceTable = (props: Props) => {
                           <span
                             onClick={() =>
                               console.log({
-                                metricName: theMetric,
+                                metricID: theMetric,
                                 metric: metric.id,
                                 team_id: selectedPlayerTeam,
                                 playerid: player.id,

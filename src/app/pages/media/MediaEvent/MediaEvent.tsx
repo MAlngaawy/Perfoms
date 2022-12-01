@@ -4,6 +4,7 @@ import AppIcons from "~/@main/core/AppIcons";
 import { Carousel, useAnimationOffsetEffect } from "@mantine/carousel";
 import { useLocation, useParams } from "react-router-dom";
 import { Button } from "~/@main/components/Button";
+import Slider from "./Slider";
 import {
   Modal,
   FileButton,
@@ -98,55 +99,56 @@ const MediaEvent = () => {
   ));
 
   return (
-    <>
-      <div className="h-full flex justify-center items-center mt-32">
-        {eventFiles && eventFiles.results.length > 0 ? (
-          <Carousel
-            slideSize="70%"
-            // align="start"
-            slideGap="lg"
-            controlsOffset="xs"
-            controlSize={19}
-            loop
-            // dragFree
-            withIndicators
-            sx={{ maxWidth: 700 }}
-            mx="auto"
-            height={300}
-          >
-            {eventFiles?.results.map((file) => (
-              <Carousel.Slide key={file.id}>
-                <SlideImage link={file.file} />
-              </Carousel.Slide>
-            ))}
-          </Carousel>
-        ) : (
-          <Carousel
-            sx={{
-              maxWidth: 700,
-            }}
-            slideSize="70%"
-            // align="start"
-            slideGap="lg"
-            controlSize={30}
-            // loop
-            // dragFree
-            withIndicators
-            height={300}
-          >
-            <Carousel.Slide>
-              <SlideImage link="https://and1.com.au/wp-content/uploads/2021/08/kids-sports.jpeg" />
-            </Carousel.Slide>
-            <Carousel.Slide>
-              <SlideImage link="https://www.signupgenius.com/cms/images/sports/team-building-activities-soccer-article-600x400.jpg" />
-            </Carousel.Slide>
-            <Carousel.Slide>
-              <SlideImage link="https://studiousguy.com/wp-content/uploads/2022/03/Team-Building-Games-for-Kids.jpg" />
-            </Carousel.Slide>
-          </Carousel>
-        )}
-      </div>
-    </>
+    <Slider images={eventFiles?.results || []} />
+    // <>
+    //   <div className="h-full flex justify-center items-center mt-32">
+    //     {eventFiles && eventFiles.results.length > 0 ? (
+    //       <Carousel
+    //         slideSize="70%"
+    //         // align="start"
+    //         slideGap="lg"
+    //         controlsOffset="xs"
+    //         controlSize={19}
+    //         loop
+    //         // dragFree
+    //         withIndicators
+    //         sx={{ maxWidth: 700 }}
+    //         mx="auto"
+    //         height={300}
+    //       >
+    //         {eventFiles?.results.map((file) => (
+    //           <Carousel.Slide key={file.id}>
+    //             <SlideImage link={file.file} />
+    //           </Carousel.Slide>
+    //         ))}
+    //       </Carousel>
+    //     ) : (
+    //       <Carousel
+    //         sx={{
+    //           maxWidth: 700,
+    //         }}
+    //         slideSize="70%"
+    //         // align="start"
+    //         slideGap="lg"
+    //         controlSize={30}
+    //         // loop
+    //         // dragFree
+    //         withIndicators
+    //         height={300}
+    //       >
+    //         <Carousel.Slide>
+    //           <SlideImage link="https://and1.com.au/wp-content/uploads/2021/08/kids-sports.jpeg" />
+    //         </Carousel.Slide>
+    //         <Carousel.Slide>
+    //           <SlideImage link="https://www.signupgenius.com/cms/images/sports/team-building-activities-soccer-article-600x400.jpg" />
+    //         </Carousel.Slide>
+    //         <Carousel.Slide>
+    //           <SlideImage link="https://studiousguy.com/wp-content/uploads/2022/03/Team-Building-Games-for-Kids.jpg" />
+    //         </Carousel.Slide>
+    //       </Carousel>
+    //     )}
+    //   </div>
+    // </>
     // <div>
     //   <TeamFilter />
     // </div>
