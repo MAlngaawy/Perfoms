@@ -34,7 +34,7 @@ export type AddPlayerType = {
   weight: number;
   height: number;
   phone: string;
-  icon: string;
+  icon: any;
 };
 
 export type ParentClub = {

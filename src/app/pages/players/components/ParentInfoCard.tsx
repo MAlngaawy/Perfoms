@@ -13,7 +13,6 @@ interface ParentInfoCardProps {
 const ParentInfoCard = (parent: ParentInfoCardProps) => {
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location.state.id);
 
   return (
     <div className="p-4 m-1 md:m-3 md:h-76 bg-white rounded-3xl flex flex-col items-center md:items-start gap-1">
