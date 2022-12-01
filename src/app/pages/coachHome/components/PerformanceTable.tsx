@@ -1,9 +1,15 @@
 import React from "react";
 import { Table, Checkbox, Avatar, Box } from "@mantine/core";
 import cn from "classnames";
-import { useGetTeamPerformancesQuery } from "~/app/store/coach/coachApi";
+import {
+  useCoachUpdateAttendanceMutation,
+  useGetTeamPerformancesQuery,
+  useTeamPerformanceMetricsQuery,
+  useUpdatePlayerPKMMutation,
+} from "~/app/store/coach/coachApi";
 import { useSelector } from "react-redux";
 import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
+import { UpdatePlaerKpiMetric } from "~/app/store/types/coach-types";
 
 type Props = {};
 // Doesn't matters what the arrange
@@ -19,6 +25,14 @@ const PerformanceTable = (props: Props) => {
     { team_id: selectedPlayerTeam?.id },
     { skip: !selectedPlayerTeam }
   );
+
+  const { data: teamPerformanceMetric } = useTeamPerformanceMetricsQuery(
+    { team_id: selectedPlayerTeam?.id },
+    { skip: !selectedPlayerTeam }
+  );
+
+  const [UpdatePlaerKpiMetric, { isLoading: isUpdating }] =
+    useUpdatePlayerPKMMutation();
 
   console.log("teamPerformance", teamPerformance);
 
@@ -39,32 +53,38 @@ const PerformanceTable = (props: Props) => {
           </tr>
         </thead>
         <tbody className="overflow-scroll">
-          {metrics.map((metric) => {
+          {teamPerformanceMetric?.player_metric.map((metric) => {
             return (
-              <tr className="" key={metric.id}>
+              <tr className="" key={metric.metric}>
                 <td className="text-sm w-48 sticky left-0 bg-white z-10 font-medium text-perfGray1">
-                  {metric.name}
+                  {metric.metric}
                 </td>
                 {teamPerformance?.results.map((player) => {
                   let theMetric = 0;
                   let theScore = 0;
                   for (let i of player.player_metric) {
-                    if (i.metric === metric.name) {
+                    if (i.metric === metric.metric) {
                       theMetric = i.id || 0;
                       theScore = i.last_score || 0;
                     }
                   }
 
                   return (
-                    <td key={metric.id}>
+                    <td key={metric.metric}>
                       <div className="flex gap-2 justify-center items-center">
                         {[1, 2, 3, 4, 5].map((number) => (
                           <span
-                            onClick={() =>
+                            onClick={() => {
+                              UpdatePlaerKpiMetric({
+                                id: theMetric,
+                                score: number,
+                                team_id: selectedPlayerTeam.id,
+                                max_score: 5,
+                              });
                               console.log({
-                                player: theMetric,
-                              })
-                            }
+                                metricID: theMetric,
+                              });
+                            }}
                             className={cn(
                               "px-3 p-1   rounded-md cursor-pointer text-perfGray1 font-bold",
                               {

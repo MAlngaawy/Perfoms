@@ -3,11 +3,10 @@ import { Table, Checkbox, Avatar, Skeleton } from "@mantine/core";
 import {
   useCoachUpdateAttendanceMutation,
   useGetTeamAttendanceQuery,
+  useTeamAttendanceDaysQuery,
 } from "~/app/store/coach/coachApi";
 import { useSelector } from "react-redux";
 import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
-
-const teamDates = ["2022-11-30", "2022-12-01", "2022-12-02", "2022-11-29"];
 
 type Props = {};
 
@@ -20,6 +19,11 @@ const AttendanceTable = (props: Props) => {
   );
 
   console.log("teamAttendance", teamAttendance);
+
+  const { data: teamAttendanceDays } = useTeamAttendanceDaysQuery(
+    { team_id: selectedPlayerTeam?.id },
+    { skip: !selectedPlayerTeam }
+  );
 
   const [updateAttend, { isLoading: isUpdating }] =
     useCoachUpdateAttendanceMutation();
@@ -46,8 +50,8 @@ const AttendanceTable = (props: Props) => {
               </tr>
             </thead>
             <tbody className="overflow-scroll">
-              {teamDates.map((item) => {
-                const thisDate = item;
+              {teamAttendanceDays?.player_attendance.map((item) => {
+                const thisDate = item.day;
                 return (
                   <tr className="">
                     <td className="text-xs font-medium text-center px-0 sticky left-0 bg-white z-10 text-perfGray1">
@@ -60,7 +64,7 @@ const AttendanceTable = (props: Props) => {
                       let theStatus = "";
                       let theID = 0;
                       for (let i of player.player_attendance) {
-                        if (i.day === item) {
+                        if (i.day === thisDate) {
                           theDate = i.day;
                           theStatus = i.status;
                           theID = i.id;
@@ -70,24 +74,24 @@ const AttendanceTable = (props: Props) => {
                         <td>
                           <Checkbox
                             disabled={
-                              theDate === item && theStatus === "UPCOMING"
+                              theDate === thisDate && theStatus === "UPCOMING"
                             }
                             checked={theStatus === "ATTENDED"}
                             onChange={(e) => {
-                              // updateAttend({
-                              //   id: attend.id,
-                              //   status:
-                              //     attend.status !== "ATTENDED"
-                              //       ? "ATTENDED"
-                              //       : "ABSENT",
-                              // });
+                              updateAttend({
+                                id: theID,
+                                status:
+                                  theStatus !== "ATTENDED"
+                                    ? "ATTENDED"
+                                    : "ABSENT",
+                              });
                               console.log({
                                 attended: `becomes ${
                                   e.currentTarget.checked
                                     ? "ATTENDED"
                                     : "ABSENT"
                                 }`,
-                                plaerId: theID,
+                                statusId: theID,
                               });
                             }}
                           />

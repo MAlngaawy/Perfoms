@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import AppRadioGroub from "~/@main/components/AppRadioGroub";
-import { useKpisQuery } from "~/app/store/Supervisor/supervisorApi";
 import Sports from "../../../@main/components/ManagerComponents/Sports";
 import Teams from "../../../@main/components/ManagerComponents/Teams";
 import Users from "../../../@main/components/ManagerComponents/Users";
@@ -9,10 +8,6 @@ type Props = {};
 
 const AdminPage = (props: Props) => {
   const [checked, setChecked] = useState<"Teams" | "Sports" | "Users">("Teams");
-
-  const data = useKpisQuery({ page: 1 });
-
-  console.log(data);
 
   return (
     <div>
@@ -28,26 +23,7 @@ const AdminPage = (props: Props) => {
       </div>
 
       <div className={checked !== "Teams" ? "hidden" : "block"}>
-        <Teams
-          data={[
-            {
-              id: 1,
-              icon: "https://freepngimg.com/thumb/football/1-football-ball-png-image-thumb.png",
-              name: "14Th Team",
-              sport: "Taekwondo",
-              age: { from: 12, to: 15 },
-              players: 30,
-            },
-            {
-              id: 2,
-              icon: "https://freepngimg.com/thumb/football/1-football-ball-png-image-thumb.png",
-              name: "14Th Team",
-              sport: "Taekwondo",
-              age: { from: 15, to: 18 },
-              players: 15,
-            },
-          ]}
-        />
+        <Teams />
       </div>
       <div className={checked !== "Sports" ? "hidden" : "block"}>
         <Sports />

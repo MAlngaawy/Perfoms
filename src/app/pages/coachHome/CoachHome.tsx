@@ -7,6 +7,7 @@ import { Button } from "@mantine/core";
 import { Link } from "react-router-dom";
 import TeamFilter from "~/@main/components/TeamFilter";
 import classNames from "classnames";
+import SwitchButton from "~/@main/components/SwitchButton";
 
 type Props = {};
 
@@ -23,45 +24,22 @@ const CoachHome = (props: Props) => {
             checked={checked}
             setChecked={setChecked}
           /> */}
-          <button
-            className={classNames(
-              " text-xs sm:text-sm p-1 md:px-2 border border-perfBlue rounded-md ",
-              {
-                "text-white bg-perfBlue ": checked === "Attendance",
-                "text-perfBlue hover:text-white hover:bg-perfBlue":
-                  checked !== "Attendance",
-              }
-            )}
-            onClick={() => setChecked("Attendance")}
-          >
-            Attendances
-          </button>
-          <button
-            className={classNames(
-              " text-xs sm:text-sm p-1 md:px-2 border border-perfBlue rounded-md ",
-              {
-                "text-white bg-perfBlue ": checked === "Performance",
-                "text-perfBlue hover:text-white hover:bg-perfBlue":
-                  checked !== "Performance",
-              }
-            )}
-            onClick={() => setChecked("Performance")}
-          >
-            Performance
-          </button>
-          <button
-            className={classNames(
-              " text-xs sm:text-sm p-1 md:px-2 border border-perfBlue rounded-md ",
-              {
-                "text-white bg-perfBlue ": checked === "Team info",
-                "text-perfBlue hover:text-white hover:bg-perfBlue":
-                  checked !== "Team info",
-              }
-            )}
-            onClick={() => setChecked("Team info")}
-          >
-            Team info
-          </button>
+          <SwitchButton
+            checked={checked}
+            setChecked={setChecked}
+            type={"Attendance"}
+          />
+          <SwitchButton
+            checked={checked}
+            setChecked={setChecked}
+            type={"Performance"}
+          />
+          <SwitchButton
+            checked={checked}
+            setChecked={setChecked}
+            type={"Team info"}
+          />
+
           <button className="bg-perfBlue text-white text-xs py-2 px-10 rounded-3xl">
             <Link to="/certificate">Certificate</Link>
           </button>

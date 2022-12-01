@@ -1,22 +1,20 @@
 import TeamCard from "./SubComponents/TeamCard";
 import AddTeamCardForm from "./SubComponents/AddTeamCardForm";
+import {
+  useSuperkpisQuery,
+  useSuperTeamsQuery,
+} from "~/app/store/Supervisor/supervisorApi";
 
-type Props = {
-  data: {
-    id: number;
-    icon: string;
-    name: string;
-    sport: string;
-    age: { from: number; to: number };
-    players: number;
-  }[];
-};
+type Props = {};
 
-const Teams = ({ data }: Props) => {
+const Teams = (props: Props) => {
+  const { data: teams } = useSuperTeamsQuery({});
+  console.log(teams);
+
   return (
     <div className="admin-teams flex flex-col xs:flex-row flex-wrap items-stretch gap-6 p-2 sm:p-6">
-      {data.map((team, index) => {
-        return <TeamCard key={index} team={team} />;
+      {teams?.results.map((team) => {
+        return <TeamCard key={team.id} team={team} />;
       })}
       <AddTeamCardForm />
     </div>

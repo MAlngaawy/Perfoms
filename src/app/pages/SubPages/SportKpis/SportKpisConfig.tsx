@@ -21,7 +21,7 @@ const SportKpisPageConfig: PagesRouteConfig = {
   auth: authRoles.User,
   routes: [
     {
-      path: "admin/sports/:id",
+      path: "supervisor/sports/:id",
       element: <SportKpis />,
     },
   ],

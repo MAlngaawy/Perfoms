@@ -4,6 +4,8 @@ import {
   CoachTeamPerformance,
   SendBulkNotifications,
   Team,
+  TeamAttendanceDays,
+  TeamPerformanceMetrics,
   UpdatePlayerPKM,
 } from "./../types/coach-types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
@@ -51,8 +53,8 @@ export const coachApi = createApi({
       }),
     }),
     updatePlayerPKM: mutation<UpdatePlayerPKM, UpdatePlayerPKM>({
-      query: ({ id, ...body }) => ({
-        url: `update-player-pkm/${id}/`,
+      query: ({ id, team_id, ...body }) => ({
+        url: `update-player-pkm/${id}/${team_id}/`,
         method: "PATCH",
         body,
       }),
@@ -101,6 +103,26 @@ export const coachApi = createApi({
         params,
       }),
     }),
+
+    teamAttendanceDays: query<
+      TeamAttendanceDays,
+      { team_id: number; page?: number }
+    >({
+      query: ({ team_id, ...params }) => ({
+        url: `team-attendance-days/${team_id}`,
+        params,
+      }),
+    }),
+
+    teamPerformanceMetrics: query<
+      TeamPerformanceMetrics,
+      { team_id: number; page?: number }
+    >({
+      query: ({ team_id, ...params }) => ({
+        url: `team-performance-metrics/${team_id}`,
+        params,
+      }),
+    }),
   }),
 });
 
@@ -118,4 +140,6 @@ export const {
   useCoachUpdateAttendanceMutation,
   useGetTeamPerformancesQuery,
   useGetPlayerInfoQuery,
+  useTeamAttendanceDaysQuery,
+  useTeamPerformanceMetricsQuery,
 } = coachApi;

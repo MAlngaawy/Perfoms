@@ -21,7 +21,7 @@ const KpiMetricsPageConfig: PagesRouteConfig = {
   auth: authRoles.User,
   routes: [
     {
-      path: "admin/sports/:id/kpis/:id",
+      path: "supervisor/sports/:id/kpis/:id",
       element: <KpiMetrics />,
     },
   ],

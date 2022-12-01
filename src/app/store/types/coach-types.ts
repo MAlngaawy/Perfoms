@@ -80,6 +80,14 @@ export type GeneratePdfDocs = {
 //   sport: number;
 // };
 
+export type TeamAttendanceDays = {
+  player_attendance: { day: string }[];
+};
+
+export type TeamPerformanceMetrics = {
+  player_metric: { metric: string }[];
+};
+
 export type Team = {
   id: number;
   coaches: CoachForParent[];
@@ -108,7 +116,9 @@ export type SendBulkNotifications = {
 
 export type UpdatePlayerPKM = {
   id: number;
+  team_id: number;
   score: number;
+  max_score: number;
 };
 
 export type PlayerParent = {
