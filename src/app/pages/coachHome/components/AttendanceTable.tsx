@@ -69,7 +69,10 @@ const AttendanceTable = (props: Props) => {
           <tr className="">
             <th className="bg-white sticky  top-0 z-20 ">Day</th>
             {players.map((player) => (
-              <th className="bg-white sticky top-0 z-20 text-center ">
+              <th
+                key={player.id}
+                className="bg-white sticky top-0 z-20 text-center "
+              >
                 <div className="flex  flex-col justify-center items-center">
                   <Avatar radius={"xl"} size="md" src={player.avatar} />
                   <span>{player.name}</span>
@@ -82,7 +85,7 @@ const AttendanceTable = (props: Props) => {
           {new Array(30).fill(5).map((item, idx) => {
             const thisDate = new Date(`${item}/${idx + 1}/2022`);
             return (
-              <tr className="">
+              <tr className="" key={idx}>
                 <td className="text-sm w-32 sticky left-0 bg-white z-10 text-perfGray2">
                   {thisDate.getDate()}/ {thisDate.getMonth()} /
                   {thisDate.getFullYear()}
@@ -90,20 +93,18 @@ const AttendanceTable = (props: Props) => {
                 {players.map((player, index) => {
                   console.log("1231321231");
                   return (
-                    <>
-                      <td>
-                        <Checkbox
-                          onChange={(e) => {
-                            console.log({
-                              attended: e.currentTarget.checked,
-                              plaerId: player.id,
-                              plaerName: player.name,
-                              date: new Date(`${item}/${idx}/2022`),
-                            });
-                          }}
-                        />
-                      </td>
-                    </>
+                    <td key={player.id}>
+                      <Checkbox
+                        onChange={(e) => {
+                          console.log({
+                            attended: e.currentTarget.checked,
+                            plaerId: player.id,
+                            plaerName: player.name,
+                            date: new Date(`${item}/${idx}/2022`),
+                          });
+                        }}
+                      />
+                    </td>
                   );
                 })}
               </tr>

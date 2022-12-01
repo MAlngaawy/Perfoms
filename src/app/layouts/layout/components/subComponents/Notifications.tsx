@@ -4,11 +4,16 @@ import Notification from "~/@main/components/Notification";
 import AppIcons from "~/@main/core/AppIcons";
 import { Link } from "react-router-dom";
 import useWindowSize from "~/@main/hooks/useWindowSize";
+import { useNotificationsQuery } from "~/app/store/user/userApi";
 
 type Props = {};
 
 const Notifications = (props: Props) => {
   const windowSize = useWindowSize();
+
+  const { data: notifications } = useNotificationsQuery({});
+
+  console.log("notifications", notifications);
 
   const haveNotificaton = true;
   return (

@@ -1,10 +1,12 @@
 import React from "react";
 import { Table } from "@mantine/core";
 import AppIcons from "~/@main/core/AppIcons";
+import { Player } from "~/app/store/types/parent-types";
+import { useSelector } from "react-redux";
+import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
+import { usePlayerCalenderQuery } from "~/app/store/parent/parentApi";
 
-type Props = {
-  data: { day: string; attendance: "ATTENDED" | "ABSENT" | "UPCOMING" }[];
-};
+type Props = {};
 
 const myDate = (theDate: string) => {
   var a = new Date(theDate);
@@ -20,22 +22,28 @@ const myDate = (theDate: string) => {
   return r;
 };
 
-const AttendanceTable = ({ data }: Props) => {
-  const rows = data.map((day) => (
-    <tr key={day.day}>
-      <td className="border-0 text-sm font-medium ">
+const AttendanceTable = (props: Props) => {
+  const selectedPlayer: Player = useSelector(selectedPlayerFn);
+  const { data: playerAttendance } = usePlayerCalenderQuery(
+    { id: selectedPlayer?.id },
+    { skip: !selectedPlayer?.id }
+  );
+
+  const rows = playerAttendance?.results.map((day) => (
+    <tr key={day.id}>
+      <td className="border-0 text-xs font-medium text-perfGray2">
         {myDate(day.day)}, {day.day}
       </td>
       <td className="border-0">
-        {day.attendance === "ABSENT" ? (
+        {day.status === "ABSENT" ? (
           <AppIcons
             className="w-5 h-5 text-perfSecondary"
             icon="XMarkIcon:outline"
           />
-        ) : day.attendance === "ATTENDED" ? (
+        ) : day.status === "ATTENDED" ? (
           <AppIcons className="w-5 h-5 text-green" icon="CheckIcon:outline" />
         ) : (
-          "__"
+          "_"
         )}
       </td>
     </tr>

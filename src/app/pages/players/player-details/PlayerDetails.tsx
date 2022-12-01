@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import PlayerInfoCard from "../components/PlayerInfoCard";
 import PlayerNav from "../components/PlayerNav";
-import { playerData } from "~/app/pages/home/HomePage";
 import ParentInfoCard from "../components/ParentInfoCard";
 import { Grid } from "@mantine/core";
 import AttendanceCard from "../components/AttendanceCard";
@@ -11,6 +10,7 @@ import Notes from "../components/Notes";
 import Performances from "../components/Performance";
 import TotalAttendance from "../../reports/components/TotalAttendance";
 import { useLocation } from "react-router-dom";
+import { PlayerData } from "~/app/store/types/user-types";
 
 // dummy data
 const playerSummary = [
@@ -216,6 +216,43 @@ const performancesDate = [
   },
 ];
 
+const playerData: PlayerData = {
+  name: "Ahmed Saleh Mostafa",
+  dob: "15/12/2006",
+  weight: 50,
+  height: 150,
+  icon_url:
+    "https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?w=2000",
+  sport: {
+    name: "kickboxing",
+  },
+  team: {
+    name: "14Th team",
+    description: "12-14 years",
+    coaches: [
+      {
+        first_name: "Ahmed",
+        last_name: "Saleh",
+        avatar:
+          "https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?w=2000",
+      },
+      {
+        first_name: "Ahmed",
+        last_name: "Saleh",
+        avatar:
+          "https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?w=2000",
+      },
+      {
+        first_name: "Ahmed",
+        last_name: "Saleh",
+        avatar:
+          "https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?w=2000",
+      },
+    ],
+  },
+  gender: "M",
+};
+
 const parent = {
   icon_url:
     "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
@@ -260,6 +297,7 @@ const PlayerDetails = () => {
               <Grid>
                 <Grid.Col span={12}>
                   <TotalAttendance
+                    //@ts-ignore
                     data={[
                       { day: "2/10/2017", attendance: "ATTENDED" },
                       { day: "2/10/2017", attendance: "ATTENDED" },

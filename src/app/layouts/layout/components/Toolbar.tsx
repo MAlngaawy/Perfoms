@@ -1,15 +1,16 @@
-import { Avatar, Indicator, Divider, Grid, Menu, Text } from "@mantine/core";
-import { userApi } from "~/app/store/user/userApi";
+import { Avatar, Divider, Menu } from "@mantine/core";
 import Cookies from "js-cookie";
-import { useDispatch } from "react-redux";
 import AppIcons from "~/@main/core/AppIcons";
 import { Link, useNavigate } from "react-router-dom";
-import Notification from "~/@main/components/Notification";
-import { eventInstance } from "~/@main/utils/AppUtils";
 import Notifications from "./subComponents/Notifications";
 import SelectUser from "./subComponents/SelectUser";
 import useWindowSize from "~/@main/hooks/useWindowSize";
 import OneMessageBox from "~/@main/components/OneMessageBox";
+import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
+import { useSelector } from "react-redux";
+import { Player } from "~/app/store/types/parent-types";
+import { usePlayerClubQuery } from "~/app/store/parent/parentApi";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {
   opened: boolean;
@@ -17,11 +18,15 @@ type Props = {
 };
 
 const Toolbar = ({ setOpened }: Props) => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  let href = window.location.href;
-  let routeName = href.slice(href.lastIndexOf("/") + 1, href.length);
   const windowSize = useWindowSize();
+
+  const selectedPlayer: Player = useSelector(selectedPlayerFn);
+  const { data: playerClub } = usePlayerClubQuery(
+    { id: selectedPlayer?.id },
+    { skip: !selectedPlayer?.id }
+  );
+
+  const { data: user } = useUserQuery(null);
 
   return (
     <nav className="w-full flex justify-between items-center shadow-md p-2 lg:p-4 bg-perfBlue lg:bg-white overflow-scroll">
@@ -35,10 +40,13 @@ const Toolbar = ({ setOpened }: Props) => {
         <div className="clubLogo gap-2 hidden lg:flex justify-center items-center">
           <img
             className="w-8"
-            src="https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/1200px-Real_Madrid_CF.svg.png"
+            src={
+              playerClub?.icon ||
+              "https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/1200px-Real_Madrid_CF.svg.png"
+            }
             alt="club logo"
           />
-          <span>Royal Club</span>
+          <span>{playerClub?.name || "Alam alryada"}</span>
         </div>
         <SelectUser />
       </div>
@@ -98,7 +106,7 @@ const Toolbar = ({ setOpened }: Props) => {
           <Menu.Target>
             <Avatar
               size={windowSize.width && windowSize.width < 400 ? "sm" : "md"}
-              src="https://s.studiobinder.com/wp-content/uploads/2021/01/Best-black-and-white-portraits-by-Platon.jpg?resolution=2560,1"
+              src={user?.avatar}
               alt="userImage"
               className="cursor-pointer"
               radius="xl"

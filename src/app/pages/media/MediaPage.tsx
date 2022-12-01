@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { useTeamEventsQuery } from "~/app/store/parent/parentApi";
+import {
+  useTeamCoachesQuery,
+  useTeamEventsQuery,
+} from "~/app/store/parent/parentApi";
 import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 import MediaCard from "./molecules/MediaCard";
+import TeamFilter from "~/@main/components/TeamFilter";
 
 const dummyData = [
   {
@@ -76,6 +80,12 @@ const MediaPage = () => {
     { teamId: selectedPlayerTeam?.id },
     { skip: !selectedPlayerTeam }
   );
+
+  const { data: playerCoaches, isLoading } = useTeamCoachesQuery(
+    { teamId: selectedPlayerTeam?.id },
+    { skip: !selectedPlayerTeam }
+  );
+
   const [opened, setOpened] = useState(false);
   const [events, setEvents] = useState(dummyData);
 
@@ -95,7 +105,10 @@ const MediaPage = () => {
 
   return (
     <div>
-      <div className="flex flex-col xs:flex-row justify-center xs:items-center flex-wrap gap-2 m-1">
+      <div className="flex justify-end m-2">
+        <TeamFilter />
+      </div>
+      <div className="flex flex-col xs:flex-row xs:items-center flex-wrap gap-2 m-4">
         {teamEvents &&
           teamEvents.results.map((data) => {
             return <MediaCard key={data.id} event={data} />;

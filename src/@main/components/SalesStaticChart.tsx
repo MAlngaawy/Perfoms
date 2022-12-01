@@ -1,3 +1,4 @@
+import { Image } from "@mantine/core";
 import { useSelector } from "react-redux";
 import {
   Bar,
@@ -10,118 +11,135 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
-
-const fakeKpiData = [
-  {
-    id: 0,
-    name: "Stances",
-    progress: 50,
-    attend: 70,
-  },
-  {
-    id: 1,
-    name: "Psycholo",
-    progress: 75,
-    attend: 45,
-  },
-  {
-    id: 2,
-    name: "Pushing",
-    progress: 95,
-    attend: 100,
-  },
-  {
-    id: 3,
-    name: "Attackin",
-    progress: 30,
-    attend: 50,
-  },
-  {
-    id: 4,
-    name: "Courage",
-    progress: 40,
-    attend: 35,
-  },
-  {
-    id: 5,
-    name: "Counter",
-    progress: 66,
-    attend: 50,
-  },
-  {
-    id: 6,
-    name: "High Tec",
-    progress: 50,
-    attend: 40,
-  },
-  {
-    id: 7,
-    name: "Fitness",
-    progress: 30,
-    attend: 60,
-  },
-];
+import { usePlayerKpisMetricsQuery } from "~/app/store/parent/parentApi";
+import {
+  selectedPlayerFn,
+  selectedPlayerTeamFn,
+  timeFilterFn,
+} from "~/app/store/parent/parentSlice";
+import { Player } from "~/app/store/types/parent-types";
+import { PerformanceCard } from "./PerformanceCard";
 
 const SaleStaticChart = () => {
-  const player = useSelector(selectedPlayerFn);
-  const formattedKpis = fakeKpiData;
-  console.log(player);
+  const selectedPlayer: Player = useSelector(selectedPlayerFn);
+  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
+  const timeFilter = useSelector(timeFilterFn);
+
+  const { data: playerKpis } = usePlayerKpisMetricsQuery(
+    {
+      team_id: selectedPlayerTeam?.id,
+      player_id: selectedPlayer?.id,
+      from_date: timeFilter?.from_date,
+      to_date: timeFilter?.to_date,
+    },
+
+    {
+      skip: !selectedPlayerTeam?.id || !selectedPlayer?.id,
+      // !timeFilter?.from_date
+      // !timeFilter?.to_date,
+    }
+  );
+  console.log("playerKpis", playerKpis);
 
   return (
-    <div className="py-5">
-      <ResponsiveContainer width="100%" height={280}>
-        <BarChart
-          data={player?.kpis?.data.map((i) => ({
-            name: i.kpi__name,
-            id: i.id,
-            progress: i.kpi__max_score,
-            attend: 4,
-          }))}
-          margin={{
-            top: 20,
-            right: 0,
-            left: 0,
-            bottom: 0,
-          }}
+    <div>
+      <div className="xs:mx-4 py-4 flex justify-between gap-4 overflow-scroll performancesCards">
+        <PerformanceCard
+          name="Strengths"
+          number={playerKpis ? playerKpis.strength_count : 0}
+          bgColor="rgba(0, 224, 150, 0.1)"
+          textColor="#27AE60"
         >
-          <CartesianGrid
-            strokeDasharray="0"
-            horizontal={true}
-            vertical={false}
+          <Image
+            width={30}
+            height={30}
+            src="assets/images/gym.png"
+            alt="icon"
           />
-          <XAxis
-            dataKey="name"
-            style={{
-              fontSize: 12,
-            }}
+        </PerformanceCard>
+
+        <PerformanceCard
+          name="Weaknesses"
+          number={playerKpis ? playerKpis.weakness_count : 0}
+          bgColor="rgba(235, 87, 87, 0.1)"
+          textColor="#EB5757"
+        >
+          <Image
+            width={30}
+            height={30}
+            src="assets/images/weakness.png"
+            alt="icon"
           />
-          <YAxis dataKey="progress" />
-          <Tooltip labelStyle={{ color: "black" }} />
-          <Legend />
-          <Bar
-            dataKey="progress"
-            fill="#333"
-            barSize={12}
-            radius={3}
-            style={{
-              cursor: "pointer",
-            }}
+        </PerformanceCard>
+
+        <PerformanceCard
+          name="Actions"
+          number={playerKpis ? playerKpis.action_count : 0}
+          bgColor="rgba(47, 128, 237, 0.1)"
+          textColor="#2F80ED"
+        >
+          <Image
+            width={30}
+            height={30}
+            src="assets/images/tasks.png"
+            alt="icon"
+          />
+        </PerformanceCard>
+
+        <PerformanceCard
+          name="Recommendations"
+          number={playerKpis ? playerKpis.recommendation_count : 0}
+          bgColor="rgba(0, 161, 255, 0.1)"
+          textColor="#00A1FF"
+        >
+          <Image
+            width={30}
+            height={30}
+            src="assets/images/discussion.png"
+            alt="icon"
+          />
+        </PerformanceCard>
+      </div>
+
+      <div className="py-5 h-80 overflow-scroll performancesCards">
+        <ResponsiveContainer width={"100%"} height="100%" className="min-w-700">
+          <BarChart
+            data={playerKpis?.player_kpi.map((i) => ({
+              name: i.kpi,
+              id: i.id,
+              progress: i.score_avg,
+              attend: 4,
+            }))}
           >
-            {player?.kpis?.data.map((metric, index) => (
-              <Cell
-                key={index}
-                fill={
-                  metric.kpi__max_score > 10
-                    ? "#00E096"
-                    : metric.kpi__max_score < 10
-                    ? "#EB5757"
-                    : "#F2C94C"
-                }
-              />
-            ))}
-          </Bar>
-          <Bar
+            <CartesianGrid
+              strokeDasharray="0"
+              horizontal={true}
+              vertical={false}
+            />
+            <XAxis
+              dataKey="name"
+              style={{
+                fontSize: 12,
+              }}
+            />
+            <YAxis dataKey="progress" />
+            <Tooltip labelStyle={{ color: "black" }} />
+            {/* <Legend /> */}
+            <Bar dataKey="progress" fill="#333" barSize={10} radius={2}>
+              {playerKpis?.player_kpi.map((metric, index) => (
+                <Cell
+                  key={index}
+                  fill={
+                    metric.score_avg >= 60
+                      ? "#00E096" // green more than 60
+                      : metric.score_avg <= 40
+                      ? "#EB5757" // red less than 40
+                      : "#F2C94C" // yallow
+                  }
+                />
+              ))}
+            </Bar>
+            {/* <Bar
             dataKey="attend"
             fill="#BDBDBD"
             barSize={12}
@@ -130,12 +148,13 @@ const SaleStaticChart = () => {
               cursor: "pointer",
             }}
           >
-            {player?.kpis?.data.map((metric) => {
+            {formattedKpis.map((metric) => {
               return <Cell key={metric.id} fill="#BDBDBD" />;
             })}
-          </Bar>
-        </BarChart>
-      </ResponsiveContainer>
+          </Bar> */}
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 };
