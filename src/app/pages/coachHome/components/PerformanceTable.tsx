@@ -6,85 +6,11 @@ import { useSelector } from "react-redux";
 import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 
 type Props = {};
-
-const players = [
-  {
-    name: "mohammed Ali",
-    avatar:
-      "https://images.squarespace-cdn.com/content/v1/5c2efbc95417fc1b3d3040ad/1623735675824-LXS5FG198B0MLQCKQC0P/Modern+School+Photos.jpg",
-    id: 1,
-    scores: [
-      {
-        id: 9,
-        score: 1,
-        metric: "ATTACK",
-      },
-      {
-        id: 8,
-        score: 3,
-        metric: "PUSH",
-      },
-      {
-        id: 7,
-        score: 5,
-        metric: "BOXING",
-      },
-    ],
-  },
-  {
-    name: "Ahmed Salah",
-    avatar:
-      "https://images.squarespace-cdn.com/content/v1/5c2efbc95417fc1b3d3040ad/1623728514460-NKFH3X6TIK8JXUESNRQD/Modern+School+Portraits+Perth.jpg",
-    id: 2,
-    scores: [
-      {
-        id: 6,
-        score: 3,
-        metric: "BOXING",
-      },
-      {
-        id: 5,
-        score: 4,
-        metric: "PUSH",
-      },
-      {
-        id: 4,
-        score: 2,
-        metric: "ATTACK",
-      },
-    ],
-  },
-
-  {
-    name: "Ali JR",
-    avatar:
-      "https://images.squarespace-cdn.com/content/v1/5c2efbc95417fc1b3d3040ad/1623728514460-NKFH3X6TIK8JXUESNRQD/Modern+School+Portraits+Perth.jpg",
-    id: 2,
-    scores: [
-      {
-        id: 1,
-        score: 2,
-        metric: "PUSH",
-      },
-      {
-        id: 2,
-        score: 1,
-        metric: "BOXING",
-      },
-      {
-        id: 3,
-        score: 2,
-        metric: "ATTACK",
-      },
-    ],
-  },
-];
-
 // Doesn't matters what the arrange
 const metrics = [
-  { name: "ATTACK", id: 2 },
-  { name: "BOXING", id: 1 },
-  { name: "PUSH", id: 3 },
+  { name: "Right Leg", id: 2 },
+  { name: "Left Leg", id: 1 },
+  { name: "Pushing Technique", id: 3 },
 ];
 
 const PerformanceTable = (props: Props) => {
@@ -94,16 +20,18 @@ const PerformanceTable = (props: Props) => {
     { skip: !selectedPlayerTeam }
   );
 
+  console.log("teamPerformance", teamPerformance);
+
   return (
     <div className="overflow-scroll max-h-screen relative m-6 bg-white rounded-lg text-center">
       <Table highlightOnHover horizontalSpacing="xl">
         <thead>
           <tr className="">
             <th className="bg-white sticky  top-0 z-20 ">Day</th>
-            {players.map((player) => (
+            {teamPerformance?.results.map((player) => (
               <th className="bg-white sticky top-0 z-20 text-center ">
                 <div className="flex  flex-col justify-center items-center">
-                  <Avatar radius={"xl"} size="md" src={player.avatar} />
+                  <Avatar radius={"xl"} size="md" src={player.icon} />
                   <span>{player.name}</span>
                 </div>
               </th>
@@ -117,13 +45,13 @@ const PerformanceTable = (props: Props) => {
                 <td className="text-sm w-48 sticky left-0 bg-white z-10 font-medium text-perfGray1">
                   {metric.name}
                 </td>
-                {players.map((player) => {
+                {teamPerformance?.results.map((player) => {
                   let theMetric = 0;
                   let theScore = 0;
-                  for (let i of player.scores) {
+                  for (let i of player.player_metric) {
                     if (i.metric === metric.name) {
                       theMetric = i.id || 0;
-                      theScore = i.score || 0;
+                      theScore = i.last_score || 0;
                     }
                   }
 
@@ -134,13 +62,7 @@ const PerformanceTable = (props: Props) => {
                           <span
                             onClick={() =>
                               console.log({
-                                metricID: theMetric,
-                                metric: metric.id,
-                                team_id: selectedPlayerTeam,
-                                playerid: player.id,
-                                playerName: player.name,
-                                new_score: number,
-                                max_score: 5,
+                                player: theMetric,
                               })
                             }
                             className={cn(

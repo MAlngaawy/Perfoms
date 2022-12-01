@@ -18,26 +18,14 @@ export type CoachForParent = {
 };
 
 export type TeamKpiMetric = {
+  icon: string;
   id: number;
-  metric: {
+  name: string;
+  player_metric: {
     id: number;
-    name: string;
-  };
-  player_kpi: {
-    id: number;
-    kpi: {
-      id: number;
-      icon: string;
-      name: string;
-    };
-    player: {
-      id: number;
-      icon: string;
-      name: string;
-    };
-  };
-  score: number;
-  max_score: number;
+    last_score: number;
+    metric: string;
+  }[];
 };
 
 export type Coach = {
@@ -148,14 +136,14 @@ export type PlayerAttendance = BaseGetAllType & {
 };
 
 export type CoachAttendance = {
+  icon: string;
   id: number;
-  day: string;
-  status: "ATTENDED" | "ABSENT" | "UPCOMING";
-  player: {
+  name: string;
+  player_attendance: {
     id: number;
-    name: string;
-    icon: string;
-  };
+    day: string;
+    status: "ATTENDED" | "ABSENT" | "UPCOMING";
+  }[];
 };
 
 export type CoachTeamAttendance = BaseGetAllType & {

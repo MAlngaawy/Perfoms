@@ -3,95 +3,23 @@ import { Table, Checkbox, Avatar, Skeleton } from "@mantine/core";
 import {
   useCoachUpdateAttendanceMutation,
   useGetTeamAttendanceQuery,
-  useGetTeamPlayersQuery,
 } from "~/app/store/coach/coachApi";
-// import memo from "../../../layouts/layout/components/Navigation";
 import { useSelector } from "react-redux";
 import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
-import TeamFilter from "~/@main/components/TeamFilter";
-import { useUpdateAttendanceMutation } from "~/app/store/attendance/attendanceApi";
-import { truncate } from "fs";
+
+const teamDates = ["2022-11-30", "2022-12-01", "2022-12-02", "2022-11-29"];
 
 type Props = {};
 
-const players = [
-  {
-    name: "mohammed Ali",
-    avatar:
-      "https://images.squarespace-cdn.com/content/v1/5c2efbc95417fc1b3d3040ad/1623735675824-LXS5FG198B0MLQCKQC0P/Modern+School+Photos.jpg",
-    id: 1,
-    attendances: [
-      {
-        status: "ATTENDED",
-        date: "11/11/2022",
-      },
-      {
-        status: "UPCOMING",
-        date: "12/12/2022",
-      },
-      {
-        status: "ABSENT",
-        date: "10/10/2022",
-      },
-    ],
-  },
-  {
-    name: "Ahmed Salah",
-    avatar:
-      "https://images.squarespace-cdn.com/content/v1/5c2efbc95417fc1b3d3040ad/1623728514460-NKFH3X6TIK8JXUESNRQD/Modern+School+Portraits+Perth.jpg",
-    id: 2,
-    attendances: [
-      {
-        status: "UPCOMING",
-        date: "12/12/2022",
-      },
-      {
-        status: "ATTENDED",
-        date: "10/10/2022",
-      },
-      {
-        status: "ABSENT",
-        date: "11/11/2022",
-      },
-    ],
-  },
-  {
-    name: "Ali JR",
-    avatar:
-      "https://images.squarespace-cdn.com/content/v1/5c2efbc95417fc1b3d3040ad/1623728514460-NKFH3X6TIK8JXUESNRQD/Modern+School+Portraits+Perth.jpg",
-    id: 2,
-    attendances: [
-      {
-        status: "UPCOMING",
-        date: "12/12/2022",
-      },
-      {
-        status: "ABSENT",
-        date: "11/11/2022",
-      },
-
-      {
-        status: "ABSENT",
-        date: "10/10/2022",
-      },
-    ],
-  },
-];
-
-const teamDates = ["10/10/2022", "11/11/2022", "12/12/2022"];
-
 const AttendanceTable = (props: Props) => {
-  // const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
+  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
 
-  // const { data: coahcTeamPlayers } = useGetTeamPlayersQuery(
-  //   { team_id: selectedPlayerTeam?.id },
-  //   { skip: !selectedPlayerTeam }
-  // );
+  const { data: teamAttendance } = useGetTeamAttendanceQuery(
+    { team_id: selectedPlayerTeam?.id },
+    { skip: !selectedPlayerTeam }
+  );
 
-  // const { data: teamAttendance } = useGetTeamAttendanceQuery(
-  //   { team_id: selectedPlayerTeam?.id },
-  //   { skip: !selectedPlayerTeam }
-  // );
+  console.log("teamAttendance", teamAttendance);
 
   const [updateAttend, { isLoading: isUpdating }] =
     useCoachUpdateAttendanceMutation();
@@ -107,11 +35,11 @@ const AttendanceTable = (props: Props) => {
             <thead>
               <tr className="">
                 <th className="bg-white sticky  top-0 z-20 ">Day</th>
-                {players.map((attend) => (
+                {teamAttendance?.results.map((player) => (
                   <th className="bg-white sticky top-0 z-20 text-center ">
                     <div className="flex  flex-col justify-center items-center">
-                      <Avatar radius={"xl"} size="md" src={attend.avatar} />
-                      <span>{attend.name}</span>
+                      <Avatar radius={"xl"} size="md" src={player.icon} />
+                      <span>{player.name}</span>
                     </div>
                   </th>
                 ))}
@@ -127,13 +55,15 @@ const AttendanceTable = (props: Props) => {
                       {/* {thisDate.getDate() - 1}/ {thisDate.getMonth() + 1} /
                       {thisDate.getFullYear()} */}
                     </td>
-                    {players.map((player) => {
+                    {teamAttendance?.results.map((player) => {
                       let theDate = "";
                       let theStatus = "";
-                      for (let i of player.attendances) {
-                        if (i.date === item) {
-                          theDate = i.date;
+                      let theID = 0;
+                      for (let i of player.player_attendance) {
+                        if (i.day === item) {
+                          theDate = i.day;
                           theStatus = i.status;
+                          theID = i.id;
                         }
                       }
                       return (
@@ -157,10 +87,7 @@ const AttendanceTable = (props: Props) => {
                                     ? "ATTENDED"
                                     : "ABSENT"
                                 }`,
-                                plaerId: player.id,
-                                plaerName: player.name,
-                                date: thisDate,
-                                playerDate: theDate,
+                                plaerId: theID,
                               });
                             }}
                           />
