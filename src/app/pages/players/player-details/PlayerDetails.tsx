@@ -297,6 +297,7 @@ const PlayerDetails = () => {
               <Grid>
                 <Grid.Col span={12}>
                   <TotalAttendance
+                    //@ts-ignore
                     data={[
                       { day: "2/10/2017", attendance: "ATTENDED" },
                       { day: "2/10/2017", attendance: "ATTENDED" },
