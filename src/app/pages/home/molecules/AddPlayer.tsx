@@ -1,133 +1,117 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import AppIcons from "~/@main/core/AppIcons/AppIcons";
-import { Modal, Button, TextInput } from "@mantine/core";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { Modal, Button, TextInput, Select, Input, Alert } from "@mantine/core";
 import * as yup from "yup";
 import cn from "classnames";
-
-import Resizer from "react-image-file-resizer";
-import PerfSelect from "~/@main/components/Select";
-import { useAddPlayerMutation } from "~/app/store/parent/parentApi";
 import SubmitButton from "~/@main/components/SubmitButton";
+import { useUserQuery } from "~/app/store/user/userApi";
+import { PlayerSport, SportTeam } from "~/app/store/types/parent-types";
+import { axiosInstance } from "../../../configs/dataService";
+import {
+  useClubSportsQuery,
+  useSportTeamsQuery,
+} from "~/app/store/parent/parentApi";
+import { DatePicker } from "@mantine/dates";
+
+// Helper Functions
+
+function formatDate(date: unknown) {
+  if (date instanceof Date) {
+    var d = new Date(date),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    return [year, month, day].join("-");
+  }
+}
 
 type Props = {};
 
-const dummyData = {
-  sports: [
-    {
-      teamId: "1",
-    },
-    {
-      teamId: "2",
-    },
-    {
-      teamId: "3",
-    },
-  ],
-};
-
 const schema = yup.object().shape({
-  image: yup.mixed().required("File is required"),
   name: yup.string().required("Your child name is Required!"),
-  dob: yup.date().required("Your child Birthday is Required!"),
-  sport: yup.number().required("please select your child sport"),
+  dob: yup.string(),
   team: yup.number().required("please select your child team"),
-  weight: yup.number().required("please add your child weight"),
-  height: yup.number().required("please add your child height"),
-  phoneNumber: yup.string().required("please enter your mobile number!"),
+  weight: yup.number(),
+  height: yup.number(),
+  phone: yup.string(),
+  icon: yup.mixed(),
+  sport: yup.number(),
 });
 
 const AddPlayer = (props: Props) => {
-  const [addPlayerHandler, { isLoading, isSuccess, isError, error }] =
-    useAddPlayerMutation();
   const [open, setOpen] = React.useState(false);
-  const [playerImage, setPlayerImage] = React.useState<string | unknown>("");
+  const [playerImage, setPlayerImage] = React.useState<any>();
   const [playerImagePreview, setPlayerImagePreview] = React.useState("null");
-  const [data, setData] = React.useState({});
-  const [teams, setTeams] = React.useState([]);
-  const [sports, setSports] = React.useState([]);
+  const { data: userData } = useUserQuery(null);
+  const [teams, setTeams] = React.useState<any>([]);
+  const [sports, setSports] = React.useState<any>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedSport, setSelectedSport] = useState<number>(0);
+  const [error, setError] = useState(false);
+  // fetch club sports
+  const { data: clubSports } = useClubSportsQuery(
+    { club_id: userData ? userData?.club && userData.club : 1 },
+    { skip: !userData?.club }
+  );
 
-  const {
-    register,
-    handleSubmit,
-    control,
-    reset,
-    formState: { errors, isSubmitSuccessful },
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
-
-  const handleClickOpen = () => {
-    console.log("Open");
-    setOpen(true);
-  };
-
-  function formatDate(date: unknown) {
-    if (date instanceof Date) {
-      var d = new Date(date),
-        month = "" + (d.getMonth() + 1),
-        day = "" + d.getDate(),
-        year = d.getFullYear();
-
-      if (month.length < 2) month = "0" + month;
-      if (day.length < 2) day = "0" + day;
-
-      return [year, month, day].join("-");
-    }
-  }
-
-  const resizeFile = (file: any) =>
-    new Promise((resolve) => {
-      Resizer.imageFileResizer(
-        file,
-        100,
-        100,
-        "JPEG",
-        100,
-        0,
-        (uri: any) => {
-          resolve(uri);
-        },
-        "base64"
-      );
-    });
-
-  const onSubmit = (data: any) => {
-    const bodyParameters = {
-      name: data.name,
-      dob: formatDate(data.dob),
-      sport: data.sport,
-      team: data.team,
-      weight: data.weight,
-      height: data.height,
-      phone: data.phoneNumber,
-      icon: playerImage as string,
-    };
-    addPlayerHandler(bodyParameters);
-    setPlayerImage(null);
-    reset({
-      image: "",
-      name: "",
-      dob: "",
-      team: "",
-      sport: "",
-      weight: "",
-      height: "",
-      phoneNumber: "",
-    });
-  };
+  // fetch sport Teams data
+  const { data: sportTeams } = useSportTeamsQuery(
+    { sport_id: selectedSport },
+    { skip: !selectedSport }
+  );
 
   // function to access file uploaded then convert to base64 then add it to the data state
   const uploadImage = async (e: any) => {
     try {
       const file = e.target.files[0];
-      const image = await resizeFile(file);
-      console.log(image);
-      setPlayerImage(image);
+      let formData = new FormData();
+      formData.append("fileToUpload", file);
+      setPlayerImage(formData);
     } catch (err) {
       console.log(err);
     }
+  };
+
+  useEffect(() => {
+    setTeams([]);
+
+    if (clubSports && clubSports.results) {
+      setSports(clubSports.results);
+    }
+    if (sportTeams && sportTeams.results) {
+      setTeams(sportTeams.results);
+    }
+  }, [clubSports, sportTeams, selectedSport]);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const onSubmitFun = async (e: any) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    setError(false);
+
+    try {
+      setIsLoading(true);
+      axiosInstance
+        .post("parent/add-player/", formData)
+        .then((res) => {
+          setIsLoading(false);
+          setOpen(false);
+          console.log(res);
+          setPlayerImage(null);
+        })
+        .catch((err) => {
+          setIsLoading(false);
+          console.log(err);
+          setError(true);
+        });
+    } catch (err) {}
   };
 
   return (
@@ -153,18 +137,19 @@ const AddPlayer = (props: Props) => {
         shadow="xl"
         radius="xl"
       >
-        <form onSubmit={handleSubmit(onSubmit)} className="rounded-3xl">
+        <form onSubmit={onSubmitFun} className="rounded-3xl">
+          {error && (
+            <Alert title="Wrong Data" color="red">
+              Name and Team is a required files
+            </Alert>
+          )}
+
           {/* add img  */}
-          <div className=" relative my-2 bg-gray-300 overflow-hidden hover:bg-gray-300 flex justify-center  items-center  mx-auto w-28  h-28 rounded-lg ">
-            <Button
-              {...register("image")}
-              className="w-full h-full"
-              component="label"
-            >
-              <img
-                className={cn("", { hidden: playerImage })}
-                src="/assets/images/Vector.png"
-                alt="upload icon"
+          <div className=" relative group my-2 bg-gray-300 overflow-hidden hover:bg-gray-300 flex justify-center  items-center  mx-auto w-28  h-28 rounded-lg ">
+            <Button className="w-full h-full" component="label">
+              <AppIcons
+                className="w-10 h-10 text-perfGray1 group-hover:text-white  "
+                icon="PhotoIcon:outline"
               />
               <img
                 className={cn(
@@ -176,32 +161,28 @@ const AddPlayer = (props: Props) => {
                 src={playerImagePreview && playerImagePreview}
                 alt="upload icon"
               />
-              <input
+              <Input
                 hidden
                 accept="image/*"
-                multiple
                 type="file"
+                name="icon"
                 onChange={(e: any) => {
-                  console.log(e.target.files[0]);
                   setPlayerImagePreview(URL.createObjectURL(e.target.files[0]));
                   uploadImage(e);
                 }}
               />
             </Button>
-            {errors.image && (
-              <p className="text-red text-xs text-left">File is required!</p>
-            )}
           </div>
 
           <div className="flex flex-col my-4 justify-center items-center gap-2">
             {/* Name and Date of birth */}
 
-            <div className="flex gap-4">
+            <div className="flex gap-4 w-full">
               <div className="w-1/2">
                 <TextInput
                   id="name"
+                  name="name"
                   label="Name"
-                  {...register("name")}
                   withAsterisk
                   sx={{
                     ".mantine-TextInput-input": {
@@ -209,27 +190,24 @@ const AddPlayer = (props: Props) => {
                       border: 0,
                       borderBottom: "1px solid",
                       borderRadius: 0,
+                      width: "100%",
                     },
                   }}
-                  error={errors.name && "Your child name is Required!"}
                 />
               </div>
               <div className="w-1/2">
-                <TextInput
-                  id="dob"
+                <DatePicker
                   label="Date of birth"
-                  placeholder="yyyy-mm-dd"
-                  withAsterisk
-                  {...register("dob")}
+                  name="dob"
+                  inputFormat="YYYY-MM-DD"
                   sx={{
-                    ".mantine-TextInput-input": {
+                    ".mantine-DatePicker-input": {
                       background: "none",
                       border: 0,
                       borderBottom: "1px solid",
                       borderRadius: 0,
                     },
                   }}
-                  error={errors.dob && "Your child Birthday is Required!"}
                 />
               </div>
             </div>
@@ -238,33 +216,46 @@ const AddPlayer = (props: Props) => {
           {/* Sport and team */}
           <div className="flex gap-4 w-full my-4">
             <div className="w-1/2">
-              <PerfSelect
-                {...register("sport")}
+              <Select
                 id="sport"
                 required
-                error={errors.city && "please select your child sport"}
                 className="w-full"
                 label="Sport"
                 name="sport"
-                control={control}
-                data={dummyData?.sports.map((item: { teamId: string }) => {
-                  return { label: item.teamId, value: item.teamId };
+                sx={{
+                  ".mantine-Select-input": {
+                    background: "none",
+                    border: 0,
+                    borderBottom: "1px solid",
+                    borderRadius: 0,
+                    width: "100%",
+                  },
+                }}
+                data={sports?.map((item: Partial<PlayerSport>) => {
+                  return { value: item.id, label: item.name };
                 })}
+                onChange={(e) => e && setSelectedSport(+e)}
               />
             </div>
 
             <div className="w-1/2">
-              <PerfSelect
-                {...register("team")}
+              <Select
                 id="team"
                 required
-                error={errors.city && "please select your child team"}
                 className="w-full"
                 label="Team"
                 name="team"
-                control={control}
-                data={dummyData?.sports.map((item: { teamId: string }) => {
-                  return { label: item.teamId, value: item.teamId };
+                sx={{
+                  ".mantine-Select-input": {
+                    background: "none",
+                    border: 0,
+                    borderBottom: "1px solid",
+                    borderRadius: 0,
+                    width: "100%",
+                  },
+                }}
+                data={teams?.map((item: Partial<SportTeam>) => {
+                  return { label: item.name, value: item.id };
                 })}
               />
             </div>
@@ -276,9 +267,6 @@ const AddPlayer = (props: Props) => {
               <TextInput
                 id="weight"
                 label="Weight"
-                {...register("weight")}
-                withAsterisk
-                error={errors.weight && "please add your child weight"}
                 sx={{
                   ".mantine-TextInput-input": {
                     background: "none",
@@ -293,9 +281,6 @@ const AddPlayer = (props: Props) => {
               <TextInput
                 id="height"
                 label="Height"
-                {...register("height")}
-                withAsterisk
-                error={errors.height && "please add your child height"}
                 sx={{
                   ".mantine-TextInput-input": {
                     background: "none",
@@ -313,8 +298,6 @@ const AddPlayer = (props: Props) => {
             <TextInput
               id="phoneNumber"
               label="phone number"
-              {...register("phoneNumber")}
-              withAsterisk
               sx={{
                 ".mantine-TextInput-input": {
                   background: "none",
@@ -323,7 +306,6 @@ const AddPlayer = (props: Props) => {
                   borderRadius: 0,
                 },
               }}
-              error={errors.phoneNumber && "please enter your mobile number!"}
             />
           </div>
 

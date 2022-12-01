@@ -20,6 +20,7 @@ import {
   TeamSupervisors,
   ParentUpcomingEvents,
   PlayerKpis,
+  PlayerSports,
 } from "./../types/parent-types";
 import {
   BaseQueryFn,
@@ -251,6 +252,23 @@ export const parentsApi = createApi({
       }),
       providesTags: ["Parent"],
     }),
+
+    clubSports: query<PlayerSports, { club_id: number; page?: number }>({
+      query: ({ club_id, ...params }) => ({
+        url: `${club_id}/sports/`,
+        params,
+      }),
+      providesTags: ["Parent"],
+    }),
+
+    sportTeams: query<SportTeams, { sport_id: number; page?: number }>({
+      query: ({ sport_id, ...params }) => ({
+        url: `${sport_id}/sport-teams/`,
+        params,
+      }),
+      providesTags: ["Parent"],
+    }),
+
     selectSubscription: mutation<SelectSubscriptionRes, SelectSubscription>({
       query: (body) => ({
         url: "/select-subscription/",
@@ -287,4 +305,6 @@ export const {
   useEventFilesQuery,
   useUpcomingEventsQuery,
   useSelectSubscriptionMutation,
+  useClubSportsQuery,
+  useSportTeamsQuery,
 } = parentsApi;
