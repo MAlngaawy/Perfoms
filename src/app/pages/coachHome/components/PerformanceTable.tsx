@@ -9,55 +9,73 @@ type Props = {};
 
 const players = [
   {
-    name: "Mohamed Ahmed",
+    name: "mohammed Ali",
     avatar:
       "https://images.squarespace-cdn.com/content/v1/5c2efbc95417fc1b3d3040ad/1623735675824-LXS5FG198B0MLQCKQC0P/Modern+School+Photos.jpg",
     id: 1,
-    score: 5,
+    scores: [
+      {
+        score: 1,
+        metric: "ATTACK",
+      },
+      {
+        score: 3,
+        metric: "PUSH",
+      },
+      {
+        score: 5,
+        metric: "BOXING",
+      },
+    ],
   },
   {
-    name: "Mohamed Ahmed",
+    name: "Ahmed Salah",
     avatar:
-      "https://images.squarespace-cdn.com/content/v1/5c2efbc95417fc1b3d3040ad/1623735675824-LXS5FG198B0MLQCKQC0P/Modern+School+Photos.jpg",
-    id: 1,
-    score: 3,
-  },
-  {
-    name: "Mohamed Ahmed",
-    avatar:
-      "https://images.squarespace-cdn.com/content/v1/5c2efbc95417fc1b3d3040ad/1623735675824-LXS5FG198B0MLQCKQC0P/Modern+School+Photos.jpg",
-    id: 1,
-    score: 1,
+      "https://images.squarespace-cdn.com/content/v1/5c2efbc95417fc1b3d3040ad/1623728514460-NKFH3X6TIK8JXUESNRQD/Modern+School+Portraits+Perth.jpg",
+    id: 2,
+    scores: [
+      {
+        score: 3,
+        metric: "BOXING",
+      },
+      {
+        score: 4,
+        metric: "PUSH",
+      },
+      {
+        score: 2,
+        metric: "ATTACK",
+      },
+    ],
   },
 
   {
-    name: "Mohamed Ahmed",
+    name: "Ali JR",
     avatar:
-      "https://images.squarespace-cdn.com/content/v1/5c2efbc95417fc1b3d3040ad/1623735675824-LXS5FG198B0MLQCKQC0P/Modern+School+Photos.jpg",
-    id: 1,
-    score: 4,
+      "https://images.squarespace-cdn.com/content/v1/5c2efbc95417fc1b3d3040ad/1623728514460-NKFH3X6TIK8JXUESNRQD/Modern+School+Portraits+Perth.jpg",
+    id: 2,
+    scores: [
+      {
+        score: 2,
+        metric: "PUSH",
+      },
+      {
+        score: 1,
+        metric: "BOXING",
+      },
+      {
+        score: 2,
+        metric: "ATTACK",
+      },
+    ],
   },
-  {
-    name: "Mohamed Ahmed",
-    avatar:
-      "https://images.squarespace-cdn.com/content/v1/5c2efbc95417fc1b3d3040ad/1623735675824-LXS5FG198B0MLQCKQC0P/Modern+School+Photos.jpg",
-    id: 1,
-    score: 2,
-  },
-  {
-    name: "Mohamed Ahmed",
-    avatar:
-      "https://images.squarespace-cdn.com/content/v1/5c2efbc95417fc1b3d3040ad/1623735675824-LXS5FG198B0MLQCKQC0P/Modern+School+Photos.jpg",
-    id: 1,
-    score: 3,
-  },
-  {
-    name: "Mohamed Ahmed",
-    avatar:
-      "https://images.squarespace-cdn.com/content/v1/5c2efbc95417fc1b3d3040ad/1623735675824-LXS5FG198B0MLQCKQC0P/Modern+School+Photos.jpg",
-    id: 1,
-    score: 1,
-  },
+];
+
+// Doesn't matters what the arrange
+const metrics = [
+  { name: "ATTACK", id: 2 },
+  { name: "BOXING", id: 1 },
+  { name: "PUSH", id: 3 },
 ];
 
 const PerformanceTable = (props: Props) => {
@@ -73,59 +91,69 @@ const PerformanceTable = (props: Props) => {
         <thead>
           <tr className="">
             <th className="bg-white sticky  top-0 z-20 ">Day</th>
-            {teamPerformance?.results.map((item) => (
+            {players.map((player) => (
               <th className="bg-white sticky top-0 z-20 text-center ">
                 <div className="flex  flex-col justify-center items-center">
-                  <Avatar
-                    radius={"xl"}
-                    size="md"
-                    src={item.player_kpi.player.icon}
-                  />
-                  <span>{item.player_kpi.player.name}</span>
+                  <Avatar radius={"xl"} size="md" src={player.avatar} />
+                  <span>{player.name}</span>
                 </div>
               </th>
             ))}
           </tr>
         </thead>
         <tbody className="overflow-scroll">
-          {teamPerformance?.results.map((item) => {
+          {metrics.map((metric) => {
             return (
-              <tr className="" key={item.id}>
-                <td className="text-sm w-48 sticky left-0 bg-white z-10 text-perfGray2">
-                  {item.metric.name}
+              <tr className="" key={metric.id}>
+                <td className="text-sm w-48 sticky left-0 bg-white z-10 font-medium text-perfGray1">
+                  {metric.name}
                 </td>
-                {teamPerformance?.results.map((item) => (
-                  <td key={item.id}>
-                    <div className="flex gap-2 justify-center items-center">
-                      {[1, 2, 3, 4, 5].map((number) => (
-                        <span
-                          onClick={() =>
-                            console.log({
-                              id: item.id,
-                              team_id: selectedPlayerTeam,
-                              playerName: item.player_kpi.player.name,
-                              score: number,
-                              max_score: item.max_score,
-                            })
-                          }
-                          className={cn(
-                            "px-3 p-1 bg-perfLigtGray rounded-md cursor-pointer",
-                            {
-                              "bg-green text-white":
-                                item.score > 3 && item.score === number,
-                              "bg-red text-white":
-                                item.score < 3 && item.score === number,
-                              "bg-yellow text-white":
-                                item.score === 3 && item.score === number,
+                {players.map((player) => {
+                  let theMetric = "";
+                  let theScore = 0;
+                  for (let i of player.scores) {
+                    if (i.metric === metric.name) {
+                      theMetric = i.metric;
+                      theScore = i.score || 0;
+                    }
+                  }
+
+                  return (
+                    <td key={metric.id}>
+                      <div className="flex gap-2 justify-center items-center">
+                        {[1, 2, 3, 4, 5].map((number) => (
+                          <span
+                            onClick={() =>
+                              console.log({
+                                metricName: theMetric,
+                                metric: metric.id,
+                                team_id: selectedPlayerTeam,
+                                playerid: player.id,
+                                playerName: player.name,
+                                new_score: number,
+                                max_score: 5,
+                              })
                             }
-                          )}
-                        >
-                          {number}
-                        </span>
-                      ))}
-                    </div>
-                  </td>
-                ))}
+                            className={cn(
+                              "px-3 p-1   rounded-md cursor-pointer text-perfGray1 font-bold",
+                              {
+                                "bg-scoreGreen text-white":
+                                  theScore > 3 && theScore === number,
+                                "bg-scoreRed text-white":
+                                  theScore < 3 && theScore === number,
+                                "bg-scoreYallow text-white":
+                                  theScore === 3 && theScore === number,
+                                "bg-scoreGray": theScore !== number,
+                              }
+                            )}
+                          >
+                            {number}
+                          </span>
+                        ))}
+                      </div>
+                    </td>
+                  );
+                })}
               </tr>
             );
           })}

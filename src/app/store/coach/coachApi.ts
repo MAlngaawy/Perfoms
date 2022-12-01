@@ -1,4 +1,5 @@
 import {
+  CoachPlayerInfo,
   CoachTeamAttendance,
   CoachTeamPerformance,
   SendBulkNotifications,
@@ -63,6 +64,16 @@ export const coachApi = createApi({
       }),
     }),
 
+    getPlayerInfo: query<
+      CoachPlayerInfo,
+      { player_id: string | undefined; page?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `player-info/${player_id}/`,
+        params,
+      }),
+    }),
+
     GetTeamAttendance: query<
       CoachTeamAttendance,
       { team_id: number; page?: number }
@@ -106,4 +117,5 @@ export const {
   useGetTeamAttendanceQuery,
   useCoachUpdateAttendanceMutation,
   useGetTeamPerformancesQuery,
+  useGetPlayerInfoQuery,
 } = coachApi;

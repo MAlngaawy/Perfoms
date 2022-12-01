@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 import TeamFilter from "~/@main/components/TeamFilter";
 import { useUpdateAttendanceMutation } from "~/app/store/attendance/attendanceApi";
+import { truncate } from "fs";
 
 type Props = {};
 
@@ -19,133 +20,147 @@ const players = [
     avatar:
       "https://images.squarespace-cdn.com/content/v1/5c2efbc95417fc1b3d3040ad/1623735675824-LXS5FG198B0MLQCKQC0P/Modern+School+Photos.jpg",
     id: 1,
+    attendances: [
+      {
+        status: "ATTENDED",
+        date: "11/11/2022",
+      },
+      {
+        status: "UPCOMING",
+        date: "12/12/2022",
+      },
+      {
+        status: "ABSENT",
+        date: "10/10/2022",
+      },
+    ],
   },
   {
     name: "Ahmed Salah",
     avatar:
       "https://images.squarespace-cdn.com/content/v1/5c2efbc95417fc1b3d3040ad/1623728514460-NKFH3X6TIK8JXUESNRQD/Modern+School+Portraits+Perth.jpg",
     id: 2,
+    attendances: [
+      {
+        status: "UPCOMING",
+        date: "12/12/2022",
+      },
+      {
+        status: "ATTENDED",
+        date: "10/10/2022",
+      },
+      {
+        status: "ABSENT",
+        date: "11/11/2022",
+      },
+    ],
   },
   {
-    name: "Kareem Momen",
-    avatar:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjh6VSzXG8EgTqDjm0JJ7CTlDVFnIHh6X9dPgBDqxt2kUOGgH7NQy0Ey6oPhEn5TVQbvI&usqp=CAU",
-    id: 3,
-  },
-  {
-    name: "Khaled Momen",
-    avatar:
-      "https://www.anthropics.com/portraitpro/img/page-images/homepage/v22/what-can-it-do-5B.jpg",
-    id: 3,
-  },
-  {
-    name: "mohammed Ali",
-    avatar:
-      "https://images.squarespace-cdn.com/content/v1/5c2efbc95417fc1b3d3040ad/1623735675824-LXS5FG198B0MLQCKQC0P/Modern+School+Photos.jpg",
-    id: 1,
-  },
-  {
-    name: "Ahmed Salah",
+    name: "Ali JR",
     avatar:
       "https://images.squarespace-cdn.com/content/v1/5c2efbc95417fc1b3d3040ad/1623728514460-NKFH3X6TIK8JXUESNRQD/Modern+School+Portraits+Perth.jpg",
     id: 2,
-  },
-  {
-    name: "Kareem Momen",
-    avatar:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjh6VSzXG8EgTqDjm0JJ7CTlDVFnIHh6X9dPgBDqxt2kUOGgH7NQy0Ey6oPhEn5TVQbvI&usqp=CAU",
-    id: 3,
-  },
-  {
-    name: "Khaled Momen",
-    avatar:
-      "https://www.anthropics.com/portraitpro/img/page-images/homepage/v22/what-can-it-do-5B.jpg",
-    id: 3,
-  },
-  {
-    name: "mohammed Ali",
-    avatar:
-      "https://images.squarespace-cdn.com/content/v1/5c2efbc95417fc1b3d3040ad/1623735675824-LXS5FG198B0MLQCKQC0P/Modern+School+Photos.jpg",
-    id: 1,
+    attendances: [
+      {
+        status: "UPCOMING",
+        date: "12/12/2022",
+      },
+      {
+        status: "ABSENT",
+        date: "11/11/2022",
+      },
+
+      {
+        status: "ABSENT",
+        date: "10/10/2022",
+      },
+    ],
   },
 ];
 
+const teamDates = ["10/10/2022", "11/11/2022", "12/12/2022"];
+
 const AttendanceTable = (props: Props) => {
-  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
+  // const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
 
-  const { data: coahcTeamPlayers } = useGetTeamPlayersQuery(
-    { team_id: selectedPlayerTeam?.id },
-    { skip: !selectedPlayerTeam }
-  );
+  // const { data: coahcTeamPlayers } = useGetTeamPlayersQuery(
+  //   { team_id: selectedPlayerTeam?.id },
+  //   { skip: !selectedPlayerTeam }
+  // );
 
-  const { data: teamAttendance } = useGetTeamAttendanceQuery(
-    { team_id: selectedPlayerTeam?.id },
-    { skip: !selectedPlayerTeam }
-  );
+  // const { data: teamAttendance } = useGetTeamAttendanceQuery(
+  //   { team_id: selectedPlayerTeam?.id },
+  //   { skip: !selectedPlayerTeam }
+  // );
 
   const [updateAttend, { isLoading: isUpdating }] =
     useCoachUpdateAttendanceMutation();
 
-  console.log("coahcTeamPlayers", coahcTeamPlayers);
+  // console.log("coahcTeamPlayers", coahcTeamPlayers);
 
   return (
     <>
-      {selectedPlayerTeam && teamAttendance ? (
+      {true ? (
         <div className="overflow-scroll max-h-screen relative m-6 bg-white rounded-lg text-center">
           {/* <TeamFilter /> */}
           <Table highlightOnHover horizontalSpacing="xl">
             <thead>
               <tr className="">
                 <th className="bg-white sticky  top-0 z-20 ">Day</th>
-                {teamAttendance?.results.map((attend) => (
-                  <th
-                    key={attend.id}
-                    className="bg-white sticky top-0 z-20 text-center "
-                  >
+                {players.map((attend) => (
+                  <th className="bg-white sticky top-0 z-20 text-center ">
                     <div className="flex  flex-col justify-center items-center">
-                      <Avatar
-                        radius={"xl"}
-                        size="md"
-                        src={attend.player.icon}
-                      />
-                      <span>{attend.player.name}</span>
+                      <Avatar radius={"xl"} size="md" src={attend.avatar} />
+                      <span>{attend.name}</span>
                     </div>
                   </th>
                 ))}
               </tr>
             </thead>
             <tbody className="overflow-scroll">
-              {teamAttendance.results.map((item) => {
-                const thisDate = new Date(item.day);
+              {teamDates.map((item) => {
+                const thisDate = item;
                 return (
-                  <tr className="" key={item.id}>
-                    <td className="text-xs font-semibold text-center px-0 sticky left-0 bg-white z-10 text-perfGray3">
-                      {thisDate.getDate() - 1}/ {thisDate.getMonth() + 1} /
-                      {thisDate.getFullYear()}
+                  <tr className="">
+                    <td className="text-xs font-medium text-center px-0 sticky left-0 bg-white z-10 text-perfGray1">
+                      {thisDate}
+                      {/* {thisDate.getDate() - 1}/ {thisDate.getMonth() + 1} /
+                      {thisDate.getFullYear()} */}
                     </td>
-                    {teamAttendance?.results.map((attend, index) => {
+                    {players.map((player) => {
+                      let theDate = "";
+                      let theStatus = "";
+                      for (let i of player.attendances) {
+                        if (i.date === item) {
+                          theDate = i.date;
+                          theStatus = i.status;
+                        }
+                      }
                       return (
-                        <td key={attend.id}>
+                        <td>
                           <Checkbox
-                            disabled={attend.status === "UPCOMING"}
-                            checked={attend.status === "ATTENDED"}
+                            disabled={
+                              theDate === item && theStatus === "UPCOMING"
+                            }
+                            checked={theStatus === "ATTENDED"}
                             onChange={(e) => {
-                              updateAttend({
-                                id: attend.id,
-                                status:
-                                  attend.status !== "ATTENDED"
-                                    ? "ATTENDED"
-                                    : "ABSENT",
-                              });
+                              // updateAttend({
+                              //   id: attend.id,
+                              //   status:
+                              //     attend.status !== "ATTENDED"
+                              //       ? "ATTENDED"
+                              //       : "ABSENT",
+                              // });
                               console.log({
                                 attended: `becomes ${
                                   e.currentTarget.checked
                                     ? "ATTENDED"
                                     : "ABSENT"
                                 }`,
-                                plaerId: attend.id,
-                                plaerName: attend.player.name,
-                                date: new Date(attend.day),
+                                plaerId: player.id,
+                                plaerName: player.name,
+                                date: thisDate,
+                                playerDate: theDate,
                               });
                             }}
                           />

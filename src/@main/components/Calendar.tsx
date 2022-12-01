@@ -17,7 +17,7 @@ const CustomCalendar = ({ pageName }: Props) => {
   );
 
   return (
-    <div className="bg-white rounded-3xl p-4">
+    <div className="bg-white rounded-3xl p-4 h-full">
       <h2 className="title text-lg text-perfGray1">Calendar.</h2>
       <div
         className={classNames(
