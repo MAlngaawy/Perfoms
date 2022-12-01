@@ -296,23 +296,7 @@ const PlayerDetails = () => {
             <Grid.Col sm={4} span={12}>
               <Grid>
                 <Grid.Col span={12}>
-                  <TotalAttendance
-                    //@ts-ignore
-                    data={[
-                      { day: "2/10/2017", attendance: "ATTENDED" },
-                      { day: "2/10/2017", attendance: "ATTENDED" },
-                      { day: "2/10/2017", attendance: "ATTENDED" },
-                      { day: "2/10/2017", attendance: "ATTENDED" },
-                      { day: "2/10/2017", attendance: "ABSENT" },
-                      { day: "2/10/2017", attendance: "ABSENT" },
-                      { day: "2/10/2017", attendance: "ABSENT" },
-                      { day: "2/10/2017", attendance: "ATTENDED" },
-                      { day: "2/10/2017", attendance: "UPCOMING" },
-                      { day: "2/10/2017", attendance: "UPCOMING" },
-                      { day: "2/10/2017", attendance: "ATTENDED" },
-                      { day: "2/10/2017", attendance: "ATTENDED" },
-                    ]}
-                  />
+                  <TotalAttendance />
                 </Grid.Col>
                 <Grid.Col span={12}>
                   <div>
