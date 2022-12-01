@@ -28,6 +28,7 @@ import SingleTeamPageConfig from "../pages/Admin/SubPages/SingleTeam/SingleTeamC
 import SportKpisPageConfig from "../pages/Admin/SubPages/SportKpis/SportKpisConfig";
 import KpiMetricsPageConfig from "../pages/Admin/SubPages/KpiMetrics/KpiMetricsConfig";
 import ChatConfig from "../pages/chat/ChatConfig";
+import RequestConfig from "../pages/requests/RequestConfig";
 
 const routeConfigs: PagesRouteConfig[] = [
   SignInConfig,
@@ -56,6 +57,7 @@ const routeConfigs: PagesRouteConfig[] = [
   SportKpisPageConfig,
   KpiMetricsPageConfig,
   ChatConfig,
+  RequestConfig,
 ];
 
 const routes: AppRouteObject[] = [
