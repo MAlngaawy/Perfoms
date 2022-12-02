@@ -18,7 +18,7 @@ const KpiMetrics = (props: Props) => {
   const { data: metrics } = useSuperMetricsQuery({ kpi_id: id }, { skip: !id });
 
   return (
-    <div className="admin-teams  flex flex-col xs:flex-row flex-wrap items-stretch gap-4 sm:m-6 p-2 sm:p-6">
+    <div className="admin-teams  flex xs:flex-row flex-wrap justify-center sm:justify-start items-stretch gap-4 sm:m-6 p-2 sm:p-6">
       {metrics?.results.map((metric: Metric) => {
         return (
           <div className="sport-card relative bg-white rounded-3xl p-12 flex flex-col justify-center items-center gap-4">
@@ -30,7 +30,9 @@ const KpiMetrics = (props: Props) => {
                 alt="icon"
               />
             </div>
-            <h2 className="text-xl text-perfBlue">{metric.name}</h2>
+            <h2 className="text-xl text-perfBlue w-28 text-center mx-auto">
+              {metric.name}
+            </h2>
             {/* Edit and Delete Buttons */}
             <div className="flex absolute left-2 top-5 gap-2">
               <EditMetric metricName={metric.name} metricId={metric.id} />
@@ -42,7 +44,7 @@ const KpiMetrics = (props: Props) => {
           </div>
         );
       })}
-      <AddMetric />
+      <AddMetric kpiId={id ? +id : undefined} />
     </div>
   );
 };

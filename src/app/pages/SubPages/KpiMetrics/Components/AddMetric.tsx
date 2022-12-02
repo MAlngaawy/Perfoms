@@ -7,17 +7,22 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Resizer from "react-image-file-resizer";
 import cn from "classnames";
 import SubmitButton from "../../../../../@main/components/SubmitButton";
+import { axiosInstance } from "~/app/configs/dataService";
 
-type Props = {};
+type Props = {
+  kpiId: number | undefined;
+};
 
 const schema = yup.object().shape({
   image: yup.mixed(),
   name: yup.string().required("please add the metric name"),
 });
-const AddMetric = (props: Props) => {
+const AddMetric = ({ kpiId }: Props) => {
   const [opened, setOpened] = useState(false);
   const [playerImage, setPlayerImage] = useState<string | unknown>("");
   const [playerImagePreview, setPlayerImagePreview] = useState("null");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<boolean | string>(false);
 
   const resetFields = () => {
     setPlayerImage(null);
@@ -73,6 +78,32 @@ const AddMetric = (props: Props) => {
     }
   };
 
+  const addMetricFun = (e: any) => {
+    console.log(typeof e.currentTarget);
+
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    formData.append("kpi", JSON.stringify(kpiId));
+    setError(false);
+
+    try {
+      setIsLoading(true);
+      axiosInstance
+        .post("supervisor/create-metric/", formData)
+        .then((res) => {
+          setIsLoading(false);
+          setOpened(false);
+          console.log(res);
+          setPlayerImage(null);
+        })
+        .catch((err) => {
+          setIsLoading(false);
+          setError(err.response.data.message);
+          console.log(err);
+        });
+    } catch (err) {}
+  };
+
   return (
     <div>
       <>
@@ -84,23 +115,13 @@ const AddMetric = (props: Props) => {
           }}
           title={`Add Metric `}
         >
-          <form
-            className="flex flex-col gap-4"
-            onSubmit={handleSubmit(onSubmitFunction)}
-          >
+          <form className="flex flex-col gap-4" onSubmit={addMetricFun}>
             {/* Image Upload */}
-            <div className=" relative my-2 bg-gray-300 overflow-hidden flex justify-center  items-center  mx-auto w-28  h-28 rounded-lg ">
-              <Button
-                {...register("image")}
-                className="w-full h-full hover:bg-perfGray3"
-                component="label"
-              >
-                <img
-                  className={cn("", {
-                    hidden: playerImage,
-                  })}
-                  src="/assets/images/Vector.png"
-                  alt="upload icon"
+            <div className=" relative group my-2 bg-gray-300 overflow-hidden hover:bg-gray-300 flex justify-center  items-center  mx-auto w-28  h-28 rounded-lg ">
+              <Button className="w-full h-full" component="label">
+                <AppIcons
+                  className="w-10 h-10 text-perfGray1 group-hover:text-white  "
+                  icon="PhotoIcon:outline"
                 />
                 <img
                   className={cn(
@@ -115,13 +136,9 @@ const AddMetric = (props: Props) => {
                 <Input
                   hidden
                   accept="image/*"
-                  {...register("image")}
-                  name="image"
-                  multiple
                   type="file"
-                  // error={errors.image && (errors.image.message as ReactNode)}
+                  name="icon"
                   onChange={(e: any) => {
-                    console.log(e.target.files[0]);
                     setPlayerImagePreview(
                       URL.createObjectURL(e.target.files[0])
                     );
@@ -129,19 +146,17 @@ const AddMetric = (props: Props) => {
                   }}
                 />
               </Button>
-              {/* {errors.image && (
-                <p className="text-red text-xs text-left">File is required!</p>
-              )} */}
             </div>
 
             <Input.Wrapper
               id="name"
               withAsterisk
               // label="Name"
-              error={errors.name && (errors.name.message as ReactNode)}
+              error={error}
             >
               <Input
                 placeholder="Name"
+                name="name"
                 sx={{
                   ".mantine-Input-input	": {
                     border: 0,
@@ -153,11 +168,11 @@ const AddMetric = (props: Props) => {
                   },
                 }}
                 className="border-b"
-                {...register("name")}
+                // {...register("name")}
                 id="name"
               />
             </Input.Wrapper>
-            <SubmitButton isLoading={false} text="Add Metric" />
+            <SubmitButton isLoading={isLoading} text="Add Metric" />
           </form>
         </Modal>
 
