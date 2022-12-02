@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import SubmitButton from "../../../../../@main/components/SubmitButton";
-import { useAddActionMutation } from "~/app/store/Supervisor/supervisorApi";
+import { useAddActionMutation } from "~/app/store/supervisor/supervisorMainApi";
 
 type Props = {
   opened: boolean;

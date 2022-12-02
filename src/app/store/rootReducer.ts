@@ -7,7 +7,7 @@ import app from "./app";
 import { attendanceApi } from "./attendance/attendanceApi";
 import { coachApi } from "./coach/coachApi";
 import parent from "./parent/parentSlice";
-import { supervisorApi } from "./Supervisor/supervisorApi";
+import { supervisorApi } from "./supervisor/supervisorMainApi";
 
 const rootReducer = combineReducers({
   app,

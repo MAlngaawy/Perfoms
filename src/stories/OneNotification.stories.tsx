@@ -13,7 +13,7 @@ const Template: ComponentStory<typeof OneNotification> = (args) => (
 export const NewOne = Template.bind({});
 
 NewOne.args = {
-  type: "Permission",
+  notification_type: "Permission",
   name: "Ahmed Ali",
   content:
     "Hey mr: ahmed hru, mohamed is doing great, he needs to practice more kicking on left leg.",
@@ -26,7 +26,7 @@ NewOne.args = {
 export const OldOne = Template.bind({});
 
 OldOne.args = {
-  type: "Certificate",
+  notification_type: "Certificate",
   name: "Mohammed LL",
   content:
     "Hey mr: ahmed hru, mohamed is doing great, he needs to practice more kicking on left leg.",

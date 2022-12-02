@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 import DeleteButton from "~/@main/components/ManagerComponents/SubComponents/DeleteButton";
 import EditKpi from "./Components/EditKpi";
 import AddKpi from "./Components/AddKpi";
-import { useSuperKpisQuery } from "~/app/store/Supervisor/supervisorApi";
+
 import { Avatar } from "@mantine/core";
+import { useSuperKpisQuery } from "~/app/store/supervisor/supervisorMainApi";
 
 type Props = {};
 

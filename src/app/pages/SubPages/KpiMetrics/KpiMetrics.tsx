@@ -1,12 +1,13 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
-import { useSuperMetricsQuery } from "~/app/store/Supervisor/supervisorApi";
+
 import { Metric } from "~/app/store/types/supervisor-types";
 import DeleteButton from "../../../../@main/components/ManagerComponents/SubComponents/DeleteButton";
 import AddMetric from "./Components/AddMetric";
 import CreateActionsAndRecomm from "./Components/CreateActionsAndRecomm";
 import EditMetric from "./Components/EditMetric";
 import { Avatar } from "@mantine/core";
+import { useSuperMetricsQuery } from "~/app/store/supervisor/supervisorMainApi";
 
 type Props = {};
 
