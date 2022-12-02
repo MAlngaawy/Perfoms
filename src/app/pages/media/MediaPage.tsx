@@ -7,6 +7,7 @@ import {
 import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 import MediaCard from "./molecules/MediaCard";
 import TeamFilter from "~/@main/components/TeamFilter";
+import MediaPageLoading from "./molecules/MediaPageLoading";
 
 const dummyData = [
   {
@@ -108,12 +109,15 @@ const MediaPage = () => {
       <div className="flex justify-end m-2">
         <TeamFilter />
       </div>
-      <div className="flex flex-col xs:flex-row xs:items-center flex-wrap gap-2 m-4">
-        {teamEvents &&
-          teamEvents.results.map((data) => {
+      {teamEvents ? (
+        <div className="flex flex-col xs:flex-row xs:items-center flex-wrap gap-2 m-4">
+          {teamEvents.results.map((data) => {
             return <MediaCard key={data.id} event={data} />;
           })}
-      </div>
+        </div>
+      ) : (
+        <MediaPageLoading />
+      )}
     </div>
   );
 };

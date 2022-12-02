@@ -4,6 +4,7 @@ import { useTeamCoachesQuery } from "~/app/store/parent/parentApi";
 import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 import CoachCard from "./components/CoachCard";
 import TeamFilter from "../../../@main/components/TeamFilter";
+import CoachesLoading from "./components/CoachesLoading";
 
 type Props = {
   coaches?: object[];
@@ -20,9 +21,11 @@ const CoachesPage = ({ coaches }: Props) => {
       <div className="flex justify-end my-2">
         <TeamFilter />
       </div>
-      <Grid gutter={10}>
-        {playerCoaches &&
-          playerCoaches.results.map((coach) => {
+      {isLoading ? (
+        <CoachesLoading />
+      ) : (
+        <Grid gutter={10}>
+          {playerCoaches?.results.map((coach) => {
             return (
               <Grid.Col xs={6} sm={4} md={3}>
                 <CoachCard
@@ -38,7 +41,8 @@ const CoachesPage = ({ coaches }: Props) => {
               </Grid.Col>
             );
           })}
-      </Grid>
+        </Grid>
+      )}
     </div>
   );
 };

@@ -5,7 +5,7 @@ type Props = {};
 
 const MediaPageLoading = (props: Props) => {
   return (
-    <Grid gutter={10}>
+    <Grid gutter={10} className="m-10">
       <Grid.Col xs={6} sm={4} md={3}>
         <Skeleton height={300} width="100%" radius="lg" />
       </Grid.Col>
