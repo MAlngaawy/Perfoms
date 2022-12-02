@@ -94,17 +94,6 @@ export type TeamPlayer = {
 
 export type plaerParent = PlayerCoach;
 
-export type TeamAttendance = BaseGetAllType & {
-  id: number;
-  day: string;
-  status: "ATTENDED" | "ABSENT" | "UPCOMING";
-  player: {
-    id: number;
-    name: string;
-    icon: string;
-  };
-};
-
 export type TeamPlayers = BaseGetAllType & {
   results: TeamPlayer[];
 };

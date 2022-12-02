@@ -1,6 +1,11 @@
 import {
+  CoachPlayerInfo,
+  CoachTeamAttendance,
+  CoachTeamPerformance,
   SendBulkNotifications,
   Team,
+  TeamAttendanceDays,
+  TeamPerformanceMetrics,
   UpdatePlayerPKM,
 } from "./../types/coach-types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
@@ -10,6 +15,8 @@ import {
   GeneratePdfDocs,
   GetMyTeams,
 } from "../types/coach-types";
+import { TeamPlayers } from "../types/clubManager-types";
+import { Attendance, UpdateAttendance } from "../types/attendance-types";
 
 export const coachApi = createApi({
   reducerPath: "coachApi",
@@ -46,14 +53,80 @@ export const coachApi = createApi({
       }),
     }),
     updatePlayerPKM: mutation<UpdatePlayerPKM, UpdatePlayerPKM>({
-      query: ({ id, ...body }) => ({
-        url: `update-player-pkm/${id}/`,
+      query: ({ id, team_id, ...body }) => ({
+        url: `update-player-pkm/${id}/${team_id}/`,
         method: "PATCH",
         body,
       }),
     }),
+    GetTeamPlayers: query<TeamPlayers, { team_id: number; page?: number }>({
+      query: ({ team_id, ...params }) => ({
+        url: `${team_id}/players`,
+        params,
+      }),
+    }),
+
+    getPlayerInfo: query<
+      CoachPlayerInfo,
+      { player_id: string | undefined; page?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `player-info/${player_id}/`,
+        params,
+      }),
+    }),
+
+    GetTeamAttendance: query<
+      CoachTeamAttendance,
+      { team_id: number; page?: number }
+    >({
+      query: ({ team_id, ...params }) => ({
+        url: `team-attendance/${team_id}`,
+        params,
+      }),
+    }),
+    coachUpdateAttendance: mutation<Attendance, UpdateAttendance>({
+      query: ({ id, ...body }) => ({
+        url: `update-attendance-day/${id}/`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["Attendance"],
+    }),
+
+    getTeamPerformances: query<
+      CoachTeamPerformance,
+      { team_id: number; page?: number }
+    >({
+      query: ({ team_id, ...params }) => ({
+        url: `team-performance/${team_id}`,
+        params,
+      }),
+    }),
+
+    teamAttendanceDays: query<
+      TeamAttendanceDays,
+      { team_id: number; page?: number }
+    >({
+      query: ({ team_id, ...params }) => ({
+        url: `team-attendance-days/${team_id}`,
+        params,
+      }),
+    }),
+
+    teamPerformanceMetrics: query<
+      TeamPerformanceMetrics,
+      { team_id: number; page?: number }
+    >({
+      query: ({ team_id, ...params }) => ({
+        url: `team-performance-metrics/${team_id}`,
+        params,
+      }),
+    }),
   }),
 });
+
+//CoachTeamPerformance
 
 export const {
   useCoachesQuery,
@@ -62,4 +135,11 @@ export const {
   useSendBulkNotificationsMutation,
   useTeamDetailsQuery,
   useUpdatePlayerPKMMutation,
+  useGetTeamPlayersQuery,
+  useGetTeamAttendanceQuery,
+  useCoachUpdateAttendanceMutation,
+  useGetTeamPerformancesQuery,
+  useGetPlayerInfoQuery,
+  useTeamAttendanceDaysQuery,
+  useTeamPerformanceMetricsQuery,
 } = coachApi;

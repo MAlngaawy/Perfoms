@@ -19,6 +19,7 @@ import {
 } from "~/app/store/parent/parentSlice";
 import { Player } from "~/app/store/types/parent-types";
 import { PerformanceCard } from "./PerformanceCard";
+import { useEffect } from "react";
 
 const SaleStaticChart = () => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
@@ -29,16 +30,20 @@ const SaleStaticChart = () => {
     {
       team_id: selectedPlayerTeam?.id,
       player_id: selectedPlayer?.id,
-      from_date: timeFilter?.from_date,
-      to_date: timeFilter?.to_date,
+      date_from: timeFilter?.from_date,
+      date_to: timeFilter?.to_date,
     },
 
     {
-      skip: !selectedPlayerTeam?.id || !selectedPlayer?.id,
-      // !timeFilter?.from_date
-      // !timeFilter?.to_date,
+      skip:
+        !selectedPlayerTeam?.id ||
+        !selectedPlayer?.id ||
+        !timeFilter?.from_date ||
+        !timeFilter?.to_date,
     }
   );
+
+  // useEffect(() => {}, [timeFilter]);
   console.log("playerKpis", playerKpis);
 
   return (
@@ -108,7 +113,7 @@ const SaleStaticChart = () => {
               name: i.kpi,
               id: i.id,
               progress: i.score_avg,
-              attend: 4,
+              old: i.old_score_avg,
             }))}
           >
             <CartesianGrid
@@ -120,17 +125,23 @@ const SaleStaticChart = () => {
               dataKey="name"
               style={{
                 fontSize: 12,
+                maxWidth: 30,
               }}
             />
             <YAxis dataKey="progress" />
             <Tooltip labelStyle={{ color: "black" }} />
             {/* <Legend /> */}
+            <Bar dataKey="old" fill="#BDBDBD" barSize={10} radius={2}>
+              {playerKpis?.player_kpi?.map((kpi) => {
+                return <Cell key={kpi.id} fill="#BDBDBD" />;
+              })}
+            </Bar>
             <Bar dataKey="progress" fill="#333" barSize={10} radius={2}>
               {playerKpis?.player_kpi.map((metric, index) => (
                 <Cell
                   key={index}
                   fill={
-                    metric.score_avg >= 60
+                    metric.score_avg > 60
                       ? "#00E096" // green more than 60
                       : metric.score_avg <= 40
                       ? "#EB5757" // red less than 40
@@ -139,19 +150,6 @@ const SaleStaticChart = () => {
                 />
               ))}
             </Bar>
-            {/* <Bar
-            dataKey="attend"
-            fill="#BDBDBD"
-            barSize={12}
-            radius={3}
-            style={{
-              cursor: "pointer",
-            }}
-          >
-            {formattedKpis.map((metric) => {
-              return <Cell key={metric.id} fill="#BDBDBD" />;
-            })}
-          </Bar> */}
           </BarChart>
         </ResponsiveContainer>
       </div>

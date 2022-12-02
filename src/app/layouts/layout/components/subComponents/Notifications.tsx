@@ -11,9 +11,9 @@ type Props = {};
 const Notifications = (props: Props) => {
   const windowSize = useWindowSize();
 
-  const { data: notifications } = useNotificationsQuery({});
+  // const { data: notifications } = useNotificationsQuery();
 
-  console.log("notifications", notifications);
+  // console.log("notifications", notifications);
 
   const haveNotificaton = true;
   return (

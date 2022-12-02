@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import TeamCoaches from "../app/pages/Admin/SubPages/SingleTeam/Components/TeamCoaches";
+import TeamCoaches from "../app/pages/SubPages/SingleTeam/Components/TeamCoaches";
 import { Grid } from "@mantine/core";
 
 export default {

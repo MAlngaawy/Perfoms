@@ -24,10 +24,11 @@ import CoachProfileConfig from "../pages/CoachProfile/CoachProfileConfig";
 import AdminPageConfig from "../pages/Admin/AdminPageConfig";
 import ParentCardConfig from "../pages/players/parentCard/ParentConfig";
 import NotifyParentConfig from "../pages/players/notifyParent/NotifyParentConfig";
-import SingleTeamPageConfig from "../pages/Admin/SubPages/SingleTeam/SingleTeamConfig";
-import SportKpisPageConfig from "../pages/Admin/SubPages/SportKpis/SportKpisConfig";
-import KpiMetricsPageConfig from "../pages/Admin/SubPages/KpiMetrics/KpiMetricsConfig";
+import SingleTeamPageConfig from "../pages/SubPages/SingleTeam/SingleTeamConfig";
+import SportKpisPageConfig from "../pages/SubPages/SportKpis/SportKpisConfig";
+import KpiMetricsPageConfig from "../pages/SubPages/KpiMetrics/KpiMetricsConfig";
 import ChatConfig from "../pages/chat/ChatConfig";
+import SupervisorConfig from "../pages/SuperVisor/SuperHomeConfig";
 
 const routeConfigs: PagesRouteConfig[] = [
   SignInConfig,
@@ -56,6 +57,7 @@ const routeConfigs: PagesRouteConfig[] = [
   SportKpisPageConfig,
   KpiMetricsPageConfig,
   ChatConfig,
+  SupervisorConfig,
 ];
 
 const routes: AppRouteObject[] = [
