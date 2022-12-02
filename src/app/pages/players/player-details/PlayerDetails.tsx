@@ -11,7 +11,10 @@ import Performances from "../components/Performance";
 import TotalAttendance from "../../reports/components/TotalAttendance";
 import { useLocation, useParams } from "react-router-dom";
 import { PlayerData } from "~/app/store/types/user-types";
-import { useGetPlayerInfoQuery } from "~/app/store/coach/coachApi";
+import {
+  useGetParentInfoQuery,
+  useGetPlayerInfoQuery,
+} from "~/app/store/coach/coachApi";
 
 // dummy data
 const playerSummary = [
@@ -272,26 +275,30 @@ const PlayerDetails = () => {
     { skip: !params.id }
   );
 
-  console.log(player);
+  const { data: parent } = useGetParentInfoQuery(
+    { player_id: params.id },
+    { skip: !params.id }
+  );
 
   return (
     <div className="p-4">
-      {/* <Avatar src={player?.icon} /> */}
-      <PlayerInfoCard
-        playerData={player || playerData}
-        playerSummary={playerSummary}
-      />
-      {/* <PlayerNav showCard={showCard} setShowCard={setShowCard} />
       {showCard === "playerInfo" && (
         <Grid columns={12}>
-          <Grid.Col sm={9} span={12}>
-            <PlayerInfoCard
-              playerData={playerData}
-              playerSummary={playerSummary}
-            />
+          <Grid.Col md={6} span={12}>
+            <PlayerInfoCard playerData={player} playerSummary={playerSummary} />
           </Grid.Col>
-          <Grid.Col sm={3} span={12}>
-            <ParentInfoCard id={location.state} {...parent} />
+          <Grid.Col md={6} span={12}>
+            <ParentInfoCard
+              first_name={parent?.first_name}
+              last_name={parent?.last_name}
+              avatar={parent?.avatar}
+              phone={parent?.mobile}
+              supscription={parent?.subscription}
+              job={parent?.job}
+              id={parent?.id}
+              parentName={parent?.first_name}
+              playerName={player?.name}
+            />
           </Grid.Col>
         </Grid>
       )}
@@ -327,7 +334,7 @@ const PlayerDetails = () => {
           <AttendanceCard />
           <Performances data={performancesDate} />
         </>
-      )} */}
+      )}
     </div>
   );
 };
