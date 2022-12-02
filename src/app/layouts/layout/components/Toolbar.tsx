@@ -69,7 +69,7 @@ const Toolbar = ({ setOpened }: Props) => {
             <Divider />
             <Menu.Label>
               <OneMessageBox
-                image="https://www.anthropics.com/portraitpro/img/page-images/homepage/v22/what-can-it-do-2A.jpg"
+                image="https://img.freepik.com/free-photo/senior-man-face-portrait-wearing-bowler-hat_53876-148154.jpg?w=2000"
                 id={1}
                 isActive={true}
                 name="John Doue"
@@ -79,7 +79,7 @@ const Toolbar = ({ setOpened }: Props) => {
               />
               <OneMessageBox
                 id={2}
-                image="https://www.anthropics.com/portraitpro/img/page-images/homepage/v22/what-can-it-do-2A.jpg"
+                image="https://i.pinimg.com/originals/39/e9/b3/39e9b39628e745a39f900dc14ee4d9a7.jpg"
                 isActive={false}
                 name="Mohammed Mon'em"
                 lastMessageText="Lorem ipsum ."

@@ -74,7 +74,9 @@ const AttendanceTable = (props: Props) => {
                         <td>
                           <Checkbox
                             disabled={
-                              theDate === thisDate && theStatus === "UPCOMING"
+                              (theDate === thisDate &&
+                                theStatus === "UPCOMING") ||
+                              isUpdating
                             }
                             checked={theStatus === "ATTENDED"}
                             onChange={(e) => {

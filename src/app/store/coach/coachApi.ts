@@ -26,7 +26,7 @@ export const coachApi = createApi({
     baseUrl: `${BASE_URL}/coach`,
     prepareHeaders: BASE_HEADERS,
   }),
-  tagTypes: ["Attendance"],
+  tagTypes: ["Attendance", "performances"],
   endpoints: ({ query, mutation }) => ({
     coaches: query<AllCoachesType, { page: number }>({
       query: (params) => ({ url: "all-coaches/", params }),
@@ -69,6 +69,7 @@ export const coachApi = createApi({
         method: "PATCH",
         body,
       }),
+      invalidatesTags: ["performances"],
     }),
     GetTeamPlayers: query<TeamPlayers, { team_id: number; page?: number }>({
       query: ({ team_id, ...params }) => ({
@@ -105,6 +106,7 @@ export const coachApi = createApi({
         url: `team-attendance/${team_id}`,
         params,
       }),
+      providesTags: ["Attendance"],
     }),
     coachUpdateAttendance: mutation<Attendance, UpdateAttendance>({
       query: ({ id, ...body }) => ({
@@ -123,6 +125,7 @@ export const coachApi = createApi({
         url: `team-performance/${team_id}`,
         params,
       }),
+      providesTags: ["performances"],
     }),
 
     teamAttendanceDays: query<
