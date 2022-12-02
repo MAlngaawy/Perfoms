@@ -65,6 +65,14 @@ const navigationConfig: NavigationConfigTypes[] = [
     icon: "BanknotesIcon:outline",
     url: "subscriptions",
   },
+  {
+    id: "players",
+    title: "Players",
+    translate: "PLAYERS",
+    type: "item",
+    icon: "UserCircleIcon:outline",
+    url: "players",
+  },
 ];
 
 export default navigationConfig;
