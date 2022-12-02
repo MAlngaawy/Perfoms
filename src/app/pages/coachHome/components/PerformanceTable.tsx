@@ -68,7 +68,6 @@ const PerformanceTable = (props: Props) => {
                       theScore = i.last_score || 0;
                     }
                   }
-
                   return (
                     <td key={metric.metric}>
                       <div className="flex gap-2 justify-center items-center">

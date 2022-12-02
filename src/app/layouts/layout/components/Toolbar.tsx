@@ -143,6 +143,7 @@ const Toolbar = ({ setOpened }: Props) => {
                   onClick={() => {
                     Cookies.remove("token");
                     window.location.reload();
+                    localStorage.clear();
                     // dispatch(userApi.util.resetApiState());
                   }}
                   className="w-full cursor-pointer hover:bg-slate-200 py-2"

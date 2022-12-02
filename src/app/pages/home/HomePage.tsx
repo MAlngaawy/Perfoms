@@ -18,6 +18,7 @@ import HomeLoading from "./organisms/HomeLoading";
 import HomePlayerInfoCard from "../../../@main/components/HomePlayerInfoCard";
 import HomeTeamInfoCard from "../../../@main/components/HomeTeamInfoCard";
 import PerformanceSummaryCard from "~/@main/components/PerformanceSummaryCard";
+import NoPlayersComp from "~/@main/components/NoPlayersComp";
 
 export type Players = {
   name: string;
@@ -77,7 +78,8 @@ const HomePage = () => {
         </div>
       ) : (
         <>
-          <HomeLoading />
+          <NoPlayersComp />
+          {/* <HomeLoading /> */}
         </>
       )}
     </div>
