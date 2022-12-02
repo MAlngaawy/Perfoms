@@ -42,6 +42,7 @@
     "react-otp-input": "^2.4.0",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.4.3",
+    "react-to-print": "^2.14.10",
     "recharts": "^2.1.16",
     "redux-logger": "^3.0.6",
     "swiper": "^8.4.5",
