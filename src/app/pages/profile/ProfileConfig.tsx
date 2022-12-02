@@ -18,7 +18,7 @@ const ProfilePageConfig: PagesRouteConfig = {
       },
     },
   },
-  auth: authRoles.User,
+  auth: authRoles.Parent,
   routes: [
     {
       path: "profile",

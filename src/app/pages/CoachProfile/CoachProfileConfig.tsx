@@ -18,7 +18,7 @@ const CoachProfileConfig: PagesRouteConfig = {
       },
     },
   },
-  auth: authRoles.User,
+  auth: authRoles.Coach,
   routes: [
     {
       path: "coach-profile",

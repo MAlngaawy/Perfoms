@@ -18,7 +18,7 @@ const SupervisorConfig: PagesRouteConfig = {
       },
     },
   },
-  auth: authRoles.User,
+  auth: authRoles.Supervisor,
   routes: [
     {
       path: "supervisor",

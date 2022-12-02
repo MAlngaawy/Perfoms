@@ -12,9 +12,6 @@ type Props = {};
 
 const SignInPage = (props: Props) => {
   const [signinHandler, { isLoading }] = useSigninMutation();
-
-  console.log(isLoading);
-
   // local schema
   yup.setLocale({
     // use constant translation keys for messages without values

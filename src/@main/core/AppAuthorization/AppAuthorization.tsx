@@ -5,6 +5,7 @@ import withRouter from "~/@main/core/withRouter";
 import history from "~/@history";
 import AppUtils from "~/@main/utils/AppUtils";
 import { AppRouteObject } from "~/@main/types/Config-Types";
+import { RolesMainRoute } from "./utils/RoutsRoles";
 
 type Props = {
   location: Location;
@@ -47,7 +48,6 @@ class AppAuthorization extends Component<PropsWithChildren<Props>, any> {
   static getDerivedStateFromProps(props: Props, state: any) {
     const { location, userRole } = props;
     const { pathname } = location;
-
     const matchedRoutes = matchRoutes<AppRouteObject>(state.routes, pathname);
     const matched = matchedRoutes ? matchedRoutes[0] : false;
     return {
@@ -66,7 +66,8 @@ class AppAuthorization extends Component<PropsWithChildren<Props>, any> {
       loginRedirectUrl = pathname;
     } else {
       setTimeout(() => history.push(redirectUrl), 0);
-      loginRedirectUrl = this.defaultLoginRedirectUrl;
+      loginRedirectUrl =
+        RolesMainRoute(userRole[0]) || this.defaultLoginRedirectUrl;
     }
   }
 

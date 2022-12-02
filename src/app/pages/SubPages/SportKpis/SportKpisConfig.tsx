@@ -18,7 +18,7 @@ const SportKpisPageConfig: PagesRouteConfig = {
       },
     },
   },
-  auth: authRoles.User,
+  auth: authRoles.Supervisor,
   routes: [
     {
       path: "supervisor/sports/:id",

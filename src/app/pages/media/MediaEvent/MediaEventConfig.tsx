@@ -18,7 +18,7 @@ const MediaEventConfig: PagesRouteConfig = {
       },
     },
   },
-  auth: authRoles.User,
+  auth: authRoles.All,
   routes: [
     {
       path: "/media/:id",

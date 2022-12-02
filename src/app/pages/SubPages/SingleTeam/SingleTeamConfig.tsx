@@ -18,7 +18,7 @@ const SingleTeamPageConfig: PagesRouteConfig = {
       },
     },
   },
-  auth: authRoles.User,
+  auth: authRoles.Supervisor,
   routes: [
     {
       path: "admin/teams/:id",

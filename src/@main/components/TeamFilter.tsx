@@ -8,19 +8,19 @@ import {
   selectPlayerTeam,
 } from "~/app/store/parent/parentSlice";
 import { usePlayerTeamsQuery } from "~/app/store/parent/parentApi";
-import { Team } from "~/app/store/types/supervisor-types";
+import { useMyTeamsQuery } from "~/app/store/coach/coachApi";
+import { PlayerTeams } from "~/app/store/types/parent-types";
 
 type Props = {};
 
 const TeamFilter = (props: Props) => {
   const dispatch = useDispatch();
   const selectedPlayer = useSelector(selectedPlayerFn);
-  const { data: playerTeams } = usePlayerTeamsQuery(
+  let { data: playerTeams } = usePlayerTeamsQuery(
     { id: selectedPlayer?.id },
     { skip: !selectedPlayer }
   );
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
-
   useEffect(() => {
     if (playerTeams)
       dispatch(
