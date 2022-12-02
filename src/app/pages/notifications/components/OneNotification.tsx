@@ -10,6 +10,10 @@ type Props = {
   created_at: string;
   newNotification?: boolean;
   senderAvatar: string;
+  name?: string;
+  content?: string;
+  date?: string;
+  image?: string;
 };
 const OneNotification = ({
   notification_type,

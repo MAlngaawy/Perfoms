@@ -8,7 +8,7 @@ import rootReducer from "./rootReducer";
 import { userApi } from "./user/userApi";
 import { coachApi } from "./coach/coachApi";
 import { createLogger } from "redux-logger";
-import { supervisorApi } from "./Supervisor/supervisorApi";
+import { supervisorApi } from "./supervisor/supervisorMainApi";
 
 export interface SerializedError {
   name?: string;

@@ -1,9 +1,6 @@
 import TeamCard from "./SubComponents/TeamCard";
 import AddTeamCardForm from "./SubComponents/AddTeamCardForm";
-import {
-  useSuperkpisQuery,
-  useSuperTeamsQuery,
-} from "~/app/store/Supervisor/supervisorApi";
+import { useSuperTeamsQuery } from "~/app/store/supervisor/supervisorMainApi";
 
 type Props = {};
 

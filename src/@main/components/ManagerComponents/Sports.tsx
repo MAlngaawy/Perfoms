@@ -1,10 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useSuperSportQuery } from "~/app/store/Supervisor/supervisorApi";
+
 import AddSport from "./SubComponents/AddSport";
 import DeleteButton from "./SubComponents/DeleteButton";
 import EditSport from "./SubComponents/EditSport";
 import { Avatar } from "@mantine/core";
+import { useSuperSportQuery } from "~/app/store/supervisor/supervisorMainApi";
 
 type Props = {};
 
