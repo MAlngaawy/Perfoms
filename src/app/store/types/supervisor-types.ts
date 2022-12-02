@@ -18,10 +18,10 @@ export type kpi = {
 export type RatePer = "Week" | "Two_Weeks" | "Month";
 
 export type AddAction = {
-  id: number;
+  id?: number;
   name: string;
   description?: string;
-  // metric_id: string;
+  metric_id: number;
 };
 
 export type AddEvent = {
@@ -33,10 +33,10 @@ export type AddEvent = {
 };
 
 export type AddRecommendation = {
-  id: number;
+  id?: number;
   name: string;
   description?: string;
-  // metric_id: string;
+  metric_id: number;
 };
 
 export type TeamCoach = {

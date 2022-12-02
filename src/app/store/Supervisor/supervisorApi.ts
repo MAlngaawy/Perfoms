@@ -1,7 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BASE_HEADERS, BASE_URL } from "~/app/configs/dataService";
 import { ClubManagerSport, Teams } from "../types/clubManager-types";
-import { kpi, Kpis, Metrics } from "../types/supervisor-types";
+import {
+  AddAction,
+  AddRecommendation,
+  kpi,
+  Kpis,
+  Metrics,
+} from "../types/supervisor-types";
 
 export const supervisorApi = createApi({
   reducerPath: "supervisorApi",
@@ -38,6 +44,22 @@ export const supervisorApi = createApi({
         body,
       }),
     }),
+
+    addAction: mutation<AddAction, AddAction>({
+      query: ({ metric_id, ...body }) => ({
+        url: `add-action/${metric_id}/`,
+        method: "POST",
+        body,
+      }),
+    }),
+
+    addRecommendations: mutation<AddRecommendation, AddRecommendation>({
+      query: ({ metric_id, ...body }) => ({
+        url: `add-recommendation/${metric_id}/`,
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -48,4 +70,6 @@ export const {
   useSuperKpisQuery,
   useAddKpiMutation,
   useSuperMetricsQuery,
+  useAddActionMutation,
+  useAddRecommendationsMutation,
 } = supervisorApi;

@@ -5,9 +5,11 @@ import AddActionModal from "./AddActionModal";
 import { Group } from "@mantine/core";
 import AddRecomendationModal from "./AddRecommendationModal";
 
-type Props = {};
+type Props = {
+  metricId: number;
+};
 
-const CreateActionsAndRecomm = (props: Props) => {
+const CreateActionsAndRecomm = ({ metricId }: Props) => {
   const [openedAction, setOpenedAction] = useState(false);
   const [openedRecommendation, setOpenedRecommendation] = useState(false);
   return (
@@ -22,10 +24,15 @@ const CreateActionsAndRecomm = (props: Props) => {
           </button>
         </Menu.Target>
 
-        <AddActionModal opened={openedAction} setOpened={setOpenedAction} />
+        <AddActionModal
+          opened={openedAction}
+          setOpened={setOpenedAction}
+          metricId={metricId}
+        />
         <AddRecomendationModal
           opened={openedRecommendation}
           setOpened={setOpenedRecommendation}
+          metricId={metricId}
         />
 
         <Menu.Dropdown>

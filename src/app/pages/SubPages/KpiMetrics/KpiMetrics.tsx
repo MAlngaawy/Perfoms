@@ -39,7 +39,7 @@ const KpiMetrics = (props: Props) => {
               <DeleteButton name={metric.name} id={metric.id} type="Metric" />
             </div>
             <div className="flex absolute right-2 top-5 gap-2">
-              <CreateActionsAndRecomm />
+              <CreateActionsAndRecomm metricId={metric.id} />
             </div>
           </div>
         );

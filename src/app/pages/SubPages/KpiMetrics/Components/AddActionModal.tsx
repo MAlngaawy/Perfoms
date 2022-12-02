@@ -6,10 +6,12 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import SubmitButton from "../../../../../@main/components/SubmitButton";
+import { useAddActionMutation } from "~/app/store/Supervisor/supervisorApi";
 
 type Props = {
   opened: boolean;
   setOpened: any;
+  metricId: number;
 };
 
 const schema = yup.object().shape({
@@ -17,8 +19,9 @@ const schema = yup.object().shape({
   desc: yup.string().required("please add the action description"),
 });
 
-const AddActionModal = ({ opened, setOpened }: Props) => {
+const AddActionModal = ({ metricId, opened, setOpened }: Props) => {
   // const [opened, setOpened] = useState(false);
+  const [addAction, { isLoading }] = useAddActionMutation();
 
   const resetFields = () => {
     reset({
@@ -38,7 +41,12 @@ const AddActionModal = ({ opened, setOpened }: Props) => {
 
   // Submit Form Function
   const onSubmitFunction = (data: any) => {
-    console.log(data);
+    console.log({ metricId, ...data });
+    addAction({
+      metric_id: metricId,
+      name: data.name,
+      description: data.desc,
+    });
     setOpened(false);
     resetFields();
   };
@@ -106,7 +114,7 @@ const AddActionModal = ({ opened, setOpened }: Props) => {
               />
             </Input.Wrapper>
 
-            <SubmitButton isLoading={false} text="Add Action" />
+            <SubmitButton isLoading={isLoading} text="Add Action" />
           </form>
         </Modal>
 

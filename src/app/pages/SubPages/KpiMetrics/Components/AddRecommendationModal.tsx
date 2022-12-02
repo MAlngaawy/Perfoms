@@ -6,10 +6,12 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import SubmitButton from "../../../../../@main/components/SubmitButton";
+import { useAddRecommendationsMutation } from "~/app/store/Supervisor/supervisorApi";
 
 type Props = {
   opened: boolean;
   setOpened: any;
+  metricId: number;
 };
 
 const schema = yup.object().shape({
@@ -17,7 +19,9 @@ const schema = yup.object().shape({
   desc: yup.string().required("please add the recommendation description"),
 });
 
-const AddRecomendationModal = ({ opened, setOpened }: Props) => {
+const AddRecomendationModal = ({ metricId, opened, setOpened }: Props) => {
+  const [addRecommendation, { isLoading }] = useAddRecommendationsMutation();
+
   const resetFields = () => {
     reset({
       desc: "",
@@ -36,7 +40,12 @@ const AddRecomendationModal = ({ opened, setOpened }: Props) => {
 
   // Submit Form Function
   const onSubmitFunction = (data: any) => {
-    console.log(data);
+    console.log({ metricId, ...data });
+    addRecommendation({
+      metric_id: metricId,
+      name: data.name,
+      description: data.desc,
+    });
     setOpened(false);
     resetFields();
   };
@@ -104,7 +113,7 @@ const AddRecomendationModal = ({ opened, setOpened }: Props) => {
               />
             </Input.Wrapper>
 
-            <SubmitButton isLoading={false} text="Add Recommendation" />
+            <SubmitButton isLoading={isLoading} text="Add Recommendation" />
           </form>
         </Modal>
       </>
