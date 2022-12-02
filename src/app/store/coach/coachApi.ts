@@ -2,7 +2,9 @@ import {
   CoachPlayerInfo,
   CoachTeamAttendance,
   CoachTeamPerformance,
+  PlayerParent,
   SendBulkNotifications,
+  sendNotifications,
   Team,
   TeamAttendanceDays,
   TeamPerformanceMetrics,
@@ -52,6 +54,15 @@ export const coachApi = createApi({
         body,
       }),
     }),
+
+    sendNotifications: mutation<sendNotifications, sendNotifications>({
+      query: (body) => ({
+        url: "send-notification/",
+        method: "POST",
+        body,
+      }),
+    }),
+
     updatePlayerPKM: mutation<UpdatePlayerPKM, UpdatePlayerPKM>({
       query: ({ id, team_id, ...body }) => ({
         url: `update-player-pkm/${id}/${team_id}/`,
@@ -72,6 +83,16 @@ export const coachApi = createApi({
     >({
       query: ({ player_id, ...params }) => ({
         url: `player-info/${player_id}/`,
+        params,
+      }),
+    }),
+
+    getParentInfo: query<
+      PlayerParent,
+      { player_id: string | undefined; page?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `parent-info/${player_id}/`,
         params,
       }),
     }),
@@ -133,6 +154,7 @@ export const {
   useGenerateDocMutation,
   useMyTeamsQuery,
   useSendBulkNotificationsMutation,
+  useSendNotificationsMutation,
   useTeamDetailsQuery,
   useUpdatePlayerPKMMutation,
   useGetTeamPlayersQuery,
@@ -140,6 +162,7 @@ export const {
   useCoachUpdateAttendanceMutation,
   useGetTeamPerformancesQuery,
   useGetPlayerInfoQuery,
+  useGetParentInfoQuery,
   useTeamAttendanceDaysQuery,
   useTeamPerformanceMetricsQuery,
 } = coachApi;

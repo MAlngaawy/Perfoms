@@ -1,44 +1,55 @@
 import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Info from "~/@main/components/Info";
+import { PlayerParent } from "~/app/store/types/coach-types";
+import { Avatar } from "@mantine/core";
+import classNames from "classnames";
+import {
+  useGetParentInfoQuery,
+  useGetPlayerInfoQuery,
+} from "~/app/store/coach/coachApi";
 
-interface ParentInfoCardProps {
-  id: number;
-  icon_url: string;
-  name: string;
-  dob: string;
-  players: string;
-}
-
-const ParentInfoCard = (parent: ParentInfoCardProps) => {
+const ParentInfoCard = ({
+  id,
+  first_name,
+  last_name,
+  avatar,
+  phone,
+  supscription,
+  job,
+  parentName,
+  playerName,
+}: any) => {
   const navigate = useNavigate();
-  const location = useLocation();
 
   return (
-    <div className="p-4 m-1 md:m-3 md:h-76 bg-white rounded-3xl flex flex-col items-center md:items-start gap-1">
-      <div>
-        <div className="playerName">
-          <h2>Parent's info</h2>
-        </div>
+    <div className="p-4  h-full border border-perfGray4 bg-white rounded-3xl flex flex-col gap-1">
+      <h2>Parent's info</h2>
+
+      <div className="flex gap-6 h-full">
         <div className="img my-2">
-          <img
-            onClick={() => {
-              navigate(`parent`, { state: { id: location.state.id } });
-            }}
-            src={
-              parent?.icon_url
-                ? parent?.icon_url
-                : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-            }
-            className="w-24 h-24 rounded-lg object-cover hover:cursor-pointer"
-            alt="player_image"
+          <Avatar
+            src={avatar}
+            className="w-40 h-full rounded-lg object-cover "
+            alt="parent"
           />
         </div>
-      </div>
-      <div className="infos">
-        <Info label="Name" value={parent?.name} />
-        <Info label="Age" value={parent?.dob} />
-        <Info label="Players" value={parent?.players} />
+        <div className="infos1 flex flex-col gap-6">
+          <Info label="Name" value={first_name + last_name} />
+          <Info label="Phone" value={phone} />
+        </div>
+        <div className="infos2 flex flex-col gap-6">
+          <Info label="Subscription" value={supscription} />
+          <Info label="Job" value={job} />
+          <button
+            className={classNames(
+              " text-xs sm:text-sm p-1 md:px-2 border border-perfBlue rounded-md text-perfBlue hover:text-white hover:bg-perfBlue "
+            )}
+            onClick={() => navigate(`parent/${id}/notify`)}
+          >
+            Notify Parent
+          </button>
+        </div>
       </div>
     </div>
   );

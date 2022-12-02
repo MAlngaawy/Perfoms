@@ -114,6 +114,14 @@ export type SendBulkNotifications = {
   message: string;
 };
 
+export type sendNotifications = {
+  notification_type: NotificationType;
+  parent_id: number;
+  title: string;
+  message: string;
+  player_id: number;
+};
+
 export type UpdatePlayerPKM = {
   id: number;
   team_id: number;
@@ -123,7 +131,7 @@ export type UpdatePlayerPKM = {
 
 export type PlayerParent = {
   id: number;
-  avatar: number;
+  avatar: string;
   first_name: string;
   last_name: string;
   subscription: string;
