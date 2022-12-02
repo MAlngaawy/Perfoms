@@ -52,7 +52,7 @@ export const userApi = createApi({
           showNotification({
             title: "Auth notification",
             //@ts-ignore
-            message: `${error.error.message} 🤥`,
+            message: `${error.error.data} 🤥`,
             color: "red",
           });
         }
@@ -69,11 +69,13 @@ export const userApi = createApi({
           const { data } = await queryFulfilled;
           Cookies.set("token", data?.data.access);
           eventInstance.emit("SignUp_Success");
-        } catch (error) {
+        } catch (error: any) {
+          console.log(error.error.data);
+
           showNotification({
             title: "Auth notification",
             //@ts-ignore
-            message: `${error.error.message} 🤥`,
+            message: `${error.error.data.message} 🤥`,
             color: "red",
           });
         }

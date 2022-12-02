@@ -21,6 +21,11 @@ const TeamFilter = (props: Props) => {
     { skip: !selectedPlayer }
   );
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
+
+  const { data: coachTeams } = useMyTeamsQuery(null);
+
+  if (!selectedPlayer) playerTeams = coachTeams as PlayerTeams | undefined;
+
   useEffect(() => {
     if (playerTeams)
       dispatch(
