@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Checkbox, Avatar, Box } from "@mantine/core";
+import { Table, Checkbox, Avatar, Box, Loader } from "@mantine/core";
 import cn from "classnames";
 import {
   useCoachUpdateAttendanceMutation,
@@ -56,7 +56,7 @@ const PerformanceTable = (props: Props) => {
           {teamPerformanceMetric?.player_metric.map((metric) => {
             return (
               <tr className="" key={metric.metric}>
-                <td className="text-sm w-48 sticky left-0 bg-white z-10 font-medium text-perfGray1">
+                <td className="text-sm w-48 sticky left-0 text-left bg-white z-10 font-medium text-perfGray1">
                   {metric.metric}
                 </td>
                 {teamPerformance?.results.map((player) => {
