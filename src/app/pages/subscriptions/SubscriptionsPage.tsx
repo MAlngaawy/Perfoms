@@ -64,7 +64,7 @@ const SubscriptionsPage = () => {
         </p>
       </div>
       <div className="bg-white rounded-3xl ">
-        <div className="subscription-board mt-12 flex flex-col md:flex-row  p-6 md:p-10 sm:mx-20 gap-10">
+        <div className="subscription-board  flex flex-col md:flex-row p-10 gap-6 justify-between">
           {subscriptions &&
             subscriptions.results.map((plan: any) => (
               <SubscriptionCard plan={plan} selectPlan={selectPlan} />

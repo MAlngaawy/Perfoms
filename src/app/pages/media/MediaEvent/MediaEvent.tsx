@@ -18,7 +18,10 @@ import {
   useEventFilesQuery,
   useTeamEventQuery,
 } from "~/app/store/parent/parentApi";
-import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
+import {
+  selectedPlayerTeamFn,
+  selectPlayerTeam,
+} from "~/app/store/parent/parentSlice";
 import { useSelector } from "react-redux";
 import TeamFilter from "~/@main/components/TeamFilter";
 import useWindowSize from "../../../../@main/hooks/useWindowSize";
@@ -28,6 +31,7 @@ const TRANSITION_DURATION = 200;
 const MediaEvent = () => {
   const { id } = useParams();
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
+
   const { data: event } = useTeamEventQuery(
     { eventId: id ? +id : 0, teamId: selectedPlayerTeam?.id },
     { skip: !id || !selectedPlayerTeam }
@@ -35,12 +39,10 @@ const MediaEvent = () => {
 
   const windowSize = useWindowSize();
 
-  const { data: eventFiles } = useEventFilesQuery(
+  const { data: eventFiles, isLoading } = useEventFilesQuery(
     { eventId: id ? +id : 0 },
     { skip: !id }
   );
-
-  console.log(eventFiles);
 
   const [embla, setEmbla] = useState<any>(null);
   const [opened, setOpened] = useState(false);
@@ -92,14 +94,42 @@ const MediaEvent = () => {
     handleYoutubeLinkInput();
   }, [youtubeLink]);
 
-  const slides = eventFiles?.results.map((file, index) => (
-    <Carousel.Slide className="bg-white" key={index}>
-      <Image src={file.file} />
-    </Carousel.Slide>
-  ));
+  // const slides = eventFiles?.results.map((file, index) => (
+  //   <Carousel.Slide className="bg-white" key={index}>
+  //     <Image src={file.file} />
+  //   </Carousel.Slide>
+  // ));
 
   return (
-    <Slider images={eventFiles?.results || []} />
+    <>
+      <div className="p-4 md:p-20">
+        <Slider isLoading={isLoading} images={eventFiles?.results || []} />
+        {/* <div className="flex flex-col">
+          <div className="flex flex-col gap-1 text-perfGray2 text-sm font-medium">
+            <p className="text-lg md:text-2xl pb-1 text-black">
+              {event?.name || "Event Name"}
+            </p>
+            <p>
+              <AppIcons className="w-5 inline" icon="CalendarIcon:outline" />{" "}
+              {event?.date || "Event Date"}
+            </p>
+            <p>
+              <AppIcons className="w-5 inline" icon="MapIcon:outline" />{" "}
+              {event?.club.name || "Club Name"} Club
+            </p>
+          </div>
+          {user?.user_type !== "Parent" && (
+            <Button
+              label={window.innerWidth > 567 ? "Add Media" : "Media"}
+              onClick={() => setOpened(true)}
+              style="primary"
+              className="h-20 shadow-xl w-20 xs:h-8 xs:w-32 mx-0 mt-0 rounded-full xs:border self-end xs:self-start xs:border-perfBlue xs:text-perfBlue xs:bg-transparent xs:hover:shadow-lg"
+              icon="plus icon"
+            />
+          )}
+        </div> */}
+      </div>
+    </>
     // <>
     //   <div className="h-full flex justify-center items-center mt-32">
     //     {eventFiles && eventFiles.results.length > 0 ? (
