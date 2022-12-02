@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import TeamPlayers from "../app/pages/Admin/SubPages/SingleTeam/Components/TeamPlayers";
+import TeamPlayers from "../app/pages/SubPages/SingleTeam/Components/TeamPlayers";
 import { Grid } from "@mantine/core";
 
 export default {

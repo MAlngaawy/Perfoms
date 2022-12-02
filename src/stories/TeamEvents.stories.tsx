@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import TeamUpcomingEvents from "../app/pages/Admin/SubPages/SingleTeam/Components/TeamUpcomingEvents";
+import TeamUpcomingEvents from "../app/pages/SubPages/SingleTeam/Components/TeamUpcomingEvents";
 import { Grid } from "@mantine/core";
 
 export default {

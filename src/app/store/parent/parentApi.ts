@@ -185,11 +185,11 @@ export const parentsApi = createApi({
 
     playerKpisMetrics: query<
       PlayerKpis,
-      { player_id: number; team_id: number; from_date: string; to_date: string }
+      { player_id: number; team_id: number; date_from: string; date_to: string }
     >({
-      query: ({ player_id, team_id, from_date, to_date }) => ({
+      query: ({ player_id, team_id, date_from, date_to }) => ({
         url: `${player_id}/${team_id}/player-kpis-metrics/`,
-        params: { from_date, to_date },
+        params: { date_from, date_to },
       }),
       providesTags: ["Parent"],
     }),

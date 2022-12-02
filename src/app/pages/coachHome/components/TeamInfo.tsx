@@ -1,9 +1,13 @@
-import { Grid } from "@mantine/core";
+import { Avatar, Grid } from "@mantine/core";
 import React from "react";
 import CustomCalendar from "~/@main/components/Calendar";
 import Card from "~/@main/components/Card";
 import { useNavigate } from "react-router-dom";
 import UpcomingEventsCard from "~/@main/components/UpcomingEventsCard";
+import { useSelector } from "react-redux";
+import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
+import { useGetTeamPlayersQuery } from "~/app/store/coach/coachApi";
+import HomeTeamInfoCard from "~/@main/components/HomeTeamInfoCard";
 
 type Props = {};
 
@@ -139,18 +143,22 @@ const dummyData = [
 ];
 
 const TeamInfo = (props: Props) => {
+  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
+
+  const { data: coahcTeamPlayers } = useGetTeamPlayersQuery(
+    { team_id: selectedPlayerTeam?.id },
+    { skip: !selectedPlayerTeam }
+  );
+
   const navigate = useNavigate();
   return (
     <div className="m-4">
       <Grid gutter={"sm"}>
         <Grid.Col span={12} sm={4}>
-          <Card type="teamInfo" />
+          <HomeTeamInfoCard />
         </Grid.Col>
         <Grid.Col span={12} xs={8} sm={5}>
-          <CustomCalendar
-            //@ts-ignore
-            data={[{ attendance: "ABSENT", day: "11-11-2022" }]}
-          />
+          <CustomCalendar />
         </Grid.Col>
         <Grid.Col span={12} xs={4} sm={3}>
           <UpcomingEventsCard />
@@ -159,19 +167,20 @@ const TeamInfo = (props: Props) => {
           className="bg-white p-4 rounded-3xl flex gap-4 justify-start items-center flex-wrap"
           span={12}
         >
-          {dummyData.map((player, idx) => {
+          {coahcTeamPlayers?.results.map((player, idx) => {
             return (
               <div
                 key={idx}
                 className="shadow-xl cursor-pointer transform hover:scale-105 rounded-lg w-28 text-center bg-white flex flex-col justify-center items-center"
-                onClick={() => navigate("/players")}
+                // onClick={() => navigate(`/players`)}
+                onClick={() => navigate(`/players/${player.id}`)}
               >
-                <img
+                <Avatar
                   className="rounded-lg w-full h-28 object-cover"
-                  src={player.image}
+                  src={player.icon}
                   alt="player Image"
                 />
-                <h2 className="text-base">{player.name}</h2>
+                <h2 className="text-sm">{player.name}</h2>
               </div>
             );
           })}

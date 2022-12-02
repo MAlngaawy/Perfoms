@@ -2,15 +2,16 @@ import React, { useState } from "react";
 import PlayerInfoCard from "../components/PlayerInfoCard";
 import PlayerNav from "../components/PlayerNav";
 import ParentInfoCard from "../components/ParentInfoCard";
-import { Grid } from "@mantine/core";
+import { Avatar, Grid } from "@mantine/core";
 import AttendanceCard from "../components/AttendanceCard";
 import AttendanceCheckBox from "../components/AttendanceCheckBox";
 import TotalDaysCard from "../components/TotalDaysCard";
 import Notes from "../components/Notes";
 import Performances from "../components/Performance";
 import TotalAttendance from "../../reports/components/TotalAttendance";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { PlayerData } from "~/app/store/types/user-types";
+import { useGetPlayerInfoQuery } from "~/app/store/coach/coachApi";
 
 // dummy data
 const playerSummary = [
@@ -264,10 +265,23 @@ const parent = {
 const PlayerDetails = () => {
   const [showCard, setShowCard] = useState("playerInfo");
   const location = useLocation();
+  const params = useParams();
+
+  const { data: player } = useGetPlayerInfoQuery(
+    { player_id: params.id },
+    { skip: !params.id }
+  );
+
+  console.log(player);
 
   return (
     <div className="p-4">
-      <PlayerNav showCard={showCard} setShowCard={setShowCard} />
+      {/* <Avatar src={player?.icon} /> */}
+      <PlayerInfoCard
+        playerData={player || playerData}
+        playerSummary={playerSummary}
+      />
+      {/* <PlayerNav showCard={showCard} setShowCard={setShowCard} />
       {showCard === "playerInfo" && (
         <Grid columns={12}>
           <Grid.Col sm={9} span={12}>
@@ -313,7 +327,7 @@ const PlayerDetails = () => {
           <AttendanceCard />
           <Performances data={performancesDate} />
         </>
-      )}
+      )} */}
     </div>
   );
 };

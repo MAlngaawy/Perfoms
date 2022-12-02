@@ -1,3 +1,4 @@
+import { Attendance } from "./attendance-types";
 import { BaseGetAllType } from "./base-types";
 import { TeamPlayer } from "./clubManager-types";
 import { RatePer } from "./supervisor-types";
@@ -17,26 +18,14 @@ export type CoachForParent = {
 };
 
 export type TeamKpiMetric = {
+  icon: string;
   id: number;
-  metric: {
+  name: string;
+  player_metric: {
     id: number;
-    name: string;
-  };
-  player_kpi: {
-    id: number;
-    kpi: {
-      id: number;
-      icon: string;
-      name: string;
-    };
-    player: {
-      id: number;
-      icon: string;
-      name: string;
-    };
-  };
-  score: number;
-  max_score: number;
+    last_score: number;
+    metric: string;
+  }[];
 };
 
 export type Coach = {
@@ -91,6 +80,14 @@ export type GeneratePdfDocs = {
 //   sport: number;
 // };
 
+export type TeamAttendanceDays = {
+  player_attendance: { day: string }[];
+};
+
+export type TeamPerformanceMetrics = {
+  player_metric: { metric: string }[];
+};
+
 export type Team = {
   id: number;
   coaches: CoachForParent[];
@@ -119,7 +116,9 @@ export type SendBulkNotifications = {
 
 export type UpdatePlayerPKM = {
   id: number;
+  team_id: number;
   score: number;
+  max_score: number;
 };
 
 export type PlayerParent = {
@@ -145,7 +144,21 @@ export type PlayerAttendance = BaseGetAllType & {
     };
   }[];
 };
-export type TeamAttendance = PlayerAttendance;
+
+export type CoachAttendance = {
+  icon: string;
+  id: number;
+  name: string;
+  player_attendance: {
+    id: number;
+    day: string;
+    status: "ATTENDED" | "ABSENT" | "UPCOMING";
+  }[];
+};
+
+export type CoachTeamAttendance = BaseGetAllType & {
+  results: CoachAttendance[];
+};
 
 export type CoachPlayerInfo = {
   id: number;

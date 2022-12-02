@@ -14,6 +14,7 @@ export type Subscription = {
   description: string;
   price: string;
   current_plan: boolean;
+  most_popular: boolean;
 };
 
 export type ActiveSubscription = {
@@ -228,6 +229,7 @@ export type PlayerKpi = {
   id: number;
   kpi: string;
   score_avg: number;
+  old_score_avg: number;
 };
 
 export type PlayerKpis = {

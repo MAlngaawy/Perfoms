@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import Teams from "../app/pages/Admin/Components/Teams";
+import Teams from "../@main/components/ManagerComponents/Teams";
 import { MemoryRouter } from "react-router-dom";
 
 export default {

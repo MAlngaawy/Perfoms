@@ -39,6 +39,10 @@ module.exports = {
         pagesBg: "#f3f5f8",
         perfLightBlue: "#ECF4FF",
         perfLightGray: "#F6F6F6",
+        scoreGreen: "#00E096",
+        scoreRed: "#EB5757",
+        scoreYallow: "#F2C94C",
+        scoreGray: "#F7F7F7",
       },
       screens: {
         xs: "576px",
