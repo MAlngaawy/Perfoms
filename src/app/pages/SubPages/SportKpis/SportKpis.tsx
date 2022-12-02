@@ -23,7 +23,7 @@ const SportKpis = (props: Props) => {
               <Avatar
                 radius={"xl"}
                 className="w-3/5 h-3/5"
-                src={kpi.icon}
+                src={kpi.icon_url}
                 alt="icon"
               />
             </Link>

@@ -99,7 +99,7 @@ const ReportPage = () => {
             </div>
           </div>
           {reportType === "Performances" ? (
-            <div className="bg-pagesBg" ref={perfCompRef}>
+            <div>
               {/* <ComponentToPrint ref={componentRef} /> */}
               <div
                 onClick={handlePrint}
@@ -111,51 +111,53 @@ const ReportPage = () => {
                 />
                 <span>PDF</span>
               </div>
-              <Grid columns={12} gutter={"sm"}>
-                <Grid.Col sm={3} md={2.5} span={12}>
-                  <HomePlayerInfoCard />
-                </Grid.Col>
-                <Grid.Col sm={9} md={9.5} span={12}>
-                  <PerformanceSummaryCard />
-                </Grid.Col>
-              </Grid>
-              <Grid columns={12} gutter={"sm"} className="info mt-3">
-                <Grid.Col sm={4} span={12}>
-                  <Card
-                    type="power"
-                    color="text-[#27AE60]"
-                    bg="bg-fadedGreen"
-                    powerType="Strength"
-                    scores={scores}
-                  />
-                </Grid.Col>
-                <Grid.Col sm={4} span={12}>
-                  <Card
-                    type="power"
-                    color="text-[#F2C94C]"
-                    bg="bg-fadedYellow"
-                    powerType="Strength"
-                    scores={scores}
-                  />
-                </Grid.Col>
-                <Grid.Col sm={4} span={12}>
-                  <Card
-                    type="power"
-                    color="text-[#EB5757]"
-                    bg="bg-fadedRed"
-                    powerType="Strength"
-                    scores={scores}
-                  />
-                </Grid.Col>
-              </Grid>
-              <Grid columns={12} gutter={"sm"} className="info mt-3">
-                <Grid.Col sm={6} span={12}>
-                  <ActionsCard player_id={player?.id} />
-                </Grid.Col>
-                <Grid.Col sm={6} span={12}>
-                  <RecommendationsCard player_id={player?.id} />
-                </Grid.Col>
-              </Grid>{" "}
+              <div className="bg-pagesBg" ref={perfCompRef}>
+                <Grid columns={12} gutter={"sm"}>
+                  <Grid.Col sm={3} md={2.5} span={12}>
+                    <HomePlayerInfoCard />
+                  </Grid.Col>
+                  <Grid.Col sm={9} md={9.5} span={12}>
+                    <PerformanceSummaryCard />
+                  </Grid.Col>
+                </Grid>
+                <Grid columns={12} gutter={"sm"} className="info mt-3">
+                  <Grid.Col sm={4} span={12}>
+                    <Card
+                      type="power"
+                      color="text-[#27AE60]"
+                      bg="bg-fadedGreen"
+                      powerType="Strength"
+                      scores={scores}
+                    />
+                  </Grid.Col>
+                  <Grid.Col sm={4} span={12}>
+                    <Card
+                      type="power"
+                      color="text-[#F2C94C]"
+                      bg="bg-fadedYellow"
+                      powerType="Strength"
+                      scores={scores}
+                    />
+                  </Grid.Col>
+                  <Grid.Col sm={4} span={12}>
+                    <Card
+                      type="power"
+                      color="text-[#EB5757]"
+                      bg="bg-fadedRed"
+                      powerType="Strength"
+                      scores={scores}
+                    />
+                  </Grid.Col>
+                </Grid>
+                <Grid columns={12} gutter={"sm"} className="info mt-3">
+                  <Grid.Col sm={6} span={12}>
+                    <ActionsCard player_id={player?.id} />
+                  </Grid.Col>
+                  <Grid.Col sm={6} span={12}>
+                    <RecommendationsCard player_id={player?.id} />
+                  </Grid.Col>
+                </Grid>{" "}
+              </div>
             </div>
           ) : (
             <div className="attendances">

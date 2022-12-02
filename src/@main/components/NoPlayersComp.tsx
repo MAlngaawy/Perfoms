@@ -6,7 +6,7 @@ type Props = {};
 
 const NoPlayersComp = (props: Props) => {
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex justify-center items-center h-screen">
       <div className="card bg-white rounded-xl flex flex-col gap-6 text-center p-8">
         <Avatar
           size={"xl"}

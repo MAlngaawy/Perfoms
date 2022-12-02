@@ -5,6 +5,7 @@ import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 import CoachCard from "./components/CoachCard";
 import TeamFilter from "../../../@main/components/TeamFilter";
 import CoachesLoading from "./components/CoachesLoading";
+import NoPlayersComp from "../../../@main/components/NoPlayersComp";
 
 type Props = {
   coaches?: object[];
@@ -12,18 +13,24 @@ type Props = {
 
 const CoachesPage = ({ coaches }: Props) => {
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
-  const { data: playerCoaches, isLoading } = useTeamCoachesQuery(
+  const {
+    data: playerCoaches,
+    isLoading,
+    isSuccess,
+  } = useTeamCoachesQuery(
     { teamId: selectedPlayerTeam?.id },
     { skip: !selectedPlayerTeam }
   );
-  return (
-    <div className="coaches p-2">
-      <div className="flex justify-end my-2">
-        <TeamFilter />
-      </div>
-      {isLoading ? (
-        <CoachesLoading />
-      ) : (
+
+  if (isLoading) return <CoachesLoading />;
+
+  if (isSuccess)
+    return (
+      <div className="coaches p-2">
+        <div className="flex justify-end my-2">
+          <TeamFilter />
+        </div>
+        {!playerCoaches?.results.length && <NoPlayersComp />}
         <Grid gutter={10}>
           {playerCoaches?.results.map((coach) => {
             return (
@@ -42,9 +49,8 @@ const CoachesPage = ({ coaches }: Props) => {
             );
           })}
         </Grid>
-      )}
-    </div>
-  );
+      </div>
+    );
 };
 
 export default CoachesPage;

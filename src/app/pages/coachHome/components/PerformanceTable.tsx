@@ -38,7 +38,7 @@ const PerformanceTable = (props: Props) => {
 
   return (
     <div className="overflow-scroll max-h-screen relative m-6 bg-white rounded-lg text-center">
-      <Table highlightOnHover horizontalSpacing="xl">
+      <Table highlightOnHover horizontalSpacing={20}>
         <thead>
           <tr className="">
             <th className="bg-white sticky  top-0 z-20 ">Day</th>
@@ -70,7 +70,7 @@ const PerformanceTable = (props: Props) => {
                   }
                   return (
                     <td key={metric.metric}>
-                      <div className="flex gap-2 justify-center items-center">
+                      <div className="flex gap-2 justify-center items-center m-10">
                         {[1, 2, 3, 4, 5].map((number) => (
                           <span
                             onClick={() => {

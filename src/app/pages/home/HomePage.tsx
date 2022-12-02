@@ -43,15 +43,17 @@ const HomePage = () => {
   // );
   return (
     <div className="home-page px-5 mb-20">
-      <div className="my-4 flex xs:flex-row gap-2 justify-between items-center">
-        <div className="flex gap-3 items-center">
-          <AddPlayer />
+      {selectedPlayer && selectedPlayerTeam && (
+        <div className="my-4 flex xs:flex-row gap-2 justify-between items-center">
+          <div className="flex gap-3 items-center">
+            <AddPlayer />
+          </div>
+          <div className="flex gap-1 justify-center items-center md:pt-0">
+            <TeamFilter />
+            <TimeFilter />
+          </div>
         </div>
-        <div className="flex gap-1 justify-center items-center md:pt-0">
-          <TeamFilter />
-          <TimeFilter />
-        </div>
-      </div>
+      )}
       {selectedPlayer && selectedPlayerTeam ? (
         <div className="flex flex-col gap-4">
           <Grid columns={12} gutter={"md"}>

@@ -46,7 +46,9 @@ const Toolbar = ({ setOpened }: Props) => {
           />
           <span>{playerClub?.name || "Alam alryada"}</span>
         </div>
-        <SelectUser />
+
+        {/* Select Player For the Parent */}
+        {user?.user_type === "Parent" && <SelectUser />}
       </div>
       <div className="right flex gap-2 justify-center items-center">
         {/* Messages Menu */}
