@@ -9,6 +9,7 @@ import { PlayerSport, SportTeam } from "~/app/store/types/parent-types";
 import { axiosInstance } from "../../../configs/dataService";
 import {
   useClubSportsQuery,
+  useMyPlayersQuery,
   useSportTeamsQuery,
 } from "~/app/store/parent/parentApi";
 import { DatePicker } from "@mantine/dates";
@@ -43,6 +44,7 @@ const schema = yup.object().shape({
 });
 
 const AddPlayer = (props: Props) => {
+  const { refetch } = useMyPlayersQuery({});
   const [open, setOpen] = React.useState(false);
   const [playerImage, setPlayerImage] = React.useState<any>();
   const [playerImagePreview, setPlayerImagePreview] = React.useState("null");
@@ -105,6 +107,7 @@ const AddPlayer = (props: Props) => {
           setOpen(false);
           console.log(res);
           setPlayerImage(null);
+          refetch();
         })
         .catch((err) => {
           setIsLoading(false);

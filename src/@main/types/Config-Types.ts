@@ -8,6 +8,7 @@ export interface NavigationConfigTypes {
   type: string;
   icon: `${IconName}:${"outline" | "solid"}`;
   url: string;
+  auth: string[];
 }
 
 export type AppRouteObject = RouteObject & {

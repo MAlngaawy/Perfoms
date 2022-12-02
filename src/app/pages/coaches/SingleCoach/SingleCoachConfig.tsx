@@ -18,7 +18,7 @@ const SingleCoacheConfig: PagesRouteConfig = {
       },
     },
   },
-  auth: authRoles.User,
+  auth: authRoles.Parent,
   routes: [
     {
       path: "/coaches/:id",

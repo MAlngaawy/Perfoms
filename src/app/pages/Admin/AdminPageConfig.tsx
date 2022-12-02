@@ -18,7 +18,7 @@ const AdminPageConfig: PagesRouteConfig = {
       },
     },
   },
-  auth: authRoles.User,
+  auth: authRoles.Admin,
   routes: [
     {
       path: "admin",

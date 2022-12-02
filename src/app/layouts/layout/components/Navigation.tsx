@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Box, Drawer, Group, Grid, Collapse } from "@mantine/core";
 import { NavLink } from "react-router-dom";
 import Cookies from "js-cookie";
-import { userApi } from "~/app/store/user/userApi";
+import { userApi, useUserQuery } from "~/app/store/user/userApi";
 import cn from "classnames";
 import { useDispatch } from "react-redux";
 
@@ -18,6 +18,8 @@ type Props = {
 };
 
 const Navigation = ({ opened, setOpened }: Props) => {
+  const { data: user } = useUserQuery(null);
+
   return (
     <>
       {/* Large Screens SideBar */}
@@ -36,7 +38,7 @@ const Navigation = ({ opened, setOpened }: Props) => {
           className="Test h-full flex flex-col overflow-scroll justify-start items-center gap-2 fixed"
         >
           <Info />
-          <NavList setOpened={setOpened} />
+          <NavList role={user?.user_type} setOpened={setOpened} />
           {/* <UserButton /> */}
         </div>
       </Grid.Col>
@@ -57,7 +59,7 @@ const Navigation = ({ opened, setOpened }: Props) => {
           className="overflow-scroll"
         >
           <Info />
-          <NavList setOpened={setOpened} />
+          <NavList role={user?.user_type} setOpened={setOpened} />
           {/* <UserButton /> */}
         </Drawer>
       </div>
@@ -102,34 +104,37 @@ const Info = () => {
   );
 };
 
-const NavList = ({ setOpened }: any) => {
+const NavList = ({ setOpened, role }: any) => {
   return (
     <div className="flex w-full px-6 flex-col gap-2">
-      {navigationConfig.map((i) => (
-        <NavLink
-          to={i.url}
-          key={i.id}
-          onClick={() => setOpened(false)}
-          className={
-            "rounded-lg text-sm font-medium flex content-center items-center gap-2 py-3 xl:py-4 w-full hover:bg-perfBlue hover:text-white hover:justify-center "
-          }
-          style={({ isActive }) =>
-            isActive
-              ? {
-                  backgroundColor: "#2F80ED",
-                  color: "#ffffff",
-                  justifyContent: "center",
-                  boxShadow: "0px 5px 20px 0px #13234B42",
-                }
-              : {
-                  color: "#828282",
-                }
-          }
-        >
-          <AppIcons className="w-5 h-5" icon={i.icon} />
-          <p>{i.title}</p>
-        </NavLink>
-      ))}
+      {role &&
+        navigationConfig
+          .filter((i) => i.auth.includes(role))
+          .map((i) => (
+            <NavLink
+              to={i.url}
+              key={i.id}
+              onClick={() => setOpened(false)}
+              className={
+                "rounded-lg text-sm font-medium flex content-center items-center gap-2 py-3 xl:py-4 w-full hover:bg-perfBlue hover:text-white hover:justify-center "
+              }
+              style={({ isActive }) =>
+                isActive
+                  ? {
+                      backgroundColor: "#2F80ED",
+                      color: "#ffffff",
+                      justifyContent: "center",
+                      boxShadow: "0px 5px 20px 0px #13234B42",
+                    }
+                  : {
+                      color: "#828282",
+                    }
+              }
+            >
+              <AppIcons className="w-5 h-5" icon={i.icon} />
+              <p>{i.title}</p>
+            </NavLink>
+          ))}
     </div>
   );
 };
