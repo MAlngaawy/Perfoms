@@ -12,13 +12,15 @@ import { useUserQuery } from "~/app/store/user/userApi";
 import { TeamEvents } from "~/app/store/types/parent-types";
 import { useCoachTeamEventQuery } from "~/app/store/coach/coachApi";
 import { useSuprtEventsQuery } from "~/app/store/supervisor/supervisorMainApi";
+import NoTeamComp from "~/@main/components/NoTeamComp";
+import NoEventsComp from "~/@main/components/NoEventsComp";
 
 const MediaPage = () => {
   const [events, setEvents] = useState<TeamEvents | undefined>();
 
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const { data: user } = useUserQuery(null);
-  console.log(user);
+  console.log(selectedPlayerTeam);
 
   const { data: parentEvents } = useTeamEventsQuery(
     { teamId: selectedPlayerTeam?.id },
@@ -45,14 +47,23 @@ const MediaPage = () => {
       <div className="flex justify-end m-2">
         <TeamFilter />
       </div>
-      {events ? (
-        <div className="flex flex-col xs:flex-row xs:items-center flex-wrap gap-2 m-4">
-          {events.results.map((data) => {
-            return <MediaCard key={data.id} event={data} />;
-          })}
-        </div>
-      ) : (
-        <MediaPageLoading />
+      {!selectedPlayerTeam && <NoTeamComp />}
+      {selectedPlayerTeam && (
+        <>
+          {events && events.results.length > 0 ? (
+            events ? (
+              <div className="flex flex-col xs:flex-row xs:items-center flex-wrap gap-2 m-4">
+                {events.results.map((data) => {
+                  return <MediaCard key={data.id} event={data} />;
+                })}
+              </div>
+            ) : (
+              <MediaPageLoading />
+            )
+          ) : (
+            <NoEventsComp />
+          )}
+        </>
       )}
     </div>
   );
