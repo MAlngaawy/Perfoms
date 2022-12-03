@@ -8,139 +8,9 @@ import { useSelector } from "react-redux";
 import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 import { useGetTeamPlayersQuery } from "~/app/store/coach/coachApi";
 import HomeTeamInfoCard from "~/@main/components/HomeTeamInfoCard";
+import NoTeamComp from "~/@main/components/NoTeamComp";
 
 type Props = {};
-
-const dummyData = [
-  {
-    image:
-      "https://images.squarespace-cdn.com/content/v1/555b5271e4b01e1078b507c9/1507748548198-FGFV23QUHHF2VHAFUT1C/squarespace-SHP-kids2_0003.jpg?format=2500w",
-    name: "Hamza Mohammed Ahmed",
-    id: 1,
-  },
-  {
-    image:
-      "https://images.squarespace-cdn.com/content/v1/555b5271e4b01e1078b507c9/1507748548198-FGFV23QUHHF2VHAFUT1C/squarespace-SHP-kids2_0003.jpg?format=2500w",
-    name: "Hamza Mohammed Ahmed",
-    id: 1,
-  },
-  {
-    image:
-      "https://images.squarespace-cdn.com/content/v1/555b5271e4b01e1078b507c9/1507748548198-FGFV23QUHHF2VHAFUT1C/squarespace-SHP-kids2_0003.jpg?format=2500w",
-    name: "Hamza Mohammed Ahmed",
-    id: 1,
-  },
-  {
-    image:
-      "https://images.squarespace-cdn.com/content/v1/555b5271e4b01e1078b507c9/1507748548198-FGFV23QUHHF2VHAFUT1C/squarespace-SHP-kids2_0003.jpg?format=2500w",
-    name: "Hamza Mohammed Ahmed",
-    id: 1,
-  },
-  {
-    image:
-      "https://images.squarespace-cdn.com/content/v1/555b5271e4b01e1078b507c9/1507748548198-FGFV23QUHHF2VHAFUT1C/squarespace-SHP-kids2_0003.jpg?format=2500w",
-    name: "Hamza Mohammed Ahmed",
-    id: 1,
-  },
-  {
-    image:
-      "https://images.squarespace-cdn.com/content/v1/555b5271e4b01e1078b507c9/1507748548198-FGFV23QUHHF2VHAFUT1C/squarespace-SHP-kids2_0003.jpg?format=2500w",
-    name: "Hamza Mohammed Ahmed",
-    id: 1,
-  },
-  {
-    image:
-      "https://images.squarespace-cdn.com/content/v1/555b5271e4b01e1078b507c9/1507748548198-FGFV23QUHHF2VHAFUT1C/squarespace-SHP-kids2_0003.jpg?format=2500w",
-    name: "Hamza Mohammed Ahmed",
-    id: 1,
-  },
-  {
-    image:
-      "https://images.squarespace-cdn.com/content/v1/555b5271e4b01e1078b507c9/1507748548198-FGFV23QUHHF2VHAFUT1C/squarespace-SHP-kids2_0003.jpg?format=2500w",
-    name: "Hamza Mohammed Ahmed",
-    id: 1,
-  },
-  {
-    image:
-      "https://images.squarespace-cdn.com/content/v1/555b5271e4b01e1078b507c9/1507748548198-FGFV23QUHHF2VHAFUT1C/squarespace-SHP-kids2_0003.jpg?format=2500w",
-    name: "Hamza Mohammed Ahmed",
-    id: 1,
-  },
-
-  {
-    image:
-      "https://images.squarespace-cdn.com/content/v1/555b5271e4b01e1078b507c9/1507748548198-FGFV23QUHHF2VHAFUT1C/squarespace-SHP-kids2_0003.jpg?format=2500w",
-    name: "Hamza Mohammed Ahmed",
-    id: 1,
-  },
-  {
-    image:
-      "https://images.squarespace-cdn.com/content/v1/555b5271e4b01e1078b507c9/1507748548198-FGFV23QUHHF2VHAFUT1C/squarespace-SHP-kids2_0003.jpg?format=2500w",
-    name: "Hamza Mohammed Ahmed",
-    id: 1,
-  },
-  {
-    image:
-      "https://images.squarespace-cdn.com/content/v1/555b5271e4b01e1078b507c9/1507748548198-FGFV23QUHHF2VHAFUT1C/squarespace-SHP-kids2_0003.jpg?format=2500w",
-    name: "Hamza Mohammed Ahmed",
-    id: 1,
-  },
-  {
-    image:
-      "https://images.squarespace-cdn.com/content/v1/555b5271e4b01e1078b507c9/1507748548198-FGFV23QUHHF2VHAFUT1C/squarespace-SHP-kids2_0003.jpg?format=2500w",
-    name: "Hamza Mohammed Ahmed",
-    id: 1,
-  },
-  {
-    image:
-      "https://images.squarespace-cdn.com/content/v1/555b5271e4b01e1078b507c9/1507748548198-FGFV23QUHHF2VHAFUT1C/squarespace-SHP-kids2_0003.jpg?format=2500w",
-    name: "Hamza Mohammed Ahmed",
-    id: 1,
-  },
-  {
-    image:
-      "https://images.squarespace-cdn.com/content/v1/555b5271e4b01e1078b507c9/1507748548198-FGFV23QUHHF2VHAFUT1C/squarespace-SHP-kids2_0003.jpg?format=2500w",
-    name: "Hamza Mohammed Ahmed",
-    id: 1,
-  },
-
-  {
-    image:
-      "https://images.squarespace-cdn.com/content/v1/555b5271e4b01e1078b507c9/1507748548198-FGFV23QUHHF2VHAFUT1C/squarespace-SHP-kids2_0003.jpg?format=2500w",
-    name: "Hamza Mohammed Ahmed",
-    id: 1,
-  },
-  {
-    image:
-      "https://images.squarespace-cdn.com/content/v1/555b5271e4b01e1078b507c9/1507748548198-FGFV23QUHHF2VHAFUT1C/squarespace-SHP-kids2_0003.jpg?format=2500w",
-    name: "Hamza Mohammed Ahmed",
-    id: 1,
-  },
-  {
-    image:
-      "https://images.squarespace-cdn.com/content/v1/555b5271e4b01e1078b507c9/1507748548198-FGFV23QUHHF2VHAFUT1C/squarespace-SHP-kids2_0003.jpg?format=2500w",
-    name: "Hamza Mohammed Ahmed",
-    id: 1,
-  },
-  {
-    image:
-      "https://images.squarespace-cdn.com/content/v1/555b5271e4b01e1078b507c9/1507748548198-FGFV23QUHHF2VHAFUT1C/squarespace-SHP-kids2_0003.jpg?format=2500w",
-    name: "Hamza Mohammed Ahmed",
-    id: 1,
-  },
-  {
-    image:
-      "https://images.squarespace-cdn.com/content/v1/555b5271e4b01e1078b507c9/1507748548198-FGFV23QUHHF2VHAFUT1C/squarespace-SHP-kids2_0003.jpg?format=2500w",
-    name: "Hamza Mohammed Ahmed",
-    id: 1,
-  },
-  {
-    image:
-      "https://images.squarespace-cdn.com/content/v1/555b5271e4b01e1078b507c9/1507748548198-FGFV23QUHHF2VHAFUT1C/squarespace-SHP-kids2_0003.jpg?format=2500w",
-    name: "Hamza Mohammed Ahmed",
-    id: 1,
-  },
-];
 
 const TeamInfo = (props: Props) => {
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
@@ -151,42 +21,49 @@ const TeamInfo = (props: Props) => {
   );
 
   const navigate = useNavigate();
+
   return (
-    <div className="m-4">
-      <Grid gutter={"sm"}>
-        <Grid.Col span={12} sm={4}>
-          <HomeTeamInfoCard />
-        </Grid.Col>
-        <Grid.Col span={12} xs={8} sm={5}>
-          <CustomCalendar />
-        </Grid.Col>
-        <Grid.Col span={12} xs={4} sm={3}>
-          <UpcomingEventsCard />
-        </Grid.Col>
-        <Grid.Col
-          className="bg-white p-4 rounded-3xl flex gap-4 justify-start items-center flex-wrap"
-          span={12}
-        >
-          {coahcTeamPlayers?.results.map((player, idx) => {
-            return (
-              <div
-                key={idx}
-                className="shadow-xl cursor-pointer transform hover:scale-105 rounded-lg w-28 text-center bg-white flex flex-col justify-center items-center"
-                // onClick={() => navigate(`/players`)}
-                onClick={() => navigate(`/players/${player.id}`)}
-              >
-                <Avatar
-                  className="rounded-lg w-full h-28 object-cover"
-                  src={player.icon}
-                  alt="player Image"
-                />
-                <h2 className="text-sm">{player.name}</h2>
-              </div>
-            );
-          })}
-        </Grid.Col>
-      </Grid>
-    </div>
+    <>
+      {selectedPlayerTeam ? (
+        <div className="m-4">
+          <Grid gutter={"sm"}>
+            <Grid.Col span={12} sm={4}>
+              <HomeTeamInfoCard />
+            </Grid.Col>
+            <Grid.Col span={12} xs={8} sm={5}>
+              <CustomCalendar />
+            </Grid.Col>
+            <Grid.Col span={12} xs={4} sm={3}>
+              <UpcomingEventsCard />
+            </Grid.Col>
+            <Grid.Col
+              className="bg-white p-4 rounded-3xl flex gap-4 justify-start items-center flex-wrap"
+              span={12}
+            >
+              {coahcTeamPlayers?.results.map((player, idx) => {
+                return (
+                  <div
+                    key={idx}
+                    className="shadow-xl cursor-pointer transform hover:scale-105 rounded-lg w-28 text-center bg-white flex flex-col justify-center items-center"
+                    // onClick={() => navigate(`/players`)}
+                    onClick={() => navigate(`/players/${player.id}`)}
+                  >
+                    <Avatar
+                      className="rounded-lg w-full h-28 object-cover"
+                      src={player.icon}
+                      alt="player Image"
+                    />
+                    <h2 className="text-sm">{player.name}</h2>
+                  </div>
+                );
+              })}
+            </Grid.Col>
+          </Grid>
+        </div>
+      ) : (
+        <NoTeamComp />
+      )}
+    </>
   );
 };
 
