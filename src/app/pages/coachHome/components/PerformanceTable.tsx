@@ -10,6 +10,7 @@ import {
 import { useSelector } from "react-redux";
 import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 import { UpdatePlaerKpiMetric } from "~/app/store/types/coach-types";
+import classNames from "classnames";
 
 type Props = {};
 // Doesn't matters what the arrange
@@ -38,7 +39,7 @@ const PerformanceTable = (props: Props) => {
 
   return (
     <div className="overflow-scroll max-h-screen relative m-6 bg-white rounded-lg text-center">
-      <Table highlightOnHover horizontalSpacing="xl">
+      <Table highlightOnHover horizontalSpacing={20}>
         <thead>
           <tr className="">
             <th className="bg-white sticky  top-0 z-20 ">Day</th>
@@ -56,7 +57,7 @@ const PerformanceTable = (props: Props) => {
           {teamPerformanceMetric?.player_metric.map((metric) => {
             return (
               <tr className="" key={metric.metric}>
-                <td className="text-sm w-48 sticky left-0 text-left bg-white z-10 font-medium text-perfGray1">
+                <td className="text-sm sticky left-0 text-left bg-white z-10 font-medium text-perfGray1">
                   {metric.metric}
                 </td>
                 {teamPerformance?.results.map((player) => {
@@ -68,10 +69,14 @@ const PerformanceTable = (props: Props) => {
                       theScore = i.last_score || 0;
                     }
                   }
-
                   return (
                     <td key={metric.metric}>
-                      <div className="flex gap-2 justify-center items-center">
+                      <div
+                        className={classNames(
+                          "flex gap-2 justify-center items-center m-6 sm:m-10",
+                          { "opacity-40": theScore > 0 }
+                        )}
+                      >
                         {[1, 2, 3, 4, 5].map((number) => (
                           <span
                             onClick={() => {

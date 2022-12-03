@@ -6,6 +6,7 @@ export type Metric = {
   id: number;
   name: string;
   icon: string;
+  icon_url: string;
   kpi?: number;
 };
 
@@ -13,6 +14,7 @@ export type kpi = {
   id: number;
   name: string;
   icon: string;
+  icon_url: string;
 };
 
 export type RatePer = "Week" | "Two_Weeks" | "Month";

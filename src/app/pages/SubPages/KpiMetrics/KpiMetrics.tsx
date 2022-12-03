@@ -27,7 +27,7 @@ const KpiMetrics = (props: Props) => {
               <Avatar
                 radius={"xl"}
                 className="w-3/5 h-3/5"
-                src={metric.icon}
+                src={metric.icon_url}
                 alt="icon"
               />
             </div>

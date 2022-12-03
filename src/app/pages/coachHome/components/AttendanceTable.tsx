@@ -35,7 +35,7 @@ const AttendanceTable = (props: Props) => {
       {true ? (
         <div className="overflow-scroll max-h-screen relative m-6 bg-white rounded-lg text-center">
           {/* <TeamFilter /> */}
-          <Table highlightOnHover horizontalSpacing="xl">
+          <Table withBorder highlightOnHover horizontalSpacing="xl">
             <thead>
               <tr className="">
                 <th className="bg-white sticky  top-0 z-20 ">Day</th>

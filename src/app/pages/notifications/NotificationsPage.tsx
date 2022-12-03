@@ -4,38 +4,6 @@ import { useNotificationsQuery } from "~/app/store/user/userApi";
 
 type Props = {};
 
-const data = [
-  {
-    type: "Permission",
-    name: "Mohammed",
-    content:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores quo minima expedita cupiditate rem ipsam possimus ",
-    date: "7/10/2022",
-    newNotification: true,
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoOhc4kExw8ulBPs32AELYOeYR5dgJjUd6Ug&usqp=CAU",
-  },
-  {
-    type: "Certificate",
-    name: "Mosatafa",
-    content:
-      "Lorem ipsum  Asperiores quo minima expedita cupiditate rem ipsam possimus ",
-    date: "7/10/2022",
-    newNotification: false,
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoOhc4kExw8ulBPs32AELYOeYR5dgJjUd6Ug&usqp=CAU",
-  },
-  {
-    type: "Recommendations",
-    name: "Mohammed",
-    content: "Asperiores quo minima expedita cupiditate rem ipsam possimus ",
-    date: "7/10/2022",
-    newNotification: false,
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoOhc4kExw8ulBPs32AELYOeYR5dgJjUd6Ug&usqp=CAU",
-  },
-];
-
 const formatDate = (date: Date | null) => {
   if (date) {
     const today = date;
@@ -68,6 +36,7 @@ const NotificationsPage = (props: Props) => {
           senderName={
             (oneNot.sender.full_name && oneNot.sender.full_name) || "Anonymos"
           }
+          message={oneNot.message}
         />
       ))}
     </div>

@@ -67,11 +67,11 @@ const OneNotification = ({
         >
           {notification_type}
         </div>
-        <div className="vewMore">
+        {/* <div className="vewMore">
           <button className="bg-none text-perfBlue p-0 hover:text-blue-800">
             View more
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BASE_HEADERS, BASE_URL } from "~/app/configs/dataService";
 import { ClubManagerSport, Teams } from "../types/clubManager-types";
+import { TeamEvents } from "../types/parent-types";
 import {
   AddAction,
   AddRecommendation,
@@ -60,6 +61,10 @@ export const supervisorApi = createApi({
         body,
       }),
     }),
+
+    suprtEvents: query<TeamEvents, { team_id: number; page?: number }>({
+      query: ({ team_id, ...params }) => ({ url: `${team_id}/events`, params }),
+    }),
   }),
 });
 
@@ -72,4 +77,5 @@ export const {
   useSuperMetricsQuery,
   useAddActionMutation,
   useAddRecommendationsMutation,
+  useSuprtEventsQuery,
 } = supervisorApi;
