@@ -364,6 +364,20 @@ class AppUtils {
     });
   }
 
+  static formatDate = (date: Date | null) => {
+    if (date) {
+      const today = date;
+      const yyyy = today.getFullYear();
+      let mm: string | number = today.getMonth() + 1; // Months start at 0!
+      let dd: string | number = today.getDate();
+
+      if (dd < 10) dd = "0" + dd;
+      if (mm < 10) mm = "0" + mm;
+
+      return yyyy + "-" + mm + "-" + dd;
+    }
+  };
+
   static hasPermission(authArr, userRole) {
     if (authArr === null || authArr === undefined) {
       return true;

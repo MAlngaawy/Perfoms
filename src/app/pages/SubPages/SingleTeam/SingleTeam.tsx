@@ -4,6 +4,8 @@ import TeamCoaches from "./Components/TeamCoaches";
 import TeamInfoCard from "./Components/TeamInfoCard";
 import TeamPlayers from "./Components/TeamPlayers";
 import TeamUpcomingEvents from "./Components/TeamUpcomingEvents";
+import { useUserQuery } from "~/app/store/user/userApi";
+import { useParams } from "react-router-dom";
 
 type Props = {};
 
@@ -60,12 +62,16 @@ const events = [
 ];
 
 const SingleTeam = (props: Props) => {
+  const { data: user } = useUserQuery(null);
+
+  const { id } = useParams();
+
   return (
     <div className="py-6 px-2">
       <Grid gutter={"xs"} className="items-stretch">
         <Grid.Col span={12} sm={7} lg={4}>
           <CardDiv>
-            <TeamCalendar teamId={1} />
+            <TeamCalendar teamId={id !== undefined ? id : ""} />
           </CardDiv>
         </Grid.Col>
         <Grid.Col span={12} sm={5} lg={3}>

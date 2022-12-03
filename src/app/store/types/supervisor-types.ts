@@ -17,6 +17,17 @@ export type kpi = {
   icon_url: string;
 };
 
+export type AddAttendancesCalendar = {
+  days: string;
+  team: number;
+};
+
+export type TeamAttendances = {
+  player_attendance: {
+    day: string;
+  };
+}[];
+
 export type RatePer = "Week" | "Two_Weeks" | "Month";
 
 export type AddAction = {
