@@ -20,6 +20,108 @@ const metrics = [
   { name: "Pushing Technique", id: 3 },
 ];
 
+const response = [
+  {
+    name: "mohammed",
+    id: 1,
+    icon: "https://clicklovegrow.com/wp-content/uploads/2020/01/Charlie-ONeill-Advanced-Graduate.jpg",
+    player_kpis: [
+      {
+        id: 2,
+        name: "Pushing",
+        player_kpi_metric: [
+          {
+            id: 2,
+            name: "Right Leg",
+            last_score: 1,
+          },
+          {
+            id: 39,
+            name: "Left Leg",
+            last_score: 2,
+          },
+          {
+            id: 111,
+            name: "Pushing Technique",
+            last_score: 3,
+          },
+        ],
+      },
+      {
+        id: 4,
+        name: "Fitness",
+        player_kpi_metric: [
+          {
+            id: 982,
+            name: "Endurance",
+            last_score: 3,
+          },
+          {
+            id: 1017,
+            name: "Balance",
+            last_score: 5,
+          },
+          {
+            id: 1052,
+            name: "Flexibility",
+            last_score: 1,
+          },
+        ],
+      },
+    ],
+  },
+
+  {
+    name: "Ahmed",
+    id: 1,
+    icon: "https://i.pinimg.com/474x/38/df/16/38df162671b772334b8bc7a9db34290e.jpg",
+    player_kpis: [
+      {
+        id: 21,
+        name: "Pushing",
+        player_kpi_metric: [
+          {
+            id: 21,
+            name: "Right Leg",
+            last_score: 2,
+          },
+          {
+            id: 391,
+            name: "Left Leg",
+            last_score: 4,
+          },
+          {
+            id: 1112,
+            name: "Pushing Technique",
+            last_score: 3,
+          },
+        ],
+      },
+      {
+        id: 43,
+        name: "Fitness",
+        player_kpi_metric: [
+          {
+            id: 9825,
+            name: "Endurance",
+            last_score: 3,
+          },
+          {
+            id: 10177,
+            name: "Balance",
+            last_score: 5,
+          },
+          {
+            id: 10526,
+            name: "Flexibility",
+            last_score: 3,
+          },
+        ],
+      },
+    ],
+  },
+];
+
 const PerformanceTable = (props: Props) => {
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const { data: teamPerformance } = useGetTeamPerformancesQuery(
