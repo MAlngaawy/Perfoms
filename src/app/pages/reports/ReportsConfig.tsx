@@ -18,7 +18,7 @@ const ReportsConfig: PagesRouteConfig = {
       },
     },
   },
-  auth: authRoles.User,
+  auth: authRoles.Parent,
   routes: [
     {
       path: "Reports",

@@ -1,3 +1,4 @@
+import { BaseGetAllType } from "./base-types";
 import { Player } from "./parent-types";
 export type LoginUserBody = {
   mobile: string;
@@ -38,6 +39,7 @@ export type User = {
   job: string;
   dob: string;
   club: number;
+  full_name?: string;
 };
 
 export type UpdateProfile = Partial<User>;
@@ -151,6 +153,20 @@ export type NotificationsType = {
       player: number;
     }
   ];
+};
+
+export type Notifications = BaseGetAllType & {
+  results: {
+    message: string;
+    notification_type: "Report" | "Certificate" | "Complement" | "Permission";
+    created_at: Date;
+    player: number;
+    sender: {
+      id: number;
+      full_name: string;
+      avatar: string;
+    };
+  }[];
 };
 
 export type ProfileType = {

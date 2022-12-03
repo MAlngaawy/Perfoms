@@ -10,7 +10,7 @@ type Props = {};
 const connects = [
   {
     image:
-      "https://www.anthropics.com/portraitpro/img/page-images/homepage/v22/what-can-it-do-2A.jpg",
+      "https://media.istockphoto.com/id/1162804750/photo/headshot-of-a-male-football-coach.jpg?s=612x612&w=0&k=20&c=f9pal_RaBurFRG3Er9ZaEdkhfeGAK3HHSKE_Q27vjko=",
     isActive: false,
     name: "John Doue",
     lastMessageText:
@@ -22,7 +22,7 @@ const connects = [
   },
   {
     image:
-      "https://www.anthropics.com/portraitpro/img/page-images/homepage/v22/what-can-it-do-2A.jpg",
+      "https://previews.123rf.com/images/blueskyimage/blueskyimage1311/blueskyimage131101911/23810213-sport-trainer-portrait-of-happy-young-coach.jpg",
     isActive: true,
     name: "John ahmed",
     lastMessageText: "Lorem ipsum.",
@@ -32,7 +32,7 @@ const connects = [
   },
   {
     image:
-      "https://www.anthropics.com/portraitpro/img/page-images/homepage/v22/what-can-it-do-2A.jpg",
+      "https://www.aurelienterrade.fr/wp-content/uploads/2016/10/ATE_2812_1600PX.jpg",
     isActive: false,
     name: "John Doue",
     lastMessageText:
@@ -43,9 +43,9 @@ const connects = [
   },
   {
     image:
-      "https://www.anthropics.com/portraitpro/img/page-images/homepage/v22/what-can-it-do-2A.jpg",
-    isActive: false,
-    name: "John Doue",
+      "https://images.squarespace-cdn.com/content/v1/51ef4493e4b0561c90fa76d6/1552662204584-T7V059IOXKML3FJP91RM/20180416_SLP0248-Edit.jpg?format=1000w",
+    isActive: true,
+    name: "Sala Farok",
     lastMessageText:
       "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda, voluptatum? Quos sed officiis assumenda officia modi, magnam odio saepe hic vel quisquam facere aspernatur dolorum ea consequatur eos, quae tenetur.",
     lastMessageTime: "10:30 am",
@@ -54,9 +54,9 @@ const connects = [
   },
   {
     image:
-      "https://www.anthropics.com/portraitpro/img/page-images/homepage/v22/what-can-it-do-2A.jpg",
+      "https://static.clubs.nfl.com/image/private/t_person_squared_mobile/f_auto/v1627765284/bills/f7ij9msrexvzdt9yingn.jpg",
     isActive: false,
-    name: "John Doue",
+    name: "Ali Mohammed",
     lastMessageText:
       "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda, voluptatum? Quos sed officiis assumenda officia modi, magnam odio saepe hic vel quisquam facere aspernatur dolorum ea consequatur eos, quae tenetur.",
     lastMessageTime: "10:30 am",

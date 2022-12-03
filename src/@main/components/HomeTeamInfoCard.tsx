@@ -10,15 +10,15 @@ const HomeTeamInfoCard = (props: Props) => {
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
 
   const { data: teamInfoData } = useTeamInfoQuery(
-    { team_id: selectedPlayerTeam.id },
-    { skip: !selectedPlayerTeam.id }
+    { team_id: selectedPlayerTeam?.id },
+    { skip: !selectedPlayerTeam }
   );
 
   return (
     <div className="bg-white p-3 rounded-3xl h-full">
       <h2 className="title text-lg text-perfGray1">Team Info.</h2>
       <div className="flex justify-between mt-4 px-2">
-        <div className="left flex flex-col gap-3 text-perfGray1">
+        <div className="left flex flex-col gap-3 text-perfGray1 flex-wrap">
           <div className="team flex flex-col gap-1">
             <h2 className="text-base font-semibold">{teamInfoData?.name}</h2>
             <h3 className=" text-perfBlue font-semibold text-sm">
@@ -40,6 +40,20 @@ const HomeTeamInfoCard = (props: Props) => {
                   : "Female"
                 : "Gender"}
               {}
+            </h2>
+          </div>
+          <div className="geder flex flex-col">
+            <p className=" text-perfGray3 text-sm font-normal">Players</p>
+            <h2 className=" text-perfGray1 text-base font-normal">
+              {teamInfoData?.players_count}
+            </h2>
+          </div>
+          <div className="geder flex flex-col">
+            <p className=" text-perfGray3 text-sm font-normal">
+              Rating schedule
+            </p>
+            <h2 className=" text-perfGray1 text-base font-normal">
+              Every {teamInfoData?.rate_per ? teamInfoData?.rate_per : "(N/A)"}
             </h2>
           </div>
         </div>

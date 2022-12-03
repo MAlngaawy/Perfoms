@@ -4,6 +4,7 @@ import {
   useSelectSubscriptionMutation,
 } from "~/app/store/parent/parentApi";
 import SubscriptionCard from "./molecules/SubscriptionCard";
+import { Skeleton } from "@mantine/core";
 
 const dummyData = [
   {
@@ -64,11 +65,14 @@ const SubscriptionsPage = () => {
         </p>
       </div>
       <div className="bg-white rounded-3xl ">
-        <div className="subscription-board mt-12 flex flex-col md:flex-row  p-6 md:p-10 sm:mx-20 gap-10">
-          {subscriptions &&
-            subscriptions.results.map((plan: any) => (
-              <SubscriptionCard plan={plan} selectPlan={selectPlan} />
-            ))}
+        <div className="subscription-board  flex flex-col md:flex-row p-10 gap-6 justify-between">
+          {subscriptions
+            ? subscriptions.results.map((plan: any) => (
+                <SubscriptionCard plan={plan} selectPlan={selectPlan} />
+              ))
+            : [1, 2, 3].map((plan: any) => (
+                <Skeleton height={600} width="100%" radius="lg" />
+              ))}
         </div>
       </div>
     </div>

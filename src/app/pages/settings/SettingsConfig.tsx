@@ -18,7 +18,7 @@ const SettingsConfig: PagesRouteConfig = {
       },
     },
   },
-  auth: authRoles.User,
+  auth: authRoles.All,
   routes: [
     {
       path: "settings",

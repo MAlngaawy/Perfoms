@@ -1,4 +1,5 @@
 import { NavigationConfigTypes } from "~/@main/types/Config-Types";
+import authRoles from "../auth/authRoles";
 
 const navigationConfig: NavigationConfigTypes[] = [
   {
@@ -8,23 +9,26 @@ const navigationConfig: NavigationConfigTypes[] = [
     type: "item",
     icon: "HomeIcon:outline",
     url: "home",
+    auth: authRoles.Parent,
   },
-  // {
-  //   id: "notifications-page",
-  //   title: "Notifications",
-  //   translate: "NOTIFICATIONS",
-  //   type: "item",
-  //   icon: "BellIcon:outline",
-  //   url: "notifications",
-  // },
-  // {
-  //   id: "messages-page",
-  //   title: "Messages",
-  //   translate: "MESSAGES",
-  //   type: "item",
-  //   icon: "EnvelopeIcon:outline",
-  //   url: "messages",
-  // },
+  {
+    id: "home-page-coach",
+    title: "Home",
+    translate: "HOME",
+    type: "item",
+    icon: "HomeIcon:outline",
+    url: "coach-home",
+    auth: authRoles.Coach,
+  },
+  {
+    id: "home-page-supervisor",
+    title: "Home",
+    translate: "HOME",
+    type: "item",
+    icon: "HomeIcon:outline",
+    url: "supervisor",
+    auth: authRoles.Supervisor,
+  },
   {
     id: "coaches-page",
     title: "Coaches",
@@ -32,6 +36,7 @@ const navigationConfig: NavigationConfigTypes[] = [
     type: "item",
     icon: "UserIcon:outline",
     url: "coaches",
+    auth: authRoles.Parent,
   },
   {
     id: "chat-page",
@@ -40,6 +45,7 @@ const navigationConfig: NavigationConfigTypes[] = [
     type: "item",
     icon: "EnvelopeIcon:outline",
     url: "chat",
+    auth: authRoles.All,
   },
   {
     id: "reports-page",
@@ -48,6 +54,7 @@ const navigationConfig: NavigationConfigTypes[] = [
     type: "item",
     icon: "NewspaperIcon:outline",
     url: "reports",
+    auth: authRoles.Parent,
   },
   {
     id: "media-page",
@@ -56,6 +63,7 @@ const navigationConfig: NavigationConfigTypes[] = [
     type: "item",
     icon: "BookmarkIcon:outline",
     url: "media",
+    auth: authRoles.All,
   },
   {
     id: "subscriptions-page",
@@ -64,6 +72,16 @@ const navigationConfig: NavigationConfigTypes[] = [
     type: "item",
     icon: "BanknotesIcon:outline",
     url: "subscriptions",
+    auth: authRoles.Parent,
+  },
+  {
+    id: "players",
+    title: "Players",
+    translate: "PLAYERS",
+    type: "item",
+    icon: "UserCircleIcon:outline",
+    url: "players",
+    auth: authRoles.Coach,
   },
 ];
 

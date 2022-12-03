@@ -7,7 +7,6 @@ import {
 } from "@zegocloud/zimkit-react";
 import "@zegocloud/zimkit-react/index.css";
 import { useChatTokenQuery } from "~/app/store/core/coreApi";
-import { players } from "../home/HomePage";
 import { useUserQuery } from "~/app/store/user/userApi";
 const appConfig = {
   appID: 989463489, // AppID - type: number

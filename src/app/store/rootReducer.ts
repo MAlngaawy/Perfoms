@@ -7,6 +7,7 @@ import app from "./app";
 import { attendanceApi } from "./attendance/attendanceApi";
 import { coachApi } from "./coach/coachApi";
 import parent from "./parent/parentSlice";
+import { supervisorApi } from "./supervisor/supervisorMainApi";
 
 const rootReducer = combineReducers({
   app,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   [eventsApi.reducerPath]: eventsApi.reducer,
   [coreApi.reducerPath]: coreApi.reducer,
   [parentsApi.reducerPath]: parentsApi.reducer,
+  [supervisorApi.reducerPath]: supervisorApi.reducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

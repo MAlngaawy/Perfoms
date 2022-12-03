@@ -6,6 +6,7 @@ export type Metric = {
   id: number;
   name: string;
   icon: string;
+  icon_url: string;
   kpi?: number;
 };
 
@@ -13,15 +14,16 @@ export type kpi = {
   id: number;
   name: string;
   icon: string;
+  icon_url: string;
 };
 
 export type RatePer = "Week" | "Two_Weeks" | "Month";
 
 export type AddAction = {
-  id: number;
+  id?: number;
   name: string;
   description?: string;
-  // metric_id: string;
+  metric_id: number;
 };
 
 export type AddEvent = {
@@ -33,10 +35,10 @@ export type AddEvent = {
 };
 
 export type AddRecommendation = {
-  id: number;
+  id?: number;
   name: string;
   description?: string;
-  // metric_id: string;
+  metric_id: number;
 };
 
 export type TeamCoach = {
@@ -52,13 +54,19 @@ export type TeamPlayer = {
 export type Team = {
   id: number;
   icon: string;
+  icon_url: string;
+  description: string;
   name: string;
   from_age: number;
   to_age: number;
   rate_per: RatePer;
   players_count: number;
   pillar?: number;
-  sport?: string;
+  sport?: {
+    id: number;
+    name: string;
+    icon: string;
+  };
 };
 
 export type coaches = BaseGetAllType & {

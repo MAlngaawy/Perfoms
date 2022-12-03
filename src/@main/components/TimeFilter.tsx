@@ -12,7 +12,7 @@ type Props = {};
 const thisWeek = () => {
   var curr = new Date(); // get current date
   var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
-  var last = first + 6; // last day is the first day + 6
+  var last = first + 36; // last day is the first day + 6
 
   return {
     firstday: new Date(curr.setDate(first)),
@@ -23,7 +23,7 @@ const thisWeek = () => {
 const lastWeek = () => {
   var curr = new Date(); // get current date
   var first = curr.getDate() - curr.getDay() - 7; // First day is the day of the month - the day of the week
-  var last = first + 6; // last day is the first day + 6
+  var last = first + 36; // last day is the first day + 6
 
   var firstday = new Date(curr.setDate(first));
   var lastday = new Date(curr.setDate(last));
@@ -36,7 +36,7 @@ const lastWeek = () => {
 const last2Weeks = () => {
   var curr = new Date(); // get current date
   var first = curr.getDate() - curr.getDay() - 14; // First day is the day of the month - the day of the week
-  var last = first + 13; // last day is the first day + 6
+  var last = first + 43; // last day is the first day + 6
 
   var firstday = new Date(curr.setDate(first));
   var lastday = new Date(curr.setDate(last));
@@ -79,38 +79,51 @@ const lastYear = () => {
   return { firstday, lastday };
 };
 
-const formatDate = (date: Date) => {
-  const today = date;
-  const yyyy = today.getFullYear();
-  let mm: string | number = today.getMonth() + 1; // Months start at 0!
-  let dd: string | number = today.getDate();
+const formatDate = (date: Date | null) => {
+  if (date) {
+    const today = date;
+    const yyyy = today.getFullYear();
+    let mm: string | number = today.getMonth() + 1; // Months start at 0!
+    let dd: string | number = today.getDate();
 
-  if (dd < 10) dd = "0" + dd;
-  if (mm < 10) mm = "0" + mm;
+    if (dd < 10) dd = "0" + dd;
+    if (mm < 10) mm = "0" + mm;
 
-  return yyyy + "-" + mm + "-" + dd;
+    return yyyy + "-" + mm + "-" + dd;
+  }
 };
 
 const TimeFilter = (props: Props) => {
-  const [value, setValue] = useState<[Date | null, Date | null]>([null, null]);
+  const [value, setValue] = useState<[Date | null, Date | null]>([
+    thisWeek().firstday,
+    thisWeek().lastday,
+  ]);
   const [opened, setOpened] = useState(false);
-  const [textValue, setTextValue] = useState<string>("Select Time");
+  const [textValue, setTextValue] = useState<string>("This Week");
   const windwSize = useWindowSize();
   const dispatch = useDispatch();
+
+  dispatch(
+    timeFilter(
+      localStorage.getItem("TimeFilter")
+        ? JSON.parse(localStorage.getItem("TimeFilter") || "")
+        : {
+            from_date: formatDate(value[0]),
+            to_date: formatDate(value[1]),
+          }
+    )
+  );
 
   useEffect(() => {
     if (value[1] && value[0]) {
       // setTextValue(`${formatDate(value[0])} - ${formatDate(value[1])}`);
-      setOpened(false);
+      // setOpened(false);
+      console.log(value);
       dispatch(
-        timeFilter(
-          localStorage.getItem("TimeFilter")
-            ? JSON.parse(localStorage.getItem("TimeFilter") || "")
-            : {
-                from_date: formatDate(value[0]),
-                to_date: formatDate(value[1]),
-              }
-        )
+        timeFilter({
+          from_date: formatDate(value[0]),
+          to_date: formatDate(value[1]),
+        })
       );
     }
   }, [value]);

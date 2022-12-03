@@ -1,22 +1,27 @@
 import React from "react";
 import cn from "classnames";
 import AppIcons from "../../../../@main/core/AppIcons";
-type Props = {
-  type: "Certificate" | "Permission" | string;
-  name: string;
-  content: string;
-  date: string;
-  newNotification: boolean;
-  image: string;
-};
+import { NavigationType } from "react-router-dom";
 
+type Props = {
+  notification_type: "Report" | "Certificate" | "Complement" | "Permission";
+  senderName: string;
+  message?: string;
+  created_at: string;
+  newNotification?: boolean;
+  senderAvatar: string;
+  name?: string;
+  content?: string;
+  date?: string;
+  image?: string;
+};
 const OneNotification = ({
-  type,
-  name,
-  content,
+  notification_type,
+  senderName,
+  message,
+  created_at,
   newNotification,
-  date,
-  image,
+  senderAvatar,
 }: Props) => {
   return (
     <div
@@ -32,18 +37,18 @@ const OneNotification = ({
         <div className=" self-center min-w-max avatar p-1">
           <img
             className="w-10 h-10 md:w-16 md:h-16 object-cover rounded-full"
-            src={image}
+            src={senderAvatar}
             alt="sender_mage"
           />
         </div>
         <div className="info flex flex-col gap-1">
           <h2 className=" text-perfGray1 text-base md:text-xl font-bold">
-            {name}
+            {senderName}
           </h2>
-          <p className=" text-perfGray3 text-sm font-medium">{content}</p>
+          <p className=" text-perfGray3 text-sm font-medium">{message}</p>
           <p className=" text-perfGray4 text-xs font-medium flex gap-1">
             <AppIcons className="w-3 h-3" icon="ClockIcon:outline" />{" "}
-            <span>{date}</span>
+            <span>{created_at}</span>
           </p>
         </div>
       </div>
@@ -52,19 +57,21 @@ const OneNotification = ({
           className={cn(
             "type py-2 px-4 md:px-8 rounded-full text-sm md:text-lg font-semibold text-white ",
             {
-              " bg-perfBlue": type === "Certificate",
-              " bg-red": type === "Permission",
-              " bg-orange": type !== "Permission" && type !== "Certificate",
+              " bg-perfBlue": notification_type === "Certificate",
+              " bg-red": notification_type === "Permission",
+              " bg-orange":
+                notification_type !== "Permission" &&
+                notification_type !== "Certificate",
             }
           )}
         >
-          {type}
+          {notification_type}
         </div>
-        <div className="vewMore">
+        {/* <div className="vewMore">
           <button className="bg-none text-perfBlue p-0 hover:text-blue-800">
             View more
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

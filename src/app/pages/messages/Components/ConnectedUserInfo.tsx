@@ -46,8 +46,8 @@ const ConnectedUserInfo = ({
             ))}
           </div>
           <button
-            className="text-perfBlue border border-perfBlue rounded-xl bg-transparent px-4 py-2 text-sm"
-            onClick={() => navigate(`coaches/${id}`)}
+            className="text-perfBlue border border-perfBlue hover:bg-perfBlue hover:text-white rounded-xl bg-transparent px-4 py-2 text-sm"
+            onClick={() => navigate(`/coaches/${id}`)}
           >
             View full profile
           </button>

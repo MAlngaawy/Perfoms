@@ -14,6 +14,7 @@ export type Subscription = {
   description: string;
   price: string;
   current_plan: boolean;
+  most_popular: boolean;
 };
 
 export type ActiveSubscription = {
@@ -34,7 +35,7 @@ export type AddPlayerType = {
   weight: number;
   height: number;
   phone: string;
-  icon: string;
+  icon: any;
 };
 
 export type ParentClub = {
@@ -228,6 +229,7 @@ export type PlayerKpi = {
   id: number;
   kpi: string;
   score_avg: number;
+  old_score_avg: number;
 };
 
 export type PlayerKpis = {

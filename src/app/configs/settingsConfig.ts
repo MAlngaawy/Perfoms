@@ -5,7 +5,7 @@ const settingsConfig = {
   },
   customScrollbars: true,
   theme: {},
-  defaultAuth: ["Admin"],
+  defaultAuth: [],
   loginRedirectUrl: "/",
 };
 

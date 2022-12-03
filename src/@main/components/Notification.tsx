@@ -2,7 +2,7 @@ import cn from "classnames";
 import AppIcons from "~/@main/core/AppIcons";
 
 type Props = {
-  notification_type: "Certificate" | "Permission" | string;
+  notification_type: "Report" | "Certificate" | "Complement" | "Permission";
   senderName: string;
   message?: string;
   created_at: string;
@@ -44,7 +44,7 @@ const Notification = ({
           </p>
         </div>
       </div>
-      <div className="flex items-center my-2 sm:my-auto justify-around w-full sm:w-1/3">
+      <div className="flex items-center my-2 sm:my-auto justify-around ">
         <div
           className={cn(
             "type py-2 px-4 rounded-full text-xs font-semibold text-white ",

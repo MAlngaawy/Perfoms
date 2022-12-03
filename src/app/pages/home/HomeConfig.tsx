@@ -18,7 +18,7 @@ const HomeConfig: PagesRouteConfig = {
       },
     },
   },
-  auth: authRoles.User,
+  auth: authRoles.Parent,
   routes: [
     {
       path: "home",

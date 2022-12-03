@@ -18,7 +18,7 @@ const CertificatePageConfig: PagesRouteConfig = {
       },
     },
   },
-  auth: authRoles.User,
+  auth: authRoles.Coach,
   routes: [
     {
       path: "certificate",

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Grid, Menu, Button } from "@mantine/core";
 import Card from "~/@main/components/Card";
 import AppIcons from "~/@main/core/AppIcons";
@@ -18,6 +18,8 @@ import HomePlayerInfoCard from "../../../@main/components/HomePlayerInfoCard";
 import ReportsPageLoading from "./components/ReportsPageLoading";
 import PerformanceSummaryCard from "~/@main/components/PerformanceSummaryCard";
 import AttendancesSmallCards from "./components/AttendancesSmallCards";
+import { useReactToPrint } from "react-to-print";
+// import { ComponentToPrint } from "./components/ComponentToPrint";
 // ===== dummy data =====
 
 const scores = [
@@ -48,10 +50,17 @@ const scores = [
 ];
 
 // ==============
-
 const ReportPage = () => {
   const player = useSelector(selectedPlayerFn);
   const widowSize = useWindowSize();
+  const perfCompRef = useRef<HTMLInputElement>(null);
+  const attCompRef = useRef<HTMLInputElement>(null);
+  const handlePrint = useReactToPrint({
+    content: (): any => perfCompRef.current,
+  });
+  const handlePrint2 = useReactToPrint({
+    content: (): any => attCompRef.current,
+  });
 
   const [reportType, setReportType] =
     useState<"Performances" | "Attendances">("Performances");
@@ -91,99 +100,124 @@ const ReportPage = () => {
           </div>
           {reportType === "Performances" ? (
             <div>
-              <Grid columns={12} gutter={"sm"}>
-                <Grid.Col sm={3} md={2.5} span={12}>
-                  <HomePlayerInfoCard />
-                </Grid.Col>
-                <Grid.Col sm={9} md={9.5} span={12}>
-                  <PerformanceSummaryCard />
-                </Grid.Col>
-              </Grid>
-              <Grid columns={12} gutter={"sm"} className="info mt-3">
-                <Grid.Col sm={4} span={12}>
-                  <Card
-                    type="power"
-                    color="text-[#27AE60]"
-                    bg="bg-fadedGreen"
-                    powerType="Strength"
-                    scores={scores}
-                  />
-                </Grid.Col>
-                <Grid.Col sm={4} span={12}>
-                  <Card
-                    type="power"
-                    color="text-[#F2C94C]"
-                    bg="bg-fadedYellow"
-                    powerType="Strength"
-                    scores={scores}
-                  />
-                </Grid.Col>
-                <Grid.Col sm={4} span={12}>
-                  <Card
-                    type="power"
-                    color="text-[#EB5757]"
-                    bg="bg-fadedRed"
-                    powerType="Strength"
-                    scores={scores}
-                  />
-                </Grid.Col>
-              </Grid>
-              <Grid columns={12} gutter={"sm"} className="info mt-3">
-                <Grid.Col sm={6} span={12}>
-                  <ActionsCard player_id={player?.id} />
-                </Grid.Col>
-                <Grid.Col sm={6} span={12}>
-                  <RecommendationsCard player_id={player?.id} />
-                </Grid.Col>
-              </Grid>{" "}
+              {/* <ComponentToPrint ref={componentRef} /> */}
+              <div
+                onClick={handlePrint}
+                className="z-50 flex flex-col items-center justify-center  fixed right-20 bottom-20 opacity-70 hover:opacity-100 w-20 h-20 rounded-full cursor-pointer bg-perfBlue text-white"
+              >
+                <AppIcons
+                  className="w-8 h-8 text-white"
+                  icon="DocumentArrowDownIcon:outline"
+                />
+                <span>PDF</span>
+              </div>
+              <div className="bg-pagesBg" ref={perfCompRef}>
+                <Grid columns={12} gutter={"sm"}>
+                  <Grid.Col sm={3} md={2.5} span={12}>
+                    <HomePlayerInfoCard />
+                  </Grid.Col>
+                  <Grid.Col sm={9} md={9.5} span={12}>
+                    <PerformanceSummaryCard />
+                  </Grid.Col>
+                </Grid>
+                <Grid columns={12} gutter={"sm"} className="info mt-3">
+                  <Grid.Col sm={4} span={12}>
+                    <Card
+                      type="power"
+                      color="text-[#27AE60]"
+                      bg="bg-fadedGreen"
+                      powerType="Strength"
+                      scores={scores}
+                    />
+                  </Grid.Col>
+                  <Grid.Col sm={4} span={12}>
+                    <Card
+                      type="power"
+                      color="text-[#F2C94C]"
+                      bg="bg-fadedYellow"
+                      powerType="Strength"
+                      scores={scores}
+                    />
+                  </Grid.Col>
+                  <Grid.Col sm={4} span={12}>
+                    <Card
+                      type="power"
+                      color="text-[#EB5757]"
+                      bg="bg-fadedRed"
+                      powerType="Strength"
+                      scores={scores}
+                    />
+                  </Grid.Col>
+                </Grid>
+                <Grid columns={12} gutter={"sm"} className="info mt-3">
+                  <Grid.Col sm={6} span={12}>
+                    <ActionsCard player_id={player?.id} />
+                  </Grid.Col>
+                  <Grid.Col sm={6} span={12}>
+                    <RecommendationsCard player_id={player?.id} />
+                  </Grid.Col>
+                </Grid>{" "}
+              </div>
             </div>
           ) : (
             <div className="attendances">
-              {/* Left Columns ( User Info And Note ) */}
-              <Grid gutter={"sm"}>
-                <Grid.Col span={12} md={2.5}>
-                  <div className="flex flex-col xs:flex-row md:flex-col gap-2 h-full">
-                    <HomePlayerInfoCard />
-                    <div className="note bg-white rounded-3xl w-full p-4 h-full">
-                      <h2 className="text-lg font-normal text-perfGray1 pb-4">
-                        Overall notes
-                      </h2>
-                      <p className=" text-base font-normal text-perfGray3">
-                        Fitness Flexibility 10 Exercises to Improve Your
-                        Flexibility 1. Standing Quad Stretch. Stand with your
-                        feet together. ... 2. Standing Side Stretch
-                      </p>
+              <div className="bg-pagesBg" ref={attCompRef}>
+                {/* Left Columns ( User Info And Note ) */}
+                <div
+                  onClick={handlePrint2}
+                  className="z-50 flex flex-col items-center justify-center  fixed right-20 bottom-20 opacity-70 hover:opacity-100 w-20 h-20 rounded-full cursor-pointer bg-perfBlue text-white"
+                >
+                  <AppIcons
+                    className="w-8 h-8 text-white"
+                    icon="DocumentArrowDownIcon:outline"
+                  />
+                  <span>PDF</span>
+                </div>
+                <Grid gutter={"sm"}>
+                  <Grid.Col span={12} md={2.5}>
+                    <div className="flex flex-col xs:flex-row md:flex-col gap-2 h-full">
+                      <HomePlayerInfoCard />
+                      <div className="note bg-white rounded-3xl w-full p-4 h-full">
+                        <h2 className="text-lg font-normal text-perfGray1 pb-4">
+                          Overall notes
+                        </h2>
+                        <p className=" text-base font-normal text-perfGray3">
+                          Fitness Flexibility 10 Exercises to Improve Your
+                          Flexibility 1. Standing Quad Stretch. Stand with your
+                          feet together. ... 2. Standing Side Stretch
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </Grid.Col>
+                  </Grid.Col>
 
-                {/* Right Column Attendance Charts And numbers */}
-                <Grid.Col span={12} md={9.5}>
-                  <Grid gutter={"sm"}>
-                    <Grid.Col span={12}>
-                      <AttendancesSmallCards />
-                    </Grid.Col>
-                    {/* Attedance Summary Table */}
-                    <Grid.Col span={12} sm={8}>
-                      <div className="bg-white h-full rounded-3xl p-4">
-                        <AttendanceTable />
-                      </div>
-                    </Grid.Col>
-
-                    <Grid.Col span={12} sm={4}>
-                      <div className="flex flex-col gap-4">
-                        {/* Total Attendace Pie Chart  */}
-                        <div className="bg-white rounded-3xl">
-                          <TotalAttendance />
+                  {/* Right Column Attendance Charts And numbers */}
+                  <Grid.Col span={12} md={9.5}>
+                    <Grid gutter={"sm"}>
+                      <Grid.Col span={12}>
+                        <AttendancesSmallCards />
+                      </Grid.Col>
+                      {/* Attedance Summary Table */}
+                      <Grid.Col span={12} sm={8}>
+                        <div className="bg-white h-full rounded-3xl p-4">
+                          <AttendanceTable />
                         </div>
+                      </Grid.Col>
 
-                        {/* Attendance Calender */}
-                        <CustomCalendar pageName="reports" />
-                      </div>
-                    </Grid.Col>
-                  </Grid>
-                </Grid.Col>
-              </Grid>
+                      <Grid.Col span={12} sm={4}>
+                        <div className="flex flex-col gap-4">
+                          {/* Total Attendace Pie Chart  */}
+                          <div className="bg-white rounded-3xl">
+                            <TotalAttendance />
+                          </div>
+
+                          {/* Attendance Calender */}
+                          <CustomCalendar pageName="reports" />
+                        </div>
+                      </Grid.Col>
+                    </Grid>
+                  </Grid.Col>
+                </Grid>
+              </div>
             </div>
           )}
         </div>

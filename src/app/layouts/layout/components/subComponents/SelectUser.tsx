@@ -14,7 +14,7 @@ const SelectUser = (props: Props) => {
   const selectedPlayer = useSelector(selectedPlayerFn);
 
   useEffect(() => {
-    if (players)
+    if (players && players.results.length > 0)
       dispatch(
         selectPlayer(
           localStorage.getItem("SelectedPlayer")

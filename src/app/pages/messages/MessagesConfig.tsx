@@ -18,7 +18,7 @@ const MessagesConfig: PagesRouteConfig = {
       },
     },
   },
-  auth: authRoles.User,
+  auth: authRoles.All,
   routes: [
     {
       path: "messages",

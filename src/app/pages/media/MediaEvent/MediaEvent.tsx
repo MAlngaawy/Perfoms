@@ -4,6 +4,7 @@ import AppIcons from "~/@main/core/AppIcons";
 import { Carousel, useAnimationOffsetEffect } from "@mantine/carousel";
 import { useLocation, useParams } from "react-router-dom";
 import { Button } from "~/@main/components/Button";
+import Slider from "./Slider";
 import {
   Modal,
   FileButton,
@@ -17,7 +18,10 @@ import {
   useEventFilesQuery,
   useTeamEventQuery,
 } from "~/app/store/parent/parentApi";
-import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
+import {
+  selectedPlayerTeamFn,
+  selectPlayerTeam,
+} from "~/app/store/parent/parentSlice";
 import { useSelector } from "react-redux";
 import TeamFilter from "~/@main/components/TeamFilter";
 import useWindowSize from "../../../../@main/hooks/useWindowSize";
@@ -27,6 +31,7 @@ const TRANSITION_DURATION = 200;
 const MediaEvent = () => {
   const { id } = useParams();
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
+
   const { data: event } = useTeamEventQuery(
     { eventId: id ? +id : 0, teamId: selectedPlayerTeam?.id },
     { skip: !id || !selectedPlayerTeam }
@@ -34,12 +39,10 @@ const MediaEvent = () => {
 
   const windowSize = useWindowSize();
 
-  const { data: eventFiles } = useEventFilesQuery(
+  const { data: eventFiles, isLoading } = useEventFilesQuery(
     { eventId: id ? +id : 0 },
     { skip: !id }
   );
-
-  console.log(eventFiles);
 
   const [embla, setEmbla] = useState<any>(null);
   const [opened, setOpened] = useState(false);
@@ -91,62 +94,91 @@ const MediaEvent = () => {
     handleYoutubeLinkInput();
   }, [youtubeLink]);
 
-  const slides = eventFiles?.results.map((file, index) => (
-    <Carousel.Slide className="bg-white" key={index}>
-      <Image src={file.file} />
-    </Carousel.Slide>
-  ));
+  // const slides = eventFiles?.results.map((file, index) => (
+  //   <Carousel.Slide className="bg-white" key={index}>
+  //     <Image src={file.file} />
+  //   </Carousel.Slide>
+  // ));
 
   return (
     <>
-      <div className="h-full flex justify-center items-center mt-32">
-        {eventFiles && eventFiles.results.length > 0 ? (
-          <Carousel
-            slideSize="70%"
-            // align="start"
-            slideGap="lg"
-            controlsOffset="xs"
-            controlSize={19}
-            loop
-            // dragFree
-            withIndicators
-            sx={{ maxWidth: 700 }}
-            mx="auto"
-            height={300}
-          >
-            {eventFiles?.results.map((file) => (
-              <Carousel.Slide key={file.id}>
-                <SlideImage link={file.file} />
-              </Carousel.Slide>
-            ))}
-          </Carousel>
-        ) : (
-          <Carousel
-            sx={{
-              maxWidth: 700,
-            }}
-            slideSize="70%"
-            // align="start"
-            slideGap="lg"
-            controlSize={30}
-            // loop
-            // dragFree
-            withIndicators
-            height={300}
-          >
-            <Carousel.Slide>
-              <SlideImage link="https://and1.com.au/wp-content/uploads/2021/08/kids-sports.jpeg" />
-            </Carousel.Slide>
-            <Carousel.Slide>
-              <SlideImage link="https://www.signupgenius.com/cms/images/sports/team-building-activities-soccer-article-600x400.jpg" />
-            </Carousel.Slide>
-            <Carousel.Slide>
-              <SlideImage link="https://studiousguy.com/wp-content/uploads/2022/03/Team-Building-Games-for-Kids.jpg" />
-            </Carousel.Slide>
-          </Carousel>
-        )}
+      <div className="p-4 md:p-20">
+        <Slider isLoading={isLoading} images={eventFiles?.results || []} />
+        {/* <div className="flex flex-col">
+          <div className="flex flex-col gap-1 text-perfGray2 text-sm font-medium">
+            <p className="text-lg md:text-2xl pb-1 text-black">
+              {event?.name || "Event Name"}
+            </p>
+            <p>
+              <AppIcons className="w-5 inline" icon="CalendarIcon:outline" />{" "}
+              {event?.date || "Event Date"}
+            </p>
+            <p>
+              <AppIcons className="w-5 inline" icon="MapIcon:outline" />{" "}
+              {event?.club.name || "Club Name"} Club
+            </p>
+          </div>
+          {user?.user_type !== "Parent" && (
+            <Button
+              label={window.innerWidth > 567 ? "Add Media" : "Media"}
+              onClick={() => setOpened(true)}
+              style="primary"
+              className="h-20 shadow-xl w-20 xs:h-8 xs:w-32 mx-0 mt-0 rounded-full xs:border self-end xs:self-start xs:border-perfBlue xs:text-perfBlue xs:bg-transparent xs:hover:shadow-lg"
+              icon="plus icon"
+            />
+          )}
+        </div> */}
       </div>
     </>
+    // <>
+    //   <div className="h-full flex justify-center items-center mt-32">
+    //     {eventFiles && eventFiles.results.length > 0 ? (
+    //       <Carousel
+    //         slideSize="70%"
+    //         // align="start"
+    //         slideGap="lg"
+    //         controlsOffset="xs"
+    //         controlSize={19}
+    //         loop
+    //         // dragFree
+    //         withIndicators
+    //         sx={{ maxWidth: 700 }}
+    //         mx="auto"
+    //         height={300}
+    //       >
+    //         {eventFiles?.results.map((file) => (
+    //           <Carousel.Slide key={file.id}>
+    //             <SlideImage link={file.file} />
+    //           </Carousel.Slide>
+    //         ))}
+    //       </Carousel>
+    //     ) : (
+    //       <Carousel
+    //         sx={{
+    //           maxWidth: 700,
+    //         }}
+    //         slideSize="70%"
+    //         // align="start"
+    //         slideGap="lg"
+    //         controlSize={30}
+    //         // loop
+    //         // dragFree
+    //         withIndicators
+    //         height={300}
+    //       >
+    //         <Carousel.Slide>
+    //           <SlideImage link="https://and1.com.au/wp-content/uploads/2021/08/kids-sports.jpeg" />
+    //         </Carousel.Slide>
+    //         <Carousel.Slide>
+    //           <SlideImage link="https://www.signupgenius.com/cms/images/sports/team-building-activities-soccer-article-600x400.jpg" />
+    //         </Carousel.Slide>
+    //         <Carousel.Slide>
+    //           <SlideImage link="https://studiousguy.com/wp-content/uploads/2022/03/Team-Building-Games-for-Kids.jpg" />
+    //         </Carousel.Slide>
+    //       </Carousel>
+    //     )}
+    //   </div>
+    // </>
     // <div>
     //   <TeamFilter />
     // </div>

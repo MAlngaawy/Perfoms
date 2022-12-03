@@ -18,7 +18,7 @@ const NotificationsConfig: PagesRouteConfig = {
       },
     },
   },
-  auth: authRoles.User,
+  auth: authRoles.All,
   routes: [
     {
       path: "notifications",

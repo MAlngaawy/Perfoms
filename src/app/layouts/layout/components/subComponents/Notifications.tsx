@@ -8,10 +8,26 @@ import { useNotificationsQuery } from "~/app/store/user/userApi";
 
 type Props = {};
 
+const formatDate = (date: Date | null) => {
+  if (date) {
+    const today = date;
+    const yyyy = today.getFullYear();
+    let mm: string | number = today.getMonth() + 1; // Months start at 0!
+    let dd: string | number = today.getDate();
+
+    if (dd < 10) dd = "0" + dd;
+    if (mm < 10) mm = "0" + mm;
+
+    return yyyy + "-" + mm + "-" + dd;
+  } else {
+    return "NA";
+  }
+};
+
 const Notifications = (props: Props) => {
   const windowSize = useWindowSize();
 
-  const { data: notifications } = useNotificationsQuery();
+  const { data: notifications } = useNotificationsQuery({});
 
   console.log("notifications", notifications);
 
@@ -42,26 +58,24 @@ const Notifications = (props: Props) => {
         </Avatar>
       </Menu.Target>
 
-      <Menu.Dropdown className="w-96 max-w-full">
+      <Menu.Dropdown className="w-80 max-h-96 overflow-scroll max-w-full">
         <h2 className="m-2 text-perfLightBlack text-sm">Notifications</h2>
         <Divider />
-        <Menu.Label className="p-0">
-          <Notification
-            created_at="11/11/2022"
-            newNotification
-            notification_type="Certificate"
-            senderAvatar="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoOhc4kExw8ulBPs32AELYOeYR5dgJjUd6Ug&usqp=CAU"
-            senderName="Ali Mohammed"
-          />
-        </Menu.Label>
-        <Menu.Label className="p-0">
-          <Notification
-            created_at="11/12/2022"
-            notification_type="Certificate"
-            senderAvatar="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoOhc4kExw8ulBPs32AELYOeYR5dgJjUd6Ug&usqp=CAU"
-            senderName="Ali Mohammed"
-          />
-        </Menu.Label>
+        {notifications?.results.map((oneNot) => (
+          <Menu.Label className="p-0">
+            <Notification
+              created_at={formatDate(new Date(oneNot.created_at))}
+              newNotification
+              notification_type={oneNot.notification_type}
+              senderAvatar={oneNot.sender.avatar}
+              senderName={
+                (oneNot.sender.full_name &&
+                  oneNot.sender.full_name.substring(0, 10) + "...") ||
+                "Anonymos"
+              }
+            />
+          </Menu.Label>
+        ))}
         <Link
           to="notifications"
           className="flex w-full justify-center items-center p-2 hover:bg-pagesBg text-sm"
