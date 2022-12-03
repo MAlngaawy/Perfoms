@@ -1,10 +1,12 @@
 import { Loader } from "@mantine/core";
 import { Button } from "~/@main/components/Button";
 import Info from "~/@main/components/Info";
-import { useAcceptCoachRequestQuery } from "~/app/store/clubManager/clubManagerApi";
 import { CoachRequest } from "~/app/store/types/supervisor-types";
 import { useState } from "react";
-import { useAcceptCoachRequestMutation } from "~/app/store/supervisor/supervisorMainApi";
+import {
+  useSuperAcceptCoachRequestMutation,
+  useSuperDeclineCoachRequestMutation,
+} from "~/app/store/supervisor/supervisorMainApi";
 
 const SingleRequest = ({
   first_name,
@@ -14,7 +16,12 @@ const SingleRequest = ({
   city,
   id,
 }: CoachRequest) => {
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
+  const [acceptRequest, { isLoading: acceptLoading }] =
+    useSuperAcceptCoachRequestMutation();
+
+  const [declineRequest, { isLoading: declineLoading }] =
+    useSuperDeclineCoachRequestMutation();
 
   return (
     <div className="h-full flex flex-col rounded-3xl bg-white px-3 py-6 gap-2 border border-perfBlue items-stretch">
@@ -27,22 +34,29 @@ const SingleRequest = ({
         </div>
         <button
           type="submit"
-          onClick={() => useAcceptCoachRequestMutation()}
-          disabled={isLoading} //isLoading
+          onClick={() => acceptRequest({ coach_id: id })}
+          disabled={acceptLoading} //isLoading
           className="mx-auto flex justify-center w-full disabled:bg-gray-500 bg-perfBlue rounded-lg items-center text-white h-12 mt-10 mb-2"
         >
-          {!isLoading ? (
+          {!acceptLoading ? (
             <span> Accept </span>
           ) : (
             <Loader variant="dots" color="white" />
           )}
         </button>
-        <Button
-          label="Decline"
-          style="basic"
-          className="h-10 rounded-md bg-perfGray4 text-perfGray2 hover:shadow-md"
-          onClick={() => console.log("decline")}
-        />
+
+        <button
+          type="submit"
+          onClick={() => declineRequest({ coach_id: id })}
+          disabled={declineLoading} //isLoading
+          className="mx-auto flex justify-center w-full disabled:bg-gray-500 rounded-md bg-perfGray4 text-perfGray2 hover:shadow-md hover:bg-scoreRed hover:text-white items-center  h-12 mb-2"
+        >
+          {!declineLoading ? (
+            <span> Accept </span>
+          ) : (
+            <Loader variant="dots" color="white" />
+          )}
+        </button>
       </div>
     </div>
   );

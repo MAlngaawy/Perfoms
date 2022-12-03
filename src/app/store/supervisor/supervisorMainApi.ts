@@ -1,6 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BASE_HEADERS, BASE_URL } from "~/app/configs/dataService";
-import { ClubManagerSport, Teams } from "../types/clubManager-types";
+import {
+  ClubManagerSport,
+  CoachesRequests,
+  Teams,
+} from "../types/clubManager-types";
+import { UpdateAttendance } from "../types/coach-types";
 import { TeamEvents } from "../types/parent-types";
 import {
   AddAction,
@@ -67,12 +72,33 @@ export const supervisorApi = createApi({
       query: ({ team_id, ...params }) => ({ url: `${team_id}/events`, params }),
     }),
 
-    acceptCoachRequest: mutation<CoachRequests, { coach_id: string | number }>({
+    superCoachesRequests: query<CoachRequests, { page?: number }>({
+      query: (params) => ({ url: "coaches/requests", params }),
+      providesTags: ["supervisor"],
+    }),
+
+    superAcceptCoachRequest: mutation<
+      CoachesRequests,
+      { coach_id: string | number }
+    >({
       query: ({ coach_id, ...body }) => ({
-        url: `coaches/${coach_id}/requests/accept`,
+        url: `coaches/requests/${coach_id}/accept/`,
         method: "PATCH",
         body,
       }),
+      invalidatesTags: ["supervisor"],
+    }),
+
+    superDeclineCoachRequest: mutation<
+      CoachesRequests,
+      { coach_id: string | number }
+    >({
+      query: ({ coach_id, ...body }) => ({
+        url: `coaches/requests/${coach_id}/decline`,
+        method: "DELETE",
+        body,
+      }),
+      invalidatesTags: ["supervisor"],
     }),
   }),
 });
@@ -87,5 +113,7 @@ export const {
   useAddActionMutation,
   useAddRecommendationsMutation,
   useSuprtEventsQuery,
-  useAcceptCoachRequestMutation,
+  useSuperCoachesRequestsQuery,
+  useSuperAcceptCoachRequestMutation,
+  useSuperDeclineCoachRequestMutation,
 } = supervisorApi;

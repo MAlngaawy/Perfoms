@@ -14,33 +14,7 @@ export const clubManagerApi = createApi({
       query: (params) => ({ url: "coaches/requests", params }),
       providesTags: ["clubManager"],
     }),
-
-    acceptCoachRequestMutation: mutation<
-      CoachRequests,
-      { coach_id: string | number }
-    >({
-      query: ({ coach_id, ...body }) => ({
-        url: `coaches/${coach_id}/requests/accept`,
-        method: "PATCH",
-        body,
-      }),
-    }),
-
-    acceptCoachRequest: query<
-      CoachRequests,
-      { coach_id: string | number; page?: number }
-    >({
-      query: ({ coach_id, ...params }) => ({
-        url: `coaches/${coach_id}/requests/accept`,
-        params,
-      }),
-      providesTags: ["clubManager"],
-    }),
   }),
 });
 
-export const {
-  useManageCoachesRequestsQuery,
-  useAcceptCoachRequestQuery,
-  useAcceptCoachRequestMutationMutation,
-} = clubManagerApi;
+export const { useManageCoachesRequestsQuery } = clubManagerApi;
