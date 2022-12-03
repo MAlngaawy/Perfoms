@@ -8,9 +8,12 @@ import useWindowSize from "~/@main/hooks/useWindowSize";
 import OneMessageBox from "~/@main/components/OneMessageBox";
 import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 import { useSelector } from "react-redux";
-import { Player } from "~/app/store/types/parent-types";
+import { ParentClub, Player } from "~/app/store/types/parent-types";
 import { usePlayerClubQuery } from "~/app/store/parent/parentApi";
 import { useUserQuery } from "~/app/store/user/userApi";
+import { useMyClubQuery } from "~/app/store/coach/coachApi";
+import { useEffect, useState } from "react";
+import { useSuperClubQuery } from "~/app/store/supervisor/supervisorMainApi";
 
 type Props = {
   opened: boolean;
@@ -19,14 +22,31 @@ type Props = {
 
 const Toolbar = ({ setOpened }: Props) => {
   const windowSize = useWindowSize();
+  const { data: user } = useUserQuery(null);
+
+  const [club, setClub] = useState<ParentClub>();
 
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
   const { data: playerClub } = usePlayerClubQuery(
     { id: selectedPlayer?.id },
-    { skip: !selectedPlayer?.id }
+    { skip: !selectedPlayer?.id || user?.user_type !== "Parent" }
   );
 
-  const { data: user } = useUserQuery(null);
+  const { data: coachClub } = useMyClubQuery(
+    {},
+    { skip: user?.user_type !== "Coach" }
+  );
+
+  const { data: superClub } = useSuperClubQuery(
+    {},
+    { skip: user?.user_type !== "Supervisor" }
+  );
+
+  useEffect(() => {
+    if (playerClub) setClub(playerClub);
+    if (coachClub) setClub(coachClub);
+    if (superClub) setClub(superClub);
+  }, [coachClub, playerClub, superClub]);
 
   return (
     <nav className="w-full flex justify-between items-center shadow-md p-2 lg:p-4 bg-perfBlue lg:bg-white overflow-scroll">
@@ -41,10 +61,10 @@ const Toolbar = ({ setOpened }: Props) => {
           <Avatar
             radius={"xl"}
             className="w-8"
-            src={playerClub?.icon_url}
+            src={club?.icon_url}
             alt="club logo"
           />
-          <span>{playerClub?.name || "Alam alryada"}</span>
+          <span>{club?.name || "Alam alryada"}</span>
         </div>
 
         {/* Select Player For the Parent */}

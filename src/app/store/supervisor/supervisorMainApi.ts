@@ -7,6 +7,7 @@ import {
 } from "../types/clubManager-types";
 import { UpdateAttendance } from "../types/coach-types";
 import { TeamEvents } from "../types/parent-types";
+import { ParentClub } from "~/app/store/types/parent-types";
 import {
   AddAction,
   AddRecommendation,
@@ -29,6 +30,9 @@ export const supervisorApi = createApi({
     }),
     superTeams: query<Teams, { page?: number }>({
       query: (params) => ({ url: "teams/", params }),
+    }),
+    superClub: query<ParentClub, { pages?: number }>({
+      query: (params) => "my-club/",
     }),
     superSport: query<ClubManagerSport, { page?: number }>({
       query: (params) => ({ url: "my-sport/", params }),
@@ -116,4 +120,5 @@ export const {
   useSuperCoachesRequestsQuery,
   useSuperAcceptCoachRequestMutation,
   useSuperDeclineCoachRequestMutation,
+  useSuperClubQuery,
 } = supervisorApi;

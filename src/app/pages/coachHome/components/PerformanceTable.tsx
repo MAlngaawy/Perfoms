@@ -52,7 +52,7 @@ const PerformanceTable = (props: Props) => {
           <Table highlightOnHover horizontalSpacing={20}>
             <thead>
               <tr className="">
-                <th className="bg-white sticky  top-0 z-20 ">Day</th>
+                <th className="bg-white sticky  top-0 z-20 ">Metric</th>
                 {teamPerformance?.results.map((player) => (
                   <th className="bg-white sticky top-0 z-20 text-center ">
                     <div className="flex  flex-col justify-center items-center">
