@@ -6,46 +6,60 @@ import DeleteButton from "../../../../@main/components/ManagerComponents/SubComp
 import AddMetric from "./Components/AddMetric";
 import CreateActionsAndRecomm from "./Components/CreateActionsAndRecomm";
 import EditMetric from "./Components/EditMetric";
-import { Avatar } from "@mantine/core";
+import { Avatar, Breadcrumbs } from "@mantine/core";
 import { useSuperMetricsQuery } from "~/app/store/supervisor/supervisorMainApi";
 
 type Props = {};
 
 const KpiMetrics = (props: Props) => {
   const { id } = useParams();
-
-  console.log("LOLLLLLLLL", id);
-
   const { data: metrics } = useSuperMetricsQuery({ kpi_id: id }, { skip: !id });
 
+  const items = [
+    { title: "Home", href: "/supervisor" },
+    { title: "Kpis", href: `/supervisor/sports/${id}` },
+    { title: "Metrics", href: `` },
+  ].map((item, index) => (
+    <Link to={item.href} key={index}>
+      {item.title}
+    </Link>
+  ));
+
   return (
-    <div className="admin-teams  flex xs:flex-row flex-wrap justify-center sm:justify-start items-stretch gap-4 sm:m-6 p-2 sm:p-6">
-      {metrics?.results.map((metric: Metric) => {
-        return (
-          <div className="sport-card relative bg-white rounded-3xl p-12 flex flex-col justify-center items-center gap-4">
-            <div className="bg-pagesBg rounded-full w-24 h-24 flex justify-center items-center">
-              <Avatar
-                radius={"xl"}
-                className="w-3/5 h-3/5"
-                src={metric.icon_url}
-                alt="icon"
-              />
+    <div className="admin-teams   m-2 sm:mx-10 my-2">
+      <div className="mx-4 my-6">
+        <Breadcrumbs className="text-perfGray3" separator="→">
+          {items}
+        </Breadcrumbs>
+      </div>
+      <div className="admin-teams  flex xs:flex-row flex-wrap justify-center sm:justify-start items-stretch gap-4 ">
+        {metrics?.results.map((metric: Metric) => {
+          return (
+            <div className="sport-card relative bg-white rounded-3xl p-12 flex flex-col justify-center items-center gap-4">
+              <div className="bg-pagesBg rounded-full w-24 h-24 flex justify-center items-center">
+                <Avatar
+                  radius={"xl"}
+                  className="w-3/5 h-3/5"
+                  src={metric.icon_url}
+                  alt="icon"
+                />
+              </div>
+              <h2 className="text-xl text-perfBlue w-28 text-center mx-auto">
+                {metric.name}
+              </h2>
+              {/* Edit and Delete Buttons */}
+              <div className="flex absolute left-2 top-5 gap-2">
+                <EditMetric metricName={metric.name} metricId={metric.id} />
+                <DeleteButton name={metric.name} id={metric.id} type="Metric" />
+              </div>
+              <div className="flex absolute right-2 top-5 gap-2">
+                <CreateActionsAndRecomm metricId={metric.id} />
+              </div>
             </div>
-            <h2 className="text-xl text-perfBlue w-28 text-center mx-auto">
-              {metric.name}
-            </h2>
-            {/* Edit and Delete Buttons */}
-            <div className="flex absolute left-2 top-5 gap-2">
-              <EditMetric metricName={metric.name} metricId={metric.id} />
-              <DeleteButton name={metric.name} id={metric.id} type="Metric" />
-            </div>
-            <div className="flex absolute right-2 top-5 gap-2">
-              <CreateActionsAndRecomm metricId={metric.id} />
-            </div>
-          </div>
-        );
-      })}
-      <AddMetric kpiId={id ? +id : undefined} />
+          );
+        })}
+        <AddMetric kpiId={id ? +id : undefined} />
+      </div>
     </div>
   );
 };
