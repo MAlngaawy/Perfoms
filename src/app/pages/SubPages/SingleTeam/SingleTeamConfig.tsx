@@ -18,10 +18,14 @@ const SingleTeamPageConfig: PagesRouteConfig = {
       },
     },
   },
-  auth: authRoles.Supervisor,
+  auth: [...authRoles.Supervisor, ...authRoles.Admin],
   routes: [
     {
       path: "admin/teams/:id",
+      element: <SingleTeam />,
+    },
+    {
+      path: "supervisor/teams/:id",
       element: <SingleTeam />,
     },
   ],

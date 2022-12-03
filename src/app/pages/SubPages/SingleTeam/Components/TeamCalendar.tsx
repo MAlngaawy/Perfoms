@@ -3,7 +3,7 @@ import { Calendar } from "@mantine/dates";
 import classNames from "classnames";
 
 type Props = {
-  teamId: number;
+  teamId: string;
 };
 
 const dates = [

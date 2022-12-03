@@ -19,7 +19,7 @@ import {
 } from "../types/coach-types";
 import { TeamPlayers, Teams } from "../types/clubManager-types";
 import { Attendance, UpdateAttendance } from "../types/attendance-types";
-import { TeamEvents } from "../types/parent-types";
+import { ParentClub, TeamEvents } from "../types/parent-types";
 
 export const coachApi = createApi({
   reducerPath: "coachApi",
@@ -34,6 +34,9 @@ export const coachApi = createApi({
     }),
     myTeams: query<Teams, { pages?: number }>({
       query: (params) => "my-teams/",
+    }),
+    myClub: query<ParentClub, { pages?: number }>({
+      query: (params) => "my-club/",
     }),
     teamDetails: query<Team, number>({
       query: (id) => `team-details/${id}/`,
@@ -177,4 +180,5 @@ export const {
   useTeamAttendanceDaysQuery,
   useTeamPerformanceMetricsQuery,
   useCoachTeamEventQuery,
+  useMyClubQuery,
 } = coachApi;
