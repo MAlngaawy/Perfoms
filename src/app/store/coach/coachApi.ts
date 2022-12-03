@@ -17,7 +17,7 @@ import {
   GeneratePdfDocs,
   GetMyTeams,
 } from "../types/coach-types";
-import { TeamPlayers } from "../types/clubManager-types";
+import { TeamPlayers, Teams } from "../types/clubManager-types";
 import { Attendance, UpdateAttendance } from "../types/attendance-types";
 import { TeamEvents } from "../types/parent-types";
 
@@ -32,8 +32,8 @@ export const coachApi = createApi({
     coaches: query<AllCoachesType, { page: number }>({
       query: (params) => ({ url: "all-coaches/", params }),
     }),
-    myTeams: query<GetMyTeams, null>({
-      query: () => "my-teams/",
+    myTeams: query<Teams, { pages?: number }>({
+      query: (params) => "my-teams/",
     }),
     teamDetails: query<Team, number>({
       query: (id) => `team-details/${id}/`,

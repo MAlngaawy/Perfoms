@@ -7,26 +7,53 @@ import {
   selectedPlayerTeamFn,
   selectPlayerTeam,
 } from "~/app/store/parent/parentSlice";
-import { usePlayerTeamsQuery } from "~/app/store/parent/parentApi";
-import { useMyTeamsQuery } from "~/app/store/coach/coachApi";
+import {
+  usePlayerTeamsQuery,
+  useTeamEventsQuery,
+} from "~/app/store/parent/parentApi";
+import {
+  useCoachTeamEventQuery,
+  useMyTeamsQuery,
+} from "~/app/store/coach/coachApi";
 import { PlayerTeams } from "~/app/store/types/parent-types";
+import { useUserQuery } from "~/app/store/user/userApi";
+import {
+  useSuperTeamsQuery,
+  useSuprtEventsQuery,
+} from "~/app/store/supervisor/supervisorMainApi";
+import { Team } from "~/app/store/types/supervisor-types";
 
 type Props = {};
 
 const TeamFilter = (props: Props) => {
+  const { data: user } = useUserQuery(null);
+  const [teams, setTeams] = useState<Team[]>();
   const dispatch = useDispatch();
   const selectedPlayer = useSelector(selectedPlayerFn);
+
   let { data: playerTeams } = usePlayerTeamsQuery(
     { id: selectedPlayer?.id },
-    { skip: !selectedPlayer }
+    { skip: !selectedPlayer || user?.user_type !== "Parent" }
   );
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
 
-  const { data: coachTeams } = useMyTeamsQuery(null);
+  const { data: coachTeams } = useMyTeamsQuery(
+    {},
+    { skip: user?.user_type !== "Coach" }
+  );
 
-  if (!selectedPlayer) playerTeams = coachTeams as PlayerTeams | undefined;
+  const { data: superTeams } = useSuperTeamsQuery(
+    {},
+    { skip: user?.user_type !== "Supervisor" }
+  );
+
+  // if (!selectedPlayer) playerTeams = coachTeams as PlayerTeams | undefined;
 
   useEffect(() => {
+    if (superTeams) setTeams(superTeams.results);
+    if (coachTeams) setTeams(coachTeams.results);
+    if (playerTeams) setTeams(playerTeams.results);
+
     if (playerTeams)
       dispatch(
         selectPlayerTeam(
@@ -38,7 +65,7 @@ const TeamFilter = (props: Props) => {
               }
         )
       );
-  }, [playerTeams]);
+  }, [playerTeams, superTeams, coachTeams]);
 
   return (
     <Menu trigger="hover" shadow="md" width={200}>
@@ -49,8 +76,8 @@ const TeamFilter = (props: Props) => {
         </button>
       </Menu.Target>
       <Menu.Dropdown>
-        {playerTeams &&
-          playerTeams.results.map((value) => (
+        {teams &&
+          teams.map((value) => (
             <Menu.Item
               key={value.id}
               onClick={() =>

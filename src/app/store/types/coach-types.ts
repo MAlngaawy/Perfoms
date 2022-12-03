@@ -104,7 +104,7 @@ export type Team = {
 };
 
 export type GetMyTeams = BaseGetAllType & {
-  data: Team[];
+  results: Team[];
 };
 
 export type SendBulkNotifications = {
