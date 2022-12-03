@@ -3,10 +3,11 @@ import { BASE_HEADERS, BASE_URL } from "~/app/configs/dataService";
 import {
   ClubManagerSport,
   CoachesRequests,
+  TeamPlayers,
   Teams,
 } from "../types/clubManager-types";
 import { UpdateAttendance } from "../types/coach-types";
-import { TeamEvents } from "../types/parent-types";
+import { TeamCoaches, TeamEvents } from "../types/parent-types";
 import { ParentClub } from "~/app/store/types/parent-types";
 import {
   AddAction,
@@ -31,6 +32,21 @@ export const supervisorApi = createApi({
     superTeams: query<Teams, { page?: number }>({
       query: (params) => ({ url: "teams/", params }),
     }),
+
+    superTeamCoaches: query<TeamCoaches, { team_id: string; page?: number }>({
+      query: ({ team_id, ...params }) => ({
+        url: `teams/${team_id}/coaches/`,
+        params,
+      }),
+    }),
+
+    superTeamPlaers: query<TeamPlayers, { team_id: string; page?: number }>({
+      query: ({ team_id, ...params }) => ({
+        url: `${team_id}/players/`,
+        params,
+      }),
+    }),
+
     superClub: query<ParentClub, { pages?: number }>({
       query: (params) => "my-club/",
     }),
@@ -109,6 +125,8 @@ export const supervisorApi = createApi({
 
 export const {
   useSuperkpisQuery,
+  useSuperTeamCoachesQuery,
+  useSuperTeamPlaersQuery,
   useSuperTeamsQuery,
   useSuperSportQuery,
   useSuperKpisQuery,

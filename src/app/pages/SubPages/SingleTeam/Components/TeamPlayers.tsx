@@ -1,128 +1,35 @@
+import {
+  useSuperTeamCoachesQuery,
+  useSuperTeamPlaersQuery,
+} from "~/app/store/supervisor/supervisorMainApi";
 import AppIcons from "../../../../../@main/core/AppIcons";
 import AddPlayer from "./AddPLayerToTeam";
 import DeletePlayerFromTeam from "./DeletePlayerFromTeam";
 
-type Props = {};
+type Props = {
+  teamId: string;
+};
 
-const players = [
-  {
-    name: "Adham abdelmoniem",
-    image:
-      "https://glamourshots.com/wp-content/uploads/2015/08/Glamour_Shots_kids_boy_bowtie_portraits-799x600.jpg",
-    id: 1,
-  },
-  {
-    name: "Adham abdelmoniem",
-    image:
-      "https://glamourshots.com/wp-content/uploads/2015/08/Glamour_Shots_kids_boy_bowtie_portraits-799x600.jpg",
-    id: 1,
-  },
-  {
-    name: "Adham abdelmoniem",
-    image:
-      "https://glamourshots.com/wp-content/uploads/2015/08/Glamour_Shots_kids_boy_bowtie_portraits-799x600.jpg",
-    id: 1,
-  },
-  {
-    name: "Adham",
-    image:
-      "https://glamourshots.com/wp-content/uploads/2015/08/Glamour_Shots_kids_boy_bowtie_portraits-799x600.jpg",
-    id: 1,
-  },
-  {
-    name: "Adham abdelmoniem",
-    image:
-      "https://glamourshots.com/wp-content/uploads/2015/08/Glamour_Shots_kids_boy_bowtie_portraits-799x600.jpg",
-    id: 1,
-  },
-  {
-    name: "Adham abdelmoniem",
-    image:
-      "https://glamourshots.com/wp-content/uploads/2015/08/Glamour_Shots_kids_boy_bowtie_portraits-799x600.jpg",
-    id: 1,
-  },
-  {
-    name: "Adham abdelmoniem",
-    image:
-      "https://glamourshots.com/wp-content/uploads/2015/08/Glamour_Shots_kids_boy_bowtie_portraits-799x600.jpg",
-    id: 1,
-  },
-  {
-    name: "Adham abdelmoniem",
-    image:
-      "https://glamourshots.com/wp-content/uploads/2015/08/Glamour_Shots_kids_boy_bowtie_portraits-799x600.jpg",
-    id: 1,
-  },
-  {
-    name: "Adham abdelmoniem",
-    image:
-      "https://glamourshots.com/wp-content/uploads/2015/08/Glamour_Shots_kids_boy_bowtie_portraits-799x600.jpg",
-    id: 1,
-  },
-  {
-    name: "Adham",
-    image:
-      "https://glamourshots.com/wp-content/uploads/2015/08/Glamour_Shots_kids_boy_bowtie_portraits-799x600.jpg",
-    id: 1,
-  },
-  {
-    name: "Adham abdelmoniem",
-    image:
-      "https://glamourshots.com/wp-content/uploads/2015/08/Glamour_Shots_kids_boy_bowtie_portraits-799x600.jpg",
-    id: 1,
-  },
-  {
-    name: "Adham abdelmoniem",
-    image:
-      "https://glamourshots.com/wp-content/uploads/2015/08/Glamour_Shots_kids_boy_bowtie_portraits-799x600.jpg",
-    id: 1,
-  },
-  {
-    name: "Adham abdelmoniem",
-    image:
-      "https://glamourshots.com/wp-content/uploads/2015/08/Glamour_Shots_kids_boy_bowtie_portraits-799x600.jpg",
-    id: 1,
-  },
-  {
-    name: "Adham abdelmoniem",
-    image:
-      "https://glamourshots.com/wp-content/uploads/2015/08/Glamour_Shots_kids_boy_bowtie_portraits-799x600.jpg",
-    id: 1,
-  },
-  {
-    name: "Adham abdelmoniem",
-    image:
-      "https://glamourshots.com/wp-content/uploads/2015/08/Glamour_Shots_kids_boy_bowtie_portraits-799x600.jpg",
-    id: 1,
-  },
-  {
-    name: "Adham",
-    image:
-      "https://glamourshots.com/wp-content/uploads/2015/08/Glamour_Shots_kids_boy_bowtie_portraits-799x600.jpg",
-    id: 1,
-  },
-  {
-    name: "Adham abdelmoniem",
-    image:
-      "https://glamourshots.com/wp-content/uploads/2015/08/Glamour_Shots_kids_boy_bowtie_portraits-799x600.jpg",
-    id: 1,
-  },
-  {
-    name: "Adham abdelmoniem",
-    image:
-      "https://glamourshots.com/wp-content/uploads/2015/08/Glamour_Shots_kids_boy_bowtie_portraits-799x600.jpg",
-    id: 1,
-  },
-];
+const TeamPlayers = ({ teamId }: Props) => {
+  const { data: players } = useSuperTeamPlaersQuery(
+    { team_id: teamId },
+    { skip: !teamId }
+  );
 
-const TeamPlayers = (props: Props) => {
   return (
     <div>
       <h2>Payers</h2>
       <div className="flex gap-4 flex-wrap mt-6">
-        {players.map((player) => {
-          return <SinglePlayer {...player} />;
-        })}
+        {players &&
+          players.results.map((player) => {
+            return (
+              <SinglePlayer
+                id={player.id}
+                name={player.name}
+                image={player.icon}
+              />
+            );
+          })}
         <AddPlayer />
       </div>
     </div>
