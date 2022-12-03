@@ -10,6 +10,7 @@ import {
 import { useSelector } from "react-redux";
 import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 import { UpdatePlaerKpiMetric } from "~/app/store/types/coach-types";
+import classNames from "classnames";
 
 type Props = {};
 // Doesn't matters what the arrange
@@ -56,7 +57,7 @@ const PerformanceTable = (props: Props) => {
           {teamPerformanceMetric?.player_metric.map((metric) => {
             return (
               <tr className="" key={metric.metric}>
-                <td className="text-sm w-48 sticky left-0 text-left bg-white z-10 font-medium text-perfGray1">
+                <td className="text-sm sticky left-0 text-left bg-white z-10 font-medium text-perfGray1">
                   {metric.metric}
                 </td>
                 {teamPerformance?.results.map((player) => {
@@ -70,7 +71,12 @@ const PerformanceTable = (props: Props) => {
                   }
                   return (
                     <td key={metric.metric}>
-                      <div className="flex gap-2 justify-center items-center m-10">
+                      <div
+                        className={classNames(
+                          "flex gap-2 justify-center items-center m-6 sm:m-10",
+                          { "opacity-40": theScore > 0 }
+                        )}
+                      >
                         {[1, 2, 3, 4, 5].map((number) => (
                           <span
                             onClick={() => {
