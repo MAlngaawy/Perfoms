@@ -18,6 +18,7 @@ const MediaPage = () => {
 
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const { data: user } = useUserQuery(null);
+  console.log(user);
 
   const { data: parentEvents } = useTeamEventsQuery(
     { teamId: selectedPlayerTeam?.id },

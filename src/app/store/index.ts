@@ -9,6 +9,7 @@ import { userApi } from "./user/userApi";
 import { coachApi } from "./coach/coachApi";
 import { createLogger } from "redux-logger";
 import { supervisorApi } from "./supervisor/supervisorMainApi";
+import { clubManagerApi } from "./clubManager/clubManagerApi";
 
 export interface SerializedError {
   name?: string;
@@ -33,6 +34,7 @@ const middlewares: any[] = [
   coreApi.middleware,
   parentsApi.middleware,
   supervisorApi.middleware,
+  clubManagerApi.middleware,
 ];
 
 if (process.env.NODE_ENV === "development") {
