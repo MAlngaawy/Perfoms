@@ -11,7 +11,7 @@ const TeamCard = ({ team }: any) => {
         to={`teams/${team.id}`}
         className="bg-pagesBg rounded-full w-32 h-32 flex justify-center items-center"
       >
-        <Avatar className="w-4/5" src={team.icon} alt="icon" />
+        <Avatar size={"xl"} src={team.icon_url} alt="icon" />
       </Link>
 
       <h2 className="text-xl font-semibold text-perfGray1">{team.name}</h2>
