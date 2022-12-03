@@ -21,5 +21,5 @@ const Template: ComponentStory<typeof TeamCalendar> = (args) => (
 export const Primary = Template.bind({});
 
 Primary.args = {
-  teamId: 1,
+  teamId: "1",
 };
