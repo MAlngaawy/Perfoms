@@ -49,6 +49,13 @@ export const userApi = createApi({
           Cookies.set("token", data.access);
           eventInstance.emit("Login_Success");
         } catch (error) {
+          console.log(error);
+          //@ts-ignore
+          if (error.error.status === 409)
+            return window.location.replace(
+              //@ts-ignore
+              `/verify-otp?userid=${error.error.data.id}`
+            );
           showNotification({
             title: "Auth notification",
             //@ts-ignore
@@ -67,11 +74,8 @@ export const userApi = createApi({
       async onQueryStarted(arg, { queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          Cookies.set("token", data?.data.access);
           eventInstance.emit("SignUp_Success");
         } catch (error: any) {
-          console.log(error.error.data);
-
           showNotification({
             title: "Auth notification",
             //@ts-ignore
@@ -122,6 +126,21 @@ export const userApi = createApi({
         method: "POST",
         body,
       }),
+      async onQueryStarted(arg, { queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          //@ts-ignore
+          Cookies.set("token", data.access);
+          eventInstance.emit("Login_Success");
+        } catch (error) {
+          showNotification({
+            title: "Auth notification",
+            //@ts-ignore
+            message: `${error.error.data.data} 🤥`,
+            color: "red",
+          });
+        }
+      },
     }),
   }),
 });

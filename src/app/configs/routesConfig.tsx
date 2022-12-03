@@ -30,6 +30,7 @@ import KpiMetricsPageConfig from "../pages/SubPages/KpiMetrics/KpiMetricsConfig"
 import ChatConfig from "../pages/chat/ChatConfig";
 import RequestConfig from "../pages/requests/RequestConfig";
 import SupervisorConfig from "../pages/SuperVisor/SuperHomeConfig";
+import OTPConfig from "../pages/OTP/OTPConfig";
 
 const routeConfigs: PagesRouteConfig[] = [
   SignInConfig,
@@ -60,6 +61,7 @@ const routeConfigs: PagesRouteConfig[] = [
   ChatConfig,
   RequestConfig,
   SupervisorConfig,
+  OTPConfig,
 ];
 
 const routes: AppRouteObject[] = [
