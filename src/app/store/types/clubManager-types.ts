@@ -5,6 +5,7 @@ import { PlayerCoach } from "./parent-types";
 
 export type ClubManagerSport = {
   icon: string;
+  icon_url: string;
   name: string;
   club: number;
 };

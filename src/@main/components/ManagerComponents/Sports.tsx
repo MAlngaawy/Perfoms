@@ -20,7 +20,7 @@ const Sports = (props: Props) => {
           to={`sports/1`}
           className="bg-pagesBg rounded-full w-24 h-24 flex justify-center items-center"
         >
-          <Avatar className="w-3/5" src={sport?.icon} alt="icon" />
+          <Avatar size={"xl"} src={sport?.icon_url} alt="icon" />
         </Link>
         <h2 className="text-xl text-perfBlue">{sport?.name}</h2>
         {/* Edit and Delete Buttons */}

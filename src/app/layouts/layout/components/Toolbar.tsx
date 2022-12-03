@@ -41,7 +41,7 @@ const Toolbar = ({ setOpened }: Props) => {
           <Avatar
             radius={"xl"}
             className="w-8"
-            src={playerClub?.icon}
+            src={playerClub?.icon_url}
             alt="club logo"
           />
           <span>{playerClub?.name || "Alam alryada"}</span>
