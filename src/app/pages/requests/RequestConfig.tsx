@@ -18,7 +18,7 @@ const RequestConfig: PagesRouteConfig = {
       },
     },
   },
-  auth: authRoles.User,
+  auth: [...authRoles.Supervisor, ...authRoles.Admin],
   routes: [
     {
       path: "requests",

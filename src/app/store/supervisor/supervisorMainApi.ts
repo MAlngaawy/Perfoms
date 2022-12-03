@@ -5,6 +5,7 @@ import { TeamEvents } from "../types/parent-types";
 import {
   AddAction,
   AddRecommendation,
+  CoachRequests,
   kpi,
   Kpis,
   Metrics,
@@ -65,6 +66,14 @@ export const supervisorApi = createApi({
     suprtEvents: query<TeamEvents, { team_id: number; page?: number }>({
       query: ({ team_id, ...params }) => ({ url: `${team_id}/events`, params }),
     }),
+
+    acceptCoachRequest: mutation<CoachRequests, { coach_id: string | number }>({
+      query: ({ coach_id, ...body }) => ({
+        url: `coaches/${coach_id}/requests/accept`,
+        method: "PATCH",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -78,4 +87,5 @@ export const {
   useAddActionMutation,
   useAddRecommendationsMutation,
   useSuprtEventsQuery,
+  useAcceptCoachRequestMutation,
 } = supervisorApi;
