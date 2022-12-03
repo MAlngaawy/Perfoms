@@ -144,3 +144,18 @@ export type SuperVisorTeamCoaches = BaseGetAllType & {
 export type SuperVisorTeamPlayers = BaseGetAllType & {
   result: Partial<Player>[];
 };
+
+// This is Requests Type
+export type CoachRequest = {
+  id: number;
+  first_name: string;
+  last_name: string;
+  avatar: string;
+  country: string;
+  city: string;
+  mobile: string;
+};
+
+export type CoachRequests = BaseGetAllType & {
+  results: CoachRequest[];
+};

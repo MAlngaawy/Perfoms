@@ -28,6 +28,7 @@ import SingleTeamPageConfig from "../pages/SubPages/SingleTeam/SingleTeamConfig"
 import SportKpisPageConfig from "../pages/SubPages/SportKpis/SportKpisConfig";
 import KpiMetricsPageConfig from "../pages/SubPages/KpiMetrics/KpiMetricsConfig";
 import ChatConfig from "../pages/chat/ChatConfig";
+import RequestConfig from "../pages/requests/RequestConfig";
 import SupervisorConfig from "../pages/SuperVisor/SuperHomeConfig";
 
 const routeConfigs: PagesRouteConfig[] = [
@@ -57,6 +58,7 @@ const routeConfigs: PagesRouteConfig[] = [
   SportKpisPageConfig,
   KpiMetricsPageConfig,
   ChatConfig,
+  RequestConfig,
   SupervisorConfig,
 ];
 

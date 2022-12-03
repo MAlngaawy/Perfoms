@@ -83,6 +83,15 @@ const navigationConfig: NavigationConfigTypes[] = [
     url: "players",
     auth: authRoles.Coach,
   },
+  {
+    id: "coaches-requests",
+    title: "Requests",
+    translate: "REQUESTS",
+    type: "item",
+    icon: "UserPlusIcon:outline",
+    url: "requests",
+    auth: [...authRoles.Admin, ...authRoles.Supervisor],
+  },
 ];
 
 export default navigationConfig;
