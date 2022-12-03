@@ -73,11 +73,8 @@ export type Team = {
   rate_per: RatePer;
   players_count: number;
   pillar?: number;
-  sport?: {
-    id: number;
-    name: string;
-    icon: string;
-  };
+  gender?: string;
+  sport?: string;
 };
 
 export type coaches = BaseGetAllType & {

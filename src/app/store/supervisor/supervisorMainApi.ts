@@ -7,7 +7,7 @@ import {
   Teams,
 } from "../types/clubManager-types";
 import { UpdateAttendance } from "../types/coach-types";
-import { TeamCoaches, TeamEvents } from "../types/parent-types";
+import { TeamCoaches, TeamEvent, TeamEvents } from "../types/parent-types";
 import { ParentClub } from "~/app/store/types/parent-types";
 import {
   AddAction,
@@ -16,6 +16,7 @@ import {
   kpi,
   Kpis,
   Metrics,
+  Team,
 } from "../types/supervisor-types";
 
 export const supervisorApi = createApi({
@@ -40,9 +41,23 @@ export const supervisorApi = createApi({
       }),
     }),
 
+    superTeamEvents: query<TeamEvents, { team_id: string; page?: number }>({
+      query: ({ team_id, ...params }) => ({
+        url: `${team_id}/events/`,
+        params,
+      }),
+    }),
+
     superTeamPlaers: query<TeamPlayers, { team_id: string; page?: number }>({
       query: ({ team_id, ...params }) => ({
         url: `${team_id}/players/`,
+        params,
+      }),
+    }),
+
+    superTeamInfo: query<Team, { team_id: string; page?: number }>({
+      query: ({ team_id, ...params }) => ({
+        url: `teams/${team_id}/`,
         params,
       }),
     }),
@@ -126,8 +141,10 @@ export const supervisorApi = createApi({
 export const {
   useSuperkpisQuery,
   useSuperTeamCoachesQuery,
+  useSuperTeamEventsQuery,
   useSuperTeamPlaersQuery,
   useSuperTeamsQuery,
+  useSuperTeamInfoQuery,
   useSuperSportQuery,
   useSuperKpisQuery,
   useAddKpiMutation,

@@ -1,6 +1,4 @@
 import { Avatar } from "@mantine/core";
-import React from "react";
-import { Url } from "url";
 import { useSuperTeamCoachesQuery } from "~/app/store/supervisor/supervisorMainApi";
 import DeleteButton from "../../../../../@main/components/ManagerComponents/SubComponents/DeleteButton";
 import AddCoachForm from "./AddCoachForm";
@@ -17,7 +15,7 @@ const TeamCoaches = ({ teamId }: Props) => {
 
   return (
     <div>
-      <h2>Team Choaches</h2>
+      <h2>Team Coaches</h2>
       <div className="flex flex-col gap-2 mt-6">
         {coaches?.results.map((coach) => (
           <div className="flex justify-between rounded-3xl items-center p-1 hover:bg-pagesBg transition-all">
@@ -35,7 +33,7 @@ const TeamCoaches = ({ teamId }: Props) => {
           </div>
         ))}
       </div>
-      <AddCoachForm />
+      {/* <AddCoachForm /> */}
     </div>
   );
 };

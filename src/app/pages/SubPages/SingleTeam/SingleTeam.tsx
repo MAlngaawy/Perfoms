@@ -53,12 +53,12 @@ const SingleTeam = (props: Props) => {
         </Grid.Col>
         <Grid.Col span={12} sm={7} lg={3}>
           <CardDiv>
-            <TeamUpcomingEvents events={events} />
+            <TeamUpcomingEvents teamId={id !== undefined ? id : ""} />
           </CardDiv>
         </Grid.Col>
         <Grid.Col span={12} sm={5} lg={2}>
           <CardDiv>
-            <TeamInfoCard />
+            <TeamInfoCard teamId={id !== undefined ? id : ""} />
           </CardDiv>
         </Grid.Col>
         <Grid.Col span={12}>
