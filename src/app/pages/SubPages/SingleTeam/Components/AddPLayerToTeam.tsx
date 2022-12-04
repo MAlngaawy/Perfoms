@@ -10,28 +10,28 @@ const playersDate = [
   {
     label: "Player One",
     image:
-      "https://previews.123rf.com/images/blueskyimage/blueskyimage1311/blueskyimage131101911/23810213-sport-trainer-portrait-of-happy-young-coach.jpg",
+      "https://daisybeattyphotography.com/wp-content/uploads/2016/10/best-child-portrait-photographer-nyc-daisy-beatty-2016-677x1024(pp_w480_h726).jpg",
     id: 1,
     value: "1",
   },
   {
     label: "Player Two",
     image:
-      "https://static.clubs.nfl.com/image/private/t_person_squared_mobile/f_auto/jaguars/gpvbkyjpty6w3kpdkv9m.jpg",
+      "https://images.unsplash.com/photo-1497881807663-38b9a95b7192?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2hpbGQlMjBwb3J0cmFpdHxlbnwwfHwwfHw%3D&w=1000&q=80",
     id: 2,
     value: "2",
   },
   {
     label: "Player Three",
     image:
-      "https://previews.123rf.com/images/blueskyimage/blueskyimage1311/blueskyimage131101911/23810213-sport-trainer-portrait-of-happy-young-coach.jpg",
+      "https://images.squarespace-cdn.com/content/v1/5575a19ee4b0e1635672b29f/1578629190658-GJ788H0T89UXLS22LE67/Remember+When+Portraits+Children%27s+Photography+Cincinnati+Ohio?format=1000w",
     id: 3,
     value: "3",
   },
   {
     label: "Player Four",
     image:
-      "https://static.clubs.nfl.com/image/private/t_person_squared_mobile/f_auto/jaguars/gpvbkyjpty6w3kpdkv9m.jpg",
+      "https://images.squarespace-cdn.com/content/v1/575c8f5ce32140042bb45885/1475886827268-1KWOE3EXS6P3BDXMU2OU/DSCF9047-2.jpg?format=1000w",
     id: 4,
     value: "4",
   },

@@ -33,7 +33,7 @@ const TeamCoaches = ({ teamId }: Props) => {
           </div>
         ))}
       </div>
-      {/* <AddCoachForm /> */}
+      <AddCoachForm />
     </div>
   );
 };

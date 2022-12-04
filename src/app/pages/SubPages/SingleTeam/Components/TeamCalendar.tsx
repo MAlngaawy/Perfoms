@@ -6,14 +6,14 @@ type Props = {
   teamId: string;
 };
 
-const dates = [
-  new Date("11/11/2022").getTime(),
-  new Date("10/15/2022").getTime(),
-  new Date("10/11/2022").getTime(),
-];
-
 const TeamCalendar = ({ teamId }: Props) => {
   const [value, setValue] = useState(null);
+
+  const [dates, setDates] = useState([
+    new Date("12/11/2022").getTime(),
+    new Date("12/15/2022").getTime(),
+    new Date("12/11/2022").getTime(),
+  ]);
 
   console.log(value);
 
@@ -36,7 +36,7 @@ const TeamCalendar = ({ teamId }: Props) => {
             const day = date.getDate();
             return (
               <div
-                onClick={() => console.log(date)}
+                onClick={() => setDates([...dates, date.getTime()])}
                 className={classNames("", {
                   "border rounded-full border-perfBlue": dates.includes(
                     date.getTime()

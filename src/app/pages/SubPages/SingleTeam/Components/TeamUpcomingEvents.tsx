@@ -51,12 +51,12 @@ const TeamUpcomingEvents = ({ teamId }: Props) => {
 
               <div className="options flex flex-col justify-around">
                 <DeleteButton id={event.id} name={event.name} type="event" />
-                {/* <EditEventForm event={event} /> */}
+                <EditEventForm event={event} />
               </div>
             </div>
           ))}
       </div>
-      {/* <AddEventForm /> */}
+      <AddEventForm />
     </div>
   );
 };
