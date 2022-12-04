@@ -60,15 +60,6 @@ export type UserSignup = {
 // =====
 
 export type CardProps = {
-  type:
-    | "action"
-    | "recommendation"
-    | "power"
-    | "playerInfo"
-    | "performanceSummary"
-    | "teamInfo"
-    | "calendar"
-    | "upcomingEvents";
   header?: string;
   firstText?: string;
   secondText?: string;

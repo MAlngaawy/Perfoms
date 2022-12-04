@@ -22,29 +22,79 @@ import { useReactToPrint } from "react-to-print";
 // import { ComponentToPrint } from "./components/ComponentToPrint";
 // ===== dummy data =====
 
-const scores = [
+const strengths = [
   {
-    name: "kick",
+    name: "Fitness Flexibility",
+    score: "4",
+  },
+  {
+    name: "Fitness Balance",
+    score: "4",
+  },
+  {
+    name: "Fitness Endurance",
+    score: "5",
+  },
+  {
+    name: "Pushing Left Leg",
+    score: "4",
+  },
+  {
+    name: "Left leg",
+    score: "5",
+  },
+  {
+    name: "Pushing Right Leg",
+    score: "5",
+  },
+];
+
+const moderate = [
+  {
+    name: "Right leg",
+    score: "3",
+  },
+  // {
+  //   name: "Technique",
+  //   score: "3",
+  // },
+  // {
+  //   name: "Blocks Timing",
+  //   score: "3",
+  // },
+  // {
+  //   name: "Power",
+  //   score: "3",
+  // },
+  {
+    name: "Blocks Technique",
+    score: "3",
+  },
+  {
+    name: "Punching Timing",
+    score: "3",
+  },
+];
+
+const weaknesses = [
+  {
+    name: "Punching Power",
+    score: "1",
+  },
+  {
+    name: "Punching Technique",
     score: "2",
   },
   {
-    name: "kick",
+    name: "Behavior",
+    score: "1",
+  },
+  {
+    name: "Stances Position In Court",
     score: "2",
   },
   {
-    name: "kick",
-    score: "2",
-  },
-  {
-    name: "kick",
-    score: "2",
-  },
-  {
-    name: "kick",
-    score: "2",
-  },
-  {
-    name: "kick",
+    name: "360",
     score: "2",
   },
 ];
@@ -123,29 +173,26 @@ const ReportPage = () => {
                 <Grid columns={12} gutter={"sm"} className="info mt-3">
                   <Grid.Col sm={4} span={12}>
                     <Card
-                      type="power"
                       color="text-[#27AE60]"
                       bg="bg-fadedGreen"
-                      powerType="Strength"
-                      scores={scores}
+                      powerType="Strengths"
+                      scores={strengths}
                     />
                   </Grid.Col>
                   <Grid.Col sm={4} span={12}>
                     <Card
-                      type="power"
                       color="text-[#F2C94C]"
                       bg="bg-fadedYellow"
-                      powerType="Strength"
-                      scores={scores}
+                      powerType="Moderate"
+                      scores={moderate}
                     />
                   </Grid.Col>
                   <Grid.Col sm={4} span={12}>
                     <Card
-                      type="power"
                       color="text-[#EB5757]"
                       bg="bg-fadedRed"
-                      powerType="Strength"
-                      scores={scores}
+                      powerType="Weaknesses"
+                      scores={weaknesses}
                     />
                   </Grid.Col>
                 </Grid>
