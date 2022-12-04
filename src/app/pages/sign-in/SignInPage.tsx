@@ -69,7 +69,7 @@ const SignInPage = (props: Props) => {
         </div>
         <img
           className="object-cover h-full w-full max-h-full min-h-0"
-          src="/assets/images/login.png"
+          src="/assets/images/loginImage.png"
           alt="Sign in"
         />
       </div>
