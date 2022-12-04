@@ -26,40 +26,40 @@ const kpiMetrics = [
   {
     kpiName: "right Leg",
     metrics: [
-      { name: "Metric 3", id: "3" },
-      { name: "Metric 4", id: "4" },
+      { name: "Punching Technique", id: "3" },
+      { name: "Behavior", id: "4" },
     ],
     id: 3,
   },
   {
     kpiName: "Pushing",
     metrics: [
-      { name: "Metric 5", id: "5" },
-      { name: "Metric 6", id: "6" },
+      { name: "Stances Position In Court", id: "5" },
+      { name: "360", id: "6" },
     ],
     id: 1,
   },
   {
     kpiName: "Punish",
     metrics: [
-      { name: "Right Leg", id: "1" },
-      { name: "Left Leg", id: "2" },
+      { name: "Tifregi", id: "1" },
+      { name: "Titchagi", id: "2" },
     ],
     id: 2,
   },
   {
     kpiName: "right Leg",
     metrics: [
-      { name: "Metric 3", id: "3" },
-      { name: "Metric 4", id: "4" },
+      { name: "Endurance", id: "3" },
+      { name: "Balance", id: "4" },
     ],
     id: 3,
   },
   {
     kpiName: "Pushing",
     metrics: [
-      { name: "Metric 5", id: "5" },
-      { name: "Metric 6", id: "6" },
+      { name: "Flexibility", id: "5" },
+      { name: "Attacking Position in court", id: "6" },
     ],
     id: 1,
   },
