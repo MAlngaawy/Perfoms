@@ -133,8 +133,8 @@ const Toolbar = ({ setOpened }: Props) => {
                 radius="xl"
               />
               <div className="hidden text-white lg:text-perfGray3 xs:flex items-center justify-center">
-                <span className=" font-semibold">{user?.first_name}</span>
-                <AppIcons className="w-4 h-4" icon="ChevronDownIcon:outline" />
+                {/* <span className=" font-semibold">{user?.first_name}</span> */}
+                <AppIcons className="w-4 h-4 " icon="ChevronDownIcon:outline" />
               </div>
             </div>
           </Menu.Target>
