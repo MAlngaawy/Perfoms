@@ -1,8 +1,7 @@
-import SignUpPage from "./SignUpPage";
 import authRoles from "../../auth/authRoles";
-import OTPComponent from "../OTP/components/OTPComponent";
+import OTPPage from "./OTPPage";
 
-const SignUpConfig = {
+const OTPConfig = {
   settings: {
     layout: {
       config: {
@@ -21,10 +20,10 @@ const SignUpConfig = {
   auth: authRoles.OnlyGuest,
   routes: [
     {
-      path: "sign-up",
-      element: <SignUpPage />,
+      path: "verify-otp",
+      element: <OTPPage />,
     },
   ],
 };
 
-export default SignUpConfig;
+export default OTPConfig;

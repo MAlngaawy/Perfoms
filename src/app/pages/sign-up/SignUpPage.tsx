@@ -2,7 +2,7 @@ import { Input, Grid, MultiSelect, Loader } from "@mantine/core";
 import { useForm } from "react-hook-form";
 // import { useSigninMutation } from "~/app/store/user/userApi";
 import { PasswordInput } from "@mantine/core";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect } from "react";
@@ -29,7 +29,8 @@ const schema = yup.object().shape({
 });
 
 const SignUpPage = (props: Props) => {
-  const [signupHandler, { isLoading }] = useSignupMutation();
+  const [signupHandler, { data, isLoading, isSuccess }] = useSignupMutation();
+  const navigator = useNavigate();
   const { data: AllClubs } = usePublicClubsQuery(null);
   const {
     register,
@@ -79,6 +80,10 @@ const SignUpPage = (props: Props) => {
     };
     signupHandler(requestData);
   };
+
+  useEffect(() => {
+    if (isSuccess && data) navigator(`/verify-otp?userid=${data.data.id}`);
+  }, [isSuccess, data]);
 
   return (
     <div className="">

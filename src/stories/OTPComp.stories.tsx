@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import OTBComponent from "../app/pages/sign-up/OTPComponent";
+import OTBComponent from "../app/pages/OTP/components/OTPComponent";
 
 export default {
   title: "OTP/OTP",
