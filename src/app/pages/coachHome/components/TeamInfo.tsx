@@ -9,6 +9,7 @@ import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 import { useGetTeamPlayersQuery } from "~/app/store/coach/coachApi";
 import HomeTeamInfoCard from "~/@main/components/HomeTeamInfoCard";
 import NoTeamComp from "~/@main/components/NoTeamComp";
+import TeamCalendar from "../../SubPages/SingleTeam/Components/TeamCalendar";
 
 type Props = {};
 
@@ -27,11 +28,19 @@ const TeamInfo = (props: Props) => {
       {selectedPlayerTeam ? (
         <div className="m-4">
           <Grid gutter={"sm"}>
-            <Grid.Col span={12} sm={4}>
+            <Grid.Col span={12} sm={5}>
               <HomeTeamInfoCard />
             </Grid.Col>
-            <Grid.Col span={12} xs={8} sm={5}>
-              <CustomCalendar />
+            <Grid.Col span={12} xs={8} sm={4}>
+              <div className="bg-white p-4 rounded-3xl min-h-full">
+                <TeamCalendar
+                  teamId={
+                    selectedPlayerTeam.id !== undefined
+                      ? JSON.stringify(selectedPlayerTeam.id)
+                      : "1"
+                  }
+                />
+              </div>
             </Grid.Col>
             <Grid.Col span={12} xs={4} sm={3}>
               <UpcomingEventsCard />
