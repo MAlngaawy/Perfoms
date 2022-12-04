@@ -40,7 +40,7 @@ const CoachHome = (props: Props) => {
             type={"Team info"}
           />
 
-          <button className="bg-perfBlue text-white text-xs py-2 px-10 rounded-3xl">
+          <button className="border text-perfBlue border-perfBlue hover:text-white bg-transparent hover:bg-perfBlue  text-xs py-2 px-10 rounded-3xl">
             <Link to="/certificate">Certificate</Link>
           </button>
         </div>
