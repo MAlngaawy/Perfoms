@@ -1,5 +1,6 @@
 import { Avatar } from "@mantine/core";
-import React from "react";
+import React, { useMemo, useRef } from "react";
+// import { useTable, useExpanded } from "react-table";
 
 type Props = {};
 
@@ -151,9 +152,113 @@ const player_kpis = [
 ];
 
 const PerfScoreTable = (props: Props) => {
-  return (
-    <div>
-      <table>
+  const data = useMemo(
+    () => [
+      {
+        metricName: "Push",
+      },
+      {
+        metricName: "Attack",
+      },
+      {
+        metricName: "Right Leg",
+      },
+    ],
+    []
+  );
+
+  const columns = useMemo(
+    () => [
+      {
+        Header: "Metric Name",
+        accessor: "metricName",
+      },
+    ],
+    []
+  );
+
+  // const tableInstance = useTable({ data, columns }, useExpanded);
+
+  // const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+  //   tableInstance;
+
+  return <div> Under Creation </div>;
+
+  // return (
+  //   <div className="m-10">
+  //     <table {...getTableProps}>
+  //       <thead>
+  //         {
+  //           // Loop over the header rows
+  //           headerGroups.map((headerGroup) => (
+  //             // Apply the header row props
+  //             <tr {...headerGroup.getHeaderGroupProps()}>
+  //               {
+  //                 // Loop over the headers in each row
+  //                 headerGroup.headers.map((column) => (
+  //                   // Apply the header cell props
+  //                   <th {...column.getHeaderProps()}>
+  //                     {
+  //                       // Render the header
+  //                       column.render("Header")
+  //                     }
+  //                   </th>
+  //                 ))
+  //               }
+  //             </tr>
+  //           ))
+  //         }
+  //       </thead>
+  //       {/* Apply the table body props */}
+  //       <tbody {...getTableBodyProps()}>
+  //         {
+  //           // Loop over the table rows
+  //           rows.map((row: any) => {
+  //             // Prepare the row for display
+  //             prepareRow(row);
+  //             return (
+  //               // Apply the row props
+  //               <tr {...row.getRowProps()}>
+  //                 {
+  //                   // Loop over the rows cells
+  //                   row.cells.map((cell: any) => {
+  //                     // Apply the cell props
+  //                     return (
+  //                       <td {...cell.getCellProps()}>
+  //                         {
+  //                           // Render the cell contents
+  //                           cell.render("Cell")
+  //                         }
+  //                       </td>
+  //                     );
+  //                   })
+  //                 }
+  //               </tr>
+  //             );
+  //           })
+  //         }
+  //       </tbody>
+  //     </table>
+  //   </div>
+  // );
+};
+
+export default PerfScoreTable;
+
+/**
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+
+<div>
+      <table ref={tableRef}>
         <thead>
           <tr>
             <th>Metrics</th>
@@ -194,7 +299,13 @@ const PerfScoreTable = (props: Props) => {
         ))}
       </table>
     </div>
-  );
-};
 
-export default PerfScoreTable;
+
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */

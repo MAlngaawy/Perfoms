@@ -129,8 +129,16 @@ select:-webkit-autofill:focus {
   }
 }
 
+.mantine-186fes1 tbody tr td {
+  border-bottom: 0;
+}
+
+.tableWrapper {
+  max-height: 80vh;
+}
+
+/* 
 table {
-  width: 750px;
   border-collapse: collapse;
   margin: 50px auto;
 }
@@ -161,4 +169,4 @@ th {
 
 [data-toggle="toggle"] {
   display: none;
-}
+} */
