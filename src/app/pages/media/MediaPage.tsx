@@ -14,6 +14,7 @@ import { useCoachTeamEventQuery } from "~/app/store/coach/coachApi";
 import { useSuprtEventsQuery } from "~/app/store/supervisor/supervisorMainApi";
 import NoTeamComp from "~/@main/components/NoTeamComp";
 import NoEventsComp from "~/@main/components/NoEventsComp";
+import SelectTeamPage from "./molecules/SelectTeamPage";
 
 const MediaPage = () => {
   const [events, setEvents] = useState<TeamEvents | undefined>();
@@ -44,10 +45,8 @@ const MediaPage = () => {
 
   return (
     <div>
-      <div className="flex justify-end m-2">
-        <TeamFilter />
-      </div>
-      {!selectedPlayerTeam && <NoTeamComp />}
+      <div className="flex justify-end m-2">{/* <TeamFilter /> */}</div>
+      {!selectedPlayerTeam && <SelectTeamPage />}
       {selectedPlayerTeam && (
         <>
           {events && events.results.length > 0 ? (
