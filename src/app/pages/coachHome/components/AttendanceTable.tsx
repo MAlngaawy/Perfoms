@@ -45,7 +45,7 @@ const AttendanceTable = (props: Props) => {
   return (
     <>
       {selectedPlayerTeam ? (
-        <div className="overflow-scroll max-h-screen relative m-6 bg-white rounded-lg text-center">
+        <div className="tableWrapper overflow-scroll relative m-6 bg-white rounded-lg text-center">
           <Table
             withBorder
             highlightOnHover

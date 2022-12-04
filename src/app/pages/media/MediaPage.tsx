@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   useTeamCoachesQuery,
   useTeamEventsQuery,
 } from "~/app/store/parent/parentApi";
-import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
+import {
+  selectedPlayerTeamFn,
+  selectPlayerTeam,
+} from "~/app/store/parent/parentSlice";
 import MediaCard from "./molecules/MediaCard";
 import TeamFilter from "~/@main/components/TeamFilter";
 import MediaPageLoading from "./molecules/MediaPageLoading";
@@ -14,6 +17,9 @@ import { useCoachTeamEventQuery } from "~/app/store/coach/coachApi";
 import { useSuprtEventsQuery } from "~/app/store/supervisor/supervisorMainApi";
 import NoTeamComp from "~/@main/components/NoTeamComp";
 import NoEventsComp from "~/@main/components/NoEventsComp";
+import SelectTeamPage from "./molecules/SelectTeamPage";
+import { Link } from "react-router-dom";
+import { Breadcrumbs } from "@mantine/core";
 
 const MediaPage = () => {
   const [events, setEvents] = useState<TeamEvents | undefined>();
@@ -40,31 +46,40 @@ const MediaPage = () => {
     if (superEvents) setEvents(superEvents);
     if (coachEvents) setEvents(coachEvents);
     if (parentEvents) setEvents(parentEvents);
-  }, [setEvents, superEvents, coachEvents, parentEvents]);
+  }, [setEvents, superEvents, coachEvents, parentEvents, selectedPlayerTeam]);
+  const dispatch = useDispatch();
+
+  const items = [
+    { title: "Teams", href: "/media-teams" },
+    { title: "Events", href: "" },
+  ].map((item, index) => (
+    <Link to={item.href} key={index}>
+      {item.title}
+    </Link>
+  ));
 
   return (
-    <div>
-      <div className="flex justify-end m-2">
-        <TeamFilter />
+    <div className="container w-11/12 mx-auto">
+      <div className="my-4">
+        <Breadcrumbs className="text-perfGray3" separator="→">
+          {items}
+        </Breadcrumbs>
       </div>
-      {!selectedPlayerTeam && <NoTeamComp />}
-      {selectedPlayerTeam && (
-        <>
-          {events && events.results.length > 0 ? (
-            events ? (
-              <div className="flex flex-col xs:flex-row xs:items-center flex-wrap gap-2 m-4">
-                {events.results.map((data) => {
-                  return <MediaCard key={data.id} event={data} />;
-                })}
-              </div>
-            ) : (
-              <MediaPageLoading />
-            )
+      <>
+        {events && events.results.length > 0 ? (
+          events ? (
+            <div className="flex flex-col xs:flex-row xs:items-center flex-wrap gap-2 my-4">
+              {events.results.map((data) => {
+                return <MediaCard key={data.id} event={data} />;
+              })}
+            </div>
           ) : (
-            <NoEventsComp />
-          )}
-        </>
-      )}
+            <MediaPageLoading />
+          )
+        ) : (
+          <NoEventsComp />
+        )}
+      </>
     </div>
   );
 };

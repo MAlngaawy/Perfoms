@@ -47,7 +47,7 @@ const MediaCard = ({ event }: props) => {
       </div>
 
       <Button
-        onClick={() => navigate(`/media/${event.id}`)}
+        onClick={() => navigate(`/media-teams/media/${event.id}`)}
         variant="light"
         className="bg-perfBlue text-white rounded-b-xl"
         fullWidth

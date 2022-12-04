@@ -1,8 +1,8 @@
 import { PagesRouteConfig } from "~/@main/types/Config-Types";
 import authRoles from "~/app/auth/authRoles";
-import MediaEvent from "./MediaEvent";
+import SelectMediaTeamPage from "./MediaTeams";
 
-const MediaEventConfig: PagesRouteConfig = {
+const MediaTeamsConfig: PagesRouteConfig = {
   settings: {
     layout: {
       config: {
@@ -21,10 +21,10 @@ const MediaEventConfig: PagesRouteConfig = {
   auth: authRoles.All,
   routes: [
     {
-      path: "/media-teams/media/:id",
-      element: <MediaEvent />,
+      path: "/media-teams",
+      element: <SelectMediaTeamPage />,
     },
   ],
 };
 
-export default MediaEventConfig;
+export default MediaTeamsConfig;

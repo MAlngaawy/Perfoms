@@ -128,3 +128,45 @@ select:-webkit-autofill:focus {
     padding-right: 20px;
   }
 }
+
+.mantine-186fes1 tbody tr td {
+  border-bottom: 0;
+}
+
+.tableWrapper {
+  max-height: 80vh;
+}
+
+/* 
+table {
+  border-collapse: collapse;
+  margin: 50px auto;
+}
+
+th {
+  background: #3498db;
+  color: white;
+  font-weight: bold;
+}
+
+td,
+th {
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: left;
+  font-size: 18px;
+}
+
+.labels tr td {
+  background-color: #2cc16a;
+  font-weight: bold;
+  color: #fff;
+}
+
+.label tr td label {
+  display: block;
+}
+
+[data-toggle="toggle"] {
+  display: none;
+} */

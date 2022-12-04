@@ -22,7 +22,7 @@ const MediaConfig: PagesRouteConfig = {
   auth: authRoles.All,
   routes: [
     {
-      path: "media",
+      path: "media-teams/media",
       element: <MediaPage />,
     },
   ],

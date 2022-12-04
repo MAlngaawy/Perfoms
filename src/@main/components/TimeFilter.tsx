@@ -5,7 +5,7 @@ import AppIcons from "./../../@main/core/AppIcons";
 import useWindowSize from "../hooks/useWindowSize";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
-import { timeFilter, timeFilterFn } from "~/app/store/parent/parentSlice";
+import { timeFilter, timeFilterFn } from "./../../app/store/parent/parentSlice";
 
 type Props = {};
 
