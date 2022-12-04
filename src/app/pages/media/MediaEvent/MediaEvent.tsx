@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Card, Image, SimpleGrid } from "@mantine/core";
+import { Breadcrumbs, Card, Image, SimpleGrid } from "@mantine/core";
 import AppIcons from "~/@main/core/AppIcons";
 import { Carousel, useAnimationOffsetEffect } from "@mantine/carousel";
-import { useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { Button } from "~/@main/components/Button";
 import Slider from "./Slider";
 import {
@@ -100,9 +100,24 @@ const MediaEvent = () => {
   //   </Carousel.Slide>
   // ));
 
+  const items = [
+    { title: "Teams", href: "/media-teams" },
+    { title: "Events", href: "/media-teams/media" },
+    { title: "Event Media", href: "" },
+  ].map((item, index) => (
+    <Link to={item.href} key={index}>
+      {item.title}
+    </Link>
+  ));
+
   return (
-    <>
-      <div className="p-4 md:p-20">
+    <div className="container w-11/12 mx-auto">
+      <div className="p-2 sm:p-6 sm:pb-0">
+        <Breadcrumbs className="text-perfGray3" separator="→">
+          {items}
+        </Breadcrumbs>
+      </div>
+      <div className="p-4 sm:p-20">
         <Slider isLoading={isLoading} images={eventFiles?.results || []} />
         {/* <div className="flex flex-col">
           <div className="flex flex-col gap-1 text-perfGray2 text-sm font-medium">
@@ -129,7 +144,7 @@ const MediaEvent = () => {
           )}
         </div> */}
       </div>
-    </>
+    </div>
     // <>
     //   <div className="h-full flex justify-center items-center mt-32">
     //     {eventFiles && eventFiles.results.length > 0 ? (

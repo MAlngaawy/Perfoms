@@ -45,8 +45,9 @@ const Slider = ({ images, isLoading }: Props) => {
             })
           ) : (
             <SwiperSlide>
-              <div className="bg-perfOfWhite p-10 h-60 text-center font-bold text-3xl flex justify-center items-center">
-                <h1>No Media Here</h1>
+              <div className="bg-perfOfWhite p-10 h-60 text-center font-semibold text-3xl rounded-xl text-perfGray3 flex flex-col justify-center items-center">
+                <AppIcons className="w-32 " icon="FolderOpenIcon:outline" />
+                <h2>No Media Here Yet !</h2>
               </div>
             </SwiperSlide>
           )}

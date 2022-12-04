@@ -55,39 +55,24 @@ const SelectTeamPage = (props: Props) => {
   }, [playerTeams, superTeams, coachTeams]);
 
   return (
-    <div className="admin-teams flex flex-col xs:flex-row flex-wrap items-stretch gap-6 p-2 sm:p-6">
+    <div className="admin-teams flex flex-col xs:flex-row flex-wrap justify-center xs:justify-start items-center xs:items-stretch gap-6 p-2 sm:p-6">
       {teams ? (
         teams.results?.map((team) => {
           return (
-            <div className="team-card relative w-full xs:w-72 bg-white p-8 rounded-xl flex flex-col justify-center items-center gap-4">
+            <div className="team-card relative w-52 bg-white p-8 rounded-xl flex flex-col justify-center items-center gap-4">
               <div
                 onClick={() =>
                   dispatch(selectPlayerTeam({ id: team.id, name: team.name }))
                 }
-                className="bg-pagesBg rounded-full w-32 h-32 flex justify-center items-center"
+                className="bg-pagesBg rounded-full w-20 h-20 flex justify-center items-center"
               >
-                <Avatar size={"xl"} src={team.icon_url} alt="icon" />
+                <Avatar size={"lg"} src={team.icon_url} alt="icon" />
               </div>
 
               <h2 className="text-xl font-semibold text-perfGray1">
                 {team.name}
               </h2>
-              <h3 className="text-xl text-perfBlue">{team.sport}</h3>
-
-              <div className="flex justify-around items-center w-full">
-                <div className="age flex flex-col">
-                  <span className=" text-sm text-perfGray3">Age</span>
-                  <span className="text-xl text-perfGray1">
-                    {team.from_age} - {team.to_age}
-                  </span>
-                </div>
-                <div className="players flex flex-col">
-                  <span className=" text-sm text-perfGray3">Players</span>
-                  <span className="text-xl text-perfGray1">
-                    {team.players_count}
-                  </span>
-                </div>
-              </div>
+              <h3 className="text-sm text-perfBlue">{team.sport}</h3>
             </div>
           );
         })
