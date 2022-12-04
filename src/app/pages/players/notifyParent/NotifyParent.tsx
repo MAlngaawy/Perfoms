@@ -1,10 +1,4 @@
-import React, { useState } from "react";
-// import { Dropdown } from "~/@main/components/Dropdown";
-// import Info from "~/@main/components/Info";
-// import AppIcons from "~/@main/core/AppIcons";
 import { useSendNotificationsMutation } from "~/app/store/coach/coachApi";
-// import { parentDummyData } from "../parentCard/ParentCard";
-// import NewMessage from "./components/NewMessage";
 import { Controller, useForm } from "react-hook-form";
 import { Alert, Input, Select, Textarea } from "@mantine/core";
 import SubmitButton from "~/@main/components/SubmitButton";
@@ -13,6 +7,7 @@ import {
   useGetPlayerInfoQuery,
 } from "~/app/store/coach/coachApi";
 import { useParams } from "react-router-dom";
+import { showNotification, updateNotification } from "@mantine/notifications";
 
 const NotifyParent = ({ parentName, playerName }: any) => {
   const params = useParams();
@@ -40,16 +35,31 @@ const NotifyParent = ({ parentName, playerName }: any) => {
       message: data.message,
       player_id: (player && player.id) || 0,
     };
-    notifyParent(sendData).then((res) => {
-      reset({ notification_type: "", title: "", message: "" });
-    });
+    notifyParent(sendData)
+      .then((res) => {
+        showNotification({
+          title: "Done",
+          //@ts-ignore
+          message: `your message has been sent`,
+          color: "green",
+        });
+        reset({ notification_type: "", title: "", message: "" });
+      })
+      .catch((err) => {
+        showNotification({
+          title: "Wrong",
+          //@ts-ignore
+          message: { err },
+          color: "red",
+        });
+      });
   };
 
   return (
     <div className="flex justify-center items-center">
-      <div className="form bg-white border my-32 border-perfGray4 p-10 rounded-xl m-6">
+      <div className="form bg-white border my-10 border-perfGray4 p-10 rounded-xl m-6">
         {isError && (
-          <Alert color={"red"}>Somethis went wrong please try again later</Alert>
+          <Alert color={"red"}>Somethis went wrong please try again</Alert>
         )}
         <h2 className="my-4">
           You Now Notifing mr:

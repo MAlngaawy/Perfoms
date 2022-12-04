@@ -167,7 +167,7 @@ const AddEventForm = (props: Props) => {
                     }}
                     name={field.name}
                     onChange={field.onChange}
-                    value={new Date(field.value)}
+                    value={new Date("11/12/2022")}
                     error={
                       errors.eventDate &&
                       (errors.eventDate.message as ReactNode)

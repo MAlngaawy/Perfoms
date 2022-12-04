@@ -14,7 +14,7 @@ type Props = {
     icon: string;
     name: string;
     date: string;
-    address: string;
+    address?: string;
     id: number;
   };
 };
@@ -40,7 +40,7 @@ const EditEventForm = ({ event }: Props) => {
     defaultValues: {
       eventName: event.name,
       eventDate: event.date,
-      eventLocation: event.address,
+      eventLocation: event.address && event.address,
     },
     resolver: yupResolver(schema),
   });

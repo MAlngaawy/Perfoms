@@ -32,7 +32,7 @@ const PlayersPage = () => {
           <TeamFilter />
         </div>
       </div>
-      <div className="players-page bg-white p-5 rounded-3xl m-5">
+      <div className="players-page bg-white p-6 rounded-3xl m-5">
         <p className="pb-2">Players</p>
         <div className="flex flex-col md:flex-row gap-5 flex-wrap">
           {coahcTeamPlayers?.results.map((card) => {

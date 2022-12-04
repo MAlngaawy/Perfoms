@@ -31,6 +31,7 @@ import ChatConfig from "../pages/chat/ChatConfig";
 import RequestConfig from "../pages/requests/RequestConfig";
 import SupervisorConfig from "../pages/SuperVisor/SuperHomeConfig";
 import MediaTeamsConfig from "../pages/media/MediaTeams/MediaTeamsConfig";
+import OTPConfig from "../pages/OTP/OTPConfig";
 
 const routeConfigs: PagesRouteConfig[] = [
   SignInConfig,
@@ -62,6 +63,7 @@ const routeConfigs: PagesRouteConfig[] = [
   RequestConfig,
   SupervisorConfig,
   MediaTeamsConfig,
+  OTPConfig,
 ];
 
 const routes: AppRouteObject[] = [

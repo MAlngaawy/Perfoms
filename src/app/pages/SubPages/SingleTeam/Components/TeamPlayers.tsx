@@ -31,7 +31,7 @@ const TeamPlayers = ({ teamId }: Props) => {
               />
             );
           })}
-        {/* <AddPlayer /> */}
+        <AddPlayer />
       </div>
     </div>
   );
