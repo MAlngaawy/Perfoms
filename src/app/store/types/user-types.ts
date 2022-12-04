@@ -7,8 +7,7 @@ export type LoginUserBody = {
 
 export type SignupRes = {
   data: {
-    access: string;
-    refresh: string;
+    id: number;
   };
 };
 
@@ -60,15 +59,6 @@ export type UserSignup = {
 // =====
 
 export type CardProps = {
-  type:
-    | "action"
-    | "recommendation"
-    | "power"
-    | "playerInfo"
-    | "performanceSummary"
-    | "teamInfo"
-    | "calendar"
-    | "upcomingEvents";
   header?: string;
   firstText?: string;
   secondText?: string;
@@ -177,13 +167,12 @@ export type ProfileType = {
 };
 
 export type SendOtp = {
-  mobile: string;
+  id: number;
 };
 
 export type OTPVerify = {
-  mobile: string;
+  id: number | null;
   otp: string;
-  token?: string;
 };
 
 export type UserDeviceId = {
