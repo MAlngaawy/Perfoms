@@ -57,7 +57,7 @@ const NotifyParent = ({ parentName, playerName }: any) => {
 
   return (
     <div className="flex justify-center items-center">
-      <div className="form bg-white border my-32 border-perfGray4 p-10 rounded-xl m-6">
+      <div className="form bg-white border my-10 border-perfGray4 p-10 rounded-xl m-6">
         {isError && (
           <Alert color={"red"}>Somethis went wrong please try again</Alert>
         )}
