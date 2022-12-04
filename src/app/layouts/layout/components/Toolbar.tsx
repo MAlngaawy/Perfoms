@@ -124,13 +124,19 @@ const Toolbar = ({ setOpened }: Props) => {
         {/* User Menu */}
         <Menu shadow="md" width={200}>
           <Menu.Target>
-            <Avatar
-              size={windowSize.width && windowSize.width < 400 ? "sm" : "md"}
-              src={user?.avatar}
-              alt="userImage"
-              className="cursor-pointer"
-              radius="xl"
-            />
+            <div className="flex gap-2 cursor-pointer">
+              <Avatar
+                size={windowSize.width && windowSize.width < 400 ? "sm" : "md"}
+                src={user?.avatar}
+                alt="userImage"
+                className="cursor-pointer"
+                radius="xl"
+              />
+              <div className="hidden text-white lg:text-perfGray3 xs:flex items-center justify-center">
+                <span className=" font-semibold">{user?.first_name}</span>
+                <AppIcons className="w-4 h-4" icon="ChevronDownIcon:outline" />
+              </div>
+            </div>
           </Menu.Target>
 
           <Menu.Dropdown className="p-0">

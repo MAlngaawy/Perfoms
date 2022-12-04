@@ -59,7 +59,12 @@ const SignInPage = (props: Props) => {
             alt="logo"
           />
         </div>
-        <div className=" text-perfBlue p-2 absolute right-4 bottom-4 bg-perfGray text-xl">
+        <div
+          style={{
+            backgroundColor: "rgba(255, 255, 255, 0.6)",
+          }}
+          className=" text-perfBlue p-2 absolute right-4 bottom-4 text-xl"
+        >
           Maximize Players Full Potential.
         </div>
         <img
