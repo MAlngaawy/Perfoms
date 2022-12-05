@@ -29,8 +29,6 @@ const Notifications = (props: Props) => {
 
   const { data: notifications } = useNotificationsQuery({});
 
-  console.log("notifications", notifications);
-
   const haveNotificaton = true;
   return (
     <Menu shadow="md" width={200}>

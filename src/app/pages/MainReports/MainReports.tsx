@@ -7,7 +7,7 @@ type Props = {};
 const MainReports = (props: Props) => {
   return (
     <div className="m-4 p-4 flex flex-wrap gap-4  items-center">
-      <Link to={"players"}>
+      <Link to={"search-players"}>
         <ReportsCategoriesCard
           image="/assets/images/players.png"
           type="Players"

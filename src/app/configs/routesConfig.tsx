@@ -33,6 +33,7 @@ import SupervisorConfig from "../pages/SuperVisor/SuperHomeConfig";
 import MediaTeamsConfig from "../pages/media/MediaTeams/MediaTeamsConfig";
 import OTPConfig from "../pages/OTP/OTPConfig";
 import MainReportsConfig from "../pages/MainReports/MainReportsConfig";
+import SearchPlayersPageConfig from "../pages/MainReports/SupPages/Players/SearchPlayersPageConfig";
 
 const routeConfigs: PagesRouteConfig[] = [
   SignInConfig,
@@ -66,6 +67,7 @@ const routeConfigs: PagesRouteConfig[] = [
   MediaTeamsConfig,
   OTPConfig,
   MainReportsConfig,
+  SearchPlayersPageConfig,
 ];
 
 const routes: AppRouteObject[] = [
