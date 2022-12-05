@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Avatar, Indicator, Divider, Menu, Text } from "@mantine/core";
 import Notification from "~/@main/components/Notification";
 import AppIcons from "~/@main/core/AppIcons";
@@ -26,16 +26,17 @@ const formatDate = (date: Date | null) => {
 
 const Notifications = (props: Props) => {
   const windowSize = useWindowSize();
-
+  const [opened, setOpened] = useState(false);
   const { data: notifications } = useNotificationsQuery({});
 
   console.log("notifications", notifications);
 
   const haveNotificaton = true;
   return (
-    <Menu shadow="md" width={200}>
+    <Menu opened={opened} shadow="md" width={200}>
       <Menu.Target>
         <Avatar
+          onClick={() => setOpened(true)}
           className="cursor-pointer"
           radius="xl"
           size={windowSize.width && windowSize.width < 400 ? "sm" : "md"}
@@ -77,6 +78,7 @@ const Notifications = (props: Props) => {
           </Menu.Label>
         ))}
         <Link
+          onClick={() => setOpened(false)}
           to="notifications"
           className="flex w-full justify-center items-center p-2 hover:bg-pagesBg text-sm"
         >
