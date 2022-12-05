@@ -34,6 +34,7 @@ import MediaTeamsConfig from "../pages/media/MediaTeams/MediaTeamsConfig";
 import OTPConfig from "../pages/OTP/OTPConfig";
 import MainReportsConfig from "../pages/MainReports/MainReportsConfig";
 import SearchPlayersPageConfig from "../pages/MainReports/SupPages/Players/SearchPlayersPageConfig";
+import SportsReportsConfig from "../pages/MainReports/SupPages/Sports/SportsReportsConfig";
 
 const routeConfigs: PagesRouteConfig[] = [
   SignInConfig,
@@ -68,6 +69,7 @@ const routeConfigs: PagesRouteConfig[] = [
   OTPConfig,
   MainReportsConfig,
   SearchPlayersPageConfig,
+  SportsReportsConfig,
 ];
 
 const routes: AppRouteObject[] = [

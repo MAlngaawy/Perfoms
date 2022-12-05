@@ -6,20 +6,20 @@ type Props = {
   name: string;
   icon?: string;
   data: {
-    name: "strengths" | "moderate" | "weaknesses";
+    name: "strengths" | "moderate" | "weaknesses" | string;
     value: number;
   }[];
 };
 
 const ReportsChartCard = ({ name, icon, data }: Props) => {
   return (
-    <div className="bg-white flex-col gap-6 rounded-xl p-4 flex m-4 h-fit w-80">
+    <div className="bg-white flex-col gap-3 rounded-xl p-4 flex h-fit w-60">
       <h2 className="w-full text-left">{name}</h2>
       <div className="flex relative w-full items-center justify-center">
         <Example data={data} />
       </div>
       <Divider />
-      <div className="flex flex-col w-full items-center gap-4">
+      <div className="flex flex-col w-full items-center gap-4 text-sm">
         <div className="flex justify-between w-full">
           <div className="flex items-center gap-2">
             <span
@@ -33,7 +33,7 @@ const ReportsChartCard = ({ name, icon, data }: Props) => {
           <h2>{data[0].value}%</h2>
         </div>
 
-        <div className="flex justify-between w-full">
+        <div className="flex justify-between w-full text-sm">
           <div className="flex items-center gap-2">
             <span
               style={{
@@ -46,11 +46,11 @@ const ReportsChartCard = ({ name, icon, data }: Props) => {
           <h2>{data[1].value}%</h2>
         </div>
 
-        <div className="flex justify-between w-full">
+        <div className="flex justify-between w-full text-sm">
           <div className="flex items-center gap-2">
             <span
               style={{
-                backgroundColor: "#F2994A",
+                backgroundColor: "#EB5757",
               }}
               className="w-4 h-4  rounded-full"
             ></span>

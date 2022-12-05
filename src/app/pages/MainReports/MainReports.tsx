@@ -28,7 +28,7 @@ const MainReports = (props: Props) => {
       <Link to={"teams"}>
         <ReportsCategoriesCard image="/assets/images/teams.png" type="Teams" />
       </Link>
-      <Link to={"sports"}>
+      <Link to={"sports-reports"}>
         <ReportsCategoriesCard
           image="/assets/images/sports.png"
           type="Sports"
