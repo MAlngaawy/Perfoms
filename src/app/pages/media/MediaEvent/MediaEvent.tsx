@@ -6,6 +6,8 @@ import { useEventFilesQuery } from "~/app/store/parent/parentApi";
 import { useSuprtEventFilesQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { EventFiles } from "~/app/store/types/parent-types";
 import { useCoachTeamEventFilesQuery } from "~/app/store/coach/coachApi";
+import AppIcons from "~/@main/core/AppIcons";
+import UploadForm from "./UploadForm";
 
 const MediaEvent = () => {
   const { id } = useParams();
@@ -41,17 +43,23 @@ const MediaEvent = () => {
       {item.title}
     </Link>
   ));
+  console.log(files);
 
   return (
-    <div className="container w-11/12 mx-auto">
-      <div className="p-2 sm:p-6 sm:pb-0">
+    <div className="container relative w-11/12 mx-auto">
+      <div className="p-2 sm:mt-6 ">
         <Breadcrumbs className="text-perfGray3" separator="→">
           {items}
         </Breadcrumbs>
       </div>
-      <div className="p-4 sm:p-20">
-        <Slider isLoading={isLoading} images={files?.results || []} />
+      <div className="p-4 sm:pt-20">
+        <Slider
+          isLoading={isLoading}
+          video_url={files?.video_url}
+          images={files?.event_files || []}
+        />
       </div>
+      <UploadForm />
     </div>
   );
 };

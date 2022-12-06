@@ -28,16 +28,20 @@ const Slider = ({ images, isLoading, video_url }: Props) => {
             enabled: true,
           }}
         >
-          <SwiperSlide>
-            <div className=" flex justify-center items-center w-40 h-40 sm:w-3/5 sm:h-96 mx-auto">
-              <ReactPlayer
-                width={"100%"}
-                height={"100%"}
-                controls={true}
-                url={"https://www.youtube.com/watch?v=KRAgcLXEdtk"}
-              />
-            </div>
-          </SwiperSlide>
+          {video_url && (
+            <SwiperSlide>
+              <div className=" flex justify-center items-center w-40 h-40 xs:w-3/5 xs:h-96 mx-auto">
+                <ReactPlayer
+                  width={"100%"}
+                  height={"100%"}
+                  controls={true}
+                  url={
+                    video_url || "https://www.youtube.com/watch?v=cz7cctS3eHQ"
+                  }
+                />
+              </div>
+            </SwiperSlide>
+          )}
           {images.length ? (
             images.map((image) => {
               return (
