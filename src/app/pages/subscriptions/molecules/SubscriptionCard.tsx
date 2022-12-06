@@ -32,7 +32,7 @@ const SubscriptionCard = ({ plan, selectPlan }: SubscripionCardProps) => {
     <div
       className={`${
         plan.most_popular
-          ? "most-popular-card bg-perfBlue text-white p-5"
+          ? "most-popular-card bg-perfBlue text-white p-5 transform md:-translate-y-5"
           : "gap-5 p-5"
       } flex flex-col justify-between relative border border-perfGray4 rounded-2xl`}
     >
@@ -42,7 +42,7 @@ const SubscriptionCard = ({ plan, selectPlan }: SubscripionCardProps) => {
             MOST POPULAR
           </p>
         ) : null}
-        <h2 className="text-4xl font-bold">
+        <h2 className="text-2xl font-bold">
           USD{plan.price}{" "}
           <span className="text-sm font-normal opacity-90">/year</span>
         </h2>

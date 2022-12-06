@@ -1,28 +1,53 @@
 import { useForm } from "react-hook-form";
-import { Input } from "@mantine/core";
+import { Avatar, Input } from "@mantine/core";
 import AppIcons from "~/@main/core/AppIcons";
 import { useUpdateProfileMutation } from "~/app/store/user/userApi";
 import { User } from "~/app/store/types/user-types";
 import { useEffect, useRef, useState } from "react";
 import { showNotification } from "@mantine/notifications";
 import SubmitButton from "~/@main/components/SubmitButton";
+import { axiosInstance } from "~/app/configs/dataService";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {
   user: User;
   setOpened: any;
+  refetch: any;
 };
 
-const EditForm = ({ user, setOpened }: Props) => {
+const EditForm = ({ user, setOpened, refetch }: Props) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [userAvatar, setUserAvatar] = useState<File>();
-  const [updateProfile, { isSuccess, isError, error, isLoading }] =
-    useUpdateProfileMutation();
+  const [isError, setIsErrror] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  // const [updateProfile, { isSuccess, isError, error, isLoading }] =
+  //   useUpdateProfileMutation();
+  // const { refetch } = useUserQuery();
+
   const { register, handleSubmit, control } = useForm({
     defaultValues: { ...user, avatar: undefined },
   });
 
-  const onSubmit = (data: any) => {
-    updateProfile(data);
+  const onSubmitFn = (e: any) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    if (userAvatar) formData.append("avatar", userAvatar);
+    setIsLoading(true);
+    try {
+      axiosInstance
+        .patch("user-generals/update-profile/", formData)
+        .then((res) => {
+          setIsLoading(false);
+          setOpened(false);
+          console.log(res);
+          refetch();
+        });
+    } catch (err) {
+      setIsErrror(true);
+    }
+
+    // updateProfile(data);
   };
 
   useEffect(() => {
@@ -33,15 +58,11 @@ const EditForm = ({ user, setOpened }: Props) => {
   }, [isSuccess, isError]);
 
   return (
-    <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSubmit)}>
+    <form className="flex flex-col gap-2" onSubmit={onSubmitFn}>
       <div className="relative photo place-self-center w-28 h-28">
-        <img
+        <Avatar
           className="object-cover w-full h-full rounded-lg"
-          src={
-            (userAvatar && URL.createObjectURL(userAvatar)) ||
-            user.avatar ||
-            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
-          }
+          src={(userAvatar && URL.createObjectURL(userAvatar)) || user.avatar}
           alt="user-avatar"
         />
         <div
@@ -57,8 +78,10 @@ const EditForm = ({ user, setOpened }: Props) => {
           onChange={(e) => setUserAvatar(e?.currentTarget?.files?.[0] as File)}
           type="file"
           className="hidden"
+          id={"avatar"}
         />
       </div>
+
       {/* Image Upload Input */}
       <Input.Wrapper id="firstName" label="First name" className="w-full">
         <Input id="firstName" {...register("first_name")} />
@@ -66,32 +89,6 @@ const EditForm = ({ user, setOpened }: Props) => {
       <Input.Wrapper id="lastName" label="Last name" className="w-full">
         <Input id="lastName" {...register("last_name")} />
       </Input.Wrapper>
-      {/* <Input.Wrapper id="job" label="Your job">
-        <Input
-          {...register("job")}
-          id="job"
-          icon={
-            <AppIcons
-              className="w-3 h-3 text-perfGray3"
-              icon="BriefcaseIcon:outline"
-            />
-          }
-        />
-      </Input.Wrapper> */}
-
-      {/* <Input.Wrapper id="dob" label="Your date of birth">
-        <Input
-          sx={{
-            ".mantine-Input-input": {
-              flexDirection: "row-reverse",
-            },
-          }}
-          type="date"
-          {...register("dob")}
-          id="dob"
-          placeholder="mm/dd/yyyy"
-        />
-      </Input.Wrapper> */}
 
       <SubmitButton isLoading={isLoading} text="Save" />
     </form>

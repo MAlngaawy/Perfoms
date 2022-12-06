@@ -39,11 +39,6 @@ const dummyData = [
 const SubscriptionsPage = () => {
   const [currentPlan, setCurrentPlan] = useState("");
   const { data: subscriptions } = useParentSubscriptionsQuery({});
-  useEffect(() => {
-    dummyData.map((plan) => {
-      plan.currentPlan ? setCurrentPlan(plan.title) : null;
-    });
-  }, []);
 
   const [selectPlan, { data, isError, isLoading, isSuccess }] =
     useSelectSubscriptionMutation();
