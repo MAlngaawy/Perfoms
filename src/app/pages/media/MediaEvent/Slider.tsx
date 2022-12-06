@@ -25,9 +25,6 @@ const Slider = ({ images, isLoading }: Props) => {
           pagination={{ clickable: true }}
           navigation={{
             enabled: true,
-            // nextEl: (
-            //   <AppIcons icon="ArrowRightCircleIcon:outline" />
-            // ) as ReactElement,
           }}
         >
           {images.length ? (

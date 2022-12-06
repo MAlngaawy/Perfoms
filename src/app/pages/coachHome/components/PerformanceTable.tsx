@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Checkbox, Avatar, Box, Loader, Skeleton } from "@mantine/core";
+import { Table, Avatar, Skeleton } from "@mantine/core";
 import cn from "classnames";
 import {
   useGetTeamPerformancesQuery,
@@ -213,17 +213,17 @@ const PerformanceTable = (props: Props) => {
               </tr>
             </thead>
             <tbody className="overflow-scroll">
-              {teamPerformanceMetric?.player_metric &&
-              teamPerformanceMetric?.player_metric.length > 0 ? (
+              {teamPerformanceMetric?.results &&
+              teamPerformanceMetric?.results.length > 0 ? (
                 <>
-                  {kpiMetrics.map((oneKpi) => (
+                  {teamPerformanceMetric?.results.map((oneKpi) => (
                     <>
                       <tr>
                         <td className="border-0 font-semibold text-left px-4 text-sm sticky left-0 bg-white z-10 text-perfGray1">
-                          {oneKpi.kpiName}
+                          {oneKpi.name}
                         </td>
                       </tr>
-                      {oneKpi.metrics.map((metric) => {
+                      {oneKpi.kpi_metric.map((metric) => {
                         return (
                           <tr className="border-0" key={metric.id}>
                             <td className=" text-xs sm:text-sm sticky left-0  bg-white z-10 font-medium text-perfGray1">

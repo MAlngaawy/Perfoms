@@ -7,7 +7,12 @@ import {
   Teams,
 } from "../types/clubManager-types";
 import { UpdateAttendance } from "../types/coach-types";
-import { TeamCoaches, TeamEvent, TeamEvents } from "../types/parent-types";
+import {
+  EventFiles,
+  TeamCoaches,
+  TeamEvent,
+  TeamEvents,
+} from "../types/parent-types";
 import { ParentClub } from "~/app/store/types/parent-types";
 import {
   AddAction,
@@ -18,6 +23,7 @@ import {
   Metrics,
   Team,
 } from "../types/supervisor-types";
+import { Event } from "../types/events-types";
 
 export const supervisorApi = createApi({
   reducerPath: "supervisorApi",
@@ -107,6 +113,13 @@ export const supervisorApi = createApi({
       query: ({ team_id, ...params }) => ({ url: `${team_id}/events`, params }),
     }),
 
+    suprtEventFiles: query<EventFiles, { event_id: number; page?: number }>({
+      query: ({ event_id, ...params }) => ({
+        url: `/${event_id}/files`,
+        params,
+      }),
+    }),
+
     superCoachesRequests: query<CoachRequests, { page?: number }>({
       query: (params) => ({ url: "coaches/requests", params }),
       providesTags: ["supervisor"],
@@ -152,6 +165,7 @@ export const {
   useAddActionMutation,
   useAddRecommendationsMutation,
   useSuprtEventsQuery,
+  useSuprtEventFilesQuery,
   useSuperCoachesRequestsQuery,
   useSuperAcceptCoachRequestMutation,
   useSuperDeclineCoachRequestMutation,
