@@ -8,17 +8,20 @@ import { EventFiles } from "~/app/store/types/parent-types";
 import { useCoachTeamEventFilesQuery } from "~/app/store/coach/coachApi";
 import AppIcons from "~/@main/core/AppIcons";
 import UploadForm from "./UploadForm";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 const MediaEvent = () => {
   const { id } = useParams();
   const [files, setFiles] = useState<EventFiles>();
+
+  const { data: user } = useUserQuery(null);
 
   const { data: parenteventFiles, isLoading } = useEventFilesQuery(
     { eventId: id ? +id : 0 },
     { skip: !id }
   );
 
-  const { data: superEventFiles } = useSuprtEventFilesQuery(
+  const { data: superEventFiles, refetch } = useSuprtEventFilesQuery(
     { event_id: id ? +id : 0 },
     { skip: !id }
   );
@@ -59,7 +62,7 @@ const MediaEvent = () => {
           images={files?.event_files || []}
         />
       </div>
-      <UploadForm />
+      {user?.user_type === "Supervisor" && <UploadForm refetch={refetch} />}
     </div>
   );
 };

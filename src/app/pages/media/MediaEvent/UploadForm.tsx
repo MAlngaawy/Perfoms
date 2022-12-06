@@ -1,14 +1,76 @@
 import React, { useState } from "react";
-import { Modal, Button, Group, Input } from "@mantine/core";
+import { Modal, Button, Group, Input, FileInput } from "@mantine/core";
 import AppIcons from "~/@main/core/AppIcons";
+import ReactPlayer from "react-player";
+import SubmitButton from "~/@main/components/SubmitButton";
+import { axiosInstance } from "../../../configs/dataService";
+import { useParams } from "react-router-dom";
 
-type Props = {};
+type Props = {
+  refetch: any;
+};
 
-const UploadForm = (props: Props) => {
+const UploadForm = ({ refetch }: Props) => {
   const [opened, setOpened] = useState(false);
+  const [link, setLink] = useState<string>();
+  const [isError, setIsErrror] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const { id } = useParams();
+  const [images, setImages] = useState<any>();
 
   const upload = (e: any) => {
     e.preventDefault();
+
+    // Youtube link upload
+    if (link) {
+      const formData = new FormData();
+      formData.append("video_url", link);
+      setIsLoading(true);
+
+      try {
+        axiosInstance
+          .patch(`supervisor/events/${id}/update/`, formData)
+          .then((res) => {
+            setIsLoading(false);
+            setOpened(false);
+            setLink("");
+            refetch();
+          })
+          .catch((err) => {
+            console.log(err);
+            setIsLoading(false);
+          });
+      } catch (err) {
+        setIsErrror(true);
+        setIsLoading(false);
+      }
+    }
+
+    if (images) {
+      // take these steps if there are an image to upload
+      const formData = new FormData();
+      formData.append("file", images);
+      setIsLoading(true);
+
+      try {
+        axiosInstance
+          .post(`supervisor/add-event-files/${id}/`, formData)
+          .then((res) => {
+            setIsLoading(false);
+            setOpened(false);
+            setLink("");
+            refetch();
+          })
+          .catch((err) => {
+            console.log(err);
+            setIsLoading(false);
+          });
+      } catch (err) {
+        setIsErrror(true);
+        setIsLoading(false);
+      }
+    }
   };
 
   return (
@@ -29,12 +91,47 @@ const UploadForm = (props: Props) => {
         onClose={() => setOpened(false)}
         title="Upload Media"
       >
-        <form onSubmit={upload}>
+        <div className="m-6">
+          <ReactPlayer
+            width={"100%"}
+            height={"100%"}
+            controls={true}
+            url={link}
+          />
+        </div>
+
+        <form onSubmit={upload} className="flex flex-col gap-4">
           <Input
             type="text"
             name="youtubeLink"
-            className="p-4 rounded-lg border border-perfBlue text-perfBlue"
+            placeholder="Add youtube Link"
+            onChange={(v: any) => setLink(v.target.value)}
+            sx={{
+              ".mantine-Input-input": {
+                borderColor: "rgb(47 128 237)",
+                color: "rgb(47 128 237)",
+              },
+            }}
           />
+
+          <FileInput
+            sx={{
+              ".mantine-Input-input": {
+                borderColor: "rgb(47 128 237)",
+                color: "rgb(47 128 237)",
+              },
+            }}
+            placeholder="Upload files"
+            onChange={(e) => {
+              console.log(e);
+              setImages(e);
+            }}
+            name="file"
+            accept="image/png,image/jpeg"
+            // multiple
+          />
+
+          <SubmitButton isLoading={isLoading} text="Upload" />
         </form>
       </Modal>
     </div>
