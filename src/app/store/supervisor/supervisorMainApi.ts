@@ -17,11 +17,13 @@ import { ParentClub } from "~/app/store/types/parent-types";
 import {
   AddAction,
   AddRecommendation,
+  AddTeamCalendar,
   CoachRequests,
   kpi,
   Kpis,
   Metrics,
   Team,
+  TeamAttendance,
 } from "../types/supervisor-types";
 import { Event } from "../types/events-types";
 
@@ -31,7 +33,7 @@ export const supervisorApi = createApi({
     baseUrl: `${BASE_URL}/supervisor`,
     prepareHeaders: BASE_HEADERS,
   }),
-  tagTypes: ["supervisor"],
+  tagTypes: ["supervisor", "calendar"],
   endpoints: ({ query, mutation }) => ({
     superkpis: query<Kpis, { page?: number }>({
       query: (params) => ({ url: "kpis/", params }),
@@ -125,6 +127,26 @@ export const supervisorApi = createApi({
       providesTags: ["supervisor"],
     }),
 
+    superTeamAttendance: query<
+      TeamAttendance,
+      { team_id: number; page?: number }
+    >({
+      query: ({ team_id, ...params }) => ({
+        url: `teams/${team_id}/attendance`,
+        params,
+      }),
+      providesTags: ["calendar"],
+    }),
+
+    superAddTeamCalendar: mutation<AddTeamCalendar, {}>({
+      query: (body) => ({
+        url: `add-team-calender/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["calendar"],
+    }),
+
     superAcceptCoachRequest: mutation<
       CoachesRequests,
       { coach_id: string | number }
@@ -170,4 +192,6 @@ export const {
   useSuperAcceptCoachRequestMutation,
   useSuperDeclineCoachRequestMutation,
   useSuperClubQuery,
+  useSuperTeamAttendanceQuery,
+  useSuperAddTeamCalendarMutation,
 } = supervisorApi;
