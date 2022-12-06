@@ -1,8 +1,8 @@
 import { PagesRouteConfig } from "~/@main/types/Config-Types";
 import authRoles from "~/app/auth/authRoles";
-import SportsReports from "./SportsReports";
+import TeamsReports from "./TeamsReport";
 
-const SportsReportsConfig: PagesRouteConfig = {
+const TeamsReportsConfig: PagesRouteConfig = {
   settings: {
     layout: {
       config: {
@@ -21,10 +21,10 @@ const SportsReportsConfig: PagesRouteConfig = {
   auth: [...authRoles.Supervisor, ...authRoles.Admin],
   routes: [
     {
-      path: "/main-reports/sports",
-      element: <SportsReports />,
+      path: "main-reports/sports/teams",
+      element: <TeamsReports />,
     },
   ],
 };
 
-export default SportsReportsConfig;
+export default TeamsReportsConfig;

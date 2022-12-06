@@ -26,25 +26,25 @@ const MainReports = (props: Props) => {
             type="Players"
           />
         </Link>
-        <Link to={"coaches"}>
+        {/* <Link to={"coaches"}>
           <ReportsCategoriesCard
             image="/assets/images/coaches.png"
             type="Coaches"
           />
-        </Link>
+        </Link> */}
         {/* <Link to={"supervisor"}>
         <ReportsCategoriesCard
           image="/assets/images/supervisor.png"
           type="Supervisor"
         />
       </Link> */}
-        <Link to={"teams"}>
+        <Link to={"sports/teams"}>
           <ReportsCategoriesCard
             image="/assets/images/teams.png"
             type="Teams"
           />
         </Link>
-        <Link to={"sports-reports"}>
+        <Link to={"sports"}>
           <ReportsCategoriesCard
             image="/assets/images/sports.png"
             type="Sports"

@@ -1,6 +1,8 @@
 import { Divider } from "@mantine/core";
 import React, { PureComponent } from "react";
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from "recharts";
+import { useNavigate } from "react-router-dom";
+import { useSuperTeamsQuery } from "~/app/store/supervisor/supervisorMainApi";
 
 type Props = {
   name: string;
@@ -9,14 +11,27 @@ type Props = {
     name: "strengths" | "moderate" | "weaknesses" | string;
     value: number;
   }[];
+  chartColors?: string[];
+  onClickFun: any;
 };
 
-const ReportsChartCard = ({ name, icon, data }: Props) => {
+const COLORS = ["#27AE60", "#F2994A", "#EB5757"];
+
+const ReportsChartCard = ({
+  name,
+  icon,
+  data,
+  chartColors = COLORS,
+  onClickFun,
+}: Props) => {
   return (
-    <div className="bg-white flex-col gap-3 rounded-xl p-4 flex h-fit w-60">
+    <div
+      onClick={() => onClickFun()}
+      className="bg-white transition-all transform hover:scale-105 hover:shadow-sm  cursor-pointer flex-col gap-3 rounded-xl p-4 flex h-fit w-60"
+    >
       <h2 className="w-full text-left">{name}</h2>
       <div className="flex relative w-full items-center justify-center">
-        <Example data={data} />
+        <Example chartColors={chartColors} data={data} />
       </div>
       <Divider />
       <div className="flex flex-col w-full items-center gap-4 text-sm">
@@ -24,11 +39,11 @@ const ReportsChartCard = ({ name, icon, data }: Props) => {
           <div className="flex items-center gap-2">
             <span
               style={{
-                backgroundColor: "#27AE60",
+                backgroundColor: chartColors && chartColors[0],
               }}
               className="w-4 h-4 rounded-full"
             ></span>
-            <h3> Strengths </h3>
+            <h3> {data[0].value} </h3>
           </div>
           <h2>{data[0].value}%</h2>
         </div>
@@ -37,11 +52,11 @@ const ReportsChartCard = ({ name, icon, data }: Props) => {
           <div className="flex items-center gap-2">
             <span
               style={{
-                backgroundColor: "#F2994A",
+                backgroundColor: chartColors && chartColors[1],
               }}
               className="w-4 h-4  rounded-full"
             ></span>
-            <h3> Moderate </h3>
+            <h3> {data[1].name} </h3>
           </div>
           <h2>{data[1].value}%</h2>
         </div>
@@ -50,11 +65,11 @@ const ReportsChartCard = ({ name, icon, data }: Props) => {
           <div className="flex items-center gap-2">
             <span
               style={{
-                backgroundColor: "#EB5757",
+                backgroundColor: chartColors && chartColors[2],
               }}
               className="w-4 h-4  rounded-full"
             ></span>
-            <h3> Weaknesses </h3>
+            <h3> {data[2].name} </h3>
           </div>
           <h2>{data[2].value}%</h2>
         </div>
@@ -65,9 +80,7 @@ const ReportsChartCard = ({ name, icon, data }: Props) => {
 
 export default ReportsChartCard;
 
-const COLORS = ["#27AE60", "#F2994A", "#EB5757"];
-
-const Example = ({ data }: any) => {
+const Example = ({ data, chartColors }: any) => {
   return (
     <PieChart width={150} height={150}>
       <Pie
@@ -80,7 +93,10 @@ const Example = ({ data }: any) => {
         dataKey="value"
       >
         {data.map((entry: any, index: any) => (
-          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+          <Cell
+            key={`cell-${index}`}
+            fill={chartColors[index % COLORS.length]}
+          />
         ))}
       </Pie>
     </PieChart>

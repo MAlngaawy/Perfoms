@@ -36,6 +36,7 @@ import MainReportsConfig from "../pages/MainReports/MainReportsConfig";
 import SearchPlayersPageConfig from "../pages/MainReports/SupPages/Players/SearchPlayersPageConfig";
 import SportsReportsConfig from "../pages/MainReports/SupPages/Sports/SportsReportsConfig";
 import PlayerPageConfig from "../pages/MainReports/SupPages/Players/Player/PlayerConfig";
+import TeamsReportsConfig from "../pages/MainReports/SupPages/Teams/TeamsReportsConfig";
 
 const routeConfigs: PagesRouteConfig[] = [
   SignInConfig,
@@ -72,6 +73,7 @@ const routeConfigs: PagesRouteConfig[] = [
   SearchPlayersPageConfig,
   SportsReportsConfig,
   PlayerPageConfig,
+  TeamsReportsConfig,
 ];
 
 const routes: AppRouteObject[] = [
