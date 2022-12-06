@@ -23,8 +23,6 @@ const formatDate = (date: Date | null) => {
 const NotificationsPage = (props: Props) => {
   const { data: notifications } = useNotificationsQuery({});
 
-  console.log("notifications", notifications);
-
   return (
     <div className="p-6 flex flex-col gap-4">
       {notifications?.results.map((oneNot) => (

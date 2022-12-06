@@ -67,7 +67,6 @@ export const parentDummyData = {
 const ParentCard = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location.state.id);
 
   return (
     <div className="parent-page">

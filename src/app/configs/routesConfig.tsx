@@ -32,6 +32,7 @@ import RequestConfig from "../pages/requests/RequestConfig";
 import SupervisorConfig from "../pages/SuperVisor/SuperHomeConfig";
 import MediaTeamsConfig from "../pages/media/MediaTeams/MediaTeamsConfig";
 import OTPConfig from "../pages/OTP/OTPConfig";
+import SingleNotificationConfig from "../pages/notifications/singleNotificatin/SingleNotificationConfig";
 
 const routeConfigs: PagesRouteConfig[] = [
   SignInConfig,
@@ -64,6 +65,7 @@ const routeConfigs: PagesRouteConfig[] = [
   SupervisorConfig,
   MediaTeamsConfig,
   OTPConfig,
+  SingleNotificationConfig,
 ];
 
 const routes: AppRouteObject[] = [

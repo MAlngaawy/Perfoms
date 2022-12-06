@@ -1,7 +1,7 @@
 import React from "react";
 import cn from "classnames";
 import AppIcons from "../../../../@main/core/AppIcons";
-import { NavigationType } from "react-router-dom";
+import { Link, NavigationType, useNavigate } from "react-router-dom";
 
 type Props = {
   notification_type: "Report" | "Certificate" | "Complement" | "Permission";
@@ -23,10 +23,24 @@ const OneNotification = ({
   newNotification,
   senderAvatar,
 }: Props) => {
+  const navigate = useNavigate();
+
   return (
     <div
+      onClick={() =>
+        navigate("notification", {
+          state: {
+            notification_type,
+            senderName,
+            message,
+            created_at,
+            newNotification,
+            senderAvatar,
+          },
+        })
+      }
       className={cn(
-        "w-full rounded-3xl md:rounded-full p-1 flex flex-col sm:flex-row justify-start items-center gap-2 md:gap-10 shadow-md",
+        "w-full rounded-3xl md:rounded-full p-1 flex hover:cursor-pointer flex-col sm:flex-row justify-start items-center gap-2 md:gap-10 shadow-md",
         {
           "border border-perfSecondary bg-white": newNotification,
           "bg-perfLigtGray border border-transparent ": !newNotification,
