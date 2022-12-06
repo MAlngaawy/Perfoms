@@ -46,7 +46,7 @@ const TeamCalendar = ({ teamId }: Props) => {
                 onClick={() =>
                   addDay({
                     day: AppUtils.formatDate(date),
-                    team: teamId,
+                    team: +teamId,
                   })
                 }
               >
