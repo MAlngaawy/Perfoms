@@ -1,19 +1,19 @@
-import React, { ReactElement } from "react";
-import { Navigation, Pagination, Scrollbar, A11y } from "swiper";
-
+import { Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
-// Import Swiper styles
+import ReactPlayer from "react-player/youtube";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Avatar, Image, Skeleton } from "@mantine/core";
 import AppIcons from "~/@main/core/AppIcons";
+
 type Props = {
   images: { id?: number; file?: string }[];
   isLoading: boolean;
+  video_url?: string;
 };
 
-const Slider = ({ images, isLoading }: Props) => {
+const Slider = ({ images, isLoading, video_url }: Props) => {
   return (
     <div className=" flex justify-center items-center">
       {isLoading ? (
@@ -23,10 +23,21 @@ const Slider = ({ images, isLoading }: Props) => {
           modules={[Navigation, Pagination]}
           spaceBetween={50}
           pagination={{ clickable: true }}
+          // wrapperClass="flex items-center"
           navigation={{
             enabled: true,
           }}
         >
+          <SwiperSlide>
+            <div className=" flex justify-center items-center w-40 h-40 sm:w-3/5 sm:h-96 mx-auto">
+              <ReactPlayer
+                width={"100%"}
+                height={"100%"}
+                controls={true}
+                url={"https://www.youtube.com/watch?v=KRAgcLXEdtk"}
+              />
+            </div>
+          </SwiperSlide>
           {images.length ? (
             images.map((image) => {
               return (
@@ -42,7 +53,7 @@ const Slider = ({ images, isLoading }: Props) => {
             })
           ) : (
             <SwiperSlide>
-              <div className="bg-perfOfWhite p-10 h-60 text-center font-semibold text-3xl rounded-xl text-perfGray3 flex flex-col justify-center items-center">
+              <div className="bg-perfOfWhite p-10 h-full w-full  sm:w-8/12 mx-auto text-center font-semibold text-3xl rounded-xl text-perfGray3 flex flex-col justify-center items-center">
                 <AppIcons className="w-32 " icon="FolderOpenIcon:outline" />
                 <h2>No Media Here Yet !</h2>
               </div>

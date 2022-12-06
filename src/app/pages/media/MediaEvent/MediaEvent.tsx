@@ -3,8 +3,6 @@ import { Breadcrumbs } from "@mantine/core";
 import { Link, useParams } from "react-router-dom";
 import Slider from "./Slider";
 import { useEventFilesQuery } from "~/app/store/parent/parentApi";
-import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
-import { useSelector } from "react-redux";
 import { useSuprtEventFilesQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { EventFiles } from "~/app/store/types/parent-types";
 import { useCoachTeamEventFilesQuery } from "~/app/store/coach/coachApi";
@@ -51,7 +49,7 @@ const MediaEvent = () => {
           {items}
         </Breadcrumbs>
       </div>
-      <div className="h-60 p-4 sm:p-20">
+      <div className="p-4 sm:p-20">
         <Slider isLoading={isLoading} images={files?.results || []} />
       </div>
     </div>
@@ -59,13 +57,3 @@ const MediaEvent = () => {
 };
 
 export default MediaEvent;
-
-const SlideImage = ({ link }: { link: string }) => {
-  return (
-    <img
-      className="w-full h-4/5 object-cover rounded-md"
-      src={link}
-      alt="event image"
-    />
-  );
-};
