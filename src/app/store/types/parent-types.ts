@@ -158,8 +158,10 @@ export type EventFile = {
   file: string;
 };
 
-export type EventFiles = BaseGetAllType & {
-  results: EventFile[];
+export type EventFiles = {
+  id: number;
+  event_files: EventFile[];
+  video_url: string;
 };
 
 export type PlayerAttendance = {
