@@ -11,7 +11,7 @@ const SubmitButton = ({ isLoading, text }: Props) => {
     <button
       type="submit"
       disabled={isLoading}
-      className="mx-auto flex justify-center w-full disabled:bg-gray-500 bg-perfBlue rounded-lg items-center text-white h-12 mt-10 mb-2"
+      className="mx-auto flex justify-center w-full disabled:bg-gray-500 bg-perfBlue rounded-lg items-center text-white h-12 mt-6 mb-2"
     >
       {!isLoading ? (
         <span>{text} </span>

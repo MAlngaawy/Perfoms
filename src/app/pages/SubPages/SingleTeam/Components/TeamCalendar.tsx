@@ -1,27 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Calendar } from "@mantine/dates";
 import classNames from "classnames";
+import {
+  useSuperAddTeamCalendarMutation,
+  useSuperTeamAttendanceQuery,
+} from "~/app/store/supervisor/supervisorMainApi";
+import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {
   teamId: string;
 };
 
 const TeamCalendar = ({ teamId }: Props) => {
-  const [value, setValue] = useState(null);
+  const { data: attDates } = useSuperTeamAttendanceQuery(
+    { team_id: +teamId },
+    { skip: !teamId }
+  );
 
-  const [dates, setDates] = useState([
-    new Date("12/11/2022").getTime(),
-    new Date("12/15/2022").getTime(),
-    new Date("12/11/2022").getTime(),
-  ]);
-
-  console.log(value);
+  const [addDay, isLoading] = useSuperAddTeamCalendarMutation();
 
   return (
     <div>
       <h2>Team Calendar</h2>
       <div className="w-full flex justify-center">
         <Calendar
+          dayStyle={(date) => {
+            if (attDates?.player_attendance) {
+              return testFun(date, attDates?.player_attendance);
+            } else {
+              return { background: "#fff" };
+            }
+          }}
           sx={{
             ".mantine-Calendar-day": {
               width: 30,
@@ -30,18 +39,16 @@ const TeamCalendar = ({ teamId }: Props) => {
               margin: 2,
             },
           }}
-          value={value}
-          onChange={() => setValue}
           renderDay={(date) => {
             const day = date.getDate();
             return (
               <div
-                onClick={() => setDates([...dates, date.getTime()])}
-                className={classNames("", {
-                  "border rounded-full border-perfBlue": dates.includes(
-                    date.getTime()
-                  ),
-                })}
+                onClick={() =>
+                  addDay({
+                    day: AppUtils.formatDate(date),
+                    team: +teamId,
+                  })
+                }
               >
                 {day}
               </div>
@@ -54,3 +61,18 @@ const TeamCalendar = ({ teamId }: Props) => {
 };
 
 export default TeamCalendar;
+
+const testFun = (thisDate: Date, data: { day: string }[]): any => {
+  for (let oneDate of data) {
+    if (
+      new Date(oneDate.day).getDate() === thisDate.getDate() &&
+      new Date(oneDate.day).getMonth() === thisDate.getMonth() &&
+      new Date(oneDate.day).getFullYear() === thisDate.getFullYear()
+    ) {
+      return {
+        border: "1px solid #00f",
+        borderRadius: "50%",
+      };
+    }
+  }
+};

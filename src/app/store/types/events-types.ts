@@ -3,7 +3,7 @@ import { RatePer } from "./supervisor-types";
 
 export type Event = {
   id: number;
-  files: string;
+  event_files: string[];
   created_at: Date;
   updated_at: Date;
   order: number;
@@ -18,6 +18,7 @@ export type Event = {
   date: Date;
   team: number;
   club: number;
+  video_url: string;
 };
 
 export type AllEvents = BaseGetAllType & {

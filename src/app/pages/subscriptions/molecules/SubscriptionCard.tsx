@@ -32,7 +32,7 @@ const SubscriptionCard = ({ plan, selectPlan }: SubscripionCardProps) => {
     <div
       className={`${
         plan.most_popular
-          ? "most-popular-card bg-perfBlue text-white p-5"
+          ? "most-popular-card bg-perfBlue text-white p-5 transform md:-translate-y-5"
           : "gap-5 p-5"
       } flex flex-col justify-between relative border border-perfGray4 rounded-2xl`}
     >

@@ -1,3 +1,4 @@
+import { string } from "yup";
 import { Attendance } from "./attendance-types";
 import { BaseGetAllType } from "./base-types";
 import { TeamPlayer } from "./clubManager-types";
@@ -80,12 +81,21 @@ export type GeneratePdfDocs = {
 //   sport: number;
 // };
 
-export type TeamAttendanceDays = {
-  player_attendance: { day: string }[];
+export type TeamAttendanceDays = BaseGetAllType & {
+  results: { day: string }[];
 };
 
-export type TeamPerformanceMetrics = {
-  player_metric: { metric: string }[];
+export type TeamPerformanceMetrics = BaseGetAllType & {
+  results: [
+    {
+      id: number;
+      name: string;
+      kpi_metric: {
+        id: number;
+        name: string;
+      }[];
+    }
+  ];
 };
 
 export type Team = {

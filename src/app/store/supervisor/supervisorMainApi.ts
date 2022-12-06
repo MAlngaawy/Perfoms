@@ -7,18 +7,26 @@ import {
   Teams,
 } from "../types/clubManager-types";
 import { UpdateAttendance } from "../types/coach-types";
-import { TeamCoaches, TeamEvent, TeamEvents } from "../types/parent-types";
+import {
+  EventFiles,
+  TeamCoaches,
+  TeamEvent,
+  TeamEvents,
+} from "../types/parent-types";
 import { ParentClub } from "~/app/store/types/parent-types";
 import {
   AddAction,
   AddRecommendation,
+  AddTeamCalendar,
   CoachRequests,
   kpi,
   Kpis,
   Metrics,
   SuperVisorPlayers,
   Team,
+  TeamAttendance,
 } from "../types/supervisor-types";
+import { Event } from "../types/events-types";
 
 export const supervisorApi = createApi({
   reducerPath: "supervisorApi",
@@ -26,7 +34,7 @@ export const supervisorApi = createApi({
     baseUrl: `${BASE_URL}/supervisor`,
     prepareHeaders: BASE_HEADERS,
   }),
-  tagTypes: ["supervisor"],
+  tagTypes: ["supervisor", "calendar"],
   endpoints: ({ query, mutation }) => ({
     superkpis: query<Kpis, { page?: number }>({
       query: (params) => ({ url: "kpis/", params }),
@@ -115,9 +123,36 @@ export const supervisorApi = createApi({
       query: ({ team_id, ...params }) => ({ url: `${team_id}/events`, params }),
     }),
 
+    suprtEventFiles: query<EventFiles, { event_id: number; page?: number }>({
+      query: ({ event_id, ...params }) => ({
+        url: `/${event_id}/files`,
+        params,
+      }),
+    }),
+
     superCoachesRequests: query<CoachRequests, { page?: number }>({
       query: (params) => ({ url: "coaches/requests", params }),
       providesTags: ["supervisor"],
+    }),
+
+    superTeamAttendance: query<
+      TeamAttendance,
+      { team_id: number; page?: number }
+    >({
+      query: ({ team_id, ...params }) => ({
+        url: `teams/${team_id}/attendance`,
+        params,
+      }),
+      providesTags: ["calendar"],
+    }),
+
+    superAddTeamCalendar: mutation<AddTeamCalendar, {}>({
+      query: (body) => ({
+        url: `add-team-calender/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["calendar"],
     }),
 
     superAcceptCoachRequest: mutation<
@@ -160,9 +195,12 @@ export const {
   useAddActionMutation,
   useAddRecommendationsMutation,
   useSuprtEventsQuery,
+  useSuprtEventFilesQuery,
   useSuperCoachesRequestsQuery,
   useSuperAcceptCoachRequestMutation,
   useSuperDeclineCoachRequestMutation,
   useSuperClubQuery,
   useSuperPlayersQuery,
+  useSuperTeamAttendanceQuery,
+  useSuperAddTeamCalendarMutation,
 } = supervisorApi;

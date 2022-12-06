@@ -8,9 +8,10 @@ import EditForm from "./EditForm";
 type Props = {
   user: User;
   players: Player[];
+  refetch: any;
 };
 
-const UserInfo = ({ user, players }: Props) => {
+const UserInfo = ({ user, players, refetch }: Props) => {
   const [opened, setOpened] = useState(false);
 
   return (
@@ -24,7 +25,7 @@ const UserInfo = ({ user, players }: Props) => {
           icon="PencilSquareIcon:outline"
         />
         <Modal opened={opened} onClose={() => setOpened(false)}>
-          <EditForm user={user} setOpened={setOpened} />
+          <EditForm refetch={refetch} user={user} setOpened={setOpened} />
         </Modal>
       </div>
       <div className="photo w-28 md:w-48 h-32 md:h-52">

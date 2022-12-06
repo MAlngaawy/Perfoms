@@ -66,10 +66,10 @@ const AttendanceTable = (props: Props) => {
               </tr>
             </thead>
             <tbody className="overflow-scroll">
-              {teamAttendanceDays?.player_attendance &&
-              teamAttendanceDays?.player_attendance.length > 0 ? (
+              {teamAttendanceDays?.results &&
+              teamAttendanceDays?.results.length > 0 ? (
                 <>
-                  {teamAttendanceDays?.player_attendance.map((item) => {
+                  {teamAttendanceDays?.results.map((item) => {
                     const thisDate = item.day;
                     return (
                       <tr className="">
