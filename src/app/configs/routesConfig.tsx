@@ -35,6 +35,7 @@ import OTPConfig from "../pages/OTP/OTPConfig";
 import MainReportsConfig from "../pages/MainReports/MainReportsConfig";
 import SearchPlayersPageConfig from "../pages/MainReports/SupPages/Players/SearchPlayersPageConfig";
 import SportsReportsConfig from "../pages/MainReports/SupPages/Sports/SportsReportsConfig";
+import PlayerPageConfig from "../pages/MainReports/SupPages/Players/Player/PlayerConfig";
 
 const routeConfigs: PagesRouteConfig[] = [
   SignInConfig,
@@ -70,6 +71,7 @@ const routeConfigs: PagesRouteConfig[] = [
   MainReportsConfig,
   SearchPlayersPageConfig,
   SportsReportsConfig,
+  PlayerPageConfig,
 ];
 
 const routes: AppRouteObject[] = [

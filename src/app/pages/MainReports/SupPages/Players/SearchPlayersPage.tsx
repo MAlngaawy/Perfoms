@@ -3,12 +3,13 @@ import React, { forwardRef, useEffect } from "react";
 import AppIcons from "~/@main/core/AppIcons";
 import { Controller, useForm } from "react-hook-form";
 import { useSuperPlayersQuery } from "~/app/store/supervisor/supervisorMainApi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 type Props = {};
 
 const SearchPlayersPage = (props: Props) => {
   const { handleSubmit, register, control } = useForm();
+  const navigate = useNavigate();
 
   const {
     data: players,
@@ -18,6 +19,7 @@ const SearchPlayersPage = (props: Props) => {
   } = useSuperPlayersQuery({});
 
   const send = (data: any) => {
+    navigate(`player/${data.id}`);
     console.log(data);
   };
 
@@ -43,7 +45,6 @@ const SearchPlayersPage = (props: Props) => {
       <div ref={ref} {...others}>
         <Group noWrap>
           <Avatar src={image} />
-
           <div>
             <Text size="sm">{label}</Text>
           </div>
