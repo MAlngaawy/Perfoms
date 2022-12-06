@@ -43,7 +43,7 @@ const ReportsChartCard = ({
               }}
               className="w-4 h-4 rounded-full"
             ></span>
-            <h3> {data[0].value} </h3>
+            <h3> {data[0].name} </h3>
           </div>
           <h2>{data[0].value}%</h2>
         </div>

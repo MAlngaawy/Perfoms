@@ -1,15 +1,77 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Breadcrumbs } from "@mantine/core";
 import ReportsChartCard from "~/@main/components/MainReports/ReportsChartCard";
 import { useSuperTeamsQuery } from "~/app/store/supervisor/supervisorMainApi";
+
+const teams = [
+  {
+    name: "14th",
+    icon: "ascascasc",
+    id: 1,
+    data: [
+      {
+        name: "strengths",
+        value: 50,
+      },
+      {
+        name: "moderate",
+        value: 300,
+      },
+      {
+        name: "weaknesses",
+        value: 10,
+      },
+    ],
+  },
+
+  {
+    name: "15th",
+    icon: "ascascasc",
+    id: 1,
+    data: [
+      {
+        name: "strengths",
+        value: 156,
+      },
+      {
+        name: "moderate",
+        value: 52,
+      },
+      {
+        name: "weaknesses",
+        value: 369,
+      },
+    ],
+  },
+
+  {
+    name: "16th",
+    icon: "ascascasc",
+    id: 1,
+    data: [
+      {
+        name: "strengths",
+        value: 30,
+      },
+      {
+        name: "moderate",
+        value: 250,
+      },
+      {
+        name: "weaknesses",
+        value: 100,
+      },
+    ],
+  },
+];
 
 type Props = {};
 
 const items = [
   { title: "Categories", href: "/main-reports" },
   { title: "Sports", href: "/main-reports/sports" },
-  { title: "Teams Reports", href: "" },
+  { title: "Teams", href: "" },
 ].map((item, index) => (
   <Link to={item.href} key={index}>
     {item.title}
@@ -18,65 +80,7 @@ const items = [
 
 const TeamsReports = (props: Props) => {
   const { data: superTeams } = useSuperTeamsQuery({});
-
-  const teams = [
-    {
-      name: "14th",
-      icon: "ascascasc",
-      data: [
-        {
-          name: "strengths",
-          value: 50,
-        },
-        {
-          name: "moderate",
-          value: 300,
-        },
-        {
-          name: "weaknesses",
-          value: 10,
-        },
-      ],
-    },
-
-    {
-      name: "15th",
-      icon: "ascascasc",
-      data: [
-        {
-          name: "strengths",
-          value: 156,
-        },
-        {
-          name: "moderate",
-          value: 52,
-        },
-        {
-          name: "weaknesses",
-          value: 369,
-        },
-      ],
-    },
-
-    {
-      name: "16th",
-      icon: "ascascasc",
-      data: [
-        {
-          name: "strengths",
-          value: 30,
-        },
-        {
-          name: "moderate",
-          value: 250,
-        },
-        {
-          name: "weaknesses",
-          value: 100,
-        },
-      ],
-    },
-  ];
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log(superTeams);
@@ -94,7 +98,7 @@ const TeamsReports = (props: Props) => {
           return (
             <div>
               <ReportsChartCard
-                onClickFun={() => console.log("Team")}
+                onClickFun={() => navigate(`${team.id}`)}
                 name={team.name}
                 data={team.data}
               />
