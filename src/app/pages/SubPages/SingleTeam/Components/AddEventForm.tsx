@@ -8,14 +8,24 @@ import cn from "classnames";
 import SubmitButton from "../../../../../@main/components/SubmitButton";
 import AppIcons from "../../../../../@main/core/AppIcons";
 import { DatePicker } from "@mantine/dates";
+import { useParams } from "react-router-dom";
+import { useSuperClubQuery } from "~/app/store/supervisor/supervisorMainApi";
+import AppUtils from "~/@main/utils/AppUtils";
+import { axiosInstance } from "~/app/configs/dataService";
+import { showNotification } from "@mantine/notifications";
 
-type Props = {};
+type Props = {
+  refetch: any;
+};
 
-const AddEventForm = (props: Props) => {
+const AddEventForm = ({ refetch }: Props) => {
   const [opened, setOpened] = useState(false);
-  const [playerImage, setPlayerImage] = useState<string | unknown>("");
+  const [playerImage, setPlayerImage] = useState<string | unknown>();
   const [playerImagePreview, setPlayerImagePreview] = useState("null");
   const [value, setValue] = useState<any>();
+  const { id: team_id } = useParams();
+  const { data: clubData } = useSuperClubQuery({});
+
   const schema = yup.object().shape({
     eventName: yup.string().required("please add the Event name"),
     eventDate: yup.date().required("Please add the event date"),
@@ -31,17 +41,6 @@ const AddEventForm = (props: Props) => {
   } = useForm({
     resolver: yupResolver(schema),
   });
-
-  // Submit Form Function
-  const onSubmitFunction = (data: any) => {
-    console.log({ ...data, icon: playerImage });
-    setPlayerImagePreview("null");
-    reset({
-      eventName: "",
-      eventLocation: "",
-    });
-    setOpened(false);
-  };
 
   // Image Functions
   // Resize the image size
@@ -73,14 +72,77 @@ const AddEventForm = (props: Props) => {
     }
   };
 
+  // Submit Form Function
+  const onSubmitFunction = (e: any) => {
+    e.preventDefault();
+    console.log(e.currentTarget);
+
+    const paramData = {
+      team: team_id,
+      club: clubData?.id,
+    };
+    console.log(paramData);
+    const formData = new FormData(e.currentTarget);
+    formData.append("team", team_id || "0");
+    formData.append("club", JSON.stringify(clubData?.id));
+
+    axiosInstance
+      .post("supervisor/add-event/", formData)
+      .then(() => {
+        showNotification({
+          message: "Event Created",
+          color: "green",
+          title: "Done",
+          styles: {
+            root: {
+              backgroundColor: "#27AE60",
+              borderColor: "#27AE60",
+              "&::before": { backgroundColor: "#fff" },
+            },
+
+            title: { color: "#fff" },
+            description: { color: "#fff" },
+            closeButton: {
+              color: "#fff",
+            },
+          },
+        });
+        refetch();
+        setOpened(false);
+      })
+      .catch((err) => {
+        showNotification({
+          message: "please try again",
+          color: "ref",
+          title: "Wrong",
+          styles: {
+            root: {
+              backgroundColor: "#EB5757",
+              borderColor: "#EB5757",
+              "&::before": { backgroundColor: "#fff" },
+            },
+
+            title: { color: "#fff" },
+            description: { color: "#fff" },
+            closeButton: {
+              color: "#fff",
+            },
+          },
+        });
+      });
+
+    setPlayerImagePreview("null");
+    reset({
+      eventName: "",
+      eventLocation: "",
+    });
+  };
+
   return (
     <div>
       <>
         <Modal opened={opened} onClose={() => setOpened(false)}>
-          <form
-            className="flex flex-col gap-4"
-            onSubmit={handleSubmit(onSubmitFunction)}
-          >
+          <form className="flex flex-col gap-4" onSubmit={onSubmitFunction}>
             {/* Image Upload */}
             <div className=" relative my-2 bg-gray-300 overflow-hidden flex justify-center  items-center  mx-auto w-28  h-28 rounded-lg ">
               <Button
@@ -108,8 +170,8 @@ const AddEventForm = (props: Props) => {
                 <Input
                   hidden
                   accept="image/*"
-                  // {...register("image")}
-                  name="image"
+                  {...register("icon")}
+                  name="icon"
                   multiple
                   type="file"
                   // error={errors.image && (errors.image.message as ReactNode)}
@@ -144,17 +206,20 @@ const AddEventForm = (props: Props) => {
                   },
                 }}
                 className="border-b"
-                {...register("eventName")}
-                id="eventName"
+                {...register("name")}
+                id="name"
+                name="name"
               />
             </Input.Wrapper>
 
             <Controller
-              {...register("eventDate")}
+              {...register("date")}
               control={control}
               render={({ field }) => {
                 return (
                   <DatePicker
+                    name="date"
+                    inputFormat="YYYY-MM-DD"
                     sx={{
                       ".mantine-DatePicker-input": {
                         border: 0,
@@ -165,9 +230,7 @@ const AddEventForm = (props: Props) => {
                         minHeight: 20,
                       },
                     }}
-                    name={field.name}
                     onChange={field.onChange}
-                    value={new Date("11/12/2022")}
                     error={
                       errors.eventDate &&
                       (errors.eventDate.message as ReactNode)
@@ -204,7 +267,7 @@ const AddEventForm = (props: Props) => {
               />
             </Input.Wrapper>
 
-            <SubmitButton isLoading={false} text="Add Team" />
+            <SubmitButton isLoading={false} text="Add Event" />
           </form>
         </Modal>
 

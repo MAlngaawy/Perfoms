@@ -2,22 +2,28 @@ import AppIcons from "../../../../../@main/core/AppIcons";
 import DeleteButton from "../../../../../@main/components/ManagerComponents/SubComponents/DeleteButton";
 import AddEventForm from "./AddEventForm";
 import EditEventForm from "./EditEventForm";
-import { useSuperTeamEventsQuery } from "~/app/store/supervisor/supervisorMainApi";
+import {
+  useSuperDeleteEventMutation,
+  useSuperTeamEventsQuery,
+} from "~/app/store/supervisor/supervisorMainApi";
+import { showNotification } from "@mantine/notifications";
 
 type Props = {
   teamId: string;
 };
 
 const TeamUpcomingEvents = ({ teamId }: Props) => {
-  const { data: events } = useSuperTeamEventsQuery(
+  const { data: events, refetch } = useSuperTeamEventsQuery(
     { team_id: teamId },
     { skip: !teamId }
   );
 
+  const [deleteEvent] = useSuperDeleteEventMutation();
+
   return (
     <div>
       <h2>Team Events</h2>
-      <div className="flex flex-col mt-4 gap-2 h-72 overflow-scroll">
+      <div className="flex flex-col mt-4 gap-2 max-h-72 overflow-scroll">
         {events &&
           events.results.map((event) => (
             <div className="flex justify-between p-1 rounded-lg hover:bg-pagesBg">
@@ -50,13 +56,39 @@ const TeamUpcomingEvents = ({ teamId }: Props) => {
               </div>
 
               <div className="options flex flex-col justify-around">
-                <DeleteButton id={event.id} name={event.name} type="event" />
-                <EditEventForm event={event} />
+                <DeleteButton
+                  deleteFun={() =>
+                    deleteEvent({ event_id: event.id }).then((res) => {
+                      showNotification({
+                        message: "Successfly Deleted",
+                        color: "green",
+                        title: "Done",
+                        styles: {
+                          root: {
+                            backgroundColor: "#27AE60",
+                            borderColor: "#27AE60",
+                            "&::before": { backgroundColor: "#fff" },
+                          },
+
+                          title: { color: "#fff" },
+                          description: { color: "#fff" },
+                          closeButton: {
+                            color: "#fff",
+                          },
+                        },
+                      });
+                    })
+                  }
+                  id={event.id}
+                  name={event.name}
+                  type="event"
+                />
+                <EditEventForm refetch={() => refetch()} event={event} />
               </div>
             </div>
           ))}
       </div>
-      <AddEventForm />
+      <AddEventForm refetch={() => refetch()} />
     </div>
   );
 };

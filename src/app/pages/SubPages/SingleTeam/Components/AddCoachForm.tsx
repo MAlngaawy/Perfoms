@@ -125,7 +125,7 @@ const AddCoachForm = ({ teamId }: Props) => {
 
         <Group position="left">
           <button
-            className="px-6 py-2 my-6 bg-slate-300 text-perfGray3 rounded-3xl"
+            className="px-6 py-2 my-2 bg-slate-300 text-perfGray3 rounded-3xl"
             onClick={() => setOpened(true)}
           >
             + Add Coach
