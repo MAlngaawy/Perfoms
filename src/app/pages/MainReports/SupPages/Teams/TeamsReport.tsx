@@ -12,26 +12,6 @@ const teams = [
     data: [
       {
         name: "strengths",
-        value: 50,
-      },
-      {
-        name: "moderate",
-        value: 300,
-      },
-      {
-        name: "weaknesses",
-        value: 10,
-      },
-    ],
-  },
-
-  {
-    name: "15th",
-    icon: "ascascasc",
-    id: 1,
-    data: [
-      {
-        name: "strengths",
         value: 156,
       },
       {
@@ -46,7 +26,7 @@ const teams = [
   },
 
   {
-    name: "16th",
+    name: "17th",
     icon: "ascascasc",
     id: 1,
     data: [

@@ -8,22 +8,21 @@ import OverAll from "./Component/OverAll";
 
 type Props = {};
 
-const items = [
-  { title: "categories", href: "/main-reports" },
-  { title: "Search Players", href: "/main-reports/search-players" },
-  { title: "Player Name", href: "" },
-].map((item, index) => (
-  <Link to={item.href} key={index}>
-    {item.title}
-  </Link>
-));
-
 const Player = (props: Props) => {
   const [checked, setChecked] = useState(true);
   const [reportType, setReportType] =
     useState<"Performances" | "Attendances">("Performances");
-
   const { id } = useParams();
+
+  const items = [
+    { title: "categories", href: "/main-reports" },
+    { title: "Search Players", href: "/main-reports/search-players" },
+    { title: id === "3" ? "Yahia Hassan" : "Habeba Wael", href: "" },
+  ].map((item, index) => (
+    <Link to={item.href} key={index}>
+      {item.title}
+    </Link>
+  ));
 
   return (
     <div className="conatiner w-11/12 mx-auto">

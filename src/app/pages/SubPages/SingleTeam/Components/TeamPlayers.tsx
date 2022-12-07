@@ -31,7 +31,7 @@ const TeamPlayers = ({ teamId }: Props) => {
               />
             );
           })}
-        <AddPlayer />
+        {/* <AddPlayer teamPlayers={players?.results || []} /> */}
       </div>
     </div>
   );

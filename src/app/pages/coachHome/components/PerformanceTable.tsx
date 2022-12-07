@@ -65,108 +65,6 @@ const kpiMetrics = [
   },
 ];
 
-const response = [
-  {
-    name: "mohammed",
-    id: 1,
-    icon: "https://clicklovegrow.com/wp-content/uploads/2020/01/Charlie-ONeill-Advanced-Graduate.jpg",
-    player_kpis: [
-      {
-        id: 2,
-        name: "Pushing",
-        player_kpi_metric: [
-          {
-            id: 2,
-            name: "Right Leg",
-            last_score: 1,
-          },
-          {
-            id: 39,
-            name: "Left Leg",
-            last_score: 2,
-          },
-          {
-            id: 111,
-            name: "Pushing Technique",
-            last_score: 3,
-          },
-        ],
-      },
-      {
-        id: 4,
-        name: "Fitness",
-        player_kpi_metric: [
-          {
-            id: 982,
-            name: "Endurance",
-            last_score: 3,
-          },
-          {
-            id: 1017,
-            name: "Balance",
-            last_score: 5,
-          },
-          {
-            id: 1052,
-            name: "Flexibility",
-            last_score: 1,
-          },
-        ],
-      },
-    ],
-  },
-
-  {
-    name: "Ahmed",
-    id: 1,
-    icon: "https://i.pinimg.com/474x/38/df/16/38df162671b772334b8bc7a9db34290e.jpg",
-    player_kpis: [
-      {
-        id: 21,
-        name: "Pushing",
-        player_kpi_metric: [
-          {
-            id: 21,
-            name: "Right Leg",
-            last_score: 2,
-          },
-          {
-            id: 391,
-            name: "Left Leg",
-            last_score: 4,
-          },
-          {
-            id: 1112,
-            name: "Pushing Technique",
-            last_score: 3,
-          },
-        ],
-      },
-      {
-        id: 43,
-        name: "Fitness",
-        player_kpi_metric: [
-          {
-            id: 9825,
-            name: "Endurance",
-            last_score: 3,
-          },
-          {
-            id: 10177,
-            name: "Balance",
-            last_score: 5,
-          },
-          {
-            id: 10526,
-            name: "Flexibility",
-            last_score: 3,
-          },
-        ],
-      },
-    ],
-  },
-];
-
 const PerformanceTable = (props: Props) => {
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const { data: teamPerformance } = useGetTeamPerformancesQuery(
@@ -219,7 +117,7 @@ const PerformanceTable = (props: Props) => {
                   {teamPerformanceMetric?.results.map((oneKpi) => (
                     <>
                       <tr>
-                        <td className="border-0 font-semibold text-left px-4 text-sm sticky left-0 bg-white z-10 text-perfGray1">
+                        <td className="border-0 font-bold text-left px-4 text-sm sticky left-0 bg-white z-10 text-perfGray1">
                           {oneKpi.name}
                         </td>
                       </tr>
@@ -227,7 +125,7 @@ const PerformanceTable = (props: Props) => {
                         return (
                           <tr className="border-0" key={metric.id}>
                             <td className=" text-xs sm:text-sm sticky left-0  bg-white z-10 font-medium text-perfGray1">
-                              <div className="w-20 xs:w-40 text-center">
+                              <div className="w-20 xs:w-40 text-left pl-6">
                                 {metric.name}
                               </div>
                             </td>
@@ -244,8 +142,8 @@ const PerformanceTable = (props: Props) => {
                                 <td key={metric.id}>
                                   <div
                                     className={classNames(
-                                      "flex gap-2 justify-center items-center mx-4",
-                                      { "opacity-40": theScore > 0 }
+                                      "flex gap-2 justify-center items-center mx-4"
+                                      // { "opacity-40": theScore > 0 }
                                     )}
                                   >
                                     {[1, 2, 3, 4, 5].map((number) => (
@@ -273,7 +171,7 @@ const PerformanceTable = (props: Props) => {
                                             "bg-scoreYallow text-white":
                                               theScore === 3 &&
                                               theScore === number,
-                                            "bg-scoreGray": theScore !== number,
+                                            "bg-slate-100": theScore !== number,
                                           }
                                         )}
                                       >

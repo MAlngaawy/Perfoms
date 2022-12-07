@@ -25,7 +25,12 @@ const UsersCard = ({ type, data }: Props) => {
                 <Avatar src={user.image} size="sm" radius={"xl"} />
                 <h3 className="text-base text-perfGray2">{user.name}</h3>
               </div>
-              <DeleteButton type={type} name={user.name} id={user.id} />
+              <DeleteButton
+                deleteFun={() => console.log("Delete")}
+                type={type}
+                name={user.name}
+                id={user.id}
+              />
             </div>
           );
         })}

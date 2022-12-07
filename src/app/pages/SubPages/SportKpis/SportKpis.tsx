@@ -47,7 +47,12 @@ const SportKpis = (props: Props) => {
               {/* Edit and Delete Buttons */}
               <div className="flex absolute right-2 top-5 gap-2">
                 <EditKpi kpiName={kpi.name} kpiId={kpi.id} />
-                <DeleteButton name={kpi.name} id={kpi.id} type="Kpi" />
+                <DeleteButton
+                  deleteFun={() => console.log("delete")}
+                  name={kpi.name}
+                  id={kpi.id}
+                  type="Kpi"
+                />
               </div>
             </div>
           );

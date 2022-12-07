@@ -1,44 +1,50 @@
-import React, { useState, ReactNode, LegacyRef, forwardRef } from "react";
+import React, { useState, forwardRef, useEffect } from "react";
 import { Modal, Group, Avatar, Text, Select } from "@mantine/core";
 import SubmitButton from "../../../../../@main/components/SubmitButton";
 import { Controller, useForm } from "react-hook-form";
-import PerfSelect from "../../../../../@main/components/Select";
+import {
+  useSuperAddTeamPlayerMutation,
+  useSuperPlayersQuery,
+} from "~/app/store/supervisor/supervisorMainApi";
+import { useParams } from "react-router-dom";
+import { showNotification } from "@mantine/notifications";
 
 type Props = {};
 
-const playersDate = [
-  {
-    label: "Player One",
-    image:
-      "https://daisybeattyphotography.com/wp-content/uploads/2016/10/best-child-portrait-photographer-nyc-daisy-beatty-2016-677x1024(pp_w480_h726).jpg",
-    id: 1,
-    value: "1",
-  },
-  {
-    label: "Player Two",
-    image:
-      "https://images.unsplash.com/photo-1497881807663-38b9a95b7192?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2hpbGQlMjBwb3J0cmFpdHxlbnwwfHwwfHw%3D&w=1000&q=80",
-    id: 2,
-    value: "2",
-  },
-  {
-    label: "Player Three",
-    image:
-      "https://images.squarespace-cdn.com/content/v1/5575a19ee4b0e1635672b29f/1578629190658-GJ788H0T89UXLS22LE67/Remember+When+Portraits+Children%27s+Photography+Cincinnati+Ohio?format=1000w",
-    id: 3,
-    value: "3",
-  },
-  {
-    label: "Player Four",
-    image:
-      "https://images.squarespace-cdn.com/content/v1/575c8f5ce32140042bb45885/1475886827268-1KWOE3EXS6P3BDXMU2OU/DSCF9047-2.jpg?format=1000w",
-    id: 4,
-    value: "4",
-  },
-];
-
-const AddPlayer = (props: Props) => {
+const AddPlayer = async (props: Props) => {
   const [opened, setOpened] = useState(false);
+  const [playersData, setPlayersData] = useState<any>([]);
+  const { data: players } = useSuperPlayersQuery({});
+
+  const { id: team_id } = useParams();
+
+  let lol2: any[] = [];
+
+  useEffect(() => {
+    let test = players?.results.map((player) => {
+      return {
+        label: player.name,
+        image: player.icon,
+        value: player.id,
+        id: player.id,
+      };
+    });
+
+    // console.log("test", test);
+    // console.log("teamPlayers", teamPlayers);
+
+    // setPlayersData(test);
+
+    // for (let player of test || []) {
+    //   for (let teamPlayer of teamPlayers) {
+    //     if (teamPlayer.id === player.id) {
+    //       lol2.push(player);
+    //     }
+    //   }
+    // }
+
+    // console.log(lol2);
+  }, [players, lol2]);
 
   const {
     register,
@@ -48,7 +54,53 @@ const AddPlayer = (props: Props) => {
     control,
   } = useForm();
 
+  const [addPlayer] = useSuperAddTeamPlayerMutation();
+
   const onSubmit = (data: any) => {
+    addPlayer({
+      team_id: team_id,
+      player_id: data.player,
+    })
+      .then((res) => {
+        showNotification({
+          message: "Successfly Added Player",
+          color: "green",
+          title: "Done",
+          styles: {
+            root: {
+              backgroundColor: "#27AE60",
+              borderColor: "#27AE60",
+              "&::before": { backgroundColor: "#fff" },
+            },
+
+            title: { color: "#fff" },
+            description: { color: "#fff" },
+            closeButton: {
+              color: "#fff",
+            },
+          },
+        });
+      })
+      .catch((err) => {
+        showNotification({
+          message: err.message,
+          color: "ref",
+          title: "Wrong",
+          styles: {
+            root: {
+              backgroundColor: "#EB5757",
+              borderColor: "#EB5757",
+              "&::before": { backgroundColor: "#fff" },
+            },
+
+            title: { color: "#fff" },
+            description: { color: "#fff" },
+            closeButton: {
+              color: "#fff",
+            },
+          },
+        });
+      });
     console.log(data);
     setOpened(false);
     reset({ player: "" });
@@ -96,7 +148,7 @@ const AddPlayer = (props: Props) => {
                   maxDropdownHeight={400}
                   // {...register("coach")}
                   nothingFound="No options"
-                  data={playersDate}
+                  data={playersData}
                   filter={(value, item) =>
                     item.label
                       ?.toLowerCase()

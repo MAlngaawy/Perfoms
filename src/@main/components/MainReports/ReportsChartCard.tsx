@@ -38,7 +38,7 @@ const ReportsChartCard = ({
         }
       )}
     >
-      <h2 className="w-full text-left">{name}</h2>
+      <h2 className="w-full text-left"> Punshing {name}</h2>
       <div className="flex relative w-full items-center justify-center">
         <Example chartColors={chartColors} data={data} />
       </div>

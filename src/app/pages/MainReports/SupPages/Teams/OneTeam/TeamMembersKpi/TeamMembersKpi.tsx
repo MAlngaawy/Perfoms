@@ -10,7 +10,7 @@ type Props = {};
 
 const membersKpi = [
   {
-    name: "Punshing Ahmed Salah",
+    name: "Ahmed Salah",
     icon: "ascascasc",
     id: 4,
     data: [
@@ -29,7 +29,7 @@ const membersKpi = [
     ],
   },
   {
-    name: "Punshing Mohammed Ali",
+    name: "Mohammed Ali",
     icon: "ascascasc",
     id: 5,
     data: [
@@ -48,7 +48,7 @@ const membersKpi = [
     ],
   },
   {
-    name: "Punshing Laila Ali",
+    name: "Laila Ali",
     icon: "ascascasc",
     id: 6,
     data: [
@@ -67,7 +67,7 @@ const membersKpi = [
     ],
   },
   {
-    name: "Punshing Mohye Ahmed",
+    name: "Mohye Ahmed",
     icon: "ascascasc",
     id: 1,
     data: [
@@ -87,7 +87,7 @@ const membersKpi = [
   },
 
   {
-    name: "Punshing Loay Morad",
+    name: "Loay Morad",
     icon: "ascascasc",
     id: 2,
     data: [
@@ -107,7 +107,7 @@ const membersKpi = [
   },
 
   {
-    name: "Punshing Fares Medhat",
+    name: "Fares Medhat",
     icon: "ascascasc",
     id: 3,
     data: [
@@ -129,7 +129,7 @@ const membersKpi = [
 
 const membersAttendance = [
   {
-    name: "Attendance Ahmed Salah",
+    name: "Ahmed Salah",
     icon: "ascascasc",
     id: 4,
     data: [
@@ -148,7 +148,7 @@ const membersAttendance = [
     ],
   },
   {
-    name: "Attendance Ahmed Salah",
+    name: "Ahmed Salah",
     icon: "ascascasc",
     id: 4,
     data: [
@@ -167,7 +167,7 @@ const membersAttendance = [
     ],
   },
   {
-    name: "Attendance Ahmed Salah",
+    name: "Ahmed Salah",
     icon: "ascascasc",
     id: 4,
     data: [
@@ -186,7 +186,7 @@ const membersAttendance = [
     ],
   },
   {
-    name: "Attendance Ahmed Salah",
+    name: "Ahmed Salah",
     icon: "ascascasc",
     id: 4,
     data: [
@@ -205,7 +205,7 @@ const membersAttendance = [
     ],
   },
   {
-    name: "Attendance Ahmed Salah",
+    name: "Ahmed Salah",
     icon: "ascascasc",
     id: 4,
     data: [
@@ -224,7 +224,7 @@ const membersAttendance = [
     ],
   },
   {
-    name: "Attendance Ahmed Salah",
+    name: "Ahmed Salah",
     icon: "ascascasc",
     id: 4,
     data: [

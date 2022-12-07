@@ -15,7 +15,7 @@ const TeamInfoCard = (props: Props) => {
             size="xl"
           />
           <div className="flex flex-col ">
-            <Info label="name" value="14Th Team" />
+            <Info label="name" value="Team 17th" />
             <Info label="Age" value="14 - 17 years" />
           </div>
         </div>
