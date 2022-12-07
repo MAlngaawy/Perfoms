@@ -1,14 +1,27 @@
 import { useState } from "react";
 import { Modal, Group } from "@mantine/core";
 import AppIcons from "../../../core/AppIcons";
+import { showNotification } from "@mantine/notifications";
 
 type Props = {
   name: string;
-  id: number;
+  id?: number;
   type: string;
+  deleteFun: any;
+  // isLoading: boolean;
+  isError?: boolean;
+  isSuccess?: boolean;
 };
 
-const DeleteButton = ({ id, name, type }: Props) => {
+const DeleteButton = ({
+  id,
+  name,
+  type,
+  deleteFun,
+  // isLoading,
+  isError,
+  isSuccess,
+}: Props) => {
   const [opened, setOpened] = useState(false);
 
   return (
@@ -29,10 +42,7 @@ const DeleteButton = ({ id, name, type }: Props) => {
             </button>
             <button
               onClick={() => {
-                console.log({
-                  name: name,
-                  id: id,
-                });
+                deleteFun();
                 setOpened(false);
               }}
               className="bg-perfSecondary mx-auto w-fit text-white rounded-lg py-2 px-4"

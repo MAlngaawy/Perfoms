@@ -78,7 +78,7 @@ export type Team = {
   sport?: string;
 };
 
-export type coaches = BaseGetAllType & {
+export type Coaches = BaseGetAllType & {
   results: PlayerCoach[];
 };
 

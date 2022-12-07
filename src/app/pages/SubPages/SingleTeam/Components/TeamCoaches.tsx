@@ -1,17 +1,28 @@
 import { Avatar } from "@mantine/core";
-import { useSuperTeamCoachesQuery } from "~/app/store/supervisor/supervisorMainApi";
+import {
+  useSuperAddTeamCoachesMutation,
+  useSuperRemoveTeamCoachMutation,
+  useSuperTeamCoachesQuery,
+} from "~/app/store/supervisor/supervisorMainApi";
 import DeleteButton from "../../../../../@main/components/ManagerComponents/SubComponents/DeleteButton";
 import AddCoachForm from "./AddCoachForm";
+import { useParams } from "react-router-dom";
+import { showNotification } from "@mantine/notifications";
 
 type Props = {
   teamId: string;
 };
 
 const TeamCoaches = ({ teamId }: Props) => {
+  const { id: teamIdFromParams } = useParams();
+
   const { data: coaches } = useSuperTeamCoachesQuery(
-    { team_id: teamId },
+    { team_id: teamIdFromParams ? teamIdFromParams : teamId },
     { skip: !teamId }
   );
+
+  const [removeCoach, { isLoading, isSuccess, isError }] =
+    useSuperRemoveTeamCoachMutation();
 
   return (
     <div>
@@ -26,6 +37,33 @@ const TeamCoaches = ({ teamId }: Props) => {
               </h3>
             </div>
             <DeleteButton
+              isSuccess={isSuccess}
+              isError={isError}
+              deleteFun={() =>
+                removeCoach({
+                  coach_id: coach.id,
+                  team_id: teamId,
+                }).then(() => {
+                  showNotification({
+                    message: "Successfly Deleted",
+                    color: "green",
+                    title: "Done",
+                    styles: {
+                      root: {
+                        backgroundColor: "#27AE60",
+                        borderColor: "#27AE60",
+                        "&::before": { backgroundColor: "#fff" },
+                      },
+
+                      title: { color: "#fff" },
+                      description: { color: "#fff" },
+                      closeButton: {
+                        color: "#fff",
+                      },
+                    },
+                  });
+                })
+              }
               type="Coach"
               name={coach.first_name + " " + coach.last_name}
               id={coach.id !== undefined ? coach.id : 1}
@@ -33,7 +71,7 @@ const TeamCoaches = ({ teamId }: Props) => {
           </div>
         ))}
       </div>
-      <AddCoachForm />
+      <AddCoachForm teamId={teamIdFromParams ? teamIdFromParams : teamId} />
     </div>
   );
 };

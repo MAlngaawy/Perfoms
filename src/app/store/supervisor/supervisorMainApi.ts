@@ -18,6 +18,7 @@ import {
   AddAction,
   AddRecommendation,
   AddTeamCalendar,
+  Coaches,
   CoachRequests,
   kpi,
   Kpis,
@@ -25,6 +26,7 @@ import {
   SuperVisorPlayers,
   Team,
   TeamAttendance,
+  TeamCoach,
 } from "../types/supervisor-types";
 import { Event } from "../types/events-types";
 
@@ -48,6 +50,7 @@ export const supervisorApi = createApi({
         url: `teams/${team_id}/coaches/`,
         params,
       }),
+      providesTags: ["supervisor"],
     }),
 
     superTeamEvents: query<TeamEvents, { team_id: string; page?: number }>({
@@ -135,6 +138,11 @@ export const supervisorApi = createApi({
       providesTags: ["supervisor"],
     }),
 
+    superAllCoaches: query<Coaches, { page?: number }>({
+      query: (params) => ({ url: "coaches/", params }),
+      providesTags: ["supervisor"],
+    }),
+
     superTeamAttendance: query<
       TeamAttendance,
       { team_id: number; page?: number }
@@ -178,6 +186,24 @@ export const supervisorApi = createApi({
       }),
       invalidatesTags: ["supervisor"],
     }),
+
+    superRemoveTeamCoach: mutation<TeamCoach, {}>({
+      query: ({ ...body }) => ({
+        url: `remove-team-coach/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["supervisor"],
+    }),
+
+    superAddTeamCoaches: mutation<TeamCoach, {}>({
+      query: ({ ...body }) => ({
+        url: `add-team-coach/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["supervisor"],
+    }),
   }),
 });
 
@@ -203,4 +229,7 @@ export const {
   useSuperPlayersQuery,
   useSuperTeamAttendanceQuery,
   useSuperAddTeamCalendarMutation,
+  useSuperRemoveTeamCoachMutation,
+  useSuperAddTeamCoachesMutation,
+  useSuperAllCoachesQuery,
 } = supervisorApi;

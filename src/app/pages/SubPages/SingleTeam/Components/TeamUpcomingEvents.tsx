@@ -17,7 +17,7 @@ const TeamUpcomingEvents = ({ teamId }: Props) => {
   return (
     <div>
       <h2>Team Events</h2>
-      <div className="flex flex-col mt-4 gap-2">
+      <div className="flex flex-col mt-4 gap-2 h-72 overflow-scroll">
         {events &&
           events.results.map((event) => (
             <div className="flex justify-between p-1 rounded-lg hover:bg-pagesBg">
