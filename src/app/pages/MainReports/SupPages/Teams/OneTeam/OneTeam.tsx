@@ -129,7 +129,7 @@ const items = [
   { title: "Categories", href: "/main-reports" },
   { title: "Sports", href: "/main-reports/sports" },
   { title: "Teams", href: "/main-reports/sports/teams" },
-  { title: "OneTeam Name", href: "" },
+  { title: "Team 17th", href: "" },
 ].map((item, index) => (
   <Link to={item.href} key={index}>
     {item.title}

@@ -247,23 +247,30 @@ const membersAttendance = [
 ];
 
 const OverAll = ({ reportType }: Props) => {
+  const { id } = useParams();
+
   return (
     <div className="reports items-stretch justify-center xs:justify-start flex flex-wrap gap-4 my-6">
       {/* <TeamInfoCard /> */}
 
       <div className="teamInfoCard bg-white h-full flex-col gap-4 rounded-xl p-4 flex w-64">
-        <h2>Ahmed’s info.</h2>
+        <h2> {id === "3" ? "Yahia's info." : "Habeba Wael"} </h2>
         <div className="flex flex-col gap-6">
           <div className="flex justify-between gap-6">
             <Avatar
               src={
-                "https://i.pinimg.com/originals/ba/16/ff/ba16ff0dd467e3a681bcd0c6a4213db8.jpg"
+                id === "3"
+                  ? "https://djangoperforms.blob.core.windows.net/media/icons/bebca1d0d7e348f1b8b2ab1542cd1dc4.jpeg"
+                  : "https://djangoperforms.blob.core.windows.net/media/icons/9c16812fc69448ecbe1625bcd9eb9622.jpeg"
               }
               className="h-full"
               size="xl"
             />
             <div className="flex flex-col ">
-              <Info label="name" value="Ahmed Ali" />
+              <Info
+                label="name"
+                value={id === "3" ? "Yahia Hassan" : "Habeba Wael"}
+              />
               <Info label="Age" value="15/12/2016 (6)" />
             </div>
           </div>
@@ -273,7 +280,7 @@ const OverAll = ({ reportType }: Props) => {
           </div>
           <div className="flex  gap-6 justify-between">
             <Info label="Sport" value="Taekwondo" />
-            <Info label="Parent" value="Ali Mohammed" />
+            <Info label="Parent" value="Wael Emerah" />
           </div>
         </div>
       </div>

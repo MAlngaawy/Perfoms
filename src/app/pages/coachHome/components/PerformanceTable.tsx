@@ -219,7 +219,7 @@ const PerformanceTable = (props: Props) => {
                   {teamPerformanceMetric?.results.map((oneKpi) => (
                     <>
                       <tr>
-                        <td className="border-0 font-semibold text-left px-4 text-sm sticky left-0 bg-white z-10 text-perfGray1">
+                        <td className="border-0 font-bold text-left px-4 text-sm sticky left-0 bg-white z-10 text-perfGray1">
                           {oneKpi.name}
                         </td>
                       </tr>
@@ -227,7 +227,7 @@ const PerformanceTable = (props: Props) => {
                         return (
                           <tr className="border-0" key={metric.id}>
                             <td className=" text-xs sm:text-sm sticky left-0  bg-white z-10 font-medium text-perfGray1">
-                              <div className="w-20 xs:w-40 text-center">
+                              <div className="w-20 xs:w-40 text-left pl-6">
                                 {metric.name}
                               </div>
                             </td>
@@ -244,8 +244,8 @@ const PerformanceTable = (props: Props) => {
                                 <td key={metric.id}>
                                   <div
                                     className={classNames(
-                                      "flex gap-2 justify-center items-center mx-4",
-                                      { "opacity-40": theScore > 0 }
+                                      "flex gap-2 justify-center items-center mx-4"
+                                      // { "opacity-40": theScore > 0 }
                                     )}
                                   >
                                     {[1, 2, 3, 4, 5].map((number) => (
@@ -273,7 +273,7 @@ const PerformanceTable = (props: Props) => {
                                             "bg-scoreYallow text-white":
                                               theScore === 3 &&
                                               theScore === number,
-                                            "bg-scoreGray": theScore !== number,
+                                            "bg-slate-100": theScore !== number,
                                           }
                                         )}
                                       >

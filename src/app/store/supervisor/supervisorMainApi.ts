@@ -22,6 +22,7 @@ import {
   Team,
   TeamAttendance,
   TeamCoach,
+  TeamPlayer,
 } from "../types/supervisor-types";
 import { Event } from "../types/events-types";
 
@@ -61,6 +62,7 @@ export const supervisorApi = createApi({
         url: `${team_id}/players/`,
         params,
       }),
+      providesTags: ["supervisor"],
     }),
 
     superPlayers: query<SuperVisorPlayers, { page?: number }>({
@@ -68,6 +70,7 @@ export const supervisorApi = createApi({
         url: `players/`,
         params,
       }),
+      providesTags: ["supervisor"],
     }),
 
     superTeamInfo: query<Team, { team_id: string; page?: number }>({
@@ -228,6 +231,24 @@ export const supervisorApi = createApi({
       }),
       invalidatesTags: ["supervisor"],
     }),
+
+    superAddTeamPlayer: mutation<TeamPlayer, {}>({
+      query: ({ ...body }) => ({
+        url: `add-team-player/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["supervisor"],
+    }),
+
+    superRemoveTeamPlayer: mutation<TeamPlayer, {}>({
+      query: ({ ...body }) => ({
+        url: `remove-team-player`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["supervisor"],
+    }),
   }),
 });
 
@@ -259,4 +280,6 @@ export const {
   useSuperAddEventMutation,
   useSuperDeleteEventMutation,
   useSuperEditEventMutation,
+  useSuperAddTeamPlayerMutation,
+  useSuperRemoveTeamPlayerMutation,
 } = supervisorApi;

@@ -42,7 +42,7 @@ module.exports = {
         scoreGreen: "#00E096",
         scoreRed: "#EB5757",
         scoreYallow: "#F2C94C",
-        scoreGray: "#F7F7F7",
+        scoreGray: "#00E096",
       },
       screens: {
         xs: "576px",
