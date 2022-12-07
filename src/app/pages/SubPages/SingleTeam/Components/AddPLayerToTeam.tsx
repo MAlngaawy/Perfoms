@@ -9,7 +9,7 @@ import {
 import { useParams } from "react-router-dom";
 import { showNotification } from "@mantine/notifications";
 
-// type Props = { teamPlayers: any[] };
+type Props = {};
 
 const AddPlayer = async (props: Props) => {
   const [opened, setOpened] = useState(false);
@@ -30,10 +30,10 @@ const AddPlayer = async (props: Props) => {
       };
     });
 
-    console.log("test", test);
-    console.log("teamPlayers", teamPlayers);
+    // console.log("test", test);
+    // console.log("teamPlayers", teamPlayers);
 
-    setPlayersData(test);
+    // setPlayersData(test);
 
     // for (let player of test || []) {
     //   for (let teamPlayer of teamPlayers) {
@@ -44,7 +44,7 @@ const AddPlayer = async (props: Props) => {
     // }
 
     // console.log(lol2);
-  }, [players, teamPlayers, lol2]);
+  }, [players, lol2]);
 
   const {
     register,
