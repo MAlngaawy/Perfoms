@@ -92,6 +92,16 @@ const navigationConfig: NavigationConfigTypes[] = [
     url: "requests",
     auth: [...authRoles.Admin, ...authRoles.Supervisor],
   },
+
+  {
+    id: "main-reports",
+    title: "Reports",
+    translate: "REPORTS",
+    type: "item",
+    icon: "NewspaperIcon:outline",
+    url: "main-reports",
+    auth: [...authRoles.Admin, ...authRoles.Supervisor],
+  },
 ];
 
 export default navigationConfig;

@@ -143,7 +143,7 @@ const TimeFilter = (props: Props) => {
               className="w-4 h-4 text-black"
             />
             <span className="flex items-center gap-1">
-              {textValue}{" "}
+              <span className="text-xs xs:text-base">{textValue} </span>
               <AppIcons className="w-3" icon="ChevronDownIcon:outline" />{" "}
             </span>
           </button>

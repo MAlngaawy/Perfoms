@@ -22,6 +22,7 @@ import {
   kpi,
   Kpis,
   Metrics,
+  SuperVisorPlayers,
   Team,
   TeamAttendance,
 } from "../types/supervisor-types";
@@ -59,6 +60,13 @@ export const supervisorApi = createApi({
     superTeamPlaers: query<TeamPlayers, { team_id: string; page?: number }>({
       query: ({ team_id, ...params }) => ({
         url: `${team_id}/players/`,
+        params,
+      }),
+    }),
+
+    superPlayers: query<SuperVisorPlayers, { page?: number }>({
+      query: (params) => ({
+        url: `players/`,
         params,
       }),
     }),
@@ -132,7 +140,7 @@ export const supervisorApi = createApi({
       { team_id: number; page?: number }
     >({
       query: ({ team_id, ...params }) => ({
-        url: `teams/${team_id}/attendance`,
+        url: `teams/${team_id}/attendance/`,
         params,
       }),
       providesTags: ["calendar"],
@@ -192,6 +200,7 @@ export const {
   useSuperAcceptCoachRequestMutation,
   useSuperDeclineCoachRequestMutation,
   useSuperClubQuery,
+  useSuperPlayersQuery,
   useSuperTeamAttendanceQuery,
   useSuperAddTeamCalendarMutation,
 } = supervisorApi;

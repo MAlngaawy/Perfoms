@@ -32,6 +32,13 @@ import RequestConfig from "../pages/requests/RequestConfig";
 import SupervisorConfig from "../pages/SuperVisor/SuperHomeConfig";
 import MediaTeamsConfig from "../pages/media/MediaTeams/MediaTeamsConfig";
 import OTPConfig from "../pages/OTP/OTPConfig";
+import MainReportsConfig from "../pages/MainReports/MainReportsConfig";
+import SearchPlayersPageConfig from "../pages/MainReports/SupPages/Players/SearchPlayersPageConfig";
+import SportsReportsConfig from "../pages/MainReports/SupPages/Sports/SportsReportsConfig";
+import PlayerPageConfig from "../pages/MainReports/SupPages/Players/Player/PlayerConfig";
+import TeamsReportsConfig from "../pages/MainReports/SupPages/Teams/TeamsReportsConfig";
+import OneTeamPageConfig from "../pages/MainReports/SupPages/Teams/OneTeam/OneTeamConfig";
+import TeamMembersKpiConfig from "../pages/MainReports/SupPages/Teams/OneTeam/TeamMembersKpi/TeamMemberKpiConfig";
 
 const routeConfigs: PagesRouteConfig[] = [
   SignInConfig,
@@ -64,6 +71,13 @@ const routeConfigs: PagesRouteConfig[] = [
   SupervisorConfig,
   MediaTeamsConfig,
   OTPConfig,
+  MainReportsConfig,
+  SearchPlayersPageConfig,
+  SportsReportsConfig,
+  PlayerPageConfig,
+  TeamsReportsConfig,
+  OneTeamPageConfig,
+  TeamMembersKpiConfig,
 ];
 
 const routes: AppRouteObject[] = [
