@@ -140,7 +140,7 @@ export const supervisorApi = createApi({
       { team_id: number; page?: number }
     >({
       query: ({ team_id, ...params }) => ({
-        url: `teams/${team_id}/attendance`,
+        url: `teams/${team_id}/attendance/`,
         params,
       }),
       providesTags: ["calendar"],

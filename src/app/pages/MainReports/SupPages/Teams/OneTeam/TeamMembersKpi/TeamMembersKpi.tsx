@@ -1,19 +1,16 @@
-import { Avatar, Breadcrumbs, Menu } from "@mantine/core";
+import { Breadcrumbs, Menu } from "@mantine/core";
 import React, { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import ReportsChartCard from "~/@main/components/MainReports/ReportsChartCard";
 import AppIcons from "~/@main/core/AppIcons";
-// import TeamInfoCard from "../components/TeamInfoCard";
+import TeamInfoCard from "../components/TeamInfoCard";
 import TimeFilter from "~/@main/components/TimeFilter";
-import Info from "~/@main/components/Info";
 
-type Props = {
-  reportType: string;
-};
+type Props = {};
 
-const kpis = [
+const membersKpi = [
   {
-    name: "Counter KPI",
+    name: "Punshing Ahmed Salah",
     icon: "ascascasc",
     id: 4,
     data: [
@@ -32,7 +29,7 @@ const kpis = [
     ],
   },
   {
-    name: "Mental KPI",
+    name: "Punshing Mohammed Ali",
     icon: "ascascasc",
     id: 5,
     data: [
@@ -51,7 +48,7 @@ const kpis = [
     ],
   },
   {
-    name: "Blocks KPI",
+    name: "Punshing Laila Ali",
     icon: "ascascasc",
     id: 6,
     data: [
@@ -70,7 +67,7 @@ const kpis = [
     ],
   },
   {
-    name: "Attacking KPIS",
+    name: "Punshing Mohye Ahmed",
     icon: "ascascasc",
     id: 1,
     data: [
@@ -90,7 +87,7 @@ const kpis = [
   },
 
   {
-    name: "Punching KPIS",
+    name: "Punshing Loay Morad",
     icon: "ascascasc",
     id: 2,
     data: [
@@ -110,7 +107,7 @@ const kpis = [
   },
 
   {
-    name: "Overall KPIS",
+    name: "Punshing Fares Medhat",
     icon: "ascascasc",
     id: 3,
     data: [
@@ -129,9 +126,10 @@ const kpis = [
     ],
   },
 ];
+
 const membersAttendance = [
   {
-    name: "Jan",
+    name: "Attendance Ahmed Salah",
     icon: "ascascasc",
     id: 4,
     data: [
@@ -150,7 +148,7 @@ const membersAttendance = [
     ],
   },
   {
-    name: "Feb",
+    name: "Attendance Ahmed Salah",
     icon: "ascascasc",
     id: 4,
     data: [
@@ -169,7 +167,7 @@ const membersAttendance = [
     ],
   },
   {
-    name: "Mar",
+    name: "Attendance Ahmed Salah",
     icon: "ascascasc",
     id: 4,
     data: [
@@ -188,7 +186,7 @@ const membersAttendance = [
     ],
   },
   {
-    name: "April",
+    name: "Attendance Ahmed Salah",
     icon: "ascascasc",
     id: 4,
     data: [
@@ -207,7 +205,7 @@ const membersAttendance = [
     ],
   },
   {
-    name: "May",
+    name: "Attendance Ahmed Salah",
     icon: "ascascasc",
     id: 4,
     data: [
@@ -226,7 +224,7 @@ const membersAttendance = [
     ],
   },
   {
-    name: "Jun",
+    name: "Attendance Ahmed Salah",
     icon: "ascascasc",
     id: 4,
     data: [
@@ -246,72 +244,97 @@ const membersAttendance = [
   },
 ];
 
-const OverAll = ({ reportType }: Props) => {
-  return (
-    <div className="reports items-stretch justify-center xs:justify-start flex flex-wrap gap-4 my-6">
-      {/* <TeamInfoCard /> */}
+const TeamMembersKpi = (props: Props) => {
+  const [reportType, setReportType] =
+    useState<"Performances" | "Attendances">("Performances");
+  const { id } = useParams();
 
-      <div className="teamInfoCard bg-white h-full flex-col gap-4 rounded-xl p-4 flex w-64">
-        <h2>Ahmed’s info.</h2>
-        <div className="flex flex-col gap-6">
-          <div className="flex justify-between gap-6">
-            <Avatar
-              src={
-                "https://i.pinimg.com/originals/ba/16/ff/ba16ff0dd467e3a681bcd0c6a4213db8.jpg"
-              }
-              className="h-full"
-              size="xl"
-            />
-            <div className="flex flex-col ">
-              <Info label="name" value="Ahmed Ali" />
-              <Info label="Age" value="15/12/2016 (6)" />
-            </div>
-          </div>
-          <div className="flex  gap-6 justify-between">
-            <Info label="Weight" value="50" />
-            <Info label="Height" value="150" />
-          </div>
-          <div className="flex  gap-6 justify-between">
-            <Info label="Sport" value="Taekwondo" />
-            <Info label="Parent" value="Ali Mohammed" />
-          </div>
-        </div>
+  const items = [
+    { title: "Categories", href: "/main-reports" },
+    { title: "Sports", href: "/main-reports/sports" },
+    { title: "Teams", href: "/main-reports/sports/teams" },
+    { title: "Team 17th", href: `/main-reports/sports/teams/${id}` },
+    {
+      title: reportType === "Performances" ? "Punshing" : "Attendance",
+      href: ``,
+    },
+  ].map((item, index) => (
+    <Link to={item.href} key={index}>
+      {item.title}
+    </Link>
+  ));
+
+  const navigate = useNavigate();
+
+  return (
+    <div className="container w-11/12 mx-auto">
+      <div className="my-4">
+        <Breadcrumbs className="text-perfGray3 flex-wrap gap-y-2" separator="→">
+          {items}
+        </Breadcrumbs>
       </div>
 
-      {reportType === "Performances" ? (
-        <>
-          {kpis.map((kpi) => {
-            return (
-              <div>
-                <ReportsChartCard
-                  // onClickFun={() => navigate(`kpi/${kpi.id}`)}
-                  clickable={false}
-                  name={kpi.name}
-                  data={kpi.data}
-                />
-              </div>
-            );
-          })}
-        </>
-      ) : (
-        <>
-          {membersAttendance.map((attend) => {
-            return (
-              <div>
-                <ReportsChartCard
-                  // onClickFun={() => navigate(`kpi/${attend.id}`)}
-                  name={attend.name}
-                  data={attend.data}
-                  clickable={false}
-                  chartColors={["#27AE60", "#EB5757", "#A3A3A3"]}
-                />
-              </div>
-            );
-          })}
-        </>
-      )}
+      <div className="flex gap-4 justify-end">
+        <Menu shadow="md" width={200}>
+          <Menu.Target>
+            <button className="flex gap-2 text-xs sm:text-sm justify-center items-center text-white bg-perfBlue py-2 px-2 xs:px-4 rounded-3xl">
+              <span>{reportType}</span>
+              <AppIcons
+                className="w-3 h-3"
+                icon="ChevronDownIcon:outline"
+              />{" "}
+            </button>
+          </Menu.Target>
+
+          <Menu.Dropdown>
+            <Menu.Item onClick={() => setReportType("Performances")}>
+              Performances
+            </Menu.Item>
+            <Menu.Item onClick={() => setReportType("Attendances")}>
+              Attendances
+            </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
+        <TimeFilter />
+      </div>
+
+      <div className="reports items-stretch justify-center xs:justify-start flex flex-wrap gap-4 my-6">
+        <TeamInfoCard />
+        {reportType === "Performances" ? (
+          <>
+            {membersKpi.map((kpi) => {
+              return (
+                <div>
+                  <ReportsChartCard
+                    // onClickFun={() => navigate(`kpi/${kpi.id}`)}
+                    clickable={false}
+                    name={kpi.name}
+                    data={kpi.data}
+                  />
+                </div>
+              );
+            })}
+          </>
+        ) : (
+          <>
+            {membersAttendance.map((attend) => {
+              return (
+                <div>
+                  <ReportsChartCard
+                    // onClickFun={() => navigate(`kpi/${attend.id}`)}
+                    name={attend.name}
+                    data={attend.data}
+                    clickable={false}
+                    chartColors={["#27AE60", "#EB5757", "#A3A3A3"]}
+                  />
+                </div>
+              );
+            })}
+          </>
+        )}
+      </div>
     </div>
   );
 };
 
-export default OverAll;
+export default TeamMembersKpi;

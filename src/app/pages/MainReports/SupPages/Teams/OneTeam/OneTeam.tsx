@@ -125,18 +125,18 @@ const kpis = [
   },
 ];
 
-const OneTeam = (props: Props) => {
-  const items = [
-    { title: "Categories", href: "/main-reports" },
-    { title: "Sports", href: "/main-reports/sports" },
-    { title: "Teams", href: "/main-reports/sports/teams" },
-    { title: "OneTeam Name", href: "" },
-  ].map((item, index) => (
-    <Link to={item.href} key={index}>
-      {item.title}
-    </Link>
-  ));
+const items = [
+  { title: "Categories", href: "/main-reports" },
+  { title: "Sports", href: "/main-reports/sports" },
+  { title: "Teams", href: "/main-reports/sports/teams" },
+  { title: "OneTeam Name", href: "" },
+].map((item, index) => (
+  <Link to={item.href} key={index}>
+    {item.title}
+  </Link>
+));
 
+const OneTeam = (props: Props) => {
   const navigate = useNavigate();
 
   return (
@@ -152,7 +152,7 @@ const OneTeam = (props: Props) => {
           return (
             <div>
               <ReportsChartCard
-                onClickFun={() => navigate(`kpis/${kpi.id}`)}
+                onClickFun={() => navigate(`kpi/${kpi.id}`)}
                 name={kpi.name}
                 data={kpi.data}
               />

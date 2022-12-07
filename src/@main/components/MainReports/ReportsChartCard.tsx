@@ -3,6 +3,7 @@ import React, { PureComponent } from "react";
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from "recharts";
 import { useNavigate } from "react-router-dom";
 import { useSuperTeamsQuery } from "~/app/store/supervisor/supervisorMainApi";
+import classNames from "classnames";
 
 type Props = {
   name: string;
@@ -12,7 +13,8 @@ type Props = {
     value: number;
   }[];
   chartColors?: string[];
-  onClickFun: any;
+  onClickFun?: any;
+  clickable?: boolean;
 };
 
 const COLORS = ["#27AE60", "#F2994A", "#EB5757"];
@@ -23,11 +25,18 @@ const ReportsChartCard = ({
   data,
   chartColors = COLORS,
   onClickFun,
+  clickable = true,
 }: Props) => {
   return (
     <div
       onClick={() => onClickFun()}
-      className="bg-white transition-all transform hover:scale-105 hover:shadow-sm  cursor-pointer flex-col gap-3 rounded-xl p-4 flex h-fit w-60"
+      className={classNames(
+        "bg-white  flex-col gap-3 rounded-xl p-4 flex h-fit w-60",
+        {
+          "transition-all transform hover:scale-105 hover:shadow-sm  cursor-pointer":
+            clickable,
+        }
+      )}
     >
       <h2 className="w-full text-left">{name}</h2>
       <div className="flex relative w-full items-center justify-center">
@@ -45,7 +54,14 @@ const ReportsChartCard = ({
             ></span>
             <h3> {data[0].name} </h3>
           </div>
-          <h2>{data[0].value}%</h2>
+          <h2>
+            {Math.floor(
+              (data[0].value /
+                (data[0].value + data[1].value + data[2].value)) *
+                100
+            )}
+            %
+          </h2>
         </div>
 
         <div className="flex justify-between w-full text-sm">
@@ -58,7 +74,14 @@ const ReportsChartCard = ({
             ></span>
             <h3> {data[1].name} </h3>
           </div>
-          <h2>{data[1].value}%</h2>
+          <h2>
+            {Math.floor(
+              (data[1].value /
+                (data[0].value + data[1].value + data[2].value)) *
+                100
+            )}
+            %
+          </h2>
         </div>
 
         <div className="flex justify-between w-full text-sm">
@@ -71,7 +94,14 @@ const ReportsChartCard = ({
             ></span>
             <h3> {data[2].name} </h3>
           </div>
-          <h2>{data[2].value}%</h2>
+          <h2>
+            {Math.floor(
+              (data[2].value /
+                (data[0].value + data[1].value + data[2].value)) *
+                100
+            )}
+            %
+          </h2>
         </div>
       </div>
     </div>
