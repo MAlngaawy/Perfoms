@@ -31,9 +31,9 @@ const ReportsChartCard = ({
     <div
       onClick={() => onClickFun()}
       className={classNames(
-        "bg-white  flex-col gap-3 rounded-xl p-4 flex h-fit w-60",
+        "bg-white  flex-col gap-3 rounded-xl shadow-md p-4 flex h-fit w-60",
         {
-          "transition-all transform hover:scale-105 hover:shadow-sm  cursor-pointer":
+          "transition-all transform hover:scale-105 hover:shadow-xl  cursor-pointer":
             clickable,
         }
       )}
