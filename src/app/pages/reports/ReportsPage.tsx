@@ -20,97 +20,20 @@ import PerformanceSummaryCard from "~/@main/components/PerformanceSummaryCard";
 import AttendancesSmallCards from "./components/AttendancesSmallCards";
 import { useReactToPrint } from "react-to-print";
 // import { ComponentToPrint } from "./components/ComponentToPrint";
-// ===== dummy data =====
-
-const strengths = [
-  {
-    name: "Fitness Flexibility",
-    score: "4",
-  },
-  {
-    name: "Fitness Balance",
-    score: "4",
-  },
-  {
-    name: "Fitness Endurance",
-    score: "5",
-  },
-  {
-    name: "Pushing Left Leg",
-    score: "4",
-  },
-  {
-    name: "Left leg",
-    score: "5",
-  },
-  {
-    name: "Pushing Right Leg",
-    score: "5",
-  },
-];
-
-const moderate = [
-  {
-    name: "Right leg",
-    score: "3",
-  },
-  // {
-  //   name: "Technique",
-  //   score: "3",
-  // },
-  // {
-  //   name: "Blocks Timing",
-  //   score: "3",
-  // },
-  // {
-  //   name: "Power",
-  //   score: "3",
-  // },
-  {
-    name: "Blocks Technique",
-    score: "3",
-  },
-  {
-    name: "Punching Timing",
-    score: "3",
-  },
-];
-
-const weaknesses = [
-  {
-    name: "Punching Power",
-    score: "1",
-  },
-  {
-    name: "Punching Technique",
-    score: "2",
-  },
-  {
-    name: "Behavior",
-    score: "1",
-  },
-  {
-    name: "Stances Position In Court",
-    score: "2",
-  },
-  {
-    name: "360",
-    score: "2",
-  },
-];
+import PrintComp from "~/@main/PrintComp";
 
 // ==============
 const ReportPage = () => {
   const player = useSelector(selectedPlayerFn);
   const widowSize = useWindowSize();
-  const perfCompRef = useRef<HTMLInputElement>(null);
-  const attCompRef = useRef<HTMLInputElement>(null);
-  const handlePrint = useReactToPrint({
-    content: (): any => perfCompRef.current,
-  });
-  const handlePrint2 = useReactToPrint({
-    content: (): any => attCompRef.current,
-  });
+  // const perfCompRef = useRef<HTMLInputElement>(null);
+  // const attCompRef = useRef<HTMLInputElement>(null);
+  // const handlePrint = useReactToPrint({
+  //   content: (): any => perfCompRef.current,
+  // });
+  // const handlePrint2 = useReactToPrint({
+  //   content: (): any => attCompRef.current,
+  // });
 
   const [reportType, setReportType] =
     useState<"Performances" | "Attendances">("Performances");
@@ -149,19 +72,8 @@ const ReportPage = () => {
             </div>
           </div>
           {reportType === "Performances" ? (
-            <div>
-              {/* <ComponentToPrint ref={componentRef} /> */}
-              <div
-                onClick={handlePrint}
-                className="z-50 flex flex-col items-center justify-center  fixed right-20 bottom-20 opacity-70 hover:opacity-100 w-20 h-20 rounded-full cursor-pointer bg-perfBlue text-white"
-              >
-                <AppIcons
-                  className="w-8 h-8 text-white"
-                  icon="DocumentArrowDownIcon:outline"
-                />
-                <span>PDF</span>
-              </div>
-              <div className="bg-pagesBg" ref={perfCompRef}>
+            <PrintComp>
+              <div>
                 <Grid columns={12} gutter={"sm"}>
                   <Grid.Col sm={3} md={2.5} span={12}>
                     <HomePlayerInfoCard />
@@ -176,7 +88,6 @@ const ReportPage = () => {
                       color="text-[#27AE60]"
                       bg="bg-fadedGreen"
                       powerType="Strengths"
-                      scores={strengths}
                       player_id={player?.id}
                     />
                   </Grid.Col>
@@ -185,7 +96,6 @@ const ReportPage = () => {
                       color="text-[#F2C94C]"
                       bg="bg-fadedYellow"
                       powerType="Moderate"
-                      scores={moderate}
                       player_id={player?.id}
                     />
                   </Grid.Col>
@@ -194,7 +104,6 @@ const ReportPage = () => {
                       color="text-[#EB5757]"
                       bg="bg-fadedRed"
                       powerType="Weaknesses"
-                      scores={weaknesses}
                       player_id={player?.id}
                     />
                   </Grid.Col>
@@ -208,21 +117,10 @@ const ReportPage = () => {
                   </Grid.Col>
                 </Grid>{" "}
               </div>
-            </div>
+            </PrintComp>
           ) : (
-            <div className="attendances">
-              <div className="bg-pagesBg" ref={attCompRef}>
-                {/* Left Columns ( User Info And Note ) */}
-                <div
-                  onClick={handlePrint2}
-                  className="z-50 flex flex-col items-center justify-center  fixed right-20 bottom-20 opacity-70 hover:opacity-100 w-20 h-20 rounded-full cursor-pointer bg-perfBlue text-white"
-                >
-                  <AppIcons
-                    className="w-8 h-8 text-white"
-                    icon="DocumentArrowDownIcon:outline"
-                  />
-                  <span>PDF</span>
-                </div>
+            <PrintComp>
+              <div className="attendances">
                 <Grid gutter={"sm"}>
                   <Grid.Col span={12} md={2.5}>
                     <div className="flex flex-col xs:flex-row md:flex-col gap-2 h-full">
@@ -268,7 +166,7 @@ const ReportPage = () => {
                   </Grid.Col>
                 </Grid>
               </div>
-            </div>
+            </PrintComp>
           )}
         </div>
       ) : (

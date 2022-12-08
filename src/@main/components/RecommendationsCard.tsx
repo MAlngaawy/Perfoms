@@ -11,11 +11,11 @@ const RecommendationsCard = ({ player_id }: Props) => {
   );
 
   return (
-    <div className="flex flex-col p-6 bg-white gap-1 rounded-3xl h-80 overflow-scroll">
+    <div className="flex flex-col p-6 bg-white gap-1 rounded-3xl ">
       <h2 className="text-perfGray1 text-base font-semibold ">
         Recommendations
       </h2>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 h-80 overflow-scroll">
         {recommendations?.results.map((recommendation) => (
           <div key={recommendation.id}>
             <p>{recommendation.metric.name}</p>

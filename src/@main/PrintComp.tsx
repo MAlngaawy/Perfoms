@@ -10,10 +10,10 @@ const PrintComp = (props: Props) => {
   const compRef = useRef<HTMLInputElement>(null);
   const handlePrint = useReactToPrint({
     content: (): any => compRef.current,
+    pageStyle: ``,
   });
-
   return (
-    <div className="bg-pagesBg">
+    <div className="">
       <div
         onClick={handlePrint}
         className="z-50 flex flex-col items-center justify-center  fixed right-20 bottom-20 opacity-70 hover:opacity-100 w-20 h-20 rounded-full cursor-pointer bg-perfBlue text-white"
@@ -24,7 +24,9 @@ const PrintComp = (props: Props) => {
         />
         <span>PDF</span>
       </div>
-      <div ref={compRef}>{props.children}</div>
+      <div className="bg-pagesBg" ref={compRef}>
+        {props.children}
+      </div>
     </div>
   );
 };

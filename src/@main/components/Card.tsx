@@ -28,7 +28,7 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
       <div className="power_type px-5 py-2 flex flex-row justify-between items-center">
         <span className={` text-lg ${color}`}>{powerType}</span>
         <p className="text-sm text-perfGray3">
-          Score is out of {scores?.length}
+          Score is out of {data?.results?.length}
         </p>
       </div>
       <div
