@@ -18,7 +18,7 @@ import SettingsConfig from "~/app/pages/settings/SettingsConfig";
 import MediaEventConfig from "../pages/media/MediaEvent/MediaEventConfig";
 import CoachHomeConfig from "../pages/coachHome/CoachHomeConfig";
 import PlayersConfig from "../pages/players/PlayersConfig";
-import PlayerCardConfig from "../pages/players/PlayerCard/PlayerCardConfig";
+import PlayerCardConfig from "../pages/players/player-details/PlayerDetailsConfig";
 import CertificatePageConfig from "../pages/Certificate/CertificateConfig";
 import CoachProfileConfig from "../pages/CoachProfile/CoachProfileConfig";
 import AdminPageConfig from "../pages/Admin/AdminPageConfig";

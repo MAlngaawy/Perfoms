@@ -14,6 +14,10 @@ import {
   useGetSuperParentInfoQuery,
   useGetSuperPlayerInfoQuery,
 } from "~/app/store/supervisor/supervisorMainApi";
+import CustomBreadCrumbs from "~/@main/components/BreadCrumbs";
+import { useUserQuery } from "~/app/store/user/userApi";
+import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
+import { useSelector } from "react-redux";
 
 // dummy data
 const playerSummary = [
@@ -72,6 +76,10 @@ const PlayerDetails = () => {
   const [playerData, setPlayerData] = useState<CoachPlayerInfo>();
   const [parentData, setParentData] = useState<PlayerParent>();
 
+  const { data: user } = useUserQuery(null);
+
+  const status = useLocation().state;
+
   const params = useParams();
   console.log(params);
 
@@ -104,7 +112,19 @@ const PlayerDetails = () => {
   }, [coachParent, coachPlayer, superParent, superPlayer]);
 
   return (
-    <div className="p-4">
+    <div className="p-4 pt-0">
+      <CustomBreadCrumbs
+        items={[
+          {
+            title: user?.user_type === "Supervisor" ? "Team" : "Players",
+            href:
+              user?.user_type === "Supervisor"
+                ? `/supervisor/teams/${status.teamId}`
+                : "/players",
+          },
+          { title: playerData?.name || "No name", href: "" },
+        ]}
+      />
       <Grid columns={12}>
         <Grid.Col md={6} span={12}>
           <PlayerInfoCard

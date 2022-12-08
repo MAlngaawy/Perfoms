@@ -1,7 +1,7 @@
 import { PagesRouteConfig } from "~/@main/types/Config-Types";
 import authRoles from "~/app/auth/authRoles";
-import PlayerDetails from "../player-details/PlayerDetails";
-import PlayerCard from "./PlayerCard";
+import PlayerDetails from "./PlayerDetails";
+import PlayerCard from "../PlayerCard/PlayerCard";
 
 const PlayerCardConfig: PagesRouteConfig = {
   settings: {
