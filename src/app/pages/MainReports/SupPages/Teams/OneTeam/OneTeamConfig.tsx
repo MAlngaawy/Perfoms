@@ -18,7 +18,7 @@ const OneTeamPageConfig: PagesRouteConfig = {
       },
     },
   },
-  auth: [...authRoles.Supervisor, ...authRoles.Admin],
+  auth: [...authRoles.Supervisor, ...authRoles.Admin, ...authRoles.Coach],
   routes: [
     {
       path: "main-reports/sports/teams/:id",

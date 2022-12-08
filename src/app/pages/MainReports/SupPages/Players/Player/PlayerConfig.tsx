@@ -18,7 +18,7 @@ const PlayerPageConfig: PagesRouteConfig = {
       },
     },
   },
-  auth: [...authRoles.Supervisor, ...authRoles.Admin],
+  auth: [...authRoles.Supervisor, ...authRoles.Admin, ...authRoles.Coach],
   routes: [
     {
       path: "/main-reports/search-players/player/:id",

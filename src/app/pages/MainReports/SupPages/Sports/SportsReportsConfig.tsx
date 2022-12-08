@@ -18,7 +18,7 @@ const SportsReportsConfig: PagesRouteConfig = {
       },
     },
   },
-  auth: [...authRoles.Supervisor, ...authRoles.Admin],
+  auth: [...authRoles.Supervisor, ...authRoles.Admin, ...authRoles.Coach],
   routes: [
     {
       path: "/main-reports/sports",

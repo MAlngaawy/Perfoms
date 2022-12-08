@@ -2,6 +2,7 @@ import React from "react";
 import ReportsCategoriesCard from "../../../@main/components/MainReports/ReportsCategoriesCard";
 import { Link } from "react-router-dom";
 import { Breadcrumbs } from "@mantine/core";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {};
 
@@ -12,6 +13,8 @@ const items = [{ title: "categories", href: "" }].map((item, index) => (
 ));
 
 const MainReports = (props: Props) => {
+  const { data: user } = useUserQuery(null);
+
   return (
     <div className="container w-11/12 mx-auto">
       <div className="my-4">
@@ -20,12 +23,14 @@ const MainReports = (props: Props) => {
         </Breadcrumbs>
       </div>
       <div className="my-6 flex flex-wrap gap-4  items-center">
-        <Link to={"search-players"}>
-          <ReportsCategoriesCard
-            image="/assets/images/players.png"
-            type="Players"
-          />
-        </Link>
+        {user?.user_type !== "Coach" && (
+          <Link to={"search-players"}>
+            <ReportsCategoriesCard
+              image="/assets/images/players.png"
+              type="Players"
+            />
+          </Link>
+        )}
         {/* <Link to={"coaches"}>
           <ReportsCategoriesCard
             image="/assets/images/coaches.png"
@@ -44,12 +49,14 @@ const MainReports = (props: Props) => {
             type="Teams"
           />
         </Link>
-        <Link to={"sports"}>
-          <ReportsCategoriesCard
-            image="/assets/images/sports.png"
-            type="Sports"
-          />
-        </Link>
+        {user?.user_type !== "Coach" && (
+          <Link to={"sports"}>
+            <ReportsCategoriesCard
+              image="/assets/images/sports.png"
+              type="Sports"
+            />
+          </Link>
+        )}
       </div>
     </div>
   );
