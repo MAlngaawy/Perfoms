@@ -32,6 +32,7 @@ import RequestConfig from "../pages/requests/RequestConfig";
 import SupervisorConfig from "../pages/SuperVisor/SuperHomeConfig";
 import MediaTeamsConfig from "../pages/media/MediaTeams/MediaTeamsConfig";
 import OTPConfig from "../pages/OTP/OTPConfig";
+import SingleNotificationConfig from "../pages/notifications/singleNotificatin/SingleNotificationConfig";
 import MainReportsConfig from "../pages/MainReports/MainReportsConfig";
 import SearchPlayersPageConfig from "../pages/MainReports/SupPages/Players/SearchPlayersPageConfig";
 import SportsReportsConfig from "../pages/MainReports/SupPages/Sports/SportsReportsConfig";
@@ -71,6 +72,7 @@ const routeConfigs: PagesRouteConfig[] = [
   SupervisorConfig,
   MediaTeamsConfig,
   OTPConfig,
+  SingleNotificationConfig,
   MainReportsConfig,
   SearchPlayersPageConfig,
   SportsReportsConfig,

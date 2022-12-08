@@ -2,6 +2,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 // export const BASE_URL = "http://20.151.65.27";
+// export const BASE_URL = "https://api.performs.app";
 
 export const BASE_URL = import.meta.env.VITE_API_URL;
 
