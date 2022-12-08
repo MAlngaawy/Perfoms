@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { Dropdown } from "~/@main/components/Dropdown";
 import PlayerCard from "./PlayerCard/PlayerCard";
 import { selectedPlayerTeamFn } from "../../store/parent/parentSlice";
 import { useSelector } from "react-redux";
@@ -34,7 +32,7 @@ const PlayersPage = () => {
       </div>
       <div className="players-page bg-white p-6 rounded-3xl m-5">
         <p className="pb-2">Players</p>
-        <div className="flex flex-col md:flex-row gap-5 flex-wrap">
+        <div className="flex gap-5 flex-wrap">
           {coahcTeamPlayers?.results.map((card) => {
             return <PlayerCard {...card} />;
           })}

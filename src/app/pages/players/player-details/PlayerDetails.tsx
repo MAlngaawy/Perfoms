@@ -65,6 +65,7 @@ const playerSummary = [
 
 const PlayerDetails = () => {
   const params = useParams();
+  console.log(params);
 
   const { data: player } = useGetPlayerInfoQuery(
     { player_id: params.id },
