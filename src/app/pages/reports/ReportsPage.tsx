@@ -177,6 +177,7 @@ const ReportPage = () => {
                       bg="bg-fadedGreen"
                       powerType="Strengths"
                       scores={strengths}
+                      player_id={player?.id}
                     />
                   </Grid.Col>
                   <Grid.Col sm={4} span={12}>
@@ -185,6 +186,7 @@ const ReportPage = () => {
                       bg="bg-fadedYellow"
                       powerType="Moderate"
                       scores={moderate}
+                      player_id={player?.id}
                     />
                   </Grid.Col>
                   <Grid.Col sm={4} span={12}>
@@ -193,6 +195,7 @@ const ReportPage = () => {
                       bg="bg-fadedRed"
                       powerType="Weaknesses"
                       scores={weaknesses}
+                      player_id={player?.id}
                     />
                   </Grid.Col>
                 </Grid>

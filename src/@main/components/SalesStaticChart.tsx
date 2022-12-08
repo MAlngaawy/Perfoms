@@ -112,7 +112,7 @@ const SaleStaticChart = () => {
             data={playerKpis?.player_kpi.map((i) => ({
               name: i.kpi,
               id: i.id,
-              progress: i.score_avg,
+              new: i.score_avg,
               old: i.old_score_avg,
             }))}
           >
@@ -128,7 +128,7 @@ const SaleStaticChart = () => {
                 maxWidth: 30,
               }}
             />
-            <YAxis dataKey="progress" />
+            <YAxis dataKey="new" />
             <Tooltip labelStyle={{ color: "black" }} />
             {/* <Legend /> */}
             <Bar dataKey="old" fill="#BDBDBD" barSize={10} radius={2}>
@@ -136,7 +136,7 @@ const SaleStaticChart = () => {
                 return <Cell key={kpi.id} fill="#BDBDBD" />;
               })}
             </Bar>
-            <Bar dataKey="progress" fill="#333" barSize={10} radius={2}>
+            <Bar dataKey="new" fill="#333" barSize={10} radius={2}>
               {playerKpis?.player_kpi.map((metric, index) => (
                 <Cell
                   key={index}
