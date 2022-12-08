@@ -280,7 +280,10 @@ const OverAll = ({ reportType }: Props) => {
           </div>
           <div className="flex  gap-6 justify-between">
             <Info label="Sport" value="Taekwondo" />
-            <Info label="Parent" value="Wael Emerah" />
+            <Info
+              label="Parent"
+              value={id === "3" ? "hasan kamal" : "Wael Emerah"}
+            />
           </div>
         </div>
       </div>

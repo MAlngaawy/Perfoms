@@ -255,7 +255,7 @@ const TeamMembersKpi = (props: Props) => {
     { title: "Teams", href: "/main-reports/sports/teams" },
     { title: "Team 17th", href: `/main-reports/sports/teams/${id}` },
     {
-      title: reportType === "Performances" ? "Punshing" : "Attendance",
+      title: reportType === "Performances" ? "Punching" : "Attendance",
       href: ``,
     },
   ].map((item, index) => (

@@ -11,7 +11,7 @@ import { showNotification } from "@mantine/notifications";
 
 type Props = {};
 
-const AddPlayer = async (props: Props) => {
+const AddPlayer = (props: Props) => {
   const [opened, setOpened] = useState(false);
   const [playersData, setPlayersData] = useState<any>([]);
   const { data: players } = useSuperPlayersQuery({});
@@ -30,21 +30,8 @@ const AddPlayer = async (props: Props) => {
       };
     });
 
-    // console.log("test", test);
-    // console.log("teamPlayers", teamPlayers);
-
-    // setPlayersData(test);
-
-    // for (let player of test || []) {
-    //   for (let teamPlayer of teamPlayers) {
-    //     if (teamPlayer.id === player.id) {
-    //       lol2.push(player);
-    //     }
-    //   }
-    // }
-
-    // console.log(lol2);
-  }, [players, lol2]);
+    setPlayersData(test);
+  }, [players]);
 
   const {
     register,

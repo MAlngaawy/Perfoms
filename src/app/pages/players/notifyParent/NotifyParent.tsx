@@ -37,19 +37,28 @@ const NotifyParent = ({ parentName, playerName }: any) => {
     };
     notifyParent(sendData)
       .then((res) => {
-        showNotification({
-          title: "Done",
-          //@ts-ignore
-          message: `your message has been sent`,
-          color: "green",
-        });
-        reset({ notification_type: "", title: "", message: "" });
+        if (isSuccess) {
+          showNotification({
+            title: "Done",
+            //@ts-ignore
+            message: `your message has been sent`,
+            color: "green",
+          });
+          reset({ notification_type: "", title: "", message: "" });
+        } else {
+          showNotification({
+            title: "Wrong",
+            //@ts-ignore
+            message: "Something went wrong",
+            color: "red",
+          });
+        }
       })
       .catch((err) => {
         showNotification({
           title: "Wrong",
           //@ts-ignore
-          message: { err },
+          message: "Something went wrong",
           color: "red",
         });
       });

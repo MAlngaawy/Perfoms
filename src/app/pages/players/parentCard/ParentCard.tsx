@@ -2,6 +2,7 @@ import React from "react";
 import Info from "~/@main/components/Info";
 import { useLocation, useNavigate } from "react-router-dom";
 import { PlayerData } from "~/app/store/types/user-types";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 const playerData: PlayerData = {
   name: "Ahmed Saleh Mostafa",

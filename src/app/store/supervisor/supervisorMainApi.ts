@@ -243,7 +243,7 @@ export const supervisorApi = createApi({
 
     superRemoveTeamPlayer: mutation<TeamPlayer, {}>({
       query: ({ ...body }) => ({
-        url: `remove-team-player`,
+        url: `remove-team-player/`,
         method: "POST",
         body,
       }),
