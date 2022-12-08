@@ -18,8 +18,6 @@ const ParentInfoCard = ({
   phone,
   supscription,
   job,
-  parentName,
-  playerName,
 }: any) => {
   const navigate = useNavigate();
   const { data: user } = useUserQuery(null);
@@ -36,12 +34,12 @@ const ParentInfoCard = ({
             alt="parent"
           />
         </div>
-        <div className="infos1 flex gap-6">
+        <div className="infos1 flex xs:flex-col gap-6">
           <Info label="Name" value={first_name + last_name} />
           <Info label="Phone" value={phone} />
         </div>
         <div className="infos2 flex flex-col gap-6">
-          <Info label="Subscription" value={supscription} />
+          <Info label="Subscription" value={supscription || "Golden"} />
           <Info label="Job" value={job} />
           {user?.user_type === "Coach" && (
             <button

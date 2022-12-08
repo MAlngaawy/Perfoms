@@ -25,6 +25,7 @@ import {
   TeamPlayer,
 } from "../types/supervisor-types";
 import { Event } from "../types/events-types";
+import { CoachPlayerInfo, PlayerParent } from "../types/coach-types";
 
 export const supervisorApi = createApi({
   reducerPath: "supervisorApi",
@@ -249,6 +250,26 @@ export const supervisorApi = createApi({
       }),
       invalidatesTags: ["supervisor"],
     }),
+
+    getSuperPlayerInfo: query<
+      CoachPlayerInfo,
+      { player_id: string | undefined; page?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `player-info/${player_id}/`,
+        params,
+      }),
+    }),
+
+    getSuperParentInfo: query<
+      PlayerParent,
+      { player_id: string | undefined; page?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `parent-info/${player_id}/`,
+        params,
+      }),
+    }),
   }),
 });
 
@@ -282,4 +303,6 @@ export const {
   useSuperEditEventMutation,
   useSuperAddTeamPlayerMutation,
   useSuperRemoveTeamPlayerMutation,
+  useGetSuperParentInfoQuery,
+  useGetSuperPlayerInfoQuery,
 } = supervisorApi;

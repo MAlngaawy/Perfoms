@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PlayerInfoCard from "../components/PlayerInfoCard";
 import PlayerNav from "../components/PlayerNav";
 import ParentInfoCard from "../components/ParentInfoCard";
@@ -9,6 +9,11 @@ import {
   useGetParentInfoQuery,
   useGetPlayerInfoQuery,
 } from "~/app/store/coach/coachApi";
+import { CoachPlayerInfo, PlayerParent } from "~/app/store/types/coach-types";
+import {
+  useGetSuperParentInfoQuery,
+  useGetSuperPlayerInfoQuery,
+} from "~/app/store/supervisor/supervisorMainApi";
 
 // dummy data
 const playerSummary = [
@@ -64,36 +69,58 @@ const playerSummary = [
 ];
 
 const PlayerDetails = () => {
+  const [playerData, setPlayerData] = useState<CoachPlayerInfo>();
+  const [parentData, setParentData] = useState<PlayerParent>();
+
   const params = useParams();
   console.log(params);
 
-  const { data: player } = useGetPlayerInfoQuery(
+  const { data: coachPlayer } = useGetPlayerInfoQuery(
     { player_id: params.id },
     { skip: !params.id }
   );
 
-  const { data: parent } = useGetParentInfoQuery(
+  const { data: coachParent } = useGetParentInfoQuery(
     { player_id: params.id },
     { skip: !params.id }
   );
+
+  const { data: superPlayer } = useGetSuperPlayerInfoQuery(
+    { player_id: params.id },
+    { skip: !params.id }
+  );
+
+  const { data: superParent } = useGetSuperParentInfoQuery(
+    { player_id: params.id },
+    { skip: !params.id }
+  );
+
+  useEffect(() => {
+    if (coachPlayer) setPlayerData(coachPlayer);
+    if (coachParent) setParentData(coachParent);
+    if (superPlayer) setPlayerData(superPlayer);
+    if (superParent) setParentData(superParent);
+    console.log("Parent", parentData);
+  }, [coachParent, coachPlayer, superParent, superPlayer]);
 
   return (
     <div className="p-4">
       <Grid columns={12}>
         <Grid.Col md={6} span={12}>
-          <PlayerInfoCard playerData={player} playerSummary={playerSummary} />
+          <PlayerInfoCard
+            playerData={playerData}
+            playerSummary={playerSummary}
+          />
         </Grid.Col>
         <Grid.Col md={6} span={12}>
           <ParentInfoCard
-            first_name={parent?.first_name}
-            last_name={parent?.last_name}
-            avatar={parent?.avatar}
-            phone={parent?.mobile}
-            supscription={parent?.subscription}
-            job={parent?.job}
-            id={parent?.id}
-            parentName={parent?.first_name}
-            playerName={player?.name}
+            first_name={parentData?.first_name}
+            last_name={parentData?.last_name}
+            avatar={parentData?.avatar}
+            phone={parentData?.mobile}
+            supscription={parentData?.subscription}
+            job={parentData?.job}
+            id={parentData?.id}
           />
         </Grid.Col>
 
