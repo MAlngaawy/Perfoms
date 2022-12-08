@@ -18,7 +18,7 @@ const NotifyParentConfig: PagesRouteConfig = {
       },
     },
   },
-  auth: authRoles.Coach,
+  auth: [...authRoles.Coach, ...authRoles.Supervisor],
   routes: [
     {
       path: "players/:player_id/parent/:parent_id/notify",

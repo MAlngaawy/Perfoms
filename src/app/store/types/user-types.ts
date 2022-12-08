@@ -69,6 +69,7 @@ export type CardProps = {
   playerSummary?: PerformanceCardProps[];
   bg?: string;
   color?: string;
+  player_id: number;
 };
 
 export type Scores = {

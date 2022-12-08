@@ -42,8 +42,8 @@ const SubscriptionCard = ({ plan, selectPlan }: SubscripionCardProps) => {
             MOST POPULAR
           </p>
         ) : null}
-        <h2 className="text-2xl font-bold">
-          USD{plan.price}{" "}
+        <h2 className="text-4xl font-bold">
+          ${plan.price}{" "}
           <span className="text-sm font-normal opacity-90">/year</span>
         </h2>
         <h3 className="text-2xl font-medium">{plan.title}</h3>

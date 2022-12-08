@@ -52,6 +52,8 @@ const AddTeamCardForm = (props: Props) => {
   // Submit Form Function
   const onSubmitFunction = (data: any) => {
     console.log({ ...data, icon: playerImage });
+
+    console.log({ ...data, icon: playerImage });
     setOpened(false);
     resetFields();
   };

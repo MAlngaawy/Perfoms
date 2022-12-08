@@ -2,6 +2,7 @@ import React from "react";
 import Info from "~/@main/components/Info";
 import { useLocation, useNavigate } from "react-router-dom";
 import { PlayerData } from "~/app/store/types/user-types";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 const playerData: PlayerData = {
   name: "Ahmed Saleh Mostafa",
@@ -86,37 +87,39 @@ const ParentCard = () => {
           <div className="playerName">
             <h2>Parent's info</h2>
           </div>
-          <div className="img my-2 self-center md:self-start">
-            <img
-              src={
-                playerData?.icon_url
-                  ? playerData?.icon_url
-                  : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-              }
-              className="w-40 h-32 md:h-48 rounded-lg object-cover"
-              alt="player_image"
-            />
+          <div className="flex flex-col">
+            <div className="img my-2 self-center md:self-start">
+              <img
+                src={
+                  playerData?.icon_url
+                    ? playerData?.icon_url
+                    : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                }
+                className="w-40 h-32 md:h-48 rounded-lg object-cover"
+                alt="player_image"
+              />
+            </div>
           </div>
-        </div>
-        <div className="flex flex-row md:w-76 gap-3 md:gap-10">
-          <div className=" flex flex-col gap-1">
-            <Info label="Name" value={parentDummyData.parentName} />
-            <Info label="Age" value={parentDummyData.dob} />
-            <Info label="Job" value={parentDummyData.job} />
-            <Info label="Players" value={parentDummyData.players} />
-          </div>
-          <div className=" flex flex-col gap-1">
-            <Info label="Subscription" value={`${playerData?.height} cm`} />
-            <Info label="Players" />
-            {parentDummyData.playersDetails.map((player) => {
-              return (
-                <SubPlayers
-                  img={player.icon_url}
-                  name={player.name}
-                  key={player.id}
-                />
-              );
-            })}
+          <div className="flex flex-row md:w-76 gap-3 md:gap-10">
+            <div className=" flex flex-col gap-1">
+              <Info label="Name" value={parentDummyData.parentName} />
+              <Info label="Age" value={parentDummyData.dob} />
+              <Info label="Job" value={parentDummyData.job} />
+              <Info label="Players" value={parentDummyData.players} />
+            </div>
+            <div className=" flex flex-col gap-1">
+              <Info label="Subscription" value={`${playerData?.height} cm`} />
+              <Info label="Players" />
+              {parentDummyData.playersDetails.map((player) => {
+                return (
+                  <SubPlayers
+                    img={player.icon_url}
+                    name={player.name}
+                    key={player.id}
+                  />
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>

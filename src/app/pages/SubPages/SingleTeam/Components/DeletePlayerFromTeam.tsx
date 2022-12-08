@@ -6,9 +6,10 @@ type Props = {
   name: string;
   id: number;
   type: string;
+  deleteFun: any;
 };
 
-const DeletePlayerFromTeam = ({ id, name, type }: Props) => {
+const DeletePlayerFromTeam = ({ id, name, type, deleteFun }: Props) => {
   const [opened, setOpened] = useState(false);
 
   return (
@@ -29,10 +30,7 @@ const DeletePlayerFromTeam = ({ id, name, type }: Props) => {
             </button>
             <button
               onClick={() => {
-                console.log({
-                  name: name,
-                  id: id,
-                });
+                deleteFun();
                 setOpened(false);
               }}
               className="bg-perfSecondary mx-auto w-fit text-white rounded-lg py-2 px-4"

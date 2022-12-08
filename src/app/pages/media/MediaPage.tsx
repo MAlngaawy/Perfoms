@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  useTeamCoachesQuery,
-  useTeamEventsQuery,
-} from "~/app/store/parent/parentApi";
-import {
-  selectedPlayerTeamFn,
-  selectPlayerTeam,
-} from "~/app/store/parent/parentSlice";
+import { useTeamEventsQuery } from "~/app/store/parent/parentApi";
+import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 import MediaCard from "./molecules/MediaCard";
 import TeamFilter from "~/@main/components/TeamFilter";
 import MediaPageLoading from "./molecules/MediaPageLoading";
@@ -15,9 +9,7 @@ import { useUserQuery } from "~/app/store/user/userApi";
 import { TeamEvents } from "~/app/store/types/parent-types";
 import { useCoachTeamEventQuery } from "~/app/store/coach/coachApi";
 import { useSuprtEventsQuery } from "~/app/store/supervisor/supervisorMainApi";
-import NoTeamComp from "~/@main/components/NoTeamComp";
 import NoEventsComp from "~/@main/components/NoEventsComp";
-import SelectTeamPage from "./molecules/SelectTeamPage";
 import { Link } from "react-router-dom";
 import { Breadcrumbs } from "@mantine/core";
 

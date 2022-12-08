@@ -1,43 +1,38 @@
-import React, { useState, ReactNode, LegacyRef, forwardRef } from "react";
+import React, { useState, forwardRef, useEffect } from "react";
 import { Modal, Group, Avatar, Text, Select } from "@mantine/core";
 import SubmitButton from "../../../../../@main/components/SubmitButton";
 import { Controller, useForm } from "react-hook-form";
+import {
+  useSuperAddTeamCoachesMutation,
+  useSuperAllCoachesQuery,
+} from "~/app/store/supervisor/supervisorMainApi";
+import { showNotification } from "@mantine/notifications";
 
-type Props = {};
+type Props = {
+  teamId: string | number;
+};
 
-const coachesDate = [
-  {
-    label: "Coach One",
-    image:
-      "https://previews.123rf.com/images/blueskyimage/blueskyimage1311/blueskyimage131101911/23810213-sport-trainer-portrait-of-happy-young-coach.jpg",
-    id: 1,
-    value: "1",
-  },
-  {
-    label: "Coach Two",
-    image:
-      "https://static.clubs.nfl.com/image/private/t_person_squared_mobile/f_auto/jaguars/gpvbkyjpty6w3kpdkv9m.jpg",
-    id: 2,
-    value: "2",
-  },
-  {
-    label: "Coach Three",
-    image:
-      "https://previews.123rf.com/images/blueskyimage/blueskyimage1311/blueskyimage131101911/23810213-sport-trainer-portrait-of-happy-young-coach.jpg",
-    id: 3,
-    value: "3",
-  },
-  {
-    label: "Coach Four",
-    image:
-      "https://static.clubs.nfl.com/image/private/t_person_squared_mobile/f_auto/jaguars/gpvbkyjpty6w3kpdkv9m.jpg",
-    id: 4,
-    value: "4",
-  },
-];
-
-const AddCoachForm = (props: Props) => {
+const AddCoachForm = ({ teamId }: Props) => {
   const [opened, setOpened] = useState(false);
+  const [coachesData, setCoachesData] = useState<any>([]);
+
+  const { data: coaches } = useSuperAllCoachesQuery({});
+
+  const [addCoach, { isLoading, isError, isSuccess }] =
+    useSuperAddTeamCoachesMutation();
+
+  useEffect(() => {
+    let test = coaches?.results.map((coach) => {
+      return {
+        label: coach.first_name + coach.first_name,
+        image: coach.avatar,
+        value: coach.id,
+        id: coach.id,
+      };
+    });
+    setCoachesData(test);
+    console.log(test);
+  }, [coaches]);
 
   const {
     register,
@@ -48,7 +43,27 @@ const AddCoachForm = (props: Props) => {
   } = useForm();
 
   const onSubmit = (data: any) => {
-    console.log(data);
+    console.log({ coach_id: data.coach, team_id: teamId });
+    addCoach({ coach_id: data.coach, team_id: teamId }).then(() => {
+      showNotification({
+        message: "Successfly Added Coach",
+        color: "green",
+        title: "Done",
+        styles: {
+          root: {
+            backgroundColor: "#27AE60",
+            borderColor: "#27AE60",
+            "&::before": { backgroundColor: "#fff" },
+          },
+
+          title: { color: "#fff" },
+          description: { color: "#fff" },
+          closeButton: {
+            color: "#fff",
+          },
+        },
+      });
+    });
     setOpened(false);
     reset({ coach: "" });
   };
@@ -95,7 +110,7 @@ const AddCoachForm = (props: Props) => {
                   maxDropdownHeight={400}
                   // {...register("coach")}
                   nothingFound="No options"
-                  data={coachesDate}
+                  data={coachesData}
                   filter={(value, item) =>
                     item.label
                       ?.toLowerCase()
@@ -110,7 +125,7 @@ const AddCoachForm = (props: Props) => {
 
         <Group position="left">
           <button
-            className="px-6 py-2 my-6 bg-slate-300 text-perfGray3 rounded-3xl"
+            className="px-6 py-2 my-2 bg-slate-300 text-perfGray3 rounded-3xl"
             onClick={() => setOpened(true)}
           >
             + Add Coach

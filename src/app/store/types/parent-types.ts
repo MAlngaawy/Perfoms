@@ -257,6 +257,14 @@ export type TeamCoaches = BaseGetAllType & {
   results: Partial<PlayerCoach>[];
 };
 
+export type PlayerMetricScores = BaseGetAllType & {
+  results: {
+    id: number;
+    metric: string;
+    last_score: string;
+  }[];
+};
+
 export type TeamEvent = {
   id: number;
   name: string;

@@ -9,30 +9,6 @@ import { useParams } from "react-router-dom";
 
 type Props = {};
 
-const events = [
-  {
-    name: "Test",
-    date: "11/11/2022",
-    address: "ELHaram",
-    icon: "https://c.ndtvimg.com/2022-03/mm7k3hj8_ukraine-orphanage-escape-reuters-650_625x300_06_March_22.jpg",
-    id: 1,
-  },
-  {
-    name: "Test",
-    date: "11/11/2022",
-    address: "ELHaram",
-    icon: "https://c.ndtvimg.com/2022-03/mm7k3hj8_ukraine-orphanage-escape-reuters-650_625x300_06_March_22.jpg",
-    id: 1,
-  },
-  {
-    name: "Test",
-    date: "11/11/2022",
-    address: "ELHaram",
-    icon: "https://c.ndtvimg.com/2022-03/mm7k3hj8_ukraine-orphanage-escape-reuters-650_625x300_06_March_22.jpg",
-    id: 1,
-  },
-];
-
 const SingleTeam = (props: Props) => {
   const { data: user } = useUserQuery(null);
 

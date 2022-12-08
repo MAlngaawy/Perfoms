@@ -29,11 +29,15 @@ const Notifications = (props: Props) => {
   const [opened, setOpened] = useState(false);
   const { data: notifications } = useNotificationsQuery({});
 
-  console.log("notifications", notifications);
-
   const haveNotificaton = true;
   return (
-    <Menu opened={opened} onChange={setOpened} shadow="md" width={200}>
+    <Menu
+      opened={opened}
+      trigger="hover"
+      onChange={setOpened}
+      shadow="md"
+      width={200}
+    >
       <Menu.Target>
         <Avatar
           onClick={() => setOpened(true)}

@@ -6,24 +6,23 @@ import {
   TeamPlayers,
   Teams,
 } from "../types/clubManager-types";
-import { UpdateAttendance } from "../types/coach-types";
-import {
-  EventFiles,
-  TeamCoaches,
-  TeamEvent,
-  TeamEvents,
-} from "../types/parent-types";
+import { EventFiles, TeamCoaches, TeamEvents } from "../types/parent-types";
 import { ParentClub } from "~/app/store/types/parent-types";
 import {
   AddAction,
+  AddEvent,
   AddRecommendation,
   AddTeamCalendar,
+  Coaches,
   CoachRequests,
   kpi,
   Kpis,
   Metrics,
+  SuperVisorPlayers,
   Team,
   TeamAttendance,
+  TeamCoach,
+  TeamPlayer,
 } from "../types/supervisor-types";
 import { Event } from "../types/events-types";
 
@@ -47,6 +46,7 @@ export const supervisorApi = createApi({
         url: `teams/${team_id}/coaches/`,
         params,
       }),
+      providesTags: ["supervisor"],
     }),
 
     superTeamEvents: query<TeamEvents, { team_id: string; page?: number }>({
@@ -54,6 +54,7 @@ export const supervisorApi = createApi({
         url: `${team_id}/events/`,
         params,
       }),
+      providesTags: ["supervisor"],
     }),
 
     superTeamPlaers: query<TeamPlayers, { team_id: string; page?: number }>({
@@ -61,6 +62,15 @@ export const supervisorApi = createApi({
         url: `${team_id}/players/`,
         params,
       }),
+      providesTags: ["supervisor"],
+    }),
+
+    superPlayers: query<SuperVisorPlayers, { page?: number }>({
+      query: (params) => ({
+        url: `players/`,
+        params,
+      }),
+      providesTags: ["supervisor"],
     }),
 
     superTeamInfo: query<Team, { team_id: string; page?: number }>({
@@ -113,6 +123,7 @@ export const supervisorApi = createApi({
 
     suprtEvents: query<TeamEvents, { team_id: number; page?: number }>({
       query: ({ team_id, ...params }) => ({ url: `${team_id}/events`, params }),
+      providesTags: ["supervisor"],
     }),
 
     suprtEventFiles: query<EventFiles, { event_id: number; page?: number }>({
@@ -127,12 +138,17 @@ export const supervisorApi = createApi({
       providesTags: ["supervisor"],
     }),
 
+    superAllCoaches: query<Coaches, { page?: number }>({
+      query: (params) => ({ url: "coaches/", params }),
+      providesTags: ["supervisor"],
+    }),
+
     superTeamAttendance: query<
       TeamAttendance,
       { team_id: number; page?: number }
     >({
       query: ({ team_id, ...params }) => ({
-        url: `teams/${team_id}/attendance`,
+        url: `teams/${team_id}/attendance/`,
         params,
       }),
       providesTags: ["calendar"],
@@ -170,6 +186,69 @@ export const supervisorApi = createApi({
       }),
       invalidatesTags: ["supervisor"],
     }),
+
+    superRemoveTeamCoach: mutation<TeamCoach, {}>({
+      query: ({ ...body }) => ({
+        url: `remove-team-coach/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["supervisor"],
+    }),
+
+    superAddTeamCoaches: mutation<TeamCoach, {}>({
+      query: ({ ...body }) => ({
+        url: `add-team-coach/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["supervisor"],
+    }),
+
+    superAddEvent: mutation<AddEvent, {}>({
+      query: ({ ...body }) => ({
+        url: `add-event/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["supervisor"],
+    }),
+
+    superEditEvent: mutation<AddEvent, { event_id: number }>({
+      query: ({ event_id, ...body }) => ({
+        url: `events/${event_id}/update`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["supervisor"],
+    }),
+
+    superDeleteEvent: mutation<{}, { event_id: number }>({
+      query: ({ event_id, ...body }) => ({
+        url: `events/${event_id}/delete/`,
+        method: "DELETE",
+        body,
+      }),
+      invalidatesTags: ["supervisor"],
+    }),
+
+    superAddTeamPlayer: mutation<TeamPlayer, {}>({
+      query: ({ ...body }) => ({
+        url: `add-team-player/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["supervisor"],
+    }),
+
+    superRemoveTeamPlayer: mutation<TeamPlayer, {}>({
+      query: ({ ...body }) => ({
+        url: `remove-team-player/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["supervisor"],
+    }),
   }),
 });
 
@@ -192,6 +271,15 @@ export const {
   useSuperAcceptCoachRequestMutation,
   useSuperDeclineCoachRequestMutation,
   useSuperClubQuery,
+  useSuperPlayersQuery,
   useSuperTeamAttendanceQuery,
   useSuperAddTeamCalendarMutation,
+  useSuperRemoveTeamCoachMutation,
+  useSuperAddTeamCoachesMutation,
+  useSuperAllCoachesQuery,
+  useSuperAddEventMutation,
+  useSuperDeleteEventMutation,
+  useSuperEditEventMutation,
+  useSuperAddTeamPlayerMutation,
+  useSuperRemoveTeamPlayerMutation,
 } = supervisorApi;
