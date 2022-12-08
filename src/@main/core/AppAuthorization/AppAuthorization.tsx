@@ -63,7 +63,6 @@ class AppAuthorization extends Component<PropsWithChildren<Props>, any> {
     const redirectUrl = loginRedirectUrl || this.defaultLoginRedirectUrl;
     if (!userRole || userRole.length === 0) {
       setTimeout(() => history.push("/sign-in"), 0);
-      loginRedirectUrl = pathname;
     } else {
       setTimeout(() => history.push(redirectUrl), 0);
       loginRedirectUrl =
