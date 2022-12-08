@@ -7,6 +7,7 @@ import {
   Input,
   Textarea,
   MultiSelect,
+  Avatar,
 } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 
@@ -17,6 +18,9 @@ import * as yup from "yup";
 import Resizer from "react-image-file-resizer";
 import cn from "classnames";
 import SubmitButton from "~/@main/components/SubmitButton";
+import { useUserQuery } from "~/app/store/user/userApi";
+import { usePlayerCoachQuery } from "~/app/store/parent/parentApi";
+import { useParams } from "react-router-dom";
 
 // Props Types
 type Props = {
@@ -37,6 +41,18 @@ type Props = {
 };
 
 const CoachPersonalInfo = (props: Props) => {
+  const [data, setData] = useState();
+
+  const { data: user } = useUserQuery(null);
+  console.log(user);
+
+  const { id } = useParams();
+
+  const { data: coachData } = usePlayerCoachQuery(
+    { id: (id !== undefined && +id) || 1 },
+    { skip: !id }
+  );
+
   return (
     <div className="bg-white flex flex-col gap-4 h-full rounded-lg md:rounded-2xl p-4">
       <h3 className="text-base font-medium text-center">
@@ -44,14 +60,20 @@ const CoachPersonalInfo = (props: Props) => {
       </h3>
       <div className="flex md:flex-col justify-center items-center gap-4">
         <div className="flex justify-center items-center">
-          <img
+          <Avatar
             className="w-32 h-32 object-cover transition-all delay-75 rounded-lg group-hover:border border-white box-border"
-            src={props.photo ? props.photo : "/assets/images/avatar.webp"}
+            src={
+              user?.user_type !== "Parent" ? user?.avatar : coachData?.avatar
+            }
             alt="Profile_Picture"
           />
         </div>
         <div className="flex flex-col justify-center items-center gap-2">
-          <h2 className="text-xl uppercase">{props.name}</h2>
+          <h2 className="text-xl ">
+            {user?.user_type !== "Parent"
+              ? user?.first_name + " " + user?.last_name
+              : coachData?.first_name + " " + coachData?.last_name}
+          </h2>
           <h4 className="text-perfBlue group-hover:text-white text-xs">
             {props.sport} Coach
           </h4>
