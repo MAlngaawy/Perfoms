@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Breadcrumbs } from "@mantine/core";
 import ReportsChartCard from "~/@main/components/MainReports/ReportsChartCard";
 import TeamInfoCard from "./components/TeamInfoCard";
+import PrintComp from "~/@main/PrintComp";
 
 type Props = {};
 
@@ -146,20 +147,22 @@ const OneTeam = (props: Props) => {
           {items}
         </Breadcrumbs>
       </div>
-      <div className="reports items-stretch justify-center xs:justify-start flex flex-wrap gap-4 my-10">
-        <TeamInfoCard />
-        {kpis.map((kpi) => {
-          return (
-            <div>
-              <ReportsChartCard
-                onClickFun={() => navigate(`kpi/${kpi.id}`)}
-                name={kpi.name}
-                data={kpi.data}
-              />
-            </div>
-          );
-        })}
-      </div>
+      <PrintComp>
+        <div className="reports items-stretch justify-center xs:justify-start flex flex-wrap gap-4 my-10">
+          <TeamInfoCard />
+          {kpis.map((kpi) => {
+            return (
+              <div>
+                <ReportsChartCard
+                  onClickFun={() => navigate(`kpi/${kpi.id}`)}
+                  name={kpi.name}
+                  data={kpi.data}
+                />
+              </div>
+            );
+          })}
+        </div>
+      </PrintComp>
     </div>
   );
 };

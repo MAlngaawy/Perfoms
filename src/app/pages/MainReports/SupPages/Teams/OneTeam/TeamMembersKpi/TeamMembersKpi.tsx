@@ -5,6 +5,7 @@ import ReportsChartCard from "~/@main/components/MainReports/ReportsChartCard";
 import AppIcons from "~/@main/core/AppIcons";
 import TeamInfoCard from "../components/TeamInfoCard";
 import TimeFilter from "~/@main/components/TimeFilter";
+import PrintComp from "~/@main/PrintComp";
 
 type Props = {};
 
@@ -297,42 +298,43 @@ const TeamMembersKpi = (props: Props) => {
         </Menu>
         <TimeFilter />
       </div>
-
-      <div className="reports items-stretch justify-center xs:justify-start flex flex-wrap gap-4 my-6">
-        <TeamInfoCard />
-        {reportType === "Performances" ? (
-          <>
-            {membersKpi.map((kpi) => {
-              return (
-                <div>
-                  <ReportsChartCard
-                    // onClickFun={() => navigate(`kpi/${kpi.id}`)}
-                    clickable={false}
-                    name={kpi.name}
-                    data={kpi.data}
-                  />
-                </div>
-              );
-            })}
-          </>
-        ) : (
-          <>
-            {membersAttendance.map((attend) => {
-              return (
-                <div>
-                  <ReportsChartCard
-                    // onClickFun={() => navigate(`kpi/${attend.id}`)}
-                    name={attend.name}
-                    data={attend.data}
-                    clickable={false}
-                    chartColors={["#27AE60", "#EB5757", "#A3A3A3"]}
-                  />
-                </div>
-              );
-            })}
-          </>
-        )}
-      </div>
+      <PrintComp>
+        <div className="reports items-stretch justify-center xs:justify-start flex flex-wrap gap-4 my-6">
+          <TeamInfoCard />
+          {reportType === "Performances" ? (
+            <>
+              {membersKpi.map((kpi) => {
+                return (
+                  <div>
+                    <ReportsChartCard
+                      // onClickFun={() => navigate(`kpi/${kpi.id}`)}
+                      clickable={false}
+                      name={kpi.name}
+                      data={kpi.data}
+                    />
+                  </div>
+                );
+              })}
+            </>
+          ) : (
+            <>
+              {membersAttendance.map((attend) => {
+                return (
+                  <div>
+                    <ReportsChartCard
+                      // onClickFun={() => navigate(`kpi/${attend.id}`)}
+                      name={attend.name}
+                      data={attend.data}
+                      clickable={false}
+                      chartColors={["#27AE60", "#EB5757", "#A3A3A3"]}
+                    />
+                  </div>
+                );
+              })}
+            </>
+          )}
+        </div>
+      </PrintComp>
     </div>
   );
 };

@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Breadcrumbs } from "@mantine/core";
 import ReportsChartCard from "~/@main/components/MainReports/ReportsChartCard";
+import PrintComp from "~/@main/PrintComp";
 
 const sports = [
   {
@@ -86,17 +87,19 @@ const SportsReports = (props: Props) => {
           {items}
         </Breadcrumbs>
       </div>
-      <div className="reports flex flex-wrap gap-4 items-center my-10">
-        {sports.map((sport) => {
-          return (
-            <ReportsChartCard
-              onClickFun={() => navigate(`teams`)}
-              name={sport.name}
-              data={sport.data}
-            />
-          );
-        })}
-      </div>
+      <PrintComp>
+        <div className="reports flex flex-wrap gap-4 items-center my-10">
+          {sports.map((sport) => {
+            return (
+              <ReportsChartCard
+                onClickFun={() => navigate(`teams`)}
+                name={sport.name}
+                data={sport.data}
+              />
+            );
+          })}
+        </div>
+      </PrintComp>
     </div>
   );
 };

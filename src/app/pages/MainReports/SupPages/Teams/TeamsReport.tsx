@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Breadcrumbs } from "@mantine/core";
 import ReportsChartCard from "~/@main/components/MainReports/ReportsChartCard";
 import { useSuperTeamsQuery } from "~/app/store/supervisor/supervisorMainApi";
+import PrintComp from "../../../../../@main/PrintComp";
 
 const teams = [
   {
@@ -73,19 +74,21 @@ const TeamsReports = (props: Props) => {
           {items}
         </Breadcrumbs>
       </div>
-      <div className="reports flex flex-wrap gap-4 items-center my-10">
-        {teams.map((team) => {
-          return (
-            <div>
-              <ReportsChartCard
-                onClickFun={() => navigate(`${team.id}`)}
-                name={team.name}
-                data={team.data}
-              />
-            </div>
-          );
-        })}
-      </div>
+      <PrintComp>
+        <div className="reports flex flex-wrap gap-4 justify-center xs:justify-start items-center my-10">
+          {teams.map((team) => {
+            return (
+              <div>
+                <ReportsChartCard
+                  onClickFun={() => navigate(`${team.id}`)}
+                  name={team.name}
+                  data={team.data}
+                />
+              </div>
+            );
+          })}
+        </div>
+      </PrintComp>
     </div>
   );
 };

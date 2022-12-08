@@ -22,7 +22,7 @@ const MainReports = (props: Props) => {
           {items}
         </Breadcrumbs>
       </div>
-      <div className="my-6 flex flex-wrap gap-4  items-center">
+      <div className="my-6 flex justify-center xs:justify-start flex-wrap gap-4  items-center">
         {user?.user_type !== "Coach" && (
           <Link to={"search-players"}>
             <ReportsCategoriesCard
