@@ -73,7 +73,7 @@ const ReportPage = () => {
           </div>
           {reportType === "Performances" ? (
             <PrintComp>
-              <div>
+              <div className="bg-pagesBg">
                 <Grid columns={12} gutter={"sm"}>
                   <Grid.Col sm={3} md={2.5} span={12}>
                     <HomePlayerInfoCard />

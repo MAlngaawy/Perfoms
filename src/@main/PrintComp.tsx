@@ -10,7 +10,26 @@ const PrintComp = (props: Props) => {
   const compRef = useRef<HTMLInputElement>(null);
   const handlePrint = useReactToPrint({
     content: (): any => compRef.current,
-    pageStyle: ``,
+    pageStyle: `
+    @media print {
+      @page { size: landscape; }
+    }
+    @page {
+      size: 300mm 500mm;
+    }
+  
+    @media all {
+      .pagebreak {
+        display: none;
+      }
+    }
+  
+    @media print {
+      .pagebreak {
+        page-break-before: always;
+      }
+    }
+    `,
   });
   return (
     <div className="">
