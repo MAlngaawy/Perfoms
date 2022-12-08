@@ -102,16 +102,40 @@ const PlayerDetails = () => {
           <div className="p-4  h-full border border-perfGray4 bg-white rounded-3xl flex flex-col gap-1">
             <h2>Achevements</h2>
 
-            <div className=" flex justify-around my-6 gap-6 h-full">
+            <div className=" flex flex-col xs:flex-row justify-around my-6 gap-6 h-full">
               <Avatar
-                className="w-32 h-full rounded-lg object-cover "
+                className="rounded-lg object-cover "
                 src={"https://cdn-icons-png.flaticon.com/512/2827/2827014.png"}
-                size="xl"
+                size={200}
               />
+
               {params.id === "2" ? (
-                <div className="flex flex-col gap-4 items-center">
+                <div className="flex flex-col gap-4 ">
                   <h2 className="text-lg"> World Cadet Bronze Medalist</h2>
-                  <h2 className="text-lg"> Croatia Open Golden Medalist</h2>
+                  <h2 className="text-lg">
+                    {" "}
+                    Beirut Open 2017 Golden Medallist
+                  </h2>
+                  <h2 className="text-lg">
+                    {" "}
+                    Arabian Open 2020 Bronze Medalist
+                  </h2>
+                  <h2 className="text-lg">
+                    {" "}
+                    Fujairah Open 2020 Golden Medalist{" "}
+                  </h2>
+                  <h2 className="text-lg">
+                    {" "}
+                    Fujairah Open 2022 Silver Medalist
+                  </h2>
+                  <h2 className="text-lg">
+                    {" "}
+                    Arabian Open 2022 Golden Medalist
+                  </h2>
+                  <h2 className="text-lg">
+                    {" "}
+                    Croatia Open 2022 Golden Medalist
+                  </h2>
                 </div>
               ) : params.id === "3" ? (
                 <div className="flex flex-col gap-4 items-start">
@@ -134,13 +158,13 @@ const PlayerDetails = () => {
           <div className="p-4  h-full border border-perfGray4 bg-white rounded-3xl flex flex-col gap-1">
             <h2>Media</h2>
 
-            <div className=" flex  justify-around my-6 gap-6 h-full">
+            <div className=" flex flex-col xs:flex-row justify-around my-6 gap-6 h-full">
               <Avatar
-                className="w-32 h-full rounded-lg object-cover "
+                className="rounded-lg object-cover "
                 src={
                   "https://www.nicepng.com/png/full/86-862080_social-media-marketing-social-media-marketing-icon.png"
                 }
-                size="xl"
+                size={200}
               />
               {params.id === "2" ? (
                 <div className="flex flex-col gap-4 items-center ">

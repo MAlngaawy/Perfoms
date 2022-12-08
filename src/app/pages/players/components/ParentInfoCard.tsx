@@ -28,7 +28,7 @@ const ParentInfoCard = ({
     <div className="p-4  h-full border border-perfGray4 bg-white rounded-3xl flex flex-col gap-1">
       <h2>Parent's info</h2>
 
-      <div className="flex gap-6 h-full">
+      <div className="flex flex-col xs:flex-row gap-6 h-full">
         <div className="img my-2">
           <Avatar
             src={avatar}
@@ -36,7 +36,7 @@ const ParentInfoCard = ({
             alt="parent"
           />
         </div>
-        <div className="infos1 flex flex-col gap-6">
+        <div className="infos1 flex gap-6">
           <Info label="Name" value={first_name + last_name} />
           <Info label="Phone" value={phone} />
         </div>

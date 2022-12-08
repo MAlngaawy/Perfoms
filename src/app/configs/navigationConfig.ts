@@ -100,7 +100,7 @@ const navigationConfig: NavigationConfigTypes[] = [
     type: "item",
     icon: "NewspaperIcon:outline",
     url: "main-reports",
-    auth: [...authRoles.Admin, ...authRoles.Supervisor],
+    auth: [...authRoles.Admin, ...authRoles.Supervisor, ...authRoles.Coach],
   },
 ];
 
