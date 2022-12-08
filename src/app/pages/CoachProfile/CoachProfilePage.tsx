@@ -4,6 +4,7 @@ import CoachPersonalInfo from "~/@main/components/CoachPersonalInfo";
 import CoachExperince from "~/@main/components/CoachExperince";
 import CoachAchievements from "~/@main/components/CoachAchievements";
 import { useState } from "react";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {};
 
@@ -75,7 +76,7 @@ const coachExp = {
 };
 
 const CoachProfilePage = (props: Props) => {
-  const [editMode, setEditMode] = useState(true);
+  const [editMode, setEditMode] = useState(false);
 
   return (
     <>

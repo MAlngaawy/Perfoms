@@ -21,6 +21,7 @@ import {
   ParentUpcomingEvents,
   PlayerKpis,
   PlayerSports,
+  PlayerMetricScores,
 } from "./../types/parent-types";
 import {
   BaseQueryFn,
@@ -262,6 +263,39 @@ export const parentsApi = createApi({
       providesTags: ["Parent"],
     }),
 
+    playerModerate: query<
+      PlayerMetricScores,
+      { player_id: number; page?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `${player_id}/metrics/scores/moderate`,
+        params,
+      }),
+      providesTags: ["Parent"],
+    }),
+
+    playerStrength: query<
+      PlayerMetricScores,
+      { player_id: number; page?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `${player_id}/metrics/scores/strength`,
+        params,
+      }),
+      providesTags: ["Parent"],
+    }),
+
+    playerWeakness: query<
+      PlayerMetricScores,
+      { player_id: number; page?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `${player_id}/metrics/scores/weakness`,
+        params,
+      }),
+      providesTags: ["Parent"],
+    }),
+
     sportTeams: query<SportTeams, { sport_id: number; page?: number }>({
       query: ({ sport_id, ...params }) => ({
         url: `${sport_id}/sport-teams/`,
@@ -308,4 +342,7 @@ export const {
   useSelectSubscriptionMutation,
   useClubSportsQuery,
   useSportTeamsQuery,
+  usePlayerModerateQuery,
+  usePlayerStrengthQuery,
+  usePlayerWeaknessQuery,
 } = parentsApi;

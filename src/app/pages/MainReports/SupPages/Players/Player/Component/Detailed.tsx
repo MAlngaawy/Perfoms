@@ -110,156 +110,157 @@ const Detailed = (props: Props) => {
     useState<"Performances" | "Attendances">("Performances");
 
   return (
-    <div>
-      <div className="report-page px-5 mb-20">
-        <div className="flex flex-col sm:flex-row gap-4 my-4 justify-between items-center">
-          <div className="flex gap-4">
-            {widowSize.width && widowSize.width < 768 && <TimeFilter />}
-          </div>
-          <div className="flex gap-4">
-            <Menu shadow="md" width={200}>
-              <Menu.Target>
-                <button className="flex gap-2 text-xs sm:text-sm justify-center items-center text-white bg-perfBlue py-2 px-4 xs:px-6 rounded-3xl">
-                  <span>{reportType}</span>
-                  <AppIcons
-                    className="w-3 h-3"
-                    icon="ChevronDownIcon:outline"
-                  />{" "}
-                </button>
-              </Menu.Target>
+    // <div>
+    //   <div className="report-page px-5 mb-20">
+    //     <div className="flex flex-col sm:flex-row gap-4 my-4 justify-between items-center">
+    //       <div className="flex gap-4">
+    //         {widowSize.width && widowSize.width < 768 && <TimeFilter />}
+    //       </div>
+    //       <div className="flex gap-4">
+    //         <Menu shadow="md" width={200}>
+    //           <Menu.Target>
+    //             <button className="flex gap-2 text-xs sm:text-sm justify-center items-center text-white bg-perfBlue py-2 px-4 xs:px-6 rounded-3xl">
+    //               <span>{reportType}</span>
+    //               <AppIcons
+    //                 className="w-3 h-3"
+    //                 icon="ChevronDownIcon:outline"
+    //               />{" "}
+    //             </button>
+    //           </Menu.Target>
 
-              <Menu.Dropdown>
-                <Menu.Item onClick={() => setReportType("Performances")}>
-                  Performances
-                </Menu.Item>
-                <Menu.Item onClick={() => setReportType("Attendances")}>
-                  Attendances
-                </Menu.Item>
-              </Menu.Dropdown>
-            </Menu>
-          </div>
-        </div>
-        {reportType === "Performances" ? (
-          <div>
-            {/* <ComponentToPrint ref={componentRef} /> */}
-            <div
-              onClick={handlePrint}
-              className="z-50 flex flex-col items-center justify-center  fixed right-20 bottom-20 opacity-70 hover:opacity-100 w-20 h-20 rounded-full cursor-pointer bg-perfBlue text-white"
-            >
-              <AppIcons
-                className="w-8 h-8 text-white"
-                icon="DocumentArrowDownIcon:outline"
-              />
-              <span>PDF</span>
-            </div>
-            <div className="bg-pagesBg" ref={perfCompRef}>
-              <Grid columns={12} gutter={"sm"}>
-                <Grid.Col sm={3} md={2.5} span={12}>
-                  <HomePlayerInfoCard />
-                </Grid.Col>
-                <Grid.Col sm={9} md={9.5} span={12}>
-                  <PerformanceSummaryCard />
-                </Grid.Col>
-              </Grid>
-              <Grid columns={12} gutter={"sm"} className="info mt-3">
-                <Grid.Col sm={4} span={12}>
-                  <Card
-                    color="text-[#27AE60]"
-                    bg="bg-fadedGreen"
-                    powerType="Strengths"
-                    scores={strengths}
-                  />
-                </Grid.Col>
-                <Grid.Col sm={4} span={12}>
-                  <Card
-                    color="text-[#F2C94C]"
-                    bg="bg-fadedYellow"
-                    powerType="Moderate"
-                    scores={moderate}
-                  />
-                </Grid.Col>
-                <Grid.Col sm={4} span={12}>
-                  <Card
-                    color="text-[#EB5757]"
-                    bg="bg-fadedRed"
-                    powerType="Weaknesses"
-                    scores={weaknesses}
-                  />
-                </Grid.Col>
-              </Grid>
-              <Grid columns={12} gutter={"sm"} className="info mt-3">
-                <Grid.Col sm={6} span={12}>
-                  <ActionsCard player_id={player?.id} />
-                </Grid.Col>
-                <Grid.Col sm={6} span={12}>
-                  <RecommendationsCard player_id={player?.id} />
-                </Grid.Col>
-              </Grid>{" "}
-            </div>
-          </div>
-        ) : (
-          <div className="attendances">
-            <div className="bg-pagesBg" ref={attCompRef}>
-              {/* Left Columns ( User Info And Note ) */}
-              <div
-                onClick={handlePrint2}
-                className="z-50 flex flex-col items-center justify-center  fixed right-20 bottom-20 opacity-70 hover:opacity-100 w-20 h-20 rounded-full cursor-pointer bg-perfBlue text-white"
-              >
-                <AppIcons
-                  className="w-8 h-8 text-white"
-                  icon="DocumentArrowDownIcon:outline"
-                />
-                <span>PDF</span>
-              </div>
-              <Grid gutter={"sm"}>
-                <Grid.Col span={12} md={2.5}>
-                  <div className="flex flex-col xs:flex-row md:flex-col gap-2 h-full">
-                    <HomePlayerInfoCard />
-                    <div className="note bg-white rounded-3xl w-full p-4 h-full">
-                      <h2 className="text-lg font-normal text-perfGray1 pb-4">
-                        Overall notes
-                      </h2>
-                      <p className=" text-base font-normal text-perfGray3">
-                        Fitness Flexibility 10 Exercises to Improve Your
-                        Flexibility 1. Standing Quad Stretch. Stand with your
-                        feet together. ... 2. Standing Side Stretch
-                      </p>
-                    </div>
-                  </div>
-                </Grid.Col>
+    //           <Menu.Dropdown>
+    //             <Menu.Item onClick={() => setReportType("Performances")}>
+    //               Performances
+    //             </Menu.Item>
+    //             <Menu.Item onClick={() => setReportType("Attendances")}>
+    //               Attendances
+    //             </Menu.Item>
+    //           </Menu.Dropdown>
+    //         </Menu>
+    //       </div>
+    //     </div>
+    //     {reportType === "Performances" ? (
+    //       <div>
+    //         {/* <ComponentToPrint ref={componentRef} /> */}
+    //         <div
+    //           onClick={handlePrint}
+    //           className="z-50 flex flex-col items-center justify-center  fixed right-20 bottom-20 opacity-70 hover:opacity-100 w-20 h-20 rounded-full cursor-pointer bg-perfBlue text-white"
+    //         >
+    //           <AppIcons
+    //             className="w-8 h-8 text-white"
+    //             icon="DocumentArrowDownIcon:outline"
+    //           />
+    //           <span>PDF</span>
+    //         </div>
+    //         <div className="bg-pagesBg" ref={perfCompRef}>
+    //           <Grid columns={12} gutter={"sm"}>
+    //             <Grid.Col sm={3} md={2.5} span={12}>
+    //               <HomePlayerInfoCard />
+    //             </Grid.Col>
+    //             <Grid.Col sm={9} md={9.5} span={12}>
+    //               <PerformanceSummaryCard />
+    //             </Grid.Col>
+    //           </Grid>
+    //           <Grid columns={12} gutter={"sm"} className="info mt-3">
+    //             <Grid.Col sm={4} span={12}>
+    //               <Card
+    //                 color="text-[#27AE60]"
+    //                 bg="bg-fadedGreen"
+    //                 powerType="Strengths"
+    //                 scores={strengths}
+    //               />
+    //             </Grid.Col>
+    //             <Grid.Col sm={4} span={12}>
+    //               <Card
+    //                 color="text-[#F2C94C]"
+    //                 bg="bg-fadedYellow"
+    //                 powerType="Moderate"
+    //                 scores={moderate}
+    //               />
+    //             </Grid.Col>
+    //             <Grid.Col sm={4} span={12}>
+    //               <Card
+    //                 color="text-[#EB5757]"
+    //                 bg="bg-fadedRed"
+    //                 powerType="Weaknesses"
+    //                 scores={weaknesses}
+    //               />
+    //             </Grid.Col>
+    //           </Grid>
+    //           <Grid columns={12} gutter={"sm"} className="info mt-3">
+    //             <Grid.Col sm={6} span={12}>
+    //               <ActionsCard player_id={player?.id} />
+    //             </Grid.Col>
+    //             <Grid.Col sm={6} span={12}>
+    //               <RecommendationsCard player_id={player?.id} />
+    //             </Grid.Col>
+    //           </Grid>{" "}
+    //         </div>
+    //       </div>
+    //     ) : (
+    //       <div className="attendances">
+    //         <div className="bg-pagesBg" ref={attCompRef}>
+    //           {/* Left Columns ( User Info And Note ) */}
+    //           <div
+    //             onClick={handlePrint2}
+    //             className="z-50 flex flex-col items-center justify-center  fixed right-20 bottom-20 opacity-70 hover:opacity-100 w-20 h-20 rounded-full cursor-pointer bg-perfBlue text-white"
+    //           >
+    //             <AppIcons
+    //               className="w-8 h-8 text-white"
+    //               icon="DocumentArrowDownIcon:outline"
+    //             />
+    //             <span>PDF</span>
+    //           </div>
+    //           <Grid gutter={"sm"}>
+    //             <Grid.Col span={12} md={2.5}>
+    //               <div className="flex flex-col xs:flex-row md:flex-col gap-2 h-full">
+    //                 <HomePlayerInfoCard />
+    //                 <div className="note bg-white rounded-3xl w-full p-4 h-full">
+    //                   <h2 className="text-lg font-normal text-perfGray1 pb-4">
+    //                     Overall notes
+    //                   </h2>
+    //                   <p className=" text-base font-normal text-perfGray3">
+    //                     Fitness Flexibility 10 Exercises to Improve Your
+    //                     Flexibility 1. Standing Quad Stretch. Stand with your
+    //                     feet together. ... 2. Standing Side Stretch
+    //                   </p>
+    //                 </div>
+    //               </div>
+    //             </Grid.Col>
 
-                {/* Right Column Attendance Charts And numbers */}
-                <Grid.Col span={12} md={9.5}>
-                  <Grid gutter={"sm"}>
-                    <Grid.Col span={12}>
-                      <AttendancesSmallCards />
-                    </Grid.Col>
-                    {/* Attedance Summary Table */}
-                    <Grid.Col span={12} sm={8}>
-                      <div className="bg-white h-full rounded-3xl p-4">
-                        <AttendanceTable />
-                      </div>
-                    </Grid.Col>
+    //             {/* Right Column Attendance Charts And numbers */}
+    //             <Grid.Col span={12} md={9.5}>
+    //               <Grid gutter={"sm"}>
+    //                 <Grid.Col span={12}>
+    //                   <AttendancesSmallCards />
+    //                 </Grid.Col>
+    //                 {/* Attedance Summary Table */}
+    //                 <Grid.Col span={12} sm={8}>
+    //                   <div className="bg-white h-full rounded-3xl p-4">
+    //                     <AttendanceTable />
+    //                   </div>
+    //                 </Grid.Col>
 
-                    <Grid.Col span={12} sm={4}>
-                      <div className="flex flex-col gap-4">
-                        {/* Total Attendace Pie Chart  */}
-                        <div className="bg-white rounded-3xl">
-                          <TotalAttendance />
-                        </div>
+    //                 <Grid.Col span={12} sm={4}>
+    //                   <div className="flex flex-col gap-4">
+    //                     {/* Total Attendace Pie Chart  */}
+    //                     <div className="bg-white rounded-3xl">
+    //                       <TotalAttendance />
+    //                     </div>
 
-                        {/* Attendance Calender */}
-                        <CustomCalendar pageName="reports" />
-                      </div>
-                    </Grid.Col>
-                  </Grid>
-                </Grid.Col>
-              </Grid>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
+    //                     {/* Attendance Calender */}
+    //                     <CustomCalendar pageName="reports" />
+    //                   </div>
+    //                 </Grid.Col>
+    //               </Grid>
+    //             </Grid.Col>
+    //           </Grid>
+    //         </div>
+    //       </div>
+    //     )}
+    //   </div>
+    // </div>
+    <></>
   );
 };
 

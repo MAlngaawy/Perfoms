@@ -72,7 +72,7 @@ const Toolbar = ({ setOpened }: Props) => {
       </div>
       <div className="right flex gap-2 justify-center items-center">
         {/* Messages Menu */}
-        <Menu shadow="md" width={200}>
+        <Menu trigger="hover" shadow="md" width={200}>
           <Menu.Target>
             <Avatar
               className="cursor-pointer"
@@ -122,7 +122,7 @@ const Toolbar = ({ setOpened }: Props) => {
         <Notifications />
 
         {/* User Menu */}
-        <Menu shadow="md" width={200}>
+        <Menu trigger="hover" shadow="md" width={200}>
           <Menu.Target>
             <div className="flex gap-2 cursor-pointer">
               <Avatar
@@ -142,7 +142,12 @@ const Toolbar = ({ setOpened }: Props) => {
           <Menu.Dropdown className="p-0">
             <Menu.Label className="p-0">
               <div className="w-full hover:bg-slate-200 py-2">
-                <Link className="w-full h-full" to="profile">
+                <Link
+                  className="w-full h-full"
+                  to={
+                    user?.user_type === "Parent" ? "profile" : "coach-profile"
+                  }
+                >
                   <div className="flex gap-2 mx-10">
                     <AppIcons className="w-4 h-4 " icon="UserIcon:outline" />
                     <p>Profile</p>
