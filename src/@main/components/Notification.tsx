@@ -1,5 +1,6 @@
 import cn from "classnames";
 import AppIcons from "~/@main/core/AppIcons";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   notification_type: "Report" | "Certificate" | "Complement" | "Permission";
@@ -18,8 +19,22 @@ const Notification = ({
   newNotification,
   senderAvatar,
 }: Props) => {
+  const navigate = useNavigate();
+
   return (
     <div
+      onClick={() =>
+        navigate("/notifications/notification", {
+          state: {
+            notification_type,
+            senderName,
+            message,
+            created_at,
+            newNotification,
+            senderAvatar,
+          },
+        })
+      }
       className={cn(
         "w-full p-1 flex cursor-pointer hover:bg-blue-100 justify-start items-center gap-2",
         {

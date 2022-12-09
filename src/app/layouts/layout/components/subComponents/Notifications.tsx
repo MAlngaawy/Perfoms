@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Avatar, Indicator, Divider, Menu, Text } from "@mantine/core";
 import Notification from "~/@main/components/Notification";
 import AppIcons from "~/@main/core/AppIcons";
 import { Link } from "react-router-dom";
 import useWindowSize from "~/@main/hooks/useWindowSize";
 import { useNotificationsQuery } from "~/app/store/user/userApi";
+import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
+import { useSelector } from "react-redux";
+import { Player } from "~/app/store/types/parent-types";
 
 type Props = {};
 
@@ -25,9 +28,15 @@ const formatDate = (date: Date | null) => {
 };
 
 const Notifications = (props: Props) => {
+  const [selectedPlayerName, setSelectedPlayerName] = useState("");
   const windowSize = useWindowSize();
   const [opened, setOpened] = useState(false);
   const { data: notifications } = useNotificationsQuery({});
+  const selectedPlayer: Player = useSelector(selectedPlayerFn);
+
+  useEffect(() => {
+    setSelectedPlayerName(selectedPlayer?.name);
+  }, [selectedPlayer]);
 
   const haveNotificaton = true;
   return (
@@ -66,21 +75,26 @@ const Notifications = (props: Props) => {
       <Menu.Dropdown className="w-80 max-h-96 overflow-scroll max-w-full">
         <h2 className="m-2 text-perfLightBlack text-sm">Notifications</h2>
         <Divider />
-        {notifications?.results.map((oneNot) => (
-          <Menu.Label className="p-0">
-            <Notification
-              created_at={formatDate(new Date(oneNot.created_at))}
-              newNotification
-              notification_type={oneNot.notification_type}
-              senderAvatar={oneNot.sender.avatar}
-              senderName={
-                (oneNot.sender.full_name &&
-                  oneNot.sender.full_name.substring(0, 10) + "...") ||
-                "Anonymos"
-              }
-            />
-          </Menu.Label>
-        ))}
+        {notifications?.results
+          .filter((not: any) => {
+            return not?.player === selectedPlayerName;
+          })
+          .slice(-8)
+          .map((oneNot) => (
+            <Menu.Label className="p-0">
+              <Notification
+                created_at={formatDate(new Date(oneNot.created_at))}
+                newNotification
+                notification_type={oneNot.notification_type}
+                senderAvatar={oneNot.sender.avatar}
+                senderName={
+                  (oneNot.sender.full_name &&
+                    oneNot.sender.full_name.substring(0, 10) + "...") ||
+                  "Anonymos"
+                }
+              />
+            </Menu.Label>
+          ))}
         <Link
           onClick={() => setOpened(false)}
           to="notifications"
