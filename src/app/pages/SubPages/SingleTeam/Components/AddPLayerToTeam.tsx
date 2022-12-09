@@ -8,20 +8,30 @@ import {
 } from "~/app/store/supervisor/supervisorMainApi";
 import { useParams } from "react-router-dom";
 import { showNotification } from "@mantine/notifications";
+import __ from "lodash";
+import { TeamPlayers } from "~/app/store/types/clubManager-types";
 
-type Props = {};
+type Props = {
+  teamPlayers: TeamPlayers | undefined;
+};
 
-const AddPlayer = (props: Props) => {
+const AddPlayer = ({ teamPlayers }: Props) => {
   const [opened, setOpened] = useState(false);
   const [playersData, setPlayersData] = useState<any>([]);
   const { data: players } = useSuperPlayersQuery({});
 
   const { id: team_id } = useParams();
 
-  let lol2: any[] = [];
-
   useEffect(() => {
-    let test = players?.results.map((player) => {
+    /**
+     * Filter the team players vs all club players
+      to show only the not team member players in the select input 
+     */
+    const allPlayers = players?.results;
+    const teamPlayersData = teamPlayers?.results;
+    const filterdPlayers = __.xorBy(allPlayers, teamPlayersData, "id");
+
+    let test = filterdPlayers.map((player) => {
       return {
         label: player.name,
         image: player.icon,
