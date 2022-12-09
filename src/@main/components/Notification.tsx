@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 type Props = {
   notification_type: "Report" | "Certificate" | "Complement" | "Permission";
   senderName: string;
-  message?: string;
+  message: string;
   created_at: string;
   newNotification?: boolean;
   senderAvatar: string;

@@ -36,6 +36,7 @@ const Notifications = (props: Props) => {
 
   useEffect(() => {
     setSelectedPlayerName(selectedPlayer?.name);
+    console.log(notifications);
   }, [selectedPlayer]);
 
   const haveNotificaton = true;
@@ -81,12 +82,13 @@ const Notifications = (props: Props) => {
           })
           .slice(-8)
           .map((oneNot) => (
-            <Menu.Label className="p-0">
+            <Menu.Label onClick={() => setOpened(false)} className="p-0">
               <Notification
                 created_at={formatDate(new Date(oneNot.created_at))}
                 newNotification
                 notification_type={oneNot.notification_type}
                 senderAvatar={oneNot.sender.avatar}
+                message={oneNot.message}
                 senderName={
                   (oneNot.sender.full_name &&
                     oneNot.sender.full_name.substring(0, 10) + "...") ||
