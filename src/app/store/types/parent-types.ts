@@ -313,6 +313,7 @@ export type ParentUpcomingEvents = BaseGetAllType & {
 };
 
 export type PlayerCertificate = {
+  created_at: Date;
   id: number;
   player: {
     id: number;

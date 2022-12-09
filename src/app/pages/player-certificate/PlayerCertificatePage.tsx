@@ -37,7 +37,11 @@ const PlayerCertificatePage = (props: Props) => {
       <h2 className="font-extrabold text-3xl">
         Player {certificate?.player.name} Certificate
       </h2>
-      <div>{true && <CertificateImage ref={canvasRef} />}</div>
+      <div>
+        {certificate && (
+          <CertificateImage certificate={certificate} ref={canvasRef} />
+        )}
+      </div>
     </div>
   );
 };
