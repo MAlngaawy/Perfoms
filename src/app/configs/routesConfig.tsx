@@ -40,6 +40,7 @@ import PlayerPageConfig from "../pages/MainReports/SupPages/Players/Player/Playe
 import TeamsReportsConfig from "../pages/MainReports/SupPages/Teams/TeamsReportsConfig";
 import OneTeamPageConfig from "../pages/MainReports/SupPages/Teams/OneTeam/OneTeamConfig";
 import TeamMembersKpiConfig from "../pages/MainReports/SupPages/Teams/OneTeam/TeamMembersKpi/TeamMemberKpiConfig";
+import PlayerCertificateConfig from "../pages/player-certificate/PlayerCertificateConfig";
 
 const routeConfigs: PagesRouteConfig[] = [
   SignInConfig,
@@ -80,6 +81,7 @@ const routeConfigs: PagesRouteConfig[] = [
   TeamsReportsConfig,
   OneTeamPageConfig,
   TeamMembersKpiConfig,
+  PlayerCertificateConfig,
 ];
 
 const routes: AppRouteObject[] = [

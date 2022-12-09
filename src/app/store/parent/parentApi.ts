@@ -22,6 +22,8 @@ import {
   PlayerKpis,
   PlayerSports,
   PlayerMetricScores,
+  PlayerCertificate,
+  PlayerCertificates,
 } from "./../types/parent-types";
 import {
   BaseQueryFn,
@@ -304,6 +306,23 @@ export const parentsApi = createApi({
       providesTags: ["Parent"],
     }),
 
+    playerCertificate: query<PlayerCertificate, string>({
+      query: (id) => ({
+        url: `/certificate/${id}`,
+      }),
+      providesTags: ["Parent"],
+    }),
+
+    playerCertificates: query<
+      PlayerCertificates,
+      { player_id: number; page?: number }
+    >({
+      query: (player_id) => ({
+        url: `/player-certificates/${player_id}`,
+      }),
+      providesTags: ["Parent"],
+    }),
+
     selectSubscription: mutation<SelectSubscriptionRes, SelectSubscription>({
       query: (body) => ({
         url: "/select-subscription/",
@@ -345,4 +364,6 @@ export const {
   usePlayerModerateQuery,
   usePlayerStrengthQuery,
   usePlayerWeaknessQuery,
+  usePlayerCertificateQuery,
+  usePlayerCertificatesQuery,
 } = parentsApi;

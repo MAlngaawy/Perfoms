@@ -78,7 +78,7 @@ export type PlayerCoachTeams = BaseGetAllType & {
 };
 
 export type Player = {
-  id: 0;
+  id: number;
   attendances: Attendance[];
   parent: User;
   sport: Sport;
@@ -310,4 +310,32 @@ export type ParentUpcomingEvents = BaseGetAllType & {
     club: ParentClub;
     upcoming: boolean;
   }[];
+};
+
+export type PlayerCertificate = {
+  id: number;
+  player: {
+    id: number;
+    name: string;
+    icon: string;
+    icon_url: string;
+    parent: number;
+  };
+  coach: {
+    id: number;
+    first_name: string;
+    last_name: string;
+    avatar: string;
+  };
+  club: {
+    id: number;
+    name: string;
+    icon: string;
+    icon_url: string;
+  };
+  team: number;
+};
+
+export type PlayerCertificates = BaseGetAllType & {
+  results: PlayerCertificate[];
 };
