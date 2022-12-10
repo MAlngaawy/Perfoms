@@ -77,6 +77,7 @@ const coachExp = {
 
 const CoachProfilePage = (props: Props) => {
   const [editMode, setEditMode] = useState(false);
+  const { data: user, refetch } = useUserQuery(null);
 
   return (
     <>
@@ -101,26 +102,9 @@ const CoachProfilePage = (props: Props) => {
         <Grid.Col xs={12} md={3}>
           <CoachPersonalInfo
             editMode={editMode}
-            id={1}
-            role="Coach"
-            name="Mohammed Ali"
-            teams={["Team 1", "Team 2", "Team 3", "Team 1", "Team 2", "Team 3"]}
-            sport="Taekwondo"
-            bio="Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic dolorum nihil sunt cum tempore numquam, alias laboriosam similique eaque perferendis temporibus repellat? Delectus deserunt aspernatur saepe voluptas ad. Deserunt, excepturi!"
-            education={[
-              {
-                from: "10/11/2022",
-                to: "11/11/2025",
-                degree: "Bachelor of Physical Education",
-                universty: "Universty of cairo",
-              },
-              {
-                from: "10/11/2022",
-                to: "11/11/2025",
-                degree: "Bachelor of Physical Education",
-                universty: "Universty of cairo",
-              },
-            ]}
+            refetch={refetch}
+            data={user}
+            type={"profile"}
           />
         </Grid.Col>
         <Grid.Col xs={12} md={7}>

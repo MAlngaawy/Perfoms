@@ -55,9 +55,36 @@ export type PlayerCoach = {
   avatar: string;
   first_name: string;
   last_name: string;
-  details: {} & { education: string };
+  details?: Details;
   job: string;
   dob: string;
+  bio?: string;
+  // Missing data
+  // sport: string;
+  // type: "Coach" | "Supervisor";
+};
+
+export type Details = {
+  bio?: string;
+  education?: {
+    from?: string;
+    to?: string;
+    degree?: string;
+    universty?: string;
+  };
+  experinces?: {
+    from?: Date;
+    to?: Date;
+    name?: string;
+    description?: string;
+  }[];
+  qualifications?: string[];
+  courses?: string[];
+  achievements?: {
+    type?: string;
+    year?: string;
+    place?: string;
+  };
 };
 
 export type PlayerCoachTeam = {

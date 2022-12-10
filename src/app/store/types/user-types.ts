@@ -1,5 +1,6 @@
 import { BaseGetAllType } from "./base-types";
-import { Player } from "./parent-types";
+import { Details, Player } from "./parent-types";
+import { Team } from "~/app/store/types/coach-types";
 export type LoginUserBody = {
   mobile: string;
   password: string;
@@ -32,13 +33,14 @@ export type User = {
   user_type: string;
   mobile: string;
   bio: string;
-  details: object;
+  details?: Details;
   avatar: string;
   city: string;
   job: string;
   dob: string;
   club: number;
   full_name?: string;
+  teams?: Partial<Team>[];
 };
 
 export type UpdateProfile = Partial<User>;

@@ -1,4 +1,4 @@
-import React, { useState, ReactNode } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Grid,
   Button,
@@ -6,191 +6,166 @@ import {
   Group,
   Input,
   Textarea,
-  MultiSelect,
   Avatar,
 } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
-
 import AppIcons from "../core/AppIcons";
-import { Controller, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import Resizer from "react-image-file-resizer";
-import cn from "classnames";
 import SubmitButton from "~/@main/components/SubmitButton";
-import { useUserQuery } from "~/app/store/user/userApi";
-import { usePlayerCoachQuery } from "~/app/store/parent/parentApi";
-import { useParams } from "react-router-dom";
+import __ from "lodash";
+import { User } from "~/app/store/types/user-types";
+import { PlayerCoach } from "~/app/store/types/parent-types";
+import { axiosInstance } from "~/app/configs/dataService";
 
 // Props Types
 type Props = {
-  id: number;
-  role?: "Coach" | "Supervisor";
-  photo?: string;
-  name: string;
-  sport?: string;
-  bio?: string;
-  teams: string[];
-  education: {
-    from?: string;
-    to?: string;
-    degree: string;
-    universty?: string;
-  }[];
+  data: User | PlayerCoach | undefined;
   editMode?: boolean;
+  refetch?: any;
+  type: "profile" | "cv";
 };
 
-const CoachPersonalInfo = (props: Props) => {
-  const [data, setData] = useState();
-
-  const { data: user } = useUserQuery(null);
-  console.log(user);
-
-  const { id } = useParams();
-
-  const { data: coachData } = usePlayerCoachQuery(
-    { id: (id !== undefined && +id) || 1 },
-    { skip: !id }
-  );
-
+const CoachPersonalInfo = ({ data, editMode, refetch, type }: Props) => {
   return (
     <div className="bg-white flex flex-col gap-4 h-full rounded-lg md:rounded-2xl p-4">
-      <h3 className="text-base font-medium text-center">
-        {props.role ? props.role : "Coach"}
-      </h3>
+      <h3 className="text-base font-medium text-center">Coach</h3>
       <div className="flex md:flex-col justify-center items-center gap-4">
         <div className="flex justify-center items-center">
           <Avatar
             className="w-32 h-32 object-cover transition-all delay-75 rounded-lg group-hover:border border-white box-border"
-            src={
-              user?.user_type !== "Parent" ? user?.avatar : coachData?.avatar
-            }
+            src={data?.avatar}
             alt="Profile_Picture"
           />
         </div>
         <div className="flex flex-col justify-center items-center gap-2">
           <h2 className="text-xl ">
-            {user?.user_type !== "Parent"
-              ? user?.first_name + " " + user?.last_name
-              : coachData?.first_name + " " + coachData?.last_name}
+            {data?.first_name + " " + data?.last_name}
           </h2>
           <h4 className="text-perfBlue group-hover:text-white text-xs">
-            {props.sport} Coach
+            {data?.job} Coach
           </h4>
           <Button className=" border border-perfBlue rounded-lg font-normal text-perfBlue hover:text-white">
             Send Message
           </Button>
         </div>
       </div>
-      <div className="profile text-left">
-        <h3 className="text-base font-medium text-perfLightBlack">Profile</h3>
-        <p className="font-normal text-perfGray3 text-sm">
-          {props.bio ? props.bio : "No Bio"}
-        </p>
-      </div>
-      <div className="teams  text-left">
-        <h3 className="text-base font-medium text-perfLightBlack">Teams</h3>
-        <Grid gutter={5}>
-          {props.teams.map((team) => (
-            <Grid.Col className="font-normal text-perfGray3 text-sm" span={6}>
-              <li>{team}</li>
-            </Grid.Col>
-          ))}
-        </Grid>
-      </div>
-      <div className="education text-left">
-        <h3 className="text-base font-medium text-perfLightBlack">Education</h3>
-        {props.education.map((education) => (
-          <div className="my-2">
-            <p className="date text-xs font-normal text-perfGray3">
-              {education.from || "-/--/----"} - {education.from || "-/--/----"}
-            </p>
-            <h2>{education.degree}</h2>
-            <p className="date text-xs font-normal text-perfGray3">
-              {education.universty}
+
+      <div className="flex flex-wrap justify-between">
+        <div className="profile text-left">
+          <div>
+            <h3 className="text-base font-medium text-perfLightBlack">
+              Profile
+            </h3>
+            <p className="font-normal text-perfGray3 text-sm">
+              {data?.bio ? data?.bio : "No Bio"}
             </p>
           </div>
-        ))}
+          <div className="teams my-4 text-left">
+            <h3 className="text-base font-medium text-perfLightBlack">Teams</h3>
+            <div className="flex gap-4">
+              {data?.teams?.map((team) => (
+                <div className="font-normal text-perfGray3 text-sm">
+                  <li>{team.name}</li>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="education text-left">
+          <h3 className="text-base font-medium text-perfLightBlack">
+            Education
+          </h3>
+
+          <div className="my-2">
+            <p className="date text-xs font-normal text-perfGray3">
+              {data?.details?.education
+                ? data?.details?.education.from
+                : "-/--/----"}{" "}
+              -
+              {data?.details?.education
+                ? data?.details?.education.to
+                : "-/--/----"}
+            </p>
+            <h2>
+              {data?.details?.education
+                ? data?.details?.education.degree
+                : "No Data"}
+            </h2>
+            <p className="date text-xs font-normal text-perfGray3">
+              {data?.details?.education
+                ? data?.details?.education.universty
+                : ""}
+            </p>
+          </div>
+        </div>
       </div>
 
-      {props.editMode && <EditCoachData />}
+      {type === "profile" && editMode && (
+        <EditCoachData
+          refetch={() => {
+            if (refetch) refetch();
+          }}
+          data={data}
+        />
+      )}
     </div>
   );
 };
 
 export default CoachPersonalInfo;
 
+type Edit = {
+  data: User | PlayerCoach | undefined;
+  refetch: any;
+};
 // Edit Coach Personal Data Modal
-function EditCoachData() {
+function EditCoachData({ data, refetch }: Edit) {
   const [opened, setOpened] = useState(false);
   const [playerImage, setPlayerImage] = React.useState<string | unknown>("");
-  const [playerImagePreview, setPlayerImagePreview] = React.useState("null");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [userAvatar, setUserAvatar] = useState<File>();
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Form Schema
-  const schema = yup.object().shape({
-    // image: yup.mixed().required("File is required"),
-    name: yup.string().required("Your child name is Required!"),
-    bio: yup.string(),
-    teams: yup.array().required(),
-    universty: yup.string(),
-    degree: yup.string(),
-    startYear: yup.date(),
-    endYear: yup.date(),
-  });
+  const onSubmitFunction = (e: any) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    console.log(formData.get("degree"));
+    const addedDetails = {
+      education: {
+        from: formData.get("from"),
+        to: formData.get("to"),
+        degree: formData.get("degree"),
+        universty: formData.get("universty"),
+      },
+    };
 
-  // use Form Config
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    control,
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
-
-  // Submit Form Function
-  const onSubmitFunction = (data: any) => {
-    console.log({ ...data, icon: playerImage });
-    setOpened(false);
-    setPlayerImage(null);
-    reset({
-      image: "",
-      name: "",
-      bio: "",
-      teams: [],
-      universty: "",
-      degree: "",
-      startYear: "",
-      endYear: "",
-    });
-  };
-
-  // Image Functions
-  // Resize the image size
-  const resizeFile = (file: any) =>
-    new Promise((resolve) => {
-      Resizer.imageFileResizer(
-        file,
-        100,
-        100,
-        "JPEG",
-        100,
-        0,
-        (uri: any) => {
-          resolve(uri);
-        },
-        "base64"
-      );
-    });
-
-  // function to access file uploaded then convert to base64 then add it to the data state
-  const uploadImage = async (e: any) => {
+    if (userAvatar) formData.append("avatar", userAvatar);
+    setIsLoading(true);
     try {
-      const file = e.target.files[0];
-      const image = await resizeFile(file);
-      console.log(image);
-      setPlayerImage(image);
+      axiosInstance
+        .patch("user-generals/update-profile/", formData)
+        .then((res) => {
+          setIsLoading(false);
+          setOpened(false);
+          setPlayerImage(null);
+          console.log(res);
+          refetch();
+        })
+        .catch(() => {
+          setIsLoading(false);
+        });
+
+      axiosInstance
+        .patch("user-generals/update-profile/", { details: addedDetails })
+        .then((res) => {
+          setIsLoading(false);
+          setOpened(false);
+          setPlayerImage(null);
+          console.log(res);
+          refetch();
+        })
+        .catch(() => {
+          setIsLoading(false);
+        });
     } catch (err) {
       console.log(err);
     }
@@ -199,115 +174,90 @@ function EditCoachData() {
   return (
     <>
       <Modal opened={opened} onClose={() => setOpened(false)}>
-        <form
-          className="flex flex-col gap-4 "
-          onSubmit={handleSubmit(onSubmitFunction)}
-        >
+        <form className="flex flex-col gap-4 " onSubmit={onSubmitFunction}>
           {/* Image Upload */}
-          <div className=" relative my-2 bg-gray-300 overflow-hidden flex justify-center  items-center  mx-auto w-28  h-28 rounded-lg ">
-            <Button
-              {...register("image")}
-              className="w-full h-full hover:bg-perfGray3"
-              component="label"
+          <div className="relative photo place-self-center w-28 h-28">
+            <Avatar
+              className="object-cover w-full h-full rounded-lg"
+              src={
+                (userAvatar && URL.createObjectURL(userAvatar)) || data?.avatar
+              }
+              alt="user-avatar"
+            />
+            <div
+              onClick={() =>
+                fileInputRef.current && fileInputRef.current.click()
+              }
             >
-              <img
-                className={cn("", {
-                  hidden: playerImage,
-                })}
-                src="/assets/images/Vector.png"
-                alt="upload icon"
+              <AppIcons
+                className="w-5 h-5 absolute top-2 cursor-pointer right-2 text-perfGray3 hover:text-perfGray1"
+                icon="PencilSquareIcon:outline"
               />
-              <img
-                className={cn(
-                  " absolute rounded-lg w-full -h-full max-w-full max-h-full object-cover left-0 top-0",
-                  {
-                    hidden: !playerImage,
-                  }
-                )}
-                src={playerImagePreview && playerImagePreview}
-                alt="upload icon"
-              />
-              <input
-                hidden
-                accept="image/*"
-                multiple
-                type="file"
-                onChange={(e: any) => {
-                  console.log(e.target.files[0]);
-                  setPlayerImagePreview(URL.createObjectURL(e.target.files[0]));
-                  uploadImage(e);
-                }}
-              />
-            </Button>
-            {errors.image && (
-              <p className="text-red text-xs text-left">File is required!</p>
-            )}
+            </div>
+            <input
+              ref={fileInputRef}
+              onChange={(e) =>
+                setUserAvatar(e?.currentTarget?.files?.[0] as File)
+              }
+              type="file"
+              className="hidden"
+              id={"avatar"}
+            />
           </div>
 
           {/*Name Input  */}
-          <Input.Wrapper
-            error={errors.name && (errors.name.message as ReactNode)}
-          >
-            <Input placeholder="Add Your Name" {...register("name")} />
-          </Input.Wrapper>
+          <Input
+            name="first_name"
+            defaultValue={data?.first_name}
+            id="firstName"
+          />
+          <Input
+            name="last_name"
+            defaultValue={data?.last_name}
+            id="lastName"
+          />
 
           {/* Bio Input */}
           <Textarea
+            name="bio"
+            defaultValue={data?.bio}
             placeholder="Your Bio"
-            withAsterisk
-            error={errors.bio && (errors.bio.message as ReactNode)}
-            {...register("bio")}
-          />
-
-          {/* Select Team MultiSelect Component */}
-          <Controller
-            {...register("teams")}
-            render={({ field }) => (
-              <MultiSelect
-                // className="w-full"
-                data={[
-                  { value: "1", label: "Tea One" },
-                  { value: "2", label: "Tea Two" },
-                ]}
-                placeholder="Select Your Teams"
-                {...field}
-                error={errors.teams && (errors.teams.message as ReactNode)}
-              />
-            )}
-            control={control}
           />
 
           {/*Degree Input  */}
-          <Input.Wrapper
-            error={errors.degree && (errors.degree.message as ReactNode)}
-          >
-            <Input placeholder="Degree" {...register("degree")} />
-          </Input.Wrapper>
+          <Input
+            name="degree"
+            defaultValue={data?.details?.education?.degree}
+            placeholder="Degree"
+          />
 
           {/*Universty Input  */}
-          <Input.Wrapper
-            error={errors.universty && (errors.universty.message as ReactNode)}
-          >
-            <Input placeholder="Universty Name" {...register("universty")} />
-          </Input.Wrapper>
+          <Input
+            name="universty"
+            defaultValue={data?.details?.education?.universty}
+            placeholder="Universty Name"
+          />
 
           {/* Start And End Year */}
-          <Controller
-            {...register("startYear")}
-            render={({ field }) => (
-              <DatePicker {...field} placeholder="Pick Start date" />
-            )}
-            control={control}
-          />
-          <Controller
-            {...register("endYear")}
-            render={({ field }) => (
-              <DatePicker {...field} placeholder="Pick End date" />
-            )}
-            control={control}
+          <DatePicker
+            inputFormat="DD/MM/YYYY"
+            defaultValue={
+              new Date(data?.details?.education?.from as unknown as Date)
+            }
+            name="from"
+            placeholder="Pick Start date"
           />
 
-          <SubmitButton isLoading={false} text="Send" />
+          <DatePicker
+            inputFormat="DD/MM/YYYY"
+            defaultValue={
+              new Date(data?.details?.education?.to as unknown as Date)
+            }
+            name="to"
+            placeholder="Pick End date"
+          />
+
+          <SubmitButton isLoading={isLoading} text="Send" />
         </form>
       </Modal>
 

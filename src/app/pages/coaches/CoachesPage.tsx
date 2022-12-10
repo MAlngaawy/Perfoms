@@ -67,7 +67,7 @@ const CoachesPage = (props: Props) => {
                     id={coach.id}
                     role={"Coach"}
                     name={`${coach.first_name} ${coach.last_name}`}
-                    education={coach.details?.education || "NA"}
+                    education={coach.details?.education?.degree || "NA"}
                     teams={coach.teams}
                     photo={coach.avatar}
                     sport={coach.job}

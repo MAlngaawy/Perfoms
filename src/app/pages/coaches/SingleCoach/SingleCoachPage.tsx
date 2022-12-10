@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Grid } from "@mantine/core";
 
 import CoachPersonalInfo from "~/@main/components/CoachPersonalInfo";
 import CoachExperince from "~/@main/components/CoachExperince";
 import CoachAchievements from "~/@main/components/CoachAchievements";
 import CustomBreadCrumbs from "~/@main/components/BreadCrumbs";
+import { usePlayerCoachQuery } from "~/app/store/parent/parentApi";
+import { useUserQuery } from "~/app/store/user/userApi";
+import { PlayerCoach } from "~/app/store/types/parent-types";
+import { User } from "~/app/store/types/user-types";
+import { useParams } from "react-router-dom";
+import __ from "lodash";
 
 type Props = {};
 
@@ -76,33 +82,30 @@ const coachExp = {
 };
 
 const SingleCoachPage = (props: Props) => {
+  const [data, setData] = useState<User | PlayerCoach>();
+
+  const { id } = useParams();
+
+  const { data: coachData } = usePlayerCoachQuery(
+    { id: (id !== undefined && +id) || 0 },
+    { skip: __.isNil(id) }
+  );
+
+  // useEffect(() => {
+  //   if (user?.user_type === "Parent") {
+  //     /// Set THe Data Based on the user type
+  //     setData(coachData);
+  //   } else {
+  //     setData(user);
+  //   }
+  // }, [user, coachData]);
+
   return (
     <div className=" container mx-auto">
       <CustomBreadCrumbs items={[{ title: "coaches", href: "/coaches" }]} />
       <Grid className="p-1 m-2" gutter="sm">
         <Grid.Col xs={12} md={3}>
-          <CoachPersonalInfo
-            id={1}
-            role="Coach"
-            name="Mohammed Ali"
-            teams={["Team 1", "Team 2", "Team 3", "Team 1", "Team 2", "Team 3"]}
-            sport="Taekwondo"
-            bio="Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic dolorum nihil sunt cum tempore numquam, alias laboriosam similique eaque perferendis temporibus repellat? Delectus deserunt aspernatur saepe voluptas ad. Deserunt, excepturi!"
-            education={[
-              {
-                from: "10/11/2022",
-                to: "11/11/2025",
-                degree: "Bachelor of Physical Education",
-                universty: "Universty of cairo",
-              },
-              {
-                from: "10/11/2022",
-                to: "11/11/2025",
-                degree: "Bachelor of Physical Education",
-                universty: "Universty of cairo",
-              },
-            ]}
-          />
+          <CoachPersonalInfo type={"cv"} data={coachData} />
         </Grid.Col>
         <Grid.Col xs={12} md={7}>
           <CoachExperince {...coachExp} />
