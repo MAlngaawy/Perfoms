@@ -242,7 +242,9 @@ function EditCoachData({ data, refetch }: Edit) {
           <DatePicker
             inputFormat="DD/MM/YYYY"
             defaultValue={
-              new Date(data?.details?.education?.from as unknown as Date)
+              data?.details?.education?.from
+                ? new Date(data?.details?.education?.from as unknown as Date)
+                : new Date()
             }
             name="from"
             placeholder="Pick Start date"
@@ -251,7 +253,9 @@ function EditCoachData({ data, refetch }: Edit) {
           <DatePicker
             inputFormat="DD/MM/YYYY"
             defaultValue={
-              new Date(data?.details?.education?.to as unknown as Date)
+              data?.details?.education?.to
+                ? new Date(data?.details?.education?.to as unknown as Date)
+                : new Date()
             }
             name="to"
             placeholder="Pick End date"

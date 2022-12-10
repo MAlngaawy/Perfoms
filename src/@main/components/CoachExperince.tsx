@@ -6,70 +6,66 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import SubmitButton from "~/@main/components/SubmitButton";
 import { DatePicker } from "@mantine/dates";
+import { User } from "~/app/store/types/user-types";
+import { Details, PlayerCoach } from "~/app/store/types/parent-types";
+import { useUpdateProfileMutation } from "~/app/store/user/userApi";
+import AppUtils from "../utils/AppUtils";
 
 type Props = {
-  experinces: {
-    start: string;
-    end: string;
-    title: string;
-    works: string[];
-  }[];
-  qualifications: string[];
-  courses: string[];
   editMode?: boolean;
+  data: User | PlayerCoach | undefined;
 };
 
-const CoachExperince = (props: Props) => {
+const CoachExperince = ({ data, editMode }: Props) => {
   return (
-    <div className="bg-white flex flex-col sm:flex-row gap-8 h-full rounded-lg md:rounded-2xl p-4  pt-10">
-      <div className="experinces">
+    <div className="bg-white flex flex-col sm:flex-row justify-between gap-8 h-full rounded-lg md:rounded-2xl p-4  pt-10">
+      <div className="experinces  sm:w-1/2">
         <>
           <TitleWithIcon name="Experinces" />
-          {props.experinces.map((oneExp) => (
-            <div className="flex flex-col ml-2 my-4">
-              <p className="text-xs font-normal text-perfGray3">
-                {oneExp.start} - {oneExp.end}
-              </p>
-              <h3 className="text-base font-semibold text-perfGray1">
-                {oneExp.title}
-              </h3>
-              <ul className="list-disc list-outside ml-8">
-                {oneExp.works.map((work) => (
-                  <li className="text-xs font-normal text-perfGray3  my-4">
-                    {work}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-          {props.editMode && <AddExperinces />}
+          <div className="flex flex-col ml-2 my-4">
+            <p className="text-xs font-normal text-perfGray3">
+              {data?.details?.experinces && data?.details?.experinces.from} /
+              {data?.details?.experinces && data?.details?.experinces.to}
+            </p>
+
+            <h3 className="text-base font-semibold text-perfGray1">
+              {data?.details?.experinces && data?.details?.experinces.name}
+            </h3>
+            <p className="text-xs font-normal text-perfGray3  my-4">
+              {data?.details?.experinces &&
+                data?.details?.experinces.description}
+            </p>
+          </div>
+          {editMode && <AddExperinces data={data?.details} />}
         </>
       </div>
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6  sm:w-1/2">
         <div className="qualifications">
           <TitleWithIcon name="Core Qualifications" />
           <ul className="list-disc list-outside  ml-8">
-            {props.qualifications.map((oneQualifications) => (
-              <li
-                key={oneQualifications}
-                className="text-xs font-normal text-perfGray3 my-4"
-              >
-                {oneQualifications}
-              </li>
-            ))}
+            {data?.details?.qualifications &&
+              data?.details?.qualifications.map((oneQualifications: any) => (
+                <li
+                  key={oneQualifications}
+                  className="text-xs font-normal text-perfGray3 my-4"
+                >
+                  {oneQualifications}
+                </li>
+              ))}
           </ul>
-          {props.editMode && <AddQualifications />}
+          {editMode && <AddQualifications data={data?.details} />}
         </div>
         <div className="courses">
           <TitleWithIcon name="Courses" />
           <ul className="list-disc list-outside ml-8">
-            {props.courses.map((course) => (
-              <li className="text-xs font-normal text-perfGray3 my-4">
-                {course}
-              </li>
-            ))}
+            {data?.details?.courses &&
+              data?.details?.courses.map((course: any) => (
+                <li className="text-xs font-normal text-perfGray3 my-4">
+                  {course}
+                </li>
+              ))}
           </ul>
-          {props.editMode && <AddCourses />}
+          {editMode && <AddCourses data={data?.details} />}
         </div>
       </div>
     </div>
@@ -93,12 +89,12 @@ const TitleWithIcon = ({ name }: { name: string }) => {
 };
 
 // Add Experinces Modal
-function AddExperinces() {
+function AddExperinces({ data: oldDetails }: { data: Details | undefined }) {
   const [opened, setOpened] = useState(false);
   // Form Schema
   const schema = yup.object().shape({
-    startYear: yup.date(),
-    endYear: yup.date(),
+    startYear: yup.string(),
+    endYear: yup.string(),
     title: yup.string().required(),
     works: yup.string(),
   });
@@ -114,15 +110,21 @@ function AddExperinces() {
     resolver: yupResolver(schema),
   });
 
+  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
+
   // Submit Form Function
   const onSubmitFunction = (data: any) => {
-    console.log(data);
     setOpened(false);
-    reset({
-      startYear: "",
-      endYear: "",
-      title: "",
-      works: "",
+    updateProfile({
+      details: {
+        ...oldDetails,
+        experinces: {
+          from: AppUtils.formatDate(new Date(data.startYear)),
+          to: AppUtils.formatDate(new Date(data.endYear)),
+          name: data.title,
+          description: data.works,
+        },
+      },
     });
   };
   return (
@@ -136,21 +138,43 @@ function AddExperinces() {
           <Input.Wrapper
             error={errors.name && (errors.name.message as ReactNode)}
           >
-            <Input placeholder="Add Title" {...register("title")} />
+            <Input
+              defaultValue={oldDetails?.experinces?.name}
+              placeholder="Add Title"
+              {...register("title")}
+            />
           </Input.Wrapper>
 
           {/* Start And End Year */}
           <Controller
             {...register("startYear")}
             render={({ field }) => (
-              <DatePicker {...field} placeholder="Pick Start date" />
+              <DatePicker
+                inputFormat="DD/MM/YYYY"
+                defaultValue={
+                  oldDetails?.experinces?.from
+                    ? new Date(oldDetails?.experinces?.from as unknown as Date)
+                    : new Date()
+                }
+                {...field}
+                placeholder="Pick Start date"
+              />
             )}
             control={control}
           />
           <Controller
             {...register("endYear")}
             render={({ field }) => (
-              <DatePicker {...field} placeholder="Pick End date" />
+              <DatePicker
+                inputFormat="DD/MM/YYYY"
+                defaultValue={
+                  oldDetails?.experinces?.to
+                    ? new Date(oldDetails?.experinces?.to as unknown as Date)
+                    : new Date()
+                }
+                {...field}
+                placeholder="Pick End date"
+              />
             )}
             control={control}
           />
@@ -159,11 +183,12 @@ function AddExperinces() {
           <Textarea
             placeholder="Describe the experinces you got"
             withAsterisk
+            defaultValue={oldDetails?.experinces?.description}
             error={errors.bio && (errors.bio.message as ReactNode)}
             {...register("works")}
           />
 
-          <SubmitButton isLoading={false} text="Send" />
+          <SubmitButton isLoading={isLoading} text="Send" />
         </form>
       </Modal>
 
@@ -180,7 +205,11 @@ function AddExperinces() {
 }
 
 // Add Qualifications Modal
-function AddQualifications() {
+function AddQualifications({
+  data: oldDetails,
+}: {
+  data: Details | undefined;
+}) {
   const [opened, setOpened] = useState(false);
 
   const schema = yup.object().shape({
@@ -198,8 +227,18 @@ function AddQualifications() {
     resolver: yupResolver(schema),
   });
 
+  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
+
   const onSubmit = (data: any) => {
-    console.log(data);
+    const oldQualifications = oldDetails?.qualifications || [];
+
+    updateProfile({
+      details: {
+        ...oldDetails,
+        qualifications: [...oldQualifications, data.qualification],
+      },
+    });
+
     reset({ qualification: "" });
     setOpened(false);
   };
@@ -243,7 +282,7 @@ function AddQualifications() {
 }
 
 // Add Courses Modal
-function AddCourses() {
+function AddCourses({ data: oldDetails }: { data: Details | undefined }) {
   const [opened, setOpened] = useState(false);
 
   const schema = yup.object().shape({
@@ -258,9 +297,18 @@ function AddCourses() {
   } = useForm({
     resolver: yupResolver(schema),
   });
+  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
 
   const onSubmit = (data: any) => {
-    console.log(data);
+    const oldCourses = oldDetails?.courses || [];
+
+    updateProfile({
+      details: {
+        ...oldDetails,
+        courses: [...oldCourses, data.course],
+      },
+    });
+
     reset({ course: "" });
     setOpened(false);
   };
@@ -270,7 +318,7 @@ function AddCourses() {
       <Modal
         opened={opened}
         onClose={() => {
-          reset({ qualification: "" });
+          reset({ course: "" });
           setOpened(false);
         }}
       >

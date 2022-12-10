@@ -73,18 +73,18 @@ export type Details = {
     universty?: string;
   };
   experinces?: {
-    from?: Date;
-    to?: Date;
+    from?: string;
+    to?: string;
     name?: string;
     description?: string;
-  }[];
+  };
   qualifications?: string[];
   courses?: string[];
   achievements?: {
     type?: string;
     year?: string;
     place?: string;
-  };
+  }[];
 };
 
 export type PlayerCoachTeam = {

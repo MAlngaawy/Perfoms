@@ -4,99 +4,80 @@ import CoachPersonalInfo from "~/@main/components/CoachPersonalInfo";
 import CoachExperince from "~/@main/components/CoachExperince";
 import CoachAchievements from "~/@main/components/CoachAchievements";
 import { useState } from "react";
-import { useUserQuery } from "~/app/store/user/userApi";
+import {
+  useUpdateProfileMutation,
+  useUserQuery,
+} from "~/app/store/user/userApi";
+import AppIcons from "~/@main/core/AppIcons";
+import DeleteButton from "~/@main/components/ManagerComponents/SubComponents/DeleteButton";
+import { showNotification } from "@mantine/notifications";
 
 type Props = {};
 
-const coachAchev = [
-  {
-    type: "Gold medal",
-    year: 2015,
-    place: "olymbec games",
+const embtyDetails = {
+  bio: "",
+  experinces: {
+    from: "",
+    to: "",
+    description: "",
+    name: "",
   },
-  {
-    type: "Gold medal",
-    year: 2015,
-    place: "olymbec games",
-  },
-  {
-    type: "Gold medal",
-    year: 2015,
-    place: "olymbec games",
-  },
-  {
-    type: "Gold medal",
-    year: 2015,
-    place: "olymbec games",
-  },
-  {
-    type: "Gold medal",
-    year: 2015,
-    place: "olymbec games",
-  },
-];
-
-const coachExp = {
-  experinces: [
+  achievements: [
     {
-      start: "10/10/2020",
-      end: "10/10/2022",
-      title: "Martial Arts Instructor ",
-      works: [
-        "Voluptatibus sequi deserunt id.",
-        "quaerat optio ullam atque aut eligendi ea commodi?",
-        "Lorem, ipsum dolor sit amet consectetur adipisicing elit.",
-        "Eaque aspernatur suscipit fuga perferendis numquam quisquam non nesciunt error,",
-      ],
-    },
-    {
-      start: "10/10/2020",
-      end: "10/10/2022",
-      title: "Martial Arts Instructor ",
-      works: [
-        "Voluptatibus sequi deserunt id.",
-        "quaerat optio ullam atque aut eligendi ea commodi?",
-        "Lorem, ipsum dolor sit amet consectetur adipisicing elit.",
-        "Eaque aspernatur suscipit fuga perferendis numquam quisquam non nesciunt error,",
-      ],
+      place: "",
+      type: "",
+      year: "",
     },
   ],
-  qualifications: [
-    "Voluptatibus sequi deserunt id.",
-    "quaerat optio ullam atque aut eligendi ea commodi?",
-    "Lorem, ipsum dolor sit amet consectetur adipisicing elit.",
-    "Eaque aspernatur suscipit fuga perferendis numquam quisquam non nesciunt error,",
-  ],
-  courses: [
-    "Voluptatibus sequi deserunt id.",
-    "quaerat optio ullam atque aut eligendi ea commodi?",
-    "Lorem, ipsum dolor sit amet consectetur adipisicing elit.",
-    "Eaque aspernatur suscipit fuga perferendis numquam quisquam non nesciunt error,",
-  ],
+  education: {
+    degree: "",
+    from: "",
+    to: "",
+    universty: "",
+  },
 };
 
 const CoachProfilePage = (props: Props) => {
   const [editMode, setEditMode] = useState(false);
   const { data: user, refetch } = useUserQuery(null);
 
+  const [updateProfile] = useUpdateProfileMutation();
+
   return (
-    <>
+    <div className="mx-2">
       <div className="edit w-full px-20 flex justify-end items-center mt-2">
         {editMode ? (
           <button
-            className="bg-perfBlue  border rounded-lg text-white py-2 px-6 cursor-pointer transform hover:scale-105"
+            className="bg-perfBlue  border rounded-lg text-white py-1 px-6 cursor-pointer transform hover:scale-105"
             onClick={() => setEditMode(false)}
           >
             Save
           </button>
         ) : (
           <button
-            className="bg-transparent rounded-lg border-perfBlue border text-perfBlue py-2 px-6 cursor-pointer transform hover:scale-105"
+            className="bg-transparent rounded-lg border-perfBlue border text-perfBlue py-1 px-6 cursor-pointer transform hover:scale-105"
             onClick={() => setEditMode(true)}
           >
             Edit
           </button>
         )}
+        {/* {editMode && (
+          <DeleteButton
+            name="Delete All CV Data"
+            type="coach"
+            deleteFun={() => {
+              updateProfile({
+                details: embtyDetails,
+              }).then(() => {
+                showNotification({
+                  message: "All Data Deleted",
+                  title: "Done",
+                  color: "green",
+                });
+              });
+            }}
+          />
+        )} */}
       </div>
       <Grid className="p-4" gutter="sm">
         <Grid.Col xs={12} md={3}>
@@ -108,13 +89,13 @@ const CoachProfilePage = (props: Props) => {
           />
         </Grid.Col>
         <Grid.Col xs={12} md={7}>
-          <CoachExperince editMode={editMode} {...coachExp} />
+          <CoachExperince editMode={editMode} data={user} />
         </Grid.Col>
         <Grid.Col xs={12} md={2}>
-          <CoachAchievements editMode={editMode} data={coachAchev} />
+          <CoachAchievements editMode={editMode} data={user?.details} />
         </Grid.Col>
       </Grid>
-    </>
+    </div>
   );
 };
 

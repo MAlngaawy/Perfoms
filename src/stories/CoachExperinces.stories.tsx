@@ -18,41 +18,4 @@ const Template: ComponentStory<typeof CoachExperince> = (args) => (
 
 export const Primary = Template.bind({});
 
-Primary.args = {
-  experinces: [
-    {
-      start: "10/10/2020",
-      end: "10/10/2022",
-      title: "Martial Arts Instructor ",
-      works: [
-        "Voluptatibus sequi deserunt id.",
-        "quaerat optio ullam atque aut eligendi ea commodi?",
-        "Lorem, ipsum dolor sit amet consectetur adipisicing elit.",
-        "Eaque aspernatur suscipit fuga perferendis numquam quisquam non nesciunt error,",
-      ],
-    },
-    {
-      start: "10/10/2020",
-      end: "10/10/2022",
-      title: "Martial Arts Instructor ",
-      works: [
-        "Voluptatibus sequi deserunt id.",
-        "quaerat optio ullam atque aut eligendi ea commodi?",
-        "Lorem, ipsum dolor sit amet consectetur adipisicing elit.",
-        "Eaque aspernatur suscipit fuga perferendis numquam quisquam non nesciunt error,",
-      ],
-    },
-  ],
-  qualifications: [
-    "Voluptatibus sequi deserunt id.",
-    "quaerat optio ullam atque aut eligendi ea commodi?",
-    "Lorem, ipsum dolor sit amet consectetur adipisicing elit.",
-    "Eaque aspernatur suscipit fuga perferendis numquam quisquam non nesciunt error,",
-  ],
-  courses: [
-    "Voluptatibus sequi deserunt id.",
-    "quaerat optio ullam atque aut eligendi ea commodi?",
-    "Lorem, ipsum dolor sit amet consectetur adipisicing elit.",
-    "Eaque aspernatur suscipit fuga perferendis numquam quisquam non nesciunt error,",
-  ],
-};
+Primary.args = {};

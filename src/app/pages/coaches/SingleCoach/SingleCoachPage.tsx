@@ -108,10 +108,10 @@ const SingleCoachPage = (props: Props) => {
           <CoachPersonalInfo type={"cv"} data={coachData} />
         </Grid.Col>
         <Grid.Col xs={12} md={7}>
-          <CoachExperince {...coachExp} />
+          <CoachExperince data={coachData} />
         </Grid.Col>
         <Grid.Col xs={12} md={2}>
-          <CoachAchievements data={coachAchev} />
+          <CoachAchievements data={coachData?.details} />
         </Grid.Col>
       </Grid>
     </div>
