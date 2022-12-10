@@ -59,7 +59,11 @@ const OneNotification = ({
           <h2 className=" text-perfGray1 text-base md:text-xl font-bold">
             {senderName}
           </h2>
-          <p className=" text-perfGray3 text-sm font-medium">{message}</p>
+          <p className=" text-perfGray3 text-sm font-medium">
+            {message && message.length > 100
+              ? message?.substring(0, 50) + "......."
+              : message}
+          </p>
           <p className=" text-perfGray4 text-xs font-medium flex gap-1">
             <AppIcons className="w-3 h-3" icon="ClockIcon:outline" />{" "}
             <span>{created_at}</span>
