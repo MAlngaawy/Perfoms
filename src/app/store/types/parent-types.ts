@@ -77,7 +77,7 @@ export type Details = {
     to?: string;
     name?: string;
     description?: string;
-  }[];
+  };
   qualifications?: string[];
   courses?: string[];
   achievements?: {

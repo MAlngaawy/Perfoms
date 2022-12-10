@@ -80,7 +80,7 @@ const CoachProfilePage = (props: Props) => {
   const { data: user, refetch } = useUserQuery(null);
 
   return (
-    <>
+    <div className="mx-4">
       <div className="edit w-full px-20 flex justify-end items-center mt-2">
         {editMode ? (
           <button
@@ -114,7 +114,7 @@ const CoachProfilePage = (props: Props) => {
           <CoachAchievements editMode={editMode} data={coachAchev} />
         </Grid.Col>
       </Grid>
-    </>
+    </div>
   );
 };
 
