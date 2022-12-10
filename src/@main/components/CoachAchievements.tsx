@@ -33,7 +33,7 @@ const CoachAchievements = ({ data, editMode }: Props) => {
                 />
               </div>
               <div className="details">
-                <h2 className="type font-medium text-perfLightBlack">
+                <h2 className="type text-xs font-medium text-perfLightBlack">
                   {item.type}
                 </h2>
                 <p className="text-xs text-perfGray3">
