@@ -8,10 +8,11 @@ import classNames from "classnames";
 type Props = {
   name: string;
   icon?: string;
-  data: {
-    name: "strengths" | "moderate" | "weaknesses" | string;
-    value: number;
-  }[];
+  statistics: {
+    strength: number;
+    moderate: number;
+    weakness: number;
+  };
   chartColors?: string[];
   onClickFun?: any;
   clickable?: boolean;
@@ -22,7 +23,7 @@ const COLORS = ["#27AE60", "#F2994A", "#EB5757"];
 const ReportsChartCard = ({
   name,
   icon,
-  data,
+  statistics,
   chartColors = COLORS,
   onClickFun,
   clickable = true,
@@ -40,7 +41,7 @@ const ReportsChartCard = ({
     >
       <h2 className="w-full text-left">{name}</h2>
       <div className="flex relative w-full items-center justify-center">
-        <Example chartColors={chartColors} data={data} />
+        <Example chartColors={chartColors} data={statistics} />
       </div>
       <Divider />
       <div className="flex flex-col w-full items-center gap-4 text-sm">
@@ -52,12 +53,14 @@ const ReportsChartCard = ({
               }}
               className="w-4 h-4 rounded-full"
             ></span>
-            <h3> {data[0].name} </h3>
+            <h3> Strength </h3>
           </div>
           <h2>
             {Math.floor(
-              (data[0].value /
-                (data[0].value + data[1].value + data[2].value)) *
+              (statistics.strength /
+                (statistics.strength +
+                  statistics.moderate +
+                  statistics.weakness)) *
                 100
             )}
             %
@@ -72,12 +75,14 @@ const ReportsChartCard = ({
               }}
               className="w-4 h-4  rounded-full"
             ></span>
-            <h3> {data[1].name} </h3>
+            <h3> Moderate </h3>
           </div>
           <h2>
             {Math.floor(
-              (data[1].value /
-                (data[0].value + data[1].value + data[2].value)) *
+              (statistics.moderate /
+                (statistics.strength +
+                  statistics.moderate +
+                  statistics.weakness)) *
                 100
             )}
             %
@@ -92,12 +97,14 @@ const ReportsChartCard = ({
               }}
               className="w-4 h-4  rounded-full"
             ></span>
-            <h3> {data[2].name} </h3>
+            <h3> Weakness </h3>
           </div>
           <h2>
             {Math.floor(
-              (data[2].value /
-                (data[0].value + data[1].value + data[2].value)) *
+              (statistics.weakness /
+                (statistics.strength +
+                  statistics.moderate +
+                  statistics.weakness)) *
                 100
             )}
             %
@@ -111,10 +118,25 @@ const ReportsChartCard = ({
 export default ReportsChartCard;
 
 const Example = ({ data, chartColors }: any) => {
+  const newData = [
+    {
+      name: "strengths",
+      value: data.strength,
+    },
+    {
+      name: "moderate",
+      value: data.moderate,
+    },
+    {
+      name: "weaknesses",
+      value: data.weakness,
+    },
+  ];
+
   return (
     <PieChart width={150} height={150}>
       <Pie
-        data={data}
+        data={newData}
         cx={"50%"}
         cy={"50%"}
         innerRadius={40}
@@ -122,7 +144,7 @@ const Example = ({ data, chartColors }: any) => {
         fill="#8884d8"
         dataKey="value"
       >
-        {data.map((entry: any, index: any) => (
+        {newData.map((entry: any, index: any) => (
           <Cell
             key={`cell-${index}`}
             fill={chartColors[index % COLORS.length]}

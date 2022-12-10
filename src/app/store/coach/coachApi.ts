@@ -8,6 +8,7 @@ import {
   Team,
   TeamAttendanceDays,
   TeamPerformanceMetrics,
+  TeamsStatistics,
   UpdatePlayerPKM,
 } from "./../types/coach-types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
@@ -173,6 +174,13 @@ export const coachApi = createApi({
         params,
       }),
     }),
+
+    coachTeamStatistics: query<TeamsStatistics, { pages?: number }>({
+      query: (params) => ({
+        url: `statistics/teams/`,
+        params,
+      }),
+    }),
   }),
 });
 
@@ -197,4 +205,5 @@ export const {
   useCoachTeamEventQuery,
   useCoachTeamEventFilesQuery,
   useMyClubQuery,
+  useCoachTeamStatisticsQuery,
 } = coachApi;

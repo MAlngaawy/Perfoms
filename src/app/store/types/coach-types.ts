@@ -58,6 +58,22 @@ export type GeneratePdfDocs = {
   doc_about: "Performance" | "Attendance" | "Matches";
 };
 
+export type TeamStatistics = {
+  id: number;
+  name: string;
+  icon: string;
+  icon_url: string;
+  statistics: {
+    strength: number;
+    moderate: number;
+    weakness: number;
+  };
+};
+
+export type TeamsStatistics = BaseGetAllType & {
+  results: TeamStatistics[];
+};
+
 // export type Team = {
 //   id: number;
 //   players: string;
