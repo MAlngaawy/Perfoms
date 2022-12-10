@@ -18,51 +18,7 @@ const Template: ComponentStory<typeof CoachPersonalInfo> = (args) => (
 
 export const Primary = Template.bind({});
 
-Primary.args = {
-  id: 1,
-  role: "Coach",
-  name: "Mohammed Ali",
-  teams: ["Team 1", "Team 2", "Team 3", "Team 1", "Team 2", "Team 3"],
-  photo:
-    "https://st.depositphotos.com/1008939/1880/i/950/depositphotos_18807295-stock-photo-portrait-of-handsome-man.jpg",
-  sport: "Taekwondo",
-  bio: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic dolorum nihil sunt cum tempore numquam, alias laboriosam similique eaque perferendis temporibus repellat? Delectus deserunt aspernatur saepe voluptas ad. Deserunt, excepturi!",
-  education: [
-    {
-      from: "10/11/2022",
-      to: "11/11/2025",
-      degree: "Bachelor of Physical Education",
-      universty: "Universty of cairo",
-    },
-    {
-      from: "10/11/2022",
-      to: "11/11/2025",
-      degree: "Bachelor of Physical Education",
-      universty: "Universty of cairo",
-    },
-  ],
-};
+Primary.args = {};
 
 export const WithoutPhoto = Template.bind({});
-WithoutPhoto.args = {
-  id: 1,
-  role: "Coach",
-  name: "Mohammed Ali",
-  teams: ["Team 1", "Team 2", "Team 3", "Team 1", "Team 2", "Team 3"],
-  sport: "Taekwondo",
-  bio: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic dolorum nihil sunt cum tempore numquam, alias laboriosam similique eaque perferendis temporibus repellat? Delectus deserunt aspernatur saepe voluptas ad. Deserunt, excepturi!",
-  education: [
-    {
-      from: "10/11/2022",
-      to: "11/11/2025",
-      degree: "Bachelor of Physical Education",
-      universty: "Universty of cairo",
-    },
-    {
-      from: "10/11/2022",
-      to: "11/11/2025",
-      degree: "Bachelor of Physical Education",
-      universty: "Universty of cairo",
-    },
-  ],
-};
+WithoutPhoto.args = {};
