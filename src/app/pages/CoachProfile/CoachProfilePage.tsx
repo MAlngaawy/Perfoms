@@ -80,18 +80,18 @@ const CoachProfilePage = (props: Props) => {
   const { data: user, refetch } = useUserQuery(null);
 
   return (
-    <div className="mx-4">
+    <div className="mx-2">
       <div className="edit w-full px-20 flex justify-end items-center mt-2">
         {editMode ? (
           <button
-            className="bg-perfBlue  border rounded-lg text-white py-2 px-6 cursor-pointer transform hover:scale-105"
+            className="bg-perfBlue  border rounded-lg text-white py-1 px-6 cursor-pointer transform hover:scale-105"
             onClick={() => setEditMode(false)}
           >
             Save
           </button>
         ) : (
           <button
-            className="bg-transparent rounded-lg border-perfBlue border text-perfBlue py-2 px-6 cursor-pointer transform hover:scale-105"
+            className="bg-transparent rounded-lg border-perfBlue border text-perfBlue py-1 px-6 cursor-pointer transform hover:scale-105"
             onClick={() => setEditMode(true)}
           >
             Edit
@@ -111,7 +111,7 @@ const CoachProfilePage = (props: Props) => {
           <CoachExperince editMode={editMode} data={user} />
         </Grid.Col>
         <Grid.Col xs={12} md={2}>
-          <CoachAchievements editMode={editMode} data={coachAchev} />
+          <CoachAchievements editMode={editMode} data={user?.details} />
         </Grid.Col>
       </Grid>
     </div>

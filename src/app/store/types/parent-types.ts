@@ -84,7 +84,7 @@ export type Details = {
     type?: string;
     year?: string;
     place?: string;
-  };
+  }[];
 };
 
 export type PlayerCoachTeam = {

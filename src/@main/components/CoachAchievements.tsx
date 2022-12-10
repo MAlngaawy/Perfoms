@@ -3,17 +3,17 @@ import { Modal, Group, Input } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { Details } from "~/app/store/types/parent-types";
+import { useUpdateProfileMutation } from "~/app/store/user/userApi";
 
 type Props = {
-  data: {
-    type: string;
-    year: number;
-    place: string;
-  }[];
+  data: Details | undefined;
   editMode?: boolean;
 };
 
 const CoachAchievements = ({ data, editMode }: Props) => {
+  // const { data: user } = useUserQuery(null);
+
   return (
     <div className="bg-white flex flex-col gap-4 h-full rounded-lg md:rounded-2xl p-4 pt-10">
       <div className="title">
@@ -22,26 +22,27 @@ const CoachAchievements = ({ data, editMode }: Props) => {
         </h2>
       </div>
       <div className="prize flex flex-col xs:flex-row md:flex-col gap-4 justify-center items-center">
-        {data.map((item) => (
-          <div className="flex gap-2 justify-center items-center">
-            <div className="icon">
-              <img
-                src="/assets/images/medal.png"
-                className="w-10"
-                alt="medal"
-              />
+        {data?.achievements &&
+          data?.achievements.map((item) => (
+            <div className="flex gap-2 justify-center items-center">
+              <div className="icon">
+                <img
+                  src="/assets/images/medal.png"
+                  className="w-10"
+                  alt="medal"
+                />
+              </div>
+              <div className="details">
+                <h2 className="type font-medium text-perfLightBlack">
+                  {item.type}
+                </h2>
+                <p className="text-xs text-perfGray3">
+                  {item.year}, {item.place}
+                </p>
+              </div>
             </div>
-            <div className="details">
-              <h2 className="type font-medium text-perfLightBlack">
-                {item.type}
-              </h2>
-              <p className="text-xs text-perfGray3">
-                {item.year}, {item.place}{" "}
-              </p>
-            </div>
-          </div>
-        ))}
-        {editMode && <AddButton />}
+          ))}
+        {editMode && <AddButton data={data} />}
       </div>
     </div>
   );
@@ -51,7 +52,7 @@ export default CoachAchievements;
 
 // Add Achevment Form
 
-function AddButton() {
+function AddButton({ data: oldDetails }: { data: Details | undefined }) {
   const [opened, setOpened] = useState(false);
 
   // Form Schema
@@ -60,6 +61,8 @@ function AddButton() {
     year: yup.number().required(),
     place: yup.string().required(),
   });
+
+  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
 
   // use Form Config
   const {
@@ -73,8 +76,22 @@ function AddButton() {
 
   // Submit Form Function
   const onSubmitFunction = (data: any) => {
+    const oldAchievements = oldDetails?.achievements || [];
     console.log(data);
     setOpened(false);
+    updateProfile({
+      details: {
+        ...oldDetails,
+        achievements: [
+          ...oldAchievements,
+          {
+            type: data.type,
+            year: data.year,
+            place: data.place,
+          },
+        ],
+      },
+    });
     reset({ type: "", year: "", place: "" });
   };
 

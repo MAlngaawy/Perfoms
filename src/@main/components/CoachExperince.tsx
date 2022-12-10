@@ -122,7 +122,6 @@ function AddExperinces({ data: oldDetails }: { data: Details | undefined }) {
 
   // Submit Form Function
   const onSubmitFunction = (data: any) => {
-    console.log(data);
     setOpened(false);
     updateProfile({
       details: {
