@@ -18,32 +18,4 @@ const Template: ComponentStory<typeof CoachAchievements> = (args) => (
 
 export const Primary = Template.bind({});
 
-Primary.args = {
-  data: [
-    {
-      type: "Gold medal",
-      year: 2015,
-      place: "olymbec games",
-    },
-    {
-      type: "Gold medal",
-      year: 2015,
-      place: "olymbec games",
-    },
-    {
-      type: "Gold medal",
-      year: 2015,
-      place: "olymbec games",
-    },
-    {
-      type: "Gold medal",
-      year: 2015,
-      place: "olymbec games",
-    },
-    {
-      type: "Gold medal",
-      year: 2015,
-      place: "olymbec games",
-    },
-  ],
-};
+Primary.args = {};

@@ -7,13 +7,13 @@ import * as yup from "yup";
 import SubmitButton from "~/@main/components/SubmitButton";
 import { DatePicker } from "@mantine/dates";
 import { User } from "~/app/store/types/user-types";
-import { Details } from "~/app/store/types/parent-types";
+import { Details, PlayerCoach } from "~/app/store/types/parent-types";
 import { useUpdateProfileMutation } from "~/app/store/user/userApi";
 import AppUtils from "../utils/AppUtils";
 
 type Props = {
   editMode?: boolean;
-  data: User | undefined;
+  data: User | PlayerCoach | undefined;
 };
 
 const CoachExperince = ({ data, editMode }: Props) => {
@@ -44,7 +44,7 @@ const CoachExperince = ({ data, editMode }: Props) => {
           <TitleWithIcon name="Core Qualifications" />
           <ul className="list-disc list-outside  ml-8">
             {data?.details?.qualifications &&
-              data?.details?.qualifications.map((oneQualifications) => (
+              data?.details?.qualifications.map((oneQualifications: any) => (
                 <li
                   key={oneQualifications}
                   className="text-xs font-normal text-perfGray3 my-4"
@@ -59,7 +59,7 @@ const CoachExperince = ({ data, editMode }: Props) => {
           <TitleWithIcon name="Courses" />
           <ul className="list-disc list-outside ml-8">
             {data?.details?.courses &&
-              data?.details?.courses.map((course) => (
+              data?.details?.courses.map((course: any) => (
                 <li className="text-xs font-normal text-perfGray3 my-4">
                   {course}
                 </li>
