@@ -12,7 +12,7 @@ type Props = {};
 const thisWeek = () => {
   var curr = new Date(); // get current date
   var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
-  var last = first + 36; // last day is the first day + 6
+  var last = first + 6; // last day is the first day + 6
 
   return {
     firstday: new Date(curr.setDate(first)),
@@ -23,7 +23,7 @@ const thisWeek = () => {
 const lastWeek = () => {
   var curr = new Date(); // get current date
   var first = curr.getDate() - curr.getDay() - 7; // First day is the day of the month - the day of the week
-  var last = first + 36; // last day is the first day + 6
+  var last = first + 6; // last day is the first day + 6
 
   var firstday = new Date(curr.setDate(first));
   var lastday = new Date(curr.setDate(last));
@@ -95,11 +95,11 @@ const formatDate = (date: Date | null) => {
 
 const TimeFilter = (props: Props) => {
   const [value, setValue] = useState<[Date | null, Date | null]>([
-    thisWeek().firstday,
-    thisWeek().lastday,
+    lastWeek().firstday,
+    lastWeek().lastday,
   ]);
   const [opened, setOpened] = useState(false);
-  const [textValue, setTextValue] = useState<string>("This Week");
+  const [textValue, setTextValue] = useState<string>("Last Week");
   const windwSize = useWindowSize();
   const dispatch = useDispatch();
 
