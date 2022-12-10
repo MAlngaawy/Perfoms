@@ -6,70 +6,79 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import SubmitButton from "~/@main/components/SubmitButton";
 import { DatePicker } from "@mantine/dates";
+import { User } from "~/app/store/types/user-types";
+import { Details } from "~/app/store/types/parent-types";
+import { useUpdateProfileMutation } from "~/app/store/user/userApi";
 
 type Props = {
-  experinces: {
-    start: string;
-    end: string;
-    title: string;
-    works: string[];
-  }[];
-  qualifications: string[];
-  courses: string[];
+  // experinces: {
+  //   start: string;
+  //   end: string;
+  //   title: string;
+  //   works: string[];
+  // }[];
+  // qualifications: string[];
+  // courses: string[];
   editMode?: boolean;
+  data: User | undefined;
 };
 
-const CoachExperince = (props: Props) => {
+const CoachExperince = ({ data, editMode }: Props) => {
   return (
-    <div className="bg-white flex flex-col sm:flex-row gap-8 h-full rounded-lg md:rounded-2xl p-4  pt-10">
+    <div className="bg-white flex flex-col sm:flex-row justify-between gap-8 h-full rounded-lg md:rounded-2xl p-4  pt-10">
       <div className="experinces">
         <>
           <TitleWithIcon name="Experinces" />
-          {props.experinces.map((oneExp) => (
-            <div className="flex flex-col ml-2 my-4">
-              <p className="text-xs font-normal text-perfGray3">
-                {oneExp.start} - {oneExp.end}
-              </p>
-              <h3 className="text-base font-semibold text-perfGray1">
-                {oneExp.title}
-              </h3>
-              <ul className="list-disc list-outside ml-8">
-                {oneExp.works.map((work) => (
-                  <li className="text-xs font-normal text-perfGray3  my-4">
+          {data?.details?.experinces &&
+            data?.details?.experinces.map((oneExp) => (
+              <div className="flex flex-col ml-2 my-4">
+                <p className="text-xs font-normal text-perfGray3">
+                  {oneExp.from} - {oneExp.to}
+                </p>
+
+                <h3 className="text-base font-semibold text-perfGray1">
+                  {oneExp.name}
+                </h3>
+                <p className="text-xs font-normal text-perfGray3  my-4">
+                  {oneExp.description}
+                  {/* {oneExp.works.map((work) => (
+                  <li className="">
                     {work}
                   </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-          {props.editMode && <AddExperinces />}
+                ))} */}
+                </p>
+              </div>
+            ))}
+          {editMode && <AddExperinces data={data?.details} />}
         </>
       </div>
       <div className="flex flex-col gap-6">
         <div className="qualifications">
           <TitleWithIcon name="Core Qualifications" />
           <ul className="list-disc list-outside  ml-8">
-            {props.qualifications.map((oneQualifications) => (
-              <li
-                key={oneQualifications}
-                className="text-xs font-normal text-perfGray3 my-4"
-              >
-                {oneQualifications}
-              </li>
-            ))}
+            {data?.details?.qualifications &&
+              data?.details?.qualifications.map((oneQualifications) => (
+                <li
+                  key={oneQualifications}
+                  className="text-xs font-normal text-perfGray3 my-4"
+                >
+                  {oneQualifications}
+                </li>
+              ))}
           </ul>
-          {props.editMode && <AddQualifications />}
+          {editMode && <AddQualifications />}
         </div>
         <div className="courses">
           <TitleWithIcon name="Courses" />
           <ul className="list-disc list-outside ml-8">
-            {props.courses.map((course) => (
-              <li className="text-xs font-normal text-perfGray3 my-4">
-                {course}
-              </li>
-            ))}
+            {data?.details?.courses &&
+              data?.details?.courses.map((course) => (
+                <li className="text-xs font-normal text-perfGray3 my-4">
+                  {course}
+                </li>
+              ))}
           </ul>
-          {props.editMode && <AddCourses />}
+          {editMode && <AddCourses />}
         </div>
       </div>
     </div>
@@ -93,12 +102,12 @@ const TitleWithIcon = ({ name }: { name: string }) => {
 };
 
 // Add Experinces Modal
-function AddExperinces() {
+function AddExperinces({ data: oldDetails }: { data: Details | undefined }) {
   const [opened, setOpened] = useState(false);
   // Form Schema
   const schema = yup.object().shape({
-    startYear: yup.date(),
-    endYear: yup.date(),
+    startYear: yup.string(),
+    endYear: yup.string(),
     title: yup.string().required(),
     works: yup.string(),
   });
@@ -114,10 +123,25 @@ function AddExperinces() {
     resolver: yupResolver(schema),
   });
 
+  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
+
   // Submit Form Function
   const onSubmitFunction = (data: any) => {
     console.log(data);
     setOpened(false);
+    updateProfile({
+      details: {
+        ...oldDetails,
+        experinces: [
+          {
+            from: data.startYear,
+            to: data.endYear,
+            name: data.title,
+            description: data.works,
+          },
+        ],
+      },
+    });
     reset({
       startYear: "",
       endYear: "",
@@ -143,14 +167,22 @@ function AddExperinces() {
           <Controller
             {...register("startYear")}
             render={({ field }) => (
-              <DatePicker {...field} placeholder="Pick Start date" />
+              <DatePicker
+                inputFormat="DD/MM/YYYY"
+                {...field}
+                placeholder="Pick Start date"
+              />
             )}
             control={control}
           />
           <Controller
             {...register("endYear")}
             render={({ field }) => (
-              <DatePicker {...field} placeholder="Pick End date" />
+              <DatePicker
+                inputFormat="DD/MM/YYYY"
+                {...field}
+                placeholder="Pick End date"
+              />
             )}
             control={control}
           />

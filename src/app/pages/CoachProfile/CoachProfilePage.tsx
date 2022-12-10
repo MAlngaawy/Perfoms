@@ -108,7 +108,7 @@ const CoachProfilePage = (props: Props) => {
           />
         </Grid.Col>
         <Grid.Col xs={12} md={7}>
-          <CoachExperince editMode={editMode} {...coachExp} />
+          <CoachExperince editMode={editMode} data={user} />
         </Grid.Col>
         <Grid.Col xs={12} md={2}>
           <CoachAchievements editMode={editMode} data={coachAchev} />

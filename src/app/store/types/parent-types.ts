@@ -73,8 +73,8 @@ export type Details = {
     universty?: string;
   };
   experinces?: {
-    from?: Date;
-    to?: Date;
+    from?: string;
+    to?: string;
     name?: string;
     description?: string;
   }[];
