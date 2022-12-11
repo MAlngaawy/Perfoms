@@ -2,6 +2,7 @@ import {
   CoachPlayerInfo,
   CoachTeamAttendance,
   CoachTeamPerformance,
+  GenerateCertification,
   PlayerParent,
   SendBulkNotifications,
   sendNotifications,
@@ -173,6 +174,17 @@ export const coachApi = createApi({
         params,
       }),
     }),
+
+    coachGenerateCertificate: mutation<
+      GenerateCertification,
+      GenerateCertification
+    >({
+      query: (body) => ({
+        url: `generate-certificate/`,
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -197,4 +209,5 @@ export const {
   useCoachTeamEventQuery,
   useCoachTeamEventFilesQuery,
   useMyClubQuery,
+  useCoachGenerateCertificateMutation,
 } = coachApi;

@@ -47,7 +47,7 @@ const Certificate = (props: Props) => {
           onSubmit={handleSubmit(sendCertificate)}
           className=" py-28 w-72 flex flex-col justify-center items-center gap-4"
         >
-          <PerfSelect
+          {/* <PerfSelect
             {...register("by")}
             id="by"
             required
@@ -60,7 +60,7 @@ const Certificate = (props: Props) => {
               { label: "By Player", value: "By Player" },
               { label: "By Team", value: "By Team" },
             ]}
-          />
+          /> */}
 
           {by === "By Player" && (
             <PerfSelect
@@ -70,6 +70,7 @@ const Certificate = (props: Props) => {
               error={errors.by && "please select the player"}
               className="w-full"
               label="Player"
+              searchable={true}
               name="player"
               control={control}
               data={[
@@ -78,7 +79,7 @@ const Certificate = (props: Props) => {
               ]}
             />
           )}
-
+          {/* 
           {by === "By Team" && (
             <PerfSelect
               {...register("team")}
@@ -109,9 +110,9 @@ const Certificate = (props: Props) => {
               { label: "Performances", value: "Performances" },
               { label: "Attendances", value: "Attendances" },
             ]}
-          />
+          /> */}
 
-          <SubmitButton isLoading={false} text="Save" />
+          <SubmitButton isLoading={false} text="Send Certificate" />
         </form>
       </div>
     </div>
