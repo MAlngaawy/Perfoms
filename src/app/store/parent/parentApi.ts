@@ -317,7 +317,7 @@ export const parentsApi = createApi({
       PlayerCertificates,
       { player_id: number; page?: number }
     >({
-      query: (player_id) => ({
+      query: ({ player_id }) => ({
         url: `/player-certificates/${player_id}`,
       }),
       providesTags: ["Parent"],

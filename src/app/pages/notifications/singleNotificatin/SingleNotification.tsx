@@ -2,7 +2,7 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import AppIcons from "../../../../@main/core/AppIcons";
 import { Link } from "react-router-dom";
-import { Breadcrumbs } from "@mantine/core";
+import { Avatar, Breadcrumbs } from "@mantine/core";
 import cn from "classnames";
 
 type Props = {};
@@ -47,11 +47,7 @@ const SingleNotification = (props: Props) => {
       >
         <div className="flex flex-row justify-between items-center">
           <div className="flex flex-row gap-3">
-            <img
-              className="w-12 h-12 rounded-full"
-              src={senderAvatar}
-              alt="sender avatar"
-            />
+            <Avatar radius={"xl"} src={senderAvatar} alt="sender avatar" />
             <div>
               <h1 className="font-bold">{fullName(senderName)}</h1>
               <div className="text-perfGray">
