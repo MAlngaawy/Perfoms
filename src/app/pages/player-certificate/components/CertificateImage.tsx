@@ -6,35 +6,48 @@ type Props = {
 };
 
 const CertificateImage = forwardRef(({ certificate }: Props, ref) => {
+  let myFont = new FontFace("old-english", "url(/assets/fonts/OLD.ttf)");
+
   useEffect(() => {
-    //@ts-ignore
-    const ctx = ref.current.getContext("2d");
-    const image = new Image();
-    image.crossOrigin = "anonymous";
-    image.src = "/assets/images/certificate.png";
-    image.onload = () => {
-      ctx.drawImage(image, 0, 0, 1200, 840);
-      ctx.font = "600 48px 'Old English Text MT Regular'";
-      ctx.textAlign = "center";
-      ctx.fillStyle = "#000000";
-      ctx.fillText(certificate.player.name, 600, 420);
-      ctx.font = "30px serif";
-      ctx.fillText(
-        `We are so impressed by your performance for last period.`,
-        600,
-        520
-      );
-      ctx.fillText(`Honestly, you are such an inspiration to us all`, 600, 560);
-      ctx.font =
-        "normal 30px -apple-system, BlinkMacSystemFont, “regular”, sans-serif";
-      ctx.textAlign = "center";
-      ctx.fillStyle = "#000000";
-      ctx.fillText(
-        new Date(certificate.created_at).toLocaleDateString(),
-        600,
-        640
-      );
-    };
+    myFont.load().then((font) => {
+      console.log(font);
+      document.fonts.add(font);
+
+      //@ts-ignore
+      const ctx = ref.current.getContext("2d");
+      const image = new Image();
+      image.crossOrigin = "anonymous";
+      image.src = "/assets/images/certificate-image.png";
+      image.onload = () => {
+        ctx.drawImage(image, 0, 0, 1080, 774);
+        ctx.letterSpacing = "10px";
+        ctx.font = "50px old-english";
+        ctx.textAlign = "center";
+        ctx.fillStyle = "#000000";
+        ctx.fillText(certificate.player.name, 550, 400);
+        ctx.letterSpacing = "1px";
+        ctx.font = "30px serif";
+        ctx.fillText(
+          `We are so impressed by your performance for last period.`,
+          550,
+          500
+        );
+        ctx.fillText(
+          `Honestly, you are such an inspiration to us all`,
+          550,
+          540
+        );
+        ctx.font =
+          "normal 20px -apple-system, BlinkMacSystemFont, “regular”, sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillStyle = "#4F4F4F";
+        ctx.fillText(
+          new Date(certificate.created_at).toLocaleDateString(),
+          550,
+          633
+        );
+      };
+    });
   }, [certificate, ref]);
   return (
     <div
@@ -42,7 +55,7 @@ const CertificateImage = forwardRef(({ certificate }: Props, ref) => {
       className="flex flex-col bg-black justify-center items-center"
     >
       {/* @ts-ignore */}
-      <canvas className="bg-black" ref={ref} width={1200} height={840} />
+      <canvas className="bg-black" ref={ref} width={1080} height={774} />
     </div>
   );
 });
