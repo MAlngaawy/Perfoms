@@ -18,6 +18,12 @@ export type CoachForParent = {
   avatar: string;
 };
 
+export type GenerateCertification = {
+  player: number;
+  club: number;
+  team: number;
+};
+
 export type TeamKpiMetric = {
   icon: string;
   id: number;
@@ -148,6 +154,10 @@ export type PlayerParent = {
   job: string;
   mobile: string;
   parent_players: TeamPlayer[];
+};
+
+export type AllTeamsPlayers = BaseGetAllType & {
+  results: TeamPlayer[];
 };
 
 export type PlayerAttendance = BaseGetAllType & {

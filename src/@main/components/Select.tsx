@@ -20,6 +20,8 @@ interface inputTypes {
   className?: string;
   control: any;
   placeholder?: string;
+  searchable?: boolean;
+  itemComponent?: any;
 }
 
 const PerfSelect = ({
@@ -32,6 +34,8 @@ const PerfSelect = ({
   className,
   control,
   placeholder,
+  searchable,
+  itemComponent,
 }: inputTypes) => {
   return (
     <Controller
@@ -40,8 +44,9 @@ const PerfSelect = ({
           placeholder={placeholder}
           id={id}
           withAsterisk={required}
-          searchable
+          searchable={searchable}
           error={error}
+          itemComponent={itemComponent}
           sx={{
             ".mantine-Input-input": {
               border: 0,
