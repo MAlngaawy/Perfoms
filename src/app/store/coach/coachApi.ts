@@ -1,4 +1,5 @@
 import {
+  AllTeamsPlayers,
   CoachPlayerInfo,
   CoachTeamAttendance,
   CoachTeamPerformance,
@@ -185,6 +186,13 @@ export const coachApi = createApi({
         body,
       }),
     }),
+
+    coachGetAllMyPlayers: query<AllTeamsPlayers, { pages?: number }>({
+      query: (params) => ({
+        url: `my-teams-players/`,
+        params,
+      }),
+    }),
   }),
 });
 
@@ -210,4 +218,5 @@ export const {
   useCoachTeamEventFilesQuery,
   useMyClubQuery,
   useCoachGenerateCertificateMutation,
+  useCoachGetAllMyPlayersQuery,
 } = coachApi;

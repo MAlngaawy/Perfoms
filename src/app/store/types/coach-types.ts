@@ -156,6 +156,10 @@ export type PlayerParent = {
   parent_players: TeamPlayer[];
 };
 
+export type AllTeamsPlayers = BaseGetAllType & {
+  results: TeamPlayer[];
+};
+
 export type PlayerAttendance = BaseGetAllType & {
   results: {
     id: number;
