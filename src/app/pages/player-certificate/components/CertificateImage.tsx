@@ -18,6 +18,13 @@ const CertificateImage = forwardRef(({ certificate }: Props, ref) => {
       ctx.textAlign = "center";
       ctx.fillStyle = "#000000";
       ctx.fillText(certificate.player.name, 600, 420);
+      ctx.font = "30px serif";
+      ctx.fillText(
+        `We are so impressed by your performance for last period.`,
+        600,
+        520
+      );
+      ctx.fillText(`Honestly, you are such an inspiration to us all`, 600, 560);
       ctx.font =
         "normal 30px -apple-system, BlinkMacSystemFont, “regular”, sans-serif";
       ctx.textAlign = "center";
