@@ -14,6 +14,8 @@ import CoachCard from "./components/CoachCard";
 import TeamFilter from "../../../@main/components/TeamFilter";
 import CoachesLoading from "./components/CoachesLoading";
 import NoPlayersComp from "../../../@main/components/NoPlayersComp";
+import Placeholders from "~/@main/components/Placeholders";
+import AddPlayer from "../home/molecules/AddPlayer";
 
 type Props = {};
 
@@ -49,6 +51,21 @@ const CoachesPage = (props: Props) => {
         )
       );
   }, [playerTeams]);
+
+  if (!selectedPlayer) {
+    return (
+      <div className="flex flex-col items-center">
+        <Placeholders
+          img="/assets/images/nocoaches.png"
+          preText={"You Need to add a"}
+          pageName={"player"}
+          postText={"to see his"}
+        />
+        <p className="text-perfBlue font-medium mb-3">Coaches & supervisors</p>
+        <AddPlayer />
+      </div>
+    );
+  }
 
   if (selectedPlayer) {
     if (isSuccess)

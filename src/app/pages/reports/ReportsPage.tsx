@@ -21,6 +21,7 @@ import AttendancesSmallCards from "./components/AttendancesSmallCards";
 import { useReactToPrint } from "react-to-print";
 // import { ComponentToPrint } from "./components/ComponentToPrint";
 import PrintComp from "~/@main/PrintComp";
+import Placeholders from "~/@main/components/Placeholders";
 
 // ==============
 const ReportPage = () => {
@@ -37,6 +38,18 @@ const ReportPage = () => {
 
   const [reportType, setReportType] =
     useState<"Performances" | "Attendances">("Performances");
+
+  if (!reportType) {
+    return (
+      <Placeholders
+        img="/assets/images/noreports.png"
+        preText={"You don’t have any"}
+        pageName={"reports"}
+        postText={"here yet."}
+      />
+    );
+  }
+
   return (
     <>
       {player ? (

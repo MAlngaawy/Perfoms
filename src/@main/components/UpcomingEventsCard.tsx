@@ -3,6 +3,7 @@ import AppIcons from "~/@main/core/AppIcons";
 import { useSelector } from "react-redux";
 import { selectedPlayerTeamFn } from "../../app/store/parent/parentSlice";
 import { useUpcomingEventsQuery } from "~/app/store/parent/parentApi";
+import NoData from "./NoData";
 
 type Props = {};
 
@@ -14,6 +15,14 @@ const UpcomingEventsCard = (props: Props) => {
   );
 
   const events = upcomingEvents?.results;
+
+  if (!events) {
+    return (
+      <div className="bg-white rounded-3xl h-full flex justify-center items-center">
+        <NoData className="flex-col items-center" />
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white  p-4 rounded-3xl h-full">
