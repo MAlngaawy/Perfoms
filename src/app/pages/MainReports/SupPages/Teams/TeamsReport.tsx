@@ -39,17 +39,18 @@ const TeamsReports = (props: Props) => {
       </div>
       <PrintComp>
         <div className="reports flex flex-wrap gap-4 justify-center xs:justify-start items-center my-10">
-          {coachTeamsStatistics?.results.map((team) => {
-            return (
-              <div>
-                <ReportsChartCard
-                  onClickFun={() => navigate(`${team.id}`)}
-                  name={team.name}
-                  statistics={team.statistics}
-                />
-              </div>
-            );
-          })}
+          {coachTeamsStatistics &&
+            coachTeamsStatistics?.results.map((team) => {
+              return (
+                <div>
+                  <ReportsChartCard
+                    onClickFun={() => navigate(`${team.id}`)}
+                    name={team.name}
+                    statistics={team.statistics}
+                  />
+                </div>
+              );
+            })}
         </div>
       </PrintComp>
     </div>

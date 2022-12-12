@@ -295,12 +295,12 @@ const OverAll = ({ reportType }: Props) => {
             {kpis.map((kpi) => {
               return (
                 <div>
-                  <ReportsChartCard
+                  {/* <ReportsChartCard
                     // onClickFun={() => navigate(`kpi/${kpi.id}`)}
                     clickable={false}
                     name={kpi.name}
-                    data={kpi.data}
-                  />
+                    statistics={kpi.data}
+                  /> */}
                 </div>
               );
             })}
@@ -310,13 +310,13 @@ const OverAll = ({ reportType }: Props) => {
             {membersAttendance.map((attend) => {
               return (
                 <div>
-                  <ReportsChartCard
+                  {/* <ReportsChartCard
                     // onClickFun={() => navigate(`kpi/${attend.id}`)}
                     name={attend.name}
                     data={attend.data}
                     clickable={false}
                     chartColors={["#27AE60", "#EB5757", "#A3A3A3"]}
-                  />
+                  /> */}
                 </div>
               );
             })}

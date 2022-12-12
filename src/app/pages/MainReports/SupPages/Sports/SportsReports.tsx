@@ -89,7 +89,7 @@ const SportsReports = (props: Props) => {
       </div>
       <PrintComp>
         <div className="reports flex flex-wrap gap-4 items-center my-10">
-          {sports.map((sport) => {
+          {/* {sports.map((sport) => {
             return (
               <ReportsChartCard
                 onClickFun={() => navigate(`teams`)}
@@ -97,7 +97,7 @@ const SportsReports = (props: Props) => {
                 data={sport.data}
               />
             );
-          })}
+          })} */}
         </div>
       </PrintComp>
     </div>

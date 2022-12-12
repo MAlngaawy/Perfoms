@@ -70,6 +70,60 @@ export type TeamStatistics = {
   };
 };
 
+export type TeamKpiStatistics = {
+  id: number;
+  name: string;
+  icon: string;
+  icon_url: string;
+  statistics: {
+    strength: number;
+    moderate: number;
+    weakness: number;
+  };
+};
+
+export type TeamKpiPlayerStatistics = {
+  id: number;
+  name: string;
+  icon: string;
+  icon_url: string;
+  kpi: {
+    id: number;
+    name: string;
+    icon: string;
+    icon_url: string;
+    statistics: {
+      strength: number;
+      moderate: number;
+      weakness: number;
+    };
+  };
+};
+
+export type TeamPlayerAttendStatistics = {
+  id: number;
+  name: string;
+  icon: string;
+  icon_url: string;
+  player_attendance: {
+    absent: number;
+    attends: number;
+    upcoming: number;
+  };
+};
+
+export type TeamPlayersAttendStatistics = BaseGetAllType & {
+  results: TeamPlayerAttendStatistics[];
+};
+
+export type TeamKpiPlayersStatistics = BaseGetAllType & {
+  results: TeamKpiPlayerStatistics[];
+};
+
+export type TeamKpisStatistics = BaseGetAllType & {
+  results: TeamKpiStatistics[];
+};
+
 export type TeamsStatistics = BaseGetAllType & {
   results: TeamStatistics[];
 };
