@@ -38,6 +38,15 @@ const TotalAttendance = (props: Props) => {
   } else {
     pieWidth = "60%";
   }
+
+  if (!playerAttendance) {
+    return (
+      <div className="flex justify-center items-center h-44">
+        <p>No data yet.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white rounded-3xl p-6 flex sm:flex-col xl:flex-row justify-around items-center">
       <div className="data flex flex-col sm:flex-row xl:flex-col justify-center items-start gap-4">

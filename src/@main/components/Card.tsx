@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import NoReport from "~/app/pages/reports/components/NoReport";
 import {
   usePlayerModerateQuery,
   usePlayerStrengthQuery,
@@ -52,6 +53,7 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
               </div>
             );
           })}
+        <>{!data && <NoReport />}</>
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import { selectedPlayerTeamFn } from "../../app/store/parent/parentSlice";
 import { useSelector } from "react-redux";
 import { useTeamInfoQuery } from "~/app/store/parent/parentApi";
 import { Avatar } from "@mantine/core";
+import NoData from "./NoData";
 
 type Props = {};
 
@@ -13,6 +14,14 @@ const HomeTeamInfoCard = (props: Props) => {
     { team_id: selectedPlayerTeam?.id },
     { skip: !selectedPlayerTeam }
   );
+
+  if (!teamInfoData) {
+    return (
+      <div className="p-6 h-full bg-white rounded-3xl flex justify-center items-center ">
+        <NoData className="flex-col text-center" />
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white p-3 rounded-3xl h-full">

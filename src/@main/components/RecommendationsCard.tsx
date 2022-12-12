@@ -1,3 +1,4 @@
+import NoReport from "~/app/pages/reports/components/NoReport";
 import { usePlayerRecommendationsQuery } from "~/app/store/parent/parentApi";
 
 type Props = {
@@ -25,6 +26,7 @@ const RecommendationsCard = ({ player_id }: Props) => {
             </p>
           </div>
         ))}
+        <>{!recommendations && <NoReport />}</>
       </div>
     </div>
   );

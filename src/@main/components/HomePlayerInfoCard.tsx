@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Player } from "~/app/store/types/parent-types";
 import Info from "./Info";
 import { useOnePlayerQuery } from "~/app/store/parent/parentApi";
+import NoData from "./NoData";
 
 type Props = {};
 
@@ -14,6 +15,14 @@ const HomePlayerInfoCard = (props: Props) => {
     { id: selectedPlayer.id },
     { skip: !selectedPlayer.id }
   );
+
+  if (!playerInfoData) {
+    return (
+      <div className="p-6 h-full bg-white rounded-3xl flex justify-center items-center">
+        <NoData className="flex-col text-center text-sm" />
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 h-full bg-white rounded-3xl">

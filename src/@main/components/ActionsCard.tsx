@@ -1,3 +1,4 @@
+import NoReport from "~/app/pages/reports/components/NoReport";
 import { usePlayerActionsQuery } from "~/app/store/parent/parentApi";
 
 type Props = {
@@ -21,6 +22,7 @@ const ActionsCard = ({ player_id }: Props) => {
             <p className=" text-perfGray3 text-sm">{action.description}</p>
           </div>
         ))}
+        <>{!actions && <NoReport />}</>
       </div>
     </div>
   );

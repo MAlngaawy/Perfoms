@@ -50,21 +50,28 @@ const AttendanceTable = (props: Props) => {
   ));
 
   return (
-    <Table>
-      <thead>
-        <tr>
-          <th className="flex items-center gap-1 text-sm font-medium border-0 border-r">
-            <p>Day</p>
-            <AppIcons
-              className="w-4 h-4 text-perfGray3"
-              icon="ArrowSmallUpIcon:outline"
-            />
-          </th>
-          <th className="text-sm font-medium border-0">Attendance</th>
-        </tr>
-      </thead>
-      <tbody>{rows}</tbody>
-    </Table>
+    <>
+      {playerAttendance && (
+        <Table>
+          <thead>
+            <tr>
+              <th className="flex items-center gap-1 text-sm font-medium border-0 border-r">
+                <p>Day</p>
+                <AppIcons
+                  className="w-4 h-4 text-perfGray3"
+                  icon="ArrowSmallUpIcon:outline"
+                />
+              </th>
+              <th className="text-sm font-medium border-0">Attendance</th>
+            </tr>
+          </thead>
+          <tbody>{rows}</tbody>
+        </Table>
+      )}
+      <div className="text-center">
+        {!playerAttendance && <p>No data yet.</p>}
+      </div>
+    </>
   );
 };
 
