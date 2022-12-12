@@ -51,7 +51,7 @@ const MediaPage = () => {
     </Link>
   ));
 
-  if (!events) {
+  if (!events?.results.length) {
     return (
       <Placeholders
         img="/assets/images/novideo.png"

@@ -24,7 +24,7 @@ const formatDate = (date: Date | null) => {
 const NotificationsPage = (props: Props) => {
   const { data: notifications } = useNotificationsQuery({});
 
-  if (!notifications) {
+  if (!notifications?.results.length) {
     return (
       <Placeholders
         img="/assets/images/nonotification.png"

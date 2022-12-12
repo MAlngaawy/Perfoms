@@ -52,7 +52,7 @@ const PlayersPage = () => {
               );
             })}
           <>
-            {!coahcTeamPlayers && (
+            {!coahcTeamPlayers?.results.length && (
               <div className="flex flex-col md:flex-row justify-center items-center gap-3">
                 <img
                   className="md:w-72 md:my-5"

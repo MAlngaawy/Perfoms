@@ -16,7 +16,7 @@ const UpcomingEventsCard = (props: Props) => {
 
   const events = upcomingEvents?.results;
 
-  if (!events) {
+  if (!events?.length) {
     return (
       <div className="bg-white rounded-3xl h-full flex justify-center items-center">
         <NoData className="flex-col items-center" />

@@ -35,7 +35,12 @@ const ReportPage = () => {
   const [reportType, setReportType] =
     useState<"Performances" | "Attendances">("Performances");
 
-  if (!reportType) {
+  const { data: playerCertificates } = usePlayerCertificatesQuery(
+    { player_id: player?.id },
+    { skip: !player }
+  );
+
+  if (!player) {
     return (
       <Placeholders
         img="/assets/images/noreports.png"
@@ -45,11 +50,6 @@ const ReportPage = () => {
       />
     );
   }
-
-  const { data: playerCertificates } = usePlayerCertificatesQuery(
-    { player_id: player?.id },
-    { skip: !player }
-  );
 
   return (
     <>
