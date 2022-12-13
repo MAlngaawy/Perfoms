@@ -19,6 +19,7 @@ import {
   Kpis,
   Metrics,
   SuperVisorPlayers,
+  SuperVisorTeamInfo,
   Team,
   TeamAttendance,
   TeamCoach,
@@ -79,7 +80,10 @@ export const supervisorApi = createApi({
       providesTags: ["supervisor"],
     }),
 
-    superTeamInfo: query<Team, { team_id: string; page?: number }>({
+    superTeamInfo: query<
+      SuperVisorTeamInfo,
+      { team_id: string | undefined; page?: number }
+    >({
       query: ({ team_id, ...params }) => ({
         url: `teams/${team_id}/`,
         params,
@@ -291,6 +295,20 @@ export const supervisorApi = createApi({
         params,
       }),
     }),
+
+    superTeamKpisStatistics: query<
+      TeamsStatistics,
+      {
+        sport_id: number | undefined;
+        team_id: string | undefined;
+        pages?: number;
+      }
+    >({
+      query: ({ sport_id, team_id, ...params }) => ({
+        url: `statistics/sports/teams/kpis/${sport_id}/${team_id}`,
+        params,
+      }),
+    }),
   }),
 });
 
@@ -328,4 +346,5 @@ export const {
   useGetSuperPlayerInfoQuery,
   useSuperSportStatisticsQuery,
   useSuperTeamsStatisticsQuery,
+  useSuperTeamKpisStatisticsQuery,
 } = supervisorApi;
