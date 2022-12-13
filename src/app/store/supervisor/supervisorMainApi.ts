@@ -25,7 +25,12 @@ import {
   TeamPlayer,
 } from "../types/supervisor-types";
 import { Event } from "../types/events-types";
-import { CoachPlayerInfo, PlayerParent } from "../types/coach-types";
+import {
+  CoachPlayerInfo,
+  PlayerParent,
+  TeamsStatistics,
+  TeamStatistics,
+} from "../types/coach-types";
 
 export const supervisorApi = createApi({
   reducerPath: "supervisorApi",
@@ -270,6 +275,12 @@ export const supervisorApi = createApi({
         params,
       }),
     }),
+
+    superSportStatistics: query<TeamStatistics, { page?: number }>({
+      query: (params) => ({
+        url: `statistics/my-sport/`,
+      }),
+    }),
   }),
 });
 
@@ -305,4 +316,5 @@ export const {
   useSuperRemoveTeamPlayerMutation,
   useGetSuperParentInfoQuery,
   useGetSuperPlayerInfoQuery,
+  useSuperSportStatisticsQuery,
 } = supervisorApi;

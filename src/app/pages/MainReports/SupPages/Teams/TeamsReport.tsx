@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Breadcrumbs } from "@mantine/core";
 import ReportsChartCard from "~/@main/components/MainReports/ReportsChartCard";
@@ -10,12 +10,14 @@ import { useUserQuery } from "~/app/store/user/userApi";
 type Props = {};
 
 const TeamsReports = (props: Props) => {
+  const [data, setData] = useState();
   const { data: superTeams } = useSuperTeamsQuery({});
+  const { data: coachTeamsStatistics } = useCoachTeamStatisticsQuery({});
   const navigate = useNavigate();
   const { data: user } = useUserQuery(null);
 
   useEffect(() => {
-    console.log(superTeams);
+    // console.log(superTeams);
   }, [superTeams]);
 
   const items = [
@@ -27,8 +29,6 @@ const TeamsReports = (props: Props) => {
       {item.title}
     </Link>
   ));
-
-  const { data: coachTeamsStatistics } = useCoachTeamStatisticsQuery({});
 
   return (
     <div className="container w-11/12 mx-auto">

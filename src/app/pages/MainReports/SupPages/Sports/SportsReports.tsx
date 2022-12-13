@@ -3,68 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Breadcrumbs } from "@mantine/core";
 import ReportsChartCard from "~/@main/components/MainReports/ReportsChartCard";
 import PrintComp from "~/@main/PrintComp";
-
-const sports = [
-  {
-    name: "Taekwondo",
-    icon: "ascascasc",
-    data: [
-      {
-        name: "strengths",
-        value: 30,
-      },
-      {
-        name: "moderate",
-        value: 250,
-      },
-      {
-        name: "weaknesses",
-        value: 100,
-      },
-    ],
-    id: 1,
-  },
-
-  {
-    name: "Football",
-    icon: "ascascasc",
-    id: 2,
-    data: [
-      {
-        name: "strengths",
-        value: 56,
-      },
-      {
-        name: "moderate",
-        value: 136,
-      },
-      {
-        name: "weaknesses",
-        value: 155,
-      },
-    ],
-  },
-
-  {
-    name: "Swimming",
-    icon: "ascascasc",
-    id: 3,
-    data: [
-      {
-        name: "strengths",
-        value: 1000,
-      },
-      {
-        name: "moderate",
-        value: 652,
-      },
-      {
-        name: "weaknesses",
-        value: 125,
-      },
-    ],
-  },
-];
+import { useSuperSportStatisticsQuery } from "~/app/store/supervisor/supervisorMainApi";
 
 type Props = {};
 
@@ -78,6 +17,7 @@ const items = [
 ));
 
 const SportsReports = (props: Props) => {
+  const { data: sportStatistics } = useSuperSportStatisticsQuery({});
   const navigate = useNavigate();
 
   return (
@@ -89,15 +29,13 @@ const SportsReports = (props: Props) => {
       </div>
       <PrintComp>
         <div className="reports flex flex-wrap gap-4 items-center my-10">
-          {/* {sports.map((sport) => {
-            return (
-              <ReportsChartCard
-                onClickFun={() => navigate(`teams`)}
-                name={sport.name}
-                data={sport.data}
-              />
-            );
-          })} */}
+          {sportStatistics && (
+            <ReportsChartCard
+              onClickFun={() => navigate(`teams`)}
+              name={sportStatistics?.name}
+              statistics={sportStatistics?.statistics}
+            />
+          )}
         </div>
       </PrintComp>
     </div>
