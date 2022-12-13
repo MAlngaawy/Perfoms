@@ -1,5 +1,5 @@
 import { Breadcrumbs, Menu, Skeleton } from "@mantine/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import ReportsChartCard from "~/@main/components/MainReports/ReportsChartCard";
 import AppIcons from "~/@main/core/AppIcons";
@@ -12,6 +12,17 @@ import {
   useCoachTeamPlayersKpiStatisticsQuery,
 } from "~/app/store/coach/coachApi";
 import AttendReportsChart from "~/@main/components/MainReports/AttendReportsChart";
+import {
+  useSuperSportStatisticsQuery,
+  useSuperTeamAttendPlayersStatisticsQuery,
+  useSuperTeamInfoQuery,
+  useSuperTeamKpiPlayersStatisticsQuery,
+} from "~/app/store/supervisor/supervisorMainApi";
+import {
+  TeamKpiPlayersStatistics,
+  TeamPlayersAttendStatistics,
+} from "~/app/store/types/coach-types";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {};
 
@@ -19,20 +30,56 @@ const TeamMembersKpi = (props: Props) => {
   const [reportType, setReportType] =
     useState<"Performances" | "Attendances">("Performances");
   const { id, kpi_id } = useParams();
+  const [kpiData, setKpiData] = useState<TeamKpiPlayersStatistics>();
+  const [attendData, setAttendData] = useState<TeamPlayersAttendStatistics>();
+  const { data: sportStatistics } = useSuperSportStatisticsQuery({});
+  const { data: user } = useUserQuery(null);
 
-  const { data: teamplayerskpi, isLoading: performancesLoading } =
+  // fetch Kpis And Attend for coach user
+  const { data: coachTeamplayerskpi, isLoading: performancesLoading } =
     useCoachTeamPlayersKpiStatisticsQuery(
       { team_id: id, kpi_id: kpi_id },
       { skip: !id || !kpi_id }
     );
-
-  const { data: teamPlayersAttends } =
+  const { data: coachTeamPlayersAttends } =
     useCoachTeamPlayersAttendancesStatisticsQuery(
       { team_id: id },
       { skip: !id }
     );
 
-  const { data: teamInfo } = useCoachTeamInfoQuery(
+  // Fetch Kpis and Attends for the supervisor
+  const { data: superTeamPlayersKpi } = useSuperTeamKpiPlayersStatisticsQuery(
+    { team_id: id, kpi_id: kpi_id },
+    { skip: !id || !kpi_id }
+  );
+  const { data: superTeamPlayersAttends } =
+    useSuperTeamAttendPlayersStatisticsQuery(
+      {
+        team_id: id,
+        sport_id: sportStatistics?.id,
+      },
+      { skip: !id || !sportStatistics?.id }
+    );
+
+  useEffect(() => {
+    if (superTeamPlayersAttends) setAttendData(superTeamPlayersAttends);
+    if (coachTeamPlayersAttends) setAttendData(coachTeamPlayersAttends);
+
+    if (superTeamPlayersKpi) setKpiData(superTeamPlayersKpi);
+    if (coachTeamplayerskpi) setKpiData(coachTeamplayerskpi);
+  }, [
+    superTeamPlayersAttends,
+    superTeamPlayersKpi,
+    coachTeamPlayersAttends,
+    coachTeamplayerskpi,
+  ]);
+
+  // Fetch Team info
+  const { data: coachTeamInfo } = useCoachTeamInfoQuery(
+    { team_id: id },
+    { skip: !id }
+  );
+  const { data: superTeamInfo } = useSuperTeamInfoQuery(
     { team_id: id },
     { skip: !id }
   );
@@ -41,13 +88,15 @@ const TeamMembersKpi = (props: Props) => {
     { title: "Categories", href: "/main-reports" },
     { title: "Teams", href: "/main-reports/sports/teams" },
     {
-      title: `Team ${teamInfo?.name}`,
+      title: `Team ${
+        user?.user_type === "Coach" ? coachTeamInfo?.name : superTeamInfo?.name
+      }`,
       href: `/main-reports/sports/teams/${id}`,
     },
     {
       title:
         reportType === "Performances"
-          ? teamplayerskpi?.results[0].kpi.name
+          ? kpiData?.results[0].kpi.name
           : "Attendance",
       href: ``,
     },
@@ -106,7 +155,7 @@ const TeamMembersKpi = (props: Props) => {
                   <Skeleton height={300} width={250} radius="lg" />
                 </>
               )}
-              {teamplayerskpi?.results.map((kpiPlayer) => {
+              {kpiData?.results.map((kpiPlayer) => {
                 return (
                   <div>
                     <ReportsChartCard
@@ -121,7 +170,7 @@ const TeamMembersKpi = (props: Props) => {
             </>
           ) : (
             <>
-              {teamPlayersAttends?.results.map((attendsPlayer) => {
+              {attendData?.results.map((attendsPlayer) => {
                 return (
                   <div>
                     <AttendReportsChart

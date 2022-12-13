@@ -19,13 +19,21 @@ import {
   Kpis,
   Metrics,
   SuperVisorPlayers,
+  SuperVisorTeamInfo,
   Team,
   TeamAttendance,
   TeamCoach,
   TeamPlayer,
 } from "../types/supervisor-types";
 import { Event } from "../types/events-types";
-import { CoachPlayerInfo, PlayerParent } from "../types/coach-types";
+import {
+  CoachPlayerInfo,
+  PlayerParent,
+  TeamKpiPlayersStatistics,
+  TeamPlayersAttendStatistics,
+  TeamsStatistics,
+  TeamStatistics,
+} from "../types/coach-types";
 
 export const supervisorApi = createApi({
   reducerPath: "supervisorApi",
@@ -74,7 +82,10 @@ export const supervisorApi = createApi({
       providesTags: ["supervisor"],
     }),
 
-    superTeamInfo: query<Team, { team_id: string; page?: number }>({
+    superTeamInfo: query<
+      SuperVisorTeamInfo,
+      { team_id: string | undefined; page?: number }
+    >({
       query: ({ team_id, ...params }) => ({
         url: `teams/${team_id}/`,
         params,
@@ -270,6 +281,64 @@ export const supervisorApi = createApi({
         params,
       }),
     }),
+
+    superSportStatistics: query<TeamStatistics, { page?: number }>({
+      query: (params) => ({
+        url: `statistics/my-sport/`,
+      }),
+    }),
+
+    superTeamsStatistics: query<
+      TeamsStatistics,
+      { sport_id: number | undefined; pages?: number }
+    >({
+      query: ({ sport_id, ...params }) => ({
+        url: `statistics/sports/teams/${sport_id}`,
+        params,
+      }),
+    }),
+
+    superTeamKpisStatistics: query<
+      TeamsStatistics,
+      {
+        sport_id: number | undefined;
+        team_id: string | undefined;
+        pages?: number;
+      }
+    >({
+      query: ({ sport_id, team_id, ...params }) => ({
+        url: `statistics/sports/teams/kpis/${sport_id}/${team_id}`,
+        params,
+      }),
+    }),
+
+    superTeamKpiPlayersStatistics: query<
+      TeamKpiPlayersStatistics,
+      {
+        kpi_id: string | undefined;
+        team_id: string | undefined;
+        pages?: number;
+      }
+    >({
+      query: ({ kpi_id, team_id, ...params }) => ({
+        url: `statistics/kpis/${kpi_id}/${team_id}/`,
+        params,
+      }),
+    }),
+
+    superTeamAttendPlayersStatistics: query<
+      TeamPlayersAttendStatistics,
+      {
+        sport_id: number | undefined;
+        team_id: string | undefined;
+        pages?: number;
+      }
+    >({
+      query: ({ sport_id, team_id, ...params }) => ({
+        url: `statistics/attends/${sport_id}/${team_id}/`,
+        params,
+      }),
+    }),
   }),
 });
 
@@ -305,4 +374,9 @@ export const {
   useSuperRemoveTeamPlayerMutation,
   useGetSuperParentInfoQuery,
   useGetSuperPlayerInfoQuery,
+  useSuperSportStatisticsQuery,
+  useSuperTeamsStatisticsQuery,
+  useSuperTeamKpisStatisticsQuery,
+  useSuperTeamKpiPlayersStatisticsQuery,
+  useSuperTeamAttendPlayersStatisticsQuery,
 } = supervisorApi;

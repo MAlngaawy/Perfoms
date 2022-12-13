@@ -32,7 +32,7 @@ const ReportsChartCard = ({
     <div
       onClick={() => onClickFun()}
       className={classNames(
-        "bg-white  flex-col gap-3 rounded-xl shadow-md p-4 flex h-fit w-60",
+        "bg-white h-full  flex-col gap-3 rounded-xl shadow-md p-4 justify-between flex w-60",
         {
           "transition-all transform hover:scale-105 hover:shadow-xl  cursor-pointer":
             clickable,
@@ -41,7 +41,15 @@ const ReportsChartCard = ({
     >
       <h2 className="w-full text-left">{name}</h2>
       <div className="flex relative w-full items-center justify-center">
-        <Example chartColors={chartColors} data={statistics} />
+        {statistics.moderate == 0 &&
+        statistics.strength == 0 &&
+        statistics.weakness == 0 ? (
+          <div className="text-lg font-semibold text-perfGray2">
+            No Data Yet
+          </div>
+        ) : (
+          <Example chartColors={chartColors} data={statistics} />
+        )}
       </div>
       <Divider />
       <div className="flex flex-col w-full items-center gap-4 text-sm">
