@@ -1,8 +1,10 @@
 import {
+  AllTeamsPlayers,
   CoachPlayerInfo,
   CoachTeamAttendance,
   CoachTeamInfo,
   CoachTeamPerformance,
+  GenerateCertification,
   PlayerParent,
   SendBulkNotifications,
   sendNotifications,
@@ -235,6 +237,24 @@ export const coachApi = createApi({
         params,
       }),
     }),
+
+    coachGenerateCertificate: mutation<
+      GenerateCertification,
+      GenerateCertification
+    >({
+      query: (body) => ({
+        url: `generate-certificate/`,
+        method: "POST",
+        body,
+      }),
+    }),
+
+    coachGetAllMyPlayers: query<AllTeamsPlayers, { pages?: number }>({
+      query: (params) => ({
+        url: `my-teams-players/`,
+        params,
+      }),
+    }),
   }),
 });
 
@@ -264,4 +284,6 @@ export const {
   useCoachTeamInfoQuery,
   useCoachTeamPlayersKpiStatisticsQuery,
   useCoachTeamPlayersAttendancesStatisticsQuery,
+  useCoachGenerateCertificateMutation,
+  useCoachGetAllMyPlayersQuery,
 } = coachApi;

@@ -21,22 +21,24 @@ import AttendancesSmallCards from "./components/AttendancesSmallCards";
 import { useReactToPrint } from "react-to-print";
 // import { ComponentToPrint } from "./components/ComponentToPrint";
 import PrintComp from "~/@main/PrintComp";
+import PlayerCertificatePage from "../player-certificate/PlayerCertificatePage";
+import { usePlayerCertificatesQuery } from "~/app/store/parent/parentApi";
+import CertificateImage from "../player-certificate/components/CertificateImage";
+import { Link } from "react-router-dom";
 
 // ==============
 const ReportPage = () => {
   const player = useSelector(selectedPlayerFn);
   const widowSize = useWindowSize();
-  // const perfCompRef = useRef<HTMLInputElement>(null);
-  // const attCompRef = useRef<HTMLInputElement>(null);
-  // const handlePrint = useReactToPrint({
-  //   content: (): any => perfCompRef.current,
-  // });
-  // const handlePrint2 = useReactToPrint({
-  //   content: (): any => attCompRef.current,
-  // });
 
   const [reportType, setReportType] =
-    useState<"Performances" | "Attendances">("Performances");
+    useState<"Performances" | "Attendances" | "Certificate">("Performances");
+
+  const { data: playerCertificates } = usePlayerCertificatesQuery(
+    { player_id: player?.id },
+    { skip: !player }
+  );
+
   return (
     <>
       {player ? (
@@ -64,6 +66,9 @@ const ReportPage = () => {
                   </Menu.Item>
                   <Menu.Item onClick={() => setReportType("Attendances")}>
                     Attendances
+                  </Menu.Item>
+                  <Menu.Item onClick={() => setReportType("Certificate")}>
+                    Certificates
                   </Menu.Item>
                 </Menu.Dropdown>
               </Menu>
@@ -118,7 +123,7 @@ const ReportPage = () => {
                 </Grid>{" "}
               </div>
             </PrintComp>
-          ) : (
+          ) : reportType === "Attendances" ? (
             <PrintComp>
               <div className="attendances">
                 <Grid gutter={"sm"}>
@@ -167,10 +172,22 @@ const ReportPage = () => {
                 </Grid>
               </div>
             </PrintComp>
+          ) : (
+            // <PlayerCertificatePage />
+            <div className="m-2">
+              <div className="overflow-scroll max-w-full">
+                {playerCertificates &&
+                  playerCertificates?.results.map((certificate) => (
+                    <PlayerCertificatePage certificateId={certificate.id} />
+                  ))}
+              </div>
+            </div>
           )}
         </div>
       ) : (
-        <ReportsPageLoading type="Performances" />
+        <div className="m-4">
+          <ReportsPageLoading type="Performances" />
+        </div>
       )}
     </>
   );
