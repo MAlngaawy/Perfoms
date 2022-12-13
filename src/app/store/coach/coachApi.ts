@@ -2,6 +2,7 @@ import {
   AllTeamsPlayers,
   CoachPlayerInfo,
   CoachTeamAttendance,
+  CoachTeamInfo,
   CoachTeamPerformance,
   GenerateCertification,
   PlayerParent,
@@ -9,7 +10,12 @@ import {
   sendNotifications,
   Team,
   TeamAttendanceDays,
+  TeamKpiPlayersStatistics,
+  TeamKpisStatistics,
+  TeamKpiStatistics,
   TeamPerformanceMetrics,
+  TeamPlayersAttendStatistics,
+  TeamsStatistics,
   UpdatePlayerPKM,
 } from "./../types/coach-types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
@@ -176,6 +182,62 @@ export const coachApi = createApi({
       }),
     }),
 
+    coachTeamStatistics: query<TeamsStatistics, { pages?: number }>({
+      query: (params) => ({
+        url: `statistics/teams/`,
+        params,
+      }),
+    }),
+
+    coachTeamKpisStatistics: query<
+      TeamKpisStatistics,
+      { team_id: string | undefined; pages?: number }
+    >({
+      query: ({ team_id, ...params }) => ({
+        url: `statistics/teams/kpis/${team_id}`,
+        params,
+      }),
+    }),
+
+    coachTeamPlayersKpiStatistics: query<
+      TeamKpiPlayersStatistics,
+      {
+        team_id: string | undefined;
+        kpi_id: string | undefined;
+        pages?: number;
+      }
+    >({
+      query: ({ team_id, kpi_id, ...params }) => ({
+        url: `statistics/kpis/${team_id}/${kpi_id}`,
+        params,
+      }),
+    }),
+
+    coachTeamPlayersAttendancesStatistics: query<
+      TeamPlayersAttendStatistics,
+      {
+        team_id: string | undefined;
+        pages?: number;
+      }
+    >({
+      query: ({ team_id, ...params }) => ({
+        url: `statistics/attends/${team_id}/`,
+        params,
+      }),
+    }),
+
+    //
+
+    coachTeamInfo: query<
+      CoachTeamInfo,
+      { team_id: string | undefined; pages?: number }
+    >({
+      query: ({ team_id, ...params }) => ({
+        url: `team-info/${team_id}`,
+        params,
+      }),
+    }),
+
     coachGenerateCertificate: mutation<
       GenerateCertification,
       GenerateCertification
@@ -217,6 +279,11 @@ export const {
   useCoachTeamEventQuery,
   useCoachTeamEventFilesQuery,
   useMyClubQuery,
+  useCoachTeamStatisticsQuery,
+  useCoachTeamKpisStatisticsQuery,
+  useCoachTeamInfoQuery,
+  useCoachTeamPlayersKpiStatisticsQuery,
+  useCoachTeamPlayersAttendancesStatisticsQuery,
   useCoachGenerateCertificateMutation,
   useCoachGetAllMyPlayersQuery,
 } = coachApi;

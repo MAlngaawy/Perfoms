@@ -1,47 +1,29 @@
 import { Divider } from "@mantine/core";
-import React, { PureComponent } from "react";
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from "recharts";
-import { useNavigate } from "react-router-dom";
-import { useSuperTeamsQuery } from "~/app/store/supervisor/supervisorMainApi";
 import classNames from "classnames";
 
 type Props = {
   name: string;
   icon?: string;
-  statistics: {
-    strength: number;
-    moderate: number;
-    weakness: number;
+  player_attendance: {
+    attends: number;
+    absent: number;
+    upcoming: number;
   };
-  chartColors?: string[];
-  onClickFun?: any;
-  clickable?: boolean;
 };
 
-const COLORS = ["#27AE60", "#F2994A", "#EB5757"];
+const chartColors = ["#27AE60", "#EB5757", "#A3A3A3"];
 
-const ReportsChartCard = ({
-  name,
-  icon,
-  statistics,
-  chartColors = COLORS,
-  onClickFun,
-  clickable = true,
-}: Props) => {
+const AttendReportsChart = ({ name, icon, player_attendance }: Props) => {
   return (
     <div
-      onClick={() => onClickFun()}
       className={classNames(
-        "bg-white  flex-col gap-3 rounded-xl shadow-md p-4 flex h-fit w-60",
-        {
-          "transition-all transform hover:scale-105 hover:shadow-xl  cursor-pointer":
-            clickable,
-        }
+        "bg-white  flex-col gap-3 rounded-xl shadow-md p-4 flex h-fit w-60"
       )}
     >
       <h2 className="w-full text-left">{name}</h2>
       <div className="flex relative w-full items-center justify-center">
-        <Example chartColors={chartColors} data={statistics} />
+        <Example chartColors={chartColors} data={player_attendance} />
       </div>
       <Divider />
       <div className="flex flex-col w-full items-center gap-4 text-sm">
@@ -53,14 +35,14 @@ const ReportsChartCard = ({
               }}
               className="w-4 h-4 rounded-full"
             ></span>
-            <h3> Strength </h3>
+            <h3> Attend </h3>
           </div>
           <h2>
             {Math.floor(
-              (statistics.strength /
-                (statistics.strength +
-                  statistics.moderate +
-                  statistics.weakness)) *
+              (player_attendance.attends /
+                (player_attendance.attends +
+                  player_attendance.absent +
+                  player_attendance.upcoming)) *
                 100
             )}
             %
@@ -75,14 +57,14 @@ const ReportsChartCard = ({
               }}
               className="w-4 h-4  rounded-full"
             ></span>
-            <h3> Moderate </h3>
+            <h3> Absent </h3>
           </div>
           <h2>
             {Math.floor(
-              (statistics.moderate /
-                (statistics.strength +
-                  statistics.moderate +
-                  statistics.weakness)) *
+              (player_attendance.absent /
+                (player_attendance.attends +
+                  player_attendance.absent +
+                  player_attendance.upcoming)) *
                 100
             )}
             %
@@ -97,14 +79,14 @@ const ReportsChartCard = ({
               }}
               className="w-4 h-4  rounded-full"
             ></span>
-            <h3> Weakness </h3>
+            <h3> Upcoming </h3>
           </div>
           <h2>
             {Math.floor(
-              (statistics.weakness /
-                (statistics.strength +
-                  statistics.moderate +
-                  statistics.weakness)) *
+              (player_attendance.upcoming /
+                (player_attendance.attends +
+                  player_attendance.absent +
+                  player_attendance.upcoming)) *
                 100
             )}
             %
@@ -115,21 +97,21 @@ const ReportsChartCard = ({
   );
 };
 
-export default ReportsChartCard;
+export default AttendReportsChart;
 
 const Example = ({ data, chartColors }: any) => {
   const newData = [
     {
-      name: "strengths",
-      value: data.strength,
+      name: "attends",
+      value: data.attends,
     },
     {
-      name: "moderate",
-      value: data.moderate,
+      name: "absent",
+      value: data.absent,
     },
     {
-      name: "weaknesses",
-      value: data.weakness,
+      name: "upcoming",
+      value: data.upcoming,
     },
   ];
 
@@ -147,7 +129,7 @@ const Example = ({ data, chartColors }: any) => {
         {newData.map((entry: any, index: any) => (
           <Cell
             key={`cell-${index}`}
-            fill={chartColors[index % COLORS.length]}
+            fill={chartColors[index % chartColors.length]}
           />
         ))}
       </Pie>

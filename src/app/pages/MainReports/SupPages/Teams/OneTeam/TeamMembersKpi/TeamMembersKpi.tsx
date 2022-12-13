@@ -1,4 +1,4 @@
-import { Breadcrumbs, Menu } from "@mantine/core";
+import { Breadcrumbs, Menu, Skeleton } from "@mantine/core";
 import React, { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import ReportsChartCard from "~/@main/components/MainReports/ReportsChartCard";
@@ -6,257 +6,49 @@ import AppIcons from "~/@main/core/AppIcons";
 import TeamInfoCard from "../components/TeamInfoCard";
 import TimeFilter from "~/@main/components/TimeFilter";
 import PrintComp from "~/@main/PrintComp";
+import {
+  useCoachTeamInfoQuery,
+  useCoachTeamPlayersAttendancesStatisticsQuery,
+  useCoachTeamPlayersKpiStatisticsQuery,
+} from "~/app/store/coach/coachApi";
+import AttendReportsChart from "~/@main/components/MainReports/AttendReportsChart";
 
 type Props = {};
-
-const membersKpi = [
-  {
-    name: "Ahmed Salah",
-    icon: "ascascasc",
-    id: 4,
-    data: [
-      {
-        name: "strengths",
-        value: 135,
-      },
-      {
-        name: "moderate",
-        value: 752,
-      },
-      {
-        name: "weaknesses",
-        value: 213,
-      },
-    ],
-  },
-  {
-    name: "Mohammed Ali",
-    icon: "ascascasc",
-    id: 5,
-    data: [
-      {
-        name: "strengths",
-        value: 852,
-      },
-      {
-        name: "moderate",
-        value: 369,
-      },
-      {
-        name: "weaknesses",
-        value: 741,
-      },
-    ],
-  },
-  {
-    name: "Laila Ali",
-    icon: "ascascasc",
-    id: 6,
-    data: [
-      {
-        name: "strengths",
-        value: 123,
-      },
-      {
-        name: "moderate",
-        value: 456,
-      },
-      {
-        name: "weaknesses",
-        value: 789,
-      },
-    ],
-  },
-  {
-    name: "Mohye Ahmed",
-    icon: "ascascasc",
-    id: 1,
-    data: [
-      {
-        name: "strengths",
-        value: 50,
-      },
-      {
-        name: "moderate",
-        value: 300,
-      },
-      {
-        name: "weaknesses",
-        value: 10,
-      },
-    ],
-  },
-
-  {
-    name: "Loay Morad",
-    icon: "ascascasc",
-    id: 2,
-    data: [
-      {
-        name: "strengths",
-        value: 156,
-      },
-      {
-        name: "moderate",
-        value: 52,
-      },
-      {
-        name: "weaknesses",
-        value: 369,
-      },
-    ],
-  },
-
-  {
-    name: "Fares Medhat",
-    icon: "ascascasc",
-    id: 3,
-    data: [
-      {
-        name: "strengths",
-        value: 30,
-      },
-      {
-        name: "moderate",
-        value: 250,
-      },
-      {
-        name: "weaknesses",
-        value: 100,
-      },
-    ],
-  },
-];
-
-const membersAttendance = [
-  {
-    name: "Ahmed Salah",
-    icon: "ascascasc",
-    id: 4,
-    data: [
-      {
-        name: "Attended",
-        value: 19,
-      },
-      {
-        name: "Absence",
-        value: 50,
-      },
-      {
-        name: "Upcoming",
-        value: 130,
-      },
-    ],
-  },
-  {
-    name: "Ahmed Salah",
-    icon: "ascascasc",
-    id: 4,
-    data: [
-      {
-        name: "Attended",
-        value: 135,
-      },
-      {
-        name: "Absence",
-        value: 752,
-      },
-      {
-        name: "Upcoming",
-        value: 213,
-      },
-    ],
-  },
-  {
-    name: "Ahmed Salah",
-    icon: "ascascasc",
-    id: 4,
-    data: [
-      {
-        name: "Attended",
-        value: 135,
-      },
-      {
-        name: "Absence",
-        value: 752,
-      },
-      {
-        name: "Upcoming",
-        value: 213,
-      },
-    ],
-  },
-  {
-    name: "Ahmed Salah",
-    icon: "ascascasc",
-    id: 4,
-    data: [
-      {
-        name: "Attended",
-        value: 135,
-      },
-      {
-        name: "Absence",
-        value: 752,
-      },
-      {
-        name: "Upcoming",
-        value: 213,
-      },
-    ],
-  },
-  {
-    name: "Ahmed Salah",
-    icon: "ascascasc",
-    id: 4,
-    data: [
-      {
-        name: "Attended",
-        value: 135,
-      },
-      {
-        name: "Absence",
-        value: 752,
-      },
-      {
-        name: "Upcoming",
-        value: 213,
-      },
-    ],
-  },
-  {
-    name: "Ahmed Salah",
-    icon: "ascascasc",
-    id: 4,
-    data: [
-      {
-        name: "Attended",
-        value: 135,
-      },
-      {
-        name: "Absence",
-        value: 752,
-      },
-      {
-        name: "Upcoming",
-        value: 213,
-      },
-    ],
-  },
-];
 
 const TeamMembersKpi = (props: Props) => {
   const [reportType, setReportType] =
     useState<"Performances" | "Attendances">("Performances");
-  const { id } = useParams();
+  const { id, kpi_id } = useParams();
+
+  const { data: teamplayerskpi, isLoading: performancesLoading } =
+    useCoachTeamPlayersKpiStatisticsQuery(
+      { team_id: id, kpi_id: kpi_id },
+      { skip: !id || !kpi_id }
+    );
+
+  const { data: teamPlayersAttends } =
+    useCoachTeamPlayersAttendancesStatisticsQuery(
+      { team_id: id },
+      { skip: !id }
+    );
+
+  const { data: teamInfo } = useCoachTeamInfoQuery(
+    { team_id: id },
+    { skip: !id }
+  );
 
   const items = [
     { title: "Categories", href: "/main-reports" },
-    { title: "Sports", href: "/main-reports/sports" },
     { title: "Teams", href: "/main-reports/sports/teams" },
-    { title: "Team 17th", href: `/main-reports/sports/teams/${id}` },
     {
-      title: reportType === "Performances" ? "Punching" : "Attendance",
+      title: `Team ${teamInfo?.name}`,
+      href: `/main-reports/sports/teams/${id}`,
+    },
+    {
+      title:
+        reportType === "Performances"
+          ? teamplayerskpi?.results[0].kpi.name
+          : "Attendance",
       href: ``,
     },
   ].map((item, index) => (
@@ -280,10 +72,7 @@ const TeamMembersKpi = (props: Props) => {
           <Menu.Target>
             <button className="flex gap-2 text-xs sm:text-sm justify-center items-center text-white bg-perfBlue py-2 px-2 xs:px-4 rounded-3xl">
               <span>{reportType}</span>
-              <AppIcons
-                className="w-3 h-3"
-                icon="ChevronDownIcon:outline"
-              />{" "}
+              <AppIcons className="w-3 h-3" icon="ChevronDownIcon:outline" />
             </button>
           </Menu.Target>
 
@@ -300,17 +89,31 @@ const TeamMembersKpi = (props: Props) => {
       </div>
       <PrintComp>
         <div className="reports items-stretch justify-center xs:justify-start flex flex-wrap gap-4 my-6">
-          <TeamInfoCard />
+          <div>
+            <TeamInfoCard />
+          </div>
+
           {reportType === "Performances" ? (
             <>
-              {membersKpi.map((kpi) => {
+              {performancesLoading && (
+                <>
+                  <Skeleton height={300} width={250} radius="lg" />
+                  <Skeleton height={300} width={250} radius="lg" />
+                  <Skeleton height={300} width={250} radius="lg" />
+                  <Skeleton height={300} width={250} radius="lg" />
+                  <Skeleton height={300} width={250} radius="lg" />
+                  <Skeleton height={300} width={250} radius="lg" />
+                  <Skeleton height={300} width={250} radius="lg" />
+                </>
+              )}
+              {teamplayerskpi?.results.map((kpiPlayer) => {
                 return (
                   <div>
                     <ReportsChartCard
                       // onClickFun={() => navigate(`kpi/${kpi.id}`)}
                       clickable={false}
-                      name={kpi.name}
-                      data={kpi.data}
+                      name={kpiPlayer.kpi.name + " - " + kpiPlayer.name}
+                      statistics={kpiPlayer.kpi.statistics}
                     />
                   </div>
                 );
@@ -318,15 +121,12 @@ const TeamMembersKpi = (props: Props) => {
             </>
           ) : (
             <>
-              {membersAttendance.map((attend) => {
+              {teamPlayersAttends?.results.map((attendsPlayer) => {
                 return (
                   <div>
-                    <ReportsChartCard
-                      // onClickFun={() => navigate(`kpi/${attend.id}`)}
-                      name={attend.name}
-                      data={attend.data}
-                      clickable={false}
-                      chartColors={["#27AE60", "#EB5757", "#A3A3A3"]}
+                    <AttendReportsChart
+                      player_attendance={attendsPlayer.player_attendance}
+                      name={attendsPlayer.name}
                     />
                   </div>
                 );

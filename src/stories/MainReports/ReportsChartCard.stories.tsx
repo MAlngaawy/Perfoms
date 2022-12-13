@@ -16,20 +16,4 @@ const Template: ComponentStory<typeof ReportsChartCard> = (args) => (
 
 export const Primary = Template.bind({});
 
-Primary.args = {
-  name: "Taekwondo",
-  data: [
-    {
-      name: "strengths",
-      value: 50,
-    },
-    {
-      name: "moderate",
-      value: 60,
-    },
-    {
-      name: "weaknesses",
-      value: 300,
-    },
-  ],
-};
+Primary.args = {};

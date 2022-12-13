@@ -1,144 +1,38 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Breadcrumbs } from "@mantine/core";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { Breadcrumbs, Skeleton } from "@mantine/core";
 import ReportsChartCard from "~/@main/components/MainReports/ReportsChartCard";
 import TeamInfoCard from "./components/TeamInfoCard";
 import PrintComp from "~/@main/PrintComp";
+import {
+  useCoachTeamInfoQuery,
+  useCoachTeamKpisStatisticsQuery,
+} from "~/app/store/coach/coachApi";
 
 type Props = {};
 
-const kpis = [
-  {
-    name: "Counter KPI",
-    icon: "ascascasc",
-    id: 4,
-    data: [
-      {
-        name: "strengths",
-        value: 135,
-      },
-      {
-        name: "moderate",
-        value: 752,
-      },
-      {
-        name: "weaknesses",
-        value: 213,
-      },
-    ],
-  },
-  {
-    name: "Mental KPI",
-    icon: "ascascasc",
-    id: 5,
-    data: [
-      {
-        name: "strengths",
-        value: 852,
-      },
-      {
-        name: "moderate",
-        value: 369,
-      },
-      {
-        name: "weaknesses",
-        value: 741,
-      },
-    ],
-  },
-  {
-    name: "Blocks KPI",
-    icon: "ascascasc",
-    id: 6,
-    data: [
-      {
-        name: "strengths",
-        value: 123,
-      },
-      {
-        name: "moderate",
-        value: 456,
-      },
-      {
-        name: "weaknesses",
-        value: 789,
-      },
-    ],
-  },
-  {
-    name: "Attacking KPIS",
-    icon: "ascascasc",
-    id: 1,
-    data: [
-      {
-        name: "strengths",
-        value: 50,
-      },
-      {
-        name: "moderate",
-        value: 300,
-      },
-      {
-        name: "weaknesses",
-        value: 10,
-      },
-    ],
-  },
-
-  {
-    name: "Punching KPIS",
-    icon: "ascascasc",
-    id: 2,
-    data: [
-      {
-        name: "strengths",
-        value: 156,
-      },
-      {
-        name: "moderate",
-        value: 52,
-      },
-      {
-        name: "weaknesses",
-        value: 369,
-      },
-    ],
-  },
-
-  {
-    name: "Overall KPIS",
-    icon: "ascascasc",
-    id: 3,
-    data: [
-      {
-        name: "strengths",
-        value: 30,
-      },
-      {
-        name: "moderate",
-        value: 250,
-      },
-      {
-        name: "weaknesses",
-        value: 100,
-      },
-    ],
-  },
-];
-
-const items = [
-  { title: "Categories", href: "/main-reports" },
-  { title: "Sports", href: "/main-reports/sports" },
-  { title: "Teams", href: "/main-reports/sports/teams" },
-  { title: "Team 17th", href: "" },
-].map((item, index) => (
-  <Link to={item.href} key={index}>
-    {item.title}
-  </Link>
-));
-
 const OneTeam = (props: Props) => {
   const navigate = useNavigate();
+
+  const { id } = useParams();
+
+  const { data: teamKpisStatistics, isLoading } =
+    useCoachTeamKpisStatisticsQuery({ team_id: id }, { skip: !id });
+
+  const { data: teamInfo } = useCoachTeamInfoQuery(
+    { team_id: id },
+    { skip: !id }
+  );
+
+  const items = [
+    { title: "Categories", href: "/main-reports" },
+    { title: "Teams", href: "/main-reports/sports/teams" },
+    { title: `Team ${teamInfo?.name}`, href: "" },
+  ].map((item, index) => (
+    <Link to={item.href} key={index}>
+      {item.title}
+    </Link>
+  ));
 
   return (
     <div className="container w-11/12 mx-auto">
@@ -149,14 +43,27 @@ const OneTeam = (props: Props) => {
       </div>
       <PrintComp>
         <div className="reports items-stretch justify-center xs:justify-start flex flex-wrap gap-4 my-10">
-          <TeamInfoCard />
-          {kpis.map((kpi) => {
+          <div>
+            <TeamInfoCard />
+          </div>
+          {isLoading && (
+            <>
+              <Skeleton height={300} width={250} radius="lg" />
+              <Skeleton height={300} width={250} radius="lg" />
+              <Skeleton height={300} width={250} radius="lg" />
+              <Skeleton height={300} width={250} radius="lg" />
+              <Skeleton height={300} width={250} radius="lg" />
+              <Skeleton height={300} width={250} radius="lg" />
+              <Skeleton height={300} width={250} radius="lg" />
+            </>
+          )}
+          {teamKpisStatistics?.results.map((kpi) => {
             return (
               <div>
                 <ReportsChartCard
                   onClickFun={() => navigate(`kpi/${kpi.id}`)}
                   name={kpi.name}
-                  data={kpi.data}
+                  statistics={kpi.statistics}
                 />
               </div>
             );
