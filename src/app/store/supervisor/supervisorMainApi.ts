@@ -29,6 +29,8 @@ import { Event } from "../types/events-types";
 import {
   CoachPlayerInfo,
   PlayerParent,
+  TeamKpiPlayersStatistics,
+  TeamPlayersAttendStatistics,
   TeamsStatistics,
   TeamStatistics,
 } from "../types/coach-types";
@@ -309,6 +311,34 @@ export const supervisorApi = createApi({
         params,
       }),
     }),
+
+    superTeamKpiPlayersStatistics: query<
+      TeamKpiPlayersStatistics,
+      {
+        kpi_id: string | undefined;
+        team_id: string | undefined;
+        pages?: number;
+      }
+    >({
+      query: ({ kpi_id, team_id, ...params }) => ({
+        url: `statistics/kpis/${kpi_id}/${team_id}/`,
+        params,
+      }),
+    }),
+
+    superTeamAttendPlayersStatistics: query<
+      TeamPlayersAttendStatistics,
+      {
+        sport_id: number | undefined;
+        team_id: string | undefined;
+        pages?: number;
+      }
+    >({
+      query: ({ sport_id, team_id, ...params }) => ({
+        url: `statistics/attends/${sport_id}/${team_id}/`,
+        params,
+      }),
+    }),
   }),
 });
 
@@ -347,4 +377,6 @@ export const {
   useSuperSportStatisticsQuery,
   useSuperTeamsStatisticsQuery,
   useSuperTeamKpisStatisticsQuery,
+  useSuperTeamKpiPlayersStatisticsQuery,
+  useSuperTeamAttendPlayersStatisticsQuery,
 } = supervisorApi;
