@@ -19,7 +19,7 @@ const TeamInfoCard = ({ teamId }: Props) => {
           <Schema label="Name" value={info?.name} />
           <Schema label="Sport" value={info?.sport ? info?.sport : "NA"} />
           <Schema label="Age" value={info?.from_age + " - " + info?.to_age} />
-          <Schema label="Gender" value={info?.gender ? info?.gender : "NA"} />
+          {/* <Schema label="Gender" value={info?.gender ? info?.gender : "NA"} /> */}
           <Schema label="Players" value={JSON.stringify(info.players_count)} />
           <Schema label="Rating schedule" value={"Every" + info.rate_per} />
         </div>
