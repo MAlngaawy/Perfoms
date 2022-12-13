@@ -281,6 +281,16 @@ export const supervisorApi = createApi({
         url: `statistics/my-sport/`,
       }),
     }),
+
+    superTeamsStatistics: query<
+      TeamsStatistics,
+      { sport_id: number | undefined; pages?: number }
+    >({
+      query: ({ sport_id, ...params }) => ({
+        url: `statistics/sports/teams/${sport_id}`,
+        params,
+      }),
+    }),
   }),
 });
 
@@ -317,4 +327,5 @@ export const {
   useGetSuperParentInfoQuery,
   useGetSuperPlayerInfoQuery,
   useSuperSportStatisticsQuery,
+  useSuperTeamsStatisticsQuery,
 } = supervisorApi;
