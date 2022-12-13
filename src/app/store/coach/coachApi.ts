@@ -5,6 +5,7 @@ import {
   CoachTeamInfo,
   CoachTeamPerformance,
   GenerateCertification,
+  PlayerMonthsAttendancesStatistics,
   PlayerParent,
   SendBulkNotifications,
   sendNotifications,
@@ -16,6 +17,7 @@ import {
   TeamPerformanceMetrics,
   TeamPlayersAttendStatistics,
   TeamsStatistics,
+  TeamStatistics,
   UpdatePlayerPKM,
 } from "./../types/coach-types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
@@ -255,6 +257,26 @@ export const coachApi = createApi({
         params,
       }),
     }),
+
+    coachPlayerKpiStatistics: query<
+      TeamsStatistics,
+      { player_id: string | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/player-kpis/${player_id}`,
+        params,
+      }),
+    }),
+
+    coachPlayersAttendStatistics: query<
+      PlayerMonthsAttendancesStatistics,
+      { player_id: string | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `calender-detailed/${player_id}/`,
+        params,
+      }),
+    }),
   }),
 });
 
@@ -286,4 +308,6 @@ export const {
   useCoachTeamPlayersAttendancesStatisticsQuery,
   useCoachGenerateCertificateMutation,
   useCoachGetAllMyPlayersQuery,
+  useCoachPlayerKpiStatisticsQuery,
+  useCoachPlayersAttendStatisticsQuery,
 } = coachApi;

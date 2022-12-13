@@ -5,6 +5,10 @@ import { Menu } from "@mantine/core";
 import AppIcons from "~/@main/core/AppIcons";
 import TimeFilter from "~/@main/components/TimeFilter";
 import OverAll from "./Component/OverAll";
+import {
+  useCoachPlayerKpiStatisticsQuery,
+  useGetPlayerInfoQuery,
+} from "~/app/store/coach/coachApi";
 
 type Props = {};
 
@@ -14,10 +18,15 @@ const Player = (props: Props) => {
     useState<"Performances" | "Attendances">("Performances");
   const { id } = useParams();
 
+  const { data: playerInfo } = useGetPlayerInfoQuery(
+    { player_id: id },
+    { skip: !id }
+  );
+
   const items = [
     { title: "categories", href: "/main-reports" },
     { title: "Search Players", href: "/main-reports/search-players" },
-    { title: id === "3" ? "Yahia Hassan" : "Habeba Wael", href: "" },
+    { title: playerInfo?.name, href: "" },
   ].map((item, index) => (
     <Link to={item.href} key={index}>
       {item.title}

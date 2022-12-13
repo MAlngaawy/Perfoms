@@ -118,6 +118,15 @@ export type TeamPlayerAttendStatistics = {
   };
 };
 
+export type PlayerMonthsAttendancesStatistics = {
+  name: string;
+  statistics: {
+    attends: number;
+    absent: number;
+    upcoming: number;
+  };
+}[];
+
 export type TeamPlayersAttendStatistics = BaseGetAllType & {
   results: TeamPlayerAttendStatistics[];
 };
