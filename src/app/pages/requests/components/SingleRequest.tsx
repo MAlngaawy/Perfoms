@@ -52,7 +52,7 @@ const SingleRequest = ({
           className="mx-auto flex justify-center w-full disabled:bg-gray-500 rounded-md bg-perfGray4 text-perfGray2 hover:shadow-md hover:bg-scoreRed hover:text-white items-center  h-12 mb-2"
         >
           {!declineLoading ? (
-            <span> Accept </span>
+            <span> Decline </span>
           ) : (
             <Loader variant="dots" color="white" />
           )}
