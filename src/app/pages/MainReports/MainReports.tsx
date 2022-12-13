@@ -23,14 +23,12 @@ const MainReports = (props: Props) => {
         </Breadcrumbs>
       </div>
       <div className="my-6 flex justify-center xs:justify-start flex-wrap gap-4  items-center">
-        {user?.user_type !== "Coach" && (
-          <Link to={"search-players"}>
-            <ReportsCategoriesCard
-              image="/assets/images/players.png"
-              type="Players"
-            />
-          </Link>
-        )}
+        <Link to={"search-players"}>
+          <ReportsCategoriesCard
+            image="/assets/images/players.png"
+            type="Players"
+          />
+        </Link>
         {/* <Link to={"coaches"}>
           <ReportsCategoriesCard
             image="/assets/images/coaches.png"
