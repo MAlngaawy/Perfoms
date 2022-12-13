@@ -20,6 +20,7 @@ import {
 import { Player } from "~/app/store/types/parent-types";
 import { PerformanceCard } from "./PerformanceCard";
 import { useEffect } from "react";
+import NoData from "./NoData";
 
 const SaleStaticChart = () => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
@@ -45,6 +46,19 @@ const SaleStaticChart = () => {
 
   // useEffect(() => {}, [timeFilter]);
   console.log("playerKpis", playerKpis);
+
+  if (!playerKpis) {
+    return (
+      <div className="flex flex-col md:flex-row items-center justify-evenly">
+        <img
+          className="md:w-96"
+          src="/assets/images/nodata.png"
+          alt="no data"
+        />
+        <NoData className="flex-row gap-1" />
+      </div>
+    );
+  }
 
   return (
     <div>

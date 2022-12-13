@@ -1,6 +1,7 @@
 import React from "react";
 import OneNotification from "./components/OneNotification";
 import { useNotificationsQuery } from "~/app/store/user/userApi";
+import Placeholders from "~/@main/components/Placeholders";
 
 type Props = {};
 
@@ -22,6 +23,17 @@ const formatDate = (date: Date | null) => {
 
 const NotificationsPage = (props: Props) => {
   const { data: notifications } = useNotificationsQuery({});
+
+  if (!notifications?.results.length) {
+    return (
+      <Placeholders
+        img="/assets/images/nonotification.png"
+        preText={"You don’t have any"}
+        pageName={"Notifications"}
+        postText={" here yet."}
+      />
+    );
+  }
 
   return (
     <div className="p-6 flex flex-col gap-4">

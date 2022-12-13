@@ -21,6 +21,7 @@ import AttendancesSmallCards from "./components/AttendancesSmallCards";
 import { useReactToPrint } from "react-to-print";
 // import { ComponentToPrint } from "./components/ComponentToPrint";
 import PrintComp from "~/@main/PrintComp";
+import Placeholders from "~/@main/components/Placeholders";
 import PlayerCertificatePage from "../player-certificate/PlayerCertificatePage";
 import { usePlayerCertificatesQuery } from "~/app/store/parent/parentApi";
 import CertificateImage from "../player-certificate/components/CertificateImage";
@@ -32,12 +33,23 @@ const ReportPage = () => {
   const widowSize = useWindowSize();
 
   const [reportType, setReportType] =
-    useState<"Performances" | "Attendances" | "Certificate">("Performances");
+    useState<"Performances" | "Attendances">("Performances");
 
   const { data: playerCertificates } = usePlayerCertificatesQuery(
     { player_id: player?.id },
     { skip: !player }
   );
+
+  if (!player) {
+    return (
+      <Placeholders
+        img="/assets/images/noreports.png"
+        preText={"You don’t have any"}
+        pageName={"reports"}
+        postText={"here yet."}
+      />
+    );
+  }
 
   return (
     <>

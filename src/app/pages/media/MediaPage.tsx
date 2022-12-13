@@ -12,6 +12,7 @@ import { useSuprtEventsQuery } from "~/app/store/supervisor/supervisorMainApi";
 import NoEventsComp from "~/@main/components/NoEventsComp";
 import { Link } from "react-router-dom";
 import { Breadcrumbs } from "@mantine/core";
+import Placeholders from "~/@main/components/Placeholders";
 
 const MediaPage = () => {
   const [events, setEvents] = useState<TeamEvents | undefined>();
@@ -49,6 +50,17 @@ const MediaPage = () => {
       {item.title}
     </Link>
   ));
+
+  if (!events?.results.length) {
+    return (
+      <Placeholders
+        img="/assets/images/novideo.png"
+        preText={"No"}
+        pageName={"events"}
+        postText={"here yet, come again later."}
+      />
+    );
+  }
 
   return (
     <div className="container w-11/12 mx-auto">

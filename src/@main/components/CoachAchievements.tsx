@@ -5,6 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Details } from "~/app/store/types/parent-types";
 import { useUpdateProfileMutation } from "~/app/store/user/userApi";
+import NoReport from "~/app/pages/reports/components/NoReport";
 
 type Props = {
   data: Details | undefined;
@@ -42,6 +43,7 @@ const CoachAchievements = ({ data, editMode }: Props) => {
               </div>
             </div>
           ))}
+        <>{!data && <NoReport />}</>
         {editMode && <AddButton data={data} />}
       </div>
     </div>

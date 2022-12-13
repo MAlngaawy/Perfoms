@@ -10,13 +10,15 @@ import { useGetTeamPlayersQuery } from "~/app/store/coach/coachApi";
 import HomeTeamInfoCard from "~/@main/components/HomeTeamInfoCard";
 import NoTeamComp from "~/@main/components/NoTeamComp";
 import TeamCalendar from "../../SubPages/SingleTeam/Components/TeamCalendar";
+import NoData from "~/@main/components/NoData";
+import Placeholders from "~/@main/components/Placeholders";
 
 type Props = {};
 
 const TeamInfo = (props: Props) => {
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
 
-  const { data: coahcTeamPlayers } = useGetTeamPlayersQuery(
+  const { data: coachTeamPlayers } = useGetTeamPlayersQuery(
     { team_id: selectedPlayerTeam?.id },
     { skip: !selectedPlayerTeam }
   );
@@ -46,26 +48,40 @@ const TeamInfo = (props: Props) => {
               <UpcomingEventsCard />
             </Grid.Col>
             <Grid.Col
-              className="bg-white p-4 rounded-3xl flex gap-4 justify-start items-center flex-wrap"
+              className={`bg-white p-4 rounded-3xl flex gap-4 ${
+                !coachTeamPlayers ? "justify-center" : "flex-start"
+              } items-center flex-wrap`}
               span={12}
             >
-              {coahcTeamPlayers?.results.map((player, idx) => {
-                return (
-                  <div
-                    key={idx}
-                    className="shadow-xl cursor-pointer transform hover:scale-105 rounded-lg w-28 text-center bg-white flex flex-col justify-center items-center"
-                    // onClick={() => navigate(`/players`)}
-                    onClick={() => navigate(`/players/${player.id}`)}
-                  >
-                    <Avatar
-                      className="rounded-lg w-full h-28 object-cover"
-                      src={player.icon}
-                      alt="player Image"
+              {coachTeamPlayers &&
+                coachTeamPlayers?.results.map((player, idx) => {
+                  return (
+                    <div
+                      key={idx}
+                      className="shadow-xl cursor-pointer transform hover:scale-105 rounded-lg w-28 text-center bg-white flex flex-col justify-center items-center"
+                      onClick={() => navigate(`/players/${player.id}`)}
+                    >
+                      <Avatar
+                        className="rounded-lg w-full h-28 object-cover"
+                        src={player.icon}
+                        alt="player Image"
+                      />
+                      <h2 className="text-sm">{player.name}</h2>
+                    </div>
+                  );
+                })}
+              <>
+                {!coachTeamPlayers?.results.length && (
+                  <div className="flex flex-col md:flex-row justify-center items-center gap-3">
+                    <img
+                      className="md:w-72 md:my-5"
+                      src="/assets/images/noteams.png"
+                      alt="no teams"
                     />
-                    <h2 className="text-sm">{player.name}</h2>
+                    <p>This team has no players yet</p>
                   </div>
-                );
-              })}
+                )}
+              </>
             </Grid.Col>
           </Grid>
         </div>
