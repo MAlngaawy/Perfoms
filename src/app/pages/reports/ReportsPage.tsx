@@ -33,7 +33,7 @@ const ReportPage = () => {
   const widowSize = useWindowSize();
 
   const [reportType, setReportType] =
-    useState<"Performances" | "Attendances">("Performances");
+    useState<"Performances" | "Attendances" | "Certificates">("Performances");
 
   const { data: playerCertificates } = usePlayerCertificatesQuery(
     { player_id: player?.id },
@@ -79,7 +79,7 @@ const ReportPage = () => {
                   <Menu.Item onClick={() => setReportType("Attendances")}>
                     Attendances
                   </Menu.Item>
-                  <Menu.Item onClick={() => setReportType("Certificate")}>
+                  <Menu.Item onClick={() => setReportType("Certificates")}>
                     Certificates
                   </Menu.Item>
                 </Menu.Dropdown>

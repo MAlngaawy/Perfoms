@@ -19,40 +19,40 @@ type Props = {
 };
 
 const CoachExperince = ({ data, editMode }: Props) => {
-  const hiddenFileInput = React.useRef(null);
+  // const hiddenFileInput = React.useRef(null);
 
-  const handleClick = (event: any) => {
-    hiddenFileInput.current.click();
-  };
+  // const handleClick = (event: any) => {
+  //   hiddenFileInput.current.click();
+  // };
 
-  const handleChange = (event: any) => {
-    const fileUploaded = event.target.files[0];
-    props.handleFile(fileUploaded);
-  };
+  // const handleChange = (event: any) => {
+  //   const fileUploaded = event.target.files[0];
+  //   props.handleFile(fileUploaded);
+  // };
 
-  if (!data) {
-    return (
-      <div className="bg-white flex flex-col items-center gap-1 h-full rounded-lg md:rounded-2xl p-4  pt-10">
-        <Placeholders
-          img="/assets/images/nocv.png"
-          preText={"You need to add your"}
-          pageName={"CV"}
-        />
-        <Button
-          label="Add your CV"
-          style="bordered"
-          className="py-1 rounded-lg"
-          onClick={handleClick}
-        />
-        <input
-          type="file"
-          ref={hiddenFileInput}
-          onChange={handleChange}
-          style={{ display: "none" }}
-        />
-      </div>
-    );
-  }
+  // if (!data) {
+  //   return (
+  //     <div className="bg-white flex flex-col items-center gap-1 h-full rounded-lg md:rounded-2xl p-4  pt-10">
+  //       <Placeholders
+  //         img="/assets/images/nocv.png"
+  //         preText={"You need to add your"}
+  //         pageName={"CV"}
+  //       />
+  //       <Button
+  //         label="Add your CV"
+  //         style="bordered"
+  //         className="py-1 rounded-lg"
+  //         onClick={handleClick}
+  //       />
+  //       <input
+  //         type="file"
+  //         ref={hiddenFileInput}
+  //         onChange={handleChange}
+  //         style={{ display: "none" }}
+  //       />
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="bg-white flex flex-col sm:flex-row justify-between gap-8 h-full rounded-lg md:rounded-2xl p-4  pt-10">
