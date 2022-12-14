@@ -1,27 +1,37 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Breadcrumbs, Switch } from "@mantine/core";
 import { Link, useParams } from "react-router-dom";
 import { Menu } from "@mantine/core";
 import AppIcons from "~/@main/core/AppIcons";
 import TimeFilter from "~/@main/components/TimeFilter";
 import OverAll from "./Component/OverAll";
-import {
-  useCoachPlayerKpiStatisticsQuery,
-  useGetPlayerInfoQuery,
-} from "~/app/store/coach/coachApi";
+import { useGetPlayerInfoQuery } from "~/app/store/coach/coachApi";
+import { useGetSuperPlayerInfoQuery } from "~/app/store/supervisor/supervisorMainApi";
+import { CoachPlayerInfo } from "~/app/store/types/coach-types";
 
 type Props = {};
 
 const Player = (props: Props) => {
   const [checked, setChecked] = useState(true);
+  const [playerInfo, setPlayerInfo] = useState<CoachPlayerInfo>();
   const [reportType, setReportType] =
     useState<"Performances" | "Attendances">("Performances");
   const { id } = useParams();
 
-  const { data: playerInfo } = useGetPlayerInfoQuery(
+  const { data: coachPlayerInfo } = useGetPlayerInfoQuery(
     { player_id: id },
     { skip: !id }
   );
+
+  const { data: superPlayerInfo } = useGetSuperPlayerInfoQuery(
+    { player_id: id },
+    { skip: !id }
+  );
+
+  useEffect(() => {
+    if (coachPlayerInfo) setPlayerInfo(coachPlayerInfo);
+    if (superPlayerInfo) setPlayerInfo(superPlayerInfo);
+  }, [coachPlayerInfo, superPlayerInfo]);
 
   const items = [
     { title: "categories", href: "/main-reports" },

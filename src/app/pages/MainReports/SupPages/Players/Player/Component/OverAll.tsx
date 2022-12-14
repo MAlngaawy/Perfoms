@@ -14,9 +14,15 @@ import {
 } from "~/app/store/coach/coachApi";
 import AttendReportsChart from "~/@main/components/MainReports/AttendReportsChart";
 import {
+  CoachPlayerInfo,
   PlayerMonthsAttendancesStatistics,
   TeamsStatistics,
 } from "~/app/store/types/coach-types";
+import {
+  useGetSuperPlayerInfoQuery,
+  useSuperPlayerKpiStatisticsQuery,
+  useSuperPlayersAttendStatisticsQuery,
+} from "~/app/store/supervisor/supervisorMainApi";
 
 type Props = {
   reportType: string;
@@ -24,19 +30,31 @@ type Props = {
 
 const OverAll = ({ reportType }: Props) => {
   const [data, setData] = useState<TeamsStatistics>();
+  const [playerInfo, setPlayerInfo] = useState<CoachPlayerInfo>();
   const [attendData, setAttendData] =
     useState<PlayerMonthsAttendancesStatistics>();
   const { id } = useParams();
 
   // Coach Player Performances Statistics
+  // Coach Player Atttendances Statistics
   const { data: coachPlayerKpisStatisticsData } =
     useCoachPlayerKpiStatisticsQuery({ player_id: id }, { skip: !id });
-
-  // Coach Player Atttendances Statistics
   const { data: coachPlayerAttendancesStatistics } =
     useCoachPlayersAttendStatisticsQuery({ player_id: id }, { skip: !id });
 
-  const { data: playerInfo } = useGetPlayerInfoQuery(
+  // Supervisor Player Performances Statistics
+  // Supervisor Player Atttendances Statistics
+  const { data: superPlayerKpisStatisticsData } =
+    useSuperPlayerKpiStatisticsQuery({ player_id: id }, { skip: !id });
+  const { data: superPlayerAttendancesStatistics } =
+    useSuperPlayersAttendStatisticsQuery({ player_id: id }, { skip: !id });
+
+  const { data: coachPlayerInfo } = useGetPlayerInfoQuery(
+    { player_id: id },
+    { skip: !id }
+  );
+
+  const { data: superPlayerInfo } = useGetSuperPlayerInfoQuery(
     { player_id: id },
     { skip: !id }
   );
@@ -45,7 +63,21 @@ const OverAll = ({ reportType }: Props) => {
     if (coachPlayerKpisStatisticsData) setData(coachPlayerKpisStatisticsData);
     if (coachPlayerAttendancesStatistics)
       setAttendData(coachPlayerAttendancesStatistics);
-  }, [coachPlayerKpisStatisticsData, coachPlayerAttendancesStatistics]);
+
+    if (superPlayerKpisStatisticsData) setData(superPlayerKpisStatisticsData);
+    if (superPlayerAttendancesStatistics)
+      setAttendData(superPlayerAttendancesStatistics);
+
+    if (coachPlayerInfo) setPlayerInfo(coachPlayerInfo);
+    if (superPlayerInfo) setPlayerInfo(superPlayerInfo);
+  }, [
+    coachPlayerKpisStatisticsData,
+    coachPlayerAttendancesStatistics,
+    superPlayerKpisStatisticsData,
+    superPlayerAttendancesStatistics,
+    coachPlayerInfo,
+    superPlayerInfo,
+  ]);
 
   return (
     <PrintComp>
