@@ -6,6 +6,8 @@ import AppIcons from "~/@main/core/AppIcons";
 import { usePlayerCertificateQuery } from "~/app/store/parent/parentApi";
 import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 import CertificateImage from "./components/CertificateImage";
+import CongratsCertificate from "./components/CongratsCertificateImage";
+import EncourageCertificate from "./components/EncourageCertificateImage";
 
 type Props = {
   certificateId?: number;
@@ -30,10 +32,10 @@ const PlayerCertificatePage = ({ certificateId }: Props) => {
   };
 
   return (
-    <div className="flex flex-col gap-5 justify-center items-center p-5 h-full w-full">
+    <div className=" relative flex flex-col gap-5 justify-center items-center p-5 h-full w-full">
       <div
         onClick={() => printDocument()}
-        className="z-50 flex flex-col border items-center justify-center  fixed right-10 bottom-10 opacity-70 hover:opacity-100 w-20 h-20 rounded-full cursor-pointer bg-perfBlue text-white"
+        className="z-50 flex flex-col border items-center justify-center absolute  right-0 bottom-0 opacity-70 hover:opacity-100 w-20 h-20 rounded-full cursor-pointer bg-perfBlue text-white"
       >
         <AppIcons
           className="w-8 h-8 text-white"
@@ -41,14 +43,19 @@ const PlayerCertificatePage = ({ certificateId }: Props) => {
         />
         <span>PDF</span>
       </div>
-      <h2 className=" my-2 text-perfGray2 text-2xl">
+      {/* <h2 className=" my-2 text-perfGray2 text-2xl">
         Player <span className="font-bold">{certificate?.player.name}</span>{" "}
         Certificate
-      </h2>
+      </h2> */}
       <div className="overflow-scroll max-w-full">
-        {certificate && (
-          <CertificateImage certificate={certificate} ref={canvasRef} />
-        )}
+        {certificate &&
+          (certificate.type === "Encouragement" ? (
+            <EncourageCertificate certificate={certificate} ref={canvasRef} />
+          ) : certificate.type === "Congratulations" ? (
+            <CongratsCertificate certificate={certificate} ref={canvasRef} />
+          ) : (
+            <CertificateImage certificate={certificate} ref={canvasRef} />
+          ))}
       </div>
     </div>
   );

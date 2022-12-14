@@ -19,6 +19,7 @@ type Props = {};
 const schema = yup.object().shape({
   // by: yup.string().required(),
   player: yup.string().required(),
+  type: yup.string().required(),
   // team: yup.string(),
   // type: yup.string().required(),
 });
@@ -71,6 +72,7 @@ const Certificate = (props: Props) => {
 
     sendCertification({
       player: +data.player,
+      type: data.type,
       club: myClub ? myClub?.id : 0,
       team: 1, // This Team ID Need to change (call Ali)
     })
@@ -80,7 +82,7 @@ const Certificate = (props: Props) => {
           color: "green",
           message: "Certificate Sent",
         });
-        reset({ player: "" });
+        reset({ player: "", type: "" });
       })
       .catch((err) => {
         showNotification({
@@ -135,17 +137,37 @@ const Certificate = (props: Props) => {
                 {...field}
                 id={"player"}
                 name="player"
-                // label="Select Player to send Certification"
                 placeholder="Select Player"
                 itemComponent={SelectItem}
                 data={inputData ? inputData : []}
                 searchable
                 maxDropdownHeight={300}
                 nothingFound="Nobody here"
-                // filter={(value, item) =>
-                //   item.label.toLowerCase().includes(value.toLowerCase().trim()) ||
-                //   item.description.toLowerCase().includes(value.toLowerCase().trim())
-                // }
+              />
+            )}
+          />
+
+          <Controller
+            control={control}
+            {...register("type")}
+            render={({ field }) => (
+              <Select
+                sx={{
+                  width: "100%",
+                }}
+                {...field}
+                id={"type"}
+                name="type"
+                placeholder="Certificate Type"
+                data={[
+                  "Performance",
+                  "Congratulations",
+                  "Encouragement",
+                  "Other",
+                ]}
+                searchable
+                maxDropdownHeight={300}
+                nothingFound="Nobody here"
               />
             )}
           />

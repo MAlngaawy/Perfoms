@@ -22,6 +22,7 @@ export type GenerateCertification = {
   player: number;
   club: number;
   team: number;
+  type: "Performance" | "Congratulations" | "Encouragement" | "Other";
 };
 
 export type TeamKpiMetric = {
