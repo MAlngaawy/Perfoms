@@ -362,6 +362,7 @@ export type PlayerCertificate = {
     icon_url: string;
   };
   team: number;
+  type: "Performance" | "Congratulations" | "Encouragement" | "Other";
 };
 
 export type PlayerCertificates = BaseGetAllType & {
