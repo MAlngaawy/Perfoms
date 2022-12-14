@@ -1,39 +1,42 @@
 import { Avatar, Breadcrumbs, Group, Select, Text } from "@mantine/core";
-import React, { forwardRef, useEffect } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 import AppIcons from "~/@main/core/AppIcons";
 import { Controller, useForm } from "react-hook-form";
 import { useSuperPlayersQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { Link, useNavigate } from "react-router-dom";
+import { TeamPlayers } from "~/app/store/types/clubManager-types";
+import { useCoachGetAllMyPlayersQuery } from "~/app/store/coach/coachApi";
 
 type Props = {};
 
 const SearchPlayersPage = (props: Props) => {
+  const [playersData, setPlayersData] = useState<TeamPlayers | any>();
   const { handleSubmit, register, control } = useForm();
   const navigate = useNavigate();
 
-  const {
-    data: players,
-    isSuccess,
-    isError,
-    isLoading,
-  } = useSuperPlayersQuery({});
+  // fetch coach players
+
+  const { data: coachPlayers } = useCoachGetAllMyPlayersQuery({});
+
+  // Fetch Super players
+  const { data: superPlayers } = useSuperPlayersQuery({});
+
+  useEffect(() => {
+    if (superPlayers) setPlayersData(superPlayers);
+    if (coachPlayers) setPlayersData(coachPlayers);
+  }, [superPlayers, coachPlayers]);
 
   const send = (data: any) => {
     navigate(`player/${data.id}`);
-    console.log(data);
   };
 
-  const data = players?.results.map((player) => {
+  const data = playersData?.results.map((player: any) => {
     return {
       label: player.name,
       value: JSON.stringify(player.id),
       image: player.icon,
     };
   });
-
-  useEffect(() => {
-    if (isSuccess) console.log(data);
-  }, [isSuccess]);
 
   interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
     image: string;
@@ -78,48 +81,50 @@ const SearchPlayersPage = (props: Props) => {
           onSubmit={handleSubmit(send)}
         >
           {data && (
-            <Controller
-              control={control}
-              {...register("id")}
-              render={({ field }) => (
-                <Select
-                  id="id"
-                  {...field}
-                  data={data}
-                  itemComponent={SelectItem}
-                  icon={
-                    <AppIcons
-                      icon="MagnifyingGlassIcon:outline"
-                      className="w-5 h-5 text-perfGray1"
-                    />
-                  }
-                  sx={{
-                    ".mantine-Select-input": {
-                      background: "#eee",
-                      borderTopLeftRadius: 30,
-                      borderBottomLeftRadius: 30,
-                      margin: 0,
-                      padding: 0,
-                      paddingLeft: 30,
-                    },
-                    ".mantine-Select-rightSection": {
-                      display: "none",
-                    },
-                  }}
-                  rightSection={false}
-                  className="m-0 p-0 h-fit w-8/12"
-                  searchable
-                />
-              )}
-            />
-          )}
+            <>
+              <Controller
+                control={control}
+                {...register("id")}
+                render={({ field }) => (
+                  <Select
+                    id="id"
+                    {...field}
+                    data={data}
+                    itemComponent={SelectItem}
+                    icon={
+                      <AppIcons
+                        icon="MagnifyingGlassIcon:outline"
+                        className="w-5 h-5 text-perfGray1"
+                      />
+                    }
+                    sx={{
+                      ".mantine-Select-input": {
+                        background: "#eee",
+                        borderTopLeftRadius: 30,
+                        borderBottomLeftRadius: 30,
+                        margin: 0,
+                        padding: 0,
+                        paddingLeft: 30,
+                      },
+                      ".mantine-Select-rightSection": {
+                        display: "none",
+                      },
+                    }}
+                    rightSection={false}
+                    className="m-0 p-0 h-fit w-8/12"
+                    searchable
+                  />
+                )}
+              />
 
-          <button
-            type="submit"
-            className="bg-perfGray3 text-white px-2 rounded-tr-full rounded-br-full"
-          >
-            Search
-          </button>
+              <button
+                type="submit"
+                className="bg-perfGray3 text-white px-2 rounded-tr-full rounded-br-full"
+              >
+                Go
+              </button>
+            </>
+          )}
         </form>
       </div>
     </div>

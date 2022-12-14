@@ -81,7 +81,7 @@ export type Scores = {
 
 export type InfoProps = {
   label: string;
-  value?: string;
+  value?: string | number | undefined;
 };
 
 export type PlayerData = {
