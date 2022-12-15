@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { Grid, Menu, Button } from "@mantine/core";
 import Card from "~/@main/components/Card";
 import AppIcons from "~/@main/core/AppIcons";
-import AttendanceTable from "~/app/pages/coachHome/components/AttendanceTable";
+import AttendanceTable from "~/app/pages/reports/components/AttendanceTable";
 import TotalAttendance from "~/app/pages/reports/components/TotalAttendance";
 import CustomCalendar from "~/@main/components/Calendar";
 import TimeFilter from "~/@main/components/TimeFilter";
@@ -21,12 +21,12 @@ import TeamFilter from "~/@main/components/TeamFilter";
 import PrintComp from "~/@main/PrintComp";
 import { useParams } from "react-router-dom";
 
-type Props = {};
+type Props = {
+  reportType: "Performances" | "Attendances";
+};
 
-const Detailed = (props: Props) => {
+const Detailed = ({ reportType }: Props) => {
   const { id } = useParams();
-  const [reportType, setReportType] =
-    useState<"Performances" | "Attendances" | "Certificates">("Performances");
 
   return (
     <>
@@ -83,7 +83,7 @@ const Detailed = (props: Props) => {
             <Grid gutter={"sm"}>
               <Grid.Col span={12} md={2.5}>
                 <div className="flex flex-col xs:flex-row md:flex-col gap-2 h-full">
-                  <HomePlayerInfoCard />
+                  <HomePlayerInfoCard player_id={id} />
                   <div className="note bg-white rounded-3xl w-full p-4 h-full">
                     <h2 className="text-lg font-normal text-perfGray1 pb-4">
                       Overall notes
@@ -101,24 +101,21 @@ const Detailed = (props: Props) => {
               <Grid.Col span={12} md={9.5}>
                 <Grid gutter={"sm"}>
                   <Grid.Col span={12}>
-                    <AttendancesSmallCards />
+                    <AttendancesSmallCards player_id={id} />
                   </Grid.Col>
                   {/* Attedance Summary Table */}
                   <Grid.Col span={12} sm={8}>
                     <div className="bg-white h-full rounded-3xl p-4">
-                      <AttendanceTable />
+                      <AttendanceTable player_id={id} />
                     </div>
                   </Grid.Col>
 
                   <Grid.Col span={12} sm={4}>
                     <div className="flex flex-col gap-4">
-                      {/* Total Attendace Pie Chart  */}
                       <div className="bg-white rounded-3xl">
-                        <TotalAttendance />
+                        <TotalAttendance player_id={id} />
                       </div>
-
-                      {/* Attendance Calender */}
-                      <CustomCalendar pageName="reports" />
+                      <CustomCalendar player_id={id} pageName="reports" />
                     </div>
                   </Grid.Col>
                 </Grid>

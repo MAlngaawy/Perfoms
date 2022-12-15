@@ -51,18 +51,13 @@ const Player = (props: Props) => {
           {items}
         </Breadcrumbs>
       </div>
-      <div className="flex flex-col my-4 xs:flex-row items-center gap-4 justify-end">
+      <div className="flex flex-col my-4 xs:flex-row items-center gap-4 justify-between">
         <div className="switch flex ">
           <Switch
             size="xl"
             sx={{
               ".mantine-Switch-track": {
                 cursor: "pointer",
-              },
-              ".mantine-Switch-root": {
-                display: "flex",
-                justifyItems: "center",
-                alignItems: "center",
               },
             }}
             onLabel="Overall"
@@ -98,12 +93,11 @@ const Player = (props: Props) => {
       <div className="my-6">
         {checked ? (
           <div>
-            {" "}
-            <OverAll reportType={reportType} />{" "}
+            <OverAll reportType={reportType} />
           </div>
         ) : (
           <div>
-            <Detailed />
+            <Detailed reportType={reportType} />
           </div>
         )}
       </div>

@@ -33,6 +33,7 @@ import {
   EventFile,
   EventFiles,
   ParentClub,
+  PlayerAttendances,
   PlayerKpis,
   PlayerMetricScores,
   PlayerRecommendations,
@@ -340,6 +341,16 @@ export const coachApi = createApi({
         params,
       }),
     }),
+
+    coachPlayerCalendar: query<
+      PlayerAttendances,
+      { player_id: string | number | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `${player_id}/calendar`,
+        params,
+      }),
+    }),
   }),
 });
 
@@ -379,4 +390,5 @@ export const {
   useCoachPlayerKpisMetricsWeaknessScoreQuery,
   useCoachPlayerRecommendationsQuery,
   useCoachPlayerActionsQuery,
+  useCoachPlayerCalendarQuery,
 } = coachApi;

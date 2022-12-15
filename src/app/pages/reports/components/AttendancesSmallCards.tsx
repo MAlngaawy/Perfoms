@@ -3,14 +3,22 @@ import { Player } from "~/app/store/types/parent-types";
 import { useSelector } from "react-redux";
 import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 import { usePlayerCalenderQuery } from "~/app/store/parent/parentApi";
+import { useCoachPlayerCalendarQuery } from "~/app/store/coach/coachApi";
 
-type Props = {};
+type Props = {
+  player_id?: number | string | undefined;
+};
 
-const AttendancesSmallCards = (props: Props) => {
+const AttendancesSmallCards = ({ player_id }: Props) => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
   const { data: playerAttendance } = usePlayerCalenderQuery(
     { id: selectedPlayer?.id },
     { skip: !selectedPlayer?.id }
+  );
+
+  const { data: coachPlayerAttendance } = useCoachPlayerCalendarQuery(
+    { player_id: player_id },
+    { skip: !player_id }
   );
 
   const newData = [0, 0];
@@ -20,6 +28,16 @@ const AttendancesSmallCards = (props: Props) => {
       if (playerAttendance?.results[i].status === "ATTENDED") {
         newData[0] += 1;
       } else if (playerAttendance?.results[i].status === "ABSENT") {
+        newData[1] += 1;
+      }
+    }
+  }
+
+  if (coachPlayerAttendance) {
+    for (let i = 0; i < coachPlayerAttendance?.results?.length; i++) {
+      if (coachPlayerAttendance?.results[i].status === "ATTENDED") {
+        newData[0] += 1;
+      } else if (coachPlayerAttendance?.results[i].status === "ABSENT") {
         newData[1] += 1;
       }
     }

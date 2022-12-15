@@ -1,19 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 import useWindowSize from "~/@main/hooks/useWindowSize";
-import { Player } from "~/app/store/types/parent-types";
+import { Player, PlayerAttendances } from "~/app/store/types/parent-types";
 import { useSelector } from "react-redux";
 import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 import { usePlayerCalenderQuery } from "~/app/store/parent/parentApi";
+import { useCoachPlayerCalendarQuery } from "~/app/store/coach/coachApi";
 
-type Props = {};
+type Props = {
+  player_id?: number | string | undefined;
+};
 
-const TotalAttendance = (props: Props) => {
+const TotalAttendance = ({ player_id }: Props) => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
-  const { data: playerAttendance } = usePlayerCalenderQuery(
+  const [playerAttendance, setPlayerAttendance] = useState<PlayerAttendances>();
+
+  const { data: parentPlayerAttendance } = usePlayerCalenderQuery(
     { id: selectedPlayer?.id },
     { skip: !selectedPlayer?.id }
   );
+
+  const { data: coachPlayerAttendance } = useCoachPlayerCalendarQuery(
+    { player_id: player_id },
+    { skip: !player_id }
+  );
+
+  useEffect(() => {
+    if (parentPlayerAttendance) setPlayerAttendance(parentPlayerAttendance);
+    if (coachPlayerAttendance) setPlayerAttendance(coachPlayerAttendance);
+  }, [parentPlayerAttendance, coachPlayerAttendance]);
 
   const newData = [
     { name: "Attended", value: 0, color: "#1B59F8" },

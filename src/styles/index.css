@@ -30,6 +30,10 @@ input:not([type="radio"]):not([type="checkbox"]) {
   row-gap: 10px;
 }
 
+.mantine-Switch-body {
+  align-items: center;
+}
+
 /* body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
