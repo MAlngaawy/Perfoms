@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 import { usePlayerCalenderQuery } from "~/app/store/parent/parentApi";
 import { useCoachPlayerCalendarQuery } from "~/app/store/coach/coachApi";
+import { useSuperPlayerCalendarQuery } from "~/app/store/supervisor/supervisorMainApi";
 
 type Props = {
   player_id?: number | string | undefined;
@@ -25,10 +26,16 @@ const TotalAttendance = ({ player_id }: Props) => {
     { skip: !player_id }
   );
 
+  const { data: superPlayerAttendance } = useSuperPlayerCalendarQuery(
+    { player_id: player_id },
+    { skip: !player_id }
+  );
+
   useEffect(() => {
     if (parentPlayerAttendance) setPlayerAttendance(parentPlayerAttendance);
     if (coachPlayerAttendance) setPlayerAttendance(coachPlayerAttendance);
-  }, [parentPlayerAttendance, coachPlayerAttendance]);
+    if (superPlayerAttendance) setPlayerAttendance(superPlayerAttendance);
+  }, [parentPlayerAttendance, coachPlayerAttendance, superPlayerAttendance]);
 
   const newData = [
     { name: "Attended", value: 0, color: "#1B59F8" },

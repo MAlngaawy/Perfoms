@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 import { usePlayerCalenderQuery } from "~/app/store/parent/parentApi";
 import { useCoachPlayerCalendarQuery } from "~/app/store/coach/coachApi";
+import { useSuperPlayerCalendarQuery } from "~/app/store/supervisor/supervisorMainApi";
 
 type Props = {
   player_id?: number | string | undefined;
@@ -17,6 +18,11 @@ const AttendancesSmallCards = ({ player_id }: Props) => {
   );
 
   const { data: coachPlayerAttendance } = useCoachPlayerCalendarQuery(
+    { player_id: player_id },
+    { skip: !player_id }
+  );
+
+  const { data: superPlayerAttendance } = useSuperPlayerCalendarQuery(
     { player_id: player_id },
     { skip: !player_id }
   );
@@ -38,6 +44,16 @@ const AttendancesSmallCards = ({ player_id }: Props) => {
       if (coachPlayerAttendance?.results[i].status === "ATTENDED") {
         newData[0] += 1;
       } else if (coachPlayerAttendance?.results[i].status === "ABSENT") {
+        newData[1] += 1;
+      }
+    }
+  }
+
+  if (superPlayerAttendance) {
+    for (let i = 0; i < superPlayerAttendance?.results?.length; i++) {
+      if (superPlayerAttendance?.results[i].status === "ATTENDED") {
+        newData[0] += 1;
+      } else if (superPlayerAttendance?.results[i].status === "ABSENT") {
         newData[1] += 1;
       }
     }

@@ -6,7 +6,15 @@ import {
   TeamPlayers,
   Teams,
 } from "../types/clubManager-types";
-import { EventFiles, TeamCoaches, TeamEvents } from "../types/parent-types";
+import {
+  EventFiles,
+  PlayerAttendances,
+  PlayerKpis,
+  PlayerMetricScores,
+  PlayerRecommendations,
+  TeamCoaches,
+  TeamEvents,
+} from "../types/parent-types";
 import { ParentClub } from "~/app/store/types/parent-types";
 import {
   AddAction,
@@ -265,7 +273,7 @@ export const supervisorApi = createApi({
 
     getSuperPlayerInfo: query<
       CoachPlayerInfo,
-      { player_id: string | undefined; page?: number }
+      { player_id: string | number | undefined; page?: number }
     >({
       query: ({ player_id, ...params }) => ({
         url: `player-info/${player_id}/`,
@@ -360,6 +368,81 @@ export const supervisorApi = createApi({
         params,
       }),
     }),
+
+    superPlayerKpisMetricsStatistics: query<
+      PlayerKpis,
+      {
+        player_id: string | undefined;
+        date_from: string;
+        date_to: string;
+        pages?: number;
+      }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/${player_id}/player-kpis-metrics`,
+        params,
+      }),
+    }),
+
+    superPlayerKpisMetricsModerateScore: query<
+      PlayerMetricScores,
+      { player_id: string | number | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/${player_id}/metrics/scores/moderate`,
+        params,
+      }),
+    }),
+
+    superPlayerKpisMetricsStrengthScore: query<
+      PlayerMetricScores,
+      { player_id: string | number | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/${player_id}/metrics/scores/strength`,
+        params,
+      }),
+    }),
+
+    superPlayerKpisMetricsWeaknessScore: query<
+      PlayerMetricScores,
+      { player_id: string | number | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/${player_id}/metrics/scores/weakness`,
+        params,
+      }),
+    }),
+
+    superPlayerRecommendations: query<
+      PlayerRecommendations,
+      { player_id: string | number | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/${player_id}/recommendations`,
+        params,
+      }),
+    }),
+
+    superPlayerActions: query<
+      PlayerRecommendations,
+      { player_id: string | number | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/${player_id}/actions`,
+        params,
+      }),
+    }),
+
+    superPlayerCalendar: query<
+      PlayerAttendances,
+      { player_id: string | number | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/${player_id}/calendar`,
+        params,
+      }),
+    }),
   }),
 });
 
@@ -402,4 +485,11 @@ export const {
   useSuperTeamAttendPlayersStatisticsQuery,
   useSuperPlayerKpiStatisticsQuery,
   useSuperPlayersAttendStatisticsQuery,
+  useSuperPlayerKpisMetricsStatisticsQuery,
+  useSuperPlayerKpisMetricsModerateScoreQuery,
+  useSuperPlayerKpisMetricsStrengthScoreQuery,
+  useSuperPlayerKpisMetricsWeaknessScoreQuery,
+  useSuperPlayerActionsQuery,
+  useSuperPlayerRecommendationsQuery,
+  useSuperPlayerCalendarQuery,
 } = supervisorApi;

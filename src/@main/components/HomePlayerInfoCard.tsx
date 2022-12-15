@@ -7,6 +7,8 @@ import { useOnePlayerQuery } from "~/app/store/parent/parentApi";
 import NoData from "./NoData";
 import { CoachPlayerInfo } from "~/app/store/types/coach-types";
 import { useGetPlayerInfoQuery } from "~/app/store/coach/coachApi";
+import { useGetSuperPlayerInfoQuery } from "~/app/store/supervisor/supervisorMainApi";
+import { Skeleton } from "@mantine/core";
 
 type Props = {
   player_id?: number | string | undefined;
@@ -26,17 +28,24 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
     { skip: !player_id }
   );
 
+  const { data: superPlayerInfo } = useGetSuperPlayerInfoQuery(
+    { player_id: player_id },
+    { skip: !player_id }
+  );
+
   console.log("coachPlayerInfo", coachPlayerInfo);
 
   useEffect(() => {
     if (parentPlayerInfoData) setPlayerInfoData(parentPlayerInfoData);
     if (coachPlayerInfo) setPlayerInfoData(coachPlayerInfo);
-  }, [parentPlayerInfoData, coachPlayerInfo]);
+    if (superPlayerInfo) setPlayerInfoData(superPlayerInfo);
+  }, [parentPlayerInfoData, coachPlayerInfo, superPlayerInfo]);
 
   if (!playerInfoData) {
     return (
       <div className="p-6 h-full bg-white rounded-3xl flex justify-center items-center">
-        <NoData className="flex-col text-center text-sm" />
+        <Skeleton width={"100%"} height={"100%"} radius={"lg"} />
+        {/* <NoData className="flex-col text-center text-sm" /> */}
       </div>
     );
   }
