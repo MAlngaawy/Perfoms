@@ -274,7 +274,12 @@ export const coachApi = createApi({
 
     coachPlayerKpisMetricsStatistics: query<
       PlayerKpis,
-      { player_id: string | undefined; pages?: number }
+      {
+        player_id: string | undefined;
+        date_from: string;
+        date_to: string;
+        pages?: number;
+      }
     >({
       query: ({ player_id, ...params }) => ({
         url: `${player_id}/player-kpis-metrics`,

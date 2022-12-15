@@ -32,8 +32,12 @@ const SaleStaticChart = () => {
   const { id } = useParams();
 
   const { data: coachPlayerKpis } = useCoachPlayerKpisMetricsStatisticsQuery(
-    { player_id: id },
-    { skip: !id }
+    {
+      player_id: id,
+      date_from: timeFilter?.from_date,
+      date_to: timeFilter?.to_date,
+    },
+    { skip: !id || !timeFilter?.from_date || !timeFilter?.to_date }
   );
 
   const { data: parentPlayerKpis } = usePlayerKpisMetricsQuery(
