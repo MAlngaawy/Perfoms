@@ -1,27 +1,71 @@
 import { useEffect, useState } from "react";
 import NoReport from "~/app/pages/reports/components/NoReport";
 import {
+  useCoachPlayerKpisMetricsModerateScoreQuery,
+  useCoachPlayerKpisMetricsStrengthScoreQuery,
+  useCoachPlayerKpisMetricsWeaknessScoreQuery,
+} from "~/app/store/coach/coachApi";
+import {
   usePlayerModerateQuery,
   usePlayerStrengthQuery,
   usePlayerWeaknessQuery,
 } from "~/app/store/parent/parentApi";
-import { PlayerMetricScores } from "~/app/store/types/parent-types";
+import { PlayerKpis, PlayerMetricScores } from "~/app/store/types/parent-types";
 import { CardProps } from "~/app/store/types/user-types";
 
 const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
   const [data, setData] = useState<PlayerMetricScores | undefined>();
 
-  const { data: moderate } = usePlayerModerateQuery({ player_id: player_id });
+  // Fetch data for Parent
+  const { data: moderate } = usePlayerModerateQuery(
+    { player_id: player_id },
+    { skip: !player_id }
+  );
+  const { data: strength } = usePlayerStrengthQuery(
+    { player_id: player_id },
+    { skip: !player_id }
+  );
+  const { data: weakness } = usePlayerWeaknessQuery(
+    { player_id: player_id },
+    { skip: !player_id }
+  );
 
-  const { data: strength } = usePlayerStrengthQuery({ player_id: player_id });
-
-  const { data: weakness } = usePlayerWeaknessQuery({ player_id: player_id });
+  // Fetch data for coach
+  const { data: coachPlayerModerate } =
+    useCoachPlayerKpisMetricsModerateScoreQuery(
+      { player_id: player_id },
+      { skip: !player_id }
+    );
+  const { data: coachPlayerStrength } =
+    useCoachPlayerKpisMetricsStrengthScoreQuery(
+      { player_id: player_id },
+      { skip: !player_id }
+    );
+  const { data: coachPlayerWeakness } =
+    useCoachPlayerKpisMetricsWeaknessScoreQuery(
+      { player_id: player_id },
+      { skip: !player_id }
+    );
 
   useEffect(() => {
-    if (powerType === "Moderate") setData(moderate);
-    if (powerType === "Strengths") setData(strength);
-    if (powerType === "Weaknesses") setData(weakness);
-  }, [moderate, strength, weakness]);
+    if (powerType === "Moderate") {
+      if (moderate) setData(moderate);
+      if (coachPlayerModerate) setData(coachPlayerModerate);
+    } else if (powerType === "Strengths") {
+      if (strength) setData(strength);
+      if (coachPlayerStrength) setData(coachPlayerStrength);
+    } else if (powerType === "Weaknesses") {
+      if (weakness) setData(weakness);
+      if (coachPlayerWeakness) setData(coachPlayerWeakness);
+    }
+  }, [
+    moderate,
+    strength,
+    weakness,
+    coachPlayerModerate,
+    coachPlayerStrength,
+    coachPlayerWeakness,
+  ]);
 
   return (
     // props {scores , bg , color}

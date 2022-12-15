@@ -17,17 +17,26 @@ import {
   selectedPlayerTeamFn,
   timeFilterFn,
 } from "~/app/store/parent/parentSlice";
-import { Player } from "~/app/store/types/parent-types";
+import { Player, PlayerKpis } from "~/app/store/types/parent-types";
 import { PerformanceCard } from "./PerformanceCard";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import NoData from "./NoData";
+import { useParams } from "react-router-dom";
+import { useCoachPlayerKpisMetricsStatisticsQuery } from "~/app/store/coach/coachApi";
 
 const SaleStaticChart = () => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const timeFilter = useSelector(timeFilterFn);
+  const [playerKpis, setPlayerKpis] = useState<PlayerKpis>();
+  const { id } = useParams();
 
-  const { data: playerKpis } = usePlayerKpisMetricsQuery(
+  const { data: coachPlayerKpis } = useCoachPlayerKpisMetricsStatisticsQuery(
+    { player_id: id },
+    { skip: !id }
+  );
+
+  const { data: parentPlayerKpis } = usePlayerKpisMetricsQuery(
     {
       team_id: selectedPlayerTeam?.id,
       player_id: selectedPlayer?.id,
@@ -44,8 +53,10 @@ const SaleStaticChart = () => {
     }
   );
 
-  // useEffect(() => {}, [timeFilter]);
-  console.log("playerKpis", playerKpis);
+  useEffect(() => {
+    if (parentPlayerKpis) setPlayerKpis(parentPlayerKpis);
+    if (coachPlayerKpis) setPlayerKpis(coachPlayerKpis);
+  }, [parentPlayerKpis, coachPlayerKpis]);
 
   if (!playerKpis) {
     return (

@@ -8,11 +8,12 @@ import OverAll from "./Component/OverAll";
 import { useGetPlayerInfoQuery } from "~/app/store/coach/coachApi";
 import { useGetSuperPlayerInfoQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { CoachPlayerInfo } from "~/app/store/types/coach-types";
+import Detailed from "./Component/Detailed";
 
 type Props = {};
 
 const Player = (props: Props) => {
-  const [checked, setChecked] = useState(true);
+  const [checked, setChecked] = useState(false);
   const [playerInfo, setPlayerInfo] = useState<CoachPlayerInfo>();
   const [reportType, setReportType] =
     useState<"Performances" | "Attendances">("Performances");
@@ -51,7 +52,7 @@ const Player = (props: Props) => {
         </Breadcrumbs>
       </div>
       <div className="flex flex-col my-4 xs:flex-row items-center gap-4 justify-end">
-        {/* <div className="switch flex ">
+        <div className="switch flex ">
           <Switch
             size="xl"
             sx={{
@@ -69,7 +70,7 @@ const Player = (props: Props) => {
             checked={checked}
             onChange={(event) => setChecked(event.currentTarget.checked)}
           />
-        </div> */}
+        </div>
         <div className="flex gap-4 xs:justify-end items-center">
           <Menu shadow="md" width={200}>
             <Menu.Target>
@@ -101,7 +102,9 @@ const Player = (props: Props) => {
             <OverAll reportType={reportType} />{" "}
           </div>
         ) : (
-          <div>{/* <Detailed /> */}</div>
+          <div>
+            <Detailed />
+          </div>
         )}
       </div>
     </div>

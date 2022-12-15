@@ -1,20 +1,37 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 import { useSelector } from "react-redux";
 import { Player } from "~/app/store/types/parent-types";
 import Info from "./Info";
 import { useOnePlayerQuery } from "~/app/store/parent/parentApi";
 import NoData from "./NoData";
+import { CoachPlayerInfo } from "~/app/store/types/coach-types";
+import { useGetPlayerInfoQuery } from "~/app/store/coach/coachApi";
 
-type Props = {};
+type Props = {
+  player_id?: number | string | undefined;
+};
 
-const HomePlayerInfoCard = (props: Props) => {
+const HomePlayerInfoCard = ({ player_id }: Props) => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
+  const [playerInfoData, setPlayerInfoData] = useState<CoachPlayerInfo>();
 
-  const { data: playerInfoData } = useOnePlayerQuery(
-    { id: selectedPlayer.id },
-    { skip: !selectedPlayer.id }
+  const { data: parentPlayerInfoData } = useOnePlayerQuery(
+    { id: selectedPlayer?.id },
+    { skip: !selectedPlayer?.id }
   );
+
+  const { data: coachPlayerInfo } = useGetPlayerInfoQuery(
+    { player_id: player_id },
+    { skip: !player_id }
+  );
+
+  console.log("coachPlayerInfo", coachPlayerInfo);
+
+  useEffect(() => {
+    if (parentPlayerInfoData) setPlayerInfoData(parentPlayerInfoData);
+    if (coachPlayerInfo) setPlayerInfoData(coachPlayerInfo);
+  }, [parentPlayerInfoData, coachPlayerInfo]);
 
   if (!playerInfoData) {
     return (
