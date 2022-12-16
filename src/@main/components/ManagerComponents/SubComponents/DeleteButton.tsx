@@ -5,23 +5,11 @@ import { showNotification } from "@mantine/notifications";
 
 type Props = {
   name: string;
-  id?: number;
   type: string;
   deleteFun: any;
-  // isLoading: boolean;
-  isError?: boolean;
-  isSuccess?: boolean;
 };
 
-const DeleteButton = ({
-  id,
-  name,
-  type,
-  deleteFun,
-  // isLoading,
-  isError,
-  isSuccess,
-}: Props) => {
+const DeleteButton = ({ name, type, deleteFun }: Props) => {
   const [opened, setOpened] = useState(false);
 
   return (

@@ -8,34 +8,39 @@ import Resizer from "react-image-file-resizer";
 import cn from "classnames";
 import SubmitButton from "../../SubmitButton";
 import PerfSelect from "../../Select";
+import { axiosInstance } from "~/app/configs/dataService";
+import { showNotification } from "@mantine/notifications";
 
-type Props = {};
+type Props = {
+  refetch: any;
+};
 
-const AddTeamCardForm = (props: Props) => {
+const AddTeamCardForm = ({ refetch }: Props) => {
   const [opened, setOpened] = useState(false);
   const [playerImage, setPlayerImage] = useState<string | unknown>("");
   const [playerImagePreview, setPlayerImagePreview] = useState("null");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const schema = yup.object().shape({
-    image: yup.mixed(),
-    ratingSchedule: yup.string().required("please chose the rating schedule"),
+    icon: yup.mixed(),
+    rate_per: yup.string().required("please chose the rating schedule"),
     name: yup.string().required("please add the team name"),
-    sport: yup.string().required("please choose the sport"),
-    maxPlayersNumber: yup.number(),
-    fromAge: yup.number(),
-    toAge: yup.number(),
+    players_count: yup.number(),
+    from_age: yup.number(),
+    to_age: yup.number(),
+    gender: yup.string(),
   });
 
   const resetFields = () => {
     setPlayerImage(null);
     reset({
-      image: "",
-      ratingSchedule: "",
+      icon: "",
+      rate_per: "",
       name: "",
-      sport: "",
-      maxPlayersNumber: "",
-      fromAge: "",
-      toAge: "",
+      players_count: "",
+      from_age: "",
+      to_age: "",
+      gender: "",
     });
   };
 
@@ -50,12 +55,41 @@ const AddTeamCardForm = (props: Props) => {
   });
 
   // Submit Form Function
-  const onSubmitFunction = (data: any) => {
-    console.log({ ...data, icon: playerImage });
+  const onSubmitFunction = (e: any) => {
+    e.preventDefault();
+    setLoading(true);
+    const formData = new FormData(e.currentTarget);
 
-    console.log({ ...data, icon: playerImage });
-    setOpened(false);
-    resetFields();
+    try {
+      axiosInstance
+        .post("supervisor/add-team/", formData)
+        .then((res) => {
+          setLoading(false);
+          setOpened(false);
+          setPlayerImage(null);
+          refetch();
+          showNotification({
+            title: "Done",
+            color: "green",
+            message: "Team Added",
+          });
+        })
+        .catch(() => {
+          setLoading(false);
+          showNotification({
+            title: "Wrong",
+            color: "red",
+            message: "Something wend wrong, try again later",
+          });
+        });
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
+
+    // console.log({ ...data, icon: playerImage });
+    // setOpened(false);
+    // resetFields();
   };
 
   // Image Functions
@@ -99,14 +133,11 @@ const AddTeamCardForm = (props: Props) => {
           }}
           title="Add Team"
         >
-          <form
-            className="flex flex-col gap-4"
-            onSubmit={handleSubmit(onSubmitFunction)}
-          >
+          <form className="flex flex-col gap-4" onSubmit={onSubmitFunction}>
             {/* Image Upload */}
             <div className=" relative my-2 bg-gray-300 overflow-hidden flex justify-center  items-center  mx-auto w-28  h-28 rounded-lg ">
               <Button
-                {...register("image")}
+                {...register("icon")}
                 className="w-full h-full hover:bg-perfGray3"
                 component="label"
               >
@@ -130,8 +161,8 @@ const AddTeamCardForm = (props: Props) => {
                 <Input
                   hidden
                   accept="image/*"
-                  {...register("image")}
-                  name="image"
+                  {...register("icon")}
+                  name="icon"
                   multiple
                   type="file"
                   // error={errors.image && (errors.image.message as ReactNode)}
@@ -153,15 +184,12 @@ const AddTeamCardForm = (props: Props) => {
               control={control}
               placeholder="Rating Schedule"
               data={[
-                { label: "Every Week", value: "Every Week" },
-                { label: "Every 2 Week", value: "Every 2 Week" },
-                { label: "Every 1 Month", value: "Every 1 Month" },
+                { label: "Every Week", value: "Week" },
+                { label: "Every 2 Week", value: "Two_Weeks" },
+                { label: "Every Month", value: "Month" },
               ]}
-              name="ratingSchedule"
-              error={
-                errors.ratingSchedule &&
-                (errors.ratingSchedule.message as ReactNode)
-              }
+              name="rate_per"
+              error={errors.rate_per && (errors.rate_per.message as ReactNode)}
             />
 
             <Input.Wrapper
@@ -190,23 +218,22 @@ const AddTeamCardForm = (props: Props) => {
 
             <PerfSelect
               control={control}
-              placeholder="Select Sport"
+              placeholder="Gender"
               data={[
-                { label: "Sport One", value: "Sport One" },
-                { label: "Sport Two", value: "Sport Two" },
-                { label: "Sport Three", value: "Sport Three" },
+                { label: "Males", value: "M" },
+                { label: "Females", value: "F" },
               ]}
               name="sport"
-              error={errors.sport && (errors.sport.message as ReactNode)}
+              error={errors.gender && (errors.gender.message as ReactNode)}
             />
 
             <Input.Wrapper
-              id="maxPlayersNumber"
+              id="players_count"
               withAsterisk
               // label="Name"
               error={
-                errors.maxPlayersNumber &&
-                (errors.maxPlayersNumber.message as ReactNode)
+                errors.players_count &&
+                (errors.players_count.message as ReactNode)
               }
             >
               <Input
@@ -223,16 +250,16 @@ const AddTeamCardForm = (props: Props) => {
                   },
                 }}
                 className="border-b"
-                {...register("maxPlayersNumber")}
-                id="maxPlayersNumber"
+                {...register("players_count")}
+                id="players_count"
               />
             </Input.Wrapper>
 
             <Input.Wrapper
-              id="fromAge"
+              id="from_age"
               withAsterisk
               // label="Name"
-              error={errors.fromAge && (errors.fromAge.message as ReactNode)}
+              error={errors.from_age && (errors.from_age.message as ReactNode)}
             >
               <Input
                 placeholder="From Age"
@@ -248,8 +275,8 @@ const AddTeamCardForm = (props: Props) => {
                   },
                 }}
                 className="border-b"
-                {...register("fromAge")}
-                id="fromAge"
+                {...register("from_age")}
+                id="from_age"
               />
             </Input.Wrapper>
 
@@ -257,7 +284,7 @@ const AddTeamCardForm = (props: Props) => {
               id="toAge"
               withAsterisk
               // label="Name"
-              error={errors.fromAge && (errors.fromAge.message as ReactNode)}
+              error={errors.to_age && (errors.to_age.message as ReactNode)}
             >
               <Input
                 placeholder="To Age"
@@ -273,12 +300,12 @@ const AddTeamCardForm = (props: Props) => {
                   },
                 }}
                 className="border-b"
-                {...register("toAge")}
-                id="toAge"
+                {...register("to_age")}
+                id="to_age"
               />
             </Input.Wrapper>
 
-            <SubmitButton isLoading={false} text="Add Team" />
+            <SubmitButton isLoading={loading} text="Add Team" />
           </form>
         </Modal>
 

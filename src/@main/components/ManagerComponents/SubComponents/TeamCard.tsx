@@ -3,8 +3,12 @@ import { SuperVisorTeam } from "~/app/store/types/supervisor-types";
 import DeleteButton from "./DeleteButton";
 import EditButton from "./EditTeamButton";
 import { Avatar } from "@mantine/core";
+import { useSuperDeleteTeamMutation } from "~/app/store/supervisor/supervisorMainApi";
+import { showNotification } from "@mantine/notifications";
 
 const TeamCard = ({ team }: any) => {
+  const [deleteTeam] = useSuperDeleteTeamMutation();
+
   return (
     <div className="team-card relative w-full xs:w-72 bg-white p-8 rounded-xl flex flex-col justify-center items-center gap-4">
       <Link
@@ -34,10 +38,27 @@ const TeamCard = ({ team }: any) => {
       <div className="flex absolute right-5 top-5 gap-2">
         <EditButton teamName={team.name} teamId={team.id} />
         <DeleteButton
-          deleteFun={() => console.log("Delete")}
+          deleteFun={() =>
+            deleteTeam({
+              team_id: team.id,
+            })
+              .then(() => {
+                showNotification({
+                  title: "Done",
+                  color: "green",
+                  message: "Team Deleted",
+                });
+              })
+              .catch(() => {
+                showNotification({
+                  title: "Wrong",
+                  color: "red",
+                  message: "Something wend wrong, try again later",
+                });
+              })
+          }
           name={team.name}
-          id={team.id}
-          type="Coach"
+          type="Team"
         />
       </div>
     </div>

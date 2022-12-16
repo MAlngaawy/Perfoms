@@ -5,7 +5,7 @@ import { useSuperTeamsQuery } from "~/app/store/supervisor/supervisorMainApi";
 type Props = {};
 
 const Teams = (props: Props) => {
-  const { data: teams } = useSuperTeamsQuery({});
+  const { data: teams, refetch } = useSuperTeamsQuery({});
   console.log(teams);
 
   return (
@@ -13,7 +13,7 @@ const Teams = (props: Props) => {
       {teams?.results.map((team) => {
         return <TeamCard key={team.id} team={team} />;
       })}
-      <AddTeamCardForm />
+      <AddTeamCardForm refetch={refetch} />
     </div>
   );
 };

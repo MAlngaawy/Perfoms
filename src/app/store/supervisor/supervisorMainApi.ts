@@ -57,6 +57,7 @@ export const supervisorApi = createApi({
     }),
     superTeams: query<Teams, { page?: number }>({
       query: (params) => ({ url: "teams/", params }),
+      providesTags: ["supervisor"],
     }),
 
     superTeamCoaches: query<TeamCoaches, { team_id: string; page?: number }>({
@@ -253,9 +254,27 @@ export const supervisorApi = createApi({
       invalidatesTags: ["supervisor"],
     }),
 
+    superDeleteTeam: mutation<{}, { team_id: number }>({
+      query: ({ team_id, ...body }) => ({
+        url: `teams/${team_id}/delete/`,
+        method: "DELETE",
+        body,
+      }),
+      invalidatesTags: ["supervisor"],
+    }),
+
     superAddTeamPlayer: mutation<TeamPlayer, {}>({
       query: ({ ...body }) => ({
         url: `add-team-player/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["supervisor"],
+    }),
+
+    superAddNewTeam: mutation<Team, {}>({
+      query: ({ ...body }) => ({
+        url: `add-team/`,
         method: "POST",
         body,
       }),
@@ -473,6 +492,7 @@ export const {
   useSuperAllCoachesQuery,
   useSuperAddEventMutation,
   useSuperDeleteEventMutation,
+  useSuperDeleteTeamMutation,
   useSuperEditEventMutation,
   useSuperAddTeamPlayerMutation,
   useSuperRemoveTeamPlayerMutation,
@@ -492,4 +512,5 @@ export const {
   useSuperPlayerActionsQuery,
   useSuperPlayerRecommendationsQuery,
   useSuperPlayerCalendarQuery,
+  useSuperAddNewTeamMutation,
 } = supervisorApi;
