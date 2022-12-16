@@ -11,7 +11,7 @@ const Teams = (props: Props) => {
   return (
     <div className="admin-teams flex flex-col xs:flex-row flex-wrap items-stretch gap-6 p-2 sm:p-6">
       {teams?.results.map((team) => {
-        return <TeamCard key={team.id} team={team} />;
+        return <TeamCard refetch={refetch} key={team.id} team={team} />;
       })}
       <AddTeamCardForm refetch={refetch} />
     </div>

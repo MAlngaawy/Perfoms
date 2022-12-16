@@ -79,7 +79,6 @@ const TeamUpcomingEvents = ({ teamId }: Props) => {
                       });
                     })
                   }
-                  id={event.id}
                   name={event.name}
                   type="event"
                 />

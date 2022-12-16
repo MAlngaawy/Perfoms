@@ -6,7 +6,7 @@ import { Avatar } from "@mantine/core";
 import { useSuperDeleteTeamMutation } from "~/app/store/supervisor/supervisorMainApi";
 import { showNotification } from "@mantine/notifications";
 
-const TeamCard = ({ team }: any) => {
+const TeamCard = ({ team, refetch }: any) => {
   const [deleteTeam] = useSuperDeleteTeamMutation();
 
   return (
@@ -36,7 +36,7 @@ const TeamCard = ({ team }: any) => {
 
       {/* Edit and Delete Buttons */}
       <div className="flex absolute right-5 top-5 gap-2">
-        <EditButton teamName={team.name} teamId={team.id} />
+        <EditButton refetch={refetch} teamData={team} />
         <DeleteButton
           deleteFun={() =>
             deleteTeam({

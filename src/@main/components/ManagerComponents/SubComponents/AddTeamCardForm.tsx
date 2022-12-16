@@ -86,10 +86,6 @@ const AddTeamCardForm = ({ refetch }: Props) => {
       console.log(err);
       setLoading(false);
     }
-
-    // console.log({ ...data, icon: playerImage });
-    // setOpened(false);
-    // resetFields();
   };
 
   // Image Functions
@@ -223,7 +219,7 @@ const AddTeamCardForm = ({ refetch }: Props) => {
                 { label: "Males", value: "M" },
                 { label: "Females", value: "F" },
               ]}
-              name="sport"
+              name="gender"
               error={errors.gender && (errors.gender.message as ReactNode)}
             />
 

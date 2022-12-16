@@ -37,8 +37,6 @@ const TeamCoaches = ({ teamId }: Props) => {
               </h3>
             </div>
             <DeleteButton
-              isSuccess={isSuccess}
-              isError={isError}
               deleteFun={() =>
                 removeCoach({
                   coach_id: coach.id,
@@ -66,7 +64,6 @@ const TeamCoaches = ({ teamId }: Props) => {
               }
               type="Coach"
               name={coach.first_name + " " + coach.last_name}
-              id={coach.id !== undefined ? coach.id : 1}
             />
           </div>
         ))}

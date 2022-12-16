@@ -53,7 +53,6 @@ const KpiMetrics = (props: Props) => {
                 <DeleteButton
                   deleteFun={() => console.log("Delete")}
                   name={metric.name}
-                  id={metric.id}
                   type="Metric"
                 />
               </div>

@@ -8,37 +8,41 @@ import Resizer from "react-image-file-resizer";
 import cn from "classnames";
 import SubmitButton from "../../SubmitButton";
 import PerfSelect from "../../Select";
+import { axiosInstance } from "~/app/configs/dataService";
+import { showNotification } from "@mantine/notifications";
+import { Team } from "~/app/store/types/supervisor-types";
 
 type Props = {
-  teamName: string;
-  teamId: number;
+  refetch: any;
+  teamData: Team;
 };
 
-const EditButton = ({ teamName, teamId }: Props) => {
+const EditButton = ({ refetch, teamData }: Props) => {
   const [opened, setOpened] = useState(false);
   const [playerImage, setPlayerImage] = useState<string | unknown>("");
   const [playerImagePreview, setPlayerImagePreview] = useState("null");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const schema = yup.object().shape({
-    image: yup.mixed(),
-    ratingSchedule: yup.string().required("please chose the rating schedule"),
+    icon: yup.mixed(),
+    rate_per: yup.string().required("please chose the rating schedule"),
     name: yup.string().required("please add the team name"),
-    sport: yup.string().required("please choose the sport"),
-    maxPlayersNumber: yup.number(),
-    fromAge: yup.number(),
-    toAge: yup.number(),
+    players_count: yup.number(),
+    from_age: yup.number(),
+    to_age: yup.number(),
+    gender: yup.string(),
   });
 
   const resetFields = () => {
     setPlayerImage(null);
     reset({
-      image: "",
-      ratingSchedule: "",
-      name: "",
-      sport: "",
-      maxPlayersNumber: "",
-      fromAge: "",
-      toAge: "",
+      icon: "",
+      rate_per: teamData.rate_per,
+      name: teamData.name,
+      players_count: teamData.players_count,
+      from_age: teamData.from_age,
+      to_age: teamData.to_age,
+      gender: teamData.gender,
     });
   };
 
@@ -50,17 +54,49 @@ const EditButton = ({ teamName, teamId }: Props) => {
     control,
   } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: {
+      icon: "",
+      rate_per: teamData.rate_per,
+      name: teamData.name,
+      players_count: teamData.players_count,
+      from_age: teamData.from_age,
+      to_age: teamData.to_age,
+      gender: teamData.gender,
+    },
   });
 
   // Submit Form Function
-  const onSubmitFunction = (data: any) => {
-    console.log({ ...data, icon: playerImage });
-    console.log("Team Prop Date To use in the request", {
-      teamId,
-      teamName,
-    });
-    setOpened(false);
-    resetFields();
+  const onSubmitFunction = (e: any) => {
+    e.preventDefault();
+    setLoading(true);
+    const formData = new FormData(e.currentTarget);
+
+    try {
+      axiosInstance
+        .patch(`supervisor/teams/${teamData.id}/update/`, formData)
+        .then((res) => {
+          setLoading(false);
+          setOpened(false);
+          setPlayerImage(null);
+          refetch();
+          showNotification({
+            title: "Done",
+            color: "green",
+            message: "Team Info Updated",
+          });
+        })
+        .catch(() => {
+          setLoading(false);
+          showNotification({
+            title: "Wrong",
+            color: "red",
+            message: "Something wend wrong, try again later",
+          });
+        });
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
   };
 
   // Image Functions
@@ -93,6 +129,8 @@ const EditButton = ({ teamName, teamId }: Props) => {
     }
   };
 
+  console.log(teamData.rate_per);
+
   return (
     <div>
       <>
@@ -102,16 +140,13 @@ const EditButton = ({ teamName, teamId }: Props) => {
             resetFields();
             setOpened(false);
           }}
-          title={`Edit (${teamName}) Team `}
+          title="Add Team"
         >
-          <form
-            className="flex flex-col gap-4"
-            onSubmit={handleSubmit(onSubmitFunction)}
-          >
+          <form className="flex flex-col gap-4" onSubmit={onSubmitFunction}>
             {/* Image Upload */}
             <div className=" relative my-2 bg-gray-300 overflow-hidden flex justify-center  items-center  mx-auto w-28  h-28 rounded-lg ">
               <Button
-                {...register("image")}
+                {...register("icon")}
                 className="w-full h-full hover:bg-perfGray3"
                 component="label"
               >
@@ -119,7 +154,7 @@ const EditButton = ({ teamName, teamId }: Props) => {
                   className={cn("", {
                     hidden: playerImage,
                   })}
-                  src="/assets/images/Vector.png"
+                  src={teamData.icon_url}
                   alt="upload icon"
                 />
                 <img
@@ -135,8 +170,8 @@ const EditButton = ({ teamName, teamId }: Props) => {
                 <Input
                   hidden
                   accept="image/*"
-                  {...register("image")}
-                  name="image"
+                  {...register("icon")}
+                  name="icon"
                   multiple
                   type="file"
                   // error={errors.image && (errors.image.message as ReactNode)}
@@ -158,15 +193,12 @@ const EditButton = ({ teamName, teamId }: Props) => {
               control={control}
               placeholder="Rating Schedule"
               data={[
-                { label: "Every Week", value: "Every Week" },
-                { label: "Every 2 Week", value: "Every 2 Week" },
-                { label: "Every 1 Month", value: "Every 1 Month" },
+                { label: "Every Week", value: "Week" },
+                { label: "Every 2 Week", value: "Two_Weeks" },
+                { label: "Every Month", value: "Month" },
               ]}
-              name="ratingSchedule"
-              error={
-                errors.ratingSchedule &&
-                (errors.ratingSchedule.message as ReactNode)
-              }
+              name="rate_per"
+              error={errors.rate_per && (errors.rate_per.message as ReactNode)}
             />
 
             <Input.Wrapper
@@ -195,23 +227,22 @@ const EditButton = ({ teamName, teamId }: Props) => {
 
             <PerfSelect
               control={control}
-              placeholder="Select Sport"
+              placeholder="Gender"
               data={[
-                { label: "Sport One", value: "Sport One" },
-                { label: "Sport Two", value: "Sport Two" },
-                { label: "Sport Three", value: "Sport Three" },
+                { label: "Males", value: "M" },
+                { label: "Females", value: "F" },
               ]}
-              name="sport"
-              error={errors.sport && (errors.sport.message as ReactNode)}
+              name="gender"
+              error={errors.gender && (errors.gender.message as ReactNode)}
             />
 
             <Input.Wrapper
-              id="maxPlayersNumber"
+              id="players_count"
               withAsterisk
               // label="Name"
               error={
-                errors.maxPlayersNumber &&
-                (errors.maxPlayersNumber.message as ReactNode)
+                errors.players_count &&
+                (errors.players_count.message as ReactNode)
               }
             >
               <Input
@@ -228,16 +259,16 @@ const EditButton = ({ teamName, teamId }: Props) => {
                   },
                 }}
                 className="border-b"
-                {...register("maxPlayersNumber")}
-                id="maxPlayersNumber"
+                {...register("players_count")}
+                id="players_count"
               />
             </Input.Wrapper>
 
             <Input.Wrapper
-              id="fromAge"
+              id="from_age"
               withAsterisk
               // label="Name"
-              error={errors.fromAge && (errors.fromAge.message as ReactNode)}
+              error={errors.from_age && (errors.from_age.message as ReactNode)}
             >
               <Input
                 placeholder="From Age"
@@ -253,8 +284,8 @@ const EditButton = ({ teamName, teamId }: Props) => {
                   },
                 }}
                 className="border-b"
-                {...register("fromAge")}
-                id="fromAge"
+                {...register("from_age")}
+                id="from_age"
               />
             </Input.Wrapper>
 
@@ -262,7 +293,7 @@ const EditButton = ({ teamName, teamId }: Props) => {
               id="toAge"
               withAsterisk
               // label="Name"
-              error={errors.fromAge && (errors.fromAge.message as ReactNode)}
+              error={errors.to_age && (errors.to_age.message as ReactNode)}
             >
               <Input
                 placeholder="To Age"
@@ -278,25 +309,22 @@ const EditButton = ({ teamName, teamId }: Props) => {
                   },
                 }}
                 className="border-b"
-                {...register("toAge")}
-                id="toAge"
+                {...register("to_age")}
+                id="to_age"
               />
             </Input.Wrapper>
 
-            <SubmitButton isLoading={false} text="Edit Team" />
+            <SubmitButton isLoading={loading} text="Add Team" />
           </form>
         </Modal>
 
-        <Group position="center">
-          <button
-            className="transform hover:scale-150"
-            onClick={() => setOpened(true)}
-          >
+        <Group position="center" className="h-full">
+          <div onClick={() => setOpened(true)}>
             <AppIcons
-              className="w-4 h-4 text-perfGray3"
-              icon="PencilSquareIcon:outline"
+              className="w-4 h-4 text-perfGray3 transform hover:scale-150 hover:text-perfBlue cursor-pointer "
+              icon={"PencilSquareIcon:outline"}
             />
-          </button>
+          </div>
         </Group>
       </>
     </div>

@@ -50,7 +50,6 @@ const SportKpis = (props: Props) => {
                 <DeleteButton
                   deleteFun={() => console.log("delete")}
                   name={kpi.name}
-                  id={kpi.id}
                   type="Kpi"
                 />
               </div>

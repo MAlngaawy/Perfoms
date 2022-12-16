@@ -29,7 +29,6 @@ const UsersCard = ({ type, data }: Props) => {
                 deleteFun={() => console.log("Delete")}
                 type={type}
                 name={user.name}
-                id={user.id}
               />
             </div>
           );

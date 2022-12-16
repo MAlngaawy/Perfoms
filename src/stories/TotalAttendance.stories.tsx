@@ -18,19 +18,4 @@ const Template: ComponentStory<typeof TotalAttendance> = (args) => (
 
 export const Primary = Template.bind({});
 
-Primary.args = {
-  data: [
-    { day: "2/10/2017", attendance: "ATTENDED" },
-    { day: "2/10/2017", attendance: "ATTENDED" },
-    { day: "2/10/2017", attendance: "ATTENDED" },
-    { day: "2/10/2017", attendance: "ATTENDED" },
-    { day: "2/10/2017", attendance: "ABSENT" },
-    { day: "2/10/2017", attendance: "ABSENT" },
-    { day: "2/10/2017", attendance: "ABSENT" },
-    { day: "2/10/2017", attendance: "ATTENDED" },
-    { day: "2/10/2017", attendance: "UPCOMING" },
-    { day: "2/10/2017", attendance: "UPCOMING" },
-    { day: "2/10/2017", attendance: "ATTENDED" },
-    { day: "2/10/2017", attendance: "ATTENDED" },
-  ],
-};
+Primary.args = {};
