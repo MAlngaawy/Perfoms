@@ -33,6 +33,10 @@ import {
   EventFile,
   EventFiles,
   ParentClub,
+  PlayerAttendances,
+  PlayerKpis,
+  PlayerMetricScores,
+  PlayerRecommendations,
   TeamEvents,
 } from "../types/parent-types";
 
@@ -99,7 +103,7 @@ export const coachApi = createApi({
 
     getPlayerInfo: query<
       CoachPlayerInfo,
-      { player_id: string | undefined; page?: number }
+      { player_id: number | string | undefined; page?: number }
     >({
       query: ({ player_id, ...params }) => ({
         url: `player-info/${player_id}/`,
@@ -268,12 +272,87 @@ export const coachApi = createApi({
       }),
     }),
 
+    coachPlayerKpisMetricsStatistics: query<
+      PlayerKpis,
+      {
+        player_id: string | undefined;
+        date_from: string;
+        date_to: string;
+        pages?: number;
+      }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `${player_id}/player-kpis-metrics`,
+        params,
+      }),
+    }),
+
+    coachPlayerKpisMetricsModerateScore: query<
+      PlayerMetricScores,
+      { player_id: string | number | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `${player_id}/metrics/scores/moderate`,
+        params,
+      }),
+    }),
+
+    coachPlayerKpisMetricsStrengthScore: query<
+      PlayerMetricScores,
+      { player_id: string | number | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `${player_id}/metrics/scores/strength`,
+        params,
+      }),
+    }),
+
+    coachPlayerKpisMetricsWeaknessScore: query<
+      PlayerMetricScores,
+      { player_id: string | number | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `${player_id}/metrics/scores/weakness`,
+        params,
+      }),
+    }),
+
+    coachPlayerRecommendations: query<
+      PlayerRecommendations,
+      { player_id: string | number | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `${player_id}/recommendations`,
+        params,
+      }),
+    }),
+
+    coachPlayerActions: query<
+      PlayerRecommendations,
+      { player_id: string | number | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `${player_id}/actions`,
+        params,
+      }),
+    }),
+
     coachPlayersAttendStatistics: query<
       PlayerMonthsAttendancesStatistics,
       { player_id: string | undefined; pages?: number }
     >({
       query: ({ player_id, ...params }) => ({
         url: `calender-detailed/${player_id}/`,
+        params,
+      }),
+    }),
+
+    coachPlayerCalendar: query<
+      PlayerAttendances,
+      { player_id: string | number | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `${player_id}/calendar`,
         params,
       }),
     }),
@@ -310,4 +389,11 @@ export const {
   useCoachGetAllMyPlayersQuery,
   useCoachPlayerKpiStatisticsQuery,
   useCoachPlayersAttendStatisticsQuery,
+  useCoachPlayerKpisMetricsStatisticsQuery,
+  useCoachPlayerKpisMetricsModerateScoreQuery,
+  useCoachPlayerKpisMetricsStrengthScoreQuery,
+  useCoachPlayerKpisMetricsWeaknessScoreQuery,
+  useCoachPlayerRecommendationsQuery,
+  useCoachPlayerActionsQuery,
+  useCoachPlayerCalendarQuery,
 } = coachApi;

@@ -1,4 +1,4 @@
-import { Image } from "@mantine/core";
+import { Image, Skeleton } from "@mantine/core";
 import { useSelector } from "react-redux";
 import {
   Bar,
@@ -17,17 +17,40 @@ import {
   selectedPlayerTeamFn,
   timeFilterFn,
 } from "~/app/store/parent/parentSlice";
-import { Player } from "~/app/store/types/parent-types";
+import { Player, PlayerKpis } from "~/app/store/types/parent-types";
 import { PerformanceCard } from "./PerformanceCard";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import NoData from "./NoData";
+import { useParams } from "react-router-dom";
+import { useCoachPlayerKpisMetricsStatisticsQuery } from "~/app/store/coach/coachApi";
+import { useSuperPlayerKpisMetricsStatisticsQuery } from "~/app/store/supervisor/supervisorMainApi";
 
 const SaleStaticChart = () => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const timeFilter = useSelector(timeFilterFn);
+  const [playerKpis, setPlayerKpis] = useState<PlayerKpis>();
+  const { id } = useParams();
 
-  const { data: playerKpis } = usePlayerKpisMetricsQuery(
+  const { data: coachPlayerKpis } = useCoachPlayerKpisMetricsStatisticsQuery(
+    {
+      player_id: id,
+      date_from: timeFilter?.from_date,
+      date_to: timeFilter?.to_date,
+    },
+    { skip: !id || !timeFilter?.from_date || !timeFilter?.to_date }
+  );
+
+  const { data: superPlayerKpis } = useSuperPlayerKpisMetricsStatisticsQuery(
+    {
+      player_id: id,
+      date_from: timeFilter?.from_date,
+      date_to: timeFilter?.to_date,
+    },
+    { skip: !id || !timeFilter?.from_date || !timeFilter?.to_date }
+  );
+
+  const { data: parentPlayerKpis } = usePlayerKpisMetricsQuery(
     {
       team_id: selectedPlayerTeam?.id,
       player_id: selectedPlayer?.id,
@@ -44,10 +67,21 @@ const SaleStaticChart = () => {
     }
   );
 
-  // useEffect(() => {}, [timeFilter]);
-  console.log("playerKpis", playerKpis);
+  useEffect(() => {
+    if (parentPlayerKpis) setPlayerKpis(parentPlayerKpis);
+    if (coachPlayerKpis) setPlayerKpis(coachPlayerKpis);
+    if (superPlayerKpis) setPlayerKpis(superPlayerKpis);
+  }, [parentPlayerKpis, coachPlayerKpis, superPlayerKpis]);
 
   if (!playerKpis) {
+    return (
+      <div className="h-96 p-2">
+        <Skeleton width={"100%"} height={"100%"} radius={"lg"} />
+      </div>
+    );
+  }
+
+  if (playerKpis && playerKpis?.player_kpi?.length < 1) {
     return (
       <div className="flex flex-col md:flex-row items-center justify-evenly">
         <img

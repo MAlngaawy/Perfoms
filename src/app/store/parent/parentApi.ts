@@ -108,7 +108,10 @@ export const parentsApi = createApi({
       providesTags: ["Parent"],
     }),
 
-    playerActions: query<PlayerActions, { id: number; page?: number }>({
+    playerActions: query<
+      PlayerActions,
+      { id: number | string | undefined; page?: number }
+    >({
       query: ({ id, ...params }) => ({
         url: `${id}/actions/`,
         params,
@@ -157,7 +160,7 @@ export const parentsApi = createApi({
 
     playerRecommendations: query<
       PlayerRecommendations,
-      { id: number; page?: number }
+      { id: number | string | undefined; page?: number }
     >({
       query: ({ id, ...params }) => ({
         url: `${id}/recommendations/`,
@@ -267,7 +270,7 @@ export const parentsApi = createApi({
 
     playerModerate: query<
       PlayerMetricScores,
-      { player_id: number; page?: number }
+      { player_id: number | string | undefined; page?: number }
     >({
       query: ({ player_id, ...params }) => ({
         url: `${player_id}/metrics/scores/moderate`,
@@ -278,7 +281,7 @@ export const parentsApi = createApi({
 
     playerStrength: query<
       PlayerMetricScores,
-      { player_id: number; page?: number }
+      { player_id: number | string | undefined; page?: number }
     >({
       query: ({ player_id, ...params }) => ({
         url: `${player_id}/metrics/scores/strength`,
@@ -289,7 +292,7 @@ export const parentsApi = createApi({
 
     playerWeakness: query<
       PlayerMetricScores,
-      { player_id: number; page?: number }
+      { player_id: number | string | undefined; page?: number }
     >({
       query: ({ player_id, ...params }) => ({
         url: `${player_id}/metrics/scores/weakness`,

@@ -1,20 +1,42 @@
 import { Calendar } from "@mantine/dates";
 import classNames from "classnames";
-import { Player } from "~/app/store/types/parent-types";
+import { Player, PlayerAttendances } from "~/app/store/types/parent-types";
 import { useSelector } from "react-redux";
 import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 import { usePlayerCalenderQuery } from "~/app/store/parent/parentApi";
+import { useEffect, useState } from "react";
+import { useCoachPlayerCalendarQuery } from "~/app/store/coach/coachApi";
+import { useSuperPlayerCalendarQuery } from "~/app/store/supervisor/supervisorMainApi";
 
 type Props = {
   pageName?: "reports";
+  player_id?: number | string | undefined;
 };
 
-const CustomCalendar = ({ pageName }: Props) => {
+const CustomCalendar = ({ pageName, player_id }: Props) => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
-  const { data: playerAttendance } = usePlayerCalenderQuery(
+  const [playerAttendance, setPlayerAttendance] = useState<PlayerAttendances>();
+
+  const { data: parentPlayerAttendance } = usePlayerCalenderQuery(
     { id: selectedPlayer?.id },
     { skip: !selectedPlayer?.id }
   );
+
+  const { data: coachPlayerAttendance } = useCoachPlayerCalendarQuery(
+    { player_id: player_id },
+    { skip: !player_id }
+  );
+
+  const { data: superPlayerAttendance } = useSuperPlayerCalendarQuery(
+    { player_id: player_id },
+    { skip: !player_id }
+  );
+
+  useEffect(() => {
+    if (parentPlayerAttendance) setPlayerAttendance(parentPlayerAttendance);
+    if (coachPlayerAttendance) setPlayerAttendance(coachPlayerAttendance);
+    if (superPlayerAttendance) setPlayerAttendance(superPlayerAttendance);
+  }, [parentPlayerAttendance, coachPlayerAttendance, superPlayerAttendance]);
 
   return (
     <div className="bg-white rounded-3xl p-4 h-full">

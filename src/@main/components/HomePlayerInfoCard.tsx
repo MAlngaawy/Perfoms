@@ -1,25 +1,51 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 import { useSelector } from "react-redux";
 import { Player } from "~/app/store/types/parent-types";
 import Info from "./Info";
 import { useOnePlayerQuery } from "~/app/store/parent/parentApi";
 import NoData from "./NoData";
+import { CoachPlayerInfo } from "~/app/store/types/coach-types";
+import { useGetPlayerInfoQuery } from "~/app/store/coach/coachApi";
+import { useGetSuperPlayerInfoQuery } from "~/app/store/supervisor/supervisorMainApi";
+import { Skeleton } from "@mantine/core";
 
-type Props = {};
+type Props = {
+  player_id?: number | string | undefined;
+};
 
-const HomePlayerInfoCard = (props: Props) => {
+const HomePlayerInfoCard = ({ player_id }: Props) => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
+  const [playerInfoData, setPlayerInfoData] = useState<CoachPlayerInfo>();
 
-  const { data: playerInfoData } = useOnePlayerQuery(
-    { id: selectedPlayer.id },
-    { skip: !selectedPlayer.id }
+  const { data: parentPlayerInfoData } = useOnePlayerQuery(
+    { id: selectedPlayer?.id },
+    { skip: !selectedPlayer?.id }
   );
+
+  const { data: coachPlayerInfo } = useGetPlayerInfoQuery(
+    { player_id: player_id },
+    { skip: !player_id }
+  );
+
+  const { data: superPlayerInfo } = useGetSuperPlayerInfoQuery(
+    { player_id: player_id },
+    { skip: !player_id }
+  );
+
+  console.log("coachPlayerInfo", coachPlayerInfo);
+
+  useEffect(() => {
+    if (parentPlayerInfoData) setPlayerInfoData(parentPlayerInfoData);
+    if (coachPlayerInfo) setPlayerInfoData(coachPlayerInfo);
+    if (superPlayerInfo) setPlayerInfoData(superPlayerInfo);
+  }, [parentPlayerInfoData, coachPlayerInfo, superPlayerInfo]);
 
   if (!playerInfoData) {
     return (
       <div className="p-6 h-full bg-white rounded-3xl flex justify-center items-center">
-        <NoData className="flex-col text-center text-sm" />
+        <Skeleton width={"100%"} height={"100%"} radius={"lg"} />
+        {/* <NoData className="flex-col text-center text-sm" /> */}
       </div>
     );
   }

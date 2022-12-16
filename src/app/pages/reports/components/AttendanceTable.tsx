@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Table } from "@mantine/core";
 import AppIcons from "~/@main/core/AppIcons";
-import { Player } from "~/app/store/types/parent-types";
+import { Player, PlayerAttendances } from "~/app/store/types/parent-types";
 import { useSelector } from "react-redux";
 import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 import { usePlayerCalenderQuery } from "~/app/store/parent/parentApi";
+import { useCoachPlayerCalendarQuery } from "~/app/store/coach/coachApi";
+import { useSuperPlayerCalendarQuery } from "~/app/store/supervisor/supervisorMainApi";
 
-type Props = {};
+type Props = {
+  player_id?: number | string | undefined;
+};
 
 const myDate = (theDate: string) => {
   var a = new Date(theDate);
@@ -22,12 +26,31 @@ const myDate = (theDate: string) => {
   return r;
 };
 
-const AttendanceTable = (props: Props) => {
+const AttendanceTable = ({ player_id }: Props) => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
-  const { data: playerAttendance } = usePlayerCalenderQuery(
+
+  const [playerAttendance, setPlayerAttendance] = useState<PlayerAttendances>();
+
+  const { data: parentPlayerAttendance } = usePlayerCalenderQuery(
     { id: selectedPlayer?.id },
     { skip: !selectedPlayer?.id }
   );
+
+  const { data: coachPlayerAttendance } = useCoachPlayerCalendarQuery(
+    { player_id: player_id },
+    { skip: !player_id }
+  );
+
+  const { data: superPlayerAttendance } = useSuperPlayerCalendarQuery(
+    { player_id: player_id },
+    { skip: !player_id }
+  );
+
+  useEffect(() => {
+    if (parentPlayerAttendance) setPlayerAttendance(parentPlayerAttendance);
+    if (coachPlayerAttendance) setPlayerAttendance(coachPlayerAttendance);
+    if (superPlayerAttendance) setPlayerAttendance(superPlayerAttendance);
+  }, [parentPlayerAttendance, coachPlayerAttendance, superPlayerAttendance]);
 
   const rows = playerAttendance?.results.map((day) => (
     <tr key={day.id}>
