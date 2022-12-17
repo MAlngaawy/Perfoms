@@ -148,6 +148,7 @@ const SignInPage = (props: Props) => {
                 className="border-b"
                 {...register("phoneNumber")}
                 id="phoneNumber"
+                type={"number"}
               />
             </Input.Wrapper>
             {/* </Grid.Col>
@@ -173,7 +174,7 @@ const SignInPage = (props: Props) => {
               withAsterisk
               error={
                 errors.password &&
-                "Password must be more than 8 characture and les than 24 character"
+                "Password must be more than 8 character and less than 24 character"
               }
               {...register("password")}
             />
