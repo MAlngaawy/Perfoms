@@ -337,6 +337,7 @@ const SignUpPage = (props: Props) => {
                     error={errors.phoneNumber && "Please add your mobile"}
                   >
                     <Input
+                      type={"number"}
                       sx={{
                         ".mantine-Input-input	": {
                           border: 0,
