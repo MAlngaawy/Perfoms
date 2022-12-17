@@ -18,7 +18,6 @@ import {
   TeamEvent,
   TeamEvents,
   TeamSupervisors,
-  ParentUpcomingEvents,
   PlayerKpis,
   PlayerSports,
   PlayerMetricScores,
@@ -39,7 +38,7 @@ import {
   AllPlayers,
   Player,
 } from "../types/parent-types";
-import { CoachPlayerInfo } from "../types/coach-types";
+import { CoachPlayerInfo, CoachTeamInfo } from "../types/coach-types";
 import { Team } from "~/app/store/types/coach-types";
 import { Teams } from "../types/clubManager-types";
 
@@ -142,7 +141,7 @@ export const parentsApi = createApi({
       providesTags: ["Parent"],
     }),
 
-    TeamInfo: query<Team, { team_id: number; page?: number }>({
+    TeamInfo: query<CoachTeamInfo, { team_id: number; page?: number }>({
       query: ({ team_id, ...params }) => ({
         url: `${team_id}/info`,
         params,
@@ -242,10 +241,7 @@ export const parentsApi = createApi({
       }),
       providesTags: ["Parent"],
     }),
-    upcomingEvents: query<
-      ParentUpcomingEvents,
-      { team_id: number; page?: number }
-    >({
+    upcomingEvents: query<TeamEvents, { team_id: number; page?: number }>({
       query: ({ team_id, ...params }) => ({
         url: `${team_id}/upcoming-events/`,
         params,

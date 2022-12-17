@@ -25,8 +25,8 @@ const TeamCalendar = ({ teamId }: Props) => {
       <div className="w-full flex justify-center">
         <Calendar
           dayStyle={(date) => {
-            if (attDates?.player_attendance) {
-              return testFun(date, attDates?.player_attendance);
+            if (attDates?.results) {
+              return testFun(date, attDates?.results);
             } else {
               return { background: "#fff" };
             }

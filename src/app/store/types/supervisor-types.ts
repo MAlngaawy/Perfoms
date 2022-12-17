@@ -170,7 +170,7 @@ export type CoachRequests = BaseGetAllType & {
 };
 
 export type TeamAttendance = BaseGetAllType & {
-  player_attendance: { day: string }[];
+  results: { day: string }[];
 };
 
 export type AddTeamCalendar = {

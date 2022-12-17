@@ -327,18 +327,6 @@ export type Kpi = {
   score: number;
 };
 
-export type ParentUpcomingEvents = BaseGetAllType & {
-  results: {
-    id: number;
-    name: string;
-    icon: string;
-    icon_url: string;
-    date: string;
-    club: ParentClub;
-    upcoming: boolean;
-  }[];
-};
-
 export type PlayerCertificate = {
   created_at: Date;
   id: number;

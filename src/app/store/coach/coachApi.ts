@@ -236,7 +236,7 @@ export const coachApi = createApi({
 
     coachTeamInfo: query<
       CoachTeamInfo,
-      { team_id: string | undefined; pages?: number }
+      { team_id: string | number | undefined; pages?: number }
     >({
       query: ({ team_id, ...params }) => ({
         url: `team-info/${team_id}`,

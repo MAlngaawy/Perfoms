@@ -1,19 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { selectedPlayerTeamFn } from "../../app/store/parent/parentSlice";
 import { useSelector } from "react-redux";
 import { useTeamInfoQuery } from "~/app/store/parent/parentApi";
 import { Avatar } from "@mantine/core";
 import NoData from "./NoData";
+import { useCoachTeamInfoQuery } from "~/app/store/coach/coachApi";
+import { CoachTeamInfo } from "~/app/store/types/coach-types";
 
 type Props = {};
 
 const HomeTeamInfoCard = (props: Props) => {
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
+  const [teamInfoData, setTeamInfoData] = useState<CoachTeamInfo>();
 
-  const { data: teamInfoData } = useTeamInfoQuery(
+  const { data: parentTeamInfoData } = useTeamInfoQuery(
     { team_id: selectedPlayerTeam?.id },
     { skip: !selectedPlayerTeam }
   );
+
+  const { data: coachTeamInfoData } = useCoachTeamInfoQuery(
+    { team_id: selectedPlayerTeam?.id },
+    { skip: !selectedPlayerTeam }
+  );
+
+  useEffect(() => {
+    if (parentTeamInfoData) setTeamInfoData(parentTeamInfoData);
+    if (coachTeamInfoData) setTeamInfoData(coachTeamInfoData);
+  }, [parentTeamInfoData, coachTeamInfoData]);
+
+  console.log("teamInfoData", teamInfoData);
 
   if (!teamInfoData) {
     return (
