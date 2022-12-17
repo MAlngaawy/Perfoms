@@ -24,6 +24,7 @@ import {
   ProfileResponse,
   UserSignup,
 } from "../types/user-types";
+import { ReactNode } from "react";
 
 export const userApi = createApi({
   reducerPath: "userApi",
@@ -57,10 +58,20 @@ export const userApi = createApi({
               `/verify-otp?userid=${error.error.data.id}`
             );
           showNotification({
-            title: "Auth notification",
+            title: "Login Error",
             //@ts-ignore
-            message: `${error.error.data} 🤥`,
-            color: "red",
+            message: error.error.data,
+            styles: (theme) => ({
+              root: {
+                backgroundColor: theme.colors.red[6],
+                borderColor: theme.colors.red[6],
+
+                "&::before": { backgroundColor: theme.white },
+              },
+
+              title: { color: theme.white },
+              description: { color: theme.white },
+            }),
           });
         }
       },
@@ -77,10 +88,20 @@ export const userApi = createApi({
           eventInstance.emit("SignUp_Success");
         } catch (error: any) {
           showNotification({
-            title: "Auth notification",
+            title: "Login Error",
             //@ts-ignore
-            message: `${error.error.data.message} 🤥`,
-            color: "red",
+            message: error.error.data.message,
+            styles: (theme) => ({
+              root: {
+                backgroundColor: theme.colors.red[6],
+                borderColor: theme.colors.red[6],
+
+                "&::before": { backgroundColor: theme.white },
+              },
+
+              title: { color: theme.white },
+              description: { color: theme.white },
+            }),
           });
         }
       },
