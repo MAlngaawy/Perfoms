@@ -13,22 +13,7 @@ import {
   useSportTeamsQuery,
 } from "~/app/store/parent/parentApi";
 import { DatePicker } from "@mantine/dates";
-
-// Helper Functions
-
-function formatDate(date: unknown) {
-  if (date instanceof Date) {
-    var d = new Date(date),
-      month = "" + (d.getMonth() + 1),
-      day = "" + d.getDate(),
-      year = d.getFullYear();
-
-    if (month.length < 2) month = "0" + month;
-    if (day.length < 2) day = "0" + day;
-
-    return [year, month, day].join("-");
-  }
-}
+import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {};
 
@@ -96,6 +81,8 @@ const AddPlayer = (props: Props) => {
   const onSubmitFun = async (e: any) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
+    const image = await AppUtils.resizeImage(formData.get("icon"));
+    formData.set("icon", image as string);
     setError(false);
 
     try {

@@ -2,6 +2,7 @@
 import axios from "axios";
 import _ from "~/@lodash";
 import { BASE_URL } from "~/app/configs/dataService";
+import Resizer from "react-image-file-resizer";
 
 class EventEmitter {
   constructor() {
@@ -377,6 +378,22 @@ class AppUtils {
       return yyyy + "-" + mm + "-" + dd;
     }
   };
+
+  static resizeImage = (file: any) =>
+    new Promise((resolve) => {
+      Resizer.imageFileResizer(
+        file,
+        200,
+        200,
+        "JPEG",
+        100,
+        0,
+        (uri: any) => {
+          resolve(uri);
+        },
+        "file"
+      );
+    });
 
   static hasPermission(authArr, userRole) {
     if (authArr === null || authArr === undefined) {

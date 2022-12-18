@@ -1,13 +1,12 @@
 import { useForm } from "react-hook-form";
 import { Avatar, Input } from "@mantine/core";
 import AppIcons from "~/@main/core/AppIcons";
-import { useUpdateProfileMutation } from "~/app/store/user/userApi";
 import { User } from "~/app/store/types/user-types";
 import { useEffect, useRef, useState } from "react";
 import { showNotification } from "@mantine/notifications";
 import SubmitButton from "~/@main/components/SubmitButton";
 import { axiosInstance } from "~/app/configs/dataService";
-import { useUserQuery } from "~/app/store/user/userApi";
+import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {
   user: User;
@@ -21,18 +20,16 @@ const EditForm = ({ user, setOpened, refetch }: Props) => {
   const [isError, setIsErrror] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  // const [updateProfile, { isSuccess, isError, error, isLoading }] =
-  //   useUpdateProfileMutation();
-  // const { refetch } = useUserQuery();
 
   const { register, handleSubmit, control } = useForm({
     defaultValues: { ...user, avatar: undefined },
   });
 
-  const onSubmitFn = (e: any) => {
+  const onSubmitFn = async (e: any) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    if (userAvatar) formData.append("avatar", userAvatar);
+    const image = await AppUtils.resizeImage(userAvatar);
+    if (userAvatar) formData.append("avatar", image as string);
     setIsLoading(true);
     try {
       axiosInstance
@@ -46,8 +43,6 @@ const EditForm = ({ user, setOpened, refetch }: Props) => {
     } catch (err) {
       setIsErrror(true);
     }
-
-    // updateProfile(data);
   };
 
   useEffect(() => {
