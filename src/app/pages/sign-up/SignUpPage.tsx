@@ -139,13 +139,13 @@ const SignUpPage = (props: Props) => {
                     value: "Parent",
                     image:
                       "https://cdn-icons-png.flaticon.com/512/437/437501.png",
-                    label: "Parent",
+                    label: "👨‍👩‍👦 Parent",
                   },
                   {
                     value: "Coach",
                     image:
                       "https://cdn-icons-png.flaticon.com/512/3564/3564504.png",
-                    label: "Coach",
+                    label: "🏋️ Coach",
                   },
                 ]}
                 name="userRole"
