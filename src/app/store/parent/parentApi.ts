@@ -9,7 +9,6 @@ import {
   PlayerCoachTeams,
   PlayerDocuments,
   PlayerRecommendations,
-  PlayerTeams,
   SelectSubscription,
   SelectSubscriptionRes,
   SportTeams,
@@ -23,7 +22,13 @@ import {
   PlayerMetricScores,
   PlayerCertificate,
   PlayerCertificates,
+  ActiveSubscription,
+  AddPlayerType,
+  AllPlayers,
+  Player,
 } from "./../types/parent-types";
+import { CoachPlayerInfo, CoachTeamInfo } from "../types/coach-types";
+import { Teams } from "../types/clubManager-types";
 import {
   BaseQueryFn,
   createApi,
@@ -31,24 +36,17 @@ import {
   fetchBaseQuery,
 } from "@reduxjs/toolkit/query/react";
 import { BASE_HEADERS, BASE_URL } from "~/app/configs/dataService";
-import {
-  ActiveSubscription,
-  AddPlayerType,
-  AllParents,
-  AllPlayers,
-  Player,
-} from "../types/parent-types";
-import { CoachPlayerInfo, CoachTeamInfo } from "../types/coach-types";
-import { Team } from "~/app/store/types/coach-types";
-import { Teams } from "../types/clubManager-types";
 
 export const parentsApi = createApi({
   reducerPath: "parentsApi",
+
   baseQuery: fetchBaseQuery({
     baseUrl: `${BASE_URL}/parent`,
     prepareHeaders: BASE_HEADERS,
   }) as BaseQueryFn<string | FetchArgs, unknown, SerializedError, {}>,
+
   tagTypes: ["Parent", "Player", "Subscriptions"],
+
   endpoints: ({ query, mutation }) => ({
     ActiveSubscription: query<ActiveSubscription, { page?: number }>({
       query: (params) => ({

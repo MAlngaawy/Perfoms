@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { Table, Checkbox, Avatar, Skeleton } from "@mantine/core";
+import { Table, Checkbox, Avatar, Skeleton, Loader } from "@mantine/core";
 import {
   useCoachUpdateAttendanceMutation,
   useGetTeamAttendanceQuery,
@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 import NoTeamComp from "~/@main/components/NoTeamComp";
 import NoAttendancesYet from "~/@main/components/NoAttendancesYet";
+import { showNotification } from "@mantine/notifications";
 
 type Props = {};
 
@@ -22,13 +23,14 @@ const AttendanceTable = (props: Props) => {
 
   console.log("teamAttendance", teamAttendance);
 
-  const { data: teamAttendanceDays, isLoading } = useTeamAttendanceDaysQuery(
+  const {
+    data: teamAttendanceDays,
+    isLoading,
+    isError,
+  } = useTeamAttendanceDaysQuery(
     { team_id: selectedPlayerTeam?.id },
     { skip: !selectedPlayerTeam }
   );
-
-  const [updateAttend, { isLoading: isUpdating }] =
-    useCoachUpdateAttendanceMutation();
 
   // console.log("coahcTeamPlayers", coahcTeamPlayers);
 
@@ -91,30 +93,11 @@ const AttendanceTable = (props: Props) => {
                           }
                           return (
                             <td>
-                              <Checkbox
-                                disabled={
-                                  (theDate === thisDate &&
-                                    theStatus === "UPCOMING") ||
-                                  isUpdating
-                                }
-                                checked={theStatus === "ATTENDED"}
-                                onChange={(e) => {
-                                  updateAttend({
-                                    id: theID,
-                                    status:
-                                      theStatus !== "ATTENDED"
-                                        ? "ATTENDED"
-                                        : "ABSENT",
-                                  });
-                                  console.log({
-                                    attended: `becomes ${
-                                      e.currentTarget.checked
-                                        ? "ATTENDED"
-                                        : "ABSENT"
-                                    }`,
-                                    statusId: theID,
-                                  });
-                                }}
+                              <TestCheckbox
+                                theDate={theDate}
+                                thisDate={thisDate}
+                                theStatus={theStatus}
+                                theID={theID}
                               />
                             </td>
                           );
@@ -140,3 +123,31 @@ const AttendanceTable = (props: Props) => {
   );
 };
 export default memo(AttendanceTable);
+
+const TestCheckbox = ({ theDate, thisDate, theStatus, theID }: any) => {
+  const [updateAttend, { isLoading: isUpdating }] =
+    useCoachUpdateAttendanceMutation();
+
+  return (
+    <>
+      {isUpdating ? (
+        <div className=" mx-auto flex items-center justify-center">
+          <Loader size={"sm"} />
+        </div>
+      ) : (
+        <Checkbox
+          disabled={
+            (theDate === thisDate && theStatus === "UPCOMING") || isUpdating
+          }
+          checked={theStatus === "ATTENDED"}
+          onChange={(e) => {
+            updateAttend({
+              id: theID,
+              status: theStatus !== "ATTENDED" ? "ATTENDED" : "ABSENT",
+            });
+          }}
+        />
+      )}
+    </>
+  );
+};
