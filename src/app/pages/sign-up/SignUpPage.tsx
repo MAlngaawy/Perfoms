@@ -1,6 +1,5 @@
 import { Input, Grid, MultiSelect, Loader } from "@mantine/core";
 import { useForm } from "react-hook-form";
-// import { useSigninMutation } from "~/app/store/user/userApi";
 import { PasswordInput } from "@mantine/core";
 import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
@@ -177,6 +176,8 @@ const SignUpPage = (props: Props) => {
                     className="border-b"
                     {...register("firstName")}
                     id="firstName"
+                    pattern="[a-zA-z]{1,100}"
+                    title="first name should only contains letters e.g:Ali"
                   />
                 </Input.Wrapper>
 
@@ -202,6 +203,8 @@ const SignUpPage = (props: Props) => {
                     className="border-b"
                     {...register("lastName")}
                     id="lastName"
+                    pattern="[a-zA-z]{1,100}"
+                    title="last name should only contains letters e.g:Ali"
                   />
                 </Input.Wrapper>
               </div>
