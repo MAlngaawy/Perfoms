@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BASE_HEADERS, BASE_URL } from "~/app/configs/dataService";
+import { Teams } from "../types/clubManager-types";
 import { CoachRequests } from "../types/supervisor-types";
 
 export const clubManagerApi = createApi({
@@ -14,7 +15,12 @@ export const clubManagerApi = createApi({
       query: (params) => ({ url: "coaches/requests", params }),
       providesTags: ["clubManager"],
     }),
+    adminTeams: query<Teams, { page?: number }>({
+      query: (params) => ({ url: "teams/", params }),
+      providesTags: ["clubManager"],
+    }),
   }),
 });
 
-export const { useManageCoachesRequestsQuery } = clubManagerApi;
+export const { useManageCoachesRequestsQuery, useAdminTeamsQuery } =
+  clubManagerApi;
