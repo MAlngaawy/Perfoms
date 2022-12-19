@@ -11,17 +11,22 @@ import PerfSelect from "../../Select";
 import { axiosInstance } from "~/app/configs/dataService";
 import { showNotification } from "@mantine/notifications";
 import { Team } from "~/app/store/types/supervisor-types";
+import { useUserQuery } from "~/app/store/user/userApi";
+import { useSuperTeamsQuery } from "~/app/store/supervisor/supervisorMainApi";
+import { useAdminTeamsQuery } from "~/app/store/clubManager/clubManagerApi";
 
 type Props = {
-  refetch: any;
   teamData: Team;
 };
 
-const EditButton = ({ refetch, teamData }: Props) => {
+const EditButton = ({ teamData }: Props) => {
   const [opened, setOpened] = useState(false);
   const [playerImage, setPlayerImage] = useState<string | unknown>("");
   const [playerImagePreview, setPlayerImagePreview] = useState("null");
   const [loading, setLoading] = useState<boolean>(false);
+  const { refetch: superRefetch } = useSuperTeamsQuery({});
+  const { refetch: adminRefetch } = useAdminTeamsQuery({});
+  const { data: user } = useUserQuery({});
 
   const schema = yup.object().shape({
     icon: yup.mixed(),
@@ -73,19 +78,28 @@ const EditButton = ({ refetch, teamData }: Props) => {
 
     try {
       axiosInstance
-        .patch(`supervisor/teams/${teamData.id}/update/`, formData)
+        .patch(
+          user?.user_type === "Supervisor"
+            ? `supervisor/teams/${teamData.id}/update/`
+            : `club-manager/teams/${teamData.id}/update/`,
+          formData
+        )
         .then((res) => {
+          if (user?.user_type === "Supervisor") {
+            superRefetch();
+          } else {
+            adminRefetch();
+          }
           setLoading(false);
           setOpened(false);
           setPlayerImage(null);
-          refetch();
           showNotification({
             title: "Done",
             color: "green",
             message: "Team Info Updated",
           });
         })
-        .catch(() => {
+        .catch((err) => {
           setLoading(false);
           showNotification({
             title: "Wrong",
@@ -128,9 +142,6 @@ const EditButton = ({ refetch, teamData }: Props) => {
       console.log(err);
     }
   };
-
-  console.log(teamData.rate_per);
-
   return (
     <div>
       <>

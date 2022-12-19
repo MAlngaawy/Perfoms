@@ -4,6 +4,7 @@ import { Event } from "./events-types";
 import { PlayerCoach } from "./parent-types";
 
 export type ClubManagerSport = {
+  id?: number;
   icon: string;
   icon_url: string;
   name: string;
