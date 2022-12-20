@@ -75,7 +75,7 @@ const AttendanceTable = ({ player_id }: Props) => {
   return (
     <>
       {playerAttendance && (
-        <Table>
+        <Table className="pdf-print">
           <thead>
             <tr>
               <th className="flex items-center gap-1 text-sm font-medium border-0 border-r">
