@@ -7,16 +7,31 @@ import {
   useSuperTeamEventsQuery,
 } from "~/app/store/supervisor/supervisorMainApi";
 import { showNotification } from "@mantine/notifications";
+import { useEffect, useState } from "react";
+import { TeamEvents } from "~/app/store/types/parent-types";
+import { useAdminTeamEventsQuery } from "~/app/store/clubManager/clubManagerApi";
 
 type Props = {
   teamId: string;
 };
 
 const TeamUpcomingEvents = ({ teamId }: Props) => {
-  const { data: events, refetch } = useSuperTeamEventsQuery(
+  const [events, setEvents] = useState<TeamEvents>();
+
+  const { data: superEvents, refetch: superRefetch } = useSuperTeamEventsQuery(
     { team_id: teamId },
     { skip: !teamId }
   );
+
+  const { data: adminEvents, refetch: adminRefetch } = useAdminTeamEventsQuery(
+    { team_id: teamId },
+    { skip: !teamId }
+  );
+
+  useEffect(() => {
+    if (superEvents) setEvents(superEvents);
+    if (adminEvents) setEvents(adminEvents);
+  }, [superEvents, adminEvents]);
 
   const [deleteEvent] = useSuperDeleteEventMutation();
 
@@ -82,12 +97,23 @@ const TeamUpcomingEvents = ({ teamId }: Props) => {
                   name={event.name}
                   type="event"
                 />
-                <EditEventForm refetch={() => refetch()} event={event} />
+                <EditEventForm
+                  refetch={() => {
+                    if (superEvents) superRefetch();
+                    if (adminEvents) adminRefetch();
+                  }}
+                  event={event}
+                />
               </div>
             </div>
           ))}
       </div>
-      <AddEventForm refetch={() => refetch()} />
+      <AddEventForm
+        refetch={() => {
+          if (superEvents) superRefetch();
+          if (adminEvents) adminRefetch();
+        }}
+      />
     </div>
   );
 };

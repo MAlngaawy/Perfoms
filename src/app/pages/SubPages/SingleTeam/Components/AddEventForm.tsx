@@ -13,6 +13,7 @@ import { useSuperClubQuery } from "~/app/store/supervisor/supervisorMainApi";
 import AppUtils from "~/@main/utils/AppUtils";
 import { axiosInstance } from "~/app/configs/dataService";
 import { showNotification } from "@mantine/notifications";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {
   refetch: any;
@@ -22,9 +23,9 @@ const AddEventForm = ({ refetch }: Props) => {
   const [opened, setOpened] = useState(false);
   const [playerImage, setPlayerImage] = useState<string | unknown>();
   const [playerImagePreview, setPlayerImagePreview] = useState("null");
-  const [value, setValue] = useState<any>();
   const { id: team_id } = useParams();
   const { data: clubData } = useSuperClubQuery({});
+  const { data: user } = useUserQuery({});
 
   const schema = yup.object().shape({
     eventName: yup.string().required("please add the Event name"),
@@ -87,7 +88,12 @@ const AddEventForm = ({ refetch }: Props) => {
     formData.append("club", JSON.stringify(clubData?.id));
 
     axiosInstance
-      .post("supervisor/add-event/", formData)
+      .post(
+        user?.user_type === "Supervisor"
+          ? "supervisor/add-event/"
+          : "club-manager/teams/events/add-event/",
+        formData
+      )
       .then(() => {
         showNotification({
           message: "Event Created",

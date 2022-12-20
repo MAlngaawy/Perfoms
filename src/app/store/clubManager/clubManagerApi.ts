@@ -1,11 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BASE_HEADERS, BASE_URL } from "~/app/configs/dataService";
-import { Sports, Teams } from "../types/clubManager-types";
+import { AddEvent, Sports, Teams } from "../types/clubManager-types";
 import { TeamCoaches } from "../types/parent-types";
+import { TeamEvents } from "~/app/store/types/parent-types";
 import {
   AddTeamCalendar,
   Coaches,
   CoachRequests,
+  SuperVisorTeamInfo,
   Team,
   TeamAttendance,
   TeamCoach,
@@ -17,7 +19,7 @@ export const clubManagerApi = createApi({
     baseUrl: `${BASE_URL}/club-manager`,
     prepareHeaders: BASE_HEADERS,
   }),
-  tagTypes: ["clubManager", "teams", "calendar", "coaches"],
+  tagTypes: ["clubManager", "teams", "calendar", "coaches", "events"],
   endpoints: ({ query, mutation }) => ({
     manageCoachesRequests: query<CoachRequests, { page?: number }>({
       query: (params) => ({ url: "coaches/requests", params }),
@@ -102,6 +104,33 @@ export const clubManagerApi = createApi({
       }),
       invalidatesTags: ["coaches"],
     }),
+
+    adminTeamEvents: query<TeamEvents, { team_id: string; page?: number }>({
+      query: ({ team_id, ...params }) => ({
+        url: `teams/${team_id}/events/`,
+        params,
+      }),
+      providesTags: ["events"],
+    }),
+
+    adminAddEvent: mutation<AddEvent, {}>({
+      query: ({ ...body }) => ({
+        url: `teams/events/add-event/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["events"],
+    }),
+
+    adminTeamInfo: query<
+      SuperVisorTeamInfo,
+      { team_id: string | undefined; page?: number }
+    >({
+      query: ({ team_id, ...params }) => ({
+        url: `teams/${team_id}/`,
+        params,
+      }),
+    }),
   }),
 });
 
@@ -117,4 +146,7 @@ export const {
   useAdminRemoveTeamCoachMutation,
   useAdminAllCoachesQuery,
   useAdminAddTeamCoachesMutation,
+  useAdminTeamEventsQuery,
+  useAdminAddEventMutation,
+  useAdminTeamInfoQuery,
 } = clubManagerApi;
