@@ -1,6 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BASE_HEADERS, BASE_URL } from "~/app/configs/dataService";
-import { AddEvent, Sports, Teams } from "../types/clubManager-types";
+import {
+  AddEvent,
+  Sports,
+  TeamPlayers,
+  Teams,
+} from "../types/clubManager-types";
 import { TeamCoaches } from "../types/parent-types";
 import { TeamEvents } from "~/app/store/types/parent-types";
 import {
@@ -19,7 +24,14 @@ export const clubManagerApi = createApi({
     baseUrl: `${BASE_URL}/club-manager`,
     prepareHeaders: BASE_HEADERS,
   }),
-  tagTypes: ["clubManager", "teams", "calendar", "coaches", "events"],
+  tagTypes: [
+    "clubManager",
+    "teams",
+    "calendar",
+    "coaches",
+    "events",
+    "players",
+  ],
   endpoints: ({ query, mutation }) => ({
     manageCoachesRequests: query<CoachRequests, { page?: number }>({
       query: (params) => ({ url: "coaches/requests", params }),
@@ -131,6 +143,14 @@ export const clubManagerApi = createApi({
         params,
       }),
     }),
+
+    adminTeamPlaers: query<TeamPlayers, { team_id: string; page?: number }>({
+      query: ({ team_id, ...params }) => ({
+        url: `teams/${team_id}/players/`,
+        params,
+      }),
+      providesTags: ["players"],
+    }),
   }),
 });
 
@@ -149,4 +169,5 @@ export const {
   useAdminTeamEventsQuery,
   useAdminAddEventMutation,
   useAdminTeamInfoQuery,
+  useAdminTeamPlaersQuery,
 } = clubManagerApi;

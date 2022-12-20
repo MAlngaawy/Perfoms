@@ -9,16 +9,30 @@ import DeletePlayerFromTeam from "./DeletePlayerFromTeam";
 import { useNavigate } from "react-router-dom";
 import { showNotification } from "@mantine/notifications";
 import { useUserQuery } from "~/app/store/user/userApi";
+import { TeamPlayers } from "~/app/store/types/clubManager-types";
+import { useEffect, useState } from "react";
+import { useAdminTeamPlaersQuery } from "~/app/store/clubManager/clubManagerApi";
 
 type Props = {
   teamId: string;
 };
 
-const TeamPlayers = ({ teamId }: Props) => {
-  const { data: players } = useSuperTeamPlaersQuery(
+const TeamPlayersComponent = ({ teamId }: Props) => {
+  const [players, setPlayers] = useState<TeamPlayers>();
+
+  const { data: superPlayers } = useSuperTeamPlaersQuery(
     { team_id: teamId },
     { skip: !teamId }
   );
+  const { data: adminPlayers } = useAdminTeamPlaersQuery(
+    { team_id: teamId },
+    { skip: !teamId }
+  );
+
+  useEffect(() => {
+    if (superPlayers) setPlayers(superPlayers);
+    if (adminPlayers) setPlayers(adminPlayers);
+  }, [superPlayers, adminPlayers]);
 
   return (
     <div>
@@ -134,4 +148,4 @@ export const SinglePlayer = ({ id, image, name, teamId }: any) => {
   );
 };
 
-export default TeamPlayers;
+export default TeamPlayersComponent;
