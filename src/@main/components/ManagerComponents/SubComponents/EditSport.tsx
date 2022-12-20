@@ -11,7 +11,7 @@ import PerfSelect from "../../Select";
 
 type Props = {
   sportName: string;
-  sportId: number;
+  sportId: number | undefined;
 };
 
 const EditSport = ({ sportName, sportId }: Props) => {

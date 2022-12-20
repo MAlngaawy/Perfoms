@@ -1,4 +1,4 @@
-import { useState, ReactNode } from "react";
+import { useState, ReactNode, useEffect } from "react";
 import { Modal, Button, Group, Input } from "@mantine/core";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -14,6 +14,8 @@ import AppUtils from "~/@main/utils/AppUtils";
 import { axiosInstance } from "~/app/configs/dataService";
 import { showNotification } from "@mantine/notifications";
 import { useUserQuery } from "~/app/store/user/userApi";
+import { useAdminClubQuery } from "~/app/store/clubManager/clubManagerApi";
+import { ParentClub } from "~/app/store/types/parent-types";
 
 type Props = {
   refetch: any;
@@ -23,9 +25,16 @@ const AddEventForm = ({ refetch }: Props) => {
   const [opened, setOpened] = useState(false);
   const [playerImage, setPlayerImage] = useState<string | unknown>();
   const [playerImagePreview, setPlayerImagePreview] = useState("null");
+  const [clubData, setclubData] = useState<ParentClub>();
   const { id: team_id } = useParams();
-  const { data: clubData } = useSuperClubQuery({});
+  const { data: superClubData } = useSuperClubQuery({});
+  const { data: adminClubData } = useAdminClubQuery({});
   const { data: user } = useUserQuery({});
+
+  useEffect(() => {
+    if (superClubData) setclubData(superClubData);
+    if (adminClubData) setclubData(adminClubData);
+  }, [superClubData, adminClubData]);
 
   const schema = yup.object().shape({
     eventName: yup.string().required("please add the Event name"),

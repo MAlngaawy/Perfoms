@@ -1,7 +1,6 @@
 import { PagesRouteConfig } from "~/@main/types/Config-Types";
 import authRoles from "~/app/auth/authRoles";
 import PlayerDetails from "./PlayerDetails";
-import PlayerCard from "../PlayerCard/PlayerCard";
 
 const PlayerCardConfig: PagesRouteConfig = {
   settings: {
@@ -19,7 +18,7 @@ const PlayerCardConfig: PagesRouteConfig = {
       },
     },
   },
-  auth: [...authRoles.Coach, ...authRoles.Supervisor],
+  auth: [...authRoles.Coach, ...authRoles.Supervisor, ...authRoles.Admin],
   routes: [
     {
       path: "/players/:id",

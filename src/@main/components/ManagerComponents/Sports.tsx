@@ -29,8 +29,12 @@ const Sports = (props: Props) => {
               <h2 className="text-xl text-perfBlue">{sport?.name}</h2>
               {/* Edit and Delete Buttons */}
               <div className="flex absolute right-2 top-5 gap-2">
-                {/* <EditSport sportName={sport.name} sportId={sport.id} />
-              <DeleteButton name={sport.name} id={sport.id} type="Sport" /> */}
+                <EditSport sportName={sport.name} sportId={sport.id} />
+                <DeleteButton
+                  name={sport.name}
+                  deleteFun={() => console.log("LOL")}
+                  type="Sport"
+                />
               </div>
             </div>
           );

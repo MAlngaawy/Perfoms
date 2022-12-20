@@ -6,7 +6,7 @@ import {
   TeamPlayers,
   Teams,
 } from "../types/clubManager-types";
-import { TeamCoaches } from "../types/parent-types";
+import { ParentClub, TeamCoaches } from "../types/parent-types";
 import { TeamEvents } from "~/app/store/types/parent-types";
 import {
   AddTeamCalendar,
@@ -151,6 +151,10 @@ export const clubManagerApi = createApi({
       }),
       providesTags: ["players"],
     }),
+
+    adminClub: query<ParentClub, { pages?: number }>({
+      query: (params) => "my-club/",
+    }),
   }),
 });
 
@@ -170,4 +174,5 @@ export const {
   useAdminAddEventMutation,
   useAdminTeamInfoQuery,
   useAdminTeamPlaersQuery,
+  useAdminClubQuery,
 } = clubManagerApi;
