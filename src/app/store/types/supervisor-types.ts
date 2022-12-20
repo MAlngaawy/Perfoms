@@ -174,6 +174,6 @@ export type TeamAttendance = BaseGetAllType & {
 };
 
 export type AddTeamCalendar = {
-  dat: string;
+  day: string;
   team: number;
 };
