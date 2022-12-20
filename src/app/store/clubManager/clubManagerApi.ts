@@ -3,6 +3,7 @@ import { BASE_HEADERS, BASE_URL } from "~/app/configs/dataService";
 import {
   AddEvent,
   Sports,
+  TeamPlayer,
   TeamPlayers,
   Teams,
 } from "../types/clubManager-types";
@@ -12,6 +13,7 @@ import {
   AddTeamCalendar,
   Coaches,
   CoachRequests,
+  SuperVisorPlayers,
   SuperVisorTeamInfo,
   Team,
   TeamAttendance,
@@ -164,6 +166,32 @@ export const clubManagerApi = createApi({
       }),
       invalidatesTags: ["events"],
     }),
+
+    adminPlayers: query<SuperVisorPlayers, { page?: number }>({
+      query: (params) => ({
+        url: `users/players/`,
+        params,
+      }),
+      providesTags: ["players"],
+    }),
+
+    adminAddTeamPlayer: mutation<TeamPlayer, {}>({
+      query: ({ ...body }) => ({
+        url: `teams/add-team-player/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["players"],
+    }),
+
+    adminRemoveTeamPlayer: mutation<TeamPlayer, {}>({
+      query: ({ ...body }) => ({
+        url: `teams/remove-team-player/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["players"],
+    }),
   }),
 });
 
@@ -185,4 +213,7 @@ export const {
   useAdminTeamPlaersQuery,
   useAdminClubQuery,
   useAdminDeleteEventMutation,
+  useAdminPlayersQuery,
+  useAdminAddTeamPlayerMutation,
+  useAdminRemoveTeamPlayerMutation,
 } = clubManagerApi;

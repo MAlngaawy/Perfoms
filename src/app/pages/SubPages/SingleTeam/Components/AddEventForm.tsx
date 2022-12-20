@@ -85,7 +85,6 @@ const AddEventForm = ({ refetch }: Props) => {
   // Submit Form Function
   const onSubmitFunction = (e: any) => {
     e.preventDefault();
-    console.log(e.currentTarget);
 
     const paramData = {
       team: team_id,
@@ -122,6 +121,11 @@ const AddEventForm = ({ refetch }: Props) => {
             },
           },
         });
+        setPlayerImagePreview("null");
+        reset({
+          eventName: "",
+          eventLocation: "",
+        });
         refetch();
         setOpened(false);
       })
@@ -144,13 +148,12 @@ const AddEventForm = ({ refetch }: Props) => {
             },
           },
         });
+        setPlayerImagePreview("null");
+        reset({
+          eventName: "",
+          eventLocation: "",
+        });
       });
-
-    setPlayerImagePreview("null");
-    reset({
-      eventName: "",
-      eventLocation: "",
-    });
   };
 
   return (
