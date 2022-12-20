@@ -1,4 +1,4 @@
-import { useState, ReactNode } from "react";
+import { useState, ReactNode, useEffect } from "react";
 import { Modal, Button, Group, Input } from "@mantine/core";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -13,6 +13,9 @@ import { axiosInstance } from "~/app/configs/dataService";
 import { showNotification } from "@mantine/notifications";
 import { useParams } from "react-router-dom";
 import { useSuperClubQuery } from "~/app/store/supervisor/supervisorMainApi";
+import { useAdminClubQuery } from "~/app/store/clubManager/clubManagerApi";
+import { ParentClub } from "~/app/store/types/parent-types";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {
   event: {
@@ -27,11 +30,19 @@ type Props = {
 
 const EditEventForm = ({ event, refetch }: Props) => {
   const [opened, setOpened] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [playerImage, setPlayerImage] = useState<string | unknown>("");
   const [playerImagePreview, setPlayerImagePreview] = useState("null");
-  const [value, setValue] = useState<any>();
+  const [clubData, setclubData] = useState<ParentClub>();
   const { id: team_id } = useParams();
-  const { data: clubData } = useSuperClubQuery({});
+  const { data: superClubData } = useSuperClubQuery({});
+  const { data: adminClubData } = useAdminClubQuery({});
+  const { data: user } = useUserQuery({});
+
+  useEffect(() => {
+    if (superClubData) setclubData(superClubData);
+    if (adminClubData) setclubData(adminClubData);
+  }, [superClubData, adminClubData]);
 
   const schema = yup.object().shape({
     eventName: yup.string().required("please add the Event name"),
@@ -82,7 +93,7 @@ const EditEventForm = ({ event, refetch }: Props) => {
   // Submit Form Function
   const onSubmitFunction = (e: any) => {
     e.preventDefault();
-    console.log(e.currentTarget);
+    setLoading(true);
 
     const paramData = {
       team: team_id,
@@ -94,8 +105,14 @@ const EditEventForm = ({ event, refetch }: Props) => {
     formData.append("club", JSON.stringify(clubData?.id));
 
     axiosInstance
-      .patch(`supervisor/events/${event.id}/update/`, formData)
+      .patch(
+        user?.user_type === "Supervisor"
+          ? `supervisor/events/${event.id}/update/`
+          : `club-manager/teams/events/${event.id}/update/`,
+        formData
+      )
       .then(() => {
+        setLoading(false);
         showNotification({
           message: "Event Updated",
           color: "green",
@@ -118,6 +135,8 @@ const EditEventForm = ({ event, refetch }: Props) => {
         setOpened(false);
       })
       .catch((err) => {
+        setLoading(false);
+
         showNotification({
           message: "please try again",
           color: "ref",
@@ -276,7 +295,7 @@ const EditEventForm = ({ event, refetch }: Props) => {
               />
             </Input.Wrapper>
 
-            <SubmitButton isLoading={false} text="Edit Event" />
+            <SubmitButton isLoading={loading} text="Edit Event" />
           </form>
         </Modal>
 

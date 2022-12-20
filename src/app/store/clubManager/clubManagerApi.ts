@@ -155,6 +155,15 @@ export const clubManagerApi = createApi({
     adminClub: query<ParentClub, { pages?: number }>({
       query: (params) => "my-club/",
     }),
+
+    adminDeleteEvent: mutation<{}, { event_id: number }>({
+      query: ({ event_id, ...body }) => ({
+        url: `teams/events/${event_id}/delete/`,
+        method: "DELETE",
+        body,
+      }),
+      invalidatesTags: ["events"],
+    }),
   }),
 });
 
@@ -175,4 +184,5 @@ export const {
   useAdminTeamInfoQuery,
   useAdminTeamPlaersQuery,
   useAdminClubQuery,
+  useAdminDeleteEventMutation,
 } = clubManagerApi;

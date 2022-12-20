@@ -9,7 +9,11 @@ import {
 import { showNotification } from "@mantine/notifications";
 import { useEffect, useState } from "react";
 import { TeamEvents } from "~/app/store/types/parent-types";
-import { useAdminTeamEventsQuery } from "~/app/store/clubManager/clubManagerApi";
+import { useUserQuery } from "~/app/store/user/userApi";
+import {
+  useAdminDeleteEventMutation,
+  useAdminTeamEventsQuery,
+} from "~/app/store/clubManager/clubManagerApi";
 
 type Props = {
   teamId: string;
@@ -17,6 +21,7 @@ type Props = {
 
 const TeamUpcomingEvents = ({ teamId }: Props) => {
   const [events, setEvents] = useState<TeamEvents>();
+  const { data: user } = useUserQuery({});
 
   const { data: superEvents, refetch: superRefetch } = useSuperTeamEventsQuery(
     { team_id: teamId },
@@ -33,7 +38,54 @@ const TeamUpcomingEvents = ({ teamId }: Props) => {
     if (adminEvents) setEvents(adminEvents);
   }, [superEvents, adminEvents]);
 
-  const [deleteEvent] = useSuperDeleteEventMutation();
+  const [superDeleteEvent] = useSuperDeleteEventMutation();
+  const [adminDeleteEvent] = useAdminDeleteEventMutation();
+
+  const deleteEvent = (eventId: number) => {
+    if (user?.user_type === "Supervisor") {
+      superDeleteEvent({ event_id: eventId }).then((res) => {
+        showNotification({
+          message: "Successfly Deleted",
+          color: "green",
+          title: "Done",
+          styles: {
+            root: {
+              backgroundColor: "#27AE60",
+              borderColor: "#27AE60",
+              "&::before": { backgroundColor: "#fff" },
+            },
+
+            title: { color: "#fff" },
+            description: { color: "#fff" },
+            closeButton: {
+              color: "#fff",
+            },
+          },
+        });
+      });
+    } else if (user?.user_type === "Admin") {
+      adminDeleteEvent({ event_id: eventId }).then((res) => {
+        showNotification({
+          message: "Successfly Deleted",
+          color: "green",
+          title: "Done",
+          styles: {
+            root: {
+              backgroundColor: "#27AE60",
+              borderColor: "#27AE60",
+              "&::before": { backgroundColor: "#fff" },
+            },
+
+            title: { color: "#fff" },
+            description: { color: "#fff" },
+            closeButton: {
+              color: "#fff",
+            },
+          },
+        });
+      });
+    }
+  };
 
   return (
     <div>
@@ -72,28 +124,7 @@ const TeamUpcomingEvents = ({ teamId }: Props) => {
 
               <div className="options flex flex-col justify-around">
                 <DeleteButton
-                  deleteFun={() =>
-                    deleteEvent({ event_id: event.id }).then((res) => {
-                      showNotification({
-                        message: "Successfly Deleted",
-                        color: "green",
-                        title: "Done",
-                        styles: {
-                          root: {
-                            backgroundColor: "#27AE60",
-                            borderColor: "#27AE60",
-                            "&::before": { backgroundColor: "#fff" },
-                          },
-
-                          title: { color: "#fff" },
-                          description: { color: "#fff" },
-                          closeButton: {
-                            color: "#fff",
-                          },
-                        },
-                      });
-                    })
-                  }
+                  deleteFun={() => deleteEvent(event.id)}
                   name={event.name}
                   type="event"
                 />
