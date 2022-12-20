@@ -1,11 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BASE_HEADERS, BASE_URL } from "~/app/configs/dataService";
 import { Sports, Teams } from "../types/clubManager-types";
+import { TeamCoaches } from "../types/parent-types";
 import {
   AddTeamCalendar,
   CoachRequests,
   Team,
   TeamAttendance,
+  TeamCoach,
 } from "../types/supervisor-types";
 
 export const clubManagerApi = createApi({
@@ -14,7 +16,7 @@ export const clubManagerApi = createApi({
     baseUrl: `${BASE_URL}/club-manager`,
     prepareHeaders: BASE_HEADERS,
   }),
-  tagTypes: ["clubManager", "teams", "calendar"],
+  tagTypes: ["clubManager", "teams", "calendar", "coaches"],
   endpoints: ({ query, mutation }) => ({
     manageCoachesRequests: query<CoachRequests, { page?: number }>({
       query: (params) => ({ url: "coaches/requests", params }),
@@ -68,6 +70,23 @@ export const clubManagerApi = createApi({
       }),
       invalidatesTags: ["calendar"],
     }),
+
+    adminTeamCoaches: query<TeamCoaches, { team_id: string; page?: number }>({
+      query: ({ team_id, ...params }) => ({
+        url: `teams/${team_id}/coaches/`,
+        params,
+      }),
+      providesTags: ["coaches"],
+    }),
+
+    adminRemoveTeamCoach: mutation<TeamCoach, {}>({
+      query: ({ ...body }) => ({
+        url: `teams/remove-team-coach/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["coaches"],
+    }),
   }),
 });
 
@@ -79,4 +98,6 @@ export const {
   useAdminAddNewTeamMutation,
   useAdminTeamAttendanceQuery,
   useAdminAddTeamCalendarMutation,
+  useAdminTeamCoachesQuery,
+  useAdminRemoveTeamCoachMutation,
 } = clubManagerApi;
