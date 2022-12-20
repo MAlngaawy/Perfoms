@@ -4,6 +4,7 @@ import { Sports, Teams } from "../types/clubManager-types";
 import { TeamCoaches } from "../types/parent-types";
 import {
   AddTeamCalendar,
+  Coaches,
   CoachRequests,
   Team,
   TeamAttendance,
@@ -87,6 +88,20 @@ export const clubManagerApi = createApi({
       }),
       invalidatesTags: ["coaches"],
     }),
+
+    adminAllCoaches: query<Coaches, { page?: number }>({
+      query: (params) => ({ url: "users/coaches/", params }),
+      providesTags: ["coaches"],
+    }),
+
+    adminAddTeamCoaches: mutation<TeamCoach, {}>({
+      query: ({ ...body }) => ({
+        url: `teams/add-team-coach/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["coaches"],
+    }),
   }),
 });
 
@@ -100,4 +115,6 @@ export const {
   useAdminAddTeamCalendarMutation,
   useAdminTeamCoachesQuery,
   useAdminRemoveTeamCoachMutation,
+  useAdminAllCoachesQuery,
+  useAdminAddTeamCoachesMutation,
 } = clubManagerApi;
