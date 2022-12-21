@@ -171,7 +171,7 @@ export const clubManagerApi = createApi({
       invalidatesTags: ["events"],
     }),
 
-    adminPlayers: query<AllUsers, { page?: number }>({
+    adminPlayers: query<SuperVisorPlayers, { page?: number }>({
       query: (params) => ({
         url: `users/players/`,
         params,
