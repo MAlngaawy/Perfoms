@@ -239,6 +239,15 @@ export const clubManagerApi = createApi({
       }),
       invalidatesTags: ["supervisorUser"],
     }),
+
+    adminDeleteSport: mutation<{}, { sport_id: string }>({
+      query: ({ sport_id, ...body }) => ({
+        url: `sports/${sport_id}/delete/`,
+        method: "DELETE",
+        body,
+      }),
+      invalidatesTags: ["clubManager"],
+    }),
   }),
 });
 
@@ -268,4 +277,5 @@ export const {
   useAdminDeletePlayerMutation,
   useAdminDeleteCoachMutation,
   useAdminDeleteSupervisorMutation,
+  useAdminDeleteSportMutation,
 } = clubManagerApi;

@@ -6,13 +6,65 @@ import DeleteButton from "./SubComponents/DeleteButton";
 import EditSport from "./SubComponents/EditSport";
 import { Avatar } from "@mantine/core";
 import { useSuperSportQuery } from "~/app/store/supervisor/supervisorMainApi";
-import { useAdminSportsQuery } from "~/app/store/clubManager/clubManagerApi";
+import {
+  useAdminDeleteSportMutation,
+  useAdminSportsQuery,
+} from "~/app/store/clubManager/clubManagerApi";
+import { showNotification } from "@mantine/notifications";
 
 type Props = {};
 
 const Sports = (props: Props) => {
   const { data: sport } = useSuperSportQuery({});
-  const { data: sports } = useAdminSportsQuery({});
+  const { data: sports, refetch: adminRefetchSports } = useAdminSportsQuery({});
+
+  const [adminDeleteSport] = useAdminDeleteSportMutation();
+
+  const deleteSport = (sport_id: string) => {
+    adminDeleteSport({
+      sport_id: sport_id,
+    })
+      .then(() => {
+        showNotification({
+          message: "Sport Successfly Deleted",
+          color: "green",
+          title: "Deleted",
+          styles: {
+            root: {
+              backgroundColor: "#27AE60",
+              borderColor: "#27AE60",
+              "&::before": { backgroundColor: "#fff" },
+            },
+            title: { color: "#fff" },
+            description: { color: "#fff" },
+            closeButton: {
+              color: "#fff",
+            },
+          },
+        });
+        adminRefetchSports();
+      })
+      .catch((err) => {
+        showNotification({
+          message: "Can't delete sport",
+          color: "red",
+          title: "Wrong",
+          styles: {
+            root: {
+              backgroundColor: "#EB5757",
+              borderColor: "#EB5757",
+              "&::before": { backgroundColor: "#fff" },
+            },
+
+            title: { color: "#fff" },
+            description: { color: "#fff" },
+            closeButton: {
+              color: "#fff",
+            },
+          },
+        });
+      });
+  };
 
   return (
     <div className="admin-teams flex flex-col xs:flex-row flex-wrap items-stretch gap-4 p-2 sm:p-6">
@@ -32,7 +84,7 @@ const Sports = (props: Props) => {
                 <EditSport sportName={sport.name} sportId={sport.id} />
                 <DeleteButton
                   name={sport.name}
-                  deleteFun={() => console.log("LOL")}
+                  deleteFun={() => deleteSport(JSON.stringify(sport.id))}
                   type="Sport"
                 />
               </div>
