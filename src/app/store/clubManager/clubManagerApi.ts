@@ -224,7 +224,7 @@ export const clubManagerApi = createApi({
 
     adminDeleteCoach: mutation<{}, { coach_id: string }>({
       query: ({ coach_id, ...body }) => ({
-        url: `users/${coach_id}/delete/`,
+        url: `users/coaches/${coach_id}/delete/`,
         method: "DELETE",
         body,
       }),
@@ -233,7 +233,7 @@ export const clubManagerApi = createApi({
 
     adminDeleteSupervisor: mutation<{}, { supervisor_id: string }>({
       query: ({ supervisor_id, ...body }) => ({
-        url: `users/${supervisor_id}/delete/`,
+        url: `users/supervisors/${supervisor_id}/delete/`,
         method: "DELETE",
         body,
       }),

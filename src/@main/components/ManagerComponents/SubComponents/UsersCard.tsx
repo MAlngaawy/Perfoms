@@ -2,7 +2,12 @@ import DeleteButton from "./DeleteButton";
 import { Avatar, Grid } from "@mantine/core";
 import AddUserForm from "./AddUser";
 import { PlayerCoach } from "~/app/store/types/parent-types";
-import { SuperVisorPlayer } from "~/app/store/types/supervisor-types";
+import { showNotification } from "@mantine/notifications";
+import {
+  useAdminDeleteCoachMutation,
+  useAdminDeletePlayerMutation,
+  useAdminDeleteSupervisorMutation,
+} from "~/app/store/clubManager/clubManagerApi";
 
 type Props = {
   type: "Player" | "Coach" | "Supervisor";
@@ -10,6 +15,140 @@ type Props = {
 };
 
 const UsersCard = ({ type, data }: Props) => {
+  const [deletePlayer] = useAdminDeletePlayerMutation();
+  const [deleteCoach] = useAdminDeleteCoachMutation();
+  const [deleteSupervisor] = useAdminDeleteSupervisorMutation();
+
+  const deleteUser = (userId: string) => {
+    if (type === "Player") {
+      deletePlayer({ player_id: userId })
+        .then((res) => {
+          showNotification({
+            message: "Successfly Deleted",
+            color: "green",
+            title: "Done",
+            styles: {
+              root: {
+                backgroundColor: "#27AE60",
+                borderColor: "#27AE60",
+                "&::before": { backgroundColor: "#fff" },
+              },
+
+              title: { color: "#fff" },
+              description: { color: "#fff" },
+              closeButton: {
+                color: "#fff",
+              },
+            },
+          });
+        })
+        .catch((err) => {
+          showNotification({
+            message: err.message,
+            color: "ref",
+            title: "Wrong",
+            styles: {
+              root: {
+                backgroundColor: "#EB5757",
+                borderColor: "#EB5757",
+                "&::before": { backgroundColor: "#fff" },
+              },
+
+              title: { color: "#fff" },
+              description: { color: "#fff" },
+              closeButton: {
+                color: "#fff",
+              },
+            },
+          });
+        });
+    } else if (type === "Coach") {
+      deleteCoach({ coach_id: userId })
+        .then((res) => {
+          showNotification({
+            message: "Successfly Deleted",
+            color: "green",
+            title: "Done",
+            styles: {
+              root: {
+                backgroundColor: "#27AE60",
+                borderColor: "#27AE60",
+                "&::before": { backgroundColor: "#fff" },
+              },
+
+              title: { color: "#fff" },
+              description: { color: "#fff" },
+              closeButton: {
+                color: "#fff",
+              },
+            },
+          });
+        })
+        .catch((err) => {
+          showNotification({
+            message: err.message,
+            color: "ref",
+            title: "Wrong",
+            styles: {
+              root: {
+                backgroundColor: "#EB5757",
+                borderColor: "#EB5757",
+                "&::before": { backgroundColor: "#fff" },
+              },
+
+              title: { color: "#fff" },
+              description: { color: "#fff" },
+              closeButton: {
+                color: "#fff",
+              },
+            },
+          });
+        });
+    } else if (type === "Supervisor") {
+      deleteSupervisor({ supervisor_id: userId })
+        .then((res) => {
+          showNotification({
+            message: "Successfly Deleted",
+            color: "green",
+            title: "Done",
+            styles: {
+              root: {
+                backgroundColor: "#27AE60",
+                borderColor: "#27AE60",
+                "&::before": { backgroundColor: "#fff" },
+              },
+
+              title: { color: "#fff" },
+              description: { color: "#fff" },
+              closeButton: {
+                color: "#fff",
+              },
+            },
+          });
+        })
+        .catch((err) => {
+          showNotification({
+            message: err.message,
+            color: "ref",
+            title: "Wrong",
+            styles: {
+              root: {
+                backgroundColor: "#EB5757",
+                borderColor: "#EB5757",
+                "&::before": { backgroundColor: "#fff" },
+              },
+
+              title: { color: "#fff" },
+              description: { color: "#fff" },
+              closeButton: {
+                color: "#fff",
+              },
+            },
+          });
+        });
+    }
+  };
+
   return (
     <div className="bg-white rounded-lg p-4 pt-0 ">
       <div className="header flex justify-between items-center py-4">
@@ -37,9 +176,9 @@ const UsersCard = ({ type, data }: Props) => {
                     </h3>
                   </div>
                   <DeleteButton
-                    deleteFun={() => console.log("Delete")}
+                    deleteFun={() => deleteUser(JSON.stringify(user.id))}
                     type={type}
-                    name={user.first_name}
+                    name={user.first_name || user.name}
                   />
                 </div>
               </Grid.Col>

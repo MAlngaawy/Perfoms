@@ -4,7 +4,7 @@ import AppIcons from "../../../core/AppIcons";
 import { showNotification } from "@mantine/notifications";
 
 type Props = {
-  name: string;
+  name: string | undefined;
   type: string;
   deleteFun: any;
 };
