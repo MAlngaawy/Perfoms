@@ -10,6 +10,7 @@ import {
 } from "~/app/store/clubManager/clubManagerApi";
 import __ from "lodash";
 import { useEffect, useState } from "react";
+import AppIcons from "~/@main/core/AppIcons";
 
 type Props = {
   type: "Player" | "Coach" | "Supervisor";
@@ -24,8 +25,6 @@ const UsersCard = ({ type, data }: Props) => {
   const [newData, setNewData] = useState<any>(data);
 
   useEffect(() => {
-    console.log("serachKeyword", searchKeyword);
-    setNewData(data);
     if (searchKeyword.length > 0) {
       let test;
       if (type === "Player") {
@@ -40,6 +39,8 @@ const UsersCard = ({ type, data }: Props) => {
             .includes(searchKeyword.toLocaleLowerCase());
         });
       }
+      setNewData(test);
+    } else {
       setNewData(data);
     }
   }, [searchKeyword, data]);
@@ -185,7 +186,13 @@ const UsersCard = ({ type, data }: Props) => {
           <TextInput
             onChange={(e) => setSearchKeyword(e.target.value)}
             value={searchKeyword}
-            placeholder="Search by name"
+            icon={
+              <AppIcons
+                className="w-5 h-5"
+                icon="MagnifyingGlassIcon:outline"
+              />
+            }
+            placeholder="Search"
           />
         </div>
       </div>
