@@ -50,6 +50,8 @@ export type ParentClubs = BaseGetAllType & {
 };
 
 export type PlayerCoach = {
+  icon?: string;
+  name?: string;
   id: number;
   teams: Partial<Team>[];
   avatar: string;

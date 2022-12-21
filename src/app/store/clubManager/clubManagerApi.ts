@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BASE_HEADERS, BASE_URL } from "~/app/configs/dataService";
 import {
   AddEvent,
+  AllUsers,
   Sports,
   TeamPlayer,
   TeamPlayers,
@@ -33,6 +34,9 @@ export const clubManagerApi = createApi({
     "coaches",
     "events",
     "players",
+    "playerUser",
+    "coachUser",
+    "supervisorUser",
   ],
   endpoints: ({ query, mutation }) => ({
     manageCoachesRequests: query<CoachRequests, { page?: number }>({
@@ -167,12 +171,28 @@ export const clubManagerApi = createApi({
       invalidatesTags: ["events"],
     }),
 
-    adminPlayers: query<SuperVisorPlayers, { page?: number }>({
+    adminPlayers: query<AllUsers, { page?: number }>({
       query: (params) => ({
         url: `users/players/`,
         params,
       }),
-      providesTags: ["players"],
+      providesTags: ["players", "playerUser"],
+    }),
+
+    adminCoaches: query<AllUsers, { page?: number }>({
+      query: (params) => ({
+        url: `users/coaches/`,
+        params,
+      }),
+      providesTags: ["coachUser"],
+    }),
+
+    adminSupervisors: query<AllUsers, { page?: number }>({
+      query: (params) => ({
+        url: `users/supervisors/`,
+        params,
+      }),
+      providesTags: ["supervisorUser"],
     }),
 
     adminAddTeamPlayer: mutation<TeamPlayer, {}>({
@@ -191,6 +211,33 @@ export const clubManagerApi = createApi({
         body,
       }),
       invalidatesTags: ["players"],
+    }),
+
+    adminDeletePlayer: mutation<{}, { player_id: string }>({
+      query: ({ player_id, ...body }) => ({
+        url: `users/${player_id}/delete/`,
+        method: "DELETE",
+        body,
+      }),
+      invalidatesTags: ["playerUser"],
+    }),
+
+    adminDeleteCoach: mutation<{}, { coach_id: string }>({
+      query: ({ coach_id, ...body }) => ({
+        url: `users/${coach_id}/delete/`,
+        method: "DELETE",
+        body,
+      }),
+      invalidatesTags: ["coachUser"],
+    }),
+
+    adminDeleteSupervisor: mutation<{}, { supervisor_id: string }>({
+      query: ({ supervisor_id, ...body }) => ({
+        url: `users/${supervisor_id}/delete/`,
+        method: "DELETE",
+        body,
+      }),
+      invalidatesTags: ["supervisorUser"],
     }),
   }),
 });
@@ -214,6 +261,11 @@ export const {
   useAdminClubQuery,
   useAdminDeleteEventMutation,
   useAdminPlayersQuery,
+  useAdminCoachesQuery,
+  useAdminSupervisorsQuery,
   useAdminAddTeamPlayerMutation,
   useAdminRemoveTeamPlayerMutation,
+  useAdminDeletePlayerMutation,
+  useAdminDeleteCoachMutation,
+  useAdminDeleteSupervisorMutation,
 } = clubManagerApi;

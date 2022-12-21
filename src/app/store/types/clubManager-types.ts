@@ -11,6 +11,10 @@ export type ClubManagerSport = {
   club: number;
 };
 
+export type AllUsers = BaseGetAllType & {
+  results: PlayerCoach[];
+};
+
 export type CoachRequest = {
   id: number;
   first_name: string;

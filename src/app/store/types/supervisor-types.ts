@@ -111,8 +111,14 @@ export type SuperVisorTeam = {
   to_age: number;
 };
 
+export type SuperVisorPlayer = {
+  id: number;
+  name: string;
+  icon: string;
+};
+
 export type SuperVisorPlayers = BaseGetAllType & {
-  results: { id: number; name: string; icon: string }[];
+  results: SuperVisorPlayer[];
 };
 
 export type SuperVisorTeams = BaseGetAllType & {
