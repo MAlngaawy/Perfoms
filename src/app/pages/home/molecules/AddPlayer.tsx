@@ -17,17 +17,6 @@ import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {};
 
-const schema = yup.object().shape({
-  name: yup.string().required("Your child name is Required!"),
-  dob: yup.string(),
-  team: yup.number().required("please select your child team"),
-  weight: yup.number(),
-  height: yup.number(),
-  phone: yup.string(),
-  icon: yup.mixed(),
-  sport: yup.number(),
-});
-
 const AddPlayer = (props: Props) => {
   const { refetch } = useMyPlayersQuery({});
   const [open, setOpen] = React.useState(false);
