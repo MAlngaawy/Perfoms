@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import DeleteButton from "~/@main/components/ManagerComponents/SubComponents/DeleteButton";
-import EditKpi from "./Components/EditKpi";
-import AddKpi from "./Components/AddKpi";
+import EditPillar from "./Components/EditPillar";
+import AddPillar from "./Components/AddPillar";
 
 import { Avatar, Breadcrumbs } from "@mantine/core";
 import { useSuperKpisQuery } from "~/app/store/supervisor/supervisorMainApi";
@@ -18,14 +18,14 @@ const items = [
     {item.title}
   </Link>
 ));
-const SportKpis = (props: Props) => {
-  const [kpis, setKpis] = useState<Kpis>();
-  const { data: superKpis } = useSuperKpisQuery({});
+const SportPillars = (props: Props) => {
+  // const [kpis, setKpis] = useState<Kpis>();
+  // const { data: superKpis } = useSuperKpisQuery({});
 
-  useEffect(() => {
-    if (superKpis) setKpis(superKpis);
-  }, [superKpis]);
-  return <div>Kpis Here</div>;
+  // useEffect(() => {
+  //   if (superKpis) setKpis(superKpis);
+  // }, [superKpis]);
+  return <div>Pillars Here</div>;
   // return (
   //   <div className="admin-teams   m-2 sm:mx-10 my-2">
   //     <div className="mx-4 my-6">
@@ -70,4 +70,4 @@ const SportKpis = (props: Props) => {
   // );
 };
 
-export default SportKpis;
+export default SportPillars;

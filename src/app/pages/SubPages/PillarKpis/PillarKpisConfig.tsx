@@ -1,8 +1,8 @@
 import { PagesRouteConfig } from "~/@main/types/Config-Types";
 import authRoles from "~/app/auth/authRoles";
-import SportKpis from "./SportKpis";
+import PillarKpis from "./PillarKpis";
 
-const SportKpisPageConfig: PagesRouteConfig = {
+const PillarKpisPageConfig: PagesRouteConfig = {
   settings: {
     layout: {
       config: {
@@ -21,14 +21,14 @@ const SportKpisPageConfig: PagesRouteConfig = {
   auth: [...authRoles.Supervisor, ...authRoles.Admin],
   routes: [
     {
-      path: "admin/sports/:id",
-      element: <SportKpis />,
+      path: "admin/sports/:sport_id/pillars/:id",
+      element: <PillarKpis />,
     },
     {
-      path: "supervisor/sports/:id",
-      element: <SportKpis />,
+      path: "supervisor/sports/:sport_id/pillars/:id",
+      element: <PillarKpis />,
     },
   ],
 };
 
-export default SportKpisPageConfig;
+export default PillarKpisPageConfig;

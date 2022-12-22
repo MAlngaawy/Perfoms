@@ -25,7 +25,7 @@ import AdminPageConfig from "../pages/Admin/AdminPageConfig";
 import ParentCardConfig from "../pages/players/parentCard/ParentConfig";
 import NotifyParentConfig from "../pages/players/notifyParent/NotifyParentConfig";
 import SingleTeamPageConfig from "../pages/SubPages/SingleTeam/SingleTeamConfig";
-import SportKpisPageConfig from "../pages/SubPages/SportKpis/SportKpisConfig";
+import PillarKpisPageConfig from "../pages/SubPages/PillarKpis/PillarKpisConfig";
 import KpiMetricsPageConfig from "../pages/SubPages/KpiMetrics/KpiMetricsConfig";
 import ChatConfig from "../pages/chat/ChatConfig";
 import RequestConfig from "../pages/requests/RequestConfig";
@@ -66,7 +66,7 @@ const routeConfigs: PagesRouteConfig[] = [
   ParentCardConfig,
   NotifyParentConfig,
   SingleTeamPageConfig,
-  SportKpisPageConfig,
+  PillarKpisPageConfig,
   KpiMetricsPageConfig,
   ChatConfig,
   RequestConfig,
