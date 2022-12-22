@@ -8,16 +8,25 @@ import Resizer from "react-image-file-resizer";
 import cn from "classnames";
 import SubmitButton from "../../SubmitButton";
 import PerfSelect from "../../Select";
+import { Sport } from "~/app/store/types/parent-types";
+import { showNotification } from "@mantine/notifications";
+import { axiosInstance } from "~/app/configs/dataService";
+import {
+  useAdminClubQuery,
+  useAdminSportsQuery,
+} from "~/app/store/clubManager/clubManagerApi";
 
 type Props = {
-  sportName: string;
-  sportId: number | undefined;
+  sportData: Partial<Sport>;
 };
 
-const EditSport = ({ sportName, sportId }: Props) => {
+const EditSport = ({ sportData }: Props) => {
   const [opened, setOpened] = useState(false);
   const [playerImage, setPlayerImage] = useState<string | unknown>("");
   const [playerImagePreview, setPlayerImagePreview] = useState("null");
+  const { data: adminClub } = useAdminClubQuery({});
+  const { refetch } = useAdminSportsQuery({});
+  const [loading, setLoading] = useState<boolean>(false);
 
   const schema = yup.object().shape({
     image: yup.mixed(),
@@ -42,41 +51,72 @@ const EditSport = ({ sportName, sportId }: Props) => {
   });
 
   // Submit Form Function
-  const onSubmitFunction = (data: any) => {
-    console.log({ ...data, icon: playerImage });
-    console.log("Team Prop Date To use in the request", {
-      sportId,
-      sportName,
-    });
-    setOpened(false);
-    resetFields();
-  };
+  const onSubmitFunction = (e: any) => {
+    e.preventDefault();
 
-  // Image Functions
-  // Resize the image size
-  const resizeFile = (file: any) =>
-    new Promise((resolve) => {
-      Resizer.imageFileResizer(
-        file,
-        100,
-        100,
-        "JPEG",
-        100,
-        0,
-        (uri: any) => {
-          resolve(uri);
-        },
-        "base64"
-      );
-    });
+    setLoading(true);
+
+    const formData = new FormData(e.currentTarget);
+
+    if (adminClub?.id) {
+      formData.append("club", JSON.stringify(adminClub?.id));
+    }
+
+    axiosInstance
+      .patch(`/club-manager/sports/${sportData.id}/update/`, formData)
+      .then(() => {
+        showNotification({
+          message: "Successfly Added Sport",
+          color: "green",
+          title: "Done",
+          styles: {
+            root: {
+              backgroundColor: "#27AE60",
+              borderColor: "#27AE60",
+              "&::before": { backgroundColor: "#fff" },
+            },
+
+            title: { color: "#fff" },
+            description: { color: "#fff" },
+            closeButton: {
+              color: "#fff",
+            },
+          },
+        });
+        setOpened(false);
+        setLoading(false);
+        refetch();
+      })
+      .catch((err) => {
+        console.log(err);
+
+        showNotification({
+          message: err.response.data.message,
+          color: "red",
+          title: "Wrong",
+          styles: {
+            root: {
+              backgroundColor: "#EB5757",
+              borderColor: "#EB5757",
+              "&::before": { backgroundColor: "#fff" },
+            },
+
+            title: { color: "#fff" },
+            description: { color: "#fff" },
+            closeButton: {
+              color: "#fff",
+            },
+          },
+        });
+        setLoading(false);
+      });
+  };
 
   // function to access file uploaded then convert to base64 then add it to the data state
   const uploadImage = async (e: any) => {
     try {
       const file = e.target.files[0];
-      const image = await resizeFile(file);
-      console.log(image);
-      setPlayerImage(image);
+      setPlayerImage(file);
     } catch (err) {
       console.log(err);
     }
@@ -88,15 +128,11 @@ const EditSport = ({ sportName, sportId }: Props) => {
         <Modal
           opened={opened}
           onClose={() => {
-            resetFields();
             setOpened(false);
           }}
-          title={`Edit (${sportName}) Sport `}
+          title={`Edit (${sportData.name}) Sport `}
         >
-          <form
-            className="flex flex-col gap-4"
-            onSubmit={handleSubmit(onSubmitFunction)}
-          >
+          <form className="flex flex-col gap-4" onSubmit={onSubmitFunction}>
             {/* Image Upload */}
             <div className=" relative my-2 bg-gray-300 overflow-hidden flex justify-center  items-center  mx-auto w-28  h-28 rounded-lg ">
               <Button
@@ -105,27 +141,17 @@ const EditSport = ({ sportName, sportId }: Props) => {
                 component="label"
               >
                 <img
-                  className={cn("", {
-                    hidden: playerImage,
-                  })}
-                  src="/assets/images/Vector.png"
-                  alt="upload icon"
-                />
-                <img
                   className={cn(
-                    " absolute rounded-lg w-full -h-full max-w-full max-h-full object-cover left-0 top-0",
-                    {
-                      hidden: !playerImage,
-                    }
+                    " absolute rounded-lg w-full -h-full max-w-full max-h-full object-cover left-0 top-0"
                   )}
-                  src={playerImagePreview && playerImagePreview}
+                  src={playerImage ? playerImagePreview : sportData.icon_url}
                   alt="upload icon"
                 />
                 <Input
                   hidden
                   accept="image/*"
                   {...register("image")}
-                  name="image"
+                  name="icon"
                   multiple
                   type="file"
                   // error={errors.image && (errors.image.message as ReactNode)}
@@ -151,6 +177,7 @@ const EditSport = ({ sportName, sportId }: Props) => {
             >
               <Input
                 placeholder="Name"
+                defaultValue={sportData.name}
                 sx={{
                   ".mantine-Input-input	": {
                     border: 0,
@@ -166,7 +193,7 @@ const EditSport = ({ sportName, sportId }: Props) => {
                 id="name"
               />
             </Input.Wrapper>
-            <SubmitButton isLoading={false} text="Edit Sport" />
+            <SubmitButton isLoading={loading} text="Edit Sport" />
           </form>
         </Modal>
 

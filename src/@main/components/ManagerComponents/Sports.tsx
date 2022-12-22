@@ -81,7 +81,7 @@ const Sports = (props: Props) => {
               <h2 className="text-xl text-perfBlue">{sport?.name}</h2>
               {/* Edit and Delete Buttons */}
               <div className="flex absolute right-2 top-5 gap-2">
-                <EditSport sportName={sport.name} sportId={sport.id} />
+                <EditSport sportData={sport} />
                 <DeleteButton
                   name={sport.name}
                   deleteFun={() => deleteSport(JSON.stringify(sport.id))}
