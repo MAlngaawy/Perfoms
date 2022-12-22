@@ -14,6 +14,7 @@ import {
   AddTeamCalendar,
   Coaches,
   CoachRequests,
+  Kpis,
   SuperVisorPlayers,
   SuperVisorTeamInfo,
   Team,
@@ -248,6 +249,10 @@ export const clubManagerApi = createApi({
       }),
       invalidatesTags: ["clubManager"],
     }),
+
+    // adminkpis: query<Kpis, { page?: number }>({
+    //   query: (params) => ({ url: "kpis/", params }),
+    // }),
   }),
 });
 

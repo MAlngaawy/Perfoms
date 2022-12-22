@@ -18,8 +18,12 @@ const SportKpisPageConfig: PagesRouteConfig = {
       },
     },
   },
-  auth: authRoles.Supervisor,
+  auth: [...authRoles.Supervisor, ...authRoles.Admin],
   routes: [
+    {
+      path: "admin/sports/:id",
+      element: <SportKpis />,
+    },
     {
       path: "supervisor/sports/:id",
       element: <SportKpis />,
