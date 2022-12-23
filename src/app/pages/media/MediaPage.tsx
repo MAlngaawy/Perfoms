@@ -13,6 +13,7 @@ import NoEventsComp from "~/@main/components/NoEventsComp";
 import { Link } from "react-router-dom";
 import { Breadcrumbs } from "@mantine/core";
 import Placeholders from "~/@main/components/Placeholders";
+import { useAdminTeamEventsQuery } from "~/app/store/clubManager/clubManagerApi";
 
 const MediaPage = () => {
   const [events, setEvents] = useState<TeamEvents | undefined>();
@@ -35,39 +36,30 @@ const MediaPage = () => {
     { skip: !selectedPlayerTeam && user?.user_type !== "Supervisor" }
   );
 
+  const { data: adminEvents } = useAdminTeamEventsQuery(
+    { team_id: selectedPlayerTeam?.id },
+    { skip: !selectedPlayerTeam && user?.user_type !== "Supervisor" }
+  );
+
   useEffect(() => {
+    console.log("selectedPlayerTeam", selectedPlayerTeam);
+
     if (superEvents) setEvents(superEvents);
     if (coachEvents) setEvents(coachEvents);
     if (parentEvents) setEvents(parentEvents);
-  }, [setEvents, superEvents, coachEvents, parentEvents, selectedPlayerTeam]);
-  const dispatch = useDispatch();
-
-  const items = [
-    { title: "Teams", href: "/media-teams" },
-    { title: "Events", href: "" },
-  ].map((item, index) => (
-    <Link to={item.href} key={index}>
-      {item.title}
-    </Link>
-  ));
-
-  if (!events?.results.length) {
-    return (
-      <Placeholders
-        img="/assets/images/novideo.png"
-        preText={"No"}
-        pageName={"events"}
-        postText={"here yet, come again later."}
-      />
-    );
-  }
-
+    if (adminEvents) setEvents(adminEvents);
+  }, [
+    setEvents,
+    superEvents,
+    coachEvents,
+    parentEvents,
+    selectedPlayerTeam,
+    adminEvents,
+  ]);
   return (
     <div className="container w-11/12 mx-auto">
-      <div className="my-4">
-        <Breadcrumbs className="text-perfGray3" separator="→">
-          {items}
-        </Breadcrumbs>
+      <div className="my-4 flex justify-end items-center">
+        <TeamFilter />
       </div>
       <>
         {events && events.results.length > 0 ? (
@@ -81,7 +73,12 @@ const MediaPage = () => {
             <MediaPageLoading />
           )
         ) : (
-          <NoEventsComp />
+          <Placeholders
+            img="/assets/images/novideo.png"
+            preText={"No"}
+            pageName={"events"}
+            postText={"here yet, come again later OR choose another team."}
+          />
         )}
       </>
     </div>

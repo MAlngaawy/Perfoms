@@ -71,7 +71,7 @@ const navigationConfig: NavigationConfigTypes[] = [
     translate: "MEDIA",
     type: "item",
     icon: "BookmarkIcon:outline",
-    url: "media-teams",
+    url: "media",
     auth: authRoles.All,
   },
   {

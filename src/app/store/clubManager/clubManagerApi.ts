@@ -124,7 +124,10 @@ export const clubManagerApi = createApi({
       invalidatesTags: ["coaches"],
     }),
 
-    adminTeamEvents: query<TeamEvents, { team_id: string; page?: number }>({
+    adminTeamEvents: query<
+      TeamEvents,
+      { team_id: string | number; page?: number }
+    >({
       query: ({ team_id, ...params }) => ({
         url: `teams/${team_id}/events/`,
         params,

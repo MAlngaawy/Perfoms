@@ -13,6 +13,7 @@ import { Avatar, Breadcrumbs } from "@mantine/core";
 import { Teams } from "~/app/store/types/clubManager-types";
 import MediaPageLoading from "../molecules/MediaPageLoading";
 import { Link, useNavigate } from "react-router-dom";
+import { useAdminTeamsQuery } from "~/app/store/clubManager/clubManagerApi";
 
 type Props = {};
 
@@ -39,10 +40,16 @@ const SelectMediaTeamPage = (props: Props) => {
     { skip: user?.user_type !== "Supervisor" }
   );
 
+  const { data: adminTeams } = useAdminTeamsQuery(
+    {},
+    { skip: user?.user_type !== "Admin" }
+  );
+
   useEffect(() => {
     if (superTeams) setTeams(superTeams);
     if (coachTeams) setTeams(coachTeams);
     if (playerTeams) setTeams(playerTeams);
+    if (adminTeams) setTeams(adminTeams);
 
     if (playerTeams)
       dispatch(
@@ -55,7 +62,7 @@ const SelectMediaTeamPage = (props: Props) => {
               }
         )
       );
-  }, [playerTeams, superTeams, coachTeams]);
+  }, [playerTeams, superTeams, coachTeams, adminTeams]);
 
   const items = [{ title: "Teams", href: "" }].map((item, index) => (
     <Link to={item.href} key={index}>
