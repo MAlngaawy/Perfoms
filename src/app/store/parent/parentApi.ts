@@ -116,9 +116,13 @@ export const parentsApi = createApi({
       providesTags: ["Parent"],
     }),
 
-    playerCalender: query<PlayerAttendances, { id: number; page?: number }>({
-      query: ({ id }) => ({
+    playerCalender: query<
+      PlayerAttendances,
+      { id: number; page?: number; date_from?: string; date_to?: string }
+    >({
+      query: ({ date_from, date_to, id }) => ({
         url: `${id}/calendar/`,
+        params: { date_from, date_to },
       }),
       providesTags: ["Parent"],
     }),
