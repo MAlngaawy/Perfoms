@@ -106,7 +106,7 @@ const SaleStaticChart = () => {
           <Image
             width={30}
             height={30}
-            src="assets/images/gym.png"
+            src="/assets/images/gym.png"
             alt="icon"
           />
         </PerformanceCard>
@@ -120,7 +120,7 @@ const SaleStaticChart = () => {
           <Image
             width={30}
             height={30}
-            src="assets/images/weakness.png"
+            src="/assets/images/weakness.png"
             alt="icon"
           />
         </PerformanceCard>
@@ -134,7 +134,7 @@ const SaleStaticChart = () => {
           <Image
             width={30}
             height={30}
-            src="assets/images/tasks.png"
+            src="/assets/images/tasks.png"
             alt="icon"
           />
         </PerformanceCard>
@@ -148,7 +148,7 @@ const SaleStaticChart = () => {
           <Image
             width={30}
             height={30}
-            src="assets/images/discussion.png"
+            src="/assets/images/discussion.png"
             alt="icon"
           />
         </PerformanceCard>
