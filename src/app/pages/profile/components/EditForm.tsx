@@ -16,7 +16,7 @@ type Props = {
 
 const EditForm = ({ user, setOpened, refetch }: Props) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [userAvatar, setUserAvatar] = useState<File>();
+  const [userAvatar, setUserAvatar] = useState<File | null>(null);
   const [isError, setIsErrror] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -26,10 +26,14 @@ const EditForm = ({ user, setOpened, refetch }: Props) => {
   });
 
   const onSubmitFn = async (e: any) => {
+    console.log("Submit Clicked");
+
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const image = await AppUtils.resizeImage(userAvatar);
-    if (userAvatar) formData.append("avatar", image as string);
+    if (userAvatar) {
+      const image = await AppUtils.resizeImage(userAvatar);
+      formData.append("avatar", image as string);
+    }
     setIsLoading(true);
     try {
       axiosInstance

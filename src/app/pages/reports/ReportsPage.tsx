@@ -135,7 +135,7 @@ const ReportPage = () => {
               <div className="attendances">
                 <Grid gutter={"sm"}>
                   <Grid.Col span={12} md={2.5}>
-                    <div className="flex flex-col xs:flex-row md:flex-col gap-2 h-full">
+                    <div className="flex flex-col sm:flex-row md:flex-col gap-2 h-full">
                       <HomePlayerInfoCard />
                       <div className="note bg-white rounded-3xl w-full p-4 h-full">
                         <h2 className="text-lg font-normal text-perfGray1 pb-4">

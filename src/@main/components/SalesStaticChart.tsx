@@ -32,6 +32,23 @@ const SaleStaticChart = () => {
   const [playerKpis, setPlayerKpis] = useState<PlayerKpis>();
   const { id } = useParams();
 
+  const { data: parentPlayerKpis } = usePlayerKpisMetricsQuery(
+    {
+      team_id: selectedPlayerTeam?.id,
+      player_id: selectedPlayer?.id,
+      date_from: timeFilter?.from_date,
+      date_to: timeFilter?.to_date,
+    },
+
+    {
+      skip:
+        !selectedPlayerTeam?.id ||
+        !selectedPlayer?.id ||
+        !timeFilter?.from_date ||
+        !timeFilter?.to_date,
+    }
+  );
+
   const { data: coachPlayerKpis } = useCoachPlayerKpisMetricsStatisticsQuery(
     {
       player_id: id,
@@ -48,23 +65,6 @@ const SaleStaticChart = () => {
       date_to: timeFilter?.to_date,
     },
     { skip: !id || !timeFilter?.from_date || !timeFilter?.to_date }
-  );
-
-  const { data: parentPlayerKpis } = usePlayerKpisMetricsQuery(
-    {
-      team_id: selectedPlayerTeam?.id,
-      player_id: selectedPlayer?.id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
-    },
-
-    {
-      skip:
-        !selectedPlayerTeam?.id ||
-        !selectedPlayer?.id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date,
-    }
   );
 
   useEffect(() => {
@@ -106,7 +106,7 @@ const SaleStaticChart = () => {
           <Image
             width={30}
             height={30}
-            src="assets/images/gym.png"
+            src="/assets/images/gym.png"
             alt="icon"
           />
         </PerformanceCard>
@@ -120,7 +120,7 @@ const SaleStaticChart = () => {
           <Image
             width={30}
             height={30}
-            src="assets/images/weakness.png"
+            src="/assets/images/weakness.png"
             alt="icon"
           />
         </PerformanceCard>
@@ -134,7 +134,7 @@ const SaleStaticChart = () => {
           <Image
             width={30}
             height={30}
-            src="assets/images/tasks.png"
+            src="/assets/images/tasks.png"
             alt="icon"
           />
         </PerformanceCard>
@@ -148,7 +148,7 @@ const SaleStaticChart = () => {
           <Image
             width={30}
             height={30}
-            src="assets/images/discussion.png"
+            src="/assets/images/discussion.png"
             alt="icon"
           />
         </PerformanceCard>

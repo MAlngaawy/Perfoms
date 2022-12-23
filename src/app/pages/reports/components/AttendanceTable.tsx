@@ -3,7 +3,7 @@ import { Table } from "@mantine/core";
 import AppIcons from "~/@main/core/AppIcons";
 import { Player, PlayerAttendances } from "~/app/store/types/parent-types";
 import { useSelector } from "react-redux";
-import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
+import { selectedPlayerFn, timeFilterFn } from "~/app/store/parent/parentSlice";
 import { usePlayerCalenderQuery } from "~/app/store/parent/parentApi";
 import { useCoachPlayerCalendarQuery } from "~/app/store/coach/coachApi";
 import { useSuperPlayerCalendarQuery } from "~/app/store/supervisor/supervisorMainApi";
@@ -28,12 +28,20 @@ const myDate = (theDate: string) => {
 
 const AttendanceTable = ({ player_id }: Props) => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
+  const timeFilter = useSelector(timeFilterFn);
 
   const [playerAttendance, setPlayerAttendance] = useState<PlayerAttendances>();
 
   const { data: parentPlayerAttendance } = usePlayerCalenderQuery(
-    { id: selectedPlayer?.id },
-    { skip: !selectedPlayer?.id }
+    {
+      id: selectedPlayer?.id,
+      date_from: timeFilter?.from_date,
+      date_to: timeFilter?.to_date,
+    },
+    {
+      skip:
+        !selectedPlayer?.id || !timeFilter?.from_date || !timeFilter?.to_date,
+    }
   );
 
   const { data: coachPlayerAttendance } = useCoachPlayerCalendarQuery(
@@ -75,7 +83,7 @@ const AttendanceTable = ({ player_id }: Props) => {
   return (
     <>
       {playerAttendance && (
-        <Table>
+        <Table className="pdf-print">
           <thead>
             <tr>
               <th className="flex items-center gap-1 text-sm font-medium border-0 border-r">

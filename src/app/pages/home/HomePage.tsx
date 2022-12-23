@@ -6,23 +6,18 @@ import { useSelector } from "react-redux";
 import {
   selectedPlayerFn,
   selectedPlayerTeamFn,
-  timeFilterFn,
 } from "~/app/store/parent/parentSlice";
 import { Link } from "react-router-dom";
 import { Player } from "~/app/store/types/parent-types";
 import TimeFilter from "~/@main/components/TimeFilter";
 import TeamFilter from "~/@main/components/TeamFilter";
-import {
-  useMyPlayersQuery,
-  usePlayerCalenderQuery,
-} from "~/app/store/parent/parentApi";
+import { useMyPlayersQuery } from "~/app/store/parent/parentApi";
 import UpcomingEventsCard from "~/@main/components/UpcomingEventsCard";
 import HomeLoading from "./organisms/HomeLoading";
 import HomePlayerInfoCard from "../../../@main/components/HomePlayerInfoCard";
 import HomeTeamInfoCard from "../../../@main/components/HomeTeamInfoCard";
 import PerformanceSummaryCard from "~/@main/components/PerformanceSummaryCard";
 import NoPlayersComp from "~/@main/components/NoPlayersComp";
-import { useUserQuery } from "~/app/store/user/userApi";
 
 export type Players = {
   name: string;

@@ -36,7 +36,7 @@ const lastWeek = () => {
 const last2Weeks = () => {
   var curr = new Date(); // get current date
   var first = curr.getDate() - curr.getDay() - 14; // First day is the day of the month - the day of the week
-  var last = first + 43; // last day is the first day + 6
+  var last = first + 13; // last day is the first day + 6
 
   var firstday = new Date(curr.setDate(first));
   var lastday = new Date(curr.setDate(last));
