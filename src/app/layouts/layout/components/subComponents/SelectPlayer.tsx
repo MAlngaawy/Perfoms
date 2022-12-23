@@ -16,7 +16,7 @@ const SelectPlayer = ({ selected, image, name, selectFun }: Props) => {
       className={classNames(
         "flex gap-1 p-1 cursor-pointer bg-slate-100 rounded-full justify-center items-center",
         {
-          "": selected,
+          "opacity-70": !selected,
         }
       )}
     >
