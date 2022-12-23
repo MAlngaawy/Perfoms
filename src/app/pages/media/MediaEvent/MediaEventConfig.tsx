@@ -21,7 +21,7 @@ const MediaEventConfig: PagesRouteConfig = {
   auth: authRoles.All,
   routes: [
     {
-      path: "/media-teams/media/:id",
+      path: "/media/:id",
       element: <MediaEvent />,
     },
   ],

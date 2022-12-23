@@ -38,15 +38,13 @@ const MediaEvent = () => {
   });
 
   const items = [
-    { title: "Teams", href: "/media-teams" },
-    { title: "Events", href: "/media-teams/media" },
+    { title: "Events", href: "/media" },
     { title: "Event Media", href: "" },
   ].map((item, index) => (
     <Link to={item.href} key={index}>
       {item.title}
     </Link>
   ));
-  console.log(files);
 
   return (
     <div className="container relative w-11/12 mx-auto">
