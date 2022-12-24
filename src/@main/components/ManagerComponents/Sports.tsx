@@ -73,7 +73,7 @@ const Sports = (props: Props) => {
           return (
             <div className="sport-card relative bg-white rounded-3xl p-12 flex flex-col justify-center items-center gap-4">
               <Link
-                to={`sports/${sport.id}`}
+                to={`sports/${sport.id}/pillars`}
                 className="bg-pagesBg rounded-full w-24 h-24 flex justify-center items-center"
               >
                 <Avatar size={"lg"} src={sport?.icon_url} alt="icon" />
@@ -94,7 +94,7 @@ const Sports = (props: Props) => {
       {sport && (
         <div className="sport-card relative bg-white rounded-3xl p-12 flex flex-col justify-center items-center gap-4">
           <Link
-            to={`sports/${sport.id}`}
+            to={`sports/${sport.id}/pillars`}
             className="bg-pagesBg rounded-full w-24 h-24 flex justify-center items-center"
           >
             <Avatar size={"xl"} src={sport?.icon_url} alt="icon" />

@@ -15,6 +15,7 @@ import {
   Coaches,
   CoachRequests,
   Kpis,
+  Pillars,
   SuperVisorPlayers,
   SuperVisorTeamInfo,
   Team,
@@ -38,6 +39,7 @@ export const clubManagerApi = createApi({
     "playerUser",
     "coachUser",
     "supervisorUser",
+    "pillars",
   ],
   endpoints: ({ query, mutation }) => ({
     manageCoachesRequests: query<CoachRequests, { page?: number }>({
@@ -253,6 +255,16 @@ export const clubManagerApi = createApi({
       invalidatesTags: ["clubManager"],
     }),
 
+    adminPillars: query<
+      Pillars,
+      { sport_id: number | string | undefined; page?: number }
+    >({
+      query: ({ sport_id, ...params }) => ({
+        url: `sports/${sport_id}/pillars/`,
+        params,
+      }),
+    }),
+
     // adminkpis: query<Kpis, { page?: number }>({
     //   query: (params) => ({ url: "kpis/", params }),
     // }),
@@ -286,4 +298,5 @@ export const {
   useAdminDeleteCoachMutation,
   useAdminDeleteSupervisorMutation,
   useAdminDeleteSportMutation,
+  useAdminPillarsQuery,
 } = clubManagerApi;

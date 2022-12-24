@@ -52,7 +52,6 @@ const EditButton = ({ teamData }: Props) => {
   };
 
   const {
-    handleSubmit,
     register,
     formState: { errors },
     reset,

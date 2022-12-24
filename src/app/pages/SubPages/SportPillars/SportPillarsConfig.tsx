@@ -21,11 +21,11 @@ const SportPillarsPageConfig: PagesRouteConfig = {
   auth: [...authRoles.Supervisor, ...authRoles.Admin],
   routes: [
     {
-      path: "admin/sports/:sport_id",
+      path: "admin/sports/:sport_id/pillars",
       element: <SportPillars />,
     },
     {
-      path: "supervisor/sports/:sport_id",
+      path: "supervisor/sports/:sport_id/pillars",
       element: <SportPillars />,
     },
   ],

@@ -18,6 +18,17 @@ export type kpi = {
   icon_url: string;
 };
 
+export type Pillar = {
+  id: number;
+  name: string;
+  icon: string;
+  sport: number;
+};
+
+export type Pillars = BaseGetAllType & {
+  results: Pillar[];
+};
+
 export type AddAttendancesCalendar = {
   days: string;
   team: number;

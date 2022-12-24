@@ -26,6 +26,7 @@ import {
   kpi,
   Kpis,
   Metrics,
+  Pillars,
   SuperVisorPlayers,
   SuperVisorTeamInfo,
   Team,
@@ -110,6 +111,15 @@ export const supervisorApi = createApi({
     }),
     superKpis: query<Kpis, { page?: number }>({
       query: (params) => ({ url: "kpis/", params }),
+    }),
+    superPillars: query<
+      Pillars,
+      { sport_id: number | string | undefined; page?: number }
+    >({
+      query: ({ sport_id, ...params }) => ({
+        url: `sports/${sport_id}/pillars/`,
+        params,
+      }),
     }),
     superMetrics: query<Metrics, { kpi_id: string | undefined; page?: number }>(
       {
@@ -474,6 +484,7 @@ export const {
   useSuperTeamInfoQuery,
   useSuperSportQuery,
   useSuperKpisQuery,
+  useSuperPillarsQuery,
   useAddKpiMutation,
   useSuperMetricsQuery,
   useAddActionMutation,
