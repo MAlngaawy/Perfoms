@@ -2,7 +2,7 @@ import { forwardRef, useEffect } from "react";
 import { PlayerCertificate } from "~/app/store/types/parent-types";
 
 type Props = {
-  certificate: PlayerCertificate | undefined;
+  certificate: Partial<PlayerCertificate>;
 };
 
 const CongratsCertificate = forwardRef(({ certificate }: Props, ref) => {
@@ -10,7 +10,6 @@ const CongratsCertificate = forwardRef(({ certificate }: Props, ref) => {
 
   useEffect(() => {
     myFont.load().then((font) => {
-      console.log(font);
       document.fonts.add(font);
 
       //@ts-ignore
@@ -24,14 +23,14 @@ const CongratsCertificate = forwardRef(({ certificate }: Props, ref) => {
         ctx.font = "50px old-english";
         ctx.textAlign = "center";
         ctx.fillStyle = "#000000";
-        ctx.fillText(certificate && certificate.player.name, 470, 365);
+        ctx.fillText(certificate && certificate?.player?.name, 630, 370);
         ctx.font =
           "normal 20px -apple-system, BlinkMacSystemFont, “regular”, sans-serif";
         ctx.textAlign = "center";
         ctx.fillStyle = "#4F4F4F";
         ctx.fillText(
           new Date(
-            certificate ? certificate.created_at : ""
+            (certificate && certificate && certificate?.created_at) || ""
           ).toLocaleDateString(),
           475,
           632

@@ -331,11 +331,11 @@ export type PlayerCertificate = {
   created_at: Date;
   id: number;
   player: {
-    id: number;
+    id?: number;
     name: string;
-    icon: string;
-    icon_url: string;
-    parent: number;
+    icon?: string;
+    icon_url?: string;
+    parent?: number;
   };
   coach: {
     id: number;
@@ -350,8 +350,14 @@ export type PlayerCertificate = {
     icon_url: string;
   };
   team: number;
-  type: "Performance" | "Congratulations" | "Encouragement" | "Other";
+  type: CertificateTypes | string;
 };
+
+export type CertificateTypes =
+  | "Performance"
+  | "Congratulations"
+  | "Encouragement"
+  | "Other";
 
 export type PlayerCertificates = BaseGetAllType & {
   results: PlayerCertificate[];
