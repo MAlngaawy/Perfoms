@@ -379,7 +379,7 @@ class AppUtils {
     }
   };
 
-  static resizeImage = (file: any) =>
+  static resizeImage = async (file: any) =>
     new Promise((resolve) => {
       Resizer.imageFileResizer(
         file,

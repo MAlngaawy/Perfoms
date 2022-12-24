@@ -44,10 +44,9 @@ const DeletePlayerFromTeam = ({ id, name, type, deleteFun }: Props) => {
       <Group position="center">
         <div
           onClick={() => setOpened(true)}
-          className="hidden group-hover:flex justify-center items-center text-white gap-2 cursor-pointer hover:bg-perfGray1/90 p-2 w-full"
+          className="hidden group-hover:flex text-white absolute top-0 right-0 rounded-lg cursor-pointer hover:bg-perfGray1/90 p-2"
         >
           <AppIcons className="w-5 h-5 text-white" icon="TrashIcon:outline" />
-          <span className="text-white">Delete </span>
         </div>
       </Group>
     </div>

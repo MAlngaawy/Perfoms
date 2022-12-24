@@ -1,7 +1,5 @@
-import React, { forwardRef, useEffect } from "react";
-import PerfSelect from "~/@main/components/Select";
+import React, { forwardRef, useEffect, useState, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { number } from "yup/lib/locale";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import SubmitButton from "~/@main/components/SubmitButton";
@@ -13,21 +11,28 @@ import {
 } from "~/app/store/coach/coachApi";
 import { Avatar, Group, Select, Text } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
+import EncourageCertificate from "../player-certificate/components/EncourageCertificateImage";
+import CongratsCertificate from "../player-certificate/components/CongratsCertificateImage";
+import CertificateImage from "../player-certificate/components/CertificateImage";
+import __ from "lodash";
+import {
+  CertificateTypes,
+  PlayerCertificate,
+} from "~/app/store/types/parent-types";
 
 type Props = {};
 
 const schema = yup.object().shape({
-  // by: yup.string().required(),
   player: yup.string().required(),
   type: yup.string().required(),
-  // team: yup.string(),
-  // type: yup.string().required(),
 });
 
 const Certificate = (props: Props) => {
   const { data: allTeamsPlayers } = useCoachGetAllMyPlayersQuery({});
-
-  console.log(allTeamsPlayers);
+  const [certificate, setCertificate] = useState<Partial<PlayerCertificate>>(
+    {}
+  );
+  const canvasRef = useRef(null);
 
   let inputData: any = allTeamsPlayers?.results.map((player) => {
     return {
@@ -37,16 +42,6 @@ const Certificate = (props: Props) => {
       id: player.id,
     };
   });
-
-  // useEffect(() => {
-  //   inputData = allTeamsPlayers?.results.map((player) => {
-  //     return {
-  //       image: player.icon,
-  //       label: player.name,
-  //       value: player.id,
-  //     };
-  //   });
-  // }, [allTeamsPlayers]);
 
   const {
     register,
@@ -59,17 +54,14 @@ const Certificate = (props: Props) => {
     resolver: yupResolver(schema),
   });
 
+  const watchedPlayer = watch("player");
+  const watchedType = watch("type");
+
   const { data: myClub } = useMyClubQuery({});
   const [sendCertification, { isLoading }] =
     useCoachGenerateCertificateMutation();
 
   const sendCertificate = (data: any) => {
-    console.log({
-      player: +data.player,
-      club: myClub ? myClub?.id : 0,
-      team: 1,
-    });
-
     sendCertification({
       player: +data.player,
       type: data.type,
@@ -91,8 +83,32 @@ const Certificate = (props: Props) => {
           color: "red",
         });
       });
-    // console.log({ ...data, club: myClub && myClub.id });
+
+    setCertificate({
+      created_at: new Date(),
+      player: {
+        name: "",
+      },
+      type: "",
+    });
   };
+
+  useEffect(() => {
+    // Get Player Name
+    const playerName: string =
+      __.find(allTeamsPlayers?.results, {
+        id: watchedPlayer,
+      })?.name || "No Player";
+
+    // set The stat
+    setCertificate({
+      created_at: new Date(),
+      player: {
+        name: playerName,
+      },
+      type: watchedType as CertificateTypes,
+    });
+  }, [watchedPlayer, watchedType]);
 
   // const by = watch("by");
 
@@ -104,28 +120,11 @@ const Certificate = (props: Props) => {
           { title: "Certificate", href: "" },
         ]}
       />
-      <div className="flex justify-center items-center">
+      <div className="flex flex-col justify-center items-center">
         <form
           onSubmit={handleSubmit(sendCertificate)}
           className=" py-28 w-72 flex flex-col justify-center items-center gap-4"
         >
-          {/* <PerfSelect
-            {...register("by")}
-            id="by"
-            required
-            error={errors.by && "please select this certificate by what"}
-            className="w-full"
-            label="By"
-            name="by"
-            control={control}
-            data={[
-              { label: "By Player", value: "By Player" },
-              { label: "By Team", value: "By Team" },
-            ]}
-          /> */}
-
-          {/* {by === "6 Player" && ( */}
-
           <Controller
             control={control}
             {...register("player")}
@@ -172,42 +171,19 @@ const Certificate = (props: Props) => {
             )}
           />
 
-          {/* )} */}
-          {/* 
-          {by === "By Team" && (
-            <PerfSelect
-              {...register("team")}
-              id="team"
-              required
-              error={errors.by && "please select the team"}
-              className="w-full"
-              label="Team"
-              name="team"
-              control={control}
-              data={[
-                { label: "Team One", value: "Team One" },
-                { label: "Team Two", value: "Team Two" },
-              ]}
-            />
-          )}
-
-          <PerfSelect
-            {...register("type")}
-            id="type"
-            required
-            error={errors.by && "please select the type of certificate"}
-            className="w-full"
-            label="Type Of Certificate"
-            name="type"
-            control={control}
-            data={[
-              { label: "Performances", value: "Performances" },
-              { label: "Attendances", value: "Attendances" },
-            ]}
-          /> */}
-
           <SubmitButton isLoading={isLoading} text="Send Certificate" />
         </form>
+        {watchedPlayer && watchedType ? (
+          <div className="flex flex-col bg-black justify-center items-center overflow-auto max-w-full">
+            {watchedType === "Encouragement" ? (
+              <EncourageCertificate certificate={certificate} ref={canvasRef} />
+            ) : watchedType === "Congratulations" ? (
+              <CongratsCertificate certificate={certificate} ref={canvasRef} />
+            ) : (
+              <CertificateImage certificate={certificate} ref={canvasRef} />
+            )}
+          </div>
+        ) : null}
       </div>
     </div>
   );
