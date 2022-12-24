@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect } from "react";
+import React, { forwardRef, useEffect, useState, useRef } from "react";
 import PerfSelect from "~/@main/components/Select";
 import { Controller, useForm } from "react-hook-form";
 import { number } from "yup/lib/locale";
@@ -13,6 +13,9 @@ import {
 } from "~/app/store/coach/coachApi";
 import { Avatar, Group, Select, Text } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
+import EncourageCertificate from "../player-certificate/components/EncourageCertificateImage";
+import CongratsCertificate from "../player-certificate/components/CongratsCertificateImage";
+import CertificateImage from "../player-certificate/components/CertificateImage";
 
 type Props = {};
 
@@ -26,8 +29,14 @@ const schema = yup.object().shape({
 
 const Certificate = (props: Props) => {
   const { data: allTeamsPlayers } = useCoachGetAllMyPlayersQuery({});
-
-  console.log(allTeamsPlayers);
+  const [certificate, setCertificate] = useState({
+    created_at: new Date(),
+    player: {
+      name: "",
+    },
+    type: "",
+  });
+  const canvasRef = useRef(null);
 
   let inputData: any = allTeamsPlayers?.results.map((player) => {
     return {
@@ -64,11 +73,11 @@ const Certificate = (props: Props) => {
     useCoachGenerateCertificateMutation();
 
   const sendCertificate = (data: any) => {
-    console.log({
-      player: +data.player,
-      club: myClub ? myClub?.id : 0,
-      team: 1,
-    });
+    // console.log({
+    //   player: +data.player,
+    //   club: myClub ? myClub?.id : 0,
+    //   team: 1,
+    // });
 
     sendCertification({
       player: +data.player,
@@ -91,8 +100,35 @@ const Certificate = (props: Props) => {
           color: "red",
         });
       });
-    // console.log({ ...data, club: myClub && myClub.id });
+
+    setCertificate({
+      created_at: new Date(),
+      player: {
+        name: "",
+      },
+      type: "",
+    });
   };
+
+  useEffect(() => {
+    if (watch().type !== "" && watch().player !== "") {
+      let playerName = "";
+      if (!allTeamsPlayers) return;
+      for (let i = 0; i < allTeamsPlayers.results?.length; i++) {
+        if (allTeamsPlayers.results[i].id === watch().player) {
+          playerName = allTeamsPlayers.results[i].name;
+          break;
+        }
+      }
+      setCertificate({
+        created_at: new Date(),
+        player: {
+          name: playerName,
+        },
+        type: watch().type,
+      });
+    }
+  }, [watch()]);
 
   // const by = watch("by");
 
@@ -104,7 +140,7 @@ const Certificate = (props: Props) => {
           { title: "Certificate", href: "" },
         ]}
       />
-      <div className="flex justify-center items-center">
+      <div className="flex flex-col justify-center items-center">
         <form
           onSubmit={handleSubmit(sendCertificate)}
           className=" py-28 w-72 flex flex-col justify-center items-center gap-4"
@@ -208,6 +244,17 @@ const Certificate = (props: Props) => {
 
           <SubmitButton isLoading={isLoading} text="Send Certificate" />
         </form>
+        {watch().player && watch().type ? (
+          <div className="flex flex-col bg-black justify-center items-center overflow-auto max-w-full">
+            {watch().type === "Encouragement" ? (
+              <EncourageCertificate certificate={certificate} ref={canvasRef} />
+            ) : watch().type === "Congratulations" ? (
+              <CongratsCertificate certificate={certificate} ref={canvasRef} />
+            ) : (
+              <CertificateImage certificate={certificate} ref={canvasRef} />
+            )}
+          </div>
+        ) : null}
       </div>
     </div>
   );
