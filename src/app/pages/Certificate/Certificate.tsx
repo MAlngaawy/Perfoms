@@ -16,6 +16,7 @@ import { showNotification } from "@mantine/notifications";
 import EncourageCertificate from "../player-certificate/components/EncourageCertificateImage";
 import CongratsCertificate from "../player-certificate/components/CongratsCertificateImage";
 import CertificateImage from "../player-certificate/components/CertificateImage";
+import { PlayerCertificate } from "~/app/store/types/parent-types";
 
 type Props = {};
 
@@ -29,13 +30,7 @@ const schema = yup.object().shape({
 
 const Certificate = (props: Props) => {
   const { data: allTeamsPlayers } = useCoachGetAllMyPlayersQuery({});
-  const [certificate, setCertificate] = useState({
-    created_at: new Date(),
-    player: {
-      name: "",
-    },
-    type: "",
-  });
+  const [certificate, setCertificate] = useState<PlayerCertificate>();
   const canvasRef = useRef(null);
 
   let inputData: any = allTeamsPlayers?.results.map((player) => {
@@ -100,14 +95,6 @@ const Certificate = (props: Props) => {
           color: "red",
         });
       });
-
-    setCertificate({
-      created_at: new Date(),
-      player: {
-        name: "",
-      },
-      type: "",
-    });
   };
 
   useEffect(() => {
@@ -120,13 +107,6 @@ const Certificate = (props: Props) => {
           break;
         }
       }
-      setCertificate({
-        created_at: new Date(),
-        player: {
-          name: playerName,
-        },
-        type: watch().type,
-      });
     }
   }, [watch()]);
 

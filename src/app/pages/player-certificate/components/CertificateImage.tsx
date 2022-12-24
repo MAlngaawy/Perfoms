@@ -1,8 +1,9 @@
+import { now } from "moment";
 import { forwardRef, useEffect } from "react";
 import { PlayerCertificate } from "~/app/store/types/parent-types";
 
 type Props = {
-  certificate: PlayerCertificate;
+  certificate: PlayerCertificate | undefined;
 };
 
 const CertificateImage = forwardRef(({ certificate }: Props, ref) => {
@@ -24,13 +25,15 @@ const CertificateImage = forwardRef(({ certificate }: Props, ref) => {
         ctx.font = "50px old-english";
         ctx.textAlign = "center";
         ctx.fillStyle = "#000000";
-        ctx.fillText(certificate.player.name, 550, 400);
+        ctx.fillText(certificate && certificate.player.name, 550, 400);
         ctx.font =
           "normal 20px -apple-system, BlinkMacSystemFont, “regular”, sans-serif";
         ctx.textAlign = "center";
         ctx.fillStyle = "#4F4F4F";
         ctx.fillText(
-          new Date(certificate.created_at).toLocaleDateString(),
+          new Date(
+            certificate ? certificate.created_at : now()
+          ).toLocaleDateString(),
           585,
           632
         );
