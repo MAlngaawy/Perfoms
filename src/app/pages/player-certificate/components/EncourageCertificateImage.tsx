@@ -1,4 +1,3 @@
-import { now } from "moment";
 import { forwardRef, useEffect } from "react";
 import { PlayerCertificate } from "~/app/store/types/parent-types";
 
@@ -32,7 +31,7 @@ const EncourageCertificate = forwardRef(({ certificate }: Props, ref) => {
         ctx.fillStyle = "#4F4F4F";
         ctx.fillText(
           new Date(
-            certificate ? certificate.created_at : now()
+            certificate ? certificate.created_at : ""
           ).toLocaleDateString(),
           540,
           748
