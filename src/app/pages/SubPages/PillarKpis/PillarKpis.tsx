@@ -12,7 +12,7 @@ type Props = {};
 
 const PillarKpis = (props: Props) => {
   const [kpis, setKpis] = useState<Kpis>();
-  const { pillarName, sportName } = useLocation().state;
+  // const { pillarName, sportName } = useLocation().state;
   const location = useLocation();
   const user = location.pathname.split("/")[1];
   const { pillar_id, sport_id } = useParams();
@@ -39,25 +39,25 @@ const PillarKpis = (props: Props) => {
     if (adminKpis) setKpis(adminKpis);
   }, [superKpis, adminKpis]);
 
-  const items = [
-    { title: "Home", href: `/${user}` },
-    {
-      title: sportName + " Pillars",
-      href: `/${user}/sports/${sport_id}/pillars`,
-    },
-    { title: pillarName + " Kpis", href: "" },
-  ].map((item, index) => (
-    <Link to={item.href} key={index}>
-      {item.title}
-    </Link>
-  ));
+  // const items = [
+  //   { title: "Home", href: `/${user}` },
+  //   {
+  //     title: sportName + " Pillars",
+  //     href: `/${user}/sports/${sport_id}/pillars`,
+  //   },
+  //   { title: pillarName + " Kpis", href: "" },
+  // ].map((item, index) => (
+  //   <Link to={item.href} key={index}>
+  //     {item.title}
+  //   </Link>
+  // ));
 
   return (
     <div className="admin-teams   m-2 sm:mx-10 my-2">
       <div className="mx-4 my-6">
-        <Breadcrumbs className="text-perfGray3" separator="→">
+        {/* <Breadcrumbs className="text-perfGray3" separator="→">
           {items}
-        </Breadcrumbs>
+        </Breadcrumbs> */}
       </div>
       <div className="flex xs:flex-row flex-wrap justify-center sm:justify-start items-stretch gap-4 ">
         {kpis?.results.map((kpi) => {
@@ -70,7 +70,7 @@ const PillarKpis = (props: Props) => {
                 <Avatar
                   radius={"xl"}
                   className="w-3/5 h-3/5"
-                  src={kpi.icon_url}
+                  src={kpi.icon}
                   alt="icon"
                 />
               </Link>

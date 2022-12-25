@@ -2,12 +2,15 @@ import { useState, ReactNode } from "react";
 import { Modal, Button, Group, Input } from "@mantine/core";
 import AppIcons from "../../../../../@main/core/AppIcons";
 import { useForm } from "react-hook-form";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
 import Resizer from "react-image-file-resizer";
 import cn from "classnames";
 import SubmitButton from "../../../../../@main/components/SubmitButton";
 import { axiosInstance } from "../../../../configs/dataService";
+import { useUserQuery } from "~/app/store/user/userApi";
+import { useParams } from "react-router-dom";
+import { useAdminKpisQuery } from "~/app/store/clubManager/clubManagerApi";
+import { useSuperKpisQuery } from "~/app/store/supervisor/supervisorMainApi";
+import { showNotification } from "@mantine/notifications";
 
 type Props = {};
 
@@ -17,10 +20,25 @@ const AddKpi = (props: Props) => {
   const [playerImagePreview, setPlayerImagePreview] = useState("null");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<boolean | string>(false);
-  const schema = yup.object().shape({
-    image: yup.mixed(),
-    name: yup.string().required("please add the Kpi name"),
-  });
+  const { data: user } = useUserQuery({});
+  const { pillar_id } = useParams();
+
+  const { refetch: superRefetchKpis } = useSuperKpisQuery(
+    {
+      pillar_id,
+    },
+    {
+      skip: !pillar_id,
+    }
+  );
+  const { refetch: adminRefetchKpis } = useAdminKpisQuery(
+    {
+      pillar_id,
+    },
+    {
+      skip: !pillar_id,
+    }
+  );
 
   const resetFields = () => {
     setPlayerImage(null);
@@ -30,21 +48,7 @@ const AddKpi = (props: Props) => {
     });
   };
 
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-    reset,
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
-
-  // Submit Form Function
-  const onSubmitFunction = (data: any) => {
-    console.log({ ...data, icon: playerImage });
-    setOpened(false);
-    resetFields();
-  };
+  const { reset } = useForm({});
 
   // Image Functions
   // Resize the image size
@@ -80,21 +84,64 @@ const AddKpi = (props: Props) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     setError(false);
-
     try {
       setIsLoading(true);
       axiosInstance
-        .post("supervisor/kpis/add-kpi/", formData)
+        .post(
+          user?.user_type === "Supervisor"
+            ? `supervisor/${pillar_id}/kpis/add-kpi/`
+            : `club-manager/sports/${pillar_id}/add-kpi/`,
+          formData
+        )
         .then((res) => {
           setIsLoading(false);
           setOpened(false);
-          console.log(res);
           setPlayerImage(null);
+          if (user?.user_type === "Supervisor") {
+            superRefetchKpis();
+          } else {
+            adminRefetchKpis();
+          }
+          showNotification({
+            message: "Successfly Added Kpi",
+            color: "green",
+            title: "Done",
+            styles: {
+              root: {
+                backgroundColor: "#27AE60",
+                borderColor: "#27AE60",
+                "&::before": { backgroundColor: "#fff" },
+              },
+
+              title: { color: "#fff" },
+              description: { color: "#fff" },
+              closeButton: {
+                color: "#fff",
+              },
+            },
+          });
         })
         .catch((err) => {
           setIsLoading(false);
           setError(err.response.data.message);
-          console.log(err);
+          showNotification({
+            message: err.response.data.message,
+            color: "red",
+            title: "Wrong",
+            styles: {
+              root: {
+                backgroundColor: "#EB5757",
+                borderColor: "#EB5757",
+                "&::before": { backgroundColor: "#fff" },
+              },
+
+              title: { color: "#fff" },
+              description: { color: "#fff" },
+              closeButton: {
+                color: "#fff",
+              },
+            },
+          });
         });
     } catch (err) {}
   };
@@ -108,7 +155,7 @@ const AddKpi = (props: Props) => {
             resetFields();
             setOpened(false);
           }}
-          title={`Add Kpi `}
+          title={`Add Kpi`}
         >
           <form
             className="flex flex-col gap-4"
