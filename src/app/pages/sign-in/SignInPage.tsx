@@ -28,7 +28,7 @@ const SignInPage = (props: Props) => {
   // Yup schema
   const schema = yup.object().shape({
     countryCode: yup.string().required(),
-    phoneNumber: yup.number().required(),
+    phoneNumber: yup.string().required(),
     password: yup.string().min(8).max(24).required(),
   });
   const {
