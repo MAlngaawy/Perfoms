@@ -7,48 +7,35 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Resizer from "react-image-file-resizer";
 import cn from "classnames";
 import SubmitButton from "../../../../../@main/components/SubmitButton";
+import { Pillar } from "~/app/store/types/supervisor-types";
+import { axiosInstance } from "~/app/configs/dataService";
 
 type Props = {
-  kpiName: string;
-  kpiId: number;
+  pillarData: Pillar;
 };
 
-const EditPillar = ({ kpiName, kpiId }: Props) => {
+const EditPillar = ({ pillarData }: Props) => {
+  console.log(pillarData);
+
   const [opened, setOpened] = useState(false);
-  const [playerImage, setPlayerImage] = useState<string | unknown>("");
-  const [playerImagePreview, setPlayerImagePreview] = useState("null");
-
-  const schema = yup.object().shape({
-    image: yup.mixed(),
-    name: yup.string().required("please add the kpi name"),
-  });
-
-  const resetFields = () => {
-    setPlayerImage(null);
-    reset({
-      image: "",
-      name: "",
-    });
-  };
+  const [playerImage, setPlayerImage] = useState<string | unknown>(
+    pillarData.icon
+  );
+  const [playerImagePreview, setPlayerImagePreview] =
+    useState<string | undefined>();
 
   const {
-    handleSubmit,
     register,
     formState: { errors },
     reset,
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
+  } = useForm({});
 
   // Submit Form Function
-  const onSubmitFunction = (data: any) => {
-    console.log({ ...data, icon: playerImage });
-    console.log("Team Prop Date To use in the request", {
-      kpiId,
-      kpiName,
-    });
+  const onSubmitFunction = (e: any) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    // axiosInstance.patch();
     setOpened(false);
-    resetFields();
   };
 
   // Image Functions
@@ -87,15 +74,11 @@ const EditPillar = ({ kpiName, kpiId }: Props) => {
         <Modal
           opened={opened}
           onClose={() => {
-            resetFields();
             setOpened(false);
           }}
-          title={`Edit (${kpiName}) Kpi `}
+          title={`Edit ${pillarData.name} pillar `}
         >
-          <form
-            className="flex flex-col gap-4"
-            onSubmit={handleSubmit(onSubmitFunction)}
-          >
+          <form className="flex flex-col gap-4" onSubmit={onSubmitFunction}>
             {/* Image Upload */}
             <div className=" relative my-2 bg-gray-300 overflow-hidden flex justify-center  items-center  mx-auto w-28  h-28 rounded-lg ">
               <Button
@@ -117,19 +100,21 @@ const EditPillar = ({ kpiName, kpiId }: Props) => {
                       hidden: !playerImage,
                     }
                   )}
-                  src={playerImagePreview && playerImagePreview}
+                  src={
+                    (playerImagePreview && playerImagePreview) ||
+                    (playerImage as string)
+                  }
                   alt="upload icon"
                 />
                 <Input
                   hidden
                   accept="image/*"
-                  {...register("image")}
-                  name="image"
+                  {...register("icon")}
+                  name="icon"
                   multiple
                   type="file"
                   // error={errors.image && (errors.image.message as ReactNode)}
                   onChange={(e: any) => {
-                    console.log(e.target.files[0]);
                     setPlayerImagePreview(
                       URL.createObjectURL(e.target.files[0])
                     );
@@ -149,6 +134,7 @@ const EditPillar = ({ kpiName, kpiId }: Props) => {
               error={errors.name && (errors.name.message as ReactNode)}
             >
               <Input
+                defaultValue={pillarData.name}
                 placeholder="Name"
                 sx={{
                   ".mantine-Input-input	": {

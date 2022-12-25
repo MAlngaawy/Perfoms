@@ -265,9 +265,15 @@ export const clubManagerApi = createApi({
       }),
     }),
 
-    // adminkpis: query<Kpis, { page?: number }>({
-    //   query: (params) => ({ url: "kpis/", params }),
-    // }),
+    adminKpis: query<
+      Kpis,
+      { pillar_id: string | number | undefined; page?: number }
+    >({
+      query: ({ pillar_id, ...params }) => ({
+        url: `sports/${pillar_id}/kpis/`,
+        params,
+      }),
+    }),
   }),
 });
 
@@ -299,4 +305,5 @@ export const {
   useAdminDeleteSupervisorMutation,
   useAdminDeleteSportMutation,
   useAdminPillarsQuery,
+  useAdminKpisQuery,
 } = clubManagerApi;

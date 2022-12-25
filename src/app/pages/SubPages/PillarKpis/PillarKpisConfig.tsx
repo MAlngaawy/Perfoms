@@ -21,11 +21,11 @@ const PillarKpisPageConfig: PagesRouteConfig = {
   auth: [...authRoles.Supervisor, ...authRoles.Admin],
   routes: [
     {
-      path: "admin/sports/:sport_id/pillars/:id",
+      path: "admin/sports/:sport_id/pillars/:pillar_id/kpis",
       element: <PillarKpis />,
     },
     {
-      path: "supervisor/sports/:sport_id/pillars/:id",
+      path: "supervisor/sports/:sport_id/pillars/:pillar_id/kpis",
       element: <PillarKpis />,
     },
   ],

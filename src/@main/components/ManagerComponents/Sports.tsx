@@ -74,6 +74,7 @@ const Sports = (props: Props) => {
             <div className="sport-card relative bg-white rounded-3xl p-12 flex flex-col justify-center items-center gap-4">
               <Link
                 to={`sports/${sport.id}/pillars`}
+                state={{ sportName: sport.name }}
                 className="bg-pagesBg rounded-full w-24 h-24 flex justify-center items-center"
               >
                 <Avatar size={"lg"} src={sport?.icon_url} alt="icon" />

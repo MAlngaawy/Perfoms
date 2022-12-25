@@ -53,8 +53,14 @@ export const supervisorApi = createApi({
   }),
   tagTypes: ["supervisor", "calendar"],
   endpoints: ({ query, mutation }) => ({
-    superkpis: query<Kpis, { page?: number }>({
-      query: (params) => ({ url: "kpis/", params }),
+    superKpis: query<
+      Kpis,
+      { pillar_id: string | number | undefined; page?: number }
+    >({
+      query: ({ pillar_id, ...params }) => ({
+        url: `${pillar_id}/kpis/`,
+        params,
+      }),
     }),
     superTeams: query<Teams, { page?: number }>({
       query: (params) => ({ url: "teams/", params }),
@@ -108,9 +114,6 @@ export const supervisorApi = createApi({
     }),
     superSport: query<ClubManagerSport, { page?: number }>({
       query: (params) => ({ url: "my-sport/", params }),
-    }),
-    superKpis: query<Kpis, { page?: number }>({
-      query: (params) => ({ url: "kpis/", params }),
     }),
     superPillars: query<
       Pillars,
@@ -476,7 +479,6 @@ export const supervisorApi = createApi({
 });
 
 export const {
-  useSuperkpisQuery,
   useSuperTeamCoachesQuery,
   useSuperTeamEventsQuery,
   useSuperTeamPlaersQuery,

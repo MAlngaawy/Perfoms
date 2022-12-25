@@ -3,6 +3,7 @@ import axios from "axios";
 import _ from "~/@lodash";
 import { BASE_URL } from "~/app/configs/dataService";
 import Resizer from "react-image-file-resizer";
+import { showNotification } from "@mantine/notifications";
 
 class EventEmitter {
   constructor() {
@@ -428,6 +429,52 @@ class AppUtils {
           return list;
         }, []);
   }
+
+  static showNotificationFun = (
+    type: "Error" | "Success",
+    title: string,
+    message: string
+  ): any => {
+    if (type === "Success") {
+      showNotification({
+        message: message,
+        color: "green",
+        title: title,
+        styles: {
+          root: {
+            backgroundColor: "#27AE60",
+            borderColor: "#27AE60",
+            "&::before": { backgroundColor: "#fff" },
+          },
+
+          title: { color: "#fff" },
+          description: { color: "#fff" },
+          closeButton: {
+            color: "#fff",
+          },
+        },
+      });
+    } else if (type === "Error") {
+      showNotification({
+        message: message,
+        color: "red",
+        title: title,
+        styles: {
+          root: {
+            backgroundColor: "#EB5757",
+            borderColor: "#EB5757",
+            "&::before": { backgroundColor: "#fff" },
+          },
+
+          title: { color: "#fff" },
+          description: { color: "#fff" },
+          closeButton: {
+            color: "#fff",
+          },
+        },
+      });
+    }
+  };
 }
 
 export const eventInstance = new EventEmitter();
