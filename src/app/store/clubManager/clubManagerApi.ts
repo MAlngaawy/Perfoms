@@ -274,6 +274,17 @@ export const clubManagerApi = createApi({
         params,
       }),
     }),
+
+    adminDeleteKpi: mutation<
+      { kpi_id: number },
+      { kpi_id: number | string | undefined }
+    >({
+      query: ({ kpi_id, ...params }) => ({
+        url: `sports/${kpi_id}/delete/`,
+        params,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -306,4 +317,5 @@ export const {
   useAdminDeleteSportMutation,
   useAdminPillarsQuery,
   useAdminKpisQuery,
+  useAdminDeleteKpiMutation,
 } = clubManagerApi;

@@ -475,6 +475,17 @@ export const supervisorApi = createApi({
         params,
       }),
     }),
+
+    superDeleteKpi: mutation<
+      { kpi_id: number },
+      { kpi_id: number | string | undefined }
+    >({
+      query: ({ kpi_id, ...params }) => ({
+        url: `kpis/${kpi_id}/delete/`,
+        params,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -526,4 +537,5 @@ export const {
   useSuperPlayerRecommendationsQuery,
   useSuperPlayerCalendarQuery,
   useSuperAddNewTeamMutation,
+  useSuperDeleteKpiMutation,
 } = supervisorApi;

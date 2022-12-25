@@ -4,9 +4,16 @@ import DeleteButton from "~/@main/components/ManagerComponents/SubComponents/Del
 import EditKpi from "./Components/EditKpi";
 import AddKpi from "./Components/AddKpi";
 import { Avatar, Breadcrumbs } from "@mantine/core";
-import { useSuperKpisQuery } from "~/app/store/supervisor/supervisorMainApi";
+import {
+  useSuperDeleteKpiMutation,
+  useSuperKpisQuery,
+} from "~/app/store/supervisor/supervisorMainApi";
 import { Kpis } from "~/app/store/types/supervisor-types";
-import { useAdminKpisQuery } from "~/app/store/clubManager/clubManagerApi";
+import {
+  useAdminDeleteKpiMutation,
+  useAdminKpisQuery,
+} from "~/app/store/clubManager/clubManagerApi";
+import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {};
 
@@ -18,21 +25,16 @@ const PillarKpis = (props: Props) => {
   const { pillar_id, sport_id } = useParams();
 
   const { data: superKpis } = useSuperKpisQuery(
-    {
-      pillar_id,
-    },
-    {
-      skip: !pillar_id,
-    }
+    { pillar_id },
+    { skip: !pillar_id }
   );
   const { data: adminKpis } = useAdminKpisQuery(
-    {
-      pillar_id,
-    },
-    {
-      skip: !pillar_id,
-    }
+    { pillar_id },
+    { skip: !pillar_id }
   );
+
+  const [superDeleteKpi] = useSuperDeleteKpiMutation();
+  const [adminDeleteKpi] = useAdminDeleteKpiMutation();
 
   useEffect(() => {
     if (superKpis) setKpis(superKpis);
@@ -79,9 +81,27 @@ const PillarKpis = (props: Props) => {
               </h2>
               {/* Edit and Delete Buttons */}
               <div className="flex absolute right-2 top-5 gap-2">
-                <EditKpi kpiName={kpi.name} kpiId={kpi.id} />
+                <EditKpi kpiData={kpi} />
                 <DeleteButton
-                  deleteFun={() => console.log("delete")}
+                  deleteFun={() => {
+                    if (user === "admin") {
+                      adminDeleteKpi({ kpi_id: kpi.id })
+                        .then(() => {
+                          AppUtils.showNotificationFun(
+                            "Success",
+                            "Deleted",
+                            "Kpi Deleted Succeffl"
+                          );
+                        })
+                        .catch(() => {
+                          AppUtils.showNotificationFun(
+                            "Error",
+                            "Wrong",
+                            "Sorry Can't delete kpi now"
+                          );
+                        });
+                    }
+                  }}
                   name={kpi.name}
                   type="Kpi"
                 />

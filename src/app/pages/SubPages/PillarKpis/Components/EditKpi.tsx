@@ -2,53 +2,95 @@ import { useState, ReactNode } from "react";
 import { Modal, Button, Group, Input } from "@mantine/core";
 import AppIcons from "../../../../../@main/core/AppIcons";
 import { useForm } from "react-hook-form";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
 import Resizer from "react-image-file-resizer";
 import cn from "classnames";
 import SubmitButton from "../../../../../@main/components/SubmitButton";
+import { kpi } from "~/app/store/types/supervisor-types";
+import { axiosInstance } from "~/app/configs/dataService";
+import { useUserQuery } from "~/app/store/user/userApi";
+import { useSuperKpisQuery } from "~/app/store/supervisor/supervisorMainApi";
+import { useAdminKpisQuery } from "~/app/store/clubManager/clubManagerApi";
+import { useParams } from "react-router-dom";
+import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {
-  kpiName: string;
-  kpiId: number;
+  kpiData: kpi;
 };
 
-const EditKpi = ({ kpiName, kpiId }: Props) => {
+const EditKpi = ({ kpiData }: Props) => {
   const [opened, setOpened] = useState(false);
-  const [playerImage, setPlayerImage] = useState<string | unknown>("");
-  const [playerImagePreview, setPlayerImagePreview] = useState("null");
+  const [isLoading, setIsLoading] = useState(false);
+  const { data: user } = useUserQuery({});
+  const [playerImage, setPlayerImage] = useState<string | unknown>(
+    kpiData.icon
+  );
+  const [playerImagePreview, setPlayerImagePreview] =
+    useState<string | undefined>();
+  const { pillar_id } = useParams();
 
-  const schema = yup.object().shape({
-    image: yup.mixed(),
-    name: yup.string().required("please add the kpi name"),
-  });
-
-  const resetFields = () => {
-    setPlayerImage(null);
-    reset({
-      image: "",
-      name: "",
-    });
-  };
+  const { refetch: superRefetchKpis } = useSuperKpisQuery(
+    {
+      pillar_id,
+    },
+    {
+      skip: !pillar_id,
+    }
+  );
+  const { refetch: adminRefetchKpis } = useAdminKpisQuery(
+    {
+      pillar_id,
+    },
+    {
+      skip: !pillar_id,
+    }
+  );
 
   const {
-    handleSubmit,
     register,
     formState: { errors },
     reset,
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
+  } = useForm({});
 
   // Submit Form Function
-  const onSubmitFunction = (data: any) => {
-    console.log({ ...data, icon: playerImage });
-    console.log("Team Prop Date To use in the request", {
-      kpiId,
-      kpiName,
-    });
-    setOpened(false);
-    resetFields();
+  const onSubmitFunction = (e: any) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    try {
+      setIsLoading(true);
+      axiosInstance
+        .patch(
+          user?.user_type === "Supervisor"
+            ? `supervisor/kpis/${kpiData.id}/update/`
+            : `club-manager/sports/${kpiData.id}/update/`,
+          formData
+        )
+        .then((res) => {
+          setIsLoading(false);
+          setOpened(false);
+          setPlayerImage(null);
+          if (user?.user_type === "Supervisor") {
+            superRefetchKpis();
+          } else {
+            adminRefetchKpis();
+          }
+          AppUtils.showNotificationFun(
+            "Success",
+            "Done",
+            "Kpi Edited Successfly"
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+          AppUtils.showNotificationFun("Error", "Wrong", "Can't Edit the Kpi");
+          setIsLoading(false);
+          setOpened(false);
+        });
+    } catch (err) {
+      console.log(err);
+      AppUtils.showNotificationFun("Error", "Wrong", "Can't Edit the Kpi");
+      setIsLoading(false);
+      setOpened(false);
+    }
   };
 
   // Image Functions
@@ -87,15 +129,11 @@ const EditKpi = ({ kpiName, kpiId }: Props) => {
         <Modal
           opened={opened}
           onClose={() => {
-            resetFields();
             setOpened(false);
           }}
-          title={`Edit (${kpiName}) Kpi `}
+          title={`Edit ${kpiData.name} Kpi `}
         >
-          <form
-            className="flex flex-col gap-4"
-            onSubmit={handleSubmit(onSubmitFunction)}
-          >
+          <form className="flex flex-col gap-4" onSubmit={onSubmitFunction}>
             {/* Image Upload */}
             <div className=" relative my-2 bg-gray-300 overflow-hidden flex justify-center  items-center  mx-auto w-28  h-28 rounded-lg ">
               <Button
@@ -117,19 +155,21 @@ const EditKpi = ({ kpiName, kpiId }: Props) => {
                       hidden: !playerImage,
                     }
                   )}
-                  src={playerImagePreview && playerImagePreview}
+                  src={
+                    (playerImagePreview && playerImagePreview) ||
+                    (playerImage as string)
+                  }
                   alt="upload icon"
                 />
                 <Input
                   hidden
                   accept="image/*"
-                  {...register("image")}
-                  name="image"
+                  {...register("icon")}
+                  name="icon"
                   multiple
                   type="file"
                   // error={errors.image && (errors.image.message as ReactNode)}
                   onChange={(e: any) => {
-                    console.log(e.target.files[0]);
                     setPlayerImagePreview(
                       URL.createObjectURL(e.target.files[0])
                     );
@@ -149,6 +189,7 @@ const EditKpi = ({ kpiName, kpiId }: Props) => {
               error={errors.name && (errors.name.message as ReactNode)}
             >
               <Input
+                defaultValue={kpiData.name}
                 placeholder="Name"
                 sx={{
                   ".mantine-Input-input	": {
@@ -165,7 +206,7 @@ const EditKpi = ({ kpiName, kpiId }: Props) => {
                 id="name"
               />
             </Input.Wrapper>
-            <SubmitButton isLoading={false} text="Edit Kpi" />
+            <SubmitButton isLoading={isLoading} text="Edit Kpi" />
           </form>
         </Modal>
 
