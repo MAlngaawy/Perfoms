@@ -18,7 +18,7 @@ const CoachAchievements = ({ data, editMode }: Props) => {
   return (
     <div className="bg-white flex flex-col gap-4 h-full rounded-lg md:rounded-2xl p-4 pt-10">
       <div className="title">
-        <h2 className="text-xl text-perfLightBlack font-medium mb-6">
+        <h2 className="text-lg text-perfLightBlack font-medium mb-6">
           Achievements
         </h2>
       </div>
