@@ -25,8 +25,9 @@ const EditPillar = ({ pillarData }: Props) => {
   const [error, setError] = useState<boolean | string>(false);
   const { data: user } = useUserQuery({});
   const { sport_id } = useParams();
-  const [playerImage, setPlayerImage] = useState<string | unknown>("");
-  const [playerImagePreview, setPlayerImagePreview] = useState("null");
+  const [playerImage, setPlayerImage] = useState<string | null>(null);
+  const [playerImagePreview, setPlayerImagePreview] =
+    useState<string | null>(null);
   const { refetch: refetchAdminPillars } = useAdminPillarsQuery(
     { sport_id: sport_id },
     { skip: !sport_id }
@@ -46,72 +47,52 @@ const EditPillar = ({ pillarData }: Props) => {
   const onSubmitFunction = (e: any) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
+    // if there is no image added .. remove empty icon field
+    console.log(formData.get("icon"));
+    if (!playerImagePreview) formData.delete("icon");
+    console.log(formData.get("icon"));
 
-    try {
-      setIsLoading(true);
-      axiosInstance
-        .patch(
-          user?.user_type === "Supervisor"
-            ? `supervisor/sports/pillars/${pillarData.id}/update/`
-            : `club-manager/sports/pillars/${pillarData.id}/update/`,
-          formData
-        )
-        .then((res) => {
-          setIsLoading(false);
-          setOpened(false);
-          if (user?.user_type === "Supervisor") {
-            refetchSuperPillars();
-          } else {
-            refetchAdminPillars();
-          }
-          AppUtils.showNotificationFun(
-            "Success",
-            "Done",
-            "Pillar Updated Successfl"
-          );
-        })
-        .catch((err) => {
-          setIsLoading(false);
-          setError(err.response.data.message);
-          AppUtils.showNotificationFun(
-            "Error",
-            "Sorry",
-            "Can't Update Pillar Now"
-          );
-        });
-    } catch (err) {
-      setIsLoading(false);
-      AppUtils.showNotificationFun("Error", "Sorry", "Can't Update Pillar Now");
-    }
+    setIsLoading(true);
+    axiosInstance
+      .patch(
+        user?.user_type === "Supervisor"
+          ? `supervisor/sports/pillars/${pillarData.id}/update/`
+          : `club-manager/sports/pillars/${pillarData.id}/update/`,
+        formData
+      )
+      .then((res) => {
+        setIsLoading(false);
+        setOpened(false);
+        if (user?.user_type === "Supervisor") {
+          refetchSuperPillars();
+        } else {
+          refetchAdminPillars();
+        }
+        AppUtils.showNotificationFun(
+          "Success",
+          "Done",
+          "Pillar Updated Successfl"
+        );
+        setPlayerImage(null);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        setError(err.response.data.message);
+        AppUtils.showNotificationFun(
+          "Error",
+          "Sorry",
+          "Can't Update Pillar Now"
+        );
+      });
 
     setOpened(false);
   };
-
-  // Image Functions
-  // Resize the image size
-  const resizeFile = (file: any) =>
-    new Promise((resolve) => {
-      Resizer.imageFileResizer(
-        file,
-        100,
-        100,
-        "JPEG",
-        100,
-        0,
-        (uri: any) => {
-          resolve(uri);
-        },
-        "base64"
-      );
-    });
 
   // function to access file uploaded then convert to base64 then add it to the data state
   const uploadImage = async (e: any) => {
     try {
       const file = e.target.files[0];
-      const image = await resizeFile(file);
-      console.log(image);
-      setPlayerImage(image);
+      setPlayerImage(file);
     } catch (err) {
       console.log(err);
     }
@@ -137,9 +118,13 @@ const EditPillar = ({ pillarData }: Props) => {
               >
                 <Avatar
                   className={cn(
-                    " absolute rounded-lg w-full -h-full max-w-full max-h-full object-cover left-0 top-0"
+                    " absolute rounded-lg w-full h-full object-cover left-0 top-0"
                   )}
-                  src={playerImage ? playerImagePreview : pillarData.icon}
+                  src={
+                    playerImage
+                      ? playerImagePreview
+                      : pillarData.icon_url || pillarData.icon
+                  }
                   alt="upload icon"
                 />
                 <Input
@@ -151,7 +136,6 @@ const EditPillar = ({ pillarData }: Props) => {
                   type="file"
                   // error={errors.image && (errors.image.message as ReactNode)}
                   onChange={(e: any) => {
-                    console.log(e.target.files[0]);
                     setPlayerImagePreview(
                       URL.createObjectURL(e.target.files[0])
                     );
@@ -159,9 +143,6 @@ const EditPillar = ({ pillarData }: Props) => {
                   }}
                 />
               </Button>
-              {/* {errors.image && (
-                <p className="text-red text-xs text-left">File is required!</p>
-              )} */}
             </div>
 
             <Input.Wrapper

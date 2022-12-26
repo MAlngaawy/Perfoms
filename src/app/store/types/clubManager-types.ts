@@ -56,6 +56,7 @@ export type Pillars = BaseGetAllType & {
     id: number;
     name: string;
     icon: string;
+    icon_url: string;
   }[];
 };
 

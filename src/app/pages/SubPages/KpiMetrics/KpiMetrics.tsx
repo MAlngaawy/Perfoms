@@ -59,7 +59,7 @@ const KpiMetrics = (props: Props) => {
               </h2>
               {/* Edit and Delete Buttons */}
               <div className="flex absolute left-2 top-5 gap-2">
-                <EditMetric metricName={metric.name} metricId={metric.id} />
+                <EditMetric metricData={metric} />
                 <DeleteButton
                   deleteFun={() => console.log("Delete")}
                   name={metric.name}

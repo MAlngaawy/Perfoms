@@ -1,4 +1,4 @@
-import { useState, ReactNode } from "react";
+import { useState, ReactNode, useEffect } from "react";
 import { Modal, Button, Group, Input } from "@mantine/core";
 import AppIcons from "../../../core/AppIcons";
 import { useForm } from "react-hook-form";
@@ -15,6 +15,7 @@ import {
   useAdminClubQuery,
   useAdminSportsQuery,
 } from "~/app/store/clubManager/clubManagerApi";
+import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {
   sportData: Partial<Sport>;
@@ -23,42 +24,30 @@ type Props = {
 const EditSport = ({ sportData }: Props) => {
   const [opened, setOpened] = useState(false);
   const [playerImage, setPlayerImage] = useState<string | unknown>("");
-  const [playerImagePreview, setPlayerImagePreview] = useState("null");
+  const [playerImagePreview, setPlayerImagePreview] = useState<string>();
   const { data: adminClub } = useAdminClubQuery({});
   const { refetch } = useAdminSportsQuery({});
   const [loading, setLoading] = useState<boolean>(false);
-
-  const schema = yup.object().shape({
-    image: yup.mixed(),
-    name: yup.string().required("please add the Sport name"),
-  });
-
-  const resetFields = () => {
-    setPlayerImage(null);
-    reset({
-      image: "",
-      name: "",
-    });
-  };
 
   const {
     handleSubmit,
     register,
     formState: { errors },
     reset,
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
+  } = useForm();
 
   // Submit Form Function
   const onSubmitFunction = (e: any) => {
     e.preventDefault();
     setLoading(true);
     const formData = new FormData(e.currentTarget);
+
+    // if there is no image added .. remove epty icon
+    if (!playerImagePreview) formData.delete("icon");
+
     if (adminClub?.id) {
       formData.append("club", JSON.stringify(adminClub?.id));
     }
-
     axiosInstance
       .patch(`/club-manager/sports/${sportData.id}/update/`, formData)
       .then(() => {
@@ -139,7 +128,7 @@ const EditSport = ({ sportData }: Props) => {
               >
                 <img
                   className={cn(
-                    " absolute rounded-lg w-full -h-full max-w-full max-h-full object-cover left-0 top-0"
+                    " absolute rounded-lg w-full h-full object-cover left-0 top-0"
                   )}
                   src={playerImage ? playerImagePreview : sportData.icon_url}
                   alt="upload icon"
@@ -161,9 +150,6 @@ const EditSport = ({ sportData }: Props) => {
                   }}
                 />
               </Button>
-              {/* {errors.image && (
-                <p className="text-red text-xs text-left">File is required!</p>
-              )} */}
             </div>
 
             <Input.Wrapper

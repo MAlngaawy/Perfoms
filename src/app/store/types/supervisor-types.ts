@@ -23,6 +23,7 @@ export type Pillar = {
   name: string;
   icon: string;
   sport: number;
+  icon_url: string;
 };
 
 export type Pillars = BaseGetAllType & {

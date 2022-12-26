@@ -1,5 +1,5 @@
 import { useState, ReactNode } from "react";
-import { Modal, Button, Group, Input } from "@mantine/core";
+import { Modal, Button, Group, Input, Avatar } from "@mantine/core";
 import AppIcons from "../../../../../@main/core/AppIcons";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -7,48 +7,80 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Resizer from "react-image-file-resizer";
 import cn from "classnames";
 import SubmitButton from "../../../../../@main/components/SubmitButton";
+import { Metric } from "~/app/store/types/supervisor-types";
+import { axiosInstance } from "~/app/configs/dataService";
+import { useParams } from "react-router-dom";
+import { useUserQuery } from "~/app/store/user/userApi";
+import { useSuperMetricsQuery } from "~/app/store/supervisor/supervisorMainApi";
+import { useAdminMetricsQuery } from "~/app/store/clubManager/clubManagerApi";
+import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {
-  metricName: string;
-  metricId: number;
+  metricData: Metric;
 };
 
-const EditMetric = ({ metricName, metricId }: Props) => {
+const EditMetric = ({ metricData }: Props) => {
   const [opened, setOpened] = useState(false);
   const [playerImage, setPlayerImage] = useState<string | unknown>("");
   const [playerImagePreview, setPlayerImagePreview] = useState("null");
-
-  const schema = yup.object().shape({
-    image: yup.mixed(),
-    name: yup.string().required("please add the metric name"),
-  });
-
-  const resetFields = () => {
-    setPlayerImage(null);
-    reset({
-      image: "",
-      name: "",
-    });
-  };
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<boolean | string>(false);
+  const { kpi_id } = useParams();
+  const { data: user } = useUserQuery({});
+  const { refetch: superRefetchMetrics } = useSuperMetricsQuery(
+    { kpi_id },
+    { skip: !kpi_id }
+  );
+  const { refetch: adminRefetchMetrics } = useAdminMetricsQuery(
+    { kpi_id },
+    { skip: !kpi_id }
+  );
   const {
     handleSubmit,
     register,
     formState: { errors },
     reset,
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
+  } = useForm({});
 
   // Submit Form Function
-  const onSubmitFunction = (data: any) => {
-    console.log({ ...data, icon: playerImage });
-    console.log("Team Prop Date To use in the request", {
-      metricId,
-      metricName,
-    });
-    setOpened(false);
-    resetFields();
+  const onSubmitFunction = (e: any) => {
+    console.log(typeof e.currentTarget);
+
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    formData.append("kpi", JSON.stringify(kpi_id));
+    setError(false);
+
+    try {
+      setIsLoading(true);
+      axiosInstance
+        .patch(
+          user?.user_type === "Admin"
+            ? `club-manager/kpis/metrics/${metricData.id}/update/`
+            : `supervisor/metrics/${metricData.id}/update/`,
+          formData
+        )
+        .then((res) => {
+          setIsLoading(false);
+          setOpened(false);
+          AppUtils.showNotificationFun(
+            "Success",
+            "Done",
+            "Metric Added Successfly"
+          );
+          adminRefetchMetrics();
+          superRefetchMetrics();
+        })
+        .catch((err) => {
+          AppUtils.showNotificationFun(
+            "Error",
+            "Sorry",
+            "Can't add metric Now"
+          );
+          setIsLoading(false);
+          setError(err.response.data.message);
+        });
+    } catch (err) {}
   };
 
   // Image Functions
@@ -87,15 +119,11 @@ const EditMetric = ({ metricName, metricId }: Props) => {
         <Modal
           opened={opened}
           onClose={() => {
-            resetFields();
             setOpened(false);
           }}
-          title={`Edit (${metricName}) Metric `}
+          title={`Edit (${metricData.name}) Metric `}
         >
-          <form
-            className="flex flex-col gap-4"
-            onSubmit={handleSubmit(onSubmitFunction)}
-          >
+          <form className="flex flex-col gap-4" onSubmit={onSubmitFunction}>
             {/* Image Upload */}
             <div className=" relative my-2 bg-gray-300 overflow-hidden flex justify-center  items-center  mx-auto w-28  h-28 rounded-lg ">
               <Button
@@ -103,28 +131,22 @@ const EditMetric = ({ metricName, metricId }: Props) => {
                 className="w-full h-full hover:bg-perfGray3"
                 component="label"
               >
-                <img
-                  className={cn("", {
-                    hidden: playerImage,
-                  })}
-                  src="/assets/images/Vector.png"
-                  alt="upload icon"
-                />
-                <img
+                <Avatar
                   className={cn(
-                    " absolute rounded-lg w-full -h-full max-w-full max-h-full object-cover left-0 top-0",
-                    {
-                      hidden: !playerImage,
-                    }
+                    " absolute rounded-lg w-full h-full object-cover left-0 top-0"
                   )}
-                  src={playerImagePreview && playerImagePreview}
+                  src={
+                    playerImage
+                      ? playerImagePreview
+                      : metricData.icon_url || metricData.icon
+                  }
                   alt="upload icon"
                 />
                 <Input
                   hidden
                   accept="image/*"
                   {...register("image")}
-                  name="image"
+                  name="icon"
                   multiple
                   type="file"
                   // error={errors.image && (errors.image.message as ReactNode)}
@@ -149,6 +171,7 @@ const EditMetric = ({ metricName, metricId }: Props) => {
               error={errors.name && (errors.name.message as ReactNode)}
             >
               <Input
+                defaultValue={metricData.name}
                 placeholder="Name"
                 sx={{
                   ".mantine-Input-input	": {
@@ -165,7 +188,7 @@ const EditMetric = ({ metricName, metricId }: Props) => {
                 id="name"
               />
             </Input.Wrapper>
-            <SubmitButton isLoading={false} text="Edit Metric" />
+            <SubmitButton isLoading={isLoading} text="Edit Metric" />
           </form>
         </Modal>
 

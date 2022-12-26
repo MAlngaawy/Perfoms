@@ -409,6 +409,17 @@ class AppUtils {
     return authArr.includes(userRole);
   }
 
+  // Convert image URL to File --- need refactor
+  // static imageUrlToFile = (url: string, imageName: string): object => {
+  //   return fetch(url).then(async (response) => {
+  //     const blob = await response.blob();
+  //     const file = new File([blob], fileName, {});
+  //     // user Resize function
+  //     // const test = await AppUtils.resizeImage(file);
+  //     return file;
+  //   });
+  // };
+
   static filterRecursive(data, predicate) {
     return !data
       ? null
