@@ -14,6 +14,7 @@ import {
   useAdminPillarsQuery,
 } from "~/app/store/clubManager/clubManagerApi";
 import AppUtils from "~/@main/utils/AppUtils";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {};
 
@@ -21,7 +22,8 @@ const SportPillars = (props: Props) => {
   const [pillars, setPillars] = useState<Pillars>();
   const { sport_id } = useParams();
   const location = useLocation();
-  const user = location.pathname.split("/")[1];
+  // const user = location.pathname.split("/")[1];
+  const { data: user } = useUserQuery({});
   const sportName: string = location.state.sportName;
 
   const { data: adminPillars, refetch: refetchAdminPillars } =
@@ -40,7 +42,7 @@ const SportPillars = (props: Props) => {
 
   // Delete Pillar Fun
   const deletePillarFun = (pillar_id: number) => {
-    if (user === "admin") {
+    if (user?.user_type === "Admin") {
       adminDeletePillar({
         pillar_id,
       })
@@ -59,7 +61,7 @@ const SportPillars = (props: Props) => {
             "Can't delete Pillar Now"
           );
         });
-    } else if (user === "supervisor") {
+    } else if (user?.user_type === "Supervisor") {
       superDeletePillar({
         pillar_id,
       })
@@ -82,8 +84,8 @@ const SportPillars = (props: Props) => {
   };
 
   const items = [
-    { title: "Home", href: `/${user}` },
-    { title: sportName + " Pillars", href: "" },
+    { title: "Home", href: `/` },
+    { title: sportName + " Pillars", href: "/" },
   ].map((item, index) => (
     <Link to={item.href} key={index}>
       {item.title}

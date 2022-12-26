@@ -14,6 +14,7 @@ import {
   useAdminKpisQuery,
 } from "~/app/store/clubManager/clubManagerApi";
 import AppUtils from "~/@main/utils/AppUtils";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {};
 
@@ -21,7 +22,8 @@ const PillarKpis = (props: Props) => {
   const [kpis, setKpis] = useState<Kpis>();
   // const { pillarName, sportName } = useLocation().state;
   const location = useLocation();
-  const user = location.pathname.split("/")[1];
+  // const user = location.pathname.split("/")[1];
+  const { data: user } = useUserQuery({});
   const { pillar_id, sport_id } = useParams();
 
   const { data: superKpis } = useSuperKpisQuery(
@@ -84,7 +86,7 @@ const PillarKpis = (props: Props) => {
                 <EditKpi kpiData={kpi} />
                 <DeleteButton
                   deleteFun={() => {
-                    if (user === "admin") {
+                    if (user?.user_type === "Admin") {
                       adminDeleteKpi({ kpi_id: kpi.id })
                         .then(() => {
                           AppUtils.showNotificationFun(
