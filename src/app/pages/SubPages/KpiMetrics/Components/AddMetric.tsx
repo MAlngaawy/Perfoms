@@ -96,7 +96,7 @@ const AddMetric = (props: Props) => {
 
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    formData.append("kpi", JSON.stringify(kpi_id));
+    // formData.append("kpi", JSON.stringify(kpi_id));
     setError(false);
 
     try {
@@ -105,7 +105,7 @@ const AddMetric = (props: Props) => {
         .post(
           user?.user_type === "Admin"
             ? `club-manager/kpis/metrics/${kpi_id}/add-metric/`
-            : "supervisor/create-metric/",
+            : `supervisor/kpis/metrics/${kpi_id}/add-metric/`,
           formData
         )
         .then((res) => {

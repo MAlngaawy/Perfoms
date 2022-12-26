@@ -359,7 +359,7 @@ export const supervisorApi = createApi({
       }
     >({
       query: ({ sport_id, team_id, ...params }) => ({
-        url: `statistics/sports/teams/kpis/${sport_id}/${team_id}`,
+        url: `statistics/sports/teams/kpis/${team_id}`,
         params,
       }),
     }),
@@ -497,6 +497,15 @@ export const supervisorApi = createApi({
         method: "DELETE",
       }),
     }),
+
+    superDeleteMetric: mutation<{}, { metric_id: string }>({
+      query: ({ metric_id, ...body }) => ({
+        url: `metrics/${metric_id}/delete/`,
+        method: "DELETE",
+        body,
+      }),
+      invalidatesTags: ["supervisor"],
+    }),
   }),
 });
 
@@ -550,4 +559,5 @@ export const {
   useSuperPlayerCalendarQuery,
   useSuperAddNewTeamMutation,
   useSuperDeleteKpiMutation,
+  useSuperDeleteMetricMutation,
 } = supervisorApi;
