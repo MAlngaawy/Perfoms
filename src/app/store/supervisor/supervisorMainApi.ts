@@ -335,7 +335,7 @@ export const supervisorApi = createApi({
       }
     >({
       query: ({ sport_id, team_id, ...params }) => ({
-        url: `statistics/sports/teams/kpis/${sport_id}/${team_id}`,
+        url: `statistics/sports/teams/kpis/${team_id}`,
         params,
       }),
     }),
