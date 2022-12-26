@@ -2,12 +2,8 @@ import { useState, ReactNode, useEffect } from "react";
 import { Modal, Button, Group, Input } from "@mantine/core";
 import AppIcons from "../../../core/AppIcons";
 import { useForm } from "react-hook-form";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import Resizer from "react-image-file-resizer";
 import cn from "classnames";
 import SubmitButton from "../../SubmitButton";
-import PerfSelect from "../../Select";
 import { Sport } from "~/app/store/types/parent-types";
 import { showNotification } from "@mantine/notifications";
 import { axiosInstance } from "~/app/configs/dataService";
@@ -15,7 +11,6 @@ import {
   useAdminClubQuery,
   useAdminSportsQuery,
 } from "~/app/store/clubManager/clubManagerApi";
-import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {
   sportData: Partial<Sport>;
