@@ -1,5 +1,5 @@
 import { useState, ReactNode } from "react";
-import { Modal, Button, Group, Input } from "@mantine/core";
+import { Modal, Button, Group, Input, Avatar } from "@mantine/core";
 import AppIcons from "../../../../../@main/core/AppIcons";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -135,7 +135,7 @@ const EditPillar = ({ pillarData }: Props) => {
                 className="w-full h-full hover:bg-perfGray3"
                 component="label"
               >
-                <img
+                <Avatar
                   className={cn(
                     " absolute rounded-lg w-full -h-full max-w-full max-h-full object-cover left-0 top-0"
                   )}

@@ -24,7 +24,6 @@ const SportPillars = (props: Props) => {
   const location = useLocation();
   // const user = location.pathname.split("/")[1];
   const { data: user } = useUserQuery({});
-  const sportName: string = location.state.sportName;
 
   const { data: adminPillars, refetch: refetchAdminPillars } =
     useAdminPillarsQuery({ sport_id: sport_id }, { skip: !sport_id });
@@ -85,7 +84,7 @@ const SportPillars = (props: Props) => {
 
   const items = [
     { title: "Home", href: `/` },
-    { title: sportName + " Pillars", href: "/" },
+    { title: "Pillars", href: `` },
   ].map((item, index) => (
     <Link to={item.href} key={index}>
       {item.title}
@@ -104,10 +103,6 @@ const SportPillars = (props: Props) => {
             <div className="sport-card relative bg-white rounded-3xl p-12 flex flex-col justify-center items-center gap-4">
               <Link
                 to={`${pillar.id}/kpis`}
-                state={{
-                  pillarName: pillar.name,
-                  sportName: sportName,
-                }}
                 className="bg-pagesBg rounded-full w-24 h-24 flex justify-center items-center"
               >
                 <Avatar

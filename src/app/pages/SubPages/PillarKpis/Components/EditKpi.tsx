@@ -1,5 +1,5 @@
 import { useState, ReactNode } from "react";
-import { Modal, Button, Group, Input } from "@mantine/core";
+import { Modal, Button, Group, Input, Avatar } from "@mantine/core";
 import AppIcons from "../../../../../@main/core/AppIcons";
 import { useForm } from "react-hook-form";
 import Resizer from "react-image-file-resizer";
@@ -55,13 +55,18 @@ const EditKpi = ({ kpiData }: Props) => {
   const onSubmitFunction = (e: any) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
+    console.log({
+      icon: formData.get("icon"),
+      name: formData.get("name"),
+    });
+
     try {
       setIsLoading(true);
       axiosInstance
         .patch(
           user?.user_type === "Supervisor"
             ? `supervisor/kpis/${kpiData.id}/update/`
-            : `club-manager/sports/${kpiData.id}/update/`,
+            : `club-manager/sports/kpis/${kpiData.id}/update/`,
           formData
         )
         .then((res) => {
@@ -142,23 +147,10 @@ const EditKpi = ({ kpiData }: Props) => {
                 component="label"
               >
                 <img
-                  className={cn("", {
-                    hidden: playerImage,
-                  })}
-                  src="/assets/images/Vector.png"
-                  alt="upload icon"
-                />
-                <img
                   className={cn(
-                    " absolute rounded-lg w-full -h-full max-w-full max-h-full object-cover left-0 top-0",
-                    {
-                      hidden: !playerImage,
-                    }
+                    " absolute rounded-lg w-full -h-full max-w-full max-h-full object-cover left-0 top-0"
                   )}
-                  src={
-                    (playerImagePreview && playerImagePreview) ||
-                    (playerImage as string)
-                  }
+                  src={playerImage ? playerImagePreview : kpiData.icon_url}
                   alt="upload icon"
                 />
                 <Input

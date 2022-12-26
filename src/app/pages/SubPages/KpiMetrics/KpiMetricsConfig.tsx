@@ -18,10 +18,14 @@ const KpiMetricsPageConfig: PagesRouteConfig = {
       },
     },
   },
-  auth: authRoles.Supervisor,
+  auth: [...authRoles.Supervisor, ...authRoles.Admin],
   routes: [
     {
-      path: "supervisor/sports/:id/kpis/:id",
+      path: "admin/sports/:sport_id/pillars/:pillar_id/kpis/:kpi_id/metrics",
+      element: <KpiMetrics />,
+    },
+    {
+      path: "supervisor/sports/:sport_id/pillars/:pillar_id/kpis/:kpi_id/metrics",
       element: <KpiMetrics />,
     },
   ],

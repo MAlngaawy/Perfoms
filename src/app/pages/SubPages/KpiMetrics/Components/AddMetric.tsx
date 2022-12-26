@@ -8,21 +8,34 @@ import Resizer from "react-image-file-resizer";
 import cn from "classnames";
 import SubmitButton from "../../../../../@main/components/SubmitButton";
 import { axiosInstance } from "~/app/configs/dataService";
+import { useParams } from "react-router-dom";
+import { useUserQuery } from "~/app/store/user/userApi";
+import { useSuperMetricsQuery } from "~/app/store/supervisor/supervisorMainApi";
+import { useAdminMetricsQuery } from "~/app/store/clubManager/clubManagerApi";
+import AppUtils from "~/@main/utils/AppUtils";
 
-type Props = {
-  kpiId: number | undefined;
-};
+type Props = {};
 
 const schema = yup.object().shape({
   image: yup.mixed(),
   name: yup.string().required("please add the metric name"),
 });
-const AddMetric = ({ kpiId }: Props) => {
+const AddMetric = (props: Props) => {
   const [opened, setOpened] = useState(false);
   const [playerImage, setPlayerImage] = useState<string | unknown>("");
   const [playerImagePreview, setPlayerImagePreview] = useState("null");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<boolean | string>(false);
+  const { kpi_id } = useParams();
+  const { data: user } = useUserQuery({});
+  const { refetch: superRefetchMetrics } = useSuperMetricsQuery(
+    { kpi_id },
+    { skip: !kpi_id }
+  );
+  const { refetch: adminRefetchMetrics } = useAdminMetricsQuery(
+    { kpi_id },
+    { skip: !kpi_id }
+  );
 
   const resetFields = () => {
     setPlayerImage(null);
@@ -83,23 +96,38 @@ const AddMetric = ({ kpiId }: Props) => {
 
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    formData.append("kpi", JSON.stringify(kpiId));
+    formData.append("kpi", JSON.stringify(kpi_id));
     setError(false);
 
     try {
       setIsLoading(true);
       axiosInstance
-        .post("supervisor/create-metric/", formData)
+        .post(
+          user?.user_type === "Admin"
+            ? `club-manager/kpis/metrics/${kpi_id}/add-metric/`
+            : "supervisor/create-metric/",
+          formData
+        )
         .then((res) => {
           setIsLoading(false);
           setOpened(false);
-          console.log(res);
           setPlayerImage(null);
+          AppUtils.showNotificationFun(
+            "Success",
+            "Done",
+            "Metric Added Successfly"
+          );
+          adminRefetchMetrics();
+          superRefetchMetrics();
         })
         .catch((err) => {
+          AppUtils.showNotificationFun(
+            "Error",
+            "Sorry",
+            "Can't add metric Now"
+          );
           setIsLoading(false);
           setError(err.response.data.message);
-          console.log(err);
         });
     } catch (err) {}
   };

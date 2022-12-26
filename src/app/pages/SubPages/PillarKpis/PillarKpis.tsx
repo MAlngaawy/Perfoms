@@ -26,11 +26,11 @@ const PillarKpis = (props: Props) => {
   const { data: user } = useUserQuery({});
   const { pillar_id, sport_id } = useParams();
 
-  const { data: superKpis } = useSuperKpisQuery(
+  const { data: superKpis, refetch: superRefetchKpis } = useSuperKpisQuery(
     { pillar_id },
     { skip: !pillar_id }
   );
-  const { data: adminKpis } = useAdminKpisQuery(
+  const { data: adminKpis, refetch: adminRefetchKpis } = useAdminKpisQuery(
     { pillar_id },
     { skip: !pillar_id }
   );
@@ -68,13 +68,13 @@ const PillarKpis = (props: Props) => {
           return (
             <div className="sport-card relative bg-white rounded-3xl p-12 flex flex-col justify-center items-center gap-4">
               <Link
-                to={`kpis/${kpi.id}`}
+                to={`${kpi.id}/metrics`}
                 className="bg-pagesBg rounded-full w-24 h-24 flex justify-center items-center"
               >
                 <Avatar
                   radius={"xl"}
                   className="w-3/5 h-3/5"
-                  src={kpi.icon}
+                  src={kpi.icon || kpi.icon_url}
                   alt="icon"
                 />
               </Link>
@@ -92,8 +92,26 @@ const PillarKpis = (props: Props) => {
                           AppUtils.showNotificationFun(
                             "Success",
                             "Deleted",
-                            "Kpi Deleted Succeffl"
+                            "Kpi Deleted Successfly"
                           );
+                          adminRefetchKpis();
+                        })
+                        .catch(() => {
+                          AppUtils.showNotificationFun(
+                            "Error",
+                            "Wrong",
+                            "Sorry Can't delete kpi now"
+                          );
+                        });
+                    } else if (user?.user_type === "Supervisor") {
+                      superDeleteKpi({ kpi_id: kpi.id })
+                        .then(() => {
+                          AppUtils.showNotificationFun(
+                            "Success",
+                            "Deleted",
+                            "Kpi Deleted Successfly"
+                          );
+                          superRefetchKpis();
                         })
                         .catch(() => {
                           AppUtils.showNotificationFun(

@@ -1,23 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-
-import { Metric } from "~/app/store/types/supervisor-types";
+import { Metric, Metrics } from "~/app/store/types/supervisor-types";
 import DeleteButton from "../../../../@main/components/ManagerComponents/SubComponents/DeleteButton";
 import AddMetric from "./Components/AddMetric";
 import CreateActionsAndRecomm from "./Components/CreateActionsAndRecomm";
 import EditMetric from "./Components/EditMetric";
 import { Avatar, Breadcrumbs } from "@mantine/core";
 import { useSuperMetricsQuery } from "~/app/store/supervisor/supervisorMainApi";
+import { useAdminMetricsQuery } from "~/app/store/clubManager/clubManagerApi";
+import { useEffect } from "react";
 
 type Props = {};
 
 const KpiMetrics = (props: Props) => {
-  const { id } = useParams();
-  const { data: metrics } = useSuperMetricsQuery({ kpi_id: id }, { skip: !id });
+  const { kpi_id } = useParams();
+  const [metrics, setMetrics] = useState<Metrics>();
+  const { data: superMetrics, refetch: superRefetchMetrics } =
+    useSuperMetricsQuery({ kpi_id }, { skip: !kpi_id });
+  const { data: adminMetrics, refetch: adminRefetchMetrics } =
+    useAdminMetricsQuery({ kpi_id }, { skip: !kpi_id });
+
+  useEffect(() => {
+    if (superMetrics) setMetrics(superMetrics);
+    if (adminMetrics) setMetrics(adminMetrics);
+  }, [superMetrics, adminMetrics]);
 
   const items = [
     { title: "Home", href: "/supervisor" },
-    { title: "Kpis", href: `/supervisor/sports/${id}` },
+    { title: "Kpis", href: `/supervisor/sports/${kpi_id}` },
     { title: "Metrics", href: `` },
   ].map((item, index) => (
     <Link to={item.href} key={index}>
@@ -40,7 +50,7 @@ const KpiMetrics = (props: Props) => {
                 <Avatar
                   radius={"xl"}
                   className="w-3/5 h-3/5"
-                  src={metric.icon_url}
+                  src={metric.icon_url || metric.icon}
                   alt="icon"
                 />
               </div>
@@ -62,7 +72,7 @@ const KpiMetrics = (props: Props) => {
             </div>
           );
         })}
-        <AddMetric kpiId={id ? +id : undefined} />
+        <AddMetric />
       </div>
     </div>
   );
