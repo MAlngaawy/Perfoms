@@ -9,20 +9,32 @@ import cn from "classnames";
 import SubmitButton from "../../../../../@main/components/SubmitButton";
 import { Pillar } from "~/app/store/types/supervisor-types";
 import { axiosInstance } from "~/app/configs/dataService";
+import { useAdminPillarsQuery } from "~/app/store/clubManager/clubManagerApi";
+import { useSuperPillarsQuery } from "~/app/store/supervisor/supervisorMainApi";
+import { useUserQuery } from "~/app/store/user/userApi";
+import { useParams } from "react-router-dom";
+import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {
   pillarData: Pillar;
 };
 
 const EditPillar = ({ pillarData }: Props) => {
-  console.log(pillarData);
-
   const [opened, setOpened] = useState(false);
-  const [playerImage, setPlayerImage] = useState<string | unknown>(
-    pillarData.icon
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<boolean | string>(false);
+  const { data: user } = useUserQuery({});
+  const { sport_id } = useParams();
+  const [playerImage, setPlayerImage] = useState<string | unknown>("");
+  const [playerImagePreview, setPlayerImagePreview] = useState("null");
+  const { refetch: refetchAdminPillars } = useAdminPillarsQuery(
+    { sport_id: sport_id },
+    { skip: !sport_id }
   );
-  const [playerImagePreview, setPlayerImagePreview] =
-    useState<string | undefined>();
+  const { refetch: refetchSuperPillars } = useSuperPillarsQuery(
+    { sport_id: sport_id },
+    { skip: !sport_id }
+  );
 
   const {
     register,
@@ -34,7 +46,44 @@ const EditPillar = ({ pillarData }: Props) => {
   const onSubmitFunction = (e: any) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    // axiosInstance.patch();
+
+    try {
+      setIsLoading(true);
+      axiosInstance
+        .patch(
+          user?.user_type === "Supervisor"
+            ? `supervisor/sports/pillars/${pillarData.id}/update/`
+            : `club-manager/sports/pillars/${pillarData.id}/update/`,
+          formData
+        )
+        .then((res) => {
+          setIsLoading(false);
+          setOpened(false);
+          if (user?.user_type === "Supervisor") {
+            refetchSuperPillars();
+          } else {
+            refetchAdminPillars();
+          }
+          AppUtils.showNotificationFun(
+            "Success",
+            "Done",
+            "Pillar Updated Successfl"
+          );
+        })
+        .catch((err) => {
+          setIsLoading(false);
+          setError(err.response.data.message);
+          AppUtils.showNotificationFun(
+            "Error",
+            "Sorry",
+            "Can't Update Pillar Now"
+          );
+        });
+    } catch (err) {
+      setIsLoading(false);
+      AppUtils.showNotificationFun("Error", "Sorry", "Can't Update Pillar Now");
+    }
+
     setOpened(false);
   };
 
@@ -87,34 +136,22 @@ const EditPillar = ({ pillarData }: Props) => {
                 component="label"
               >
                 <img
-                  className={cn("", {
-                    hidden: playerImage,
-                  })}
-                  src="/assets/images/Vector.png"
-                  alt="upload icon"
-                />
-                <img
                   className={cn(
-                    " absolute rounded-lg w-full -h-full max-w-full max-h-full object-cover left-0 top-0",
-                    {
-                      hidden: !playerImage,
-                    }
+                    " absolute rounded-lg w-full -h-full max-w-full max-h-full object-cover left-0 top-0"
                   )}
-                  src={
-                    (playerImagePreview && playerImagePreview) ||
-                    (playerImage as string)
-                  }
+                  src={playerImage ? playerImagePreview : pillarData.icon}
                   alt="upload icon"
                 />
                 <Input
                   hidden
                   accept="image/*"
-                  {...register("icon")}
+                  {...register("image")}
                   name="icon"
                   multiple
                   type="file"
                   // error={errors.image && (errors.image.message as ReactNode)}
                   onChange={(e: any) => {
+                    console.log(e.target.files[0]);
                     setPlayerImagePreview(
                       URL.createObjectURL(e.target.files[0])
                     );
@@ -151,7 +188,7 @@ const EditPillar = ({ pillarData }: Props) => {
                 id="name"
               />
             </Input.Wrapper>
-            <SubmitButton isLoading={false} text="Edit Kpi" />
+            <SubmitButton isLoading={isLoading} text="Edit Pillar" />
           </form>
         </Modal>
 

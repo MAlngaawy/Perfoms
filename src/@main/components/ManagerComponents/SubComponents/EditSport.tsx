@@ -53,11 +53,8 @@ const EditSport = ({ sportData }: Props) => {
   // Submit Form Function
   const onSubmitFunction = (e: any) => {
     e.preventDefault();
-
     setLoading(true);
-
     const formData = new FormData(e.currentTarget);
-
     if (adminClub?.id) {
       formData.append("club", JSON.stringify(adminClub?.id));
     }
