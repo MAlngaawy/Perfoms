@@ -5,8 +5,15 @@ import EditPillar from "./Components/EditPillar";
 import AddPillar from "./Components/AddPillar";
 import { Pillars } from "~/app/store/types/supervisor-types";
 import { Avatar, Breadcrumbs } from "@mantine/core";
-import { useSuperPillarsQuery } from "~/app/store/supervisor/supervisorMainApi";
-import { useAdminPillarsQuery } from "~/app/store/clubManager/clubManagerApi";
+import {
+  useSuperDeletePillarMutation,
+  useSuperPillarsQuery,
+} from "~/app/store/supervisor/supervisorMainApi";
+import {
+  useAdminDeletePillarMutation,
+  useAdminPillarsQuery,
+} from "~/app/store/clubManager/clubManagerApi";
+import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {};
 
@@ -23,10 +30,56 @@ const SportPillars = (props: Props) => {
   const { data: superPillars, refetch: refetchSuperPillars } =
     useSuperPillarsQuery({ sport_id: sport_id }, { skip: !sport_id });
 
+  const [superDeletePillar] = useSuperDeletePillarMutation();
+  const [adminDeletePillar] = useAdminDeletePillarMutation();
+
   useEffect(() => {
     if (superPillars) setPillars(superPillars);
     if (adminPillars) setPillars(adminPillars);
   }, [superPillars, adminPillars]);
+
+  // Delete Pillar Fun
+  const deletePillarFun = (pillar_id: number) => {
+    if (user === "admin") {
+      adminDeletePillar({
+        pillar_id,
+      })
+        .then((res) => {
+          AppUtils.showNotificationFun(
+            "Success",
+            "Done",
+            "Pillar Deleted Succcessfly"
+          );
+          refetchAdminPillars();
+        })
+        .catch(() => {
+          AppUtils.showNotificationFun(
+            "Error",
+            "Sorry",
+            "Can't delete Pillar Now"
+          );
+        });
+    } else if (user === "supervisor") {
+      superDeletePillar({
+        pillar_id,
+      })
+        .then((res) => {
+          AppUtils.showNotificationFun(
+            "Success",
+            "Done",
+            "Pillar Deleted Succcessfly"
+          );
+          refetchSuperPillars();
+        })
+        .catch(() => {
+          AppUtils.showNotificationFun(
+            "Error",
+            "Sorry",
+            "Can't delete Pillar Now"
+          );
+        });
+    }
+  };
 
   const items = [
     { title: "Home", href: `/${user}` },
@@ -69,7 +122,7 @@ const SportPillars = (props: Props) => {
               <div className="flex absolute right-2 top-5 gap-2">
                 <EditPillar pillarData={pillar} />
                 <DeleteButton
-                  deleteFun={() => console.log("delete")}
+                  deleteFun={() => deletePillarFun(pillar.id)}
                   name={pillar.name}
                   type="pillar"
                 />

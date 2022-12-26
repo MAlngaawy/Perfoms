@@ -115,6 +115,7 @@ export const supervisorApi = createApi({
     superSport: query<ClubManagerSport, { page?: number }>({
       query: (params) => ({ url: "my-sport/", params }),
     }),
+
     superPillars: query<
       Pillars,
       { sport_id: number | string | undefined; page?: number }
@@ -124,6 +125,16 @@ export const supervisorApi = createApi({
         params,
       }),
     }),
+
+    superDeletePillar: mutation<{}, { pillar_id: string | number | undefined }>(
+      {
+        query: ({ pillar_id, ...params }) => ({
+          url: `sports/pillars/${pillar_id}/delete`,
+          method: "DELETE",
+        }),
+      }
+    ),
+
     superMetrics: query<Metrics, { kpi_id: string | undefined; page?: number }>(
       {
         query: ({ kpi_id, ...params }) => ({
@@ -498,6 +509,7 @@ export const {
   useSuperSportQuery,
   useSuperKpisQuery,
   useSuperPillarsQuery,
+  useSuperDeletePillarMutation,
   useAddKpiMutation,
   useSuperMetricsQuery,
   useAddActionMutation,
