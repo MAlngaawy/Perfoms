@@ -6,6 +6,7 @@ import TeamPlayers from "./Components/TeamPlayers";
 import TeamUpcomingEvents from "./Components/TeamUpcomingEvents";
 import { useUserQuery } from "~/app/store/user/userApi";
 import { useParams } from "react-router-dom";
+import CustomBreadCrumbs from "~/@main/components/BreadCrumbs";
 
 type Props = {};
 
@@ -15,7 +16,15 @@ const SingleTeam = (props: Props) => {
   const { id } = useParams();
 
   return (
-    <div className="py-6 px-2">
+    <div className="p-2">
+      <CustomBreadCrumbs
+        items={[
+          {
+            href: user?.user_type === "Admin" ? "/admin" : "/supervisor",
+            title: "Home",
+          },
+        ]}
+      />
       <Grid gutter={"xs"} className="items-stretch">
         <Grid.Col span={12} sm={7} lg={4}>
           <CardDiv>

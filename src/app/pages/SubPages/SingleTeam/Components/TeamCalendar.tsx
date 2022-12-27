@@ -1,23 +1,41 @@
 import { useEffect, useState } from "react";
 import { Calendar } from "@mantine/dates";
-import classNames from "classnames";
 import {
   useSuperAddTeamCalendarMutation,
   useSuperTeamAttendanceQuery,
 } from "~/app/store/supervisor/supervisorMainApi";
 import AppUtils from "~/@main/utils/AppUtils";
+import { useUserQuery } from "~/app/store/user/userApi";
+import { TeamAttendance } from "~/app/store/types/supervisor-types";
+import {
+  useAdminAddTeamCalendarMutation,
+  useAdminTeamAttendanceQuery,
+} from "~/app/store/clubManager/clubManagerApi";
 
 type Props = {
   teamId: string;
 };
 
 const TeamCalendar = ({ teamId }: Props) => {
-  const { data: attDates } = useSuperTeamAttendanceQuery(
+  const { data: user } = useUserQuery({});
+  const [attDates, setAttDates] = useState<TeamAttendance>();
+
+  const { data: superAttDates } = useSuperTeamAttendanceQuery(
     { team_id: +teamId },
     { skip: !teamId }
   );
+  const [superAddDay] = useSuperAddTeamCalendarMutation();
 
-  const [addDay, isLoading] = useSuperAddTeamCalendarMutation();
+  const { data: adminAttDates } = useAdminTeamAttendanceQuery(
+    { team_id: +teamId },
+    { skip: !teamId }
+  );
+  const [adminAddDay] = useAdminAddTeamCalendarMutation();
+
+  useEffect(() => {
+    if (superAttDates) setAttDates(superAttDates);
+    if (adminAttDates) setAttDates(adminAttDates);
+  }, [superAttDates, adminAttDates]);
 
   return (
     <div>
@@ -43,12 +61,19 @@ const TeamCalendar = ({ teamId }: Props) => {
             const day = date.getDate();
             return (
               <div
-                onClick={() =>
-                  addDay({
-                    day: AppUtils.formatDate(date),
-                    team: +teamId,
-                  })
-                }
+                onClick={() => {
+                  if (user?.user_type === "Supervisor") {
+                    superAddDay({
+                      day: AppUtils.formatDate(date),
+                      team: +teamId,
+                    });
+                  } else if (user?.user_type === "Admin") {
+                    adminAddDay({
+                      day: AppUtils.formatDate(date),
+                      team: +teamId,
+                    });
+                  }
+                }}
               >
                 {day}
               </div>

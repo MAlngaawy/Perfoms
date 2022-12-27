@@ -1,209 +1,23 @@
 import React from "react";
+import {
+  useAdminCoachesQuery,
+  useAdminPlayersQuery,
+  useAdminSupervisorsQuery,
+} from "~/app/store/clubManager/clubManagerApi";
 import UsersCard from "./SubComponents/UsersCard";
 
 type Props = {};
 
-const usersData = [
-  {
-    name: "mohamed",
-    id: 1,
-    image:
-      "https://media.istockphoto.com/id/1221796966/photo/young-soccer-player-portrait-on-the-empty-stadium.jpg?s=612x612&w=0&k=20&c=TbBtuY4YooEd7DxreBBhm0SJ6BX43TK9TBUWF8b5pmc=",
-  },
-  {
-    name: "mohamed",
-    id: 1,
-    image:
-      "https://media.istockphoto.com/id/1221796966/photo/young-soccer-player-portrait-on-the-empty-stadium.jpg?s=612x612&w=0&k=20&c=TbBtuY4YooEd7DxreBBhm0SJ6BX43TK9TBUWF8b5pmc=",
-  },
-  {
-    name: "mohamed",
-    id: 1,
-    image:
-      "https://media.istockphoto.com/id/1221796966/photo/young-soccer-player-portrait-on-the-empty-stadium.jpg?s=612x612&w=0&k=20&c=TbBtuY4YooEd7DxreBBhm0SJ6BX43TK9TBUWF8b5pmc=",
-  },
-  {
-    name: "mohamed",
-    id: 1,
-    image:
-      "https://media.istockphoto.com/id/1221796966/photo/young-soccer-player-portrait-on-the-empty-stadium.jpg?s=612x612&w=0&k=20&c=TbBtuY4YooEd7DxreBBhm0SJ6BX43TK9TBUWF8b5pmc=",
-  },
-  {
-    name: "mohamed",
-    id: 1,
-    image:
-      "https://media.istockphoto.com/id/1221796966/photo/young-soccer-player-portrait-on-the-empty-stadium.jpg?s=612x612&w=0&k=20&c=TbBtuY4YooEd7DxreBBhm0SJ6BX43TK9TBUWF8b5pmc=",
-  },
-  {
-    name: "mohamed",
-    id: 1,
-    image:
-      "https://media.istockphoto.com/id/1221796966/photo/young-soccer-player-portrait-on-the-empty-stadium.jpg?s=612x612&w=0&k=20&c=TbBtuY4YooEd7DxreBBhm0SJ6BX43TK9TBUWF8b5pmc=",
-  },
-  {
-    name: "mohamed",
-    id: 1,
-    image:
-      "https://media.istockphoto.com/id/1221796966/photo/young-soccer-player-portrait-on-the-empty-stadium.jpg?s=612x612&w=0&k=20&c=TbBtuY4YooEd7DxreBBhm0SJ6BX43TK9TBUWF8b5pmc=",
-  },
-  {
-    name: "mohamed",
-    id: 1,
-    image:
-      "https://media.istockphoto.com/id/1221796966/photo/young-soccer-player-portrait-on-the-empty-stadium.jpg?s=612x612&w=0&k=20&c=TbBtuY4YooEd7DxreBBhm0SJ6BX43TK9TBUWF8b5pmc=",
-  },
-  {
-    name: "mohamed",
-    id: 1,
-    image:
-      "https://media.istockphoto.com/id/1221796966/photo/young-soccer-player-portrait-on-the-empty-stadium.jpg?s=612x612&w=0&k=20&c=TbBtuY4YooEd7DxreBBhm0SJ6BX43TK9TBUWF8b5pmc=",
-  },
-  {
-    name: "mohamed",
-    id: 1,
-    image:
-      "https://media.istockphoto.com/id/1221796966/photo/young-soccer-player-portrait-on-the-empty-stadium.jpg?s=612x612&w=0&k=20&c=TbBtuY4YooEd7DxreBBhm0SJ6BX43TK9TBUWF8b5pmc=",
-  },
-  {
-    name: "mohamed",
-    id: 1,
-    image:
-      "https://media.istockphoto.com/id/1221796966/photo/young-soccer-player-portrait-on-the-empty-stadium.jpg?s=612x612&w=0&k=20&c=TbBtuY4YooEd7DxreBBhm0SJ6BX43TK9TBUWF8b5pmc=",
-  },
-  {
-    name: "mohamed",
-    id: 1,
-    image:
-      "https://media.istockphoto.com/id/1221796966/photo/young-soccer-player-portrait-on-the-empty-stadium.jpg?s=612x612&w=0&k=20&c=TbBtuY4YooEd7DxreBBhm0SJ6BX43TK9TBUWF8b5pmc=",
-  },
-  {
-    name: "mohamed",
-    id: 1,
-    image:
-      "https://media.istockphoto.com/id/1221796966/photo/young-soccer-player-portrait-on-the-empty-stadium.jpg?s=612x612&w=0&k=20&c=TbBtuY4YooEd7DxreBBhm0SJ6BX43TK9TBUWF8b5pmc=",
-  },
-  {
-    name: "mohamed",
-    id: 1,
-    image:
-      "https://media.istockphoto.com/id/1221796966/photo/young-soccer-player-portrait-on-the-empty-stadium.jpg?s=612x612&w=0&k=20&c=TbBtuY4YooEd7DxreBBhm0SJ6BX43TK9TBUWF8b5pmc=",
-  },
-  {
-    name: "mohamed",
-    id: 1,
-    image:
-      "https://media.istockphoto.com/id/1221796966/photo/young-soccer-player-portrait-on-the-empty-stadium.jpg?s=612x612&w=0&k=20&c=TbBtuY4YooEd7DxreBBhm0SJ6BX43TK9TBUWF8b5pmc=",
-  },
-  {
-    name: "mohamed",
-    id: 1,
-    image:
-      "https://media.istockphoto.com/id/1221796966/photo/young-soccer-player-portrait-on-the-empty-stadium.jpg?s=612x612&w=0&k=20&c=TbBtuY4YooEd7DxreBBhm0SJ6BX43TK9TBUWF8b5pmc=",
-  },
-  {
-    name: "mohamed",
-    id: 1,
-    image:
-      "https://media.istockphoto.com/id/1221796966/photo/young-soccer-player-portrait-on-the-empty-stadium.jpg?s=612x612&w=0&k=20&c=TbBtuY4YooEd7DxreBBhm0SJ6BX43TK9TBUWF8b5pmc=",
-  },
-  {
-    name: "mohamed",
-    id: 1,
-    image:
-      "https://media.istockphoto.com/id/1221796966/photo/young-soccer-player-portrait-on-the-empty-stadium.jpg?s=612x612&w=0&k=20&c=TbBtuY4YooEd7DxreBBhm0SJ6BX43TK9TBUWF8b5pmc=",
-  },
-  {
-    name: "mohamed",
-    id: 1,
-    image:
-      "https://media.istockphoto.com/id/1221796966/photo/young-soccer-player-portrait-on-the-empty-stadium.jpg?s=612x612&w=0&k=20&c=TbBtuY4YooEd7DxreBBhm0SJ6BX43TK9TBUWF8b5pmc=",
-  },
-  {
-    name: "mohamed",
-    id: 1,
-    image:
-      "https://media.istockphoto.com/id/1221796966/photo/young-soccer-player-portrait-on-the-empty-stadium.jpg?s=612x612&w=0&k=20&c=TbBtuY4YooEd7DxreBBhm0SJ6BX43TK9TBUWF8b5pmc=",
-  },
-  {
-    name: "mohamed",
-    id: 1,
-    image:
-      "https://media.istockphoto.com/id/1221796966/photo/young-soccer-player-portrait-on-the-empty-stadium.jpg?s=612x612&w=0&k=20&c=TbBtuY4YooEd7DxreBBhm0SJ6BX43TK9TBUWF8b5pmc=",
-  },
-  {
-    name: "mohamed",
-    id: 1,
-    image:
-      "https://media.istockphoto.com/id/1221796966/photo/young-soccer-player-portrait-on-the-empty-stadium.jpg?s=612x612&w=0&k=20&c=TbBtuY4YooEd7DxreBBhm0SJ6BX43TK9TBUWF8b5pmc=",
-  },
-  {
-    name: "mohamed",
-    id: 1,
-    image:
-      "https://media.istockphoto.com/id/1221796966/photo/young-soccer-player-portrait-on-the-empty-stadium.jpg?s=612x612&w=0&k=20&c=TbBtuY4YooEd7DxreBBhm0SJ6BX43TK9TBUWF8b5pmc=",
-  },
-  {
-    name: "mohamed",
-    id: 1,
-    image:
-      "https://media.istockphoto.com/id/1221796966/photo/young-soccer-player-portrait-on-the-empty-stadium.jpg?s=612x612&w=0&k=20&c=TbBtuY4YooEd7DxreBBhm0SJ6BX43TK9TBUWF8b5pmc=",
-  },
-  {
-    name: "mohamed",
-    id: 1,
-    image:
-      "https://media.istockphoto.com/id/1221796966/photo/young-soccer-player-portrait-on-the-empty-stadium.jpg?s=612x612&w=0&k=20&c=TbBtuY4YooEd7DxreBBhm0SJ6BX43TK9TBUWF8b5pmc=",
-  },
-  {
-    name: "mohamed",
-    id: 1,
-    image:
-      "https://media.istockphoto.com/id/1221796966/photo/young-soccer-player-portrait-on-the-empty-stadium.jpg?s=612x612&w=0&k=20&c=TbBtuY4YooEd7DxreBBhm0SJ6BX43TK9TBUWF8b5pmc=",
-  },
-  {
-    name: "mohamed",
-    id: 1,
-    image:
-      "https://media.istockphoto.com/id/1221796966/photo/young-soccer-player-portrait-on-the-empty-stadium.jpg?s=612x612&w=0&k=20&c=TbBtuY4YooEd7DxreBBhm0SJ6BX43TK9TBUWF8b5pmc=",
-  },
-  {
-    name: "mohamed",
-    id: 1,
-    image:
-      "https://media.istockphoto.com/id/1221796966/photo/young-soccer-player-portrait-on-the-empty-stadium.jpg?s=612x612&w=0&k=20&c=TbBtuY4YooEd7DxreBBhm0SJ6BX43TK9TBUWF8b5pmc=",
-  },
-  {
-    name: "mohamed",
-    id: 1,
-    image:
-      "https://media.istockphoto.com/id/1221796966/photo/young-soccer-player-portrait-on-the-empty-stadium.jpg?s=612x612&w=0&k=20&c=TbBtuY4YooEd7DxreBBhm0SJ6BX43TK9TBUWF8b5pmc=",
-  },
-  {
-    name: "mohamed",
-    id: 1,
-    image:
-      "https://media.istockphoto.com/id/1221796966/photo/young-soccer-player-portrait-on-the-empty-stadium.jpg?s=612x612&w=0&k=20&c=TbBtuY4YooEd7DxreBBhm0SJ6BX43TK9TBUWF8b5pmc=",
-  },
-  {
-    name: "mohamed",
-    id: 1,
-    image:
-      "https://media.istockphoto.com/id/1221796966/photo/young-soccer-player-portrait-on-the-empty-stadium.jpg?s=612x612&w=0&k=20&c=TbBtuY4YooEd7DxreBBhm0SJ6BX43TK9TBUWF8b5pmc=",
-  },
-  {
-    name: "mohamed",
-    id: 1,
-    image:
-      "https://media.istockphoto.com/id/1221796966/photo/young-soccer-player-portrait-on-the-empty-stadium.jpg?s=612x612&w=0&k=20&c=TbBtuY4YooEd7DxreBBhm0SJ6BX43TK9TBUWF8b5pmc=",
-  },
-];
-
 const Users = (props: Props) => {
+  const { data: players } = useAdminPlayersQuery({});
+  const { data: coaches } = useAdminCoachesQuery({});
+  const { data: supervisors } = useAdminSupervisorsQuery({});
+
   return (
-    <div className="flex flex-col gap-6  p-2 sm:p-6">
-      <UsersCard type="Coach" data={usersData} />
-      <UsersCard type="Supervisor" data={usersData} />
-      <UsersCard type="Player" data={usersData} />
+    <div className="flex flex-col gap-6  p-2 sm:p-6 mb-10">
+      <UsersCard type="Coach" data={coaches?.results} />
+      <UsersCard type="Supervisor" data={supervisors?.results} />
+      <UsersCard type="Player" data={players?.results} />
     </div>
   );
 };

@@ -5,6 +5,8 @@ import ReactPlayer from "react-player";
 import SubmitButton from "~/@main/components/SubmitButton";
 import { axiosInstance } from "../../../configs/dataService";
 import { useParams } from "react-router-dom";
+import { useUserQuery } from "~/app/store/user/userApi";
+import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {
   refetch: any;
@@ -13,11 +15,10 @@ type Props = {
 const UploadForm = ({ refetch }: Props) => {
   const [opened, setOpened] = useState(false);
   const [link, setLink] = useState<string>();
-  const [isError, setIsErrror] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
   const { id } = useParams();
   const [images, setImages] = useState<any>();
+  const { data: user } = useUserQuery({});
 
   const upload = (e: any) => {
     e.preventDefault();
@@ -30,19 +31,30 @@ const UploadForm = ({ refetch }: Props) => {
 
       try {
         axiosInstance
-          .patch(`supervisor/events/${id}/update/`, formData)
+          .patch(
+            user?.user_type === "Supervisor"
+              ? `supervisor/events/${id}/update/`
+              : `club-manager/teams/events/${id}/update/`,
+            formData
+          )
           .then((res) => {
             setIsLoading(false);
             setOpened(false);
             setLink("");
             refetch();
+            AppUtils.showNotificationFun("Success", "Done", "Media Added");
           })
           .catch((err) => {
+            AppUtils.showNotificationFun(
+              "Error",
+              "Sorry",
+              "Can't add Media now"
+            );
             console.log(err);
             setIsLoading(false);
           });
       } catch (err) {
-        setIsErrror(true);
+        AppUtils.showNotificationFun("Error", "Sorry", "Can't add Media now");
         setIsLoading(false);
       }
     }
@@ -55,19 +67,30 @@ const UploadForm = ({ refetch }: Props) => {
 
       try {
         axiosInstance
-          .post(`supervisor/add-event-files/${id}/`, formData)
+          .post(
+            user?.user_type === "Supervisor"
+              ? `supervisor/add-event-files/${id}/`
+              : `club-manager/add-event-files/${id}/`,
+            formData
+          )
           .then((res) => {
             setIsLoading(false);
             setOpened(false);
             setLink("");
+            AppUtils.showNotificationFun("Success", "Done", "Media Added");
             refetch();
           })
           .catch((err) => {
             console.log(err);
             setIsLoading(false);
+            AppUtils.showNotificationFun(
+              "Error",
+              "Sorry",
+              "Can't add Media now"
+            );
           });
       } catch (err) {
-        setIsErrror(true);
+        AppUtils.showNotificationFun("Error", "Sorry", "Can't add Media now");
         setIsLoading(false);
       }
     }

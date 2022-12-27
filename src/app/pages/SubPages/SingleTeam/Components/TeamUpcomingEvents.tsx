@@ -7,18 +7,85 @@ import {
   useSuperTeamEventsQuery,
 } from "~/app/store/supervisor/supervisorMainApi";
 import { showNotification } from "@mantine/notifications";
+import { useEffect, useState } from "react";
+import { TeamEvents } from "~/app/store/types/parent-types";
+import { useUserQuery } from "~/app/store/user/userApi";
+import {
+  useAdminDeleteEventMutation,
+  useAdminTeamEventsQuery,
+} from "~/app/store/clubManager/clubManagerApi";
 
 type Props = {
   teamId: string;
 };
 
 const TeamUpcomingEvents = ({ teamId }: Props) => {
-  const { data: events, refetch } = useSuperTeamEventsQuery(
+  const [events, setEvents] = useState<TeamEvents>();
+  const { data: user } = useUserQuery({});
+
+  const { data: superEvents, refetch: superRefetch } = useSuperTeamEventsQuery(
     { team_id: teamId },
     { skip: !teamId }
   );
 
-  const [deleteEvent] = useSuperDeleteEventMutation();
+  const { data: adminEvents, refetch: adminRefetch } = useAdminTeamEventsQuery(
+    { team_id: teamId },
+    { skip: !teamId }
+  );
+
+  useEffect(() => {
+    if (superEvents) setEvents(superEvents);
+    if (adminEvents) setEvents(adminEvents);
+  }, [superEvents, adminEvents]);
+
+  const [superDeleteEvent] = useSuperDeleteEventMutation();
+  const [adminDeleteEvent] = useAdminDeleteEventMutation();
+
+  const deleteEvent = (eventId: number) => {
+    if (user?.user_type === "Supervisor") {
+      superDeleteEvent({ event_id: eventId }).then((res) => {
+        showNotification({
+          message: "Successfly Deleted",
+          color: "green",
+          title: "Done",
+          styles: {
+            root: {
+              backgroundColor: "#27AE60",
+              borderColor: "#27AE60",
+              "&::before": { backgroundColor: "#fff" },
+            },
+
+            title: { color: "#fff" },
+            description: { color: "#fff" },
+            closeButton: {
+              color: "#fff",
+            },
+          },
+        });
+      });
+    } else if (user?.user_type === "Admin") {
+      adminDeleteEvent({ event_id: eventId }).then((res) => {
+        showNotification({
+          message: "Successfly Deleted",
+          color: "green",
+          title: "Done",
+          styles: {
+            root: {
+              backgroundColor: "#27AE60",
+              borderColor: "#27AE60",
+              "&::before": { backgroundColor: "#fff" },
+            },
+
+            title: { color: "#fff" },
+            description: { color: "#fff" },
+            closeButton: {
+              color: "#fff",
+            },
+          },
+        });
+      });
+    }
+  };
 
   return (
     <div>
@@ -57,37 +124,27 @@ const TeamUpcomingEvents = ({ teamId }: Props) => {
 
               <div className="options flex flex-col justify-around">
                 <DeleteButton
-                  deleteFun={() =>
-                    deleteEvent({ event_id: event.id }).then((res) => {
-                      showNotification({
-                        message: "Successfly Deleted",
-                        color: "green",
-                        title: "Done",
-                        styles: {
-                          root: {
-                            backgroundColor: "#27AE60",
-                            borderColor: "#27AE60",
-                            "&::before": { backgroundColor: "#fff" },
-                          },
-
-                          title: { color: "#fff" },
-                          description: { color: "#fff" },
-                          closeButton: {
-                            color: "#fff",
-                          },
-                        },
-                      });
-                    })
-                  }
+                  deleteFun={() => deleteEvent(event.id)}
                   name={event.name}
                   type="event"
                 />
-                <EditEventForm refetch={() => refetch()} event={event} />
+                <EditEventForm
+                  refetch={() => {
+                    if (superEvents) superRefetch();
+                    if (adminEvents) adminRefetch();
+                  }}
+                  event={event}
+                />
               </div>
             </div>
           ))}
       </div>
-      <AddEventForm refetch={() => refetch()} />
+      <AddEventForm
+        refetch={() => {
+          if (superEvents) superRefetch();
+          if (adminEvents) adminRefetch();
+        }}
+      />
     </div>
   );
 };

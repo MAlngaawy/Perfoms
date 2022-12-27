@@ -1,5 +1,5 @@
-import { useState, ReactNode } from "react";
-import { Modal, Button, Group, Input } from "@mantine/core";
+import { useState, ReactNode, useEffect } from "react";
+import { Modal, Button, Group, Input, Avatar } from "@mantine/core";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -13,6 +13,9 @@ import { useSuperClubQuery } from "~/app/store/supervisor/supervisorMainApi";
 import AppUtils from "~/@main/utils/AppUtils";
 import { axiosInstance } from "~/app/configs/dataService";
 import { showNotification } from "@mantine/notifications";
+import { useUserQuery } from "~/app/store/user/userApi";
+import { useAdminClubQuery } from "~/app/store/clubManager/clubManagerApi";
+import { ParentClub } from "~/app/store/types/parent-types";
 
 type Props = {
   refetch: any;
@@ -20,11 +23,18 @@ type Props = {
 
 const AddEventForm = ({ refetch }: Props) => {
   const [opened, setOpened] = useState(false);
-  const [playerImage, setPlayerImage] = useState<string | unknown>();
+  const [playerImage, setPlayerImage] = useState<any>();
   const [playerImagePreview, setPlayerImagePreview] = useState("null");
-  const [value, setValue] = useState<any>();
+  const [clubData, setclubData] = useState<ParentClub>();
   const { id: team_id } = useParams();
-  const { data: clubData } = useSuperClubQuery({});
+  const { data: superClubData } = useSuperClubQuery({});
+  const { data: adminClubData } = useAdminClubQuery({});
+  const { data: user } = useUserQuery({});
+
+  useEffect(() => {
+    if (superClubData) setclubData(superClubData);
+    if (adminClubData) setclubData(adminClubData);
+  }, [superClubData, adminClubData]);
 
   const schema = yup.object().shape({
     eventName: yup.string().required("please add the Event name"),
@@ -48,15 +58,15 @@ const AddEventForm = ({ refetch }: Props) => {
     new Promise((resolve) => {
       Resizer.imageFileResizer(
         file,
-        100,
-        100,
+        300,
+        300,
         "JPEG",
         100,
         0,
         (uri: any) => {
           resolve(uri);
         },
-        "base64"
+        "file"
       );
     });
 
@@ -75,67 +85,41 @@ const AddEventForm = ({ refetch }: Props) => {
   // Submit Form Function
   const onSubmitFunction = (e: any) => {
     e.preventDefault();
-    console.log(e.currentTarget);
 
-    const paramData = {
-      team: team_id,
-      club: clubData?.id,
-    };
-    console.log(paramData);
+    // const paramData = {
+    //   team: team_id,
+    //   club: clubData?.id,
+    // };
     const formData = new FormData(e.currentTarget);
     formData.append("team", team_id || "0");
     formData.append("club", JSON.stringify(clubData?.id));
+    formData.set("icon", playerImage);
 
     axiosInstance
-      .post("supervisor/add-event/", formData)
+      .post(
+        user?.user_type === "Supervisor"
+          ? "supervisor/add-event/"
+          : "club-manager/teams/events/add-event/",
+        formData
+      )
       .then(() => {
-        showNotification({
-          message: "Event Created",
-          color: "green",
-          title: "Done",
-          styles: {
-            root: {
-              backgroundColor: "#27AE60",
-              borderColor: "#27AE60",
-              "&::before": { backgroundColor: "#fff" },
-            },
-
-            title: { color: "#fff" },
-            description: { color: "#fff" },
-            closeButton: {
-              color: "#fff",
-            },
-          },
+        AppUtils.showNotificationFun("Success", "Done", "Event Created");
+        setPlayerImagePreview("null");
+        reset({
+          eventName: "",
+          eventLocation: "",
         });
         refetch();
         setOpened(false);
       })
       .catch((err) => {
-        showNotification({
-          message: "please try again",
-          color: "ref",
-          title: "Wrong",
-          styles: {
-            root: {
-              backgroundColor: "#EB5757",
-              borderColor: "#EB5757",
-              "&::before": { backgroundColor: "#fff" },
-            },
-
-            title: { color: "#fff" },
-            description: { color: "#fff" },
-            closeButton: {
-              color: "#fff",
-            },
-          },
+        AppUtils.showNotificationFun("Error", "Sorry", "please try again");
+        setPlayerImagePreview("null");
+        reset({
+          eventName: "",
+          eventLocation: "",
         });
       });
-
-    setPlayerImagePreview("null");
-    reset({
-      eventName: "",
-      eventLocation: "",
-    });
   };
 
   return (
@@ -157,9 +141,9 @@ const AddEventForm = ({ refetch }: Props) => {
                   src="/assets/images/Vector.png"
                   alt="upload icon"
                 />
-                <img
+                <Avatar
                   className={cn(
-                    " absolute rounded-lg w-full -h-full max-w-full max-h-full object-cover left-0 top-0",
+                    " absolute rounded-lg w-full h-full object-cover left-0 top-0",
                     {
                       hidden: !playerImage,
                     }

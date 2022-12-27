@@ -8,21 +8,42 @@ import DeleteButton from "../../../../../@main/components/ManagerComponents/SubC
 import AddCoachForm from "./AddCoachForm";
 import { useParams } from "react-router-dom";
 import { showNotification } from "@mantine/notifications";
+import {
+  useAdminRemoveTeamCoachMutation,
+  useAdminTeamCoachesQuery,
+} from "~/app/store/clubManager/clubManagerApi";
+import { TeamCoaches } from "~/app/store/types/parent-types";
+import { useEffect } from "react";
+import { useState } from "react";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {
   teamId: string;
 };
 
-const TeamCoaches = ({ teamId }: Props) => {
+const TeamCoachesComp = ({ teamId }: Props) => {
   const { id: teamIdFromParams } = useParams();
+  const [coaches, setCoaches] = useState<TeamCoaches>();
+  const { data: user } = useUserQuery({});
 
-  const { data: coaches } = useSuperTeamCoachesQuery(
+  const { data: superCoaches } = useSuperTeamCoachesQuery(
     { team_id: teamIdFromParams ? teamIdFromParams : teamId },
     { skip: !teamId }
   );
 
-  const [removeCoach, { isLoading, isSuccess, isError }] =
-    useSuperRemoveTeamCoachMutation();
+  const { data: adminCoaches } = useAdminTeamCoachesQuery(
+    { team_id: teamIdFromParams ? teamIdFromParams : teamId },
+    { skip: !teamId }
+  );
+
+  const [superRemoveCoach] = useSuperRemoveTeamCoachMutation();
+
+  const [adminRemoveCoach] = useAdminRemoveTeamCoachMutation();
+
+  useEffect(() => {
+    if (superCoaches) setCoaches(superCoaches);
+    if (adminCoaches) setCoaches(adminCoaches);
+  }, [superCoaches, adminCoaches]);
 
   return (
     <div>
@@ -37,31 +58,57 @@ const TeamCoaches = ({ teamId }: Props) => {
               </h3>
             </div>
             <DeleteButton
-              deleteFun={() =>
-                removeCoach({
-                  coach_id: coach.id,
-                  team_id: teamId,
-                }).then(() => {
-                  showNotification({
-                    message: "Successfly Deleted",
-                    color: "green",
-                    title: "Done",
-                    styles: {
-                      root: {
-                        backgroundColor: "#27AE60",
-                        borderColor: "#27AE60",
-                        "&::before": { backgroundColor: "#fff" },
-                      },
+              deleteFun={() => {
+                if (user?.user_type === "Supervisor") {
+                  superRemoveCoach({
+                    coach_id: coach.id,
+                    team_id: teamId,
+                  }).then(() => {
+                    showNotification({
+                      message: "Successfly Deleted",
+                      color: "green",
+                      title: "Done",
+                      styles: {
+                        root: {
+                          backgroundColor: "#27AE60",
+                          borderColor: "#27AE60",
+                          "&::before": { backgroundColor: "#fff" },
+                        },
 
-                      title: { color: "#fff" },
-                      description: { color: "#fff" },
-                      closeButton: {
-                        color: "#fff",
+                        title: { color: "#fff" },
+                        description: { color: "#fff" },
+                        closeButton: {
+                          color: "#fff",
+                        },
                       },
-                    },
+                    });
                   });
-                })
-              }
+                } else if (user?.user_type === "Admin") {
+                  adminRemoveCoach({
+                    coach_id: coach.id,
+                    team_id: teamId,
+                  }).then(() => {
+                    showNotification({
+                      message: "Successfly Deleted",
+                      color: "green",
+                      title: "Done",
+                      styles: {
+                        root: {
+                          backgroundColor: "#27AE60",
+                          borderColor: "#27AE60",
+                          "&::before": { backgroundColor: "#fff" },
+                        },
+
+                        title: { color: "#fff" },
+                        description: { color: "#fff" },
+                        closeButton: {
+                          color: "#fff",
+                        },
+                      },
+                    });
+                  });
+                }
+              }}
               type="Coach"
               name={coach.first_name + " " + coach.last_name}
             />
@@ -73,4 +120,4 @@ const TeamCoaches = ({ teamId }: Props) => {
   );
 };
 
-export default TeamCoaches;
+export default TeamCoachesComp;

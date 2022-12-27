@@ -9,16 +9,33 @@ import DeletePlayerFromTeam from "./DeletePlayerFromTeam";
 import { useNavigate } from "react-router-dom";
 import { showNotification } from "@mantine/notifications";
 import { useUserQuery } from "~/app/store/user/userApi";
+import { TeamPlayers } from "~/app/store/types/clubManager-types";
+import { useEffect, useState } from "react";
+import {
+  useAdminRemoveTeamPlayerMutation,
+  useAdminTeamPlaersQuery,
+} from "~/app/store/clubManager/clubManagerApi";
 
 type Props = {
   teamId: string;
 };
 
-const TeamPlayers = ({ teamId }: Props) => {
-  const { data: players } = useSuperTeamPlaersQuery(
+const TeamPlayersComponent = ({ teamId }: Props) => {
+  const [players, setPlayers] = useState<TeamPlayers>();
+
+  const { data: superPlayers } = useSuperTeamPlaersQuery(
     { team_id: teamId },
     { skip: !teamId }
   );
+  const { data: adminPlayers } = useAdminTeamPlaersQuery(
+    { team_id: teamId },
+    { skip: !teamId }
+  );
+
+  useEffect(() => {
+    if (superPlayers) setPlayers(superPlayers);
+    if (adminPlayers) setPlayers(adminPlayers);
+  }, [superPlayers, adminPlayers]);
 
   return (
     <div>
@@ -45,7 +62,96 @@ export const SinglePlayer = ({ id, image, name, teamId }: any) => {
   const navigate = useNavigate();
   const { data: user } = useUserQuery(null);
 
-  const [removePlayer] = useSuperRemoveTeamPlayerMutation();
+  const [superRemovePlayer] = useSuperRemoveTeamPlayerMutation();
+  const [adminRemovePlayer] = useAdminRemoveTeamPlayerMutation();
+
+  const removeTeamPlayer = (teamId: number, playerId: number) => {
+    if (user?.user_type === "Supervisor") {
+      superRemovePlayer({ team_id: teamId, player_id: playerId })
+        .then((res) => {
+          showNotification({
+            message: "Deleted Succefly",
+            color: "green",
+            title: "Done",
+            styles: {
+              root: {
+                backgroundColor: "#27AE60",
+                borderColor: "#27AE60",
+                "&::before": { backgroundColor: "#fff" },
+              },
+
+              title: { color: "#fff" },
+              description: { color: "#fff" },
+              closeButton: {
+                color: "#fff",
+              },
+            },
+          });
+        })
+        .catch((err) => {
+          showNotification({
+            message: err.message,
+            color: "ref",
+            title: "Wrong",
+            styles: {
+              root: {
+                backgroundColor: "#EB5757",
+                borderColor: "#EB5757",
+                "&::before": { backgroundColor: "#fff" },
+              },
+
+              title: { color: "#fff" },
+              description: { color: "#fff" },
+              closeButton: {
+                color: "#fff",
+              },
+            },
+          });
+        });
+    } else if (user?.user_type === "Admin") {
+      adminRemovePlayer({ team_id: teamId, player_id: playerId })
+        .then((res) => {
+          showNotification({
+            message: "Deleted Succefly",
+            color: "green",
+            title: "Done",
+            styles: {
+              root: {
+                backgroundColor: "#27AE60",
+                borderColor: "#27AE60",
+                "&::before": { backgroundColor: "#fff" },
+              },
+
+              title: { color: "#fff" },
+              description: { color: "#fff" },
+              closeButton: {
+                color: "#fff",
+              },
+            },
+          });
+        })
+        .catch((err) => {
+          showNotification({
+            message: err.message,
+            color: "ref",
+            title: "Wrong",
+            styles: {
+              root: {
+                backgroundColor: "#EB5757",
+                borderColor: "#EB5757",
+                "&::before": { backgroundColor: "#fff" },
+              },
+
+              title: { color: "#fff" },
+              description: { color: "#fff" },
+              closeButton: {
+                color: "#fff",
+              },
+            },
+          });
+        });
+    }
+  };
 
   return (
     <div
@@ -66,61 +172,15 @@ export const SinglePlayer = ({ id, image, name, teamId }: any) => {
           <AppIcons className="w-5 h-5 text-white" icon="UserIcon:outline" />
           <span className="text-white">View profile</span>
         </div>
-        {user?.user_type === "Supervisor" && (
-          <DeletePlayerFromTeam
-            deleteFun={() =>
-              removePlayer({ team_id: teamId, player_id: id })
-                .then((res) => {
-                  showNotification({
-                    message: "Deleted Succefly",
-                    color: "green",
-                    title: "Done",
-                    styles: {
-                      root: {
-                        backgroundColor: "#27AE60",
-                        borderColor: "#27AE60",
-                        "&::before": { backgroundColor: "#fff" },
-                      },
-
-                      title: { color: "#fff" },
-                      description: { color: "#fff" },
-                      closeButton: {
-                        color: "#fff",
-                      },
-                    },
-                  });
-                })
-                .catch((err) => {
-                  showNotification({
-                    message: err.message,
-                    color: "ref",
-                    title: "Wrong",
-                    styles: {
-                      root: {
-                        backgroundColor: "#EB5757",
-                        borderColor: "#EB5757",
-                        "&::before": { backgroundColor: "#fff" },
-                      },
-
-                      title: { color: "#fff" },
-                      description: { color: "#fff" },
-                      closeButton: {
-                        color: "#fff",
-                      },
-                    },
-                  });
-                })
-            }
-            id={id}
-            name={name}
-            type="player"
-          />
-        )}
-
-        {/* <div className="hidden group-hover:flex justify-center items-center text-white gap-2 cursor-pointer hover:bg-perfGray1/90 p-2 w-full">
-          <AppIcons className="w-5 h-5 text-white" icon="TrashIcon:outline" />
-          <span className="text-white">Delete </span>
-        </div> */}
+        {user?.user_type === "Supervisor" ||
+          (user?.user_type === "Admin" && (
+            <DeletePlayerFromTeam
+              deleteFun={() => removeTeamPlayer(teamId, id)}
+              id={id}
+              name={name}
+              type="player"
+            />
+          ))}
       </div>
       <img
         className="rounded-lg w-full h-32 object-cover"
@@ -134,4 +194,4 @@ export const SinglePlayer = ({ id, image, name, teamId }: any) => {
   );
 };
 
-export default TeamPlayers;
+export default TeamPlayersComponent;

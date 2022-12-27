@@ -1,15 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useAdminTeamInfoQuery } from "~/app/store/clubManager/clubManagerApi";
 import { useSuperTeamInfoQuery } from "~/app/store/supervisor/supervisorMainApi";
+import { SuperVisorTeamInfo } from "~/app/store/types/supervisor-types";
 
 type Props = {
   teamId: string;
 };
 
 const TeamInfoCard = ({ teamId }: Props) => {
-  const { data: info } = useSuperTeamInfoQuery(
+  const [info, setInfo] = useState<SuperVisorTeamInfo>();
+
+  const { data: superInfo } = useSuperTeamInfoQuery(
     { team_id: teamId },
     { skip: !teamId }
   );
+
+  const { data: adminInfo } = useAdminTeamInfoQuery(
+    { team_id: teamId },
+    { skip: !teamId }
+  );
+
+  useEffect(() => {
+    if (superInfo) setInfo(superInfo);
+    if (adminInfo) setInfo(adminInfo);
+  }, [superInfo, adminInfo]);
 
   return (
     <div>

@@ -1,4 +1,4 @@
-import { useState, ReactNode } from "react";
+import { useState, ReactNode, useEffect } from "react";
 import { Modal, Button, Group, Input } from "@mantine/core";
 import AppIcons from "../../../core/AppIcons";
 import { useForm } from "react-hook-form";
@@ -10,16 +10,32 @@ import SubmitButton from "../../SubmitButton";
 import PerfSelect from "../../Select";
 import { axiosInstance } from "~/app/configs/dataService";
 import { showNotification } from "@mantine/notifications";
+import { useUserQuery } from "~/app/store/user/userApi";
+import { Sports } from "~/app/store/types/clubManager-types";
+import {
+  useAdminSportsQuery,
+  useAdminTeamsQuery,
+} from "~/app/store/clubManager/clubManagerApi";
+import { useSuperTeamsQuery } from "~/app/store/supervisor/supervisorMainApi";
 
 type Props = {
-  refetch: any;
+  // refetch: any;
 };
 
-const AddTeamCardForm = ({ refetch }: Props) => {
+const AddTeamCardForm = (props: Props) => {
   const [opened, setOpened] = useState(false);
   const [playerImage, setPlayerImage] = useState<string | unknown>("");
   const [playerImagePreview, setPlayerImagePreview] = useState("null");
   const [loading, setLoading] = useState<boolean>(false);
+  const [sports, setSports] = useState<Sports | undefined>();
+  const { data: user } = useUserQuery({});
+  const { refetch: superRefetch } = useSuperTeamsQuery({});
+  const { refetch: adminRefetch } = useAdminTeamsQuery({});
+  const { data: AdminSports } = useAdminSportsQuery({});
+
+  useEffect(() => {
+    if (AdminSports) setSports(AdminSports);
+  }, [AdminSports]);
 
   const schema = yup.object().shape({
     icon: yup.mixed(),
@@ -59,15 +75,23 @@ const AddTeamCardForm = ({ refetch }: Props) => {
     e.preventDefault();
     setLoading(true);
     const formData = new FormData(e.currentTarget);
-
     try {
       axiosInstance
-        .post("supervisor/add-team/", formData)
+        .post(
+          user?.user_type === "Supervisor"
+            ? "supervisor/add-team/"
+            : `club-manager/teams/${formData.get("sport")}/add-team/`,
+          formData
+        )
         .then((res) => {
+          if (user?.user_type === "Supervisor") {
+            superRefetch();
+          } else {
+            adminRefetch();
+          }
           setLoading(false);
           setOpened(false);
           setPlayerImage(null);
-          refetch();
           showNotification({
             title: "Done",
             color: "green",
@@ -211,6 +235,21 @@ const AddTeamCardForm = ({ refetch }: Props) => {
                 id="name"
               />
             </Input.Wrapper>
+
+            {user?.user_type === "Admin" && sports && (
+              <PerfSelect
+                control={control}
+                placeholder="Sport"
+                data={sports?.results?.map((sport, idx) => {
+                  return {
+                    label: sport.name,
+                    value: JSON.stringify(sport.id ? sport.id : idx),
+                  };
+                })}
+                name="sport"
+                required
+              />
+            )}
 
             <PerfSelect
               control={control}

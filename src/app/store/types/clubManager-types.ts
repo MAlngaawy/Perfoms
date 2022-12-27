@@ -4,10 +4,15 @@ import { Event } from "./events-types";
 import { PlayerCoach } from "./parent-types";
 
 export type ClubManagerSport = {
+  id?: number;
   icon: string;
   icon_url: string;
   name: string;
   club: number;
+};
+
+export type AllUsers = BaseGetAllType & {
+  results: PlayerCoach[];
 };
 
 export type CoachRequest = {
@@ -33,9 +38,10 @@ export type AddAction = {
 };
 
 export type AddRecommendation = {
-  id: number;
+  id?: number;
   name: string;
-  description: string;
+  description?: string;
+  metric_id: number;
 };
 
 export type Metrics = BaseGetAllType & {
@@ -51,6 +57,7 @@ export type Pillars = BaseGetAllType & {
     id: number;
     name: string;
     icon: string;
+    icon_url: string;
   }[];
 };
 

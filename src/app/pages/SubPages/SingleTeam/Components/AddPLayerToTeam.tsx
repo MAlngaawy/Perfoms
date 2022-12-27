@@ -10,6 +10,12 @@ import { useParams } from "react-router-dom";
 import { showNotification } from "@mantine/notifications";
 import __ from "lodash";
 import { TeamPlayers } from "~/app/store/types/clubManager-types";
+import {
+  useAdminAddTeamPlayerMutation,
+  useAdminPlayersQuery,
+} from "~/app/store/clubManager/clubManagerApi";
+import { SuperVisorPlayers } from "~/app/store/types/supervisor-types";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {
   teamPlayers: TeamPlayers | undefined;
@@ -18,15 +24,20 @@ type Props = {
 const AddPlayer = ({ teamPlayers }: Props) => {
   const [opened, setOpened] = useState(false);
   const [playersData, setPlayersData] = useState<any>([]);
-  const { data: players } = useSuperPlayersQuery({});
+  const [players, setPlayers] = useState<SuperVisorPlayers>();
+  const [loading, setLoading] = useState<boolean>(false);
+  const { data: superPlayers } = useSuperPlayersQuery({});
+  const { data: adminPlayers } = useAdminPlayersQuery({});
+  const { data: user } = useUserQuery({});
 
   const { id: team_id } = useParams();
 
   useEffect(() => {
-    /**
-     * Filter the team players vs all club players
-      to show only the not team member players in the select input 
-     */
+    if (superPlayers) setPlayers(superPlayers);
+    if (adminPlayers) setPlayers(adminPlayers);
+
+    // Filter the team players vs all club players
+    //to show only the not team member players in the select input
     const allPlayers = players?.results;
     const teamPlayersData = teamPlayers?.results;
     const filterdPlayers = __.xorBy(allPlayers, teamPlayersData, "id");
@@ -41,7 +52,7 @@ const AddPlayer = ({ teamPlayers }: Props) => {
     });
 
     setPlayersData(test);
-  }, [players]);
+  }, [players, superPlayers, adminPlayers]);
 
   const {
     register,
@@ -51,54 +62,110 @@ const AddPlayer = ({ teamPlayers }: Props) => {
     control,
   } = useForm();
 
-  const [addPlayer] = useSuperAddTeamPlayerMutation();
+  const [superAddPlayer] = useSuperAddTeamPlayerMutation();
+  const [adminAddPlayer] = useAdminAddTeamPlayerMutation();
+
+  const addPlayerFunc = (data: any) => {
+    setLoading(true);
+    if (user?.user_type === "Supervisor") {
+      superAddPlayer({
+        team_id: team_id,
+        player_id: data.player,
+      })
+        .then(() => {
+          setLoading(false);
+          showNotification({
+            message: "Successfly Added Player",
+            color: "green",
+            title: "Done",
+            styles: {
+              root: {
+                backgroundColor: "#27AE60",
+                borderColor: "#27AE60",
+                "&::before": { backgroundColor: "#fff" },
+              },
+
+              title: { color: "#fff" },
+              description: { color: "#fff" },
+              closeButton: {
+                color: "#fff",
+              },
+            },
+          });
+        })
+        .catch((err) => {
+          setLoading(false);
+          showNotification({
+            message: err.message,
+            color: "ref",
+            title: "Wrong",
+            styles: {
+              root: {
+                backgroundColor: "#EB5757",
+                borderColor: "#EB5757",
+                "&::before": { backgroundColor: "#fff" },
+              },
+
+              title: { color: "#fff" },
+              description: { color: "#fff" },
+              closeButton: {
+                color: "#fff",
+              },
+            },
+          });
+        });
+    } else if (user?.user_type === "Admin") {
+      adminAddPlayer({
+        team_id: team_id,
+        player_id: data.player,
+      })
+        .then((res) => {
+          setLoading(false);
+          showNotification({
+            message: "Successfly Added Player",
+            color: "green",
+            title: "Done",
+            styles: {
+              root: {
+                backgroundColor: "#27AE60",
+                borderColor: "#27AE60",
+                "&::before": { backgroundColor: "#fff" },
+              },
+
+              title: { color: "#fff" },
+              description: { color: "#fff" },
+              closeButton: {
+                color: "#fff",
+              },
+            },
+          });
+        })
+        .catch((err) => {
+          setLoading(false);
+          showNotification({
+            message: err.message,
+            color: "ref",
+            title: "Wrong",
+            styles: {
+              root: {
+                backgroundColor: "#EB5757",
+                borderColor: "#EB5757",
+                "&::before": { backgroundColor: "#fff" },
+              },
+
+              title: { color: "#fff" },
+              description: { color: "#fff" },
+              closeButton: {
+                color: "#fff",
+              },
+            },
+          });
+        });
+    }
+  };
 
   const onSubmit = (data: any) => {
-    addPlayer({
-      team_id: team_id,
-      player_id: data.player,
-    })
-      .then((res) => {
-        showNotification({
-          message: "Successfly Added Player",
-          color: "green",
-          title: "Done",
-          styles: {
-            root: {
-              backgroundColor: "#27AE60",
-              borderColor: "#27AE60",
-              "&::before": { backgroundColor: "#fff" },
-            },
-
-            title: { color: "#fff" },
-            description: { color: "#fff" },
-            closeButton: {
-              color: "#fff",
-            },
-          },
-        });
-      })
-      .catch((err) => {
-        showNotification({
-          message: err.message,
-          color: "ref",
-          title: "Wrong",
-          styles: {
-            root: {
-              backgroundColor: "#EB5757",
-              borderColor: "#EB5757",
-              "&::before": { backgroundColor: "#fff" },
-            },
-
-            title: { color: "#fff" },
-            description: { color: "#fff" },
-            closeButton: {
-              color: "#fff",
-            },
-          },
-        });
-      });
-    console.log(data);
+    addPlayerFunc(data);
     setOpened(false);
     reset({ player: "" });
   };
@@ -139,7 +206,8 @@ const AddPlayer = ({ teamPlayers }: Props) => {
               render={({ field }) => (
                 <Select
                   {...field}
-                  placeholder="Pick one"
+                  placeholder="Choose Player"
+                  autoFocus={true}
                   searchable
                   itemComponent={SelectItem}
                   maxDropdownHeight={400}
@@ -154,7 +222,7 @@ const AddPlayer = ({ teamPlayers }: Props) => {
                 />
               )}
             />
-            <SubmitButton isLoading={false} text="Add Player" />
+            <SubmitButton isLoading={loading} text="Add Player" />
           </form>
         </Modal>
 

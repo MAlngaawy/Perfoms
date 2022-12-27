@@ -9,6 +9,7 @@ import { useCoachTeamEventFilesQuery } from "~/app/store/coach/coachApi";
 import AppIcons from "~/@main/core/AppIcons";
 import UploadForm from "./UploadForm";
 import { useUserQuery } from "~/app/store/user/userApi";
+import { useAdminEventFilesQuery } from "~/app/store/clubManager/clubManagerApi";
 
 const MediaEvent = () => {
   const { id } = useParams();
@@ -21,32 +22,34 @@ const MediaEvent = () => {
     { skip: !id }
   );
 
-  const { data: superEventFiles, refetch } = useSuprtEventFilesQuery(
-    { event_id: id ? +id : 0 },
-    { skip: !id }
-  );
+  const { data: superEventFiles, refetch: superRefetch } =
+    useSuprtEventFilesQuery({ event_id: id ? +id : 0 }, { skip: !id });
 
   const { data: coachEventFiles } = useCoachTeamEventFilesQuery(
     { event_id: id ? +id : 0 },
     { skip: !id }
   );
 
+  const { data: adminEventFiles, refetch: adminRefetch } =
+    useAdminEventFilesQuery({ event_id: id ? +id : 0 }, { skip: !id });
+
   useEffect(() => {
+    console.log("Effect");
+
     if (parenteventFiles) setFiles(parenteventFiles);
     if (superEventFiles) setFiles(superEventFiles);
     if (coachEventFiles) setFiles(coachEventFiles);
-  });
+    if (adminEventFiles) setFiles(adminEventFiles);
+  }, [parenteventFiles, superEventFiles, coachEventFiles, adminEventFiles]);
 
   const items = [
-    { title: "Teams", href: "/media-teams" },
-    { title: "Events", href: "/media-teams/media" },
+    { title: "Events", href: "/media" },
     { title: "Event Media", href: "" },
   ].map((item, index) => (
     <Link to={item.href} key={index}>
       {item.title}
     </Link>
   ));
-  console.log(files);
 
   return (
     <div className="container relative w-11/12 mx-auto">
@@ -62,7 +65,18 @@ const MediaEvent = () => {
           images={files?.event_files || []}
         />
       </div>
-      {user?.user_type === "Supervisor" && <UploadForm refetch={refetch} />}
+      {user?.user_type === "Supervisor" ||
+        (user?.user_type === "Admin" && (
+          <UploadForm
+            refetch={() => {
+              if (user?.user_type === "Supervisor") {
+                superRefetch();
+              } else {
+                adminRefetch();
+              }
+            }}
+          />
+        ))}
     </div>
   );
 };
