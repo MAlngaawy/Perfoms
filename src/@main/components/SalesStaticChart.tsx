@@ -96,7 +96,7 @@ const SaleStaticChart = () => {
 
   return (
     <div>
-      <div className="xs:mx-4 py-4 flex justify-between gap-4 overflow-scroll performancesCards">
+      <div className="py-4 flex flex-col xs:flex-row w-full justify-between gap-3 performancesCards">
         <PerformanceCard
           name="Strengths"
           number={playerKpis ? playerKpis.strength_count : 0}

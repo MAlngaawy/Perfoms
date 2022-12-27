@@ -32,8 +32,8 @@ const CertificateImage = forwardRef(({ certificate }: Props, ref) => {
           new Date(
             (certificate && certificate && certificate?.created_at) || ""
           ).toLocaleDateString(),
-          585,
-          632
+          500,
+          450
         );
       };
     });

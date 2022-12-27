@@ -8,13 +8,14 @@ import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 import CertificateImage from "./components/CertificateImage";
 import CongratsCertificate from "./components/CongratsCertificateImage";
 import EncourageCertificate from "./components/EncourageCertificateImage";
+import { timeFilterFn } from "~/app/store/parent/parentSlice";
 
 type Props = {
   certificateId?: number;
 };
 
 const PlayerCertificatePage = ({ certificateId }: Props) => {
-  const canvasRef = useRef(null);
+  const canvasRef = useRef<any>();
   const { id } = useParams();
   const { data: certificate } = usePlayerCertificateQuery(
     certificateId as unknown as string,
@@ -22,6 +23,19 @@ const PlayerCertificatePage = ({ certificateId }: Props) => {
       skip: !certificateId,
     }
   );
+
+  const timeFilter = useSelector(timeFilterFn);
+
+  const dateFilter = (date: Date): boolean => {
+    let theDate = new Date(date).getTime();
+    let toDate = new Date(timeFilter.to_date).getTime();
+    let fromDate = new Date(timeFilter.from_date).getTime();
+
+    if (theDate > fromDate && theDate < toDate) {
+      return true;
+    }
+    return false;
+  };
 
   const printDocument = () => {
     //@ts-ignore
@@ -33,28 +47,51 @@ const PlayerCertificatePage = ({ certificateId }: Props) => {
 
   return (
     <div className=" relative flex flex-col gap-5 justify-center items-center p-5 h-full w-full">
-      <div
-        onClick={() => printDocument()}
-        className="z-50 flex flex-col border items-center justify-center absolute  right-0 bottom-0 opacity-70 hover:opacity-100 w-20 h-20 rounded-full cursor-pointer bg-perfBlue text-white"
-      >
-        <AppIcons
-          className="w-8 h-8 text-white"
-          icon="DocumentArrowDownIcon:outline"
-        />
-        <span>PDF</span>
-      </div>
-      {/* <h2 className=" my-2 text-perfGray2 text-2xl">
-        Player <span className="font-bold">{certificate?.player.name}</span>{" "}
-        Certificate
-      </h2> */}
       <div className="overflow-scroll max-w-full">
         {certificate &&
+          dateFilter(certificate.created_at) &&
           (certificate.type === "Encouragement" ? (
-            <EncourageCertificate certificate={certificate} ref={canvasRef} />
+            <>
+              <div
+                onClick={() => printDocument()}
+                className="z-50 flex flex-col border items-center justify-center absolute  right-0 bottom-0 opacity-70 hover:opacity-100 w-20 h-20 rounded-full cursor-pointer bg-perfBlue text-white"
+              >
+                <AppIcons
+                  className="w-8 h-8 text-white"
+                  icon="DocumentArrowDownIcon:outline"
+                />
+                <span>PDF</span>
+              </div>
+              <EncourageCertificate certificate={certificate} ref={canvasRef} />
+            </>
           ) : certificate.type === "Congratulations" ? (
-            <CongratsCertificate certificate={certificate} ref={canvasRef} />
+            <>
+              <div
+                onClick={() => printDocument()}
+                className="z-50 flex flex-col border items-center justify-center absolute  right-0 bottom-0 opacity-70 hover:opacity-100 w-20 h-20 rounded-full cursor-pointer bg-perfBlue text-white"
+              >
+                <AppIcons
+                  className="w-8 h-8 text-white"
+                  icon="DocumentArrowDownIcon:outline"
+                />
+                <span>PDF</span>
+              </div>
+              <CongratsCertificate certificate={certificate} ref={canvasRef} />
+            </>
           ) : (
-            <CertificateImage certificate={certificate} ref={canvasRef} />
+            <>
+              <div
+                onClick={() => printDocument()}
+                className="z-50 flex flex-col border items-center justify-center absolute  right-0 bottom-0 opacity-70 hover:opacity-100 w-20 h-20 rounded-full cursor-pointer bg-perfBlue text-white"
+              >
+                <AppIcons
+                  className="w-8 h-8 text-white"
+                  icon="DocumentArrowDownIcon:outline"
+                />
+                <span>PDF</span>
+              </div>
+              <CertificateImage certificate={certificate} ref={canvasRef} />
+            </>
           ))}
       </div>
     </div>
