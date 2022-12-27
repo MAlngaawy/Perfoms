@@ -22,20 +22,16 @@ const MediaEvent = () => {
     { skip: !id }
   );
 
-  const { data: superEventFiles, refetch } = useSuprtEventFilesQuery(
-    { event_id: id ? +id : 0 },
-    { skip: !id }
-  );
+  const { data: superEventFiles, refetch: superRefetch } =
+    useSuprtEventFilesQuery({ event_id: id ? +id : 0 }, { skip: !id });
 
   const { data: coachEventFiles } = useCoachTeamEventFilesQuery(
     { event_id: id ? +id : 0 },
     { skip: !id }
   );
 
-  const { data: adminEventFiles } = useAdminEventFilesQuery(
-    { event_id: id ? +id : 0 },
-    { skip: !id }
-  );
+  const { data: adminEventFiles, refetch: adminRefetch } =
+    useAdminEventFilesQuery({ event_id: id ? +id : 0 }, { skip: !id });
 
   useEffect(() => {
     console.log("Effect");
@@ -69,7 +65,18 @@ const MediaEvent = () => {
           images={files?.event_files || []}
         />
       </div>
-      {user?.user_type === "Supervisor" && <UploadForm refetch={refetch} />}
+      {user?.user_type === "Supervisor" ||
+        (user?.user_type === "Admin" && (
+          <UploadForm
+            refetch={() => {
+              if (user?.user_type === "Supervisor") {
+                superRefetch();
+              } else {
+                adminRefetch();
+              }
+            }}
+          />
+        ))}
     </div>
   );
 };
