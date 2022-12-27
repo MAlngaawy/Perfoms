@@ -32,8 +32,8 @@ const CongratsCertificate = forwardRef(({ certificate }: Props, ref) => {
           new Date(
             (certificate && certificate && certificate?.created_at) || ""
           ).toLocaleDateString(),
-          475,
-          632
+          410,
+          450
         );
       };
     });
