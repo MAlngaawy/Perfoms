@@ -42,8 +42,6 @@ const MediaPage = () => {
   );
 
   useEffect(() => {
-    console.log("selectedPlayerTeam", selectedPlayerTeam);
-
     if (superEvents) setEvents(superEvents);
     if (coachEvents) setEvents(coachEvents);
     if (parentEvents) setEvents(parentEvents);

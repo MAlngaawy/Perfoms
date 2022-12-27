@@ -9,6 +9,7 @@ import { useCoachTeamEventFilesQuery } from "~/app/store/coach/coachApi";
 import AppIcons from "~/@main/core/AppIcons";
 import UploadForm from "./UploadForm";
 import { useUserQuery } from "~/app/store/user/userApi";
+import { useAdminEventFilesQuery } from "~/app/store/clubManager/clubManagerApi";
 
 const MediaEvent = () => {
   const { id } = useParams();
@@ -31,11 +32,19 @@ const MediaEvent = () => {
     { skip: !id }
   );
 
+  const { data: adminEventFiles } = useAdminEventFilesQuery(
+    { event_id: id ? +id : 0 },
+    { skip: !id }
+  );
+
   useEffect(() => {
+    console.log("Effect");
+
     if (parenteventFiles) setFiles(parenteventFiles);
     if (superEventFiles) setFiles(superEventFiles);
     if (coachEventFiles) setFiles(coachEventFiles);
-  });
+    if (adminEventFiles) setFiles(adminEventFiles);
+  }, [parenteventFiles, superEventFiles, coachEventFiles, adminEventFiles]);
 
   const items = [
     { title: "Events", href: "/media" },

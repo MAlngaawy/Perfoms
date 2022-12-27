@@ -9,7 +9,7 @@ import {
   TeamPlayers,
   Teams,
 } from "../types/clubManager-types";
-import { ParentClub, TeamCoaches } from "../types/parent-types";
+import { EventFiles, ParentClub, TeamCoaches } from "../types/parent-types";
 import { TeamEvents } from "~/app/store/types/parent-types";
 import {
   AddAction,
@@ -333,6 +333,13 @@ export const clubManagerApi = createApi({
         body,
       }),
     }),
+
+    adminEventFiles: query<EventFiles, { event_id: number; page?: number }>({
+      query: ({ event_id, ...params }) => ({
+        url: `/${event_id}/files`,
+        params,
+      }),
+    }),
   }),
 });
 
@@ -371,4 +378,5 @@ export const {
   useAdminDeleteMetricMutation,
   useAdminAddRecommendationsMutation,
   useAdminAddActopnMutation,
+  useAdminEventFilesQuery,
 } = clubManagerApi;
