@@ -189,6 +189,7 @@ export type EventFile = {
 
 export type EventFiles = {
   id: number;
+  name: string;
   event_files: EventFile[];
   video_url: string;
 };
