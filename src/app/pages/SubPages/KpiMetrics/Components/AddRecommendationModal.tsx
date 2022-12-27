@@ -6,7 +6,11 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import SubmitButton from "../../../../../@main/components/SubmitButton";
-import { useAddRecommendationsMutation } from "~/app/store/supervisor/supervisorMainApi";
+import { useSuperAddRecommendationsMutation } from "~/app/store/supervisor/supervisorMainApi";
+import { useUserQuery } from "~/app/store/user/userApi";
+import { AddRecommendation } from "~/app/store/types/supervisor-types";
+import { useAdminAddRecommendationsMutation } from "~/app/store/clubManager/clubManagerApi";
+import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {
   opened: boolean;
@@ -20,7 +24,52 @@ const schema = yup.object().shape({
 });
 
 const AddRecomendationModal = ({ metricId, opened, setOpened }: Props) => {
-  const [addRecommendation, { isLoading }] = useAddRecommendationsMutation();
+  const { data: user } = useUserQuery({});
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const [superAddRecommendation, { isLoading: superLoading }] =
+    useSuperAddRecommendationsMutation();
+  const [adminAddRecommendation, { isLoading: adminLoading }] =
+    useAdminAddRecommendationsMutation();
+
+  const addRecommendation = (data: AddRecommendation) => {
+    setLoading(true);
+    if (user?.user_type === "Admin") {
+      setLoading(adminLoading);
+      adminAddRecommendation(data)
+        .then(() => {
+          AppUtils.showNotificationFun(
+            "Success",
+            "Done",
+            "Successfly Added Recommendation"
+          );
+        })
+        .catch(() => {
+          AppUtils.showNotificationFun(
+            "Error",
+            "Sorry",
+            "Cant add Recommendation Now"
+          );
+        });
+    } else {
+      setLoading(superLoading);
+      superAddRecommendation(data)
+        .then(() => {
+          AppUtils.showNotificationFun(
+            "Success",
+            "Done",
+            "Successfly Added Recommendation"
+          );
+        })
+        .catch(() => {
+          AppUtils.showNotificationFun(
+            "Error",
+            "Sorry",
+            "Cant add Recommendation Now"
+          );
+        });
+    }
+  };
 
   const resetFields = () => {
     reset({
@@ -41,6 +90,11 @@ const AddRecomendationModal = ({ metricId, opened, setOpened }: Props) => {
   // Submit Form Function
   const onSubmitFunction = (data: any) => {
     console.log({ metricId, ...data });
+    // addRecommendation({
+    //   metric_id: metricId,
+    //   name: data.name,
+    //   description: data.desc,
+    // });
     addRecommendation({
       metric_id: metricId,
       name: data.name,
@@ -113,7 +167,7 @@ const AddRecomendationModal = ({ metricId, opened, setOpened }: Props) => {
               />
             </Input.Wrapper>
 
-            <SubmitButton isLoading={isLoading} text="Add Recommendation" />
+            <SubmitButton isLoading={loading} text="Add Recommendation" />
           </form>
         </Modal>
       </>

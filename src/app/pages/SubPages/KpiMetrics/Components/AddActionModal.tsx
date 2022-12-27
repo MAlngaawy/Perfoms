@@ -6,7 +6,11 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import SubmitButton from "../../../../../@main/components/SubmitButton";
-import { useAddActionMutation } from "~/app/store/supervisor/supervisorMainApi";
+import { useSuperAddActionMutation } from "~/app/store/supervisor/supervisorMainApi";
+import { useAdminAddActopnMutation } from "~/app/store/clubManager/clubManagerApi";
+import { useUserQuery } from "~/app/store/user/userApi";
+import { AddAction } from "~/app/store/types/supervisor-types";
+import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {
   opened: boolean;
@@ -20,9 +24,44 @@ const schema = yup.object().shape({
 });
 
 const AddActionModal = ({ metricId, opened, setOpened }: Props) => {
-  // const [opened, setOpened] = useState(false);
-  const [addAction, { isLoading }] = useAddActionMutation();
+  const { data: user } = useUserQuery({});
+  const [loading, setLoading] = useState<boolean>(false);
 
+  const [superAddAction, { isLoading: superLoading }] =
+    useSuperAddActionMutation();
+  const [adminAddAction, { isLoading: adminLoading }] =
+    useAdminAddActopnMutation();
+
+  const addActionFun = (data: AddAction) => {
+    setLoading(true);
+    if (user?.user_type === "Admin") {
+      setLoading(adminLoading);
+      adminAddAction(data)
+        .then(() => {
+          AppUtils.showNotificationFun(
+            "Success",
+            "Done",
+            "Successfly Added Action"
+          );
+        })
+        .catch(() => {
+          AppUtils.showNotificationFun("Error", "Sorry", "Cant add Action Now");
+        });
+    } else {
+      setLoading(superLoading);
+      superAddAction(data)
+        .then(() => {
+          AppUtils.showNotificationFun(
+            "Success",
+            "Done",
+            "Successfly Added Action"
+          );
+        })
+        .catch(() => {
+          AppUtils.showNotificationFun("Error", "Sorry", "Cant add Action Now");
+        });
+    }
+  };
   const resetFields = () => {
     reset({
       desc: "",
@@ -42,7 +81,7 @@ const AddActionModal = ({ metricId, opened, setOpened }: Props) => {
   // Submit Form Function
   const onSubmitFunction = (data: any) => {
     console.log({ metricId, ...data });
-    addAction({
+    addActionFun({
       metric_id: metricId,
       name: data.name,
       description: data.desc,
@@ -114,7 +153,7 @@ const AddActionModal = ({ metricId, opened, setOpened }: Props) => {
               />
             </Input.Wrapper>
 
-            <SubmitButton isLoading={isLoading} text="Add Action" />
+            <SubmitButton isLoading={loading} text="Add Action" />
           </form>
         </Modal>
 

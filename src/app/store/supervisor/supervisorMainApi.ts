@@ -153,7 +153,7 @@ export const supervisorApi = createApi({
       }),
     }),
 
-    addAction: mutation<AddAction, AddAction>({
+    superAddAction: mutation<AddAction, AddAction>({
       query: ({ metric_id, ...body }) => ({
         url: `add-action/${metric_id}/`,
         method: "POST",
@@ -161,7 +161,7 @@ export const supervisorApi = createApi({
       }),
     }),
 
-    addRecommendations: mutation<AddRecommendation, AddRecommendation>({
+    superAddRecommendations: mutation<AddRecommendation, AddRecommendation>({
       query: ({ metric_id, ...body }) => ({
         url: `add-recommendation/${metric_id}/`,
         method: "POST",
@@ -523,8 +523,8 @@ export const {
   useSuperDeletePillarMutation,
   useAddKpiMutation,
   useSuperMetricsQuery,
-  useAddActionMutation,
-  useAddRecommendationsMutation,
+  useSuperAddActionMutation,
+  useSuperAddRecommendationsMutation,
   useSuprtEventsQuery,
   useSuprtEventFilesQuery,
   useSuperCoachesRequestsQuery,

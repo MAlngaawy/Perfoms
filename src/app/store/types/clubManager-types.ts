@@ -38,9 +38,10 @@ export type AddAction = {
 };
 
 export type AddRecommendation = {
-  id: number;
+  id?: number;
   name: string;
-  description: string;
+  description?: string;
+  metric_id: number;
 };
 
 export type Metrics = BaseGetAllType & {

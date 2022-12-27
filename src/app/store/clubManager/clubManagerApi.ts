@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BASE_HEADERS, BASE_URL } from "~/app/configs/dataService";
 import {
   AddEvent,
+  AddRecommendation,
   AllUsers,
   Sports,
   TeamPlayer,
@@ -11,6 +12,7 @@ import {
 import { ParentClub, TeamCoaches } from "../types/parent-types";
 import { TeamEvents } from "~/app/store/types/parent-types";
 import {
+  AddAction,
   AddTeamCalendar,
   Coaches,
   CoachRequests,
@@ -315,6 +317,22 @@ export const clubManagerApi = createApi({
       }),
       invalidatesTags: ["metrics"],
     }),
+
+    adminAddRecommendations: mutation<AddRecommendation, AddRecommendation>({
+      query: ({ metric_id, ...body }) => ({
+        url: `kpis/metrics/${metric_id}/add-recommendation/`,
+        method: "POST",
+        body,
+      }),
+    }),
+
+    adminAddActopn: mutation<AddAction, AddAction>({
+      query: ({ metric_id, ...body }) => ({
+        url: `kpis/metrics/${metric_id}/add-action/`,
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -351,4 +369,6 @@ export const {
   useAdminDeleteKpiMutation,
   useAdminMetricsQuery,
   useAdminDeleteMetricMutation,
+  useAdminAddRecommendationsMutation,
+  useAdminAddActopnMutation,
 } = clubManagerApi;
