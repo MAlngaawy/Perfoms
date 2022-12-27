@@ -7,48 +7,50 @@ import TeamUpcomingEvents from "./Components/TeamUpcomingEvents";
 import { useUserQuery } from "~/app/store/user/userApi";
 import { useParams } from "react-router-dom";
 import CustomBreadCrumbs from "~/@main/components/BreadCrumbs";
+import SharedBreadCrumbs from "~/@main/components/shared/SharedBreadCrumbs";
 
 type Props = {};
 
 const SingleTeam = (props: Props) => {
   const { data: user } = useUserQuery(null);
-
-  const { id } = useParams();
+  const { team_id } = useParams();
 
   return (
     <div className="p-2">
-      <CustomBreadCrumbs
+      {/* <CustomBreadCrumbs
         items={[
           {
             href: user?.user_type === "Admin" ? "/admin" : "/supervisor",
             title: "Home",
           },
         ]}
-      />
+      /> */}
+      <SharedBreadCrumbs />
+
       <Grid gutter={"xs"} className="items-stretch">
         <Grid.Col span={12} sm={7} lg={4}>
           <CardDiv>
-            <TeamCalendar teamId={id !== undefined ? id : ""} />
+            <TeamCalendar teamId={team_id !== undefined ? team_id : ""} />
           </CardDiv>
         </Grid.Col>
         <Grid.Col span={12} sm={5} lg={3}>
           <CardDiv>
-            <TeamCoaches teamId={id !== undefined ? id : ""} />
+            <TeamCoaches teamId={team_id !== undefined ? team_id : ""} />
           </CardDiv>
         </Grid.Col>
         <Grid.Col span={12} sm={7} lg={3}>
           <CardDiv>
-            <TeamUpcomingEvents teamId={id !== undefined ? id : ""} />
+            <TeamUpcomingEvents teamId={team_id !== undefined ? team_id : ""} />
           </CardDiv>
         </Grid.Col>
         <Grid.Col span={12} sm={5} lg={2}>
           <CardDiv>
-            <TeamInfoCard teamId={id !== undefined ? id : ""} />
+            <TeamInfoCard teamId={team_id !== undefined ? team_id : ""} />
           </CardDiv>
         </Grid.Col>
         <Grid.Col span={12}>
           <CardDiv>
-            <TeamPlayers teamId={id !== undefined ? id : ""} />
+            <TeamPlayers teamId={team_id !== undefined ? team_id : ""} />
           </CardDiv>
         </Grid.Col>
       </Grid>

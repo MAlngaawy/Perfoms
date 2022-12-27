@@ -44,7 +44,7 @@ const MediaEvent = () => {
 
   const items = [
     { title: "Events", href: "/media" },
-    { title: "Event Media", href: "" },
+    { title: files?.name || "Event Media", href: "" },
   ].map((item, index) => (
     <Link to={item.href} key={index}>
       {item.title}

@@ -17,6 +17,7 @@ import {
 import { useEffect } from "react";
 import { useUserQuery } from "~/app/store/user/userApi";
 import AppUtils from "~/@main/utils/AppUtils";
+import SharedBreadCrumbs from "~/@main/components/shared/SharedBreadCrumbs";
 
 type Props = {};
 
@@ -77,22 +78,10 @@ const KpiMetrics = (props: Props) => {
     }
   };
 
-  const items = [
-    { title: "Home", href: "/supervisor" },
-    { title: "Kpis", href: `/supervisor/sports/${kpi_id}` },
-    { title: "Metrics", href: `` },
-  ].map((item, index) => (
-    <Link to={item.href} key={index}>
-      {item.title}
-    </Link>
-  ));
-
   return (
     <div className="admin-teams   m-2 sm:mx-10 my-2">
       <div className="mx-4 my-6">
-        <Breadcrumbs className="text-perfGray3" separator="→">
-          {items}
-        </Breadcrumbs>
+        <SharedBreadCrumbs />
       </div>
       <div className="admin-teams  flex xs:flex-row flex-wrap justify-center sm:justify-start items-stretch gap-4 ">
         {metrics?.results.map((metric: Metric) => {

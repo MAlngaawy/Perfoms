@@ -15,6 +15,7 @@ import {
 } from "~/app/store/clubManager/clubManagerApi";
 import AppUtils from "~/@main/utils/AppUtils";
 import { useUserQuery } from "~/app/store/user/userApi";
+import SharedBreadCrumbs from "~/@main/components/shared/SharedBreadCrumbs";
 
 type Props = {};
 
@@ -43,25 +44,10 @@ const PillarKpis = (props: Props) => {
     if (adminKpis) setKpis(adminKpis);
   }, [superKpis, adminKpis]);
 
-  // const items = [
-  //   { title: "Home", href: `/${user}` },
-  //   {
-  //     title: sportName + " Pillars",
-  //     href: `/${user}/sports/${sport_id}/pillars`,
-  //   },
-  //   { title: pillarName + " Kpis", href: "" },
-  // ].map((item, index) => (
-  //   <Link to={item.href} key={index}>
-  //     {item.title}
-  //   </Link>
-  // ));
-
   return (
     <div className="admin-teams   m-2 sm:mx-10 my-2">
       <div className="mx-4 my-6">
-        {/* <Breadcrumbs className="text-perfGray3" separator="→">
-          {items}
-        </Breadcrumbs> */}
+        <SharedBreadCrumbs />
       </div>
       <div className="flex xs:flex-row flex-wrap justify-center sm:justify-start items-stretch gap-4 ">
         {kpis?.results.map((kpi) => {
