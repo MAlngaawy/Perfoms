@@ -30,6 +30,15 @@ const navigationConfig: NavigationConfigTypes[] = [
     auth: authRoles.Supervisor,
   },
   {
+    id: "home-page-admin",
+    title: "Home",
+    translate: "HOME",
+    type: "item",
+    icon: "HomeIcon:outline",
+    url: "admin",
+    auth: authRoles.Admin,
+  },
+  {
     id: "coaches-page",
     title: "Coaches",
     translate: "COACHES",
@@ -62,7 +71,7 @@ const navigationConfig: NavigationConfigTypes[] = [
     translate: "MEDIA",
     type: "item",
     icon: "BookmarkIcon:outline",
-    url: "media-teams",
+    url: "media",
     auth: authRoles.All,
   },
   {

@@ -50,6 +50,8 @@ export type ParentClubs = BaseGetAllType & {
 };
 
 export type PlayerCoach = {
+  icon?: string;
+  name?: string;
   id: number;
   teams: Partial<Team>[];
   avatar: string;
@@ -187,6 +189,7 @@ export type EventFile = {
 
 export type EventFiles = {
   id: number;
+  name: string;
   event_files: EventFile[];
   video_url: string;
 };

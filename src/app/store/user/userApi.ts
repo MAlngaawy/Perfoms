@@ -25,6 +25,8 @@ import {
   UserSignup,
 } from "../types/user-types";
 import { ReactNode } from "react";
+import { Kpis, Metrics, Pillars } from "../types/supervisor-types";
+import { Sports } from "../types/clubManager-types";
 
 export const userApi = createApi({
   reducerPath: "userApi",
@@ -141,6 +143,34 @@ export const userApi = createApi({
         body,
       }),
     }),
+
+    // Fetch Some general data to use in bread crumbs
+    generalKpis: query<Kpis, { page?: number }>({
+      query: (params) => ({
+        url: "kpis/",
+      }),
+    }),
+    generalMetrics: query<Metrics, { page?: number }>({
+      query: (params) => ({
+        url: "metrics/",
+      }),
+    }),
+    generalPillars: query<Pillars, { page?: number }>({
+      query: (params) => ({
+        url: "pillars/",
+      }),
+    }),
+    generalSports: query<Sports, { page?: number }>({
+      query: (params) => ({
+        url: "sports/",
+      }),
+    }),
+    generalTeams: query<Sports, { page?: number }>({
+      query: (params) => ({
+        url: "teams/",
+      }),
+    }),
+
     verifyOtp: mutation<OTPVerify, OTPVerify>({
       query: (body) => ({
         url: "verify-otp/",
@@ -176,4 +206,9 @@ export const {
   useUserDeviceIdMutation,
   useUpdateProfileMutation,
   useVerifyOtpMutation,
+  useGeneralKpisQuery,
+  useGeneralMetricsQuery,
+  useGeneralPillarsQuery,
+  useGeneralSportsQuery,
+  useGeneralTeamsQuery,
 } = userApi;

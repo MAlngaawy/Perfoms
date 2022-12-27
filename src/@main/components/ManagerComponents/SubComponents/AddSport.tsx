@@ -7,68 +7,99 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Resizer from "react-image-file-resizer";
 import cn from "classnames";
 import SubmitButton from "../../SubmitButton";
+import { axiosInstance } from "~/app/configs/dataService";
+import { showNotification } from "@mantine/notifications";
+import {
+  useAdminClubQuery,
+  useAdminSportsQuery,
+} from "~/app/store/clubManager/clubManagerApi";
 
 type Props = {};
 
 const AddSport = (props: Props) => {
   const [opened, setOpened] = useState(false);
-  const [playerImage, setPlayerImage] = useState<string | unknown>("");
+  const [playerImage, setPlayerImage] = useState<File | unknown>("");
   const [playerImagePreview, setPlayerImagePreview] = useState("null");
-
-  const schema = yup.object().shape({
-    image: yup.mixed(),
-    name: yup.string().required("please add the Sport name"),
-  });
+  const { data: adminClub } = useAdminClubQuery({});
+  const { refetch } = useAdminSportsQuery({});
+  const [loading, setLoading] = useState<boolean>(false);
 
   const resetFields = () => {
     setPlayerImage(null);
-    reset({
-      image: "",
-      name: "",
-    });
   };
 
   const {
-    handleSubmit,
     register,
     formState: { errors },
     reset,
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
+  } = useForm({});
 
   // Submit Form Function
-  const onSubmitFunction = (data: any) => {
-    console.log({ ...data, icon: playerImage });
-    setOpened(false);
-    resetFields();
-  };
+  const onSubmitFunction = (e: any) => {
+    e.preventDefault();
 
-  // Image Functions
-  // Resize the image size
-  const resizeFile = (file: any) =>
-    new Promise((resolve) => {
-      Resizer.imageFileResizer(
-        file,
-        100,
-        100,
-        "JPEG",
-        100,
-        0,
-        (uri: any) => {
-          resolve(uri);
-        },
-        "base64"
-      );
-    });
+    setLoading(true);
+
+    const formData = new FormData(e.currentTarget);
+
+    if (adminClub?.id) {
+      formData.append("club", JSON.stringify(adminClub?.id));
+    }
+
+    axiosInstance
+      .post("/club-manager/add-sport/", formData)
+      .then(() => {
+        showNotification({
+          message: "Successfly Added Sport",
+          color: "green",
+          title: "Done",
+          styles: {
+            root: {
+              backgroundColor: "#27AE60",
+              borderColor: "#27AE60",
+              "&::before": { backgroundColor: "#fff" },
+            },
+
+            title: { color: "#fff" },
+            description: { color: "#fff" },
+            closeButton: {
+              color: "#fff",
+            },
+          },
+        });
+        setOpened(false);
+        setLoading(false);
+        resetFields();
+        refetch();
+      })
+      .catch((err) => {
+        showNotification({
+          message: err.response.data.message,
+          color: "red",
+          title: "Wrong",
+          styles: {
+            root: {
+              backgroundColor: "#EB5757",
+              borderColor: "#EB5757",
+              "&::before": { backgroundColor: "#fff" },
+            },
+
+            title: { color: "#fff" },
+            description: { color: "#fff" },
+            closeButton: {
+              color: "#fff",
+            },
+          },
+        });
+        setLoading(false);
+      });
+  };
 
   // function to access file uploaded then convert to base64 then add it to the data state
   const uploadImage = async (e: any) => {
     try {
       const file = e.target.files[0];
-      const image = await resizeFile(file);
-      console.log(image);
-      setPlayerImage(image);
+      setPlayerImage(file);
     } catch (err) {
       console.log(err);
     }
@@ -85,10 +116,7 @@ const AddSport = (props: Props) => {
           }}
           title={`Add Sport `}
         >
-          <form
-            className="flex flex-col gap-4"
-            onSubmit={handleSubmit(onSubmitFunction)}
-          >
+          <form className="flex flex-col gap-4" onSubmit={onSubmitFunction}>
             {/* Image Upload */}
             <div className=" relative my-2 bg-gray-300 overflow-hidden flex justify-center  items-center  mx-auto w-28  h-28 rounded-lg ">
               <Button
@@ -116,8 +144,8 @@ const AddSport = (props: Props) => {
                 <Input
                   hidden
                   accept="image/*"
-                  {...register("image")}
-                  name="image"
+                  {...register("icon")}
+                  name="icon"
                   multiple
                   type="file"
                   // error={errors.image && (errors.image.message as ReactNode)}
@@ -158,7 +186,7 @@ const AddSport = (props: Props) => {
                 id="name"
               />
             </Input.Wrapper>
-            <SubmitButton isLoading={false} text="Add Sport" />
+            <SubmitButton isLoading={loading} text="Add Sport" />
           </form>
         </Modal>
 

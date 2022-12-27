@@ -1,13 +1,16 @@
 import { Link } from "react-router-dom";
-import { SuperVisorTeam } from "~/app/store/types/supervisor-types";
 import DeleteButton from "./DeleteButton";
 import EditButton from "./EditTeamButton";
 import { Avatar } from "@mantine/core";
 import { useSuperDeleteTeamMutation } from "~/app/store/supervisor/supervisorMainApi";
 import { showNotification } from "@mantine/notifications";
+import { useAdminDeleteTeamMutation } from "~/app/store/clubManager/clubManagerApi";
+import { useUserQuery } from "~/app/store/user/userApi";
 
-const TeamCard = ({ team, refetch }: any) => {
-  const [deleteTeam] = useSuperDeleteTeamMutation();
+const TeamCard = ({ team }: any) => {
+  const [superDeleteTeam] = useSuperDeleteTeamMutation();
+  const [adminDeleteTeam] = useAdminDeleteTeamMutation();
+  const { data: user } = useUserQuery({});
 
   return (
     <div className="team-card relative w-full xs:w-72 bg-white p-8 rounded-xl flex flex-col justify-center items-center gap-4">
@@ -36,27 +39,47 @@ const TeamCard = ({ team, refetch }: any) => {
 
       {/* Edit and Delete Buttons */}
       <div className="flex absolute right-5 top-5 gap-2">
-        <EditButton refetch={refetch} teamData={team} />
+        <EditButton teamData={team} />
         <DeleteButton
-          deleteFun={() =>
-            deleteTeam({
-              team_id: team.id,
-            })
-              .then(() => {
-                showNotification({
-                  title: "Done",
-                  color: "green",
-                  message: "Team Deleted",
-                });
+          deleteFun={() => {
+            if (user?.user_type === "Supervisor") {
+              superDeleteTeam({
+                team_id: team.id,
               })
-              .catch(() => {
-                showNotification({
-                  title: "Wrong",
-                  color: "red",
-                  message: "Something wend wrong, try again later",
+                .then(() => {
+                  showNotification({
+                    title: "Done",
+                    color: "green",
+                    message: "Team Deleted",
+                  });
+                })
+                .catch(() => {
+                  showNotification({
+                    title: "Wrong",
+                    color: "red",
+                    message: "Something wend wrong, try again later",
+                  });
                 });
+            } else if (user?.user_type === "Admin") {
+              adminDeleteTeam({
+                team_id: team.id,
               })
-          }
+                .then(() => {
+                  showNotification({
+                    title: "Done",
+                    color: "green",
+                    message: "Team Deleted",
+                  });
+                })
+                .catch(() => {
+                  showNotification({
+                    title: "Wrong",
+                    color: "red",
+                    message: "Something wend wrong, try again later",
+                  });
+                });
+            }
+          }}
           name={team.name}
           type="Team"
         />

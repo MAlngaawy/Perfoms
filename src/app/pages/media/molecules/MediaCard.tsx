@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Image, Text, Badge, Button, Group } from "@mantine/core";
+import { Card, Image, Text, Badge, Button, Group, Avatar } from "@mantine/core";
 import AppIcons from "~/@main/core/AppIcons";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +15,7 @@ const MediaCard = ({ event }: props) => {
   return (
     <Card shadow="sm" className="rounded-b-xl" p={0} radius="md" withBorder>
       <Card.Section component="a">
-        <img
+        <Avatar
           src={event.icon_url}
           className="w-64 h-56 min-w-full object-cover"
           alt="Norway"
@@ -47,7 +47,7 @@ const MediaCard = ({ event }: props) => {
       </div>
 
       <Button
-        onClick={() => navigate(`/media-teams/media/${event.id}`)}
+        onClick={() => navigate(`/media/${event.id}`)}
         variant="light"
         className="bg-perfBlue text-white rounded-b-xl"
         fullWidth

@@ -1,36 +1,87 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-
-import { Metric } from "~/app/store/types/supervisor-types";
+import { Metric, Metrics } from "~/app/store/types/supervisor-types";
 import DeleteButton from "../../../../@main/components/ManagerComponents/SubComponents/DeleteButton";
 import AddMetric from "./Components/AddMetric";
 import CreateActionsAndRecomm from "./Components/CreateActionsAndRecomm";
 import EditMetric from "./Components/EditMetric";
 import { Avatar, Breadcrumbs } from "@mantine/core";
-import { useSuperMetricsQuery } from "~/app/store/supervisor/supervisorMainApi";
+import {
+  useSuperDeleteMetricMutation,
+  useSuperMetricsQuery,
+} from "~/app/store/supervisor/supervisorMainApi";
+import {
+  useAdminDeleteMetricMutation,
+  useAdminMetricsQuery,
+} from "~/app/store/clubManager/clubManagerApi";
+import { useEffect } from "react";
+import { useUserQuery } from "~/app/store/user/userApi";
+import AppUtils from "~/@main/utils/AppUtils";
+import SharedBreadCrumbs from "~/@main/components/shared/SharedBreadCrumbs";
 
 type Props = {};
 
 const KpiMetrics = (props: Props) => {
-  const { id } = useParams();
-  const { data: metrics } = useSuperMetricsQuery({ kpi_id: id }, { skip: !id });
+  const { kpi_id } = useParams();
+  const [metrics, setMetrics] = useState<Metrics>();
+  const { data: user } = useUserQuery({});
+  const { data: superMetrics } = useSuperMetricsQuery(
+    { kpi_id },
+    { skip: !kpi_id }
+  );
+  const { data: adminMetrics } = useAdminMetricsQuery(
+    { kpi_id },
+    { skip: !kpi_id }
+  );
 
-  const items = [
-    { title: "Home", href: "/supervisor" },
-    { title: "Kpis", href: `/supervisor/sports/${id}` },
-    { title: "Metrics", href: `` },
-  ].map((item, index) => (
-    <Link to={item.href} key={index}>
-      {item.title}
-    </Link>
-  ));
+  const [superDeleteMetric] = useSuperDeleteMetricMutation();
+  const [adminDeleteMetric] = useAdminDeleteMetricMutation();
+
+  useEffect(() => {
+    if (superMetrics) setMetrics(superMetrics);
+    if (adminMetrics) setMetrics(adminMetrics);
+  }, [superMetrics, adminMetrics]);
+
+  const deleteFun = (metric_id: string) => {
+    if (user?.user_type === "Admin") {
+      adminDeleteMetric({ metric_id: metric_id })
+        .then((res) => {
+          AppUtils.showNotificationFun(
+            "Success",
+            "Done",
+            "Successfl Deleted Metric"
+          );
+        })
+        .catch((err) => {
+          AppUtils.showNotificationFun(
+            "Error",
+            "Sorry",
+            "Can't delete Metric now , try again later"
+          );
+        });
+    } else {
+      superDeleteMetric({ metric_id: metric_id })
+        .then((res) => {
+          AppUtils.showNotificationFun(
+            "Success",
+            "Done",
+            "Successfl Deleted Metric"
+          );
+        })
+        .catch((err) => {
+          AppUtils.showNotificationFun(
+            "Error",
+            "Sorry",
+            "Can't delete Metric now , try again later"
+          );
+        });
+    }
+  };
 
   return (
     <div className="admin-teams   m-2 sm:mx-10 my-2">
       <div className="mx-4 my-6">
-        <Breadcrumbs className="text-perfGray3" separator="→">
-          {items}
-        </Breadcrumbs>
+        <SharedBreadCrumbs />
       </div>
       <div className="admin-teams  flex xs:flex-row flex-wrap justify-center sm:justify-start items-stretch gap-4 ">
         {metrics?.results.map((metric: Metric) => {
@@ -40,7 +91,7 @@ const KpiMetrics = (props: Props) => {
                 <Avatar
                   radius={"xl"}
                   className="w-3/5 h-3/5"
-                  src={metric.icon_url}
+                  src={metric.icon_url || metric.icon}
                   alt="icon"
                 />
               </div>
@@ -49,9 +100,9 @@ const KpiMetrics = (props: Props) => {
               </h2>
               {/* Edit and Delete Buttons */}
               <div className="flex absolute left-2 top-5 gap-2">
-                <EditMetric metricName={metric.name} metricId={metric.id} />
+                <EditMetric metricData={metric} />
                 <DeleteButton
-                  deleteFun={() => console.log("Delete")}
+                  deleteFun={() => deleteFun(JSON.stringify(metric.id))}
                   name={metric.name}
                   type="Metric"
                 />
@@ -62,7 +113,7 @@ const KpiMetrics = (props: Props) => {
             </div>
           );
         })}
-        <AddMetric kpiId={id ? +id : undefined} />
+        <AddMetric />
       </div>
     </div>
   );

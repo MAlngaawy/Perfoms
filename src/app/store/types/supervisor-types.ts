@@ -18,6 +18,18 @@ export type kpi = {
   icon_url: string;
 };
 
+export type Pillar = {
+  id: number;
+  name: string;
+  icon: string;
+  sport: number;
+  icon_url: string;
+};
+
+export type Pillars = BaseGetAllType & {
+  results: Pillar[];
+};
+
 export type AddAttendancesCalendar = {
   days: string;
   team: number;
@@ -111,8 +123,14 @@ export type SuperVisorTeam = {
   to_age: number;
 };
 
+export type SuperVisorPlayer = {
+  id: number;
+  name: string;
+  icon: string;
+};
+
 export type SuperVisorPlayers = BaseGetAllType & {
-  results: { id: number; name: string; icon: string }[];
+  results: SuperVisorPlayer[];
 };
 
 export type SuperVisorTeams = BaseGetAllType & {
@@ -174,6 +192,6 @@ export type TeamAttendance = BaseGetAllType & {
 };
 
 export type AddTeamCalendar = {
-  dat: string;
+  day: string;
   team: number;
 };

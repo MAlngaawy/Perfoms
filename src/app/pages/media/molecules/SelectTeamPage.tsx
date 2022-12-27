@@ -11,6 +11,7 @@ import { useMyTeamsQuery } from "~/app/store/coach/coachApi";
 import { useSuperTeamsQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { Avatar } from "@mantine/core";
 import { Teams } from "~/app/store/types/clubManager-types";
+import { useAdminTeamsQuery } from "~/app/store/clubManager/clubManagerApi";
 
 type Props = {};
 
@@ -25,6 +26,7 @@ const SelectTeamPage = (props: Props) => {
     { skip: !selectedPlayer || user?.user_type !== "Parent" }
   );
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
+  console.log("select team page", selectedPlayerTeam);
 
   const { data: coachTeams } = useMyTeamsQuery(
     {},
@@ -36,10 +38,16 @@ const SelectTeamPage = (props: Props) => {
     { skip: user?.user_type !== "Supervisor" }
   );
 
+  const { data: adminTeams } = useAdminTeamsQuery(
+    {},
+    { skip: user?.user_type !== "Admin" }
+  );
+
   useEffect(() => {
     if (superTeams) setTeams(superTeams);
     if (coachTeams) setTeams(coachTeams);
     if (playerTeams) setTeams(playerTeams);
+    if (adminTeams) setTeams(adminTeams);
 
     if (playerTeams)
       dispatch(
@@ -52,7 +60,7 @@ const SelectTeamPage = (props: Props) => {
               }
         )
       );
-  }, [playerTeams, superTeams, coachTeams]);
+  }, [playerTeams, superTeams, coachTeams, adminTeams]);
 
   return (
     <div className="admin-teams flex flex-col xs:flex-row flex-wrap justify-center xs:justify-start items-center xs:items-stretch gap-6 p-2 sm:p-6">

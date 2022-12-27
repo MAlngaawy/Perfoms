@@ -26,6 +26,7 @@ import {
   kpi,
   Kpis,
   Metrics,
+  Pillars,
   SuperVisorPlayers,
   SuperVisorTeamInfo,
   Team,
@@ -50,10 +51,16 @@ export const supervisorApi = createApi({
     baseUrl: `${BASE_URL}/supervisor`,
     prepareHeaders: BASE_HEADERS,
   }),
-  tagTypes: ["supervisor", "calendar"],
+  tagTypes: ["supervisor", "calendar", "metrics"],
   endpoints: ({ query, mutation }) => ({
-    superkpis: query<Kpis, { page?: number }>({
-      query: (params) => ({ url: "kpis/", params }),
+    superKpis: query<
+      Kpis,
+      { pillar_id: string | number | undefined; page?: number }
+    >({
+      query: ({ pillar_id, ...params }) => ({
+        url: `${pillar_id}/kpis/`,
+        params,
+      }),
     }),
     superTeams: query<Teams, { page?: number }>({
       query: (params) => ({ url: "teams/", params }),
@@ -108,17 +115,36 @@ export const supervisorApi = createApi({
     superSport: query<ClubManagerSport, { page?: number }>({
       query: (params) => ({ url: "my-sport/", params }),
     }),
-    superKpis: query<Kpis, { page?: number }>({
-      query: (params) => ({ url: "kpis/", params }),
+
+    superPillars: query<
+      Pillars,
+      { sport_id: number | string | undefined; page?: number }
+    >({
+      query: ({ sport_id, ...params }) => ({
+        url: `sports/${sport_id}/pillars/`,
+        params,
+      }),
     }),
+
+    superDeletePillar: mutation<{}, { pillar_id: string | number | undefined }>(
+      {
+        query: ({ pillar_id, ...params }) => ({
+          url: `sports/pillars/${pillar_id}/delete`,
+          method: "DELETE",
+        }),
+      }
+    ),
+
     superMetrics: query<Metrics, { kpi_id: string | undefined; page?: number }>(
       {
         query: ({ kpi_id, ...params }) => ({
           url: `metrics/${kpi_id}/`,
           params,
         }),
+        providesTags: ["metrics"],
       }
     ),
+
     addKpi: mutation<kpi, kpi>({
       query: ({ ...body }) => ({
         url: "kpis/add-kpi/",
@@ -127,7 +153,7 @@ export const supervisorApi = createApi({
       }),
     }),
 
-    addAction: mutation<AddAction, AddAction>({
+    superAddAction: mutation<AddAction, AddAction>({
       query: ({ metric_id, ...body }) => ({
         url: `add-action/${metric_id}/`,
         method: "POST",
@@ -135,7 +161,7 @@ export const supervisorApi = createApi({
       }),
     }),
 
-    addRecommendations: mutation<AddRecommendation, AddRecommendation>({
+    superAddRecommendations: mutation<AddRecommendation, AddRecommendation>({
       query: ({ metric_id, ...body }) => ({
         url: `add-recommendation/${metric_id}/`,
         method: "POST",
@@ -335,7 +361,7 @@ export const supervisorApi = createApi({
       }
     >({
       query: ({ sport_id, team_id, ...params }) => ({
-        url: `statistics/sports/teams/kpis/${sport_id}/${team_id}`,
+        url: `statistics/sports/teams/kpis/${team_id}`,
         params,
       }),
     }),
@@ -462,11 +488,30 @@ export const supervisorApi = createApi({
         params,
       }),
     }),
+
+    superDeleteKpi: mutation<
+      { kpi_id: number },
+      { kpi_id: number | string | undefined }
+    >({
+      query: ({ kpi_id, ...params }) => ({
+        url: `kpis/${kpi_id}/delete/`,
+        params,
+        method: "DELETE",
+      }),
+    }),
+
+    superDeleteMetric: mutation<{}, { metric_id: string }>({
+      query: ({ metric_id, ...body }) => ({
+        url: `metrics/${metric_id}/delete/`,
+        method: "DELETE",
+        body,
+      }),
+      invalidatesTags: ["metrics"],
+    }),
   }),
 });
 
 export const {
-  useSuperkpisQuery,
   useSuperTeamCoachesQuery,
   useSuperTeamEventsQuery,
   useSuperTeamPlaersQuery,
@@ -474,10 +519,12 @@ export const {
   useSuperTeamInfoQuery,
   useSuperSportQuery,
   useSuperKpisQuery,
+  useSuperPillarsQuery,
+  useSuperDeletePillarMutation,
   useAddKpiMutation,
   useSuperMetricsQuery,
-  useAddActionMutation,
-  useAddRecommendationsMutation,
+  useSuperAddActionMutation,
+  useSuperAddRecommendationsMutation,
   useSuprtEventsQuery,
   useSuprtEventFilesQuery,
   useSuperCoachesRequestsQuery,
@@ -513,4 +560,6 @@ export const {
   useSuperPlayerRecommendationsQuery,
   useSuperPlayerCalendarQuery,
   useSuperAddNewTeamMutation,
+  useSuperDeleteKpiMutation,
+  useSuperDeleteMetricMutation,
 } = supervisorApi;

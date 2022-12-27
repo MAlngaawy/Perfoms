@@ -147,7 +147,6 @@ function EditCoachData({ data, refetch }: Edit) {
           setIsLoading(false);
           setOpened(false);
           setPlayerImage(null);
-          console.log(res);
           refetch();
         })
         .catch(() => {
@@ -160,7 +159,6 @@ function EditCoachData({ data, refetch }: Edit) {
           setIsLoading(false);
           setOpened(false);
           setPlayerImage(null);
-          console.log(res);
           refetch();
         })
         .catch(() => {
