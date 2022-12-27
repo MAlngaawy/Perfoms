@@ -17,7 +17,7 @@ const DeleteButton = ({ name, type, deleteFun }: Props) => {
       <Modal opened={opened} onClose={() => setOpened(false)} title="Confirm!">
         <div className="flex flex-col gap-6 m-2 xs:m-10">
           <h2 className="text-perfSecondary text-center">
-            Are You Sure You Want To Delete {type} ({name}) ?
+            Are You Sure You Want To Delete {type} {name} ?
           </h2>
           <div className="flex justify-center items-center mt-4">
             <button

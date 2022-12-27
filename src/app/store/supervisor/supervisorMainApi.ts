@@ -51,7 +51,7 @@ export const supervisorApi = createApi({
     baseUrl: `${BASE_URL}/supervisor`,
     prepareHeaders: BASE_HEADERS,
   }),
-  tagTypes: ["supervisor", "calendar"],
+  tagTypes: ["supervisor", "calendar", "metrics"],
   endpoints: ({ query, mutation }) => ({
     superKpis: query<
       Kpis,
@@ -141,8 +141,10 @@ export const supervisorApi = createApi({
           url: `metrics/${kpi_id}/`,
           params,
         }),
+        providesTags: ["metrics"],
       }
     ),
+
     addKpi: mutation<kpi, kpi>({
       query: ({ ...body }) => ({
         url: "kpis/add-kpi/",
@@ -504,7 +506,7 @@ export const supervisorApi = createApi({
         method: "DELETE",
         body,
       }),
-      invalidatesTags: ["supervisor"],
+      invalidatesTags: ["metrics"],
     }),
   }),
 });

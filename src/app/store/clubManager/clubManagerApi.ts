@@ -40,6 +40,7 @@ export const clubManagerApi = createApi({
     "coachUser",
     "supervisorUser",
     "pillars",
+    "metrics",
   ],
   endpoints: ({ query, mutation }) => ({
     manageCoachesRequests: query<CoachRequests, { page?: number }>({
@@ -303,6 +304,7 @@ export const clubManagerApi = createApi({
         url: `kpis/${kpi_id}/metrics/`,
         params,
       }),
+      providesTags: ["metrics"],
     }),
 
     adminDeleteMetric: mutation<{}, { metric_id: string }>({
@@ -311,7 +313,7 @@ export const clubManagerApi = createApi({
         method: "DELETE",
         body,
       }),
-      invalidatesTags: ["clubManager"],
+      invalidatesTags: ["metrics"],
     }),
   }),
 });
