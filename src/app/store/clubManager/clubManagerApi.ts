@@ -5,6 +5,7 @@ import {
   AddRecommendation,
   AllUsers,
   Sports,
+  SportsStatistics,
   TeamPlayer,
   TeamPlayers,
   Teams,
@@ -24,6 +25,7 @@ import {
   TeamAttendance,
   TeamCoach,
 } from "../types/supervisor-types";
+import { TeamStatistics } from "../types/coach-types";
 
 export const clubManagerApi = createApi({
   reducerPath: "clubManagerApi",
@@ -340,6 +342,14 @@ export const clubManagerApi = createApi({
         params,
       }),
     }),
+
+    // Main reports API
+
+    adminSportStatistics: query<SportsStatistics, { page?: number }>({
+      query: (params) => ({
+        url: `statistics/sports/`,
+      }),
+    }),
   }),
 });
 
@@ -379,4 +389,6 @@ export const {
   useAdminAddRecommendationsMutation,
   useAdminAddActopnMutation,
   useAdminEventFilesQuery,
+  // Main Reports APIs
+  useAdminSportStatisticsQuery,
 } = clubManagerApi;

@@ -2,6 +2,7 @@ import { BaseGetAllType } from "./base-types";
 import { Metric, Team } from "./supervisor-types";
 import { Event } from "./events-types";
 import { PlayerCoach } from "./parent-types";
+import { TeamStatistics } from "./coach-types";
 
 export type ClubManagerSport = {
   id?: number;
@@ -124,4 +125,8 @@ export type AddSupervisorUser = {
   first_name: string;
   last_name: string;
   avatar: string;
+};
+
+export type SportsStatistics = BaseGetAllType & {
+  results: TeamStatistics[];
 };
