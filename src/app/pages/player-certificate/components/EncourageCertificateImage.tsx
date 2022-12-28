@@ -33,8 +33,8 @@ const EncourageCertificate = forwardRef(({ certificate }: Props, ref) => {
           new Date(
             (certificate && certificate && certificate?.created_at) || ""
           ).toLocaleDateString(),
-          540,
-          748
+          460,
+          530
         );
       };
     });
