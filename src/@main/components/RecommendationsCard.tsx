@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { PlayerRecommendations } from "~/app/store/types/parent-types";
 import { Skeleton } from "@mantine/core";
 import { useSuperPlayerRecommendationsQuery } from "~/app/store/supervisor/supervisorMainApi";
+import { useAdminPlayerRecommendationsQuery } from "~/app/store/clubManager/clubManagerApi";
 
 type Props = {
   player_id: number | string | undefined;
@@ -31,6 +32,12 @@ const RecommendationsCard = ({ player_id }: Props) => {
       { skip: !player_id }
     );
 
+  const { data: adminPlayerRecomendations } =
+    useAdminPlayerRecommendationsQuery(
+      { player_id: player_id },
+      { skip: !player_id }
+    );
+
   useEffect(() => {
     if (parentPlayerRecommendations)
       setRecommendations(parentPlayerRecommendations);
@@ -38,10 +45,13 @@ const RecommendationsCard = ({ player_id }: Props) => {
       setRecommendations(coachPlayerRecomendations);
     if (superPlayerRecomendations)
       setRecommendations(superPlayerRecomendations);
+    if (adminPlayerRecomendations)
+      setRecommendations(adminPlayerRecomendations);
   }, [
     parentPlayerRecommendations,
     coachPlayerRecomendations,
     superPlayerRecomendations,
+    adminPlayerRecomendations,
   ]);
 
   return (

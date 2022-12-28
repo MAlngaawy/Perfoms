@@ -10,7 +10,14 @@ import {
   TeamPlayers,
   Teams,
 } from "../types/clubManager-types";
-import { EventFiles, ParentClub, TeamCoaches } from "../types/parent-types";
+import {
+  EventFiles,
+  ParentClub,
+  PlayerKpis,
+  PlayerMetricScores,
+  PlayerRecommendations,
+  TeamCoaches,
+} from "../types/parent-types";
 import { TeamEvents } from "~/app/store/types/parent-types";
 import {
   AddAction,
@@ -439,6 +446,71 @@ export const clubManagerApi = createApi({
         params,
       }),
     }),
+
+    adminPlayerKpisMetricsStatistics: query<
+      PlayerKpis,
+      {
+        player_id: string | undefined;
+        date_from: string;
+        date_to: string;
+        pages?: number;
+      }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/${player_id}/player-kpis-metrics`,
+        params,
+      }),
+    }),
+
+    adminPlayerKpisMetricsModerateScore: query<
+      PlayerMetricScores,
+      { player_id: string | number | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/${player_id}/metrics/scores/moderate`,
+        params,
+      }),
+    }),
+
+    adminPlayerKpisMetricsStrengthScore: query<
+      PlayerMetricScores,
+      { player_id: string | number | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/${player_id}/metrics/scores/strength`,
+        params,
+      }),
+    }),
+
+    adminPlayerKpisMetricsWeaknessScore: query<
+      PlayerMetricScores,
+      { player_id: string | number | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/${player_id}/metrics/scores/weakness`,
+        params,
+      }),
+    }),
+
+    adminPlayerRecommendations: query<
+      PlayerRecommendations,
+      { player_id: string | number | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/${player_id}/recommendations`,
+        params,
+      }),
+    }),
+
+    adminPlayerActions: query<
+      PlayerRecommendations,
+      { player_id: string | number | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/${player_id}/actions`,
+        params,
+      }),
+    }),
   }),
 });
 
@@ -487,4 +559,10 @@ export const {
   useAdminPlayerInfoQuery,
   useAdminPlayerKpiStatisticsQuery,
   useAdminPlayersAttendStatisticsQuery,
+  useAdminPlayerKpisMetricsStatisticsQuery,
+  useAdminPlayerKpisMetricsModerateScoreQuery,
+  useAdminPlayerKpisMetricsStrengthScoreQuery,
+  useAdminPlayerKpisMetricsWeaknessScoreQuery,
+  useAdminPlayerRecommendationsQuery,
+  useAdminPlayerActionsQuery,
 } = clubManagerApi;
