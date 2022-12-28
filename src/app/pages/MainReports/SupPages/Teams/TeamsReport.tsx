@@ -60,7 +60,7 @@ const TeamsReports = (props: Props) => {
               return (
                 <div>
                   <ReportsChartCard
-                    onClickFun={() => navigate(`${team.id}`)}
+                    onClickFun={() => navigate(`${team.id}/kpis`)}
                     name={team.name}
                     statistics={team.statistics}
                   />

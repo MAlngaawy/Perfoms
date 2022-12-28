@@ -368,8 +368,8 @@ export const supervisorApi = createApi({
     superTeamKpiPlayersStatistics: query<
       TeamKpiPlayersStatistics,
       {
-        kpi_id: string | undefined;
-        team_id: string | undefined;
+        kpi_id: string | number | undefined;
+        team_id: string | number | undefined;
         pages?: number;
       }
     >({
@@ -382,8 +382,8 @@ export const supervisorApi = createApi({
     superTeamAttendPlayersStatistics: query<
       TeamPlayersAttendStatistics,
       {
-        sport_id: number | undefined;
-        team_id: string | undefined;
+        sport_id: number | string | undefined;
+        team_id: number | string | undefined;
         pages?: number;
       }
     >({

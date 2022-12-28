@@ -111,7 +111,7 @@ const OneTeam = (props: Props) => {
             return (
               <div>
                 <ReportsChartCard
-                  onClickFun={() => navigate(`kpi/${kpi.id}`)}
+                  onClickFun={() => navigate(`${kpi.id}/players`)}
                   name={kpi.name}
                   statistics={kpi.statistics}
                 />

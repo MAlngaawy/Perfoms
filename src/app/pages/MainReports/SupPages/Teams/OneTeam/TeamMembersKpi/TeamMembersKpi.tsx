@@ -23,75 +23,101 @@ import {
   TeamPlayersAttendStatistics,
 } from "~/app/store/types/coach-types";
 import { useUserQuery } from "~/app/store/user/userApi";
+import {
+  useAdminTeamAttendPlayersStatisticsQuery,
+  useAdminTeamInfoQuery,
+  useAdminTeamKpiPlayersStatisticsQuery,
+} from "~/app/store/clubManager/clubManagerApi";
 
 type Props = {};
 
 const TeamMembersKpi = (props: Props) => {
   const [reportType, setReportType] =
     useState<"Performances" | "Attendances">("Performances");
-  const { id, kpi_id } = useParams();
+  const { sport_id, team_id, kpi_id } = useParams();
   const [kpiData, setKpiData] = useState<TeamKpiPlayersStatistics>();
   const [attendData, setAttendData] = useState<TeamPlayersAttendStatistics>();
-  const { data: sportStatistics } = useSuperSportStatisticsQuery({});
   const { data: user } = useUserQuery(null);
 
   // fetch Kpis And Attend for coach user
   const { data: coachTeamplayerskpi, isLoading: performancesLoading } =
     useCoachTeamPlayersKpiStatisticsQuery(
-      { team_id: id, kpi_id: kpi_id },
-      { skip: !id || !kpi_id }
+      { team_id: team_id, kpi_id: kpi_id },
+      { skip: !team_id || !kpi_id }
     );
   const { data: coachTeamPlayersAttends } =
     useCoachTeamPlayersAttendancesStatisticsQuery(
-      { team_id: id },
-      { skip: !id }
+      { team_id: team_id },
+      { skip: !team_id }
     );
 
   // Fetch Kpis and Attends for the supervisor
   const { data: superTeamPlayersKpi } = useSuperTeamKpiPlayersStatisticsQuery(
-    { team_id: id, kpi_id: kpi_id },
-    { skip: !id || !kpi_id }
+    { team_id: team_id, kpi_id: kpi_id },
+    { skip: !team_id || !kpi_id }
   );
   const { data: superTeamPlayersAttends } =
     useSuperTeamAttendPlayersStatisticsQuery(
       {
-        team_id: id,
-        sport_id: sportStatistics?.id,
+        team_id: team_id,
+        sport_id: sport_id,
       },
-      { skip: !id || !sportStatistics?.id }
+      { skip: !team_id || !sport_id }
+    );
+
+  // Fetch Kpis and Attends for the Admin
+  const { data: adminTeamPlayersKpi } = useAdminTeamKpiPlayersStatisticsQuery(
+    { team_id: team_id, kpi_id: kpi_id },
+    { skip: !team_id || !kpi_id }
+  );
+  const { data: adminTeamPlayersAttends } =
+    useAdminTeamAttendPlayersStatisticsQuery(
+      {
+        team_id: team_id,
+        sport_id: sport_id,
+      },
+      { skip: !team_id || !sport_id }
     );
 
   useEffect(() => {
     if (superTeamPlayersAttends) setAttendData(superTeamPlayersAttends);
     if (coachTeamPlayersAttends) setAttendData(coachTeamPlayersAttends);
+    if (adminTeamPlayersAttends) setAttendData(adminTeamPlayersAttends);
 
     if (superTeamPlayersKpi) setKpiData(superTeamPlayersKpi);
     if (coachTeamplayerskpi) setKpiData(coachTeamplayerskpi);
+    if (adminTeamPlayersKpi) setKpiData(adminTeamPlayersKpi);
   }, [
     superTeamPlayersAttends,
     superTeamPlayersKpi,
     coachTeamPlayersAttends,
     coachTeamplayerskpi,
+    adminTeamPlayersAttends,
+    adminTeamPlayersKpi,
   ]);
 
   // Fetch Team info
   const { data: coachTeamInfo } = useCoachTeamInfoQuery(
-    { team_id: id },
-    { skip: !id }
+    { team_id: team_id },
+    { skip: !team_id }
   );
   const { data: superTeamInfo } = useSuperTeamInfoQuery(
-    { team_id: id },
-    { skip: !id }
+    { team_id: team_id },
+    { skip: !team_id }
+  );
+  const { data: adminTeamInfo } = useAdminTeamInfoQuery(
+    { team_id: team_id },
+    { skip: !team_id }
   );
 
   const items = [
     { title: "Categories", href: "/main-reports" },
-    { title: "Teams", href: "/main-reports/sports/teams" },
+    { title: "Teams", href: `/main-reports/sports/${sport_id}/teams` },
     {
       title: `Team ${
-        user?.user_type === "Coach" ? coachTeamInfo?.name : superTeamInfo?.name
+        coachTeamInfo?.name || superTeamInfo?.name || adminTeamInfo?.name
       }`,
-      href: `/main-reports/sports/teams/${id}`,
+      href: `/main-reports/sports/${sport_id}/teams/${team_id}/kpis`,
     },
     {
       title:
@@ -139,7 +165,9 @@ const TeamMembersKpi = (props: Props) => {
       <PrintComp>
         <div className="reports items-stretch justify-center xs:justify-start flex flex-wrap gap-4 my-6">
           <div>
-            <TeamInfoCard />
+            <TeamInfoCard
+              TeamInfoData={coachTeamInfo || superTeamInfo || adminTeamInfo}
+            />
           </div>
 
           {reportType === "Performances" ? (

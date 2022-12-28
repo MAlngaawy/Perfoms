@@ -25,7 +25,12 @@ import {
   TeamAttendance,
   TeamCoach,
 } from "../types/supervisor-types";
-import { TeamsStatistics, TeamStatistics } from "../types/coach-types";
+import {
+  TeamKpiPlayersStatistics,
+  TeamPlayersAttendStatistics,
+  TeamsStatistics,
+  TeamStatistics,
+} from "../types/coach-types";
 
 export const clubManagerApi = createApi({
   reducerPath: "clubManagerApi",
@@ -374,6 +379,34 @@ export const clubManagerApi = createApi({
         params,
       }),
     }),
+
+    adminTeamKpiPlayersStatistics: query<
+      TeamKpiPlayersStatistics,
+      {
+        kpi_id: string | number | undefined;
+        team_id: string | number | undefined;
+        pages?: number;
+      }
+    >({
+      query: ({ kpi_id, team_id, ...params }) => ({
+        url: `statistics/kpis/${kpi_id}/${team_id}/`,
+        params,
+      }),
+    }),
+
+    adminTeamAttendPlayersStatistics: query<
+      TeamPlayersAttendStatistics,
+      {
+        sport_id: number | string | undefined;
+        team_id: number | string | undefined;
+        pages?: number;
+      }
+    >({
+      query: ({ sport_id, team_id, ...params }) => ({
+        url: `statistics/attends/${sport_id}/${team_id}/`,
+        params,
+      }),
+    }),
   }),
 });
 
@@ -417,4 +450,6 @@ export const {
   useAdminSportStatisticsQuery,
   useAdminTeamsStatisticsQuery,
   useAdminTeamKpisStatisticsQuery,
+  useAdminTeamKpiPlayersStatisticsQuery,
+  useAdminTeamAttendPlayersStatisticsQuery,
 } = clubManagerApi;
