@@ -13,6 +13,7 @@ import {
 import {
   EventFiles,
   ParentClub,
+  PlayerAttendances,
   PlayerKpis,
   PlayerMetricScores,
   PlayerRecommendations,
@@ -511,6 +512,16 @@ export const clubManagerApi = createApi({
         params,
       }),
     }),
+
+    adminPlayerCalendar: query<
+      PlayerAttendances,
+      { player_id: string | number | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/${player_id}/calendar`,
+        params,
+      }),
+    }),
   }),
 });
 
@@ -565,4 +576,5 @@ export const {
   useAdminPlayerKpisMetricsWeaknessScoreQuery,
   useAdminPlayerRecommendationsQuery,
   useAdminPlayerActionsQuery,
+  useAdminPlayerCalendarQuery,
 } = clubManagerApi;
