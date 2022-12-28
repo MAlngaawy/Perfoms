@@ -21,7 +21,7 @@ const TeamsReportsConfig: PagesRouteConfig = {
   auth: [...authRoles.Supervisor, ...authRoles.Admin, ...authRoles.Coach],
   routes: [
     {
-      path: "main-reports/sports/teams",
+      path: "main-reports/sports/:sport_id/teams",
       element: <TeamsReports />,
     },
   ],

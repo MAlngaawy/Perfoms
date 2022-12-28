@@ -34,7 +34,7 @@ const SportsReports = (props: Props) => {
           <>
             {sportStatistics && (
               <ReportsChartCard
-                onClickFun={() => navigate(`teams`)}
+                onClickFun={() => navigate(`${sportStatistics.id}/teams`)}
                 name={sportStatistics?.name}
                 statistics={sportStatistics?.statistics}
               />
@@ -43,7 +43,7 @@ const SportsReports = (props: Props) => {
               adminSportsStatistics.results.map((sport) => {
                 return (
                   <ReportsChartCard
-                    onClickFun={() => navigate(`teams`)}
+                    onClickFun={() => navigate(`${sport.id}/teams`)}
                     name={sport?.name}
                     statistics={sport?.statistics}
                   />

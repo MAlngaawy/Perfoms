@@ -129,15 +129,15 @@ const Example = ({ data, chartColors }: any) => {
   const newData = [
     {
       name: "strengths",
-      value: data.strength || 1,
+      value: data.strength || 1000000,
     },
     {
       name: "moderate",
-      value: data.moderate || 1,
+      value: data.moderate || 1000000,
     },
     {
       name: "weaknesses",
-      value: data.weakness || 1,
+      value: data.weakness || 1000000,
     },
   ];
 
@@ -158,7 +158,9 @@ const Example = ({ data, chartColors }: any) => {
             <Cell
               key={`cell-${index}`}
               fill={
-                entry.value === 1 ? "#eee" : chartColors[index % COLORS.length]
+                entry.value === 1000000
+                  ? "#eee"
+                  : chartColors[index % COLORS.length]
               }
             />
           );

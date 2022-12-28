@@ -25,7 +25,7 @@ import {
   TeamAttendance,
   TeamCoach,
 } from "../types/supervisor-types";
-import { TeamStatistics } from "../types/coach-types";
+import { TeamsStatistics, TeamStatistics } from "../types/coach-types";
 
 export const clubManagerApi = createApi({
   reducerPath: "clubManagerApi",
@@ -350,6 +350,16 @@ export const clubManagerApi = createApi({
         url: `statistics/sports/`,
       }),
     }),
+
+    adminTeamsStatistics: query<
+      TeamsStatistics,
+      { sport_id: number | string | undefined; pages?: number }
+    >({
+      query: ({ sport_id, ...params }) => ({
+        url: `statistics/sports/teams/${sport_id}`,
+        params,
+      }),
+    }),
   }),
 });
 
@@ -391,4 +401,5 @@ export const {
   useAdminEventFilesQuery,
   // Main Reports APIs
   useAdminSportStatisticsQuery,
+  useAdminTeamsStatisticsQuery,
 } = clubManagerApi;
