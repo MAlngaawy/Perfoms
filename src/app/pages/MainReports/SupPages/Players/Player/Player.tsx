@@ -9,6 +9,7 @@ import { useGetPlayerInfoQuery } from "~/app/store/coach/coachApi";
 import { useGetSuperPlayerInfoQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { CoachPlayerInfo } from "~/app/store/types/coach-types";
 import Detailed from "./Component/Detailed";
+import { useAdminPlayerInfoQuery } from "~/app/store/clubManager/clubManagerApi";
 
 type Props = {};
 
@@ -23,8 +24,11 @@ const Player = (props: Props) => {
     { player_id: id },
     { skip: !id }
   );
-
   const { data: superPlayerInfo } = useGetSuperPlayerInfoQuery(
+    { player_id: id },
+    { skip: !id }
+  );
+  const { data: adminPlayerInfo } = useAdminPlayerInfoQuery(
     { player_id: id },
     { skip: !id }
   );
@@ -32,7 +36,8 @@ const Player = (props: Props) => {
   useEffect(() => {
     if (coachPlayerInfo) setPlayerInfo(coachPlayerInfo);
     if (superPlayerInfo) setPlayerInfo(superPlayerInfo);
-  }, [coachPlayerInfo, superPlayerInfo]);
+    if (adminPlayerInfo) setPlayerInfo(adminPlayerInfo);
+  }, [coachPlayerInfo, adminPlayerInfo, adminPlayerInfo]);
 
   const items = [
     { title: "categories", href: "/main-reports" },
@@ -93,7 +98,7 @@ const Player = (props: Props) => {
       <div className="my-6">
         {checked ? (
           <div>
-            <OverAll reportType={reportType} />
+            <OverAll playerInfo={playerInfo} reportType={reportType} />
           </div>
         ) : (
           <div>

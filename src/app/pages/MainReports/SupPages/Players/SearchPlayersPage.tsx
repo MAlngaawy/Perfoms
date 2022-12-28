@@ -6,6 +6,7 @@ import { useSuperPlayersQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { Link, useNavigate } from "react-router-dom";
 import { TeamPlayers } from "~/app/store/types/clubManager-types";
 import { useCoachGetAllMyPlayersQuery } from "~/app/store/coach/coachApi";
+import { useAdminPlayersQuery } from "~/app/store/clubManager/clubManagerApi";
 
 type Props = {};
 
@@ -14,17 +15,15 @@ const SearchPlayersPage = (props: Props) => {
   const { handleSubmit, register, control } = useForm();
   const navigate = useNavigate();
 
-  // fetch coach players
-
   const { data: coachPlayers } = useCoachGetAllMyPlayersQuery({});
-
-  // Fetch Super players
   const { data: superPlayers } = useSuperPlayersQuery({});
+  const { data: adminPlayers } = useAdminPlayersQuery({});
 
   useEffect(() => {
     if (superPlayers) setPlayersData(superPlayers);
     if (coachPlayers) setPlayersData(coachPlayers);
-  }, [superPlayers, coachPlayers]);
+    if (adminPlayers) setPlayersData(adminPlayers);
+  }, [superPlayers, coachPlayers, adminPlayers]);
 
   const send = (data: any) => {
     navigate(`player/${data.id}`);

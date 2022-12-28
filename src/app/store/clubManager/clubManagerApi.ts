@@ -26,6 +26,7 @@ import {
   TeamCoach,
 } from "../types/supervisor-types";
 import {
+  CoachPlayerInfo,
   TeamKpiPlayersStatistics,
   TeamPlayersAttendStatistics,
   TeamsStatistics,
@@ -407,6 +408,16 @@ export const clubManagerApi = createApi({
         params,
       }),
     }),
+
+    adminPlayerInfo: query<
+      CoachPlayerInfo,
+      { player_id: number | string | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `teams/players/${player_id}/`,
+        params,
+      }),
+    }),
   }),
 });
 
@@ -452,4 +463,5 @@ export const {
   useAdminTeamKpisStatisticsQuery,
   useAdminTeamKpiPlayersStatisticsQuery,
   useAdminTeamAttendPlayersStatisticsQuery,
+  useAdminPlayerInfoQuery,
 } = clubManagerApi;
