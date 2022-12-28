@@ -15,6 +15,10 @@ import {
 } from "~/app/store/coach/coachApi";
 import { useUserQuery } from "~/app/store/user/userApi";
 import { TeamsStatistics } from "~/app/store/types/coach-types";
+import {
+  useAdminTeamInfoQuery,
+  useAdminTeamKpisStatisticsQuery,
+} from "~/app/store/clubManager/clubManagerApi";
 
 type Props = {};
 
@@ -22,40 +26,52 @@ const OneTeam = (props: Props) => {
   const [data, setData] = useState<TeamsStatistics>();
   const navigate = useNavigate();
   const { data: user } = useUserQuery(null);
-  const { id } = useParams();
+  const { team_id, sport_id } = useParams();
   const { data: sportStatistics } = useSuperSportStatisticsQuery({});
 
   // Fetch Kpis Statistics Data
   const { data: coachTeamKpisStatistics, isLoading } =
-    useCoachTeamKpisStatisticsQuery({ team_id: id }, { skip: !id });
+    useCoachTeamKpisStatisticsQuery({ team_id: team_id }, { skip: !team_id });
 
   const { data: superTeamKpisStatistics, isLoading: superLoading } =
-    useSuperTeamKpisStatisticsQuery(
-      { team_id: id, sport_id: sportStatistics?.id },
-      { skip: !id }
+    useSuperTeamKpisStatisticsQuery({ team_id: team_id }, { skip: !team_id });
+
+  const { data: adminTeamKpisStatistics, isLoading: adminLoading } =
+    useAdminTeamKpisStatisticsQuery(
+      { team_id, sport_id: sport_id },
+      { skip: !team_id || !sport_id }
     );
 
   // Fetch Team info Data
   const { data: coachTeamInfo } = useCoachTeamInfoQuery(
-    { team_id: id },
-    { skip: !id }
+    { team_id: team_id },
+    { skip: !team_id }
   );
   const { data: superTeamInfo } = useSuperTeamInfoQuery(
-    { team_id: id },
-    { skip: !id }
+    { team_id: team_id },
+    { skip: !team_id }
+  );
+  const { data: adminTeamInfo } = useAdminTeamInfoQuery(
+    { team_id: team_id },
+    { skip: !team_id }
   );
 
   useEffect(() => {
     if (coachTeamKpisStatistics) setData(coachTeamKpisStatistics);
     if (superTeamKpisStatistics) setData(superTeamKpisStatistics);
-  }, [coachTeamKpisStatistics, superTeamKpisStatistics]);
+    if (adminTeamKpisStatistics) setData(adminTeamKpisStatistics);
+  }, [
+    coachTeamKpisStatistics,
+    superTeamKpisStatistics,
+    adminTeamKpisStatistics,
+  ]);
 
   const items = [
     { title: "Categories", href: "/main-reports" },
-    { title: "Teams", href: "/main-reports/sports/teams" },
+    { title: "Teams", href: `/main-reports/sports/${sport_id}/teams` },
     {
       title: `Team ${
-        user?.user_type === "Coach" ? coachTeamInfo?.name : superTeamInfo?.name
+        coachTeamInfo?.name || superTeamInfo?.name || adminTeamInfo?.name
       }`,
       href: "",
     },
@@ -75,7 +91,9 @@ const OneTeam = (props: Props) => {
       <PrintComp>
         <div className="reports items-stretch justify-center xs:justify-start flex flex-wrap gap-4 my-10">
           <div>
-            <TeamInfoCard />
+            <TeamInfoCard
+              TeamInfoData={coachTeamInfo || superTeamInfo || adminTeamInfo}
+            />
           </div>
           {isLoading ||
             (superLoading && (

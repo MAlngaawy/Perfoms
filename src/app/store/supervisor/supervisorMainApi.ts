@@ -355,12 +355,11 @@ export const supervisorApi = createApi({
     superTeamKpisStatistics: query<
       TeamsStatistics,
       {
-        sport_id: number | undefined;
-        team_id: string | undefined;
+        team_id: number | string | undefined;
         pages?: number;
       }
     >({
-      query: ({ sport_id, team_id, ...params }) => ({
+      query: ({ team_id, ...params }) => ({
         url: `statistics/sports/teams/kpis/${team_id}`,
         params,
       }),

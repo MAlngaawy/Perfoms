@@ -21,7 +21,7 @@ const OneTeamPageConfig: PagesRouteConfig = {
   auth: [...authRoles.Supervisor, ...authRoles.Admin, ...authRoles.Coach],
   routes: [
     {
-      path: "main-reports/sports/teams/:id",
+      path: "main-reports/sports/:sport_id/teams/:team_id",
       element: <OneTeam />,
     },
   ],

@@ -360,6 +360,20 @@ export const clubManagerApi = createApi({
         params,
       }),
     }),
+
+    adminTeamKpisStatistics: query<
+      TeamsStatistics,
+      {
+        sport_id: number | string | undefined;
+        team_id: number | string | undefined;
+        pages?: number;
+      }
+    >({
+      query: ({ sport_id, team_id, ...params }) => ({
+        url: `statistics/sports/teams/kpis/${sport_id}/${team_id}`,
+        params,
+      }),
+    }),
   }),
 });
 
@@ -402,4 +416,5 @@ export const {
   // Main Reports APIs
   useAdminSportStatisticsQuery,
   useAdminTeamsStatisticsQuery,
+  useAdminTeamKpisStatisticsQuery,
 } = clubManagerApi;
