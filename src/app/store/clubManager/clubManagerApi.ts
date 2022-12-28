@@ -27,6 +27,7 @@ import {
 } from "../types/supervisor-types";
 import {
   CoachPlayerInfo,
+  PlayerMonthsAttendancesStatistics,
   TeamKpiPlayersStatistics,
   TeamPlayersAttendStatistics,
   TeamsStatistics,
@@ -418,6 +419,26 @@ export const clubManagerApi = createApi({
         params,
       }),
     }),
+
+    adminPlayerKpiStatistics: query<
+      TeamsStatistics,
+      { player_id: string | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/player-kpis/${player_id}`,
+        params,
+      }),
+    }),
+
+    adminPlayersAttendStatistics: query<
+      PlayerMonthsAttendancesStatistics,
+      { player_id: string | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/calender-detailed/${player_id}/`,
+        params,
+      }),
+    }),
   }),
 });
 
@@ -464,4 +485,6 @@ export const {
   useAdminTeamKpiPlayersStatisticsQuery,
   useAdminTeamAttendPlayersStatisticsQuery,
   useAdminPlayerInfoQuery,
+  useAdminPlayerKpiStatisticsQuery,
+  useAdminPlayersAttendStatisticsQuery,
 } = clubManagerApi;

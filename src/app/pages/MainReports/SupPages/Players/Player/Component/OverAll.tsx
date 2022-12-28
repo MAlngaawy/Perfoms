@@ -18,6 +18,10 @@ import {
   useSuperPlayerKpiStatisticsQuery,
   useSuperPlayersAttendStatisticsQuery,
 } from "~/app/store/supervisor/supervisorMainApi";
+import {
+  useAdminPlayerKpiStatisticsQuery,
+  useAdminPlayersAttendStatisticsQuery,
+} from "~/app/store/clubManager/clubManagerApi";
 
 type Props = {
   reportType: string;
@@ -40,6 +44,12 @@ const OverAll = ({ playerInfo, reportType }: Props) => {
   const { data: superPlayerAttendancesStatistics } =
     useSuperPlayersAttendStatisticsQuery({ player_id: id }, { skip: !id });
 
+  const { data: adminPlayerKpisStatisticsData } =
+    useAdminPlayerKpiStatisticsQuery({ player_id: id }, { skip: !id });
+
+  const { data: adminPlayerAttendancesStatistics } =
+    useAdminPlayersAttendStatisticsQuery({ player_id: id }, { skip: !id });
+
   useEffect(() => {
     if (coachPlayerKpisStatisticsData) setData(coachPlayerKpisStatisticsData);
     if (coachPlayerAttendancesStatistics)
@@ -48,11 +58,17 @@ const OverAll = ({ playerInfo, reportType }: Props) => {
     if (superPlayerKpisStatisticsData) setData(superPlayerKpisStatisticsData);
     if (superPlayerAttendancesStatistics)
       setAttendData(superPlayerAttendancesStatistics);
+
+    if (adminPlayerKpisStatisticsData) setData(adminPlayerKpisStatisticsData);
+    if (adminPlayerAttendancesStatistics)
+      setAttendData(adminPlayerAttendancesStatistics);
   }, [
     coachPlayerKpisStatisticsData,
     coachPlayerAttendancesStatistics,
     superPlayerKpisStatisticsData,
     superPlayerAttendancesStatistics,
+    adminPlayerKpisStatisticsData,
+    adminPlayerAttendancesStatistics,
   ]);
 
   return (
