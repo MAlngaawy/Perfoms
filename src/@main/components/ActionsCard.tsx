@@ -6,6 +6,7 @@ import { useCoachPlayerActionsQuery } from "~/app/store/coach/coachApi";
 import { useEffect } from "react";
 import { useSuperPlayerActionsQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { Skeleton } from "@mantine/core";
+import { useAdminPlayerActionsQuery } from "~/app/store/clubManager/clubManagerApi";
 
 type Props = {
   player_id: number | string | undefined;
@@ -29,11 +30,22 @@ const ActionsCard = ({ player_id }: Props) => {
     { skip: !player_id }
   );
 
+  const { data: adminPlayerActions } = useAdminPlayerActionsQuery(
+    { player_id: player_id },
+    { skip: !player_id }
+  );
+
   useEffect(() => {
     if (parentPlayerActions) setActions(parentPlayerActions);
     if (coachPlayerActions) setActions(coachPlayerActions);
     if (superPlayerActions) setActions(superPlayerActions);
-  }, [parentPlayerActions, coachPlayerActions, superPlayerActions]);
+    if (adminPlayerActions) setActions(adminPlayerActions);
+  }, [
+    parentPlayerActions,
+    coachPlayerActions,
+    superPlayerActions,
+    adminPlayerActions,
+  ]);
 
   return (
     <div className="flex flex-col p-6 bg-white gap-1 rounded-3xl ">

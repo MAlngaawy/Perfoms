@@ -1,16 +1,12 @@
-import { Avatar, Breadcrumbs, Menu } from "@mantine/core";
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Avatar } from "@mantine/core";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import ReportsChartCard from "~/@main/components/MainReports/ReportsChartCard";
-import AppIcons from "~/@main/core/AppIcons";
-// import TeamInfoCard from "../components/TeamInfoCard";
-import TimeFilter from "~/@main/components/TimeFilter";
 import Info from "~/@main/components/Info";
 import PrintComp from "~/@main/PrintComp";
 import {
   useCoachPlayerKpiStatisticsQuery,
   useCoachPlayersAttendStatisticsQuery,
-  useGetPlayerInfoQuery,
 } from "~/app/store/coach/coachApi";
 import AttendReportsChart from "~/@main/components/MainReports/AttendReportsChart";
 import {
@@ -19,45 +15,40 @@ import {
   TeamsStatistics,
 } from "~/app/store/types/coach-types";
 import {
-  useGetSuperPlayerInfoQuery,
   useSuperPlayerKpiStatisticsQuery,
   useSuperPlayersAttendStatisticsQuery,
 } from "~/app/store/supervisor/supervisorMainApi";
+import {
+  useAdminPlayerKpiStatisticsQuery,
+  useAdminPlayersAttendStatisticsQuery,
+} from "~/app/store/clubManager/clubManagerApi";
 
 type Props = {
   reportType: string;
+  playerInfo: CoachPlayerInfo | undefined;
 };
 
-const OverAll = ({ reportType }: Props) => {
+const OverAll = ({ playerInfo, reportType }: Props) => {
   const [data, setData] = useState<TeamsStatistics>();
-  const [playerInfo, setPlayerInfo] = useState<CoachPlayerInfo>();
   const [attendData, setAttendData] =
     useState<PlayerMonthsAttendancesStatistics>();
   const { id } = useParams();
 
-  // Coach Player Performances Statistics
-  // Coach Player Atttendances Statistics
   const { data: coachPlayerKpisStatisticsData } =
     useCoachPlayerKpiStatisticsQuery({ player_id: id }, { skip: !id });
   const { data: coachPlayerAttendancesStatistics } =
     useCoachPlayersAttendStatisticsQuery({ player_id: id }, { skip: !id });
 
-  // Supervisor Player Performances Statistics
-  // Supervisor Player Atttendances Statistics
   const { data: superPlayerKpisStatisticsData } =
     useSuperPlayerKpiStatisticsQuery({ player_id: id }, { skip: !id });
   const { data: superPlayerAttendancesStatistics } =
     useSuperPlayersAttendStatisticsQuery({ player_id: id }, { skip: !id });
 
-  const { data: coachPlayerInfo } = useGetPlayerInfoQuery(
-    { player_id: id },
-    { skip: !id }
-  );
+  const { data: adminPlayerKpisStatisticsData } =
+    useAdminPlayerKpiStatisticsQuery({ player_id: id }, { skip: !id });
 
-  const { data: superPlayerInfo } = useGetSuperPlayerInfoQuery(
-    { player_id: id },
-    { skip: !id }
-  );
+  const { data: adminPlayerAttendancesStatistics } =
+    useAdminPlayersAttendStatisticsQuery({ player_id: id }, { skip: !id });
 
   useEffect(() => {
     if (coachPlayerKpisStatisticsData) setData(coachPlayerKpisStatisticsData);
@@ -68,15 +59,16 @@ const OverAll = ({ reportType }: Props) => {
     if (superPlayerAttendancesStatistics)
       setAttendData(superPlayerAttendancesStatistics);
 
-    if (coachPlayerInfo) setPlayerInfo(coachPlayerInfo);
-    if (superPlayerInfo) setPlayerInfo(superPlayerInfo);
+    if (adminPlayerKpisStatisticsData) setData(adminPlayerKpisStatisticsData);
+    if (adminPlayerAttendancesStatistics)
+      setAttendData(adminPlayerAttendancesStatistics);
   }, [
     coachPlayerKpisStatisticsData,
     coachPlayerAttendancesStatistics,
     superPlayerKpisStatisticsData,
     superPlayerAttendancesStatistics,
-    coachPlayerInfo,
-    superPlayerInfo,
+    adminPlayerKpisStatisticsData,
+    adminPlayerAttendancesStatistics,
   ]);
 
   return (

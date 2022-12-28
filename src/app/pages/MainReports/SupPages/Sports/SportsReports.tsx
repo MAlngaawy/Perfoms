@@ -4,6 +4,7 @@ import { Breadcrumbs } from "@mantine/core";
 import ReportsChartCard from "~/@main/components/MainReports/ReportsChartCard";
 import PrintComp from "~/@main/PrintComp";
 import { useSuperSportStatisticsQuery } from "~/app/store/supervisor/supervisorMainApi";
+import { useAdminSportStatisticsQuery } from "~/app/store/clubManager/clubManagerApi";
 
 type Props = {};
 
@@ -18,6 +19,7 @@ const items = [
 
 const SportsReports = (props: Props) => {
   const { data: sportStatistics } = useSuperSportStatisticsQuery({});
+  const { data: adminSportsStatistics } = useAdminSportStatisticsQuery({});
   const navigate = useNavigate();
 
   return (
@@ -28,14 +30,26 @@ const SportsReports = (props: Props) => {
         </Breadcrumbs>
       </div>
       <PrintComp>
-        <div className="reports flex flex-wrap gap-4 items-center my-10">
-          {sportStatistics && (
-            <ReportsChartCard
-              onClickFun={() => navigate(`teams`)}
-              name={sportStatistics?.name}
-              statistics={sportStatistics?.statistics}
-            />
-          )}
+        <div className="reports flex flex-wrap gap-4 justify-center sm:justify-start items-center my-10">
+          <>
+            {sportStatistics && (
+              <ReportsChartCard
+                onClickFun={() => navigate(`${sportStatistics.id}/teams`)}
+                name={sportStatistics?.name}
+                statistics={sportStatistics?.statistics}
+              />
+            )}
+            {adminSportsStatistics &&
+              adminSportsStatistics.results.map((sport) => {
+                return (
+                  <ReportsChartCard
+                    onClickFun={() => navigate(`${sport.id}/teams`)}
+                    name={sport?.name}
+                    statistics={sport?.statistics}
+                  />
+                );
+              })}
+          </>
         </div>
       </PrintComp>
     </div>

@@ -5,6 +5,7 @@ import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 import { usePlayerCalenderQuery } from "~/app/store/parent/parentApi";
 import { useCoachPlayerCalendarQuery } from "~/app/store/coach/coachApi";
 import { useSuperPlayerCalendarQuery } from "~/app/store/supervisor/supervisorMainApi";
+import { useAdminPlayerCalendarQuery } from "~/app/store/clubManager/clubManagerApi";
 
 type Props = {
   player_id?: number | string | undefined;
@@ -23,6 +24,11 @@ const AttendancesSmallCards = ({ player_id }: Props) => {
   );
 
   const { data: superPlayerAttendance } = useSuperPlayerCalendarQuery(
+    { player_id: player_id },
+    { skip: !player_id }
+  );
+
+  const { data: adminPlayerAttendance } = useAdminPlayerCalendarQuery(
     { player_id: player_id },
     { skip: !player_id }
   );
@@ -54,6 +60,16 @@ const AttendancesSmallCards = ({ player_id }: Props) => {
       if (superPlayerAttendance?.results[i].status === "ATTENDED") {
         newData[0] += 1;
       } else if (superPlayerAttendance?.results[i].status === "ABSENT") {
+        newData[1] += 1;
+      }
+    }
+  }
+
+  if (adminPlayerAttendance) {
+    for (let i = 0; i < adminPlayerAttendance?.results?.length; i++) {
+      if (adminPlayerAttendance?.results[i].status === "ATTENDED") {
+        newData[0] += 1;
+      } else if (adminPlayerAttendance?.results[i].status === "ABSENT") {
         newData[1] += 1;
       }
     }

@@ -21,7 +21,7 @@ const TeamMembersKpiConfig: PagesRouteConfig = {
   auth: [...authRoles.Supervisor, ...authRoles.Admin, ...authRoles.Coach],
   routes: [
     {
-      path: "main-reports/sports/teams/:id/kpi/:kpi_id",
+      path: "main-reports/sports/:sport_id/teams/:team_id/kpis/:kpi_id/players",
       element: <TeamMembersKpi />,
     },
   ],

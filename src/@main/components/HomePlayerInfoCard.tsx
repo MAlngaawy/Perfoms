@@ -9,6 +9,7 @@ import { CoachPlayerInfo } from "~/app/store/types/coach-types";
 import { useGetPlayerInfoQuery } from "~/app/store/coach/coachApi";
 import { useGetSuperPlayerInfoQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { Skeleton } from "@mantine/core";
+import { useAdminPlayerInfoQuery } from "~/app/store/clubManager/clubManagerApi";
 
 type Props = {
   player_id?: number | string | undefined;
@@ -33,13 +34,19 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
     { skip: !player_id }
   );
 
+  const { data: adminPlayerInfo } = useAdminPlayerInfoQuery(
+    { player_id: player_id },
+    { skip: !player_id }
+  );
+
   console.log("coachPlayerInfo", coachPlayerInfo);
 
   useEffect(() => {
     if (parentPlayerInfoData) setPlayerInfoData(parentPlayerInfoData);
     if (coachPlayerInfo) setPlayerInfoData(coachPlayerInfo);
     if (superPlayerInfo) setPlayerInfoData(superPlayerInfo);
-  }, [parentPlayerInfoData, coachPlayerInfo, superPlayerInfo]);
+    if (adminPlayerInfo) setPlayerInfoData(adminPlayerInfo);
+  }, [parentPlayerInfoData, coachPlayerInfo, superPlayerInfo, adminPlayerInfo]);
 
   if (!playerInfoData) {
     return (

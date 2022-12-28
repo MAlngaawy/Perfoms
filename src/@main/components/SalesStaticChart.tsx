@@ -24,6 +24,7 @@ import NoData from "./NoData";
 import { useParams } from "react-router-dom";
 import { useCoachPlayerKpisMetricsStatisticsQuery } from "~/app/store/coach/coachApi";
 import { useSuperPlayerKpisMetricsStatisticsQuery } from "~/app/store/supervisor/supervisorMainApi";
+import { useAdminPlayerKpisMetricsStatisticsQuery } from "~/app/store/clubManager/clubManagerApi";
 
 const SaleStaticChart = () => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
@@ -67,11 +68,21 @@ const SaleStaticChart = () => {
     { skip: !id || !timeFilter?.from_date || !timeFilter?.to_date }
   );
 
+  const { data: adminPlayerKpis } = useAdminPlayerKpisMetricsStatisticsQuery(
+    {
+      player_id: id,
+      date_from: timeFilter?.from_date,
+      date_to: timeFilter?.to_date,
+    },
+    { skip: !id || !timeFilter?.from_date || !timeFilter?.to_date }
+  );
+
   useEffect(() => {
     if (parentPlayerKpis) setPlayerKpis(parentPlayerKpis);
     if (coachPlayerKpis) setPlayerKpis(coachPlayerKpis);
     if (superPlayerKpis) setPlayerKpis(superPlayerKpis);
-  }, [parentPlayerKpis, coachPlayerKpis, superPlayerKpis]);
+    if (adminPlayerKpis) setPlayerKpis(adminPlayerKpis);
+  }, [parentPlayerKpis, coachPlayerKpis, superPlayerKpis, adminPlayerKpis]);
 
   if (!playerKpis) {
     return (

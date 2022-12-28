@@ -5,11 +5,20 @@ import {
   AddRecommendation,
   AllUsers,
   Sports,
+  SportsStatistics,
   TeamPlayer,
   TeamPlayers,
   Teams,
 } from "../types/clubManager-types";
-import { EventFiles, ParentClub, TeamCoaches } from "../types/parent-types";
+import {
+  EventFiles,
+  ParentClub,
+  PlayerAttendances,
+  PlayerKpis,
+  PlayerMetricScores,
+  PlayerRecommendations,
+  TeamCoaches,
+} from "../types/parent-types";
 import { TeamEvents } from "~/app/store/types/parent-types";
 import {
   AddAction,
@@ -24,6 +33,14 @@ import {
   TeamAttendance,
   TeamCoach,
 } from "../types/supervisor-types";
+import {
+  CoachPlayerInfo,
+  PlayerMonthsAttendancesStatistics,
+  TeamKpiPlayersStatistics,
+  TeamPlayersAttendStatistics,
+  TeamsStatistics,
+  TeamStatistics,
+} from "../types/coach-types";
 
 export const clubManagerApi = createApi({
   reducerPath: "clubManagerApi",
@@ -340,6 +357,171 @@ export const clubManagerApi = createApi({
         params,
       }),
     }),
+
+    // Main reports API
+
+    adminSportStatistics: query<SportsStatistics, { page?: number }>({
+      query: (params) => ({
+        url: `statistics/sports/`,
+      }),
+    }),
+
+    adminTeamsStatistics: query<
+      TeamsStatistics,
+      { sport_id: number | string | undefined; pages?: number }
+    >({
+      query: ({ sport_id, ...params }) => ({
+        url: `statistics/sports/teams/${sport_id}`,
+        params,
+      }),
+    }),
+
+    adminTeamKpisStatistics: query<
+      TeamsStatistics,
+      {
+        sport_id: number | string | undefined;
+        team_id: number | string | undefined;
+        pages?: number;
+      }
+    >({
+      query: ({ sport_id, team_id, ...params }) => ({
+        url: `statistics/sports/teams/kpis/${sport_id}/${team_id}`,
+        params,
+      }),
+    }),
+
+    adminTeamKpiPlayersStatistics: query<
+      TeamKpiPlayersStatistics,
+      {
+        kpi_id: string | number | undefined;
+        team_id: string | number | undefined;
+        pages?: number;
+      }
+    >({
+      query: ({ kpi_id, team_id, ...params }) => ({
+        url: `statistics/kpis/${kpi_id}/${team_id}/`,
+        params,
+      }),
+    }),
+
+    adminTeamAttendPlayersStatistics: query<
+      TeamPlayersAttendStatistics,
+      {
+        sport_id: number | string | undefined;
+        team_id: number | string | undefined;
+        pages?: number;
+      }
+    >({
+      query: ({ sport_id, team_id, ...params }) => ({
+        url: `statistics/attends/${sport_id}/${team_id}/`,
+        params,
+      }),
+    }),
+
+    adminPlayerInfo: query<
+      CoachPlayerInfo,
+      { player_id: number | string | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `teams/players/${player_id}/`,
+        params,
+      }),
+    }),
+
+    adminPlayerKpiStatistics: query<
+      TeamsStatistics,
+      { player_id: string | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/player-kpis/${player_id}`,
+        params,
+      }),
+    }),
+
+    adminPlayersAttendStatistics: query<
+      PlayerMonthsAttendancesStatistics,
+      { player_id: string | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/calender-detailed/${player_id}/`,
+        params,
+      }),
+    }),
+
+    adminPlayerKpisMetricsStatistics: query<
+      PlayerKpis,
+      {
+        player_id: string | undefined;
+        date_from: string;
+        date_to: string;
+        pages?: number;
+      }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/${player_id}/player-kpis-metrics`,
+        params,
+      }),
+    }),
+
+    adminPlayerKpisMetricsModerateScore: query<
+      PlayerMetricScores,
+      { player_id: string | number | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/${player_id}/metrics/scores/moderate`,
+        params,
+      }),
+    }),
+
+    adminPlayerKpisMetricsStrengthScore: query<
+      PlayerMetricScores,
+      { player_id: string | number | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/${player_id}/metrics/scores/strength`,
+        params,
+      }),
+    }),
+
+    adminPlayerKpisMetricsWeaknessScore: query<
+      PlayerMetricScores,
+      { player_id: string | number | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/${player_id}/metrics/scores/weakness`,
+        params,
+      }),
+    }),
+
+    adminPlayerRecommendations: query<
+      PlayerRecommendations,
+      { player_id: string | number | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/${player_id}/recommendations`,
+        params,
+      }),
+    }),
+
+    adminPlayerActions: query<
+      PlayerRecommendations,
+      { player_id: string | number | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/${player_id}/actions`,
+        params,
+      }),
+    }),
+
+    adminPlayerCalendar: query<
+      PlayerAttendances,
+      { player_id: string | number | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/${player_id}/calendar`,
+        params,
+      }),
+    }),
   }),
 });
 
@@ -379,4 +561,20 @@ export const {
   useAdminAddRecommendationsMutation,
   useAdminAddActopnMutation,
   useAdminEventFilesQuery,
+  // Main Reports APIs
+  useAdminSportStatisticsQuery,
+  useAdminTeamsStatisticsQuery,
+  useAdminTeamKpisStatisticsQuery,
+  useAdminTeamKpiPlayersStatisticsQuery,
+  useAdminTeamAttendPlayersStatisticsQuery,
+  useAdminPlayerInfoQuery,
+  useAdminPlayerKpiStatisticsQuery,
+  useAdminPlayersAttendStatisticsQuery,
+  useAdminPlayerKpisMetricsStatisticsQuery,
+  useAdminPlayerKpisMetricsModerateScoreQuery,
+  useAdminPlayerKpisMetricsStrengthScoreQuery,
+  useAdminPlayerKpisMetricsWeaknessScoreQuery,
+  useAdminPlayerRecommendationsQuery,
+  useAdminPlayerActionsQuery,
+  useAdminPlayerCalendarQuery,
 } = clubManagerApi;

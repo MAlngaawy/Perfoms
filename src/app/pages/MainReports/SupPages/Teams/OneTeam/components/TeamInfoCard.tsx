@@ -6,46 +6,46 @@ import { useEffect, useState } from "react";
 import { CoachTeamInfo } from "~/app/store/types/coach-types";
 import { useSuperTeamInfoQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { useUserQuery } from "~/app/store/user/userApi";
+import { useAdminTeamInfoQuery } from "~/app/store/clubManager/clubManagerApi";
 import {
   SuperVisorTeam,
   SuperVisorTeamInfo,
 } from "~/app/store/types/supervisor-types";
 
-type Props = {};
+type Props = {
+  TeamInfoData: CoachTeamInfo | SuperVisorTeamInfo | undefined;
+};
 
-const TeamInfoCard = (props: Props) => {
-  const { id } = useParams();
-  const { data: user } = useUserQuery(null);
-  const [data, setData] = useState<CoachTeamInfo | SuperVisorTeamInfo>();
+const TeamInfoCard = ({ TeamInfoData: data }: Props) => {
+  console.log(data);
 
-  const { data: coachTeamInfo, isLoading } = useCoachTeamInfoQuery(
-    { team_id: id },
-    { skip: !id }
-  );
+  const { team_id } = useParams();
+  // const [data, setData] = useState<CoachTeamInfo | SuperVisorTeamInfo>();
 
-  const { data: superTeamInfo, isLoading: superLoading } =
-    useSuperTeamInfoQuery({ team_id: id }, { skip: !id });
+  // const { data: coachTeamInfo, isLoading: coachLoading } =
+  //   useCoachTeamInfoQuery({ team_id: team_id }, { skip: !team_id });
 
-  useEffect(() => {
-    if (coachTeamInfo) setData(coachTeamInfo);
-    if (superTeamInfo) setData(superTeamInfo);
-  }, [coachTeamInfo, superTeamInfo]);
+  // const { data: superTeamInfo, isLoading: superLoading } =
+  //   useSuperTeamInfoQuery({ team_id: team_id }, { skip: !team_id });
 
-  if (isLoading || superLoading)
-    return <Skeleton height={360} width={300} radius="lg" />;
+  // const { data: adminTeamInfo, isLoading: adminLoading } =
+  //   useAdminTeamInfoQuery({ team_id: team_id }, { skip: !team_id });
+
+  // useEffect(() => {
+  //   if (coachTeamInfo) setData(coachTeamInfo);
+  //   if (superTeamInfo) setData(superTeamInfo);
+  //   if (adminTeamInfo) setData(adminTeamInfo);
+  // }, [coachTeamInfo, superTeamInfo, adminTeamInfo]);
+
+  // if (coachLoading || superLoading || adminLoading)
+  //   return <Skeleton height={360} width={300} radius="lg" />;
 
   return (
     <div className="teamInfoCard bg-white h-full flex-col gap-4 rounded-xl p-4 flex w-64">
       <h2>Team Info</h2>
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-2">
         <div className="flex justify-between gap-6">
-          <Avatar
-            src={
-              data?.icon_url ||
-              "https://cdn-icons-png.flaticon.com/512/3903/3903982.png"
-            }
-            size="xl"
-          />
+          <Avatar src={data?.icon_url} size={100} />
           <div className="flex flex-col ">
             <Info label="name" value={"Team " + data?.name} />
             <Info

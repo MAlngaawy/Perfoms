@@ -7,6 +7,7 @@ import { selectedPlayerFn, timeFilterFn } from "~/app/store/parent/parentSlice";
 import { usePlayerCalenderQuery } from "~/app/store/parent/parentApi";
 import { useCoachPlayerCalendarQuery } from "~/app/store/coach/coachApi";
 import { useSuperPlayerCalendarQuery } from "~/app/store/supervisor/supervisorMainApi";
+import { useAdminPlayerCalendarQuery } from "~/app/store/clubManager/clubManagerApi";
 
 type Props = {
   player_id?: number | string | undefined;
@@ -54,11 +55,22 @@ const AttendanceTable = ({ player_id }: Props) => {
     { skip: !player_id }
   );
 
+  const { data: adminPlayerAttendance } = useAdminPlayerCalendarQuery(
+    { player_id: player_id },
+    { skip: !player_id }
+  );
+
   useEffect(() => {
     if (parentPlayerAttendance) setPlayerAttendance(parentPlayerAttendance);
     if (coachPlayerAttendance) setPlayerAttendance(coachPlayerAttendance);
     if (superPlayerAttendance) setPlayerAttendance(superPlayerAttendance);
-  }, [parentPlayerAttendance, coachPlayerAttendance, superPlayerAttendance]);
+    if (adminPlayerAttendance) setPlayerAttendance(adminPlayerAttendance);
+  }, [
+    parentPlayerAttendance,
+    coachPlayerAttendance,
+    superPlayerAttendance,
+    adminPlayerAttendance,
+  ]);
 
   const rows = playerAttendance?.results.map((day) => (
     <tr key={day.id}>

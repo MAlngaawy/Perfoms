@@ -41,15 +41,15 @@ const ReportsChartCard = ({
     >
       <h2 className="w-full text-left">{name}</h2>
       <div className="flex relative w-full items-center justify-center">
-        {statistics.moderate == 0 &&
+        {/* {statistics.moderate == 0 &&
         statistics.strength == 0 &&
         statistics.weakness == 0 ? (
           <div className="text-lg font-semibold text-perfGray2">
             No Data Yet
           </div>
-        ) : (
-          <Example chartColors={chartColors} data={statistics} />
-        )}
+        ) : ( */}
+        <Example chartColors={chartColors} data={statistics} />
+        {/* )} */}
       </div>
       <Divider />
       <div className="flex flex-col w-full items-center gap-4 text-sm">
@@ -152,12 +152,17 @@ const Example = ({ data, chartColors }: any) => {
         fill="#8884d8"
         dataKey="value"
       >
-        {newData.map((entry: any, index: any) => (
-          <Cell
-            key={`cell-${index}`}
-            fill={chartColors[index % COLORS.length]}
-          />
-        ))}
+        {newData.map((entry: any, index: any) => {
+          console.log("entry", entry);
+          return (
+            <Cell
+              key={`cell-${index}`}
+              fill={
+                entry.value === 0 ? "#eee" : chartColors[index % COLORS.length]
+              }
+            />
+          );
+        })}
       </Pie>
     </PieChart>
   );

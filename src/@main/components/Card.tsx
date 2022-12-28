@@ -18,6 +18,11 @@ import {
 import { PlayerKpis, PlayerMetricScores } from "~/app/store/types/parent-types";
 import { CardProps } from "~/app/store/types/user-types";
 import { Skeleton } from "@mantine/core";
+import {
+  useAdminPlayerKpisMetricsModerateScoreQuery,
+  useAdminPlayerKpisMetricsStrengthScoreQuery,
+  useAdminPlayerKpisMetricsWeaknessScoreQuery,
+} from "~/app/store/clubManager/clubManagerApi";
 
 const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
   const [data, setData] = useState<PlayerMetricScores | undefined>();
@@ -70,19 +75,39 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
       { skip: !player_id }
     );
 
+  // Fetch Supervisor Data
+  const { data: adminPlayerModerate } =
+    useAdminPlayerKpisMetricsModerateScoreQuery(
+      { player_id: player_id },
+      { skip: !player_id }
+    );
+  const { data: adminPlayerStrength } =
+    useAdminPlayerKpisMetricsStrengthScoreQuery(
+      { player_id: player_id },
+      { skip: !player_id }
+    );
+  const { data: adminPlayerWeakness } =
+    useAdminPlayerKpisMetricsWeaknessScoreQuery(
+      { player_id: player_id },
+      { skip: !player_id }
+    );
+
   useEffect(() => {
     if (powerType === "Moderate") {
       if (moderate) setData(moderate);
       if (coachPlayerModerate) setData(coachPlayerModerate);
       if (superPlayerModerate) setData(superPlayerModerate);
+      if (adminPlayerModerate) setData(adminPlayerModerate);
     } else if (powerType === "Strengths") {
       if (strength) setData(strength);
       if (coachPlayerStrength) setData(coachPlayerStrength);
       if (superPlayerStrength) setData(superPlayerStrength);
+      if (adminPlayerStrength) setData(adminPlayerStrength);
     } else if (powerType === "Weaknesses") {
       if (weakness) setData(weakness);
       if (coachPlayerWeakness) setData(coachPlayerWeakness);
       if (superPlayerWeakness) setData(superPlayerWeakness);
+      if (adminPlayerWeakness) setData(adminPlayerWeakness);
     }
   }, [
     moderate,
@@ -94,6 +119,9 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
     superPlayerModerate,
     superPlayerStrength,
     superPlayerWeakness,
+    adminPlayerModerate,
+    adminPlayerStrength,
+    adminPlayerWeakness,
   ]);
 
   return (

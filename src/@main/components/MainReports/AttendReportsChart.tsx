@@ -23,15 +23,7 @@ const AttendReportsChart = ({ name, icon, player_attendance }: Props) => {
     >
       <h2 className="w-full text-left">{name}</h2>
       <div className="flex relative w-full items-center justify-center">
-        {player_attendance.attends == 0 &&
-        player_attendance.absent == 0 &&
-        player_attendance.upcoming == 0 ? (
-          <div className="text-lg font-semibold text-perfGray2">
-            No Data Yet
-          </div>
-        ) : (
-          <Example chartColors={chartColors} data={player_attendance} />
-        )}
+        <Example chartColors={chartColors} data={player_attendance} />
       </div>
       <Divider />
       <div className="flex flex-col w-full items-center gap-4 text-sm">
@@ -137,7 +129,11 @@ const Example = ({ data, chartColors }: any) => {
         {newData.map((entry: any, index: any) => (
           <Cell
             key={`cell-${index}`}
-            fill={chartColors[index % chartColors.length]}
+            fill={
+              entry.value === 0
+                ? "#eee"
+                : chartColors[index % chartColors.length]
+            }
           />
         ))}
       </Pie>
