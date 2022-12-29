@@ -14,6 +14,7 @@ import { useUserQuery } from "~/app/store/user/userApi";
 import { useMyClubQuery } from "~/app/store/coach/coachApi";
 import { useEffect, useState } from "react";
 import { useSuperClubQuery } from "~/app/store/supervisor/supervisorMainApi";
+import { useAdminClubQuery } from "~/app/store/clubManager/clubManagerApi";
 
 type Props = {
   opened: boolean;
@@ -42,11 +43,17 @@ const Toolbar = ({ setOpened }: Props) => {
     { skip: user?.user_type !== "Supervisor" }
   );
 
+  const { data: adminClub } = useAdminClubQuery(
+    {},
+    { skip: user?.user_type !== "Admin" }
+  );
+
   useEffect(() => {
     if (playerClub) setClub(playerClub);
     if (coachClub) setClub(coachClub);
     if (superClub) setClub(superClub);
-  }, [coachClub, playerClub, superClub]);
+    if (adminClub) setClub(adminClub);
+  }, [coachClub, playerClub, superClub, adminClub]);
 
   return (
     <nav className="w-full flex justify-between items-center shadow-md p-2 lg:p-4 bg-perfBlue lg:bg-white overflow-scroll">
@@ -60,7 +67,7 @@ const Toolbar = ({ setOpened }: Props) => {
         <div className="clubLogo gap-2 hidden lg:flex justify-center items-center">
           <Avatar
             radius={"xl"}
-            className="w-8"
+            className="w-10"
             src={club?.icon_url}
             alt="club logo"
           />
