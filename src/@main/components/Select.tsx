@@ -54,11 +54,16 @@ const PerfSelect = ({
               borderBottom: 1,
               borderStyle: "solid",
               borderRadius: 0,
-              minHeight: 20,
+              minHeight: 10,
+              maxHeight: 15,
+              fontSize: 12,
             },
             ".mantine-Select-dropdown": {
               minWidth: 100,
               // overflow: "auto",
+            },
+            ".mantine-Select-label": {
+              fontSize: 10,
             },
           }}
           className={className}
