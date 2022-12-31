@@ -12,9 +12,15 @@ import { DatePicker } from "@mantine/dates";
 import AppIcons from "~/@main/core/AppIcons";
 import SubmitButton from "~/@main/components/SubmitButton";
 import __ from "lodash";
-import { User } from "~/app/store/types/user-types";
+import { Education, User } from "~/app/store/types/user-types";
 import { PlayerCoach } from "~/app/store/types/parent-types";
 import { axiosInstance } from "~/app/configs/dataService";
+import {
+  useAddUserEducationMutation,
+  useDeleteUserEducationMutation,
+  useGetUserEducationsQuery,
+} from "~/app/store/user/userApi";
+import DeleteButton from "../ManagerComponents/SubComponents/DeleteButton";
 
 // Props Types
 type Props = {
@@ -25,6 +31,9 @@ type Props = {
 };
 
 const CoachPersonalInfo = ({ data, editMode, refetch, type }: Props) => {
+  const { data: userEducations } = useGetUserEducationsQuery({});
+  const [deleteEducation] = useDeleteUserEducationMutation();
+
   return (
     <div className="bg-white flex flex-col gap-4 h-full rounded-lg md:rounded-2xl p-4">
       <h3 className="text-base font-medium text-center">Coach</h3>
@@ -75,32 +84,37 @@ const CoachPersonalInfo = ({ data, editMode, refetch, type }: Props) => {
             Education
           </h3>
 
-          <div className="my-2">
-            <p className="date text-xs font-normal text-perfGray3">
-              {data?.details?.education
-                ? data?.details?.education.from
-                : "-/--/----"}{" "}
-              -
-              {data?.details?.education
-                ? data?.details?.education.to
-                : "-/--/----"}
-            </p>
-            <h2>
-              {data?.details?.education
-                ? data?.details?.education.degree
-                : "No Data"}
-            </h2>
-            <p className="date text-xs font-normal text-perfGray3">
-              {data?.details?.education
-                ? data?.details?.education.universty
-                : ""}
-            </p>
-          </div>
+          {userEducations &&
+            userEducations.results.map((education) => {
+              return (
+                <div className="my-2 relative">
+                  <p className="date text-xs font-normal text-perfGray3">
+                    {education.year}
+                  </p>
+                  <h2>{education.degree}</h2>
+                  <p className="date text-xs font-normal text-perfGray3">
+                    {education.universty}
+                  </p>
+                  <div className="absolute right-0 top-0">
+                    {editMode && (
+                      <DeleteButton
+                        deleteFun={() => {
+                          deleteEducation({ id: education.id });
+                        }}
+                        name={education.degree}
+                        type="Degree"
+                      />
+                    )}
+                  </div>
+                </div>
+              );
+            })}
         </div>
       </div>
 
       {type === "profile" && editMode && (
         <EditCoachData
+          educationData={userEducations?.results[0]}
           refetch={() => {
             if (refetch) refetch();
           }}
@@ -115,46 +129,40 @@ export default CoachPersonalInfo;
 
 type Edit = {
   data: User | PlayerCoach | undefined;
+  educationData: Education | undefined;
   refetch: any;
 };
 // Edit Coach Personal Data Modal
-function EditCoachData({ data, refetch }: Edit) {
+function EditCoachData({ data, refetch, educationData }: Edit) {
   const [opened, setOpened] = useState(false);
   const [playerImage, setPlayerImage] = React.useState<string | unknown>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [userAvatar, setUserAvatar] = useState<File>();
   const [isLoading, setIsLoading] = useState(false);
+  const [addUserEducation] = useAddUserEducationMutation();
 
   const onSubmitFunction = (e: any) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    console.log(formData.get("degree"));
-    const addedDetails = {
-      education: {
-        from: formData.get("from"),
-        to: formData.get("to"),
-        degree: formData.get("degree"),
-        universty: formData.get("universty"),
-      },
+    const newEducation = {
+      degree: e.target["degree"].value,
+      universty: e.target["universty"].value,
+      year: e.target["year"].value,
     };
+    addUserEducation(newEducation)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    const formData = new FormData(e.currentTarget);
 
     if (userAvatar) formData.append("avatar", userAvatar);
     setIsLoading(true);
     try {
       axiosInstance
         .patch("user-generals/update-profile/", formData)
-        .then((res) => {
-          setIsLoading(false);
-          setOpened(false);
-          setPlayerImage(null);
-          refetch();
-        })
-        .catch(() => {
-          setIsLoading(false);
-        });
-
-      axiosInstance
-        .patch("user-generals/update-profile/", { details: addedDetails })
         .then((res) => {
           setIsLoading(false);
           setOpened(false);
@@ -223,21 +231,20 @@ function EditCoachData({ data, refetch }: Edit) {
           />
 
           {/*Degree Input  */}
-          <Input
-            name="degree"
-            defaultValue={data?.details?.education?.degree}
-            placeholder="Degree"
-          />
+          <Input name="degree" placeholder="Degree" />
+
+          {/*Universty Input  */}
+          <Input name="universty" placeholder="Universty Name" />
 
           {/*Universty Input  */}
           <Input
-            name="universty"
-            defaultValue={data?.details?.education?.universty}
-            placeholder="Universty Name"
+            name="year"
+            type={"number"}
+            placeholder="Pick Graduation date"
           />
 
           {/* Start And End Year */}
-          <DatePicker
+          {/* <DatePicker
             inputFormat="DD/MM/YYYY"
             defaultValue={
               data?.details?.education?.from
@@ -246,18 +253,15 @@ function EditCoachData({ data, refetch }: Edit) {
             }
             name="from"
             placeholder="Pick Start date"
-          />
+          /> */}
 
-          <DatePicker
+          {/* <DatePicker
             inputFormat="DD/MM/YYYY"
-            defaultValue={
-              data?.details?.education?.to
-                ? new Date(data?.details?.education?.to as unknown as Date)
-                : new Date()
+            name="year"
+            placeholder={
+              JSON.stringify(educationData?.year) || "Pick Graduation date"
             }
-            name="to"
-            placeholder="Pick End date"
-          />
+          /> */}
 
           <SubmitButton isLoading={isLoading} text="Send" />
         </form>

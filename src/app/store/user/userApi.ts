@@ -1,6 +1,9 @@
 import { SerializedError } from "./../index";
 import {
+  AddEducation,
   ChangePassword,
+  Education,
+  Educations,
   NotificationsType,
   OTPVerify,
   SendOtp,
@@ -34,7 +37,7 @@ export const userApi = createApi({
     baseUrl: `${BASE_URL}/user-generals`,
     prepareHeaders: BASE_HEADERS,
   }) as BaseQueryFn<string | FetchArgs, unknown, SerializedError, {}>,
-  tagTypes: ["Users"],
+  tagTypes: ["Users", "education"],
   endpoints: ({ query, mutation }) => ({
     user: query<User, any>({
       query: () => `profile/`,
@@ -193,6 +196,33 @@ export const userApi = createApi({
         }
       },
     }),
+
+    // Users Profile
+    /**Education */
+    getUserEducations: query<Educations, {}>({
+      query: (params) => ({
+        url: "educations",
+        params,
+      }),
+      providesTags: ["education"],
+    }),
+
+    addUserEducation: mutation<AddEducation, AddEducation>({
+      query: (body) => ({
+        url: "educations/",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["education"],
+    }),
+
+    deleteUserEducation: mutation<Education, { id: number }>({
+      query: ({ id, ...params }) => ({
+        url: `educations/${id}/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["education"],
+    }),
   }),
 });
 
@@ -211,4 +241,7 @@ export const {
   useGeneralPillarsQuery,
   useGeneralSportsQuery,
   useGeneralTeamsQuery,
+  useGetUserEducationsQuery,
+  useAddUserEducationMutation,
+  useDeleteUserEducationMutation,
 } = userApi;
