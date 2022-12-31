@@ -9,7 +9,7 @@ import {
   Avatar,
 } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
-import AppIcons from "../core/AppIcons";
+import AppIcons from "~/@main/core/AppIcons";
 import SubmitButton from "~/@main/components/SubmitButton";
 import __ from "lodash";
 import { User } from "~/app/store/types/user-types";

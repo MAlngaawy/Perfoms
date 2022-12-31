@@ -1,8 +1,8 @@
 import { Grid } from "@mantine/core";
 
-import CoachPersonalInfo from "~/@main/components/CoachPersonalInfo";
-import CoachExperince from "~/@main/components/CoachExperince";
-import CoachAchievements from "~/@main/components/CoachAchievements";
+import CoachPersonalInfo from "~/@main/components/CoachProfileComponents/CoachPersonalInfo";
+import CoachExperince from "~/@main/components/CoachProfileComponents/CoachExperince";
+import CoachAchievements from "~/@main/components/CoachProfileComponents/CoachAchievements";
 import { useState } from "react";
 import {
   useUpdateProfileMutation,

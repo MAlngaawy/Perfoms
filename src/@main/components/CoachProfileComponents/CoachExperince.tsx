@@ -9,9 +9,9 @@ import { DatePicker } from "@mantine/dates";
 import { User } from "~/app/store/types/user-types";
 import { Details, PlayerCoach } from "~/app/store/types/parent-types";
 import { useUpdateProfileMutation } from "~/app/store/user/userApi";
-import AppUtils from "../utils/AppUtils";
-import Placeholders from "./Placeholders";
-import { Button } from "./Button";
+import AppUtils from "../../utils/AppUtils";
+import Placeholders from "../Placeholders";
+import { Button } from "../Button";
 
 type Props = {
   editMode?: boolean;
