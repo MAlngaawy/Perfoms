@@ -125,11 +125,12 @@ function EditCoachData({ data, refetch }: Edit) {
   const [userAvatar, setUserAvatar] = useState<File>();
   const [isLoading, setIsLoading] = useState(false);
 
+  console.log("Dataaaaaaaaa", data);
   const onSubmitFunction = (e: any) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    console.log(formData.get("degree"));
     const addedDetails = {
+      ...data?.details,
       education: {
         from: formData.get("from"),
         to: formData.get("to"),

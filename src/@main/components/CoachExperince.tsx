@@ -61,7 +61,8 @@ const CoachExperince = ({ data, editMode }: Props) => {
           <TitleWithIcon name="Experinces" />
           <div className="flex flex-col ml-2 my-4">
             <p className="text-xs font-normal text-perfGray3">
-              {data?.details?.experinces && data?.details?.experinces.from} /
+              {data?.details?.experinces &&
+                data?.details?.experinces.from + "/"}
               {data?.details?.experinces && data?.details?.experinces.to}
             </p>
 
@@ -188,13 +189,12 @@ function AddExperinces({ data: oldDetails }: { data: Details | undefined }) {
             render={({ field }) => (
               <DatePicker
                 inputFormat="DD/MM/YYYY"
-                defaultValue={
-                  oldDetails?.experinces?.from
-                    ? new Date(oldDetails?.experinces?.from as unknown as Date)
-                    : new Date()
+                placeholder={
+                  oldDetails?.experinces?.to
+                    ? oldDetails?.experinces?.from
+                    : "Pick End date"
                 }
                 {...field}
-                placeholder="Pick Start date"
               />
             )}
             control={control}
@@ -204,13 +204,12 @@ function AddExperinces({ data: oldDetails }: { data: Details | undefined }) {
             render={({ field }) => (
               <DatePicker
                 inputFormat="DD/MM/YYYY"
-                defaultValue={
-                  oldDetails?.experinces?.to
-                    ? new Date(oldDetails?.experinces?.to as unknown as Date)
-                    : new Date()
-                }
                 {...field}
-                placeholder="Pick End date"
+                placeholder={
+                  oldDetails?.experinces?.to
+                    ? oldDetails?.experinces?.to
+                    : "Pick End date"
+                }
               />
             )}
             control={control}
