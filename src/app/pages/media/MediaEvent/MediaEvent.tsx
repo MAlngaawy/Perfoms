@@ -65,18 +65,17 @@ const MediaEvent = () => {
           images={files?.event_files || []}
         />
       </div>
-      {user?.user_type === "Supervisor" ||
-        (user?.user_type === "Admin" && (
-          <UploadForm
-            refetch={() => {
-              if (user?.user_type === "Supervisor") {
-                superRefetch();
-              } else {
-                adminRefetch();
-              }
-            }}
-          />
-        ))}
+      {(user?.user_type === "Supervisor" || user?.user_type === "Admin") && (
+        <UploadForm
+          refetch={() => {
+            if (user?.user_type === "Supervisor") {
+              superRefetch();
+            } else {
+              adminRefetch();
+            }
+          }}
+        />
+      )}
     </div>
   );
 };
