@@ -14,29 +14,6 @@ import { showNotification } from "@mantine/notifications";
 
 type Props = {};
 
-const embtyDetails = {
-  bio: "",
-  experinces: {
-    from: "",
-    to: "",
-    description: "",
-    name: "",
-  },
-  achievements: [
-    {
-      place: "",
-      type: "",
-      year: "",
-    },
-  ],
-  education: {
-    degree: "",
-    from: "",
-    to: "",
-    universty: "",
-  },
-};
-
 const CoachProfilePage = (props: Props) => {
   const [editMode, setEditMode] = useState(false);
   const { data: user, refetch } = useUserQuery(null);

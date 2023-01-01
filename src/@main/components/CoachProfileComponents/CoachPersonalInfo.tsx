@@ -21,10 +21,11 @@ import {
   useGetUserEducationsQuery,
 } from "~/app/store/user/userApi";
 import DeleteButton from "../ManagerComponents/SubComponents/DeleteButton";
+import { useNavigate } from "react-router-dom";
 
 // Props Types
 type Props = {
-  data: User | PlayerCoach | undefined;
+  data: Partial<User> | undefined;
   editMode?: boolean;
   refetch?: any;
   type: "profile" | "cv";
@@ -33,10 +34,11 @@ type Props = {
 const CoachPersonalInfo = ({ data, editMode, refetch, type }: Props) => {
   const { data: userEducations } = useGetUserEducationsQuery({});
   const [deleteEducation] = useDeleteUserEducationMutation();
+  const navigate = useNavigate();
 
   return (
     <div className="bg-white flex flex-col gap-4 h-full rounded-lg md:rounded-2xl p-4">
-      <h3 className="text-base font-medium text-center">Coach</h3>
+      <h3 className="text-base font-medium text-center">{data?.user_type}</h3>
       <div className="flex md:flex-col justify-center items-center gap-4">
         <div className="flex justify-center items-center">
           <Avatar
@@ -50,11 +52,16 @@ const CoachPersonalInfo = ({ data, editMode, refetch, type }: Props) => {
             {data?.first_name + " " + data?.last_name}
           </h2>
           <h4 className="text-perfBlue group-hover:text-white text-xs">
-            {data?.job} Coach
+            {data?.job}
           </h4>
-          <Button className=" border border-perfBlue rounded-lg font-normal text-perfBlue hover:text-white">
-            Send Message
-          </Button>
+          {data?.user_type == "Parent" && (
+            <Button
+              onClick={() => navigate("/chat")}
+              className=" border border-perfBlue rounded-lg font-normal text-perfBlue hover:text-white"
+            >
+              Send Message
+            </Button>
+          )}
         </div>
       </div>
 
@@ -83,6 +90,12 @@ const CoachPersonalInfo = ({ data, editMode, refetch, type }: Props) => {
           <h3 className="text-base font-medium text-perfLightBlack">
             Education
           </h3>
+
+          {userEducations?.results.length === 0 && (
+            <h2 className="my-4">
+              No <span className="text-perfBlue"> Educations </span> Added Yet!
+            </h2>
+          )}
 
           {userEducations &&
             userEducations.results.map((education) => {
@@ -128,7 +141,7 @@ const CoachPersonalInfo = ({ data, editMode, refetch, type }: Props) => {
 export default CoachPersonalInfo;
 
 type Edit = {
-  data: User | PlayerCoach | undefined;
+  data: Partial<User> | undefined;
   educationData: Education | undefined;
   refetch: any;
 };
