@@ -39,7 +39,7 @@ export const userApi = createApi({
     baseUrl: `${BASE_URL}/user-generals`,
     prepareHeaders: BASE_HEADERS,
   }) as BaseQueryFn<string | FetchArgs, unknown, SerializedError, {}>,
-  tagTypes: ["Users", "education"],
+  tagTypes: ["Users", "education", "experiences"],
   endpoints: ({ query, mutation }) => ({
     user: query<User, any>({
       query: () => `profile/`,
@@ -232,6 +232,7 @@ export const userApi = createApi({
         url: "experiances/",
         params,
       }),
+      providesTags: ["experiences"],
     }),
 
     addUserExperiences: mutation<AddExperince, {}>({
@@ -240,6 +241,7 @@ export const userApi = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["experiences"],
     }),
 
     deleteExperiences: mutation<AddExperince, { id: number }>({
@@ -247,6 +249,7 @@ export const userApi = createApi({
         url: `experiances/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["experiences"],
     }),
   }),
 });

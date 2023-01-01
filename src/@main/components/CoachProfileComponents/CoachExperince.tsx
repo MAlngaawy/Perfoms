@@ -10,12 +10,14 @@ import { User } from "~/app/store/types/user-types";
 import { Details, PlayerCoach } from "~/app/store/types/parent-types";
 import {
   useAddUserExperiencesMutation,
+  useDeleteExperiencesMutation,
   useGetUserExperiencesQuery,
   useUpdateProfileMutation,
 } from "~/app/store/user/userApi";
 import AppUtils from "../../utils/AppUtils";
 import Placeholders from "../Placeholders";
 import { Button } from "../Button";
+import DeleteButton from "../ManagerComponents/SubComponents/DeleteButton";
 
 type Props = {
   editMode?: boolean;
@@ -24,73 +26,62 @@ type Props = {
 
 const CoachExperince = ({ data, editMode }: Props) => {
   const { data: experiences } = useGetUserExperiencesQuery({});
-  console.log("experiences", experiences);
-
-  // const hiddenFileInput = React.useRef(null);
-
-  // const handleClick = (event: any) => {
-  //   hiddenFileInput.current.click();
-  // };
-
-  // const handleChange = (event: any) => {
-  //   const fileUploaded = event.target.files[0];
-  //   props.handleFile(fileUploaded);
-  // };
-
-  // if (!data) {
-  //   return (
-  //     <div className="bg-white flex flex-col items-center gap-1 h-full rounded-lg md:rounded-2xl p-4  pt-10">
-  //       <Placeholders
-  //         img="/assets/images/nocv.png"
-  //         preText={"You need to add your"}
-  //         pageName={"CV"}
-  //       />
-  //       <Button
-  //         label="Add your CV"
-  //         style="bordered"
-  //         className="py-1 rounded-lg"
-  //         onClick={handleClick}
-  //       />
-  //       <input
-  //         type="file"
-  //         ref={hiddenFileInput}
-  //         onChange={handleChange}
-  //         style={{ display: "none" }}
-  //       />
-  //     </div>
-  //   );
-  // }
+  const [deleteExperience] = useDeleteExperiencesMutation();
 
   return (
     <div className="bg-white flex flex-col sm:flex-row justify-between gap-8 h-full rounded-lg md:rounded-2xl p-4  pt-10">
       <div className="experinces sm:w-1/2">
         <TitleWithIcon name="Experinces" />
         {experiences?.results.length === 0 && (
-          <h2>No Experiences Added Yet!</h2>
+          <h2 className="my-4">
+            No <span className="text-perfBlue"> Experiences </span> Added Yet!
+          </h2>
         )}
         {experiences?.results.map((exper) => {
           return (
-            <>
-              <div className="flex flex-col ml-2 my-4">
-                <p className="text-xs font-normal text-perfGray3">
-                  {exper.date_from + "/"}
-                  {exper.date_to}
-                </p>
+            <div className="flex flex-col ml-2 my-4 relative">
+              <p className="text-xs font-normal text-perfGray3">
+                {exper.date_from + " / "}
+                {exper.to_present ? "Present" : exper.date_to}
+              </p>
 
-                <h3 className="text-base font-semibold text-perfGray1">
-                  {exper.title}
-                </h3>
+              <h3 className="text-base font-semibold text-perfGray1">
+                {exper.title}
+              </h3>
 
-                <p className="text-xs font-normal text-perfGray3  my-4">
-                  {exper.description}
-                </p>
+              <p className="text-xs font-normal text-perfGray3  my-2">
+                {exper.description}
+              </p>
+              <div className=" absolute right-0 top-0">
+                <DeleteButton
+                  type="Experience"
+                  name={exper.title}
+                  deleteFun={() => {
+                    deleteExperience({ id: exper.id })
+                      .then(() => {
+                        AppUtils.showNotificationFun(
+                          "Success",
+                          "Done",
+                          "Experience Successfly Deleted"
+                        );
+                      })
+                      .catch(() => {
+                        AppUtils.showNotificationFun(
+                          "Error",
+                          "Sorry",
+                          "Can't Delete Experience Now"
+                        );
+                      });
+                  }}
+                />
               </div>
-            </>
+            </div>
           );
         })}
-        {editMode && experiences && experiences.results.length < 2 && (
+        {/* {editMode && experiences && experiences.results.length < 2 && (
           <AddExperinces data={data?.details} />
-        )}
+        )} */}
+        {editMode && <AddExperinces data={data?.details} />}
       </div>
 
       <div className="flex flex-col gap-6  sm:w-1/2">
@@ -181,13 +172,19 @@ function AddExperinces({ data: oldDetails }: { data: Details | undefined }) {
   // const toPresent = watch("to_present");
   // console.log(toPresent);
 
-  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
-  const [addExperience] = useAddUserExperiencesMutation();
+  // const [updateProfile, { isLoading }] = useUpdateProfileMutation();
+  const [addExperience, { isLoading }] = useAddUserExperiencesMutation();
 
   // Submit Form Function
   const onSubmitFunction = (data: any) => {
-    console.log("DATA", data);
-    addExperience(data)
+    console.log("DATA");
+    const newData = {
+      ...data,
+      date_from: AppUtils.formatDate(new Date(data.date_from)),
+      date_to: AppUtils.formatDate(new Date(data.date_to)),
+      place: "No Place",
+    };
+    addExperience(newData)
       .then(() => {
         AppUtils.showNotificationFun("Success", "Done", "Experienc");
         reserFields();
@@ -195,8 +192,8 @@ function AddExperinces({ data: oldDetails }: { data: Details | undefined }) {
       })
       .catch((err) => {
         AppUtils.showNotificationFun("Error", "Sorry", "Something Went Wrong");
-        // reserFields();
-        // setOpened(false);
+        reserFields();
+        setOpened(false);
       });
   };
   return (
@@ -218,7 +215,7 @@ function AddExperinces({ data: oldDetails }: { data: Details | undefined }) {
             {...register("date_from")}
             render={({ field }) => (
               <DatePicker
-                inputFormat="DD/MM/YYYY"
+                inputFormat="YYYY-MM-DD"
                 {...field}
                 placeholder="Pick Start date"
               />
@@ -230,7 +227,7 @@ function AddExperinces({ data: oldDetails }: { data: Details | undefined }) {
             render={({ field }) => (
               <DatePicker
                 disabled={checked}
-                inputFormat="DD/MM/YYYY"
+                inputFormat="YYYY-MM-DD"
                 {...field}
                 placeholder="Pick End date"
               />
@@ -247,6 +244,7 @@ function AddExperinces({ data: oldDetails }: { data: Details | undefined }) {
           <Textarea
             placeholder="Describe the experinces you got"
             withAsterisk
+            maxRows={50}
             error={errors.bio && (errors.bio.message as ReactNode)}
             {...register("description")}
           />
