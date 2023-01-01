@@ -9,14 +9,18 @@ import { DatePicker } from "@mantine/dates";
 import { User } from "~/app/store/types/user-types";
 import { Details, PlayerCoach } from "~/app/store/types/parent-types";
 import {
+  useAddUserCoursesMutation,
   useAddUserExperiencesMutation,
+  useAddUserQualificationsMutation,
+  useDeleteCourseMutation,
   useDeleteExperiencesMutation,
+  useDeleteQualificationsMutation,
+  useGetUserCoursesQuery,
   useGetUserExperiencesQuery,
+  useGetUserQualificationsQuery,
   useUpdateProfileMutation,
 } from "~/app/store/user/userApi";
 import AppUtils from "../../utils/AppUtils";
-import Placeholders from "../Placeholders";
-import { Button } from "../Button";
 import DeleteButton from "../ManagerComponents/SubComponents/DeleteButton";
 
 type Props = {
@@ -26,7 +30,11 @@ type Props = {
 
 const CoachExperince = ({ data, editMode }: Props) => {
   const { data: experiences } = useGetUserExperiencesQuery({});
+  const { data: qualifications } = useGetUserQualificationsQuery({});
+  const { data: courses } = useGetUserCoursesQuery({});
   const [deleteExperience] = useDeleteExperiencesMutation();
+  const [deleteQualification] = useDeleteQualificationsMutation();
+  const [deleteCourse] = useDeleteCourseMutation();
 
   return (
     <div className="bg-white flex flex-col sm:flex-row justify-between gap-8 h-full rounded-lg md:rounded-2xl p-4  pt-10">
@@ -87,28 +95,86 @@ const CoachExperince = ({ data, editMode }: Props) => {
       <div className="flex flex-col gap-6  sm:w-1/2">
         <div className="qualifications">
           <TitleWithIcon name="Core Qualifications" />
+          {qualifications?.results.length === 0 && (
+            <h2 className="my-4">
+              No <span className="text-perfBlue"> Qualifications </span> Added
+              Yet!
+            </h2>
+          )}
           <ul className="list-disc list-outside  ml-8">
-            {data?.details?.qualifications &&
-              data?.details?.qualifications.map((oneQualifications: any) => (
-                <li
-                  key={oneQualifications}
-                  className="text-xs font-normal text-perfGray3 my-4"
-                >
-                  {oneQualifications}
-                </li>
-              ))}
+            {qualifications?.results.map((oneQualifications) => (
+              <li
+                key={oneQualifications.id}
+                className="text-xs w-full relative font-normal text-perfGray3 my-4"
+              >
+                <div className="absolute right-0">
+                  <DeleteButton
+                    name={oneQualifications.name}
+                    type="Qualification"
+                    deleteFun={() => {
+                      deleteQualification({ id: oneQualifications.id })
+                        .then(() => {
+                          AppUtils.showNotificationFun(
+                            "Success",
+                            "Done",
+                            "Qualification Successfly Deleted"
+                          );
+                        })
+                        .catch(() => {
+                          AppUtils.showNotificationFun(
+                            "Error",
+                            "Sorry",
+                            "Can't Delete Qualification Now"
+                          );
+                        });
+                    }}
+                  />
+                </div>
+                {oneQualifications.name}
+              </li>
+            ))}
           </ul>
-          {editMode && <AddQualifications data={data?.details} />}
+          {editMode && <AddQualifications />}
         </div>
         <div className="courses">
           <TitleWithIcon name="Courses" />
-          <ul className="list-disc list-outside ml-8">
-            {data?.details?.courses &&
-              data?.details?.courses.map((course: any) => (
-                <li className="text-xs font-normal text-perfGray3 my-4">
-                  {course}
-                </li>
-              ))}
+          {courses?.results.length === 0 && (
+            <h2 className="my-4">
+              No <span className="text-perfBlue"> Courses </span> Added Yet!
+            </h2>
+          )}
+          <ul className="list-disc list-outside  ml-8">
+            {courses?.results.map((course) => (
+              <li
+                key={course.id}
+                className="text-xs w-full relative font-normal text-perfGray3 my-4"
+              >
+                <div className="absolute right-0">
+                  <DeleteButton
+                    name={course.name}
+                    type="Courses"
+                    deleteFun={() => {
+                      deleteCourse({ id: course.id })
+                        .then(() => {
+                          AppUtils.showNotificationFun(
+                            "Success",
+                            "Done",
+                            "Courses Successfly Deleted"
+                          );
+                        })
+                        .catch(() => {
+                          AppUtils.showNotificationFun(
+                            "Error",
+                            "Sorry",
+                            "Can't Delete Courses Now"
+                          );
+                        });
+                    }}
+                  />
+                </div>
+                {course.name}
+              </li>
+            ))}
           </ul>
           {editMode && <AddCourses data={data?.details} />}
         </div>
@@ -133,12 +199,13 @@ const TitleWithIcon = ({ name }: { name: string }) => {
   );
 };
 
-// Add Experinces Modal
+/***
+ * Add Experinces Modal
+ */
 function AddExperinces({ data: oldDetails }: { data: Details | undefined }) {
   const [opened, setOpened] = useState(false);
   const [checked, setChecked] = useState(false);
 
-  // Form Schema
   const schema = yup.object().shape({
     date_from: yup.string(),
     date_to: yup.string(),
@@ -147,7 +214,6 @@ function AddExperinces({ data: oldDetails }: { data: Details | undefined }) {
     to_present: yup.boolean(),
   });
 
-  // use Form Config
   const {
     register,
     handleSubmit,
@@ -169,15 +235,9 @@ function AddExperinces({ data: oldDetails }: { data: Details | undefined }) {
     });
   };
 
-  // const toPresent = watch("to_present");
-  // console.log(toPresent);
-
-  // const [updateProfile, { isLoading }] = useUpdateProfileMutation();
   const [addExperience, { isLoading }] = useAddUserExperiencesMutation();
 
-  // Submit Form Function
   const onSubmitFunction = (data: any) => {
-    console.log("DATA");
     const newData = {
       ...data,
       date_from: AppUtils.formatDate(new Date(data.date_from)),
@@ -244,7 +304,6 @@ function AddExperinces({ data: oldDetails }: { data: Details | undefined }) {
           <Textarea
             placeholder="Describe the experinces you got"
             withAsterisk
-            maxRows={50}
             error={errors.bio && (errors.bio.message as ReactNode)}
             {...register("description")}
           />
@@ -265,18 +324,15 @@ function AddExperinces({ data: oldDetails }: { data: Details | undefined }) {
   );
 }
 
-// Add Qualifications Modal
-function AddQualifications({
-  data: oldDetails,
-}: {
-  data: Details | undefined;
-}) {
+/**
+ * Add Qualifications Modal
+ */
+function AddQualifications() {
   const [opened, setOpened] = useState(false);
+  const [addQualifications, { isLoading }] = useAddUserQualificationsMutation();
 
   const schema = yup.object().shape({
-    qualification: yup
-      .string()
-      .required("Please add your qualifications to send"),
+    name: yup.string().required("Please add your qualification to send"),
   });
 
   const {
@@ -288,19 +344,23 @@ function AddQualifications({
     resolver: yupResolver(schema),
   });
 
-  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
-
   const onSubmit = (data: any) => {
-    const oldQualifications = oldDetails?.qualifications || [];
-
-    updateProfile({
-      details: {
-        ...oldDetails,
-        qualifications: [...oldQualifications, data.qualification],
-      },
-    });
-
-    reset({ qualification: "" });
+    addQualifications(data)
+      .then(() => {
+        AppUtils.showNotificationFun(
+          "Success",
+          "Done",
+          "Qualification added successfly"
+        );
+      })
+      .catch(() => {
+        AppUtils.showNotificationFun(
+          "Error",
+          "Sorry",
+          "Can't add Qualification now"
+        );
+      });
+    reset({ name: "" });
     setOpened(false);
   };
 
@@ -309,7 +369,7 @@ function AddQualifications({
       <Modal
         opened={opened}
         onClose={() => {
-          reset({ qualification: "" });
+          reset({ name: "" });
           setOpened(false);
         }}
       >
@@ -320,13 +380,10 @@ function AddQualifications({
               (errors.qualification.message as ReactNode)
             }
           >
-            <Input
-              placeholder="Add Qualifiactions"
-              {...register("qualification")}
-            />
+            <Input placeholder="Add Qualifiactions" {...register("name")} />
           </Input.Wrapper>
 
-          <SubmitButton isLoading={false} text="Send" />
+          <SubmitButton isLoading={isLoading} text="Send" />
         </form>
       </Modal>
 
@@ -342,12 +399,15 @@ function AddQualifications({
   );
 }
 
-// Add Courses Modal
+/**
+ * Add Courses Modal
+ */
 function AddCourses({ data: oldDetails }: { data: Details | undefined }) {
   const [opened, setOpened] = useState(false);
+  const [addCourse, { isLoading }] = useAddUserCoursesMutation();
 
   const schema = yup.object().shape({
-    course: yup.string().required("Please add your course to send"),
+    name: yup.string().required("Please add your Course to send"),
   });
 
   const {
@@ -358,19 +418,20 @@ function AddCourses({ data: oldDetails }: { data: Details | undefined }) {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
 
   const onSubmit = (data: any) => {
-    const oldCourses = oldDetails?.courses || [];
-
-    updateProfile({
-      details: {
-        ...oldDetails,
-        courses: [...oldCourses, data.course],
-      },
-    });
-
-    reset({ course: "" });
+    addCourse(data)
+      .then(() => {
+        AppUtils.showNotificationFun(
+          "Success",
+          "Done",
+          "Course added successfly"
+        );
+      })
+      .catch(() => {
+        AppUtils.showNotificationFun("Error", "Sorry", "Can't add Course now");
+      });
+    reset({ name: "" });
     setOpened(false);
   };
 
@@ -379,7 +440,7 @@ function AddCourses({ data: oldDetails }: { data: Details | undefined }) {
       <Modal
         opened={opened}
         onClose={() => {
-          reset({ course: "" });
+          reset({ name: "" });
           setOpened(false);
         }}
       >
@@ -387,10 +448,10 @@ function AddCourses({ data: oldDetails }: { data: Details | undefined }) {
           <Input.Wrapper
             error={errors.course && (errors.course.message as ReactNode)}
           >
-            <Input placeholder="Add Course" {...register("course")} />
+            <Input placeholder="Add Course" {...register("name")} />
           </Input.Wrapper>
 
-          <SubmitButton isLoading={false} text="Send" />
+          <SubmitButton isLoading={isLoading} text="Send" />
         </form>
       </Modal>
 

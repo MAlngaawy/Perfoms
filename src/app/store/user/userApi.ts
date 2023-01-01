@@ -1,12 +1,18 @@
 import { SerializedError } from "./../index";
 import {
+  AddCourse,
   AddEducation,
   AddExperince,
+  AddQualification,
   ChangePassword,
+  Course,
+  Courses,
   Education,
   Educations,
   NotificationsType,
   OTPVerify,
+  Qualification,
+  Qualifications,
   SendOtp,
   SignupRes,
   User,
@@ -39,7 +45,7 @@ export const userApi = createApi({
     baseUrl: `${BASE_URL}/user-generals`,
     prepareHeaders: BASE_HEADERS,
   }) as BaseQueryFn<string | FetchArgs, unknown, SerializedError, {}>,
-  tagTypes: ["Users", "education", "experiences"],
+  tagTypes: ["Users", "education", "experiences", "courses", "qualifications"],
   endpoints: ({ query, mutation }) => ({
     user: query<User, any>({
       query: () => `profile/`,
@@ -251,6 +257,54 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["experiences"],
     }),
+
+    getUserCourses: query<Courses, { page?: number }>({
+      query: (params) => ({
+        url: "courses/",
+      }),
+      providesTags: ["courses"],
+    }),
+
+    addUserCourses: mutation<AddCourse, {}>({
+      query: (body) => ({
+        url: "courses/",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["courses"],
+    }),
+
+    deleteCourse: mutation<Course, { id: number }>({
+      query: ({ id }) => ({
+        url: `courses/${id}/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["courses"],
+    }),
+
+    getUserQualifications: query<Qualifications, { page?: number }>({
+      query: (params) => ({
+        url: "qualifications/",
+      }),
+      providesTags: ["qualifications"],
+    }),
+
+    addUserQualifications: mutation<AddQualification, {}>({
+      query: (body) => ({
+        url: "qualifications/",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["qualifications"],
+    }),
+
+    deleteQualifications: mutation<Qualification, { id: number }>({
+      query: ({ id }) => ({
+        url: `qualifications/${id}/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["qualifications"],
+    }),
   }),
 });
 
@@ -275,4 +329,10 @@ export const {
   useGetUserExperiencesQuery,
   useAddUserExperiencesMutation,
   useDeleteExperiencesMutation,
+  useGetUserCoursesQuery,
+  useAddUserCoursesMutation,
+  useDeleteCourseMutation,
+  useGetUserQualificationsQuery,
+  useAddUserQualificationsMutation,
+  useDeleteQualificationsMutation,
 } = userApi;

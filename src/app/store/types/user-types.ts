@@ -212,6 +212,10 @@ export type UserExperinces = BaseGetAllType & {
   results: Experince[];
 };
 
+export type AddCourse = {
+  name: string;
+};
+
 export type Course = {
   id: number;
   name: string;
@@ -219,6 +223,10 @@ export type Course = {
 
 export type Courses = BaseGetAllType & {
   results: Course[];
+};
+
+export type AddQualification = {
+  name: string;
 };
 
 export type Qualification = {
