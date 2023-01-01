@@ -1,6 +1,7 @@
 import { SerializedError } from "./../index";
 import {
   AddEducation,
+  AddExperince,
   ChangePassword,
   Education,
   Educations,
@@ -10,6 +11,7 @@ import {
   SignupRes,
   User,
   UserDeviceId,
+  UserExperinces,
 } from "./../types/user-types";
 import { eventInstance } from "~/@main/utils/AppUtils";
 import { showNotification } from "@mantine/notifications";
@@ -223,6 +225,29 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["education"],
     }),
+
+    /**Experinces */
+    getUserExperiences: query<UserExperinces, {}>({
+      query: (params) => ({
+        url: "experiances/",
+        params,
+      }),
+    }),
+
+    addUserExperiences: mutation<AddExperince, {}>({
+      query: (body) => ({
+        url: "experiances/",
+        method: "POST",
+        body,
+      }),
+    }),
+
+    deleteExperiences: mutation<AddExperince, { id: number }>({
+      query: ({ id, ...params }) => ({
+        url: `experiances/${id}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -244,4 +269,7 @@ export const {
   useGetUserEducationsQuery,
   useAddUserEducationMutation,
   useDeleteUserEducationMutation,
+  useGetUserExperiencesQuery,
+  useAddUserExperiencesMutation,
+  useDeleteExperiencesMutation,
 } = userApi;

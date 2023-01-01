@@ -1,5 +1,5 @@
 import React, { useState, ReactNode } from "react";
-import { Modal, Group, Input, Textarea } from "@mantine/core";
+import { Modal, Group, Input, Textarea, Checkbox } from "@mantine/core";
 import AppIcons from "~/@main/core/AppIcons";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -8,7 +8,11 @@ import SubmitButton from "~/@main/components/SubmitButton";
 import { DatePicker } from "@mantine/dates";
 import { User } from "~/app/store/types/user-types";
 import { Details, PlayerCoach } from "~/app/store/types/parent-types";
-import { useUpdateProfileMutation } from "~/app/store/user/userApi";
+import {
+  useAddUserExperiencesMutation,
+  useGetUserExperiencesQuery,
+  useUpdateProfileMutation,
+} from "~/app/store/user/userApi";
 import AppUtils from "../../utils/AppUtils";
 import Placeholders from "../Placeholders";
 import { Button } from "../Button";
@@ -19,6 +23,9 @@ type Props = {
 };
 
 const CoachExperince = ({ data, editMode }: Props) => {
+  const { data: experiences } = useGetUserExperiencesQuery({});
+  console.log("experiences", experiences);
+
   // const hiddenFileInput = React.useRef(null);
 
   // const handleClick = (event: any) => {
@@ -56,26 +63,36 @@ const CoachExperince = ({ data, editMode }: Props) => {
 
   return (
     <div className="bg-white flex flex-col sm:flex-row justify-between gap-8 h-full rounded-lg md:rounded-2xl p-4  pt-10">
-      <div className="experinces  sm:w-1/2">
-        <>
-          <TitleWithIcon name="Experinces" />
-          <div className="flex flex-col ml-2 my-4">
-            <p className="text-xs font-normal text-perfGray3">
-              {data?.details?.experinces && data?.details?.experinces.from} /
-              {data?.details?.experinces && data?.details?.experinces.to}
-            </p>
+      <div className="experinces sm:w-1/2">
+        <TitleWithIcon name="Experinces" />
+        {experiences?.results.length === 0 && (
+          <h2>No Experiences Added Yet!</h2>
+        )}
+        {experiences?.results.map((exper) => {
+          return (
+            <>
+              <div className="flex flex-col ml-2 my-4">
+                <p className="text-xs font-normal text-perfGray3">
+                  {exper.date_from + "/"}
+                  {exper.date_to}
+                </p>
 
-            <h3 className="text-base font-semibold text-perfGray1">
-              {data?.details?.experinces && data?.details?.experinces.name}
-            </h3>
-            <p className="text-xs font-normal text-perfGray3  my-4">
-              {data?.details?.experinces &&
-                data?.details?.experinces.description}
-            </p>
-          </div>
-          {editMode && <AddExperinces data={data?.details} />}
-        </>
+                <h3 className="text-base font-semibold text-perfGray1">
+                  {exper.title}
+                </h3>
+
+                <p className="text-xs font-normal text-perfGray3  my-4">
+                  {exper.description}
+                </p>
+              </div>
+            </>
+          );
+        })}
+        {editMode && experiences && experiences.results.length < 2 && (
+          <AddExperinces data={data?.details} />
+        )}
       </div>
+
       <div className="flex flex-col gap-6  sm:w-1/2">
         <div className="qualifications">
           <TitleWithIcon name="Core Qualifications" />
@@ -128,12 +145,15 @@ const TitleWithIcon = ({ name }: { name: string }) => {
 // Add Experinces Modal
 function AddExperinces({ data: oldDetails }: { data: Details | undefined }) {
   const [opened, setOpened] = useState(false);
+  const [checked, setChecked] = useState(false);
+
   // Form Schema
   const schema = yup.object().shape({
-    startYear: yup.string(),
-    endYear: yup.string(),
+    date_from: yup.string(),
+    date_to: yup.string(),
     title: yup.string().required(),
-    works: yup.string(),
+    description: yup.string(),
+    to_present: yup.boolean(),
   });
 
   // use Form Config
@@ -142,27 +162,42 @@ function AddExperinces({ data: oldDetails }: { data: Details | undefined }) {
     handleSubmit,
     formState: { errors },
     reset,
+    watch,
     control,
   } = useForm({
     resolver: yupResolver(schema),
   });
 
+  const reserFields = () => {
+    reset({
+      date_from: null,
+      date_to: null,
+      title: "",
+      description: "",
+      to_present: yup.boolean(),
+    });
+  };
+
+  // const toPresent = watch("to_present");
+  // console.log(toPresent);
+
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
+  const [addExperience] = useAddUserExperiencesMutation();
 
   // Submit Form Function
   const onSubmitFunction = (data: any) => {
-    setOpened(false);
-    updateProfile({
-      details: {
-        ...oldDetails,
-        experinces: {
-          from: AppUtils.formatDate(new Date(data.startYear)),
-          to: AppUtils.formatDate(new Date(data.endYear)),
-          name: data.title,
-          description: data.works,
-        },
-      },
-    });
+    console.log("DATA", data);
+    addExperience(data)
+      .then(() => {
+        AppUtils.showNotificationFun("Success", "Done", "Experienc");
+        reserFields();
+        setOpened(false);
+      })
+      .catch((err) => {
+        AppUtils.showNotificationFun("Error", "Sorry", "Something Went Wrong");
+        // reserFields();
+        // setOpened(false);
+      });
   };
   return (
     <>
@@ -175,24 +210,15 @@ function AddExperinces({ data: oldDetails }: { data: Details | undefined }) {
           <Input.Wrapper
             error={errors.name && (errors.name.message as ReactNode)}
           >
-            <Input
-              defaultValue={oldDetails?.experinces?.name}
-              placeholder="Add Title"
-              {...register("title")}
-            />
+            <Input placeholder="Add Title" {...register("title")} />
           </Input.Wrapper>
 
           {/* Start And End Year */}
           <Controller
-            {...register("startYear")}
+            {...register("date_from")}
             render={({ field }) => (
               <DatePicker
                 inputFormat="DD/MM/YYYY"
-                defaultValue={
-                  oldDetails?.experinces?.from
-                    ? new Date(oldDetails?.experinces?.from as unknown as Date)
-                    : new Date()
-                }
                 {...field}
                 placeholder="Pick Start date"
               />
@@ -200,29 +226,29 @@ function AddExperinces({ data: oldDetails }: { data: Details | undefined }) {
             control={control}
           />
           <Controller
-            {...register("endYear")}
+            {...register("date_to")}
             render={({ field }) => (
               <DatePicker
+                disabled={checked}
                 inputFormat="DD/MM/YYYY"
-                defaultValue={
-                  oldDetails?.experinces?.to
-                    ? new Date(oldDetails?.experinces?.to as unknown as Date)
-                    : new Date()
-                }
                 {...field}
                 placeholder="Pick End date"
               />
             )}
             control={control}
           />
+          <Checkbox
+            checked={checked}
+            {...register("to_present")}
+            onChange={(event) => setChecked(event.currentTarget.checked)}
+          />
 
           {/* Works Input */}
           <Textarea
             placeholder="Describe the experinces you got"
             withAsterisk
-            defaultValue={oldDetails?.experinces?.description}
             error={errors.bio && (errors.bio.message as ReactNode)}
-            {...register("works")}
+            {...register("description")}
           />
 
           <SubmitButton isLoading={isLoading} text="Send" />

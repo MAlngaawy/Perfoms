@@ -189,7 +189,17 @@ export type ChangePassword = {
   new_password: string;
 };
 
+export type AddExperince = {
+  date_from: string;
+  date_to: string;
+  title: string;
+  to_present: boolean;
+  place: string;
+  description: string;
+};
+
 export type Experince = {
+  id: number;
   date_from: string;
   date_to: string;
   title: string;
