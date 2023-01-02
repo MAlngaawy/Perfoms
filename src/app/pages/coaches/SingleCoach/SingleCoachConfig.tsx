@@ -21,7 +21,7 @@ const SingleCoacheConfig: PagesRouteConfig = {
   auth: authRoles.Parent,
   routes: [
     {
-      path: "/coaches/:id",
+      path: "/coaches/:coach_id",
       element: <SingleCoachPage />,
     },
   ],

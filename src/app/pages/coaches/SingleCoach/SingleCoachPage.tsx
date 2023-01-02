@@ -84,11 +84,11 @@ const coachExp = {
 const SingleCoachPage = (props: Props) => {
   const [data, setData] = useState<User | PlayerCoach>();
 
-  const { id } = useParams();
+  const { coach_id } = useParams();
 
   const { data: coachData } = usePlayerCoachQuery(
-    { id: (id !== undefined && +id) || 0 },
-    { skip: __.isNil(id) }
+    { id: (coach_id !== undefined && +coach_id) || 0 },
+    { skip: __.isNil(coach_id) }
   );
 
   // useEffect(() => {

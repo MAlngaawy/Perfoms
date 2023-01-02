@@ -1,5 +1,7 @@
 import { SerializedError } from "./../index";
 import {
+  Achievement,
+  AddAchievements,
   AddCourse,
   AddEducation,
   AddExperince,
@@ -38,6 +40,7 @@ import {
 import { ReactNode } from "react";
 import { Kpis, Metrics, Pillars } from "../types/supervisor-types";
 import { Sports } from "../types/clubManager-types";
+import { UserAchievements } from "~/app/store/types/user-types";
 
 export const userApi = createApi({
   reducerPath: "userApi",
@@ -45,7 +48,14 @@ export const userApi = createApi({
     baseUrl: `${BASE_URL}/user-generals`,
     prepareHeaders: BASE_HEADERS,
   }) as BaseQueryFn<string | FetchArgs, unknown, SerializedError, {}>,
-  tagTypes: ["Users", "education", "experiences", "courses", "qualifications"],
+  tagTypes: [
+    "Users",
+    "education",
+    "experiences",
+    "courses",
+    "qualifications",
+    "achievements",
+  ],
   endpoints: ({ query, mutation }) => ({
     user: query<User, any>({
       query: () => `profile/`,
@@ -215,6 +225,15 @@ export const userApi = createApi({
       providesTags: ["education"],
     }),
 
+    getCoachEducations: query<
+      Educations,
+      { coach_id: number | string | undefined }
+    >({
+      query: ({ coach_id, ...params }) => ({
+        url: `${coach_id}/educations`,
+      }),
+    }),
+
     addUserEducation: mutation<AddEducation, AddEducation>({
       query: (body) => ({
         url: "educations/",
@@ -241,6 +260,15 @@ export const userApi = createApi({
       providesTags: ["experiences"],
     }),
 
+    getCoachExperiences: query<
+      Educations,
+      { coach_id: number | string | undefined }
+    >({
+      query: ({ coach_id, ...params }) => ({
+        url: `${coach_id}/experiances`,
+      }),
+    }),
+
     addUserExperiences: mutation<AddExperince, {}>({
       query: (body) => ({
         url: "experiances/",
@@ -263,6 +291,15 @@ export const userApi = createApi({
         url: "courses/",
       }),
       providesTags: ["courses"],
+    }),
+
+    getCoachCourses: query<
+      Educations,
+      { coach_id: number | string | undefined }
+    >({
+      query: ({ coach_id, ...params }) => ({
+        url: `${coach_id}/courses`,
+      }),
     }),
 
     addUserCourses: mutation<AddCourse, {}>({
@@ -289,6 +326,15 @@ export const userApi = createApi({
       providesTags: ["qualifications"],
     }),
 
+    getCoachQualifications: query<
+      Educations,
+      { coach_id: number | string | undefined }
+    >({
+      query: ({ coach_id, ...params }) => ({
+        url: `${coach_id}/qualifications`,
+      }),
+    }),
+
     addUserQualifications: mutation<AddQualification, {}>({
       query: (body) => ({
         url: "qualifications/",
@@ -304,6 +350,41 @@ export const userApi = createApi({
         method: "DELETE",
       }),
       invalidatesTags: ["qualifications"],
+    }),
+
+    /**Handle User Achievements */
+
+    getUserAchievements: query<UserAchievements, { page?: number }>({
+      query: (params) => ({
+        url: "achievements/",
+      }),
+      providesTags: ["achievements"],
+    }),
+
+    getCoachAchievements: query<
+      UserAchievements,
+      { coach_id: number | string | undefined }
+    >({
+      query: ({ coach_id, ...params }) => ({
+        url: `${coach_id}/achievements`,
+      }),
+    }),
+
+    addUserAchievements: mutation<AddAchievements, {}>({
+      query: (body) => ({
+        url: "achievements/",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["achievements"],
+    }),
+
+    deleteAchievements: mutation<Achievement, { id: number }>({
+      query: ({ id }) => ({
+        url: `achievements/${id}/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["achievements"],
     }),
   }),
 });
@@ -324,15 +405,23 @@ export const {
   useGeneralSportsQuery,
   useGeneralTeamsQuery,
   useGetUserEducationsQuery,
+  useGetCoachEducationsQuery,
   useAddUserEducationMutation,
   useDeleteUserEducationMutation,
   useGetUserExperiencesQuery,
+  useGetCoachExperiencesQuery,
   useAddUserExperiencesMutation,
   useDeleteExperiencesMutation,
   useGetUserCoursesQuery,
+  useGetCoachCoursesQuery,
   useAddUserCoursesMutation,
   useDeleteCourseMutation,
   useGetUserQualificationsQuery,
+  useGetCoachQualificationsQuery,
   useAddUserQualificationsMutation,
   useDeleteQualificationsMutation,
+  useGetUserAchievementsQuery,
+  useGetCoachAchievementsQuery,
+  useAddUserAchievementsMutation,
+  useDeleteAchievementsMutation,
 } = userApi;

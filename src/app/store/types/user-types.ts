@@ -254,3 +254,20 @@ export type Education = {
 export type Educations = BaseGetAllType & {
   results: Education[];
 };
+
+export type AddAchievements = {
+  type: string;
+  year: number;
+  place: string;
+};
+
+export type Achievement = {
+  id: number;
+  type: string;
+  year: number;
+  place: string;
+};
+
+export type UserAchievements = BaseGetAllType & {
+  results: Achievement[];
+};

@@ -1,11 +1,22 @@
-import React, { useState, ReactNode } from "react";
+import React, { useState, ReactNode, useEffect } from "react";
 import { Modal, Group, Input } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Details } from "~/app/store/types/parent-types";
-import { useUpdateProfileMutation } from "~/app/store/user/userApi";
+import {
+  useAddUserAchievementsMutation,
+  useDeleteAchievementsMutation,
+  useGetCoachAchievementsQuery,
+  useGetUserAchievementsQuery,
+  useUpdateProfileMutation,
+  useUserQuery,
+} from "~/app/store/user/userApi";
 import NoReport from "~/app/pages/reports/components/NoReport";
+import { UserAchievements } from "~/app/store/types/user-types";
+import { useParams } from "react-router-dom";
+import AppUtils from "~/@main/utils/AppUtils";
+import DeleteButton from "../ManagerComponents/SubComponents/DeleteButton";
 
 type Props = {
   data: Details | undefined;
@@ -14,6 +25,23 @@ type Props = {
 
 const CoachAchievements = ({ data, editMode }: Props) => {
   // const { data: user } = useUserQuery(null);
+  const { coach_id } = useParams();
+  const { data: user } = useUserQuery({});
+  const [achievements, setAchievements] = useState<UserAchievements>();
+  const { data: userAchievements } = useGetUserAchievementsQuery({});
+  const [deleteAchievements] = useDeleteAchievementsMutation();
+  const { data: coachAchievements } = useGetCoachAchievementsQuery(
+    { coach_id: coach_id },
+    { skip: !coach_id }
+  );
+
+  useEffect(() => {
+    if (user?.user_type === "Parent") {
+      setAchievements(coachAchievements);
+    } else {
+      setAchievements(userAchievements);
+    }
+  }, [userAchievements, coachAchievements]);
 
   return (
     <div className="bg-white flex flex-col gap-4 h-full rounded-lg md:rounded-2xl p-4 pt-10">
@@ -21,30 +49,58 @@ const CoachAchievements = ({ data, editMode }: Props) => {
         <h2 className="text-lg text-perfLightBlack font-medium mb-6">
           Achievements
         </h2>
+        {achievements?.results.length === 0 && (
+          <h2 className="my-4">
+            No <span className="text-perfBlue"> Achievements </span> Added Yet!
+          </h2>
+        )}
       </div>
       <div className="prize flex flex-col xs:flex-row md:flex-col gap-4 justify-center items-center">
-        {data?.achievements &&
-          data?.achievements.map((item) => (
-            <div className="flex gap-2 justify-center items-center">
-              <div className="icon">
-                <img
-                  src="/assets/images/medal.png"
-                  className="w-10"
-                  alt="medal"
+        {achievements?.results.map((item) => (
+          <div className="flex gap-2 justify-center items-center relative">
+            {editMode && (
+              <div className="absolute right-0 top-0">
+                <DeleteButton
+                  type=" Medal"
+                  name={item.place + " " + item.type}
+                  deleteFun={() => {
+                    deleteAchievements({ id: item.id })
+                      .then((res) => {
+                        AppUtils.showNotificationFun(
+                          "Success",
+                          "Done",
+                          "Successfly Added Achievement"
+                        );
+                      })
+                      .catch((err) => {
+                        AppUtils.showNotificationFun(
+                          "Error",
+                          "Sorry",
+                          "Can't Add Achievement Now"
+                        );
+                      });
+                  }}
                 />
               </div>
-              <div className="details">
-                <h2 className="type text-xs font-medium text-perfLightBlack">
-                  {item.type}
-                </h2>
-                <p className="text-xs text-perfGray3">
-                  {item.year}, {item.place}
-                </p>
-              </div>
+            )}
+            <div className="icon">
+              <img
+                src="/assets/images/medal.png"
+                className="w-10"
+                alt="medal"
+              />
             </div>
-          ))}
-        <>{!data && <NoReport />}</>
-        {editMode && <AddButton data={data} />}
+            <div className="details">
+              <h2 className="type text-xs font-medium text-perfLightBlack">
+                {item.type}
+              </h2>
+              <p className="text-xs text-perfGray3">
+                {item.year}, {item.place}
+              </p>
+            </div>
+          </div>
+        ))}
+        {editMode && <AddButton />}
       </div>
     </div>
   );
@@ -54,8 +110,9 @@ export default CoachAchievements;
 
 // Add Achevment Form
 
-function AddButton({ data: oldDetails }: { data: Details | undefined }) {
+function AddButton() {
   const [opened, setOpened] = useState(false);
+  const [addAchievements, { isLoading }] = useAddUserAchievementsMutation();
 
   // Form Schema
   const schema = yup.object().shape({
@@ -63,8 +120,6 @@ function AddButton({ data: oldDetails }: { data: Details | undefined }) {
     year: yup.number().required(),
     place: yup.string().required(),
   });
-
-  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
 
   // use Form Config
   const {
@@ -78,22 +133,23 @@ function AddButton({ data: oldDetails }: { data: Details | undefined }) {
 
   // Submit Form Function
   const onSubmitFunction = (data: any) => {
-    const oldAchievements = oldDetails?.achievements || [];
     console.log(data);
     setOpened(false);
-    updateProfile({
-      details: {
-        ...oldDetails,
-        achievements: [
-          ...oldAchievements,
-          {
-            type: data.type,
-            year: data.year,
-            place: data.place,
-          },
-        ],
-      },
-    });
+    addAchievements(data)
+      .then((res) => {
+        AppUtils.showNotificationFun(
+          "Success",
+          "Done",
+          "Successfly Added Achievement"
+        );
+      })
+      .catch((err) => {
+        AppUtils.showNotificationFun(
+          "Error",
+          "Sorry",
+          "Can't Add Achievement Now"
+        );
+      });
     reset({ type: "", year: "", place: "" });
   };
 
