@@ -23,7 +23,7 @@ const Layout = (props: PropsWithChildren<Props>) => {
         <Navigation opened={opened} setOpened={setOpened} />
       )}
       <Grid.Col xs={12} lg={config.navbar.display && 10} className="p-0">
-        <main>
+        <main className="h-screen overflow-scroll">
           {config.toolbar.display && (
             <Toolbar opened={opened} setOpened={setOpened} />
           )}

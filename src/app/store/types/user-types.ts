@@ -188,3 +188,86 @@ export type ChangePassword = {
   old_password: string;
   new_password: string;
 };
+
+export type AddExperince = {
+  date_from: string;
+  date_to: string;
+  title: string;
+  to_present: boolean;
+  place: string;
+  description: string;
+};
+
+export type Experince = {
+  id: number;
+  date_from: string;
+  date_to: string;
+  title: string;
+  to_present: boolean;
+  place: string;
+  description: string;
+};
+
+export type UserExperinces = BaseGetAllType & {
+  results: Experince[];
+};
+
+export type AddCourse = {
+  name: string;
+};
+
+export type Course = {
+  id: number;
+  name: string;
+};
+
+export type Courses = BaseGetAllType & {
+  results: Course[];
+};
+
+export type AddQualification = {
+  name: string;
+};
+
+export type Qualification = {
+  id: number;
+  name: string;
+};
+
+export type Qualifications = BaseGetAllType & {
+  results: Qualification[];
+};
+
+export type AddEducation = {
+  year: number;
+  degree: string;
+  universty: string;
+};
+
+export type Education = {
+  id: number;
+  year: number;
+  degree: string;
+  universty: string;
+};
+
+export type Educations = BaseGetAllType & {
+  results: Education[];
+};
+
+export type AddAchievements = {
+  type: string;
+  year: number;
+  place: string;
+};
+
+export type Achievement = {
+  id: number;
+  type: string;
+  year: number;
+  place: string;
+};
+
+export type UserAchievements = BaseGetAllType & {
+  results: Achievement[];
+};
