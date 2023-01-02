@@ -37,7 +37,7 @@ const Player = (props: Props) => {
     if (coachPlayerInfo) setPlayerInfo(coachPlayerInfo);
     if (superPlayerInfo) setPlayerInfo(superPlayerInfo);
     if (adminPlayerInfo) setPlayerInfo(adminPlayerInfo);
-  }, [coachPlayerInfo, adminPlayerInfo, adminPlayerInfo]);
+  }, [coachPlayerInfo, superPlayerInfo, adminPlayerInfo]);
 
   const items = [
     { title: "categories", href: "/main-reports" },

@@ -170,6 +170,7 @@ function EditCoachData({ data, refetch, educationData }: Edit) {
   const [isLoading, setIsLoading] = useState(false);
   const [addUserEducation] = useAddUserEducationMutation();
 
+  console.log("Dataaaaaaaaa", data);
   const onSubmitFunction = (e: any) => {
     e.preventDefault();
     const newEducation = {
