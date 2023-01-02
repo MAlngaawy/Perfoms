@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Grid } from "@mantine/core";
 
-import CoachPersonalInfo from "~/@main/components/CoachPersonalInfo";
-import CoachExperince from "~/@main/components/CoachExperince";
-import CoachAchievements from "~/@main/components/CoachAchievements";
+import CoachPersonalInfo from "~/@main/components/CoachProfileComponents/CoachPersonalInfo";
+import CoachExperince from "~/@main/components/CoachProfileComponents/CoachExperince";
+import CoachAchievements from "~/@main/components/CoachProfileComponents/CoachAchievements";
 import CustomBreadCrumbs from "~/@main/components/BreadCrumbs";
 import { usePlayerCoachQuery } from "~/app/store/parent/parentApi";
 import { useUserQuery } from "~/app/store/user/userApi";
@@ -84,11 +84,11 @@ const coachExp = {
 const SingleCoachPage = (props: Props) => {
   const [data, setData] = useState<User | PlayerCoach>();
 
-  const { id } = useParams();
+  const { coach_id } = useParams();
 
   const { data: coachData } = usePlayerCoachQuery(
-    { id: (id !== undefined && +id) || 0 },
-    { skip: __.isNil(id) }
+    { id: (coach_id !== undefined && +coach_id) || 0 },
+    { skip: __.isNil(coach_id) }
   );
 
   // useEffect(() => {

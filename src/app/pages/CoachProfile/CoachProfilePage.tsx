@@ -1,8 +1,8 @@
 import { Grid } from "@mantine/core";
 
-import CoachPersonalInfo from "~/@main/components/CoachPersonalInfo";
-import CoachExperince from "~/@main/components/CoachExperince";
-import CoachAchievements from "~/@main/components/CoachAchievements";
+import CoachPersonalInfo from "~/@main/components/CoachProfileComponents/CoachPersonalInfo";
+import CoachExperince from "~/@main/components/CoachProfileComponents/CoachExperince";
+import CoachAchievements from "~/@main/components/CoachProfileComponents/CoachAchievements";
 import { useState } from "react";
 import {
   useUpdateProfileMutation,
@@ -13,29 +13,6 @@ import DeleteButton from "~/@main/components/ManagerComponents/SubComponents/Del
 import { showNotification } from "@mantine/notifications";
 
 type Props = {};
-
-const embtyDetails = {
-  bio: "",
-  experinces: {
-    from: "",
-    to: "",
-    description: "",
-    name: "",
-  },
-  achievements: [
-    {
-      place: "",
-      type: "",
-      year: "",
-    },
-  ],
-  education: {
-    degree: "",
-    from: "",
-    to: "",
-    universty: "",
-  },
-};
 
 const CoachProfilePage = (props: Props) => {
   const [editMode, setEditMode] = useState(false);

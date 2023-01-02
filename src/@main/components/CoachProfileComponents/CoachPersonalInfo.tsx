@@ -9,25 +9,53 @@ import {
   Avatar,
 } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
-import AppIcons from "../core/AppIcons";
+import AppIcons from "~/@main/core/AppIcons";
 import SubmitButton from "~/@main/components/SubmitButton";
 import __ from "lodash";
-import { User } from "~/app/store/types/user-types";
+import { Education, Educations, User } from "~/app/store/types/user-types";
 import { PlayerCoach } from "~/app/store/types/parent-types";
 import { axiosInstance } from "~/app/configs/dataService";
+import {
+  useAddUserEducationMutation,
+  useDeleteUserEducationMutation,
+  useGetCoachEducationsQuery,
+  useGetUserEducationsQuery,
+  useUserQuery,
+} from "~/app/store/user/userApi";
+import DeleteButton from "../ManagerComponents/SubComponents/DeleteButton";
+import { useNavigate, useParams } from "react-router-dom";
 
 // Props Types
 type Props = {
-  data: User | PlayerCoach | undefined;
+  data: Partial<User> | undefined;
   editMode?: boolean;
   refetch?: any;
   type: "profile" | "cv";
 };
 
 const CoachPersonalInfo = ({ data, editMode, refetch, type }: Props) => {
+  const [educations, setEducations] = useState<Educations>();
+  const { coach_id } = useParams();
+  const { data: user } = useUserQuery({});
+  const { data: userEducations } = useGetUserEducationsQuery({});
+  const { data: coachEducations } = useGetCoachEducationsQuery(
+    { coach_id: coach_id },
+    { skip: !coach_id }
+  );
+  const [deleteEducation] = useDeleteUserEducationMutation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user?.user_type === "Parent") {
+      setEducations(coachEducations);
+    } else {
+      setEducations(userEducations);
+    }
+  }, [userEducations, coachEducations]);
+
   return (
     <div className="bg-white flex flex-col gap-4 h-full rounded-lg md:rounded-2xl p-4">
-      <h3 className="text-base font-medium text-center">Coach</h3>
+      <h3 className="text-base font-medium text-center">{data?.user_type}</h3>
       <div className="flex md:flex-col justify-center items-center gap-4">
         <div className="flex justify-center items-center">
           <Avatar
@@ -41,15 +69,20 @@ const CoachPersonalInfo = ({ data, editMode, refetch, type }: Props) => {
             {data?.first_name + " " + data?.last_name}
           </h2>
           <h4 className="text-perfBlue group-hover:text-white text-xs">
-            {data?.job} Coach
+            {data?.job}
           </h4>
-          <Button className=" border border-perfBlue rounded-lg font-normal text-perfBlue hover:text-white">
-            Send Message
-          </Button>
+          {data?.user_type == "Parent" && (
+            <Button
+              onClick={() => navigate("/chat")}
+              className=" border border-perfBlue rounded-lg font-normal text-perfBlue hover:text-white"
+            >
+              Send Message
+            </Button>
+          )}
         </div>
       </div>
 
-      <div className="flex flex-wrap justify-between">
+      <div className="flex flex-wrap sm:flex-col justify-between">
         <div className="profile text-left">
           <div>
             <h3 className="text-base font-medium text-perfLightBlack">
@@ -75,32 +108,42 @@ const CoachPersonalInfo = ({ data, editMode, refetch, type }: Props) => {
             Education
           </h3>
 
-          <div className="my-2">
-            <p className="date text-xs font-normal text-perfGray3">
-              {data?.details?.education
-                ? data?.details?.education.from
-                : "-/--/----"}{" "}
-              -
-              {data?.details?.education
-                ? data?.details?.education.to
-                : "-/--/----"}
-            </p>
-            <h2>
-              {data?.details?.education
-                ? data?.details?.education.degree
-                : "No Data"}
+          {educations?.results.length === 0 && (
+            <h2 className="my-4">
+              No <span className="text-perfBlue"> Educations </span> Added Yet!
             </h2>
-            <p className="date text-xs font-normal text-perfGray3">
-              {data?.details?.education
-                ? data?.details?.education.universty
-                : ""}
-            </p>
-          </div>
+          )}
+
+          {educations?.results.map((education) => {
+            return (
+              <div className="my-2 relative">
+                <p className="date text-xs font-normal text-perfGray3">
+                  {education.year}
+                </p>
+                <h2>{education.degree}</h2>
+                <p className="date text-xs font-normal text-perfGray3">
+                  {education.universty}
+                </p>
+                <div className="absolute right-0 top-0">
+                  {editMode && (
+                    <DeleteButton
+                      deleteFun={() => {
+                        deleteEducation({ id: education.id });
+                      }}
+                      name={education.degree}
+                      type="Degree"
+                    />
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 
       {type === "profile" && editMode && (
         <EditCoachData
+          educationData={userEducations?.results[0]}
           refetch={() => {
             if (refetch) refetch();
           }}
@@ -114,48 +157,46 @@ const CoachPersonalInfo = ({ data, editMode, refetch, type }: Props) => {
 export default CoachPersonalInfo;
 
 type Edit = {
-  data: User | PlayerCoach | undefined;
+  data: Partial<User> | undefined;
+  educationData: Education | undefined;
   refetch: any;
 };
 // Edit Coach Personal Data Modal
-function EditCoachData({ data, refetch }: Edit) {
+function EditCoachData({ data, refetch, educationData }: Edit) {
   const [opened, setOpened] = useState(false);
   const [playerImage, setPlayerImage] = React.useState<string | unknown>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [userAvatar, setUserAvatar] = useState<File>();
   const [isLoading, setIsLoading] = useState(false);
+  const [addUserEducation] = useAddUserEducationMutation();
 
   console.log("Dataaaaaaaaa", data);
   const onSubmitFunction = (e: any) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const addedDetails = {
-      ...data?.details,
-      education: {
-        from: formData.get("from"),
-        to: formData.get("to"),
-        degree: formData.get("degree"),
-        universty: formData.get("universty"),
-      },
+    const newEducation = {
+      degree: e.target["degree"].value,
+      universty: e.target["universty"].value,
+      year: e.target["year"].value,
     };
+
+    if (newEducation.degree && newEducation.universty && newEducation.year) {
+      addUserEducation(newEducation)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+
+    const formData = new FormData(e.currentTarget);
+    console.log(formData.get("bio"));
 
     if (userAvatar) formData.append("avatar", userAvatar);
     setIsLoading(true);
     try {
       axiosInstance
         .patch("user-generals/update-profile/", formData)
-        .then((res) => {
-          setIsLoading(false);
-          setOpened(false);
-          setPlayerImage(null);
-          refetch();
-        })
-        .catch(() => {
-          setIsLoading(false);
-        });
-
-      axiosInstance
-        .patch("user-generals/update-profile/", { details: addedDetails })
         .then((res) => {
           setIsLoading(false);
           setOpened(false);
@@ -224,21 +265,20 @@ function EditCoachData({ data, refetch }: Edit) {
           />
 
           {/*Degree Input  */}
-          <Input
-            name="degree"
-            defaultValue={data?.details?.education?.degree}
-            placeholder="Degree"
-          />
+          <Input name="degree" placeholder="Degree" />
+
+          {/*Universty Input  */}
+          <Input name="universty" placeholder="Universty Name" />
 
           {/*Universty Input  */}
           <Input
-            name="universty"
-            defaultValue={data?.details?.education?.universty}
-            placeholder="Universty Name"
+            name="year"
+            type={"number"}
+            placeholder="Pick Graduation date"
           />
 
           {/* Start And End Year */}
-          <DatePicker
+          {/* <DatePicker
             inputFormat="DD/MM/YYYY"
             defaultValue={
               data?.details?.education?.from
@@ -247,18 +287,15 @@ function EditCoachData({ data, refetch }: Edit) {
             }
             name="from"
             placeholder="Pick Start date"
-          />
+          /> */}
 
-          <DatePicker
+          {/* <DatePicker
             inputFormat="DD/MM/YYYY"
-            defaultValue={
-              data?.details?.education?.to
-                ? new Date(data?.details?.education?.to as unknown as Date)
-                : new Date()
+            name="year"
+            placeholder={
+              JSON.stringify(educationData?.year) || "Pick Graduation date"
             }
-            name="to"
-            placeholder="Pick End date"
-          />
+          /> */}
 
           <SubmitButton isLoading={isLoading} text="Send" />
         </form>
