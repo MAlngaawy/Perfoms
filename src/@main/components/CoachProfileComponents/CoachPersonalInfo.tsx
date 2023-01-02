@@ -177,15 +177,19 @@ function EditCoachData({ data, refetch, educationData }: Edit) {
       universty: e.target["universty"].value,
       year: e.target["year"].value,
     };
-    addUserEducation(newEducation)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+
+    if (newEducation.degree && newEducation.universty && newEducation.year) {
+      addUserEducation(newEducation)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
 
     const formData = new FormData(e.currentTarget);
+    console.log(formData.get("bio"));
 
     if (userAvatar) formData.append("avatar", userAvatar);
     setIsLoading(true);
