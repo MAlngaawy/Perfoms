@@ -12,16 +12,18 @@ import { DatePicker } from "@mantine/dates";
 import AppIcons from "~/@main/core/AppIcons";
 import SubmitButton from "~/@main/components/SubmitButton";
 import __ from "lodash";
-import { Education, User } from "~/app/store/types/user-types";
+import { Education, Educations, User } from "~/app/store/types/user-types";
 import { PlayerCoach } from "~/app/store/types/parent-types";
 import { axiosInstance } from "~/app/configs/dataService";
 import {
   useAddUserEducationMutation,
   useDeleteUserEducationMutation,
+  useGetCoachEducationsQuery,
   useGetUserEducationsQuery,
+  useUserQuery,
 } from "~/app/store/user/userApi";
 import DeleteButton from "../ManagerComponents/SubComponents/DeleteButton";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 // Props Types
 type Props = {
@@ -32,9 +34,24 @@ type Props = {
 };
 
 const CoachPersonalInfo = ({ data, editMode, refetch, type }: Props) => {
+  const [educations, setEducations] = useState<Educations>();
+  const { coach_id } = useParams();
+  const { data: user } = useUserQuery({});
   const { data: userEducations } = useGetUserEducationsQuery({});
+  const { data: coachEducations } = useGetCoachEducationsQuery(
+    { coach_id: coach_id },
+    { skip: !coach_id }
+  );
   const [deleteEducation] = useDeleteUserEducationMutation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user?.user_type === "Parent") {
+      setEducations(coachEducations);
+    } else {
+      setEducations(userEducations);
+    }
+  }, [userEducations, coachEducations]);
 
   return (
     <div className="bg-white flex flex-col gap-4 h-full rounded-lg md:rounded-2xl p-4">
@@ -65,7 +82,7 @@ const CoachPersonalInfo = ({ data, editMode, refetch, type }: Props) => {
         </div>
       </div>
 
-      <div className="flex flex-wrap justify-between">
+      <div className="flex flex-wrap sm:flex-col justify-between">
         <div className="profile text-left">
           <div>
             <h3 className="text-base font-medium text-perfLightBlack">
@@ -91,37 +108,36 @@ const CoachPersonalInfo = ({ data, editMode, refetch, type }: Props) => {
             Education
           </h3>
 
-          {userEducations?.results.length === 0 && (
+          {educations?.results.length === 0 && (
             <h2 className="my-4">
               No <span className="text-perfBlue"> Educations </span> Added Yet!
             </h2>
           )}
 
-          {userEducations &&
-            userEducations.results.map((education) => {
-              return (
-                <div className="my-2 relative">
-                  <p className="date text-xs font-normal text-perfGray3">
-                    {education.year}
-                  </p>
-                  <h2>{education.degree}</h2>
-                  <p className="date text-xs font-normal text-perfGray3">
-                    {education.universty}
-                  </p>
-                  <div className="absolute right-0 top-0">
-                    {editMode && (
-                      <DeleteButton
-                        deleteFun={() => {
-                          deleteEducation({ id: education.id });
-                        }}
-                        name={education.degree}
-                        type="Degree"
-                      />
-                    )}
-                  </div>
+          {educations?.results.map((education) => {
+            return (
+              <div className="my-2 relative">
+                <p className="date text-xs font-normal text-perfGray3">
+                  {education.year}
+                </p>
+                <h2>{education.degree}</h2>
+                <p className="date text-xs font-normal text-perfGray3">
+                  {education.universty}
+                </p>
+                <div className="absolute right-0 top-0">
+                  {editMode && (
+                    <DeleteButton
+                      deleteFun={() => {
+                        deleteEducation({ id: education.id });
+                      }}
+                      name={education.degree}
+                      type="Degree"
+                    />
+                  )}
                 </div>
-              );
-            })}
+              </div>
+            );
+          })}
         </div>
       </div>
 

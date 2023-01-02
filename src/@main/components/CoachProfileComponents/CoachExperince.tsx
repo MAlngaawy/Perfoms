@@ -1,4 +1,4 @@
-import React, { useState, ReactNode } from "react";
+import React, { useState, ReactNode, useEffect } from "react";
 import { Modal, Group, Input, Textarea, Checkbox } from "@mantine/core";
 import AppIcons from "~/@main/core/AppIcons";
 import { Controller, useForm } from "react-hook-form";
@@ -6,7 +6,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import SubmitButton from "~/@main/components/SubmitButton";
 import { DatePicker } from "@mantine/dates";
-import { User } from "~/app/store/types/user-types";
+import {
+  Courses,
+  Qualifications,
+  User,
+  UserExperinces,
+} from "~/app/store/types/user-types";
 import { Details, PlayerCoach } from "~/app/store/types/parent-types";
 import {
   useAddUserCoursesMutation,
@@ -15,13 +20,18 @@ import {
   useDeleteCourseMutation,
   useDeleteExperiencesMutation,
   useDeleteQualificationsMutation,
+  useGetCoachCoursesQuery,
+  useGetCoachExperiencesQuery,
+  useGetCoachQualificationsQuery,
   useGetUserCoursesQuery,
   useGetUserExperiencesQuery,
   useGetUserQualificationsQuery,
   useUpdateProfileMutation,
+  useUserQuery,
 } from "~/app/store/user/userApi";
 import AppUtils from "../../utils/AppUtils";
 import DeleteButton from "../ManagerComponents/SubComponents/DeleteButton";
+import { useParams } from "react-router-dom";
 
 type Props = {
   editMode?: boolean;
@@ -29,12 +39,64 @@ type Props = {
 };
 
 const CoachExperince = ({ data, editMode }: Props) => {
-  const { data: experiences } = useGetUserExperiencesQuery({});
-  const { data: qualifications } = useGetUserQualificationsQuery({});
-  const { data: courses } = useGetUserCoursesQuery({});
+  const [experiences, setExperiences] = useState<UserExperinces>();
+  const [qualifications, setQualifications] = useState<Qualifications>();
+  const [courses, setCourses] = useState<Courses>();
+
+  const { data: user } = useUserQuery({});
+  const { coach_id } = useParams();
+
+  const { data: userExperiences } = useGetUserExperiencesQuery({});
+  const { data: userQualifications } = useGetUserQualificationsQuery({});
+  const { data: userCourses } = useGetUserCoursesQuery({});
+
+  const { data: coachExperiences } = useGetCoachExperiencesQuery(
+    {
+      coach_id,
+    },
+    {
+      skip: !coach_id,
+    }
+  );
+  const { data: coachQualifications } = useGetCoachQualificationsQuery(
+    {
+      coach_id,
+    },
+    {
+      skip: !coach_id,
+    }
+  );
+  const { data: coachCourses } = useGetCoachCoursesQuery(
+    {
+      coach_id,
+    },
+    {
+      skip: !coach_id,
+    }
+  );
+
   const [deleteExperience] = useDeleteExperiencesMutation();
   const [deleteQualification] = useDeleteQualificationsMutation();
   const [deleteCourse] = useDeleteCourseMutation();
+
+  useEffect(() => {
+    if (user?.user_type === "Parent") {
+      setExperiences(coachExperiences);
+      setQualifications(coachQualifications);
+      setCourses(coachCourses);
+    } else {
+      setExperiences(userExperiences);
+      setQualifications(userQualifications);
+      setCourses(userCourses);
+    }
+  }, [
+    coachExperiences,
+    coachQualifications,
+    coachCourses,
+    userExperiences,
+    userQualifications,
+    userCourses,
+  ]);
 
   return (
     <div className="bg-white flex flex-col sm:flex-row justify-between gap-8 h-full rounded-lg md:rounded-2xl p-4  pt-10">
@@ -60,29 +122,31 @@ const CoachExperince = ({ data, editMode }: Props) => {
               <p className="text-xs font-normal text-perfGray3  my-2">
                 {exper.description}
               </p>
-              <div className=" absolute right-0 top-0">
-                <DeleteButton
-                  type="Experience"
-                  name={exper.title}
-                  deleteFun={() => {
-                    deleteExperience({ id: exper.id })
-                      .then(() => {
-                        AppUtils.showNotificationFun(
-                          "Success",
-                          "Done",
-                          "Experience Successfly Deleted"
-                        );
-                      })
-                      .catch(() => {
-                        AppUtils.showNotificationFun(
-                          "Error",
-                          "Sorry",
-                          "Can't Delete Experience Now"
-                        );
-                      });
-                  }}
-                />
-              </div>
+              {editMode && (
+                <div className=" absolute right-0 top-0">
+                  <DeleteButton
+                    type="Experience"
+                    name={exper.title}
+                    deleteFun={() => {
+                      deleteExperience({ id: exper.id })
+                        .then(() => {
+                          AppUtils.showNotificationFun(
+                            "Success",
+                            "Done",
+                            "Experience Successfly Deleted"
+                          );
+                        })
+                        .catch(() => {
+                          AppUtils.showNotificationFun(
+                            "Error",
+                            "Sorry",
+                            "Can't Delete Experience Now"
+                          );
+                        });
+                    }}
+                  />
+                </div>
+              )}
             </div>
           );
         })}
@@ -107,29 +171,31 @@ const CoachExperince = ({ data, editMode }: Props) => {
                 key={oneQualifications.id}
                 className="text-xs w-full relative font-normal text-perfGray3 my-4"
               >
-                <div className="absolute right-0">
-                  <DeleteButton
-                    name={oneQualifications.name}
-                    type="Qualification"
-                    deleteFun={() => {
-                      deleteQualification({ id: oneQualifications.id })
-                        .then(() => {
-                          AppUtils.showNotificationFun(
-                            "Success",
-                            "Done",
-                            "Qualification Successfly Deleted"
-                          );
-                        })
-                        .catch(() => {
-                          AppUtils.showNotificationFun(
-                            "Error",
-                            "Sorry",
-                            "Can't Delete Qualification Now"
-                          );
-                        });
-                    }}
-                  />
-                </div>
+                {editMode && (
+                  <div className="absolute right-0">
+                    <DeleteButton
+                      name={oneQualifications.name}
+                      type="Qualification"
+                      deleteFun={() => {
+                        deleteQualification({ id: oneQualifications.id })
+                          .then(() => {
+                            AppUtils.showNotificationFun(
+                              "Success",
+                              "Done",
+                              "Qualification Successfly Deleted"
+                            );
+                          })
+                          .catch(() => {
+                            AppUtils.showNotificationFun(
+                              "Error",
+                              "Sorry",
+                              "Can't Delete Qualification Now"
+                            );
+                          });
+                      }}
+                    />
+                  </div>
+                )}
                 {oneQualifications.name}
               </li>
             ))}
@@ -149,29 +215,31 @@ const CoachExperince = ({ data, editMode }: Props) => {
                 key={course.id}
                 className="text-xs w-full relative font-normal text-perfGray3 my-4"
               >
-                <div className="absolute right-0">
-                  <DeleteButton
-                    name={course.name}
-                    type="Courses"
-                    deleteFun={() => {
-                      deleteCourse({ id: course.id })
-                        .then(() => {
-                          AppUtils.showNotificationFun(
-                            "Success",
-                            "Done",
-                            "Courses Successfly Deleted"
-                          );
-                        })
-                        .catch(() => {
-                          AppUtils.showNotificationFun(
-                            "Error",
-                            "Sorry",
-                            "Can't Delete Courses Now"
-                          );
-                        });
-                    }}
-                  />
-                </div>
+                {editMode && (
+                  <div className="absolute right-0">
+                    <DeleteButton
+                      name={course.name}
+                      type="Courses"
+                      deleteFun={() => {
+                        deleteCourse({ id: course.id })
+                          .then(() => {
+                            AppUtils.showNotificationFun(
+                              "Success",
+                              "Done",
+                              "Courses Successfly Deleted"
+                            );
+                          })
+                          .catch(() => {
+                            AppUtils.showNotificationFun(
+                              "Error",
+                              "Sorry",
+                              "Can't Delete Courses Now"
+                            );
+                          });
+                      }}
+                    />
+                  </div>
+                )}
                 {course.name}
               </li>
             ))}

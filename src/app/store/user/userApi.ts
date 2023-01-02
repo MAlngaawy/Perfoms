@@ -261,7 +261,7 @@ export const userApi = createApi({
     }),
 
     getCoachExperiences: query<
-      Educations,
+      UserExperinces,
       { coach_id: number | string | undefined }
     >({
       query: ({ coach_id, ...params }) => ({
@@ -293,10 +293,7 @@ export const userApi = createApi({
       providesTags: ["courses"],
     }),
 
-    getCoachCourses: query<
-      Educations,
-      { coach_id: number | string | undefined }
-    >({
+    getCoachCourses: query<Courses, { coach_id: number | string | undefined }>({
       query: ({ coach_id, ...params }) => ({
         url: `${coach_id}/courses`,
       }),
@@ -327,7 +324,7 @@ export const userApi = createApi({
     }),
 
     getCoachQualifications: query<
-      Educations,
+      Qualifications,
       { coach_id: number | string | undefined }
     >({
       query: ({ coach_id, ...params }) => ({
