@@ -32,7 +32,7 @@ const ResetPasswordComp = (props: Props) => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      mobile: mobile,
+      mobile: `+${mobile}`,
       new_password: "",
       new_password_confirm: "",
     },
@@ -44,8 +44,6 @@ const ResetPasswordComp = (props: Props) => {
   };
 
   useEffect(() => {
-    console.log("Effect");
-
     if (isSuccess) {
       navigate(`/sign-in`);
       AppUtils.showNotificationFun(
