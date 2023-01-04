@@ -43,6 +43,7 @@ import TeamMembersKpiConfig from "../pages/MainReports/SupPages/Teams/OneTeam/Te
 import PlayerCertificateConfig from "../pages/player-certificate/PlayerCertificateConfig";
 import SportPillarsPageConfig from "../pages/SubPages/SportPillars/SportPillarsConfig";
 import ForgotPassConfig from "../pages/sign-in/ForgotPasswordPage/ForgotPassConfig";
+import ResetPasswordConfig from "../pages/ResetPassword/ResetPasswordConfig";
 
 const routeConfigs: PagesRouteConfig[] = [
   SignInConfig,
@@ -86,6 +87,7 @@ const routeConfigs: PagesRouteConfig[] = [
   PlayerCertificateConfig,
   SportPillarsPageConfig,
   ForgotPassConfig,
+  ResetPasswordConfig,
 ];
 
 const routes: AppRouteObject[] = [

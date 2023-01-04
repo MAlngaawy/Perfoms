@@ -9,6 +9,7 @@ export type LoginUserBody = {
 export type SignupRes = {
   data: {
     id: number;
+    mobile: string;
   };
 };
 
@@ -170,11 +171,13 @@ export type ProfileType = {
 };
 
 export type SendOtp = {
-  id: number;
+  // id: number;
+  mobile: string;
 };
 
 export type OTPVerify = {
-  id: number | null;
+  // id: number | null;
+  mobile: string | null;
   otp: string;
 };
 

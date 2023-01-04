@@ -1,17 +1,18 @@
 import { Select, Input, Grid, Loader } from "@mantine/core";
 import { useForm, Controller } from "react-hook-form";
-import { useSigninMutation } from "~/app/store/user/userApi";
-import { PasswordInput } from "@mantine/core";
-import { Link } from "react-router-dom";
+import { useSendOtpMutation } from "~/app/store/user/userApi";
+import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { ReactNode } from "react";
+import { useEffect } from "react";
 import SubmitButton from "~/@main/components/SubmitButton";
+import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {};
 
 const ForgotPass = (props: Props) => {
-  const [signinHandler, { isLoading }] = useSigninMutation();
+  const [sendOTP, { data, isLoading, isSuccess }] = useSendOtpMutation();
+  const navigator = useNavigate();
 
   // Yup schema
   const schema = yup.object().shape({
@@ -29,12 +30,32 @@ const ForgotPass = (props: Props) => {
   });
 
   const submitFun = (data: any) => {
-    const newData = {
-      mobile: data.countryCode + data.phoneNumber,
-      password: data.password,
-    };
-    signinHandler(newData);
+    const mobile = data.countryCode + data.phoneNumber;
+    sendOTP({ mobile: mobile })
+      .then((res) => {
+        console.log(res);
+        navigator(`/verify-otp?usermobile=${mobile}&type=reset`);
+      })
+      .catch((err) => {
+        console.log(err);
+        AppUtils.showNotificationFun("Error", "Sorry", "ascsac");
+      });
   };
+
+  useEffect(() => {
+    if (isSuccess && data) navigator(`/verify-otp?usermobile=${data.mobile}`);
+  }, [isSuccess, data]);
+
+  // useEffect(() => {
+  //   if (isSuccess && data) {
+  //     sendOTP({ mobile: data.mobile })
+  //       .then((res) => {
+  //         console.log(res);
+  //         navigator(`/verify-otp?usermobile=${data.mobile}`);
+  //       })
+  //       .catch((err) => console.log(err));
+  //   }
+  // }, [isSuccess, data]);
 
   return (
     <div className="signIn bg-perfOfWhite flex justify-center min-h-screen items-stretch">
@@ -71,7 +92,30 @@ const ForgotPass = (props: Props) => {
             </h2>
             <p className="text-perfGray text-base">Enter your phone number</p>
           </div>
-          <div className="inputs gap-4 flex w-full flex-col justify-center items-center">
+          <div className="inputs gap-1 flex w-full justify-center items-center">
+            <Input.Wrapper
+              sx={{
+                width: 50,
+              }}
+              label="Code"
+            >
+              <Input
+                sx={{
+                  ".mantine-Input-input	": {
+                    border: 0,
+                    padding: 0,
+                    borderBottom: 1,
+                    background: "none",
+                    borderStyle: "solid",
+                    borderRadius: 0,
+                  },
+                }}
+                autoComplete="phone"
+                className="border-b"
+                disabled
+                value="+20"
+              />
+            </Input.Wrapper>
             <Input.Wrapper
               id="phoneNumber"
               withAsterisk
@@ -99,7 +143,7 @@ const ForgotPass = (props: Props) => {
             </Input.Wrapper>
           </div>
           <SubmitButton isLoading={isLoading} text="Send" />
-          <p className="text-perfGray text-center text-base">
+          <p className="text-perfGray text-center text-base mt-10">
             You don't have an account?
             <Link to="/sign-up">
               <span className="text-loginBlue cursor-pointer mx-1">

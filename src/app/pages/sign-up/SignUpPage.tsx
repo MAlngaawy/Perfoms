@@ -9,7 +9,10 @@ import { State } from "country-state-city";
 import PerfSelect, { Option } from "~/@main/components/Select";
 import { Controller } from "react-hook-form";
 import { usePublicClubsQuery, useTeamsQuery } from "~/app/store/core/coreApi";
-import { useSignupMutation } from "~/app/store/user/userApi";
+import {
+  useSendOtpMutation,
+  useSignupMutation,
+} from "~/app/store/user/userApi";
 import SubmitButton from "~/@main/components/SubmitButton";
 
 type Props = {};
@@ -29,6 +32,7 @@ const schema = yup.object().shape({
 
 const SignUpPage = (props: Props) => {
   const [signupHandler, { data, isLoading, isSuccess }] = useSignupMutation();
+  const [sendOTP] = useSendOtpMutation();
   const navigator = useNavigate();
   const { data: AllClubs } = usePublicClubsQuery(null);
   const {
@@ -77,11 +81,28 @@ const SignUpPage = (props: Props) => {
       city: data.city,
       teams: data.teams,
     };
-    signupHandler(requestData);
+    signupHandler(requestData)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {
-    if (isSuccess && data) navigator(`/verify-otp?userid=${data.data.id}`);
+    if (isSuccess && data) {
+      sendOTP({ mobile: data.data.mobile })
+        .then((res) => {
+          console.log(res);
+          // Type "type=new" in search param to tell the OTP page that this is a new user register
+          // to send the user to the right place after verify the otp && user role for the direction too
+          navigator(
+            `/verify-otp?usermobile=${data.data.mobile}&type=new&role=${userRole}`
+          );
+        })
+        .catch((err) => console.log(err));
+    }
   }, [isSuccess, data]);
 
   return (
