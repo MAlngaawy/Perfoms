@@ -3,17 +3,39 @@ import { showNotification } from "@mantine/notifications";
 import React, { useEffect, useState } from "react";
 import OtpInput from "react-otp-input";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { useVerifyOtpMutation } from "~/app/store/user/userApi";
+import {
+  useSendOtpMutation,
+  useVerifyOtpMutation,
+} from "~/app/store/user/userApi";
 
 type Props = {};
 
 const OTPComponent = (props: Props) => {
   const [param] = useSearchParams();
-  const navigare = useNavigate();
+  const navigate = useNavigate();
   const [otp, setOtp] = useState("");
   const [verifyOtp, { isSuccess, isError, error }] = useVerifyOtpMutation();
+  const [sendOTP, { data }] = useSendOtpMutation();
+  const [coachRequestSent, setCoachRequestSent] = useState<boolean>(false);
 
-  if (isSuccess) {
+  const mobile = param.get("usermobile");
+  const userRole = param.get("role");
+  const type = param.get("type");
+
+  useEffect(() => {
+    if (isSuccess) {
+      if (type === "reset") {
+        navigate(`/reser-password?usermobile=${mobile}`);
+      } else if (type === "new") {
+        if (userRole === "Coach") {
+          setCoachRequestSent(true);
+        } else if (userRole === "Parent") {
+          navigate(`/sign-in`);
+        }
+      }
+    }
+  }, [mobile, userRole, type]);
+  if (coachRequestSent) {
     return (
       <div className="flex flex-col gap-2 w-72 xs:w-96 text-center justify-center items-center">
         <Info />
@@ -38,7 +60,10 @@ const OTPComponent = (props: Props) => {
         inputStyle="border rounded-sm border-perfBlue w-10 h-10"
       />
       <button
-        onClick={() => verifyOtp({ id: Number(param.get("userid")), otp })}
+        onClick={() => {
+          navigate(`/reset-password?usermobile=${param.get("usermobile")}`);
+          // verifyOtp({ mobile: "+" + param.get("usermobile"), otp });
+        }}
         className="w-full bg-perfBlue hover:bg-blue-700 text-white py-2 font-medium rounded-md"
       >
         Confirme
@@ -47,7 +72,7 @@ const OTPComponent = (props: Props) => {
         didnt recive a SMS?
         <span
           className="text-sm text-perfBlue font-medium ml-1 cursor-pointer"
-          onClick={() => console.log()}
+          onClick={() => sendOTP({ mobile: "+" + param.get("usermobile") })}
         >
           send again
         </span>
