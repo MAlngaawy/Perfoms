@@ -274,3 +274,9 @@ export type Achievement = {
 export type UserAchievements = BaseGetAllType & {
   results: Achievement[];
 };
+
+export type ResetPassword = {
+  mobile: string | null;
+  new_password: string;
+  new_password_confirm: string;
+};

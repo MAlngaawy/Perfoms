@@ -16,30 +16,25 @@ const OTPComponent = (props: Props) => {
   const [otp, setOtp] = useState("");
   const [verifyOtp, { isSuccess, isError, error }] = useVerifyOtpMutation();
   const [sendOTP, { data }] = useSendOtpMutation();
-  const [coachRequestSent, setCoachRequetSent] = useState<boolean>(false);
-  const [test, setTest] = useState<boolean>(false);
+  const [coachRequestSent, setCoachRequestSent] = useState<boolean>(false);
 
   const mobile = param.get("usermobile");
   const userRole = param.get("role");
   const type = param.get("type");
 
-  console.log(mobile, userRole, type);
-
   useEffect(() => {
-    console.log("Effect");
-
     if (isSuccess) {
       if (type === "reset") {
         navigate(`/reser-password?usermobile=${mobile}`);
       } else if (type === "new") {
         if (userRole === "Coach") {
-          setCoachRequetSent(true);
+          setCoachRequestSent(true);
         } else if (userRole === "Parent") {
           navigate(`/sign-in`);
         }
       }
     }
-  }, [mobile, userRole, type, test]);
+  }, [mobile, userRole, type]);
   if (coachRequestSent) {
     return (
       <div className="flex flex-col gap-2 w-72 xs:w-96 text-center justify-center items-center">
@@ -66,9 +61,8 @@ const OTPComponent = (props: Props) => {
       />
       <button
         onClick={() => {
-          setTest(true);
-          // navigate(`/reser-password?usermobile=${param.get("usermobile")}`);
-          verifyOtp({ mobile: "+" + param.get("usermobile"), otp });
+          navigate(`/reset-password?usermobile=${param.get("usermobile")}`);
+          // verifyOtp({ mobile: "+" + param.get("usermobile"), otp });
         }}
         className="w-full bg-perfBlue hover:bg-blue-700 text-white py-2 font-medium rounded-md"
       >

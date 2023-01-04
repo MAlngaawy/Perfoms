@@ -11,7 +11,8 @@ import AppUtils from "~/@main/utils/AppUtils";
 type Props = {};
 
 const ForgotPass = (props: Props) => {
-  const [sendOTP, { data, isLoading, isSuccess }] = useSendOtpMutation();
+  const [sendOTP, { data, isLoading, isSuccess, isError, error }] =
+    useSendOtpMutation();
   const navigator = useNavigate();
 
   // Yup schema
@@ -31,31 +32,23 @@ const ForgotPass = (props: Props) => {
 
   const submitFun = (data: any) => {
     const mobile = data.countryCode + data.phoneNumber;
-    sendOTP({ mobile: mobile })
-      .then((res) => {
-        console.log(res);
-        navigator(`/verify-otp?usermobile=${mobile}&type=reset`);
-      })
-      .catch((err) => {
-        console.log(err);
-        AppUtils.showNotificationFun("Error", "Sorry", "ascsac");
-      });
+    navigator(`/verify-otp?usermobile=${mobile}`);
+    // sendOTP({ mobile: mobile });
   };
 
   useEffect(() => {
-    if (isSuccess && data) navigator(`/verify-otp?usermobile=${data.mobile}`);
-  }, [isSuccess, data]);
-
-  // useEffect(() => {
-  //   if (isSuccess && data) {
-  //     sendOTP({ mobile: data.mobile })
-  //       .then((res) => {
-  //         console.log(res);
-  //         navigator(`/verify-otp?usermobile=${data.mobile}`);
-  //       })
-  //       .catch((err) => console.log(err));
-  //   }
-  // }, [isSuccess, data]);
+    if (isSuccess && data) {
+      navigator(`/verify-otp?usermobile=${data?.mobile}`);
+    }
+    if (isError) {
+      AppUtils.showNotificationFun(
+        "Error",
+        "Sorry",
+        //@ts-ignore
+        error?.data?.message || "Enter a valid mobile number"
+      );
+    }
+  }, [isSuccess, data, isError]);
 
   return (
     <div className="signIn bg-perfOfWhite flex justify-center min-h-screen items-stretch">
