@@ -32,8 +32,7 @@ const ForgotPass = (props: Props) => {
 
   const submitFun = (data: any) => {
     const mobile = data.countryCode + data.phoneNumber;
-    navigator(`/verify-otp?usermobile=${mobile}`);
-    // sendOTP({ mobile: mobile });
+    sendOTP({ mobile: mobile });
   };
 
   useEffect(() => {

@@ -32,7 +32,7 @@ const ResetPasswordComp = (props: Props) => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      mobile: `+${mobile}`,
+      mobile: mobile,
       new_password: "",
       new_password_confirm: "",
     },
@@ -53,7 +53,6 @@ const ResetPasswordComp = (props: Props) => {
       );
     }
     if (isError) {
-      console.log(error);
       AppUtils.showNotificationFun(
         "Error",
         "Something went wrong",
