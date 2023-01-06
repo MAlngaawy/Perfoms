@@ -17,6 +17,7 @@ const OTPComponent = (props: Props) => {
   const [verifyOtp, { isSuccess, isError, error }] = useVerifyOtpMutation();
   const [sendOTP, { data }] = useSendOtpMutation();
   const [coachRequestSent, setCoachRequestSent] = useState<boolean>(false);
+  const [test, setTest] = useState<boolean>(false);
 
   const mobile = param.get("usermobile");
   const userRole = param.get("role");
@@ -28,24 +29,13 @@ const OTPComponent = (props: Props) => {
         navigate(`/reser-password?usermobile=${mobile}`);
       } else if (type === "new") {
         if (userRole === "Coach") {
-          setCoachRequestSent(true);
+          navigate(`/coachRequestSent`);
         } else if (userRole === "Parent") {
           navigate(`/sign-in`);
         }
       }
     }
-  }, [mobile, userRole, type]);
-  if (coachRequestSent) {
-    return (
-      <div className="flex flex-col gap-2 w-72 xs:w-96 text-center justify-center items-center">
-        <Info />
-        <h2 className="text-perfBlue text-2xl font-medium ">
-          Your application was sent to the admins to be confirmed.
-        </h2>
-        <p className="text-orange text-xl">you will recive an SMS</p>
-      </div>
-    );
-  }
+  }, [isSuccess]);
 
   return (
     <div className="flex flex-col gap-6 w-72 xs:w-96 justify-center items-center">
@@ -61,8 +51,9 @@ const OTPComponent = (props: Props) => {
       />
       <button
         onClick={() => {
-          navigate(`/reset-password?usermobile=${param.get("usermobile")}`);
-          // verifyOtp({ mobile: "+" + param.get("usermobile"), otp });
+          // navigate(`/reset-password?usermobile=${param.get("usermobile")}`);
+          verifyOtp({ mobile: "+" + param.get("usermobile"), otp });
+          // setTest(true);
         }}
         className="w-full bg-perfBlue hover:bg-blue-700 text-white py-2 font-medium rounded-md"
       >
@@ -81,7 +72,7 @@ const OTPComponent = (props: Props) => {
   );
 };
 
-const Info = () => {
+export const Info = () => {
   return (
     <div className="mb-4 flex flex-col gap-2">
       {/* Logo */}

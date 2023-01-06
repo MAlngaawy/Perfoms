@@ -32,7 +32,6 @@ const schema = yup.object().shape({
 
 const SignUpPage = (props: Props) => {
   const [signupHandler, { data, isLoading, isSuccess }] = useSignupMutation();
-  const [sendOTP] = useSendOtpMutation();
   const navigator = useNavigate();
   const { data: AllClubs } = usePublicClubsQuery(null);
   const {
@@ -92,16 +91,9 @@ const SignUpPage = (props: Props) => {
 
   useEffect(() => {
     if (isSuccess && data) {
-      sendOTP({ mobile: data.data.mobile })
-        .then((res) => {
-          console.log(res);
-          // Type "type=new" in search param to tell the OTP page that this is a new user register
-          // to send the user to the right place after verify the otp && user role for the direction too
-          navigator(
-            `/verify-otp?usermobile=${data.data.mobile}&type=new&role=${userRole}`
-          );
-        })
-        .catch((err) => console.log(err));
+      navigator(
+        `/verify-otp?usermobile=${data.data.mobile}&type=new&role=${userRole}`
+      );
     }
   }, [isSuccess, data]);
 
@@ -272,6 +264,7 @@ const SignUpPage = (props: Props) => {
               <PerfSelect
                 id="city"
                 required
+                searchable
                 error={errors.city && "Please select your City"}
                 className="w-full"
                 label="City"
