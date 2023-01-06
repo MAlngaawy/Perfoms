@@ -25,10 +25,13 @@ const ForgotPass = (props: Props) => {
     handleSubmit,
     formState: { errors },
     control,
+    watch,
   } = useForm({
     defaultValues: { countryCode: "+20", phoneNumber: "" },
     resolver: yupResolver(schema),
   });
+
+  const myMobile = watch("countryCode") + watch("phoneNumber");
 
   const submitFun = (data: any) => {
     const mobile = data.countryCode + data.phoneNumber;
@@ -36,8 +39,10 @@ const ForgotPass = (props: Props) => {
   };
 
   useEffect(() => {
+    console.log(data);
+
     if (isSuccess && data) {
-      navigator(`/verify-otp?usermobile=${data?.mobile}`);
+      navigator(`/verify-otp?usermobile=${myMobile}&type=reset`);
     }
     if (isError) {
       AppUtils.showNotificationFun(

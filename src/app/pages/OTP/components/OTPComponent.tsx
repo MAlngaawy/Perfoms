@@ -3,6 +3,7 @@ import { showNotification } from "@mantine/notifications";
 import React, { useEffect, useState } from "react";
 import OtpInput from "react-otp-input";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import AppUtils from "~/@main/utils/AppUtils";
 import {
   useSendOtpMutation,
   useVerifyOtpMutation,
@@ -15,7 +16,8 @@ const OTPComponent = (props: Props) => {
   const navigate = useNavigate();
   const [otp, setOtp] = useState("");
   const [verifyOtp, { isSuccess, isError, error }] = useVerifyOtpMutation();
-  const [sendOTP, { data }] = useSendOtpMutation();
+  const [sendOTP, { data, isSuccess: otpSentSuccessfully }] =
+    useSendOtpMutation();
   const [coachRequestSent, setCoachRequestSent] = useState<boolean>(false);
   const [test, setTest] = useState<boolean>(false);
 
@@ -63,7 +65,12 @@ const OTPComponent = (props: Props) => {
         didnt recive a SMS?
         <span
           className="text-sm text-perfBlue font-medium ml-1 cursor-pointer"
-          onClick={() => sendOTP({ mobile: "+" + param.get("usermobile") })}
+          onClick={() => {
+            setOtp("");
+            sendOTP({ mobile: "+" + param.get("usermobile") }).then(() => {
+              AppUtils.showNotificationFun("Success", "Done", "OTP code sent");
+            });
+          }}
         >
           send again
         </span>
