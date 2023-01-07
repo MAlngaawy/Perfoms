@@ -15,6 +15,7 @@ import { useMyClubQuery } from "~/app/store/coach/coachApi";
 import { useEffect, useState } from "react";
 import { useSuperClubQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { useAdminClubQuery } from "~/app/store/clubManager/clubManagerApi";
+import { dataServerToken } from "../../../configs/dataService";
 
 type Props = {
   opened: boolean;
@@ -47,8 +48,13 @@ const Toolbar = ({ setOpened }: Props) => {
     {},
     { skip: user?.user_type !== "Admin" }
   );
-
   useEffect(() => {
+    if (!dataServerToken) {
+      location.reload();
+      console.log("NOTokken");
+    } else {
+      console.log("tokken", dataServerToken);
+    }
     if (playerClub) setClub(playerClub);
     if (coachClub) setClub(coachClub);
     if (superClub) setClub(superClub);

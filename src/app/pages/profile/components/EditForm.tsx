@@ -7,6 +7,7 @@ import { showNotification } from "@mantine/notifications";
 import SubmitButton from "~/@main/components/SubmitButton";
 import { axiosInstance } from "~/app/configs/dataService";
 import AppUtils from "~/@main/utils/AppUtils";
+import Cookies from "js-cookie";
 
 type Props = {
   user: User;
@@ -26,8 +27,6 @@ const EditForm = ({ user, setOpened, refetch }: Props) => {
   });
 
   const onSubmitFn = async (e: any) => {
-    console.log("Submit Clicked");
-
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     if (userAvatar) {
