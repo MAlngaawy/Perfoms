@@ -15,7 +15,6 @@
   -moz-text-rendering: optimizeLegibility;
   -webkit-text-rendering: optimizeLegibility;
   -webkit-tap-highlight-color: transparent;
-  overflow: auto;
 }
 
 * :focus {
