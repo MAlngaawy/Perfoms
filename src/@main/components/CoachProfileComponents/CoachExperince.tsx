@@ -109,7 +109,7 @@ const CoachExperince = ({ data, editMode }: Props) => {
         )}
         {experiences?.results.map((exper) => {
           return (
-            <div className="flex flex-col ml-2 my-4 relative">
+            <div className="flex flex-col ml-2 my-4 relative break-words">
               <p className="text-xs font-normal text-perfGray3">
                 {exper.date_from + " / "}
                 {exper.to_present ? "Present" : exper.date_to}
@@ -133,7 +133,7 @@ const CoachExperince = ({ data, editMode }: Props) => {
                           AppUtils.showNotificationFun(
                             "Success",
                             "Done",
-                            "Experience Successfly Deleted"
+                            "Experience Successfully Deleted"
                           );
                         })
                         .catch(() => {
@@ -169,7 +169,7 @@ const CoachExperince = ({ data, editMode }: Props) => {
             {qualifications?.results.map((oneQualifications) => (
               <li
                 key={oneQualifications.id}
-                className="text-xs w-full relative font-normal text-perfGray3 my-4"
+                className="text-xs w-full relative font-normal text-perfGray3 my-4 pr-5 break-words"
               >
                 {editMode && (
                   <div className="absolute right-0">
@@ -182,7 +182,7 @@ const CoachExperince = ({ data, editMode }: Props) => {
                             AppUtils.showNotificationFun(
                               "Success",
                               "Done",
-                              "Qualification Successfly Deleted"
+                              "Qualification Successfully Deleted"
                             );
                           })
                           .catch(() => {
@@ -213,7 +213,7 @@ const CoachExperince = ({ data, editMode }: Props) => {
             {courses?.results.map((course) => (
               <li
                 key={course.id}
-                className="text-xs w-full relative font-normal text-perfGray3 my-4"
+                className="text-xs w-full relative font-normal text-perfGray3 my-4 pr-5 break-words"
               >
                 {editMode && (
                   <div className="absolute right-0">
@@ -226,7 +226,7 @@ const CoachExperince = ({ data, editMode }: Props) => {
                             AppUtils.showNotificationFun(
                               "Success",
                               "Done",
-                              "Courses Successfly Deleted"
+                              "Courses Successfully Deleted"
                             );
                           })
                           .catch(() => {
@@ -376,7 +376,7 @@ function AddExperinces({ data: oldDetails }: { data: Details | undefined }) {
             {...register("description")}
           />
 
-          <SubmitButton isLoading={isLoading} text="Send" />
+          <SubmitButton isLoading={isLoading} text="Save" />
         </form>
       </Modal>
 
@@ -418,7 +418,7 @@ function AddQualifications() {
         AppUtils.showNotificationFun(
           "Success",
           "Done",
-          "Qualification added successfly"
+          "Qualification added successfully"
         );
       })
       .catch(() => {
@@ -451,7 +451,7 @@ function AddQualifications() {
             <Input placeholder="Add Qualifiactions" {...register("name")} />
           </Input.Wrapper>
 
-          <SubmitButton isLoading={isLoading} text="Send" />
+          <SubmitButton isLoading={isLoading} text="Save" />
         </form>
       </Modal>
 
@@ -493,7 +493,7 @@ function AddCourses({ data: oldDetails }: { data: Details | undefined }) {
         AppUtils.showNotificationFun(
           "Success",
           "Done",
-          "Course added successfly"
+          "Course added successfully"
         );
       })
       .catch(() => {
@@ -519,7 +519,7 @@ function AddCourses({ data: oldDetails }: { data: Details | undefined }) {
             <Input placeholder="Add Course" {...register("name")} />
           </Input.Wrapper>
 
-          <SubmitButton isLoading={isLoading} text="Send" />
+          <SubmitButton isLoading={isLoading} text="Save" />
         </form>
       </Modal>
 
