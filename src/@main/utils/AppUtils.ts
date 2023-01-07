@@ -2,7 +2,7 @@
 import axios from "axios";
 import _ from "~/@lodash";
 import { BASE_URL } from "~/app/configs/dataService";
-import Resizer from "react-image-file-resizer";
+import Resizer from "../utils/Resizer.js";
 import { showNotification } from "@mantine/notifications";
 
 class EventEmitter {

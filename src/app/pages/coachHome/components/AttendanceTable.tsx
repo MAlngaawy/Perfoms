@@ -9,7 +9,6 @@ import { useSelector } from "react-redux";
 import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 import NoTeamComp from "~/@main/components/NoTeamComp";
 import NoAttendancesYet from "~/@main/components/NoAttendancesYet";
-import { showNotification } from "@mantine/notifications";
 
 type Props = {};
 
@@ -21,8 +20,7 @@ const AttendanceTable = (props: Props) => {
     { skip: !selectedPlayerTeam }
   );
 
-  console.log("teamAttendance", teamAttendance);
-
+  // !-- this end point comes with an empty array! ==https://api.performs.app/coach/team-attendance-days/4/==
   const {
     data: teamAttendanceDays,
     isLoading,
