@@ -27,7 +27,7 @@ const Navigation = ({ opened, setOpened }: Props) => {
         style={{
           boxShadow: "4px 8px 14px 0px #2D43771F",
         }}
-        className="hidden lg:flex justify-center overflow-scroll min-h-screen max-h-full p-0 pt-6 bg-white"
+        className="hidden lg:flex justify-center overflow-auto min-h-screen max-h-full p-0 pt-6 bg-white"
         span={2}
       >
         <div

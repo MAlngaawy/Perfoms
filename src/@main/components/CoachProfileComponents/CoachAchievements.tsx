@@ -59,7 +59,7 @@ const CoachAchievements = ({ data, editMode }: Props) => {
         {achievements?.results.map((item) => (
           <div
             key={item.id}
-            className="flex gap-2 justify-center items-center relative"
+            className="flex gap-2 justify-center relative flex-row items-start"
           >
             {editMode && (
               <div className="absolute right-0 top-0">
@@ -72,7 +72,7 @@ const CoachAchievements = ({ data, editMode }: Props) => {
                         AppUtils.showNotificationFun(
                           "Success",
                           "Done",
-                          "Successfly Added Achievement"
+                          "Successfully Added Achievement"
                         );
                       })
                       .catch((err) => {
@@ -93,7 +93,7 @@ const CoachAchievements = ({ data, editMode }: Props) => {
                 alt="medal"
               />
             </div>
-            <div className="details">
+            <div className="details break-words w-4/6 md:w-24 pr-5">
               <h2 className="type text-xs font-medium text-perfLightBlack">
                 {item.type}
               </h2>
@@ -143,7 +143,7 @@ function AddButton() {
         AppUtils.showNotificationFun(
           "Success",
           "Done",
-          "Successfly Added Achievement"
+          "Successfully Added Achievement"
         );
       })
       .catch((err) => {
@@ -175,9 +175,7 @@ function AddButton() {
             <Input placeholder="Medal Type" {...register("type")} />
           </Input.Wrapper>
 
-          <Input.Wrapper
-            error={errors.year && (errors.year.message as ReactNode)}
-          >
+          <Input.Wrapper error={errors.year && "you must enter a valid year."}>
             <Input
               placeholder="in any year you got this modal"
               {...register("year")}
@@ -194,7 +192,7 @@ function AddButton() {
           </Input.Wrapper>
 
           <button type="submit" className="bg-perfBlue text-white p-2">
-            Send
+            Save
           </button>
         </form>
       </Modal>
