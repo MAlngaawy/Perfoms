@@ -39,6 +39,7 @@ const NotificationsPage = (props: Props) => {
     <div className="p-6 flex flex-col gap-4">
       {notifications?.results.map((oneNot) => (
         <OneNotification
+          key={oneNot.id}
           created_at={formatDate(new Date(oneNot.created_at))}
           newNotification
           notification_type={oneNot.notification_type}

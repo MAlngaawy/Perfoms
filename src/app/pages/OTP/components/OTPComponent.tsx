@@ -3,27 +3,41 @@ import { showNotification } from "@mantine/notifications";
 import React, { useEffect, useState } from "react";
 import OtpInput from "react-otp-input";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { useVerifyOtpMutation } from "~/app/store/user/userApi";
+import AppUtils from "~/@main/utils/AppUtils";
+import {
+  useSendOtpMutation,
+  useVerifyOtpMutation,
+} from "~/app/store/user/userApi";
 
 type Props = {};
 
 const OTPComponent = (props: Props) => {
   const [param] = useSearchParams();
-  const navigare = useNavigate();
+  const navigate = useNavigate();
   const [otp, setOtp] = useState("");
   const [verifyOtp, { isSuccess, isError, error }] = useVerifyOtpMutation();
+  const [sendOTP, { data, isSuccess: otpSentSuccessfully }] =
+    useSendOtpMutation();
+  const [coachRequestSent, setCoachRequestSent] = useState<boolean>(false);
+  const [test, setTest] = useState<boolean>(false);
 
-  if (isSuccess) {
-    return (
-      <div className="flex flex-col gap-2 w-72 xs:w-96 text-center justify-center items-center">
-        <Info />
-        <h2 className="text-perfBlue text-2xl font-medium ">
-          Your application was sent to the admins to be confirmed.
-        </h2>
-        <p className="text-orange text-xl">you will recive an SMS</p>
-      </div>
-    );
-  }
+  const mobile = param.get("usermobile");
+  const userRole = param.get("role");
+  const type = param.get("type");
+
+  useEffect(() => {
+    if (isSuccess) {
+      if (type === "reset") {
+        navigate(`/reser-password?usermobile=${mobile}`);
+      } else if (type === "new") {
+        if (userRole === "Coach") {
+          navigate(`/coachRequestSent`);
+        } else if (userRole === "Parent") {
+          navigate(`/sign-in`);
+        }
+      }
+    }
+  }, [isSuccess]);
 
   return (
     <div className="flex flex-col gap-6 w-72 xs:w-96 justify-center items-center">
@@ -38,7 +52,11 @@ const OTPComponent = (props: Props) => {
         inputStyle="border rounded-sm border-perfBlue w-10 h-10"
       />
       <button
-        onClick={() => verifyOtp({ id: Number(param.get("userid")), otp })}
+        onClick={() => {
+          // navigate(`/reset-password?usermobile=${param.get("usermobile")}`);
+          verifyOtp({ mobile: "+" + param.get("usermobile"), otp });
+          // setTest(true);
+        }}
         className="w-full bg-perfBlue hover:bg-blue-700 text-white py-2 font-medium rounded-md"
       >
         Confirme
@@ -47,7 +65,12 @@ const OTPComponent = (props: Props) => {
         didnt recive a SMS?
         <span
           className="text-sm text-perfBlue font-medium ml-1 cursor-pointer"
-          onClick={() => console.log()}
+          onClick={() => {
+            setOtp("");
+            sendOTP({ mobile: "+" + param.get("usermobile") }).then(() => {
+              AppUtils.showNotificationFun("Success", "Done", "OTP code sent");
+            });
+          }}
         >
           send again
         </span>
@@ -56,7 +79,7 @@ const OTPComponent = (props: Props) => {
   );
 };
 
-const Info = () => {
+export const Info = () => {
   return (
     <div className="mb-4 flex flex-col gap-2">
       {/* Logo */}

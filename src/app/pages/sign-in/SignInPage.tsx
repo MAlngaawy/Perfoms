@@ -12,18 +12,6 @@ type Props = {};
 
 const SignInPage = (props: Props) => {
   const [signinHandler, { isLoading }] = useSigninMutation();
-  // local schema
-  yup.setLocale({
-    // use constant translation keys for messages without values
-    mixed: {
-      default: "field_invalid",
-    },
-    // use functions to generate an error object that includes the value from the schema
-    number: {
-      min: ({ min }) => ({ key: "field_too_short", values: { min } }),
-      max: ({ max }) => ({ key: "field_too_big", values: { max } }),
-    },
-  });
 
   // Yup schema
   const schema = yup.object().shape({
@@ -84,7 +72,7 @@ const SignInPage = (props: Props) => {
             </h2>
             <p className="text-perfGray text-base">Welcome back.</p>
           </div>
-          <div className="inputs mb-10 gap-4 flex w-full flex-col justify-center items-center">
+          <div className="inputs gap-4 flex w-full flex-col justify-center items-center">
             {/* <Grid grow gutter="sm" className="w-full"> */}
             {/* Select Country code Input */}
             {/* <Grid.Col span={3}>
@@ -155,29 +143,37 @@ const SignInPage = (props: Props) => {
             </Grid> */}
 
             {/* Password Input */}
-            <PasswordInput
-              sx={{
-                ".mantine-PasswordInput-input": {
-                  border: 0,
-                  padding: 0,
-                  borderBottom: 1,
-                  background: "none",
-                  borderStyle: "solid",
-                  borderRadius: 0,
-                },
-                ".mantine-PasswordInput-innerInput": {
-                  padding: 0,
-                },
-              }}
-              className="w-full"
-              label="Password"
-              withAsterisk
-              error={
-                errors.password &&
-                "Password must be more than 8 character and less than 24 character"
-              }
-              {...register("password")}
-            />
+            <div className="w-full">
+              <PasswordInput
+                sx={{
+                  ".mantine-PasswordInput-input": {
+                    border: 0,
+                    padding: 0,
+                    borderBottom: 1,
+                    background: "none",
+                    borderStyle: "solid",
+                    borderRadius: 0,
+                  },
+                  ".mantine-PasswordInput-innerInput": {
+                    padding: 0,
+                  },
+                }}
+                className="w-full"
+                label="Password"
+                withAsterisk
+                error={
+                  errors.password &&
+                  "Password must be more than 8 character and less than 24 character"
+                }
+                {...register("password")}
+              />
+              <Link
+                to={"forgot-pass"}
+                className="forgot-pass mt-4 text-xs text-perfGray3"
+              >
+                Forget password
+              </Link>
+            </div>
           </div>
           <SubmitButton isLoading={isLoading} text="Sign in" />
           <p className="text-perfGray text-center text-base">

@@ -200,9 +200,15 @@ const UsersCard = ({ type, data }: Props) => {
         <Grid className="w-full" gutter={"sm"}>
           {newData &&
             newData.length > 0 &&
-            newData.map((user: any) => {
+            newData.map((user: any, index: number) => {
               return (
-                <Grid.Col className="w-fit h-fit" span={12} xs={6} sm={4}>
+                <Grid.Col
+                  key={index}
+                  className="w-fit h-fit"
+                  span={12}
+                  xs={6}
+                  sm={4}
+                >
                   <div className="flex justify-between rounded-3xl items-center p-1  hover:bg-pagesBg transition-all">
                     <div className="coach-data flex gap-2 items-center cursor-default">
                       <Avatar

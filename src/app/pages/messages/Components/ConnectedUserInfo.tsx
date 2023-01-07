@@ -42,7 +42,9 @@ const ConnectedUserInfo = ({
           <div>
             <h2>Teams</h2>
             {teams.map((team) => (
-              <p className="text-xs text-perfGray3">{team}</p>
+              <p key={team} className="text-xs text-perfGray3">
+                {team}
+              </p>
             ))}
           </div>
           <button

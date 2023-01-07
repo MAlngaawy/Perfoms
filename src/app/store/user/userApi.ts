@@ -15,6 +15,7 @@ import {
   OTPVerify,
   Qualification,
   Qualifications,
+  ResetPassword,
   SendOtp,
   SignupRes,
   User,
@@ -383,6 +384,14 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["achievements"],
     }),
+
+    resetPassword: mutation<ResetPassword, ResetPassword>({
+      query: (body) => ({
+        url: "reset-password/",
+        method: "PATCH",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -421,4 +430,5 @@ export const {
   useGetCoachAchievementsQuery,
   useAddUserAchievementsMutation,
   useDeleteAchievementsMutation,
+  useResetPasswordMutation,
 } = userApi;

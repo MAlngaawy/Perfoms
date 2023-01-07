@@ -34,7 +34,7 @@ const RequestPage = (props: Props) => {
       ) : (
         <>
           {requests?.results.map((request) => {
-            return <SingleRequest {...request} />;
+            return <SingleRequest key={request.id} {...request} />;
           })}
         </>
       )}

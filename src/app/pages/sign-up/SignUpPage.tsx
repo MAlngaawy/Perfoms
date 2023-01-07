@@ -9,7 +9,10 @@ import { State } from "country-state-city";
 import PerfSelect, { Option } from "~/@main/components/Select";
 import { Controller } from "react-hook-form";
 import { usePublicClubsQuery, useTeamsQuery } from "~/app/store/core/coreApi";
-import { useSignupMutation } from "~/app/store/user/userApi";
+import {
+  useSendOtpMutation,
+  useSignupMutation,
+} from "~/app/store/user/userApi";
 import SubmitButton from "~/@main/components/SubmitButton";
 
 type Props = {};
@@ -77,16 +80,26 @@ const SignUpPage = (props: Props) => {
       city: data.city,
       teams: data.teams,
     };
-    signupHandler(requestData);
+    signupHandler(requestData)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {
-    if (isSuccess && data) navigator(`/verify-otp?userid=${data.data.id}`);
+    if (isSuccess && data) {
+      navigator(
+        `/verify-otp?usermobile=${data.data.mobile}&type=new&role=${userRole}`
+      );
+    }
   }, [isSuccess, data]);
 
   return (
-    <div className="flex h-screen justify-center items-center">
-      <div className="h-full relative hidden md:block">
+    <div className="flex h-screen overflow-scroll justify-center items-center">
+      <div className="h-full w-1/2 relative hidden md:block">
         <div className="absolute left-4 top-4  bg-white/60 rounded-2xl p-4">
           <img
             className="w-20 h-20"
@@ -107,10 +120,10 @@ const SignUpPage = (props: Props) => {
           className="w-full h-full max-w-full max-h-full object-cover"
         />
       </div>
-      <div className="mx-auto flex justify-center">
+      <div className="mx-auto w-full md:w-1/2 flex justify-center">
         {/* <OTPComponent /> */}
         <form
-          className="md:w-96 overflow-scroll"
+          className=" mx-4 md:w-96 overflow-scroll"
           onSubmit={handleSubmit((data: any) => submitFun(data))}
         >
           <div className="title text-left mb-4">
@@ -251,6 +264,7 @@ const SignUpPage = (props: Props) => {
               <PerfSelect
                 id="city"
                 required
+                searchable
                 error={errors.city && "Please select your City"}
                 className="w-full"
                 label="City"

@@ -45,6 +45,7 @@ const TeamPlayersComponent = ({ teamId }: Props) => {
           players.results.map((player) => {
             return (
               <SinglePlayer
+                key={player.id}
                 teamId={teamId}
                 id={player.id}
                 name={player.name}

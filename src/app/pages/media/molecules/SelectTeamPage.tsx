@@ -67,7 +67,10 @@ const SelectTeamPage = (props: Props) => {
       {teams ? (
         teams.results?.map((team) => {
           return (
-            <div className="team-card relative w-52 bg-white p-8 rounded-xl flex flex-col justify-center items-center gap-4">
+            <div
+              key={team.id}
+              className="team-card relative w-52 bg-white p-8 rounded-xl flex flex-col justify-center items-center gap-4"
+            >
               <div
                 onClick={() =>
                   dispatch(selectPlayerTeam({ id: team.id, name: team.name }))

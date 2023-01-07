@@ -71,7 +71,10 @@ const Sports = (props: Props) => {
       {sports &&
         sports?.results.map((sport) => {
           return (
-            <div className="sport-card relative bg-white rounded-3xl p-12 flex flex-col justify-center items-center gap-4">
+            <div
+              key={sport.id}
+              className="sport-card relative bg-white rounded-3xl p-12 flex flex-col justify-center items-center gap-4"
+            >
               <Link
                 to={`sports/${sport.id}/pillars`}
                 state={{ sportName: sport.name }}

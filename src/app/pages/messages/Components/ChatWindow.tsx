@@ -123,39 +123,35 @@ const ChatWindow = ({
           <div className="messages gap-4 flex flex-col py-6 h-80 overflow-scroll">
             {messages.map((message) => {
               return (
-                <>
-                  <div
-                    className={classNames(
-                      " mx-4 text-base font-normal flex flex-col",
-                      {
-                        "self-start": message.fromMe,
-                        "self-end  ": !message.fromMe,
-                      }
-                    )}
+                <div
+                  key={message.text}
+                  className={classNames(
+                    " mx-4 text-base font-normal flex flex-col",
+                    {
+                      "self-start": message.fromMe,
+                      "self-end  ": !message.fromMe,
+                    }
+                  )}
+                >
+                  <span
+                    className={classNames("p-3 py-1", {
+                      "bg-perfBlue text-white rounded-tl-3xl rounded-tr-3xl rounded-br-3xl ":
+                        message.fromMe,
+                      "bg-slate-200 text-perfGray1 rounded-tl-3xl rounded-tr-3xl rounded-bl-3xl ":
+                        !message.fromMe,
+                    })}
                   >
-                    <span
-                      className={classNames("p-3 py-1", {
-                        "bg-perfBlue text-white rounded-tl-3xl rounded-tr-3xl rounded-br-3xl ":
-                          message.fromMe,
-                        "bg-slate-200 text-perfGray1 rounded-tl-3xl rounded-tr-3xl rounded-bl-3xl ":
-                          !message.fromMe,
-                      })}
-                    >
-                      {message.text}
-                    </span>
-                    <span
-                      className={classNames(
-                        "text-xs mx-2 my-1 text-perfGray3",
-                        {
-                          "self-start ": message.fromMe,
-                          "self-end ": !message.fromMe,
-                        }
-                      )}
-                    >
-                      {message.time} am
-                    </span>
-                  </div>
-                </>
+                    {message.text}
+                  </span>
+                  <span
+                    className={classNames("text-xs mx-2 my-1 text-perfGray3", {
+                      "self-start ": message.fromMe,
+                      "self-end ": !message.fromMe,
+                    })}
+                  >
+                    {message.time} am
+                  </span>
+                </div>
               );
             })}
           </div>

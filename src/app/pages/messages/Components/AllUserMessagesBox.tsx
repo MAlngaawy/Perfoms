@@ -63,29 +63,29 @@ const AllUserMessagesBox = ({
       </div>
       <div className="flex flex-col h-80 overflow-scroll">
         {list === "Coaches" &&
-          connects.map((connect) => {
+          connects.map((connect, idx) => {
             return (
-              <>
+              <div key={idx}>
                 <Divider />
                 <OneMessageBox
                   visibleChatUserID={visibleChatUserID}
                   setVisibleChatUserID={setVisibleChatUserID}
                   {...connect}
                 />{" "}
-              </>
+              </div>
             );
           })}
         {list === "Teams" &&
-          connects.map((connect) => {
+          connects.map((connect, idx) => {
             return (
-              <>
+              <div key={idx}>
                 <Divider />
                 <OneMessageBox
                   visibleChatUserID={visibleChatUserID}
                   setVisibleChatUserID={setVisibleChatUserID}
                   {...connect}
                 />{" "}
-              </>
+              </div>
             );
           })}
       </div>

@@ -9,7 +9,6 @@ import { useSelector } from "react-redux";
 import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 import NoTeamComp from "~/@main/components/NoTeamComp";
 import NoAttendancesYet from "~/@main/components/NoAttendancesYet";
-import { showNotification } from "@mantine/notifications";
 
 type Props = {};
 
@@ -21,8 +20,7 @@ const AttendanceTable = (props: Props) => {
     { skip: !selectedPlayerTeam }
   );
 
-  console.log("teamAttendance", teamAttendance);
-
+  // !-- this end point comes with an empty array! ==https://api.performs.app/coach/team-attendance-days/4/==
   const {
     data: teamAttendanceDays,
     isLoading,
@@ -58,7 +56,10 @@ const AttendanceTable = (props: Props) => {
               <tr className="">
                 <th className="bg-white sticky  top-0 z-20 ">Day</th>
                 {teamAttendance?.results.map((player) => (
-                  <th className="bg-white sticky top-0 z-20 text-center ">
+                  <th
+                    key={player.id}
+                    className="bg-white sticky top-0 z-20 text-center "
+                  >
                     <div className="flex  flex-col justify-center items-center">
                       <Avatar radius={"xl"} size="md" src={player.icon} />
                       <span>{player.name}</span>
@@ -74,7 +75,7 @@ const AttendanceTable = (props: Props) => {
                   {teamAttendanceDays?.results.map((item) => {
                     const thisDate = item.day;
                     return (
-                      <tr className="">
+                      <tr key={item.day} className="">
                         <td className="text-xs font-medium text-center px-0 sticky left-0 bg-white z-10 text-perfGray1">
                           {thisDate}
                           {/* {thisDate.getDate() - 1}/ {thisDate.getMonth() + 1} /
@@ -92,7 +93,7 @@ const AttendanceTable = (props: Props) => {
                             }
                           }
                           return (
-                            <td>
+                            <td key={player.id}>
                               <TestCheckbox
                                 theDate={theDate}
                                 thisDate={thisDate}

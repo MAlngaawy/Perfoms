@@ -11,6 +11,7 @@ import {
   useAdminAddTeamCalendarMutation,
   useAdminTeamAttendanceQuery,
 } from "~/app/store/clubManager/clubManagerApi";
+import { useGetTeamAttendanceQuery } from "~/app/store/coach/coachApi";
 
 type Props = {
   teamId: string;
@@ -19,22 +20,42 @@ type Props = {
 const TeamCalendar = ({ teamId }: Props) => {
   const { data: user } = useUserQuery({});
   const [attDates, setAttDates] = useState<TeamAttendance>();
+  const [page, setPage] = useState<number>(1);
 
+  // !-- and what about the 188 results ?? how to send page number to filter ?
+  // !-- you can send just the last 100 result ? -- we need to handle pagination
+  // !-- it doesn't arrange in the array !
+
+  //! The same calendar shows different results in super and admin .. it should be the same ??
   const { data: superAttDates } = useSuperTeamAttendanceQuery(
     { team_id: +teamId },
     { skip: !teamId }
   );
-  const [superAddDay] = useSuperAddTeamCalendarMutation();
 
   const { data: adminAttDates } = useAdminTeamAttendanceQuery(
-    { team_id: +teamId },
+    { team_id: +teamId, page: page },
     { skip: !teamId }
   );
+
+  // !--There is no End point for coach thet bring the asked data types {day: string} ??
+
+  // const { data: coachAttDates } = useGetTeamAttendanceQuery(
+  //   { team_id: +teamId },
+  //   { skip: !teamId }
+  // );
+
+  //useGetTeamAttendanceQuery
+  //!  This add day when i reclick on a selected day .. it should be unselect
+  // ! but it doesn't work ! it doesn't remove from the dayes __ it works in some dayes
   const [adminAddDay] = useAdminAddTeamCalendarMutation();
+  const [superAddDay] = useSuperAddTeamCalendarMutation();
 
   useEffect(() => {
+    // console.log("attDates", attDates);
+    // if (attDates && attDates?.count > 100) setPage(2);
     if (superAttDates) setAttDates(superAttDates);
     if (adminAttDates) setAttDates(adminAttDates);
+    // if (coachAttDates) setAttDates(coachAttDates);
   }, [superAttDates, adminAttDates]);
 
   return (

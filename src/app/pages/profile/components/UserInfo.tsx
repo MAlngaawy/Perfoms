@@ -66,7 +66,10 @@ const UserInfo = ({ user, players, refetch }: Props) => {
         </div> */}
           <div className="playersProfile flex flex-col gap-4">
             {players?.map((player) => (
-              <div className="player flex items-center gap-2 cursor-pointer">
+              <div
+                key={player.id}
+                className="player flex items-center gap-2 cursor-pointer"
+              >
                 <Avatar radius={"xl"} size="sm" src={player.icon} />
                 <h2 className="name text-base">{player.name}</h2>
               </div>

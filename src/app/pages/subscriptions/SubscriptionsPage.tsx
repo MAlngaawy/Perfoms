@@ -5,6 +5,7 @@ import {
 } from "~/app/store/parent/parentApi";
 import SubscriptionCard from "./molecules/SubscriptionCard";
 import { Skeleton } from "@mantine/core";
+import { Subscription } from "~/app/store/types/parent-types";
 
 const SubscriptionsPage = () => {
   const [currentPlan, setCurrentPlan] = useState("");
@@ -32,11 +33,15 @@ const SubscriptionsPage = () => {
       <div className="bg-white/50 rounded-3xl ">
         <div className="subscription-board  flex flex-col md:flex-row p-10 gap-6 justify-between">
           {subscriptions
-            ? subscriptions.results.map((plan: any) => (
-                <SubscriptionCard plan={plan} selectPlan={selectPlan} />
+            ? subscriptions.results.map((plan: Subscription) => (
+                <SubscriptionCard
+                  key={plan.id}
+                  plan={plan}
+                  selectPlan={selectPlan}
+                />
               ))
             : [1, 2, 3].map((plan: any) => (
-                <Skeleton height={600} width="100%" radius="lg" />
+                <Skeleton key={plan} height={600} width="100%" radius="lg" />
               ))}
         </div>
       </div>

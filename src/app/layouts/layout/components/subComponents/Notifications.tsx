@@ -82,7 +82,11 @@ const Notifications = (props: Props) => {
           })
           .slice(-8)
           .map((oneNot) => (
-            <Menu.Label onClick={() => setOpened(false)} className="p-0">
+            <Menu.Label
+              key={oneNot.id}
+              onClick={() => setOpened(false)}
+              className="p-0"
+            >
               <Notification
                 created_at={formatDate(new Date(oneNot.created_at))}
                 newNotification

@@ -185,7 +185,7 @@ const TeamMembersKpi = (props: Props) => {
               )}
               {kpiData?.results.map((kpiPlayer) => {
                 return (
-                  <div>
+                  <div key={kpiPlayer.id}>
                     <ReportsChartCard
                       // onClickFun={() => navigate(`kpi/${kpi.id}`)}
                       clickable={false}
@@ -200,7 +200,7 @@ const TeamMembersKpi = (props: Props) => {
             <>
               {attendData?.results.map((attendsPlayer) => {
                 return (
-                  <div>
+                  <div key={attendsPlayer.id}>
                     <AttendReportsChart
                       player_attendance={attendsPlayer.player_attendance}
                       name={attendsPlayer.name}

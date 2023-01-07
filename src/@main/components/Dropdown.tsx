@@ -30,8 +30,10 @@ export const Dropdown = ({
       </Menu.Target>
 
       <Menu.Dropdown>
-        {values.map((value) => (
-          <Menu.Item onClick={() => setSelected(value)}>{value}</Menu.Item>
+        {values.map((value, idx) => (
+          <Menu.Item key={idx} onClick={() => setSelected(value)}>
+            {value}
+          </Menu.Item>
         ))}
       </Menu.Dropdown>
     </Menu>
