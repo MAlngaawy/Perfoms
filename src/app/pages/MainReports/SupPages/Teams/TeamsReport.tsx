@@ -58,7 +58,7 @@ const TeamsReports = (props: Props) => {
           {data &&
             data?.results.map((team) => {
               return (
-                <div>
+                <div key={team.id}>
                   <ReportsChartCard
                     onClickFun={() => navigate(`${team.id}/kpis`)}
                     name={team.name}

@@ -45,6 +45,7 @@ const PlayersPage = () => {
             coahcTeamPlayers?.results.map((player) => {
               return (
                 <SinglePlayer
+                  key={player.id}
                   id={player.id}
                   image={player.icon}
                   name={player.name}

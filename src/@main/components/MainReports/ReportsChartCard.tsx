@@ -153,7 +153,6 @@ const Example = ({ data, chartColors }: any) => {
         dataKey="value"
       >
         {newData.map((entry: any, index: any) => {
-          console.log("entry", entry);
           return (
             <Cell
               key={`cell-${index}`}

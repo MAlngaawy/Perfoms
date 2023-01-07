@@ -101,7 +101,10 @@ const PerformanceTable = (props: Props) => {
                   Technic
                 </th>
                 {teamPerformance?.results.map((player) => (
-                  <th className="bg-white sticky top-0 z-20 text-center ">
+                  <th
+                    key={player.id}
+                    className="bg-white sticky top-0 z-20 text-center "
+                  >
                     <div className="flex  flex-col justify-center items-center">
                       <Avatar radius={"xl"} size="md" src={player.icon} />
                       <span>{player.name}</span>
@@ -115,7 +118,7 @@ const PerformanceTable = (props: Props) => {
               teamPerformanceMetric?.results.length > 0 ? (
                 <>
                   {teamPerformanceMetric?.results.map((oneKpi) => (
-                    <>
+                    <div key={oneKpi.id}>
                       <tr>
                         <td className="border-0 font-bold text-left px-4 text-sm sticky left-0 bg-white z-10 text-perfGray1">
                           {oneKpi.name}
@@ -139,7 +142,7 @@ const PerformanceTable = (props: Props) => {
                                 }
                               }
                               return (
-                                <td key={metric.id}>
+                                <td key={player.id}>
                                   <div
                                     className={classNames(
                                       "flex gap-2 justify-center items-center mx-4"
@@ -148,6 +151,7 @@ const PerformanceTable = (props: Props) => {
                                   >
                                     {[1, 2, 3, 4, 5].map((number) => (
                                       <span
+                                        key={number}
                                         onClick={() => {
                                           UpdatePlaerKpiMetric({
                                             id: theMetric,
@@ -185,7 +189,7 @@ const PerformanceTable = (props: Props) => {
                           </tr>
                         );
                       })}
-                    </>
+                    </div>
                   ))}
                 </>
               ) : (

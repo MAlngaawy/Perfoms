@@ -52,7 +52,10 @@ const PillarKpis = (props: Props) => {
       <div className="flex xs:flex-row flex-wrap justify-center sm:justify-start items-stretch gap-4 ">
         {kpis?.results.map((kpi) => {
           return (
-            <div className="sport-card relative bg-white rounded-3xl p-12 flex flex-col justify-center items-center gap-4">
+            <div
+              key={kpi?.id}
+              className="sport-card relative bg-white rounded-3xl p-12 flex flex-col justify-center items-center gap-4"
+            >
               <Link
                 to={`${kpi.id}/metrics`}
                 className="bg-pagesBg rounded-full w-24 h-24 flex justify-center items-center"

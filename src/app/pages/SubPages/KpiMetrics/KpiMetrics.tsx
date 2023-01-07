@@ -86,7 +86,10 @@ const KpiMetrics = (props: Props) => {
       <div className="admin-teams  flex xs:flex-row flex-wrap justify-center sm:justify-start items-stretch gap-4 ">
         {metrics?.results.map((metric: Metric) => {
           return (
-            <div className="sport-card relative bg-white rounded-3xl p-12 flex flex-col justify-center items-center gap-4">
+            <div
+              key={metric.id}
+              className="sport-card relative bg-white rounded-3xl p-12 flex flex-col justify-center items-center gap-4"
+            >
               <div className="bg-pagesBg rounded-full w-24 h-24 flex justify-center items-center">
                 <Avatar
                   radius={"xl"}

@@ -27,6 +27,7 @@ const AppRadioGroub = ({ checked, setChecked, values }: Props) => {
         {values.map((value, ids) => {
           return (
             <Radio
+              key={ids}
               sx={{
                 ".mantine-Radio-body": {
                   backgroundColor: "#fff",

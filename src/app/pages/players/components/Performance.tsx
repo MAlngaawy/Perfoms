@@ -36,6 +36,7 @@ const Performance = ({ data }: Props) => {
               <div className="flex gap-1 xs:gap-2 justify-center items-center">
                 {[1, 2, 3, 4, 5].map((number) => (
                   <span
+                    key={number}
                     onClick={() =>
                       console.log({
                         newScore: number,

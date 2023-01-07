@@ -43,6 +43,7 @@ const SportsReports = (props: Props) => {
               adminSportsStatistics.results.map((sport) => {
                 return (
                   <ReportsChartCard
+                    key={sport.id}
                     onClickFun={() => navigate(`${sport.id}/teams`)}
                     name={sport?.name}
                     statistics={sport?.statistics}

@@ -45,7 +45,7 @@ const Slider = ({ images, isLoading, video_url }: Props) => {
           {images.length ? (
             images.map((image) => {
               return (
-                <SwiperSlide>
+                <SwiperSlide key={image.id}>
                   <OneSlide
                     imageLink={
                       image.file ||

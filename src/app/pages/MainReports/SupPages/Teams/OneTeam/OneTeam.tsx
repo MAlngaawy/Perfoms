@@ -109,7 +109,7 @@ const OneTeam = (props: Props) => {
             ))}
           {data?.results.map((kpi) => {
             return (
-              <div>
+              <div key={kpi.id}>
                 <ReportsChartCard
                   onClickFun={() => navigate(`${kpi.id}/players`)}
                   name={kpi.name}

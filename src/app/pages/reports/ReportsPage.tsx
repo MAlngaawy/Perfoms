@@ -185,7 +185,10 @@ const ReportPage = () => {
               <div className="overflow-scroll max-w-full">
                 {playerCertificates &&
                   playerCertificates?.results.map((certificate) => (
-                    <PlayerCertificatePage certificateId={certificate.id} />
+                    <PlayerCertificatePage
+                      key={certificate.id}
+                      certificateId={certificate.id}
+                    />
                   ))}
               </div>
             </div>

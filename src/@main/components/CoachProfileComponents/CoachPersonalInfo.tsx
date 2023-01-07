@@ -96,7 +96,10 @@ const CoachPersonalInfo = ({ data, editMode, refetch, type }: Props) => {
             <h3 className="text-base font-medium text-perfLightBlack">Teams</h3>
             <div className="flex gap-4">
               {data?.teams?.map((team) => (
-                <div className="font-normal text-perfGray3 text-sm">
+                <div
+                  key={team?.id}
+                  className="font-normal text-perfGray3 text-sm"
+                >
                   <li>{team.name}</li>
                 </div>
               ))}
@@ -116,7 +119,7 @@ const CoachPersonalInfo = ({ data, editMode, refetch, type }: Props) => {
 
           {educations?.results.map((education) => {
             return (
-              <div className="my-2 relative">
+              <div key={education.id} className="my-2 relative">
                 <p className="date text-xs font-normal text-perfGray3">
                   {education.year}
                 </p>

@@ -78,7 +78,7 @@ const CoachesPage = (props: Props) => {
           <Grid gutter={10}>
             {playerCoaches?.results.map((coach) => {
               return (
-                <Grid.Col xs={6} sm={4} md={3}>
+                <Grid.Col xs={6} sm={4} md={3} key={coach.id}>
                   <CoachCard
                     key={coach.id}
                     id={coach.id}

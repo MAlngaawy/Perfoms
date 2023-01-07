@@ -57,7 +57,10 @@ const CoachAchievements = ({ data, editMode }: Props) => {
       </div>
       <div className="prize flex flex-col xs:flex-row md:flex-col gap-4 justify-center items-center">
         {achievements?.results.map((item) => (
-          <div className="flex gap-2 justify-center items-center relative">
+          <div
+            key={item.id}
+            className="flex gap-2 justify-center items-center relative"
+          >
             {editMode && (
               <div className="absolute right-0 top-0">
                 <DeleteButton

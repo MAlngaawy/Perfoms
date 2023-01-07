@@ -109,7 +109,7 @@ const CoachExperince = ({ data, editMode }: Props) => {
         )}
         {experiences?.results.map((exper) => {
           return (
-            <div className="flex flex-col ml-2 my-4 relative">
+            <div key={exper.id} className="flex flex-col ml-2 my-4 relative">
               <p className="text-xs font-normal text-perfGray3">
                 {exper.date_from + " / "}
                 {exper.to_present ? "Present" : exper.date_to}

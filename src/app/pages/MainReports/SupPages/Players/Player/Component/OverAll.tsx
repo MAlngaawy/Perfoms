@@ -104,7 +104,7 @@ const OverAll = ({ playerInfo, reportType }: Props) => {
           <>
             {data?.results?.map((kpi) => {
               return (
-                <div>
+                <div key={kpi.id}>
                   <ReportsChartCard
                     name={kpi.name}
                     statistics={kpi.statistics}
@@ -117,7 +117,7 @@ const OverAll = ({ playerInfo, reportType }: Props) => {
           <>
             {attendData?.map((attend) => {
               return (
-                <div>
+                <div key={attend.name}>
                   <AttendReportsChart
                     player_attendance={attend.statistics}
                     name={attend.name}
