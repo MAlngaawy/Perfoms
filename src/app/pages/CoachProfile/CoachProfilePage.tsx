@@ -8,9 +8,6 @@ import {
   useUpdateProfileMutation,
   useUserQuery,
 } from "~/app/store/user/userApi";
-import AppIcons from "~/@main/core/AppIcons";
-import DeleteButton from "~/@main/components/ManagerComponents/SubComponents/DeleteButton";
-import { showNotification } from "@mantine/notifications";
 
 type Props = {};
 
@@ -28,7 +25,7 @@ const CoachProfilePage = (props: Props) => {
             className="bg-perfBlue  border rounded-lg text-white py-1 px-6 cursor-pointer transform hover:scale-105"
             onClick={() => setEditMode(false)}
           >
-            Save
+            Done
           </button>
         ) : (
           <button
@@ -38,23 +35,6 @@ const CoachProfilePage = (props: Props) => {
             Edit
           </button>
         )}
-        {/* {editMode && (
-          <DeleteButton
-            name="Delete All CV Data"
-            type="coach"
-            deleteFun={() => {
-              updateProfile({
-                details: embtyDetails,
-              }).then(() => {
-                showNotification({
-                  message: "All Data Deleted",
-                  title: "Done",
-                  color: "green",
-                });
-              });
-            }}
-          />
-        )} */}
       </div>
       <Grid className="p-4" gutter="sm">
         <Grid.Col xs={12} md={3}>
