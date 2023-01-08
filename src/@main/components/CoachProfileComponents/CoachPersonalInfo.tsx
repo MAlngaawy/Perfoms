@@ -303,7 +303,7 @@ function EditCoachData({ data, refetch, educationData }: Edit) {
             }
           /> */}
 
-          <SubmitButton isLoading={isLoading} text="Send" />
+          <SubmitButton isLoading={isLoading} text="Save" />
         </form>
       </Modal>
 
