@@ -16,8 +16,6 @@ export const BASE_HEADERS = (headers: any, api: any) => {
 
 console.log("Cookies", Cookies.get("token"));
 
-console.log("document.cookie", document.cookie);
-
 export const dataServerToken = Cookies.get("token");
 
 export const BASE_AXIOS_HEADERS = () => ({

@@ -24,6 +24,7 @@ import {
 } from "~/app/store/user/userApi";
 import DeleteButton from "../ManagerComponents/SubComponents/DeleteButton";
 import { useNavigate, useParams } from "react-router-dom";
+import AppUtils from "~/@main/utils/AppUtils";
 
 // Props Types
 type Props = {
@@ -173,8 +174,7 @@ function EditCoachData({ data, refetch, educationData }: Edit) {
   const [isLoading, setIsLoading] = useState(false);
   const [addUserEducation] = useAddUserEducationMutation();
 
-  console.log("Dataaaaaaaaa", data);
-  const onSubmitFunction = (e: any) => {
+  const onSubmitFunction = async (e: any) => {
     e.preventDefault();
     const newEducation = {
       degree: e.target["degree"].value,
@@ -195,7 +195,10 @@ function EditCoachData({ data, refetch, educationData }: Edit) {
     const formData = new FormData(e.currentTarget);
     console.log(formData.get("bio"));
 
-    if (userAvatar) formData.append("avatar", userAvatar);
+    if (userAvatar) {
+      const minimizedImage = await AppUtils.resizeImage(userAvatar);
+      formData.append("avatar", minimizedImage as string);
+    }
     setIsLoading(true);
     try {
       axiosInstance
