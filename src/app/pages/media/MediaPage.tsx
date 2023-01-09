@@ -24,21 +24,21 @@ const MediaPage = () => {
 
   const { data: parentEvents } = useTeamEventsQuery(
     { teamId: selectedPlayerTeam?.id },
-    { skip: !selectedPlayerTeam && user?.user_type !== "Parent" }
+    { skip: !selectedPlayerTeam || user?.user_type !== "Parent" }
   );
 
   const { data: coachEvents } = useCoachTeamEventQuery(
     { team_id: selectedPlayerTeam?.id },
-    { skip: !selectedPlayerTeam && user?.user_type !== "Coach" }
+    { skip: !selectedPlayerTeam || user?.user_type !== "Coach" }
   );
   const { data: superEvents } = useSuprtEventsQuery(
     { team_id: selectedPlayerTeam?.id },
-    { skip: !selectedPlayerTeam && user?.user_type !== "Supervisor" }
+    { skip: !selectedPlayerTeam || user?.user_type !== "Supervisor" }
   );
 
   const { data: adminEvents } = useAdminTeamEventsQuery(
     { team_id: selectedPlayerTeam?.id },
-    { skip: !selectedPlayerTeam && user?.user_type !== "Supervisor" }
+    { skip: !selectedPlayerTeam || user?.user_type !== "Admin" }
   );
 
   useEffect(() => {

@@ -10,6 +10,7 @@ import { useGetPlayerInfoQuery } from "~/app/store/coach/coachApi";
 import { useGetSuperPlayerInfoQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { Skeleton } from "@mantine/core";
 import { useAdminPlayerInfoQuery } from "~/app/store/clubManager/clubManagerApi";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {
   player_id?: number | string | undefined;
@@ -18,28 +19,27 @@ type Props = {
 const HomePlayerInfoCard = ({ player_id }: Props) => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
   const [playerInfoData, setPlayerInfoData] = useState<CoachPlayerInfo>();
+  const { data: user } = useUserQuery({});
 
   const { data: parentPlayerInfoData } = useOnePlayerQuery(
     { id: selectedPlayer?.id },
-    { skip: !selectedPlayer?.id }
+    { skip: !selectedPlayer?.id || user?.user_type !== "Parent" }
   );
 
   const { data: coachPlayerInfo } = useGetPlayerInfoQuery(
     { player_id: player_id },
-    { skip: !player_id }
+    { skip: user?.user_type !== "Coach" }
   );
 
   const { data: superPlayerInfo } = useGetSuperPlayerInfoQuery(
     { player_id: player_id },
-    { skip: !player_id }
+    { skip: !player_id || user?.user_type !== "Supervisor" }
   );
 
   const { data: adminPlayerInfo } = useAdminPlayerInfoQuery(
     { player_id: player_id },
-    { skip: !player_id }
+    { skip: !player_id || user?.user_type !== "Admin" }
   );
-
-  console.log("coachPlayerInfo", coachPlayerInfo);
 
   useEffect(() => {
     if (parentPlayerInfoData) setPlayerInfoData(parentPlayerInfoData);

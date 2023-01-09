@@ -26,19 +26,25 @@ const items = [
 
 const TeamsReports = (props: Props) => {
   const [data, setData] = useState<TeamsStatistics>();
+  const { data: user } = useUserQuery({});
   const { sport_id } = useParams();
-  const { data: sportStatistics } = useSuperSportStatisticsQuery({});
+  const { data: sportStatistics } = useSuperSportStatisticsQuery(
+    {},
+    { skip: user?.user_type !== "Supervisor" }
+  );
   const { data: superTeamsStatistics } = useSuperTeamsStatisticsQuery(
     { sport_id: sportStatistics?.id },
-    { skip: !sportStatistics?.id }
+    { skip: !sportStatistics?.id || user?.user_type !== "Supervisor" }
   );
   const { data: adminTeamsStatistics } = useAdminTeamsStatisticsQuery(
     { sport_id: sport_id },
-    { skip: !sport_id }
+    { skip: !sport_id || user?.user_type !== "Admin" }
   );
-  const { data: coachTeamsStatistics } = useCoachTeamStatisticsQuery({});
+  const { data: coachTeamsStatistics } = useCoachTeamStatisticsQuery(
+    {},
+    { skip: user?.user_type !== "Coach" }
+  );
   const navigate = useNavigate();
-  const { data: user } = useUserQuery(null);
 
   useEffect(() => {
     if (user?.user_type === "Coach") setData(coachTeamsStatistics);

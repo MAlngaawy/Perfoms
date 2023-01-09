@@ -5,6 +5,7 @@ import ReportsChartCard from "~/@main/components/MainReports/ReportsChartCard";
 import PrintComp from "~/@main/PrintComp";
 import { useSuperSportStatisticsQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { useAdminSportStatisticsQuery } from "~/app/store/clubManager/clubManagerApi";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {};
 
@@ -18,8 +19,16 @@ const items = [
 ));
 
 const SportsReports = (props: Props) => {
-  const { data: sportStatistics } = useSuperSportStatisticsQuery({});
-  const { data: adminSportsStatistics } = useAdminSportStatisticsQuery({});
+  const { data: user } = useUserQuery({});
+
+  const { data: sportStatistics } = useSuperSportStatisticsQuery(
+    {},
+    { skip: user?.user_type !== "Supervisor" }
+  );
+  const { data: adminSportsStatistics } = useAdminSportStatisticsQuery(
+    {},
+    { skip: user?.user_type !== "Admin" }
+  );
   const navigate = useNavigate();
 
   return (

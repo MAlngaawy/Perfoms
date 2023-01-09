@@ -6,6 +6,7 @@ import { PlayerRecommendations } from "~/app/store/types/parent-types";
 import { Skeleton } from "@mantine/core";
 import { useSuperPlayerRecommendationsQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { useAdminPlayerRecommendationsQuery } from "~/app/store/clubManager/clubManagerApi";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {
   player_id: number | string | undefined;
@@ -14,28 +15,29 @@ type Props = {
 const RecommendationsCard = ({ player_id }: Props) => {
   const [recommendations, setRecommendations] =
     useState<PlayerRecommendations>();
+  const { data: user } = useUserQuery({});
 
   const { data: parentPlayerRecommendations } = usePlayerRecommendationsQuery(
     { id: player_id },
-    { skip: !player_id }
+    { skip: !player_id || user?.user_type !== "Parent" }
   );
 
   const { data: coachPlayerRecomendations } =
     useCoachPlayerRecommendationsQuery(
       { player_id: player_id },
-      { skip: !player_id }
+      { skip: !player_id || user?.user_type !== "Coach" }
     );
 
   const { data: superPlayerRecomendations } =
     useSuperPlayerRecommendationsQuery(
       { player_id: player_id },
-      { skip: !player_id }
+      { skip: !player_id || user?.user_type !== "Supervisor" }
     );
 
   const { data: adminPlayerRecomendations } =
     useAdminPlayerRecommendationsQuery(
       { player_id: player_id },
-      { skip: !player_id }
+      { skip: !player_id || user?.user_type !== "Admin" }
     );
 
   useEffect(() => {

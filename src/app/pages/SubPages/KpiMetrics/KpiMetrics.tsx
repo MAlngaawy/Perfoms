@@ -27,11 +27,11 @@ const KpiMetrics = (props: Props) => {
   const { data: user } = useUserQuery({});
   const { data: superMetrics } = useSuperMetricsQuery(
     { kpi_id },
-    { skip: !kpi_id }
+    { skip: !kpi_id || user?.user_type !== "Supervisor" }
   );
   const { data: adminMetrics } = useAdminMetricsQuery(
     { kpi_id },
-    { skip: !kpi_id }
+    { skip: !kpi_id || user?.user_type !== "Admin" }
   );
 
   const [superDeleteMetric] = useSuperDeleteMetricMutation();

@@ -1,6 +1,4 @@
-import React from "react";
 import { Link } from "react-router-dom";
-
 import AddSport from "./SubComponents/AddSport";
 import DeleteButton from "./SubComponents/DeleteButton";
 import EditSport from "./SubComponents/EditSport";
@@ -11,12 +9,20 @@ import {
   useAdminSportsQuery,
 } from "~/app/store/clubManager/clubManagerApi";
 import { showNotification } from "@mantine/notifications";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {};
 
 const Sports = (props: Props) => {
-  const { data: sport } = useSuperSportQuery({});
-  const { data: sports, refetch: adminRefetchSports } = useAdminSportsQuery({});
+  const { data: user } = useUserQuery({});
+  const { data: sport } = useSuperSportQuery(
+    {},
+    { skip: user?.user_type !== "Supervisor" }
+  );
+  const { data: sports, refetch: adminRefetchSports } = useAdminSportsQuery(
+    {},
+    { skip: user?.user_type !== "Admin" }
+  );
 
   const [adminDeleteSport] = useAdminDeleteSportMutation();
 

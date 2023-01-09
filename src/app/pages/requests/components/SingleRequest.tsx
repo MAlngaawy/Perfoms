@@ -7,6 +7,12 @@ import {
   useSuperAcceptCoachRequestMutation,
   useSuperDeclineCoachRequestMutation,
 } from "~/app/store/supervisor/supervisorMainApi";
+import {
+  useAdminAcceptCoachRequestMutation,
+  useAdminDeclineCoachRequestMutation,
+} from "~/app/store/clubManager/clubManagerApi";
+import { useUserQuery } from "~/app/store/user/userApi";
+import AppUtils from "~/@main/utils/AppUtils";
 
 const SingleRequest = ({
   first_name,
@@ -16,12 +22,20 @@ const SingleRequest = ({
   city,
   id,
 }: CoachRequest) => {
+  const { data: user } = useUserQuery({});
+
   // const [isLoading, setIsLoading] = useState(false);
-  const [acceptRequest, { isLoading: acceptLoading }] =
+  const [superAcceptRequest, { isLoading: superAcceptLoading }] =
     useSuperAcceptCoachRequestMutation();
 
-  const [declineRequest, { isLoading: declineLoading }] =
+  const [superDeclineRequest, { isLoading: superDeclineLoading }] =
     useSuperDeclineCoachRequestMutation();
+
+  const [adminAcceptRequest, { isLoading: adminAcceptLoading }] =
+    useAdminAcceptCoachRequestMutation();
+
+  const [adminDeclineRequest, { isLoading: adminDeclineLoading }] =
+    useAdminDeclineCoachRequestMutation();
 
   return (
     <div className="h-full flex flex-col rounded-3xl bg-white px-3 py-6 gap-2 border border-perfBlue items-stretch">
@@ -34,11 +48,29 @@ const SingleRequest = ({
         </div>
         <button
           type="submit"
-          onClick={() => acceptRequest({ coach_id: id })}
-          disabled={acceptLoading} //isLoading
+          onClick={() => {
+            if (user?.user_type === "Admin") {
+              adminAcceptRequest({ coach_id: id }).then((res) => {
+                AppUtils.showNotificationFun(
+                  "Success",
+                  "Done",
+                  "Coach Request Accepted"
+                );
+              });
+            } else {
+              superAcceptRequest({ coach_id: id }).then((res) => {
+                AppUtils.showNotificationFun(
+                  "Success",
+                  "Done",
+                  "Coach Request Accepted"
+                );
+              });
+            }
+          }}
+          disabled={superAcceptLoading || adminAcceptLoading} //isLoading
           className="mx-auto flex justify-center w-full disabled:bg-gray-500 bg-perfBlue rounded-lg items-center text-white h-12 mt-10 mb-2"
         >
-          {!acceptLoading ? (
+          {!superAcceptLoading || !adminAcceptLoading ? (
             <span> Accept </span>
           ) : (
             <Loader variant="dots" color="white" />
@@ -47,11 +79,29 @@ const SingleRequest = ({
 
         <button
           type="submit"
-          onClick={() => declineRequest({ coach_id: id })}
-          disabled={declineLoading} //isLoading
+          onClick={() => {
+            if (user?.user_type === "Admin") {
+              adminDeclineRequest({ coach_id: id }).then((res) => {
+                AppUtils.showNotificationFun(
+                  "Success",
+                  "Done",
+                  "Coach Request Decline"
+                );
+              });
+            } else {
+              superDeclineRequest({ coach_id: id }).then((res) => {
+                AppUtils.showNotificationFun(
+                  "Success",
+                  "Done",
+                  "Coach Request Decline"
+                );
+              });
+            }
+          }}
+          disabled={adminDeclineLoading || superDeclineLoading} //isLoading
           className="mx-auto flex justify-center w-full disabled:bg-gray-500 rounded-md bg-perfGray4 text-perfGray2 hover:shadow-md hover:bg-scoreRed hover:text-white items-center  h-12 mb-2"
         >
-          {!declineLoading ? (
+          {!adminDeclineLoading || !superDeclineLoading ? (
             <span> Decline </span>
           ) : (
             <Loader variant="dots" color="white" />

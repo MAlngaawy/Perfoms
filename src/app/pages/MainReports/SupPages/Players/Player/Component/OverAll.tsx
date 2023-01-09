@@ -22,6 +22,10 @@ import {
   useAdminPlayerKpiStatisticsQuery,
   useAdminPlayersAttendStatisticsQuery,
 } from "~/app/store/clubManager/clubManagerApi";
+import {
+  useGetUserAchievementsQuery,
+  useUserQuery,
+} from "~/app/store/user/userApi";
 
 type Props = {
   reportType: string;
@@ -30,25 +34,44 @@ type Props = {
 
 const OverAll = ({ playerInfo, reportType }: Props) => {
   const [data, setData] = useState<TeamsStatistics>();
+  const { data: user } = useUserQuery({});
   const [attendData, setAttendData] =
     useState<PlayerMonthsAttendancesStatistics>();
   const { id } = useParams();
 
   const { data: coachPlayerKpisStatisticsData } =
-    useCoachPlayerKpiStatisticsQuery({ player_id: id }, { skip: !id });
+    useCoachPlayerKpiStatisticsQuery(
+      { player_id: id },
+      { skip: !id || user?.user_type !== "Coach" }
+    );
   const { data: coachPlayerAttendancesStatistics } =
-    useCoachPlayersAttendStatisticsQuery({ player_id: id }, { skip: !id });
+    useCoachPlayersAttendStatisticsQuery(
+      { player_id: id },
+      { skip: !id || user?.user_type !== "Coach" }
+    );
 
   const { data: superPlayerKpisStatisticsData } =
-    useSuperPlayerKpiStatisticsQuery({ player_id: id }, { skip: !id });
+    useSuperPlayerKpiStatisticsQuery(
+      { player_id: id },
+      { skip: !id || user?.user_type !== "Supervisor" }
+    );
   const { data: superPlayerAttendancesStatistics } =
-    useSuperPlayersAttendStatisticsQuery({ player_id: id }, { skip: !id });
+    useSuperPlayersAttendStatisticsQuery(
+      { player_id: id },
+      { skip: !id || user?.user_type !== "Supervisor" }
+    );
 
   const { data: adminPlayerKpisStatisticsData } =
-    useAdminPlayerKpiStatisticsQuery({ player_id: id }, { skip: !id });
+    useAdminPlayerKpiStatisticsQuery(
+      { player_id: id },
+      { skip: !id || user?.user_type !== "Admin" }
+    );
 
   const { data: adminPlayerAttendancesStatistics } =
-    useAdminPlayersAttendStatisticsQuery({ player_id: id }, { skip: !id });
+    useAdminPlayersAttendStatisticsQuery(
+      { player_id: id },
+      { skip: !id || user?.user_type !== "Admin" }
+    );
 
   useEffect(() => {
     if (coachPlayerKpisStatisticsData) setData(coachPlayerKpisStatisticsData);

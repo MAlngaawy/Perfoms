@@ -23,73 +23,75 @@ import {
   useAdminPlayerKpisMetricsStrengthScoreQuery,
   useAdminPlayerKpisMetricsWeaknessScoreQuery,
 } from "~/app/store/clubManager/clubManagerApi";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
   const [data, setData] = useState<PlayerMetricScores | undefined>();
+  const { data: user } = useUserQuery({});
 
   // Fetch data for Parent
   const { data: moderate } = usePlayerModerateQuery(
     { player_id: player_id },
-    { skip: !player_id }
+    { skip: !player_id || user?.user_type !== "Parent" }
   );
   const { data: strength } = usePlayerStrengthQuery(
     { player_id: player_id },
-    { skip: !player_id }
+    { skip: !player_id || user?.user_type !== "Parent" }
   );
   const { data: weakness } = usePlayerWeaknessQuery(
     { player_id: player_id },
-    { skip: !player_id }
+    { skip: !player_id || user?.user_type !== "Parent" }
   );
 
   // Fetch data for coach
   const { data: coachPlayerModerate } =
     useCoachPlayerKpisMetricsModerateScoreQuery(
       { player_id: player_id },
-      { skip: !player_id }
+      { skip: !player_id || user?.user_type !== "Coach" }
     );
   const { data: coachPlayerStrength } =
     useCoachPlayerKpisMetricsStrengthScoreQuery(
       { player_id: player_id },
-      { skip: !player_id }
+      { skip: !player_id || user?.user_type !== "Coach" }
     );
   const { data: coachPlayerWeakness } =
     useCoachPlayerKpisMetricsWeaknessScoreQuery(
       { player_id: player_id },
-      { skip: !player_id }
+      { skip: !player_id || user?.user_type !== "Coach" }
     );
 
   // Fetch Supervisor Data
   const { data: superPlayerModerate } =
     useSuperPlayerKpisMetricsModerateScoreQuery(
       { player_id: player_id },
-      { skip: !player_id }
+      { skip: !player_id || user?.user_type !== "Supervisor" }
     );
   const { data: superPlayerStrength } =
     useSuperPlayerKpisMetricsStrengthScoreQuery(
       { player_id: player_id },
-      { skip: !player_id }
+      { skip: !player_id || user?.user_type !== "Supervisor" }
     );
   const { data: superPlayerWeakness } =
     useSuperPlayerKpisMetricsWeaknessScoreQuery(
       { player_id: player_id },
-      { skip: !player_id }
+      { skip: !player_id || user?.user_type !== "Supervisor" }
     );
 
   // Fetch Supervisor Data
   const { data: adminPlayerModerate } =
     useAdminPlayerKpisMetricsModerateScoreQuery(
       { player_id: player_id },
-      { skip: !player_id }
+      { skip: !player_id || user?.user_type !== "Admin" }
     );
   const { data: adminPlayerStrength } =
     useAdminPlayerKpisMetricsStrengthScoreQuery(
       { player_id: player_id },
-      { skip: !player_id }
+      { skip: !player_id || user?.user_type !== "Admin" }
     );
   const { data: adminPlayerWeakness } =
     useAdminPlayerKpisMetricsWeaknessScoreQuery(
       { player_id: player_id },
-      { skip: !player_id }
+      { skip: !player_id || user?.user_type !== "Admin" }
     );
 
   useEffect(() => {

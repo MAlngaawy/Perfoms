@@ -43,18 +43,18 @@ const TeamMembersKpi = (props: Props) => {
   const { data: coachTeamplayerskpi, isLoading: performancesLoading } =
     useCoachTeamPlayersKpiStatisticsQuery(
       { team_id: team_id, kpi_id: kpi_id },
-      { skip: !team_id || !kpi_id }
+      { skip: !team_id || !kpi_id || user?.user_type !== "Coach" }
     );
   const { data: coachTeamPlayersAttends } =
     useCoachTeamPlayersAttendancesStatisticsQuery(
       { team_id: team_id },
-      { skip: !team_id }
+      { skip: !team_id || user?.user_type !== "Coach" }
     );
 
   // Fetch Kpis and Attends for the supervisor
   const { data: superTeamPlayersKpi } = useSuperTeamKpiPlayersStatisticsQuery(
     { team_id: team_id, kpi_id: kpi_id },
-    { skip: !team_id || !kpi_id }
+    { skip: !team_id || !kpi_id || user?.user_type !== "Supervisor" }
   );
   const { data: superTeamPlayersAttends } =
     useSuperTeamAttendPlayersStatisticsQuery(
@@ -62,13 +62,13 @@ const TeamMembersKpi = (props: Props) => {
         team_id: team_id,
         sport_id: sport_id,
       },
-      { skip: !team_id || !sport_id }
+      { skip: !team_id || !sport_id || user?.user_type !== "Supervisor" }
     );
 
   // Fetch Kpis and Attends for the Admin
   const { data: adminTeamPlayersKpi } = useAdminTeamKpiPlayersStatisticsQuery(
     { team_id: team_id, kpi_id: kpi_id },
-    { skip: !team_id || !kpi_id }
+    { skip: !team_id || !kpi_id || user?.user_type !== "Admin" }
   );
   const { data: adminTeamPlayersAttends } =
     useAdminTeamAttendPlayersStatisticsQuery(
@@ -76,7 +76,7 @@ const TeamMembersKpi = (props: Props) => {
         team_id: team_id,
         sport_id: sport_id,
       },
-      { skip: !team_id || !sport_id }
+      { skip: !team_id || !sport_id || user?.user_type !== "Admin" }
     );
 
   useEffect(() => {

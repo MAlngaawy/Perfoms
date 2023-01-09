@@ -4,6 +4,7 @@ import {
   AddEvent,
   AddRecommendation,
   AllUsers,
+  CoachesRequests,
   Sports,
   SportsStatistics,
   TeamPlayer,
@@ -65,6 +66,30 @@ export const clubManagerApi = createApi({
     manageCoachesRequests: query<CoachRequests, { page?: number }>({
       query: (params) => ({ url: "coaches/requests", params }),
       providesTags: ["clubManager"],
+    }),
+
+    adminAcceptCoachRequest: mutation<
+      CoachesRequests,
+      { coach_id: string | number }
+    >({
+      query: ({ coach_id, ...body }) => ({
+        url: `coaches/requests/${coach_id}/accept/`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["clubManager"],
+    }),
+
+    adminDeclineCoachRequest: mutation<
+      CoachesRequests,
+      { coach_id: string | number }
+    >({
+      query: ({ coach_id, ...body }) => ({
+        url: `coaches/requests/${coach_id}/decline`,
+        method: "DELETE",
+        body,
+      }),
+      invalidatesTags: ["clubManager"],
     }),
 
     adminSports: query<Sports, { page?: number }>({
@@ -527,6 +552,8 @@ export const clubManagerApi = createApi({
 
 export const {
   useManageCoachesRequestsQuery,
+  useAdminAcceptCoachRequestMutation,
+  useAdminDeclineCoachRequestMutation,
   useAdminSportsQuery,
   useAdminTeamsQuery,
   useAdminDeleteTeamMutation,

@@ -85,22 +85,22 @@ const PlayerDetails = () => {
 
   const { data: coachPlayer } = useGetPlayerInfoQuery(
     { player_id: params.id },
-    { skip: !params.id }
+    { skip: !params.id || user?.user_type !== "Coach" }
   );
 
   const { data: coachParent } = useGetParentInfoQuery(
     { player_id: params.id },
-    { skip: !params.id }
+    { skip: !params.id || user?.user_type !== "Coach" }
   );
 
   const { data: superPlayer } = useGetSuperPlayerInfoQuery(
     { player_id: params.id },
-    { skip: !params.id }
+    { skip: !params.id || user?.user_type !== "Supervisor" }
   );
 
   const { data: superParent } = useGetSuperParentInfoQuery(
     { player_id: params.id },
-    { skip: !params.id }
+    { skip: !params.id || user?.user_type !== "Supervisor" }
   );
 
   useEffect(() => {

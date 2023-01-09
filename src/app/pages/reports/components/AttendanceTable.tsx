@@ -8,6 +8,7 @@ import { usePlayerCalenderQuery } from "~/app/store/parent/parentApi";
 import { useCoachPlayerCalendarQuery } from "~/app/store/coach/coachApi";
 import { useSuperPlayerCalendarQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { useAdminPlayerCalendarQuery } from "~/app/store/clubManager/clubManagerApi";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {
   player_id?: number | string | undefined;
@@ -30,6 +31,7 @@ const myDate = (theDate: string) => {
 const AttendanceTable = ({ player_id }: Props) => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
   const timeFilter = useSelector(timeFilterFn);
+  const { data: user } = useUserQuery({});
 
   const [playerAttendance, setPlayerAttendance] = useState<PlayerAttendances>();
 
@@ -41,23 +43,26 @@ const AttendanceTable = ({ player_id }: Props) => {
     },
     {
       skip:
-        !selectedPlayer?.id || !timeFilter?.from_date || !timeFilter?.to_date,
+        !selectedPlayer?.id ||
+        !timeFilter?.from_date ||
+        !timeFilter?.to_date ||
+        user?.user_type !== "Parent",
     }
   );
 
   const { data: coachPlayerAttendance } = useCoachPlayerCalendarQuery(
     { player_id: player_id },
-    { skip: !player_id }
+    { skip: !player_id || user?.user_type !== "Coach" }
   );
 
   const { data: superPlayerAttendance } = useSuperPlayerCalendarQuery(
     { player_id: player_id },
-    { skip: !player_id }
+    { skip: !player_id || user?.user_type !== "Supervisor" }
   );
 
   const { data: adminPlayerAttendance } = useAdminPlayerCalendarQuery(
     { player_id: player_id },
-    { skip: !player_id }
+    { skip: !player_id || user?.user_type !== "Admin" }
   );
 
   useEffect(() => {

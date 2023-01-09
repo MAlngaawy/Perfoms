@@ -22,14 +22,15 @@ type Props = {
 
 const TeamPlayersComponent = ({ teamId }: Props) => {
   const [players, setPlayers] = useState<TeamPlayers>();
+  const { data: user } = useUserQuery({});
 
   const { data: superPlayers } = useSuperTeamPlaersQuery(
     { team_id: teamId },
-    { skip: !teamId }
+    { skip: !teamId || user?.user_type !== "Supervisor" }
   );
   const { data: adminPlayers } = useAdminTeamPlaersQuery(
     { team_id: teamId },
-    { skip: !teamId }
+    { skip: !teamId || user?.user_type !== "Admin" }
   );
 
   useEffect(() => {

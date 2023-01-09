@@ -27,10 +27,16 @@ const SportPillars = (props: Props) => {
   const { data: user } = useUserQuery({});
 
   const { data: adminPillars, refetch: refetchAdminPillars } =
-    useAdminPillarsQuery({ sport_id: sport_id }, { skip: !sport_id });
+    useAdminPillarsQuery(
+      { sport_id: sport_id },
+      { skip: !sport_id || user?.user_type !== "Admin" }
+    );
 
   const { data: superPillars, refetch: refetchSuperPillars } =
-    useSuperPillarsQuery({ sport_id: sport_id }, { skip: !sport_id });
+    useSuperPillarsQuery(
+      { sport_id: sport_id },
+      { skip: !sport_id || user?.user_type !== "Supervisor" }
+    );
 
   const [superDeletePillar] = useSuperDeletePillarMutation();
   const [adminDeletePillar] = useAdminDeletePillarMutation();

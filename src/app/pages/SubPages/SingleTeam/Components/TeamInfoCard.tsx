@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAdminTeamInfoQuery } from "~/app/store/clubManager/clubManagerApi";
 import { useSuperTeamInfoQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { SuperVisorTeamInfo } from "~/app/store/types/supervisor-types";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {
   teamId: string;
@@ -9,15 +10,16 @@ type Props = {
 
 const TeamInfoCard = ({ teamId }: Props) => {
   const [info, setInfo] = useState<SuperVisorTeamInfo>();
+  const { data: user } = useUserQuery({});
 
   const { data: superInfo } = useSuperTeamInfoQuery(
     { team_id: teamId },
-    { skip: !teamId }
+    { skip: !teamId || user?.user_type !== "Supervisor" }
   );
 
   const { data: adminInfo } = useAdminTeamInfoQuery(
     { team_id: teamId },
-    { skip: !teamId }
+    { skip: !teamId || user?.user_type !== "Admin" }
   );
 
   useEffect(() => {

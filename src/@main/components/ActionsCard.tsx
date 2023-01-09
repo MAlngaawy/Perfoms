@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { useSuperPlayerActionsQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { Skeleton } from "@mantine/core";
 import { useAdminPlayerActionsQuery } from "~/app/store/clubManager/clubManagerApi";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {
   player_id: number | string | undefined;
@@ -14,25 +15,26 @@ type Props = {
 
 const ActionsCard = ({ player_id }: Props) => {
   const [actions, setActions] = useState<PlayerActions>();
+  const { data: user } = useUserQuery({});
 
   const { data: parentPlayerActions } = usePlayerActionsQuery(
     { id: player_id },
-    { skip: !player_id }
+    { skip: !player_id || user?.user_type !== "Parent" }
   );
 
   const { data: coachPlayerActions } = useCoachPlayerActionsQuery(
     { player_id: player_id },
-    { skip: !player_id }
+    { skip: !player_id || user?.user_type !== "Coach" }
   );
 
   const { data: superPlayerActions } = useSuperPlayerActionsQuery(
     { player_id: player_id },
-    { skip: !player_id }
+    { skip: !player_id || user?.user_type !== "Supervisor" }
   );
 
   const { data: adminPlayerActions } = useAdminPlayerActionsQuery(
     { player_id: player_id },
-    { skip: !player_id }
+    { skip: !player_id || user?.user_type !== "Admin" }
   );
 
   useEffect(() => {

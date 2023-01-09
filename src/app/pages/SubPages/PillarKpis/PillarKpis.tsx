@@ -29,11 +29,11 @@ const PillarKpis = (props: Props) => {
 
   const { data: superKpis, refetch: superRefetchKpis } = useSuperKpisQuery(
     { pillar_id },
-    { skip: !pillar_id }
+    { skip: !pillar_id || user?.user_type !== "Supervisor" }
   );
   const { data: adminKpis, refetch: adminRefetchKpis } = useAdminKpisQuery(
     { pillar_id },
-    { skip: !pillar_id }
+    { skip: !pillar_id || user?.user_type !== "Admin" }
   );
 
   const [superDeleteKpi] = useSuperDeleteKpiMutation();

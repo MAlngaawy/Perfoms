@@ -25,12 +25,14 @@ import { useParams } from "react-router-dom";
 import { useCoachPlayerKpisMetricsStatisticsQuery } from "~/app/store/coach/coachApi";
 import { useSuperPlayerKpisMetricsStatisticsQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { useAdminPlayerKpisMetricsStatisticsQuery } from "~/app/store/clubManager/clubManagerApi";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 const SaleStaticChart = () => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const timeFilter = useSelector(timeFilterFn);
   const [playerKpis, setPlayerKpis] = useState<PlayerKpis>();
+  const { data: user } = useUserQuery({});
   const { id } = useParams();
 
   const { data: parentPlayerKpis } = usePlayerKpisMetricsQuery(
@@ -46,7 +48,8 @@ const SaleStaticChart = () => {
         !selectedPlayerTeam?.id ||
         !selectedPlayer?.id ||
         !timeFilter?.from_date ||
-        !timeFilter?.to_date,
+        !timeFilter?.to_date ||
+        user?.user_type !== "Parent",
     }
   );
 
@@ -56,7 +59,13 @@ const SaleStaticChart = () => {
       date_from: timeFilter?.from_date,
       date_to: timeFilter?.to_date,
     },
-    { skip: !id || !timeFilter?.from_date || !timeFilter?.to_date }
+    {
+      skip:
+        !id ||
+        !timeFilter?.from_date ||
+        !timeFilter?.to_date ||
+        user?.user_type !== "Coach",
+    }
   );
 
   const { data: superPlayerKpis } = useSuperPlayerKpisMetricsStatisticsQuery(
@@ -65,7 +74,13 @@ const SaleStaticChart = () => {
       date_from: timeFilter?.from_date,
       date_to: timeFilter?.to_date,
     },
-    { skip: !id || !timeFilter?.from_date || !timeFilter?.to_date }
+    {
+      skip:
+        !id ||
+        !timeFilter?.from_date ||
+        !timeFilter?.to_date ||
+        user?.user_type !== "Supervisor",
+    }
   );
 
   const { data: adminPlayerKpis } = useAdminPlayerKpisMetricsStatisticsQuery(
@@ -74,7 +89,13 @@ const SaleStaticChart = () => {
       date_from: timeFilter?.from_date,
       date_to: timeFilter?.to_date,
     },
-    { skip: !id || !timeFilter?.from_date || !timeFilter?.to_date }
+    {
+      skip:
+        !id ||
+        !timeFilter?.from_date ||
+        !timeFilter?.to_date ||
+        user?.user_type !== "Admin",
+    }
   );
 
   useEffect(() => {

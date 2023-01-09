@@ -27,33 +27,38 @@ const OneTeam = (props: Props) => {
   const navigate = useNavigate();
   const { data: user } = useUserQuery(null);
   const { team_id, sport_id } = useParams();
-  const { data: sportStatistics } = useSuperSportStatisticsQuery({});
 
   // Fetch Kpis Statistics Data
   const { data: coachTeamKpisStatistics, isLoading } =
-    useCoachTeamKpisStatisticsQuery({ team_id: team_id }, { skip: !team_id });
+    useCoachTeamKpisStatisticsQuery(
+      { team_id: team_id },
+      { skip: !team_id || user?.user_type !== "Coach" }
+    );
 
   const { data: superTeamKpisStatistics, isLoading: superLoading } =
-    useSuperTeamKpisStatisticsQuery({ team_id: team_id }, { skip: !team_id });
+    useSuperTeamKpisStatisticsQuery(
+      { team_id: team_id },
+      { skip: !team_id || user?.user_type !== "Supervisor" }
+    );
 
   const { data: adminTeamKpisStatistics, isLoading: adminLoading } =
     useAdminTeamKpisStatisticsQuery(
       { team_id, sport_id: sport_id },
-      { skip: !team_id || !sport_id }
+      { skip: !team_id || !sport_id || user?.user_type !== "Admin" }
     );
 
   // Fetch Team info Data
   const { data: coachTeamInfo } = useCoachTeamInfoQuery(
     { team_id: team_id },
-    { skip: !team_id }
+    { skip: !team_id || user?.user_type !== "Coach" }
   );
   const { data: superTeamInfo } = useSuperTeamInfoQuery(
     { team_id: team_id },
-    { skip: !team_id }
+    { skip: !team_id || user?.user_type !== "Supervisor" }
   );
   const { data: adminTeamInfo } = useAdminTeamInfoQuery(
     { team_id: team_id },
-    { skip: !team_id }
+    { skip: !team_id || user?.user_type !== "Admin" }
   );
 
   useEffect(() => {

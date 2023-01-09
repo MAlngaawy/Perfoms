@@ -10,17 +10,17 @@ import { useGetTeamPlayersQuery } from "~/app/store/coach/coachApi";
 import HomeTeamInfoCard from "~/@main/components/HomeTeamInfoCard";
 import NoTeamComp from "~/@main/components/NoTeamComp";
 import TeamCalendar from "../../SubPages/SingleTeam/Components/TeamCalendar";
-import NoData from "~/@main/components/NoData";
-import Placeholders from "~/@main/components/Placeholders";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {};
 
 const TeamInfo = (props: Props) => {
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
+  const { data: user } = useUserQuery({});
 
   const { data: coachTeamPlayers } = useGetTeamPlayersQuery(
     { team_id: selectedPlayerTeam?.id },
-    { skip: !selectedPlayerTeam }
+    { skip: !selectedPlayerTeam || user?.user_type !== "Coach" }
   );
 
   const navigate = useNavigate();
