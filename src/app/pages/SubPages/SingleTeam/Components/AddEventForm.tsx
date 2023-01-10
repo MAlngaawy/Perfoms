@@ -26,7 +26,7 @@ const AddEventForm = ({ refetch }: Props) => {
   const [playerImage, setPlayerImage] = useState<any>();
   const [playerImagePreview, setPlayerImagePreview] = useState("null");
   const [clubData, setclubData] = useState<ParentClub>();
-  const { id: team_id } = useParams();
+  const { team_id } = useParams();
   const { data: superClubData } = useSuperClubQuery({});
   const { data: adminClubData } = useAdminClubQuery({});
   const { data: user } = useUserQuery({});
@@ -91,7 +91,9 @@ const AddEventForm = ({ refetch }: Props) => {
     //   club: clubData?.id,
     // };
     const formData = new FormData(e.currentTarget);
-    formData.append("team", team_id || "0");
+    if (team_id) {
+      formData.append("team", team_id);
+    }
     formData.append("club", JSON.stringify(clubData?.id));
     formData.set("icon", playerImage);
 

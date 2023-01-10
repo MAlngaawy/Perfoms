@@ -34,7 +34,7 @@ const EditEventForm = ({ event, refetch }: Props) => {
   const [playerImage, setPlayerImage] = useState<string | unknown>("");
   const [playerImagePreview, setPlayerImagePreview] = useState("null");
   const [clubData, setclubData] = useState<ParentClub>();
-  const { id: team_id } = useParams();
+  const { team_id } = useParams();
   const { data: superClubData } = useSuperClubQuery({});
   const { data: adminClubData } = useAdminClubQuery({});
   const { data: user } = useUserQuery({});
