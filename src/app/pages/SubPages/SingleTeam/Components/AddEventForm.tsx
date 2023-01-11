@@ -54,28 +54,12 @@ const AddEventForm = ({ refetch }: Props) => {
 
   // Image Functions
   // Resize the image size
-  const resizeFile = (file: any) =>
-    new Promise((resolve) => {
-      Resizer.imageFileResizer(
-        file,
-        300,
-        300,
-        "JPEG",
-        100,
-        0,
-        (uri: any) => {
-          resolve(uri);
-        },
-        "file"
-      );
-    });
 
   // function to access file uploaded then convert to base64 then add it to the data state
   const uploadImage = async (e: any) => {
     try {
       const file = e.target.files[0];
-      const image = await resizeFile(file);
-      console.log(image);
+      const image = await AppUtils.resizeImage(file);
       setPlayerImage(image);
     } catch (err) {
       console.log(err);
