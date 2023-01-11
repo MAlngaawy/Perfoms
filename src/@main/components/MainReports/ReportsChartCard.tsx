@@ -1,5 +1,5 @@
 import { Divider } from "@mantine/core";
-import React, { PureComponent } from "react";
+import React, { PureComponent, useEffect, useState } from "react";
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from "recharts";
 import { useNavigate } from "react-router-dom";
 import { useSuperTeamsQuery } from "~/app/store/supervisor/supervisorMainApi";
@@ -70,7 +70,7 @@ const ReportsChartCard = ({
                   statistics.moderate +
                   statistics.weakness)) *
                 100
-            )}
+            ) || 0}
             %
           </h2>
         </div>
@@ -92,7 +92,7 @@ const ReportsChartCard = ({
                   statistics.moderate +
                   statistics.weakness)) *
                 100
-            )}
+            ) || 0}
             %
           </h2>
         </div>
@@ -114,7 +114,7 @@ const ReportsChartCard = ({
                   statistics.moderate +
                   statistics.weakness)) *
                 100
-            )}
+            ) || 0}
             %
           </h2>
         </div>
@@ -126,6 +126,14 @@ const ReportsChartCard = ({
 export default ReportsChartCard;
 
 const Example = ({ data, chartColors }: any) => {
+  const [empty, setEmpty] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (data.strength === 0 && data.moderate === 0 && data.weakness === 0) {
+      setEmpty(true);
+    }
+  }, [data]);
+
   const newData = [
     {
       name: "strengths",
@@ -140,6 +148,43 @@ const Example = ({ data, chartColors }: any) => {
       value: data.weakness,
     },
   ];
+
+  const emptyNewData = [
+    {
+      name: "strengths",
+      value: 10,
+    },
+    {
+      name: "moderate",
+      value: 10,
+    },
+    {
+      name: "weaknesses",
+      value: 10,
+    },
+  ];
+
+  if (empty) {
+    return (
+      <div>
+        <PieChart width={150} height={150}>
+          <Pie
+            data={emptyNewData}
+            cx={"50%"}
+            cy={"50%"}
+            innerRadius={40}
+            outerRadius={55}
+            fill="#8884d8"
+            dataKey="value"
+          >
+            {newData.map((entry: any, index: any) => {
+              return <Cell key={`cell-${index}`} fill={"#CCC"} />;
+            })}
+          </Pie>
+        </PieChart>
+      </div>
+    );
+  }
 
   return (
     <PieChart width={150} height={150}>

@@ -1,6 +1,7 @@
 import { Divider } from "@mantine/core";
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from "recharts";
 import classNames from "classnames";
+import { useEffect, useState } from "react";
 
 type Props = {
   name: string;
@@ -44,7 +45,7 @@ const AttendReportsChart = ({ name, icon, player_attendance }: Props) => {
                   player_attendance.absent +
                   player_attendance.upcoming)) *
                 100
-            )}
+            ) || 0}
             %
           </h2>
         </div>
@@ -66,7 +67,7 @@ const AttendReportsChart = ({ name, icon, player_attendance }: Props) => {
                   player_attendance.absent +
                   player_attendance.upcoming)) *
                 100
-            )}
+            ) || 0}
             %
           </h2>
         </div>
@@ -88,7 +89,7 @@ const AttendReportsChart = ({ name, icon, player_attendance }: Props) => {
                   player_attendance.absent +
                   player_attendance.upcoming)) *
                 100
-            )}
+            ) || 0}
             %
           </h2>
         </div>
@@ -100,6 +101,14 @@ const AttendReportsChart = ({ name, icon, player_attendance }: Props) => {
 export default AttendReportsChart;
 
 const Example = ({ data, chartColors }: any) => {
+  const [empty, setEmpty] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (data.attends === 0 && data.absent === 0 && data.upcoming === 0) {
+      setEmpty(true);
+    }
+  }, [data]);
+
   const newData = [
     {
       name: "attends",
@@ -114,6 +123,43 @@ const Example = ({ data, chartColors }: any) => {
       value: data.upcoming,
     },
   ];
+
+  const emptyNewData = [
+    {
+      name: "attends",
+      value: 10,
+    },
+    {
+      name: "absent",
+      value: 10,
+    },
+    {
+      name: "upcoming",
+      value: 10,
+    },
+  ];
+
+  if (empty) {
+    return (
+      <div>
+        <PieChart width={150} height={150}>
+          <Pie
+            data={emptyNewData}
+            cx={"50%"}
+            cy={"50%"}
+            innerRadius={40}
+            outerRadius={55}
+            fill="#8884d8"
+            dataKey="value"
+          >
+            {newData.map((entry: any, index: any) => {
+              return <Cell key={`cell-${index}`} fill={"#CCC"} />;
+            })}
+          </Pie>
+        </PieChart>
+      </div>
+    );
+  }
 
   return (
     <PieChart width={150} height={150}>
