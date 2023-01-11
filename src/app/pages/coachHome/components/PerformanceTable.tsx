@@ -118,7 +118,7 @@ const PerformanceTable = (props: Props) => {
               teamPerformanceMetric?.results.length > 0 ? (
                 <>
                   {teamPerformanceMetric?.results.map((oneKpi) => (
-                    <div key={oneKpi.id}>
+                    <>
                       <tr>
                         <td className="border-0 font-bold text-left px-4 text-sm sticky left-0 bg-white z-10 text-perfGray1">
                           {oneKpi.name}
@@ -189,7 +189,7 @@ const PerformanceTable = (props: Props) => {
                           </tr>
                         );
                       })}
-                    </div>
+                    </>
                   ))}
                 </>
               ) : (
