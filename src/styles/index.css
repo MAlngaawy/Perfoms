@@ -15,6 +15,7 @@
   -moz-text-rendering: optimizeLegibility;
   -webkit-text-rendering: optimizeLegibility;
   -webkit-tap-highlight-color: transparent;
+  overflow-wrap: break-word;
 }
 
 * :focus {
@@ -135,7 +136,6 @@ select:-webkit-autofill:focus {
 .swiper-wrapper {
   align-items: center;
 }
-
 
 @media print {
   .pdf-print {

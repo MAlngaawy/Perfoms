@@ -118,7 +118,7 @@ const SportPillars = (props: Props) => {
                   alt="icon"
                 />
               </Link>
-              <h2 className="text-xl text-perfBlue w-28 text-center mx-auto">
+              <h2 className="text-xl  break-words text-perfBlue w-28 text-center mx-auto">
                 {pillar.name}
               </h2>
               {/* Edit and Delete Buttons */}
