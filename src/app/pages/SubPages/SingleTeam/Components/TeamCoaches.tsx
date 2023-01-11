@@ -68,7 +68,7 @@ const TeamCoachesComp = ({ teamId }: Props) => {
                     team_id: teamId,
                   }).then(() => {
                     showNotification({
-                      message: "Successfly Deleted",
+                      message: "Successfully Deleted",
                       color: "green",
                       title: "Done",
                       styles: {
@@ -92,7 +92,7 @@ const TeamCoachesComp = ({ teamId }: Props) => {
                     team_id: teamId,
                   }).then(() => {
                     showNotification({
-                      message: "Successfly Deleted",
+                      message: "Successfully Deleted",
                       color: "green",
                       title: "Done",
                       styles: {

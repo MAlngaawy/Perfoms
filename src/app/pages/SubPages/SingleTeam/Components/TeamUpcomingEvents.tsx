@@ -45,7 +45,7 @@ const TeamUpcomingEvents = ({ teamId }: Props) => {
     if (user?.user_type === "Supervisor") {
       superDeleteEvent({ event_id: eventId }).then((res) => {
         showNotification({
-          message: "Successfly Deleted",
+          message: "Successfully Deleted",
           color: "green",
           title: "Done",
           styles: {
@@ -66,7 +66,7 @@ const TeamUpcomingEvents = ({ teamId }: Props) => {
     } else if (user?.user_type === "Admin") {
       adminDeleteEvent({ event_id: eventId }).then((res) => {
         showNotification({
-          message: "Successfly Deleted",
+          message: "Successfully Deleted",
           color: "green",
           title: "Done",
           styles: {

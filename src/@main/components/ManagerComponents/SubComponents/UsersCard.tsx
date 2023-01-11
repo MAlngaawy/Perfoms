@@ -50,7 +50,7 @@ const UsersCard = ({ type, data }: Props) => {
       deletePlayer({ player_id: userId })
         .then((res) => {
           showNotification({
-            message: "Successfly Deleted",
+            message: "Successfully Deleted",
             color: "green",
             title: "Done",
             styles: {
@@ -92,7 +92,7 @@ const UsersCard = ({ type, data }: Props) => {
       deleteCoach({ coach_id: userId })
         .then((res) => {
           showNotification({
-            message: "Successfly Deleted",
+            message: "Successfully Deleted",
             color: "green",
             title: "Done",
             styles: {
@@ -134,7 +134,7 @@ const UsersCard = ({ type, data }: Props) => {
       deleteSupervisor({ supervisor_id: userId })
         .then((res) => {
           showNotification({
-            message: "Successfly Deleted",
+            message: "Successfully Deleted",
             color: "green",
             title: "Done",
             styles: {

@@ -41,7 +41,7 @@ const AddActionModal = ({ metricId, opened, setOpened }: Props) => {
           AppUtils.showNotificationFun(
             "Success",
             "Done",
-            "Successfly Added Action"
+            "Successfully Added Action"
           );
         })
         .catch(() => {
@@ -54,7 +54,7 @@ const AddActionModal = ({ metricId, opened, setOpened }: Props) => {
           AppUtils.showNotificationFun(
             "Success",
             "Done",
-            "Successfly Added Action"
+            "Successfully Added Action"
           );
         })
         .catch(() => {

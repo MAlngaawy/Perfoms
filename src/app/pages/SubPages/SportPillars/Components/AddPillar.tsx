@@ -80,7 +80,7 @@ const AddPillar = (props: Props) => {
             refetchAdminPillars();
           }
           showNotification({
-            message: "Successfly Added Pillar",
+            message: "Successfully Added Pillar",
             color: "green",
             title: "Done",
             styles: {

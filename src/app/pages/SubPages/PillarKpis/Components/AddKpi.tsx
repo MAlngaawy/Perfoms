@@ -86,7 +86,7 @@ const AddKpi = (props: Props) => {
             adminRefetchKpis();
           }
           showNotification({
-            message: "Successfly Added Kpi",
+            message: "Successfully Added Kpi",
             color: "green",
             title: "Done",
             styles: {

@@ -32,7 +32,7 @@ const Sports = (props: Props) => {
     })
       .then(() => {
         showNotification({
-          message: "Sport Successfly Deleted",
+          message: "Sport Successfully Deleted",
           color: "green",
           title: "Deleted",
           styles: {

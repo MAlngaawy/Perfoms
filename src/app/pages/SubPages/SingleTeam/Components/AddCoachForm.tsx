@@ -61,7 +61,7 @@ const AddCoachForm = ({ teamId }: Props) => {
     if (user?.user_type === "Supervisor") {
       superAddCoach({ coach_id: data.coach, team_id: +teamId }).then(() => {
         showNotification({
-          message: "Successfly Added Coach",
+          message: "Successfully Added Coach",
           color: "green",
           title: "Done",
           styles: {
@@ -84,7 +84,7 @@ const AddCoachForm = ({ teamId }: Props) => {
     if (user?.user_type === "Admin") {
       adminAddCoach({ coach_id: data.coach, team_id: +teamId }).then(() => {
         showNotification({
-          message: "Successfly Added Coach",
+          message: "Successfully Added Coach",
           color: "green",
           title: "Done",
           styles: {

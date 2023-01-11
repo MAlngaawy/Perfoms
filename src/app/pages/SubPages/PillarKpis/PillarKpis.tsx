@@ -81,7 +81,7 @@ const PillarKpis = (props: Props) => {
                           AppUtils.showNotificationFun(
                             "Success",
                             "Deleted",
-                            "Kpi Deleted Successfly"
+                            "Kpi Deleted Successfully"
                           );
                           adminRefetchKpis();
                         })
@@ -98,7 +98,7 @@ const PillarKpis = (props: Props) => {
                           AppUtils.showNotificationFun(
                             "Success",
                             "Deleted",
-                            "Kpi Deleted Successfly"
+                            "Kpi Deleted Successfully"
                           );
                           superRefetchKpis();
                         })

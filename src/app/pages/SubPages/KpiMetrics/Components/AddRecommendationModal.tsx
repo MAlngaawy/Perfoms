@@ -41,7 +41,7 @@ const AddRecomendationModal = ({ metricId, opened, setOpened }: Props) => {
           AppUtils.showNotificationFun(
             "Success",
             "Done",
-            "Successfly Added Recommendation"
+            "Successfully Added Recommendation"
           );
         })
         .catch(() => {
@@ -58,7 +58,7 @@ const AddRecomendationModal = ({ metricId, opened, setOpened }: Props) => {
           AppUtils.showNotificationFun(
             "Success",
             "Done",
-            "Successfly Added Recommendation"
+            "Successfully Added Recommendation"
           );
         })
         .catch(() => {

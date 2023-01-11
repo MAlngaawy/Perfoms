@@ -50,7 +50,7 @@ const AddSport = (props: Props) => {
       .post("/club-manager/add-sport/", formData)
       .then(() => {
         showNotification({
-          message: "Successfly Added Sport",
+          message: "Successfully Added Sport",
           color: "green",
           title: "Done",
           styles: {

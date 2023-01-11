@@ -40,7 +40,11 @@ const EditItem = ({ data, apiUrl, refetchFunction }: Props) => {
         setIsLoading(false);
         setOpened(false);
         refetchFunction();
-        AppUtils.showNotificationFun("Success", "Done", " Successfly Updated");
+        AppUtils.showNotificationFun(
+          "Success",
+          "Done",
+          " Successfully Updated"
+        );
       })
       .catch((err) => {
         setIsLoading(false);

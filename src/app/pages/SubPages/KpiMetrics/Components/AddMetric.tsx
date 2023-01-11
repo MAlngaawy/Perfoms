@@ -97,7 +97,7 @@ const AddMetric = (props: Props) => {
           AppUtils.showNotificationFun(
             "Success",
             "Done",
-            "Metric Added Successfly"
+            "Metric Added Successfully"
           );
           adminRefetchMetrics();
           superRefetchMetrics();

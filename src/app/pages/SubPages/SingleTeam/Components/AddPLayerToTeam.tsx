@@ -30,7 +30,7 @@ const AddPlayer = ({ teamPlayers }: Props) => {
   const { data: adminPlayers } = useAdminPlayersQuery({});
   const { data: user } = useUserQuery({});
 
-  const { id: team_id } = useParams();
+  const { team_id } = useParams();
 
   useEffect(() => {
     if (superPlayers) setPlayers(superPlayers);
@@ -62,8 +62,58 @@ const AddPlayer = ({ teamPlayers }: Props) => {
     control,
   } = useForm();
 
-  const [superAddPlayer] = useSuperAddTeamPlayerMutation();
-  const [adminAddPlayer] = useAdminAddTeamPlayerMutation();
+  const [
+    superAddPlayer,
+    { isSuccess: superAddSuccess, isError: superAddError },
+  ] = useSuperAddTeamPlayerMutation();
+  const [
+    adminAddPlayer,
+    { isSuccess: adminAddSuccess, isError: adminAddError },
+  ] = useAdminAddTeamPlayerMutation();
+
+  useEffect(() => {
+    if (superAddSuccess || adminAddSuccess) {
+      showNotification({
+        message: "Successfully Added Player",
+        color: "green",
+        title: "Done",
+        styles: {
+          root: {
+            backgroundColor: "#27AE60",
+            borderColor: "#27AE60",
+            "&::before": { backgroundColor: "#fff" },
+          },
+
+          title: { color: "#fff" },
+          description: { color: "#fff" },
+          closeButton: {
+            color: "#fff",
+          },
+        },
+      });
+    }
+
+    if (adminAddError || superAddError) {
+      showNotification({
+        message: "Something went wrong",
+        color: "ref",
+        title: "Wrong",
+        styles: {
+          root: {
+            backgroundColor: "#EB5757",
+            borderColor: "#EB5757",
+            "&::before": { backgroundColor: "#fff" },
+          },
+
+          title: { color: "#fff" },
+          description: { color: "#fff" },
+          closeButton: {
+            color: "#fff",
+          },
+        },
+      });
+    }
+  }, [superAddSuccess, adminAddSuccess, adminAddError, superAddError]);
 
   const addPlayerFunc = (data: any) => {
     setLoading(true);
@@ -74,45 +124,9 @@ const AddPlayer = ({ teamPlayers }: Props) => {
       })
         .then(() => {
           setLoading(false);
-          showNotification({
-            message: "Successfly Added Player",
-            color: "green",
-            title: "Done",
-            styles: {
-              root: {
-                backgroundColor: "#27AE60",
-                borderColor: "#27AE60",
-                "&::before": { backgroundColor: "#fff" },
-              },
-
-              title: { color: "#fff" },
-              description: { color: "#fff" },
-              closeButton: {
-                color: "#fff",
-              },
-            },
-          });
         })
         .catch((err) => {
           setLoading(false);
-          showNotification({
-            message: err.message,
-            color: "ref",
-            title: "Wrong",
-            styles: {
-              root: {
-                backgroundColor: "#EB5757",
-                borderColor: "#EB5757",
-                "&::before": { backgroundColor: "#fff" },
-              },
-
-              title: { color: "#fff" },
-              description: { color: "#fff" },
-              closeButton: {
-                color: "#fff",
-              },
-            },
-          });
         });
     } else if (user?.user_type === "Admin") {
       adminAddPlayer({
@@ -121,45 +135,9 @@ const AddPlayer = ({ teamPlayers }: Props) => {
       })
         .then((res) => {
           setLoading(false);
-          showNotification({
-            message: "Successfly Added Player",
-            color: "green",
-            title: "Done",
-            styles: {
-              root: {
-                backgroundColor: "#27AE60",
-                borderColor: "#27AE60",
-                "&::before": { backgroundColor: "#fff" },
-              },
-
-              title: { color: "#fff" },
-              description: { color: "#fff" },
-              closeButton: {
-                color: "#fff",
-              },
-            },
-          });
         })
         .catch((err) => {
           setLoading(false);
-          showNotification({
-            message: err.message,
-            color: "ref",
-            title: "Wrong",
-            styles: {
-              root: {
-                backgroundColor: "#EB5757",
-                borderColor: "#EB5757",
-                "&::before": { backgroundColor: "#fff" },
-              },
-
-              title: { color: "#fff" },
-              description: { color: "#fff" },
-              closeButton: {
-                color: "#fff",
-              },
-            },
-          });
         });
     }
   };

@@ -24,7 +24,7 @@ type Props = {
 
 const Toolbar = ({ setOpened }: Props) => {
   const windowSize = useWindowSize();
-  const { data: user } = useUserQuery(null);
+  const { data: user } = useUserQuery({});
 
   const [club, setClub] = useState<ParentClub>();
 
@@ -130,9 +130,8 @@ const Toolbar = ({ setOpened }: Props) => {
             </Link>
           </Menu.Dropdown>
         </Menu>
-
         {/* Notifications Menu */}
-        <Notifications />
+        {user?.user_type !== "Admin" && <Notifications />}
 
         {/* User Menu */}
         <Menu trigger="hover" shadow="md" width={200}>
