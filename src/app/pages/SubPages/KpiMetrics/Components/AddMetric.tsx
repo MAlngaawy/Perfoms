@@ -61,29 +61,11 @@ const AddMetric = (props: Props) => {
     resetFields();
   };
 
-  // Image Functions
-  // Resize the image size
-  const resizeFile = (file: any) =>
-    new Promise((resolve) => {
-      Resizer.imageFileResizer(
-        file,
-        100,
-        100,
-        "JPEG",
-        100,
-        0,
-        (uri: any) => {
-          resolve(uri);
-        },
-        "base64"
-      );
-    });
-
   // function to access file uploaded then convert to base64 then add it to the data state
   const uploadImage = async (e: any) => {
     try {
       const file = e.target.files[0];
-      const image = await resizeFile(file);
+      const image = await AppUtils.resizeImage(file);
       console.log(image);
       setPlayerImage(image);
     } catch (err) {

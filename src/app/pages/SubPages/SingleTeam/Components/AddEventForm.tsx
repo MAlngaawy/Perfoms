@@ -52,9 +52,6 @@ const AddEventForm = ({ refetch }: Props) => {
     resolver: yupResolver(schema),
   });
 
-  // Image Functions
-  // Resize the image size
-
   // function to access file uploaded then convert to base64 then add it to the data state
   const uploadImage = async (e: any) => {
     try {
