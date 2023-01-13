@@ -47,7 +47,9 @@ const AddSport = (props: Props) => {
       formData.append("club", JSON.stringify(adminClub?.id));
     }
 
-    formData.set("icon", playerImage as string);
+    if (playerImage) {
+      formData.set("icon", playerImage as string);
+    }
 
     axiosInstance
       .post("/club-manager/add-sport/", formData)

@@ -58,7 +58,9 @@ const AddPillar = (props: Props) => {
   const addPillarFun = (e: any) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    formData.set("icon", playerImage as string);
+    if (playerImage) {
+      formData.set("icon", playerImage as string);
+    }
     if (sport_id) formData.append("sport", sport_id);
     setError(false);
     try {

@@ -78,7 +78,9 @@ const AddMetric = (props: Props) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     // formData.append("kpi", JSON.stringify(kpi_id));
-    formData.set("icon", playerImage as string);
+    if (playerImage) {
+      formData.set("icon", playerImage as string);
+    }
 
     setError(false);
 

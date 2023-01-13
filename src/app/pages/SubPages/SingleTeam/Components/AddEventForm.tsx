@@ -73,7 +73,9 @@ const AddEventForm = ({ refetch }: Props) => {
       formData.append("team", team_id);
     }
     formData.append("club", JSON.stringify(clubData?.id));
-    formData.set("icon", playerImage);
+    if (playerImage) {
+      formData.set("icon", playerImage);
+    }
 
     axiosInstance
       .post(

@@ -76,7 +76,9 @@ const AddTeamCardForm = (props: Props) => {
     e.preventDefault();
     setLoading(true);
     const formData = new FormData(e.currentTarget);
-    formData.set("icon", playerImage as string);
+    if (playerImage) {
+      formData.set("icon", playerImage as string);
+    }
     try {
       axiosInstance
         .post(

@@ -71,7 +71,9 @@ const AddPlayer = (props: Props) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const image = await AppUtils.resizeImage(formData.get("icon"));
-    formData.set("icon", image as string);
+    if (image) {
+      formData.set("icon", image as string);
+    }
     setError(false);
 
     try {

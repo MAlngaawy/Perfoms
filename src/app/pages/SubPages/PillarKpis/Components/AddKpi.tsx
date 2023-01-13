@@ -65,7 +65,9 @@ const AddKpi = (props: Props) => {
   const addKpiFun = (e: any) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    formData.set("icon", playerImage as string);
+    if (playerImage) {
+      formData.set("icon", playerImage as string);
+    }
     setError(false);
     try {
       setIsLoading(true);

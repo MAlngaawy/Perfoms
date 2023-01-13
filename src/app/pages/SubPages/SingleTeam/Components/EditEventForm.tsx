@@ -84,7 +84,9 @@ const EditEventForm = ({ event, refetch }: Props) => {
     const formData = new FormData(e.currentTarget);
     formData.append("team", team_id || "0");
     formData.append("club", JSON.stringify(clubData?.id));
-    formData.set("icon", playerImage as string);
+    if (playerImage) {
+      formData.set("icon", playerImage as string);
+    }
 
     axiosInstance
       .patch(

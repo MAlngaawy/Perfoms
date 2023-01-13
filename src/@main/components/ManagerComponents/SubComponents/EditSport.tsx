@@ -44,7 +44,9 @@ const EditSport = ({ sportData }: Props) => {
     if (adminClub?.id) {
       formData.append("club", JSON.stringify(adminClub?.id));
     }
-    formData.set("icon", playerImage as string);
+    if (playerImage) {
+      formData.set("icon", playerImage as string);
+    }
     axiosInstance
       .patch(`/club-manager/sports/${sportData.id}/update/`, formData)
       .then(() => {
