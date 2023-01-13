@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { Player, PlayerAttendances } from "~/app/store/types/parent-types";
 import { useSelector } from "react-redux";
 import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
-import { usePlayerCalenderQuery } from "~/app/store/parent/parentApi";
+import { usePlayerCalendarQuery } from "~/app/store/parent/parentApi";
 import { useEffect, useState } from "react";
 import { useCoachPlayerCalendarQuery } from "~/app/store/coach/coachApi";
 import { useSuperPlayerCalendarQuery } from "~/app/store/supervisor/supervisorMainApi";
@@ -18,7 +18,7 @@ const CustomCalendar = ({ pageName, player_id }: Props) => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
   const [playerAttendance, setPlayerAttendance] = useState<PlayerAttendances>();
 
-  const { data: parentPlayerAttendance } = usePlayerCalenderQuery(
+  const { data: parentPlayerAttendance } = usePlayerCalendarQuery(
     { id: selectedPlayer?.id },
     { skip: !selectedPlayer?.id }
   );

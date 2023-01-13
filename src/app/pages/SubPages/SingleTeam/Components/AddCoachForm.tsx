@@ -12,12 +12,14 @@ import {
   useAdminAddTeamCoachesMutation,
   useAdminAllCoachesQuery,
 } from "~/app/store/clubManager/clubManagerApi";
+import __ from "lodash";
 
 type Props = {
   teamId: string | number;
+  teamCoaches: any;
 };
 
-const AddCoachForm = ({ teamId }: Props) => {
+const AddCoachForm = ({ teamId, teamCoaches }: Props) => {
   const [opened, setOpened] = useState(false);
   const [coachesData, setCoachesData] = useState<any>([]);
 
@@ -31,9 +33,10 @@ const AddCoachForm = ({ teamId }: Props) => {
 
   useEffect(() => {
     if (superCoaches) {
-      let test = superCoaches?.results.map((coach) => {
+      const filterdCoaches = __.xorBy(superCoaches.results, teamCoaches, "id");
+      let test = filterdCoaches.map((coach) => {
         return {
-          label: coach.first_name + coach.first_name,
+          label: coach.first_name + " " + coach.last_name,
           image: coach.avatar,
           value: coach.id,
           id: coach.id,
@@ -41,11 +44,11 @@ const AddCoachForm = ({ teamId }: Props) => {
       });
       setCoachesData(test);
     }
-
     if (adminCoaches) {
-      let test = adminCoaches?.results.map((coach) => {
+      const filterdCoaches = __.xorBy(adminCoaches.results, teamCoaches, "id");
+      let test = filterdCoaches.map((coach) => {
         return {
-          label: coach.first_name + coach.first_name,
+          label: coach.first_name + " " + coach.last_name,
           image: coach.avatar,
           value: coach.id,
           id: coach.id,
@@ -55,7 +58,7 @@ const AddCoachForm = ({ teamId }: Props) => {
     }
   }, [superCoaches, adminCoaches]);
 
-  const { register, handleSubmit, reset, control } = useForm();
+  const { handleSubmit, reset, control } = useForm();
 
   const onSubmit = (data: any) => {
     if (user?.user_type === "Supervisor") {

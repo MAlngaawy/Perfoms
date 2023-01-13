@@ -116,7 +116,7 @@ export const parentsApi = createApi({
       providesTags: ["Parent"],
     }),
 
-    playerCalender: query<
+    playerCalendar: query<
       PlayerAttendances,
       { id: number; page?: number; date_from?: string; date_to?: string }
     >({
@@ -344,7 +344,7 @@ export const {
   usePlayerCoachTeamsQuery,
   useOnePlayerQuery,
   usePlayerActionsQuery,
-  usePlayerCalenderQuery,
+  usePlayerCalendarQuery,
   usePlayerRecommendationsQuery,
   usePlayerKpisMetricsQuery,
   usePlayerSportTeamsQuery,

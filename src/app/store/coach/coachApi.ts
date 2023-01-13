@@ -39,6 +39,7 @@ import {
   PlayerRecommendations,
   TeamEvents,
 } from "../types/parent-types";
+import { TeamAttendance } from "../types/supervisor-types";
 
 export const coachApi = createApi({
   reducerPath: "coachApi",
@@ -46,7 +47,7 @@ export const coachApi = createApi({
     baseUrl: `${BASE_URL}/coach`,
     prepareHeaders: BASE_HEADERS,
   }),
-  tagTypes: ["Attendance", "performances"],
+  tagTypes: ["Attendance", "performances", "calendar"],
   endpoints: ({ query, mutation }) => ({
     coaches: query<AllCoachesType, { page: number }>({
       query: (params) => ({ url: "all-coaches/", params }),
@@ -342,7 +343,7 @@ export const coachApi = createApi({
       { player_id: string | undefined; pages?: number }
     >({
       query: ({ player_id, ...params }) => ({
-        url: `calender-detailed/${player_id}/`,
+        url: `calendar-detailed/${player_id}/`,
         params,
       }),
     }),
@@ -355,6 +356,18 @@ export const coachApi = createApi({
         url: `${player_id}/calendar`,
         params,
       }),
+    }),
+
+    // This is for the calendar in the team info page
+    coachTeamCalendar: query<
+      TeamAttendance,
+      { team_id: number; year: string; month: string; page?: number }
+    >({
+      query: ({ team_id, ...params }) => ({
+        url: `teams/${team_id}/calendar/`,
+        params,
+      }),
+      providesTags: ["calendar"],
     }),
   }),
 });
@@ -396,4 +409,5 @@ export const {
   useCoachPlayerRecommendationsQuery,
   useCoachPlayerActionsQuery,
   useCoachPlayerCalendarQuery,
+  useCoachTeamCalendarQuery,
 } = coachApi;

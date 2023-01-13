@@ -28,16 +28,15 @@ const TeamCoachesComp = ({ teamId }: Props) => {
 
   const { data: superCoaches } = useSuperTeamCoachesQuery(
     { team_id: teamIdFromParams ? teamIdFromParams : teamId },
-    { skip: !teamId }
+    { skip: !teamId || user?.user_type !== "Supervisor" }
   );
 
   const { data: adminCoaches } = useAdminTeamCoachesQuery(
     { team_id: teamIdFromParams ? teamIdFromParams : teamId },
-    { skip: !teamId }
+    { skip: !teamId || user?.user_type !== "Admin" }
   );
 
   const [superRemoveCoach] = useSuperRemoveTeamCoachMutation();
-
   const [adminRemoveCoach] = useAdminRemoveTeamCoachMutation();
 
   useEffect(() => {
@@ -118,7 +117,10 @@ const TeamCoachesComp = ({ teamId }: Props) => {
           </div>
         ))}
       </div>
-      <AddCoachForm teamId={teamIdFromParams ? teamIdFromParams : teamId} />
+      <AddCoachForm
+        teamCoaches={coaches?.results}
+        teamId={teamIdFromParams ? teamIdFromParams : teamId}
+      />
     </div>
   );
 };

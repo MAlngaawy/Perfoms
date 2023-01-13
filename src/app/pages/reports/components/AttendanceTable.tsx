@@ -4,7 +4,7 @@ import AppIcons from "~/@main/core/AppIcons";
 import { Player, PlayerAttendances } from "~/app/store/types/parent-types";
 import { useSelector } from "react-redux";
 import { selectedPlayerFn, timeFilterFn } from "~/app/store/parent/parentSlice";
-import { usePlayerCalenderQuery } from "~/app/store/parent/parentApi";
+import { usePlayerCalendarQuery } from "~/app/store/parent/parentApi";
 import { useCoachPlayerCalendarQuery } from "~/app/store/coach/coachApi";
 import { useSuperPlayerCalendarQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { useAdminPlayerCalendarQuery } from "~/app/store/clubManager/clubManagerApi";
@@ -35,7 +35,7 @@ const AttendanceTable = ({ player_id }: Props) => {
 
   const [playerAttendance, setPlayerAttendance] = useState<PlayerAttendances>();
 
-  const { data: parentPlayerAttendance } = usePlayerCalenderQuery(
+  const { data: parentPlayerAttendance } = usePlayerCalendarQuery(
     {
       id: selectedPlayer?.id,
       date_from: timeFilter?.from_date,

@@ -170,7 +170,7 @@ const ReportPage = () => {
                             <TotalAttendance />
                           </div>
 
-                          {/* Attendance Calender */}
+                          {/* Attendance Calendar */}
                           <CustomCalendar pageName="reports" />
                         </div>
                       </Grid.Col>

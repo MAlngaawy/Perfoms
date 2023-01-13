@@ -44,6 +44,7 @@ import {
   TeamsStatistics,
   TeamStatistics,
 } from "../types/coach-types";
+import { YearPicker } from "@mantine/dates/lib/components/CalendarBase/YearPicker/YearPicker";
 
 export const supervisorApi = createApi({
   reducerPath: "supervisorApi",
@@ -193,7 +194,7 @@ export const supervisorApi = createApi({
 
     superTeamAttendance: query<
       TeamAttendance,
-      { team_id: number; page?: number }
+      { team_id: number; year: string; month: string; page?: number }
     >({
       query: ({ team_id, ...params }) => ({
         url: `teams/${team_id}/attendance/`,
@@ -204,7 +205,7 @@ export const supervisorApi = createApi({
 
     superAddTeamCalendar: mutation<AddTeamCalendar, {}>({
       query: (body) => ({
-        url: `add-team-calender/`,
+        url: `add-team-calendar/`,
         method: "POST",
         body,
       }),
@@ -408,7 +409,7 @@ export const supervisorApi = createApi({
       { player_id: string | undefined; pages?: number }
     >({
       query: ({ player_id, ...params }) => ({
-        url: `statistics/calender-detailed/${player_id}/`,
+        url: `statistics/calendar-detailed/${player_id}/`,
         params,
       }),
     }),

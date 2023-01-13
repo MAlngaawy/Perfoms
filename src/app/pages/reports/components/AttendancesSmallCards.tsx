@@ -2,7 +2,7 @@ import React from "react";
 import { Player } from "~/app/store/types/parent-types";
 import { useSelector } from "react-redux";
 import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
-import { usePlayerCalenderQuery } from "~/app/store/parent/parentApi";
+import { usePlayerCalendarQuery } from "~/app/store/parent/parentApi";
 import { useCoachPlayerCalendarQuery } from "~/app/store/coach/coachApi";
 import { useSuperPlayerCalendarQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { useAdminPlayerCalendarQuery } from "~/app/store/clubManager/clubManagerApi";
@@ -13,7 +13,7 @@ type Props = {
 
 const AttendancesSmallCards = ({ player_id }: Props) => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
-  const { data: playerAttendance } = usePlayerCalenderQuery(
+  const { data: playerAttendance } = usePlayerCalendarQuery(
     { id: selectedPlayer?.id },
     { skip: !selectedPlayer?.id }
   );

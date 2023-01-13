@@ -7,7 +7,7 @@ type Props = {
   data: { day: string; attendance: "ATTENDED" | "ABSENT" | "UPCOMING" }[];
 };
 
-const AttendanceCalender = ({ data }: Props) => {
+const AttendanceCalendar = ({ data }: Props) => {
   return (
     <div className="bg-white p-4 rounded-3xl h-full">
       <h2 className="title text-lg text-perfGray1">Calendar.</h2>
@@ -38,7 +38,7 @@ const AttendanceCalender = ({ data }: Props) => {
   );
 };
 
-export default AttendanceCalender;
+export default AttendanceCalendar;
 
 const CustomDatePicker = ({ data }: { data: any }) => {
   const theme = useMantineTheme();

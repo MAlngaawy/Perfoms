@@ -65,7 +65,7 @@ const ReportsPageLoading = ({ type }: Props) => {
                     {/* Total Attendace Pie Chart  */}
                     <Skeleton height={300} width="100%" radius="lg" />
 
-                    {/* Attendance Calender */}
+                    {/* Attendance Calendar */}
                     <Skeleton height={300} width="100%" radius="lg" />
                   </div>
                 </Grid.Col>

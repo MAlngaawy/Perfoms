@@ -25,7 +25,7 @@ export const attendanceApi = createApi({
     }),
     addAttendance: mutation<Attendance, AddAttendance>({
       query: (body) => ({
-        url: "add-team-calender/",
+        url: "add-team-calendar/",
         method: "POST",
         body,
       }),

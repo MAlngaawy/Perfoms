@@ -122,7 +122,12 @@ export const clubManagerApi = createApi({
 
     adminTeamAttendance: query<
       TeamAttendance,
-      { team_id: number; page?: number }
+      {
+        team_id: number;
+        year: string;
+        month: string;
+        page?: number;
+      }
     >({
       query: ({ team_id, ...params }) => ({
         url: `teams/${team_id}/attendance/`,
@@ -133,7 +138,7 @@ export const clubManagerApi = createApi({
 
     adminAddTeamCalendar: mutation<AddTeamCalendar, {}>({
       query: (body) => ({
-        url: `teams/add-team-calender/`,
+        url: `teams/add-team-calendar/`,
         method: "POST",
         body,
       }),
@@ -468,7 +473,7 @@ export const clubManagerApi = createApi({
       { player_id: string | undefined; pages?: number }
     >({
       query: ({ player_id, ...params }) => ({
-        url: `statistics/calender-detailed/${player_id}/`,
+        url: `statistics/calendar-detailed/${player_id}/`,
         params,
       }),
     }),

@@ -17,14 +17,6 @@ const SingleTeam = (props: Props) => {
 
   return (
     <div className="p-2">
-      {/* <CustomBreadCrumbs
-        items={[
-          {
-            href: user?.user_type === "Admin" ? "/admin" : "/supervisor",
-            title: "Home",
-          },
-        ]}
-      /> */}
       <SharedBreadCrumbs />
 
       <Grid gutter={"xs"} className="items-stretch">
