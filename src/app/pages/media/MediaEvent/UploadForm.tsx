@@ -30,14 +30,18 @@ const UploadForm = ({ refetch, videoUrl }: Props) => {
       formData.append("video_url", link);
       setIsLoading(true);
 
+      let updateEvent = "";
+      if (user?.user_type === "Supervisor") {
+        updateEvent = `supervisor/events/${id}/update/`;
+      } else if (user?.user_type === "Admin") {
+        updateEvent = `club-manager/teams/events/${id}/update/`;
+      } else if (user?.user_type === "Coach") {
+        updateEvent = `coach/events/${id}/update/`;
+      }
+
       try {
         axiosInstance
-          .patch(
-            user?.user_type === "Supervisor"
-              ? `supervisor/events/${id}/update/`
-              : `club-manager/teams/events/${id}/update/`,
-            formData
-          )
+          .patch(updateEvent, formData)
           .then((res) => {
             setIsLoading(false);
             setOpened(false);
@@ -67,14 +71,18 @@ const UploadForm = ({ refetch, videoUrl }: Props) => {
       formData.append("file", resizedImage as string);
       setIsLoading(true);
 
+      let uploadFileUrl = "";
+      if (user?.user_type === "Supervisor") {
+        uploadFileUrl = `supervisor/add-event-files/${id}/`;
+      } else if (user?.user_type === "Admin") {
+        uploadFileUrl = `club-manager/add-event-files/${id}/`;
+      } else if (user?.user_type === "Coach") {
+        uploadFileUrl = `coach/add-event-files/${id}/`;
+      }
+
       try {
         axiosInstance
-          .post(
-            user?.user_type === "Supervisor"
-              ? `supervisor/add-event-files/${id}/`
-              : `club-manager/add-event-files/${id}/`,
-            formData
-          )
+          .post(uploadFileUrl, formData)
           .then((res) => {
             setIsLoading(false);
             setOpened(false);
