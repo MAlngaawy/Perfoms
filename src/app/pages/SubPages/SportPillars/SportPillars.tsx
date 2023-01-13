@@ -56,7 +56,7 @@ const SportPillars = (props: Props) => {
           AppUtils.showNotificationFun(
             "Success",
             "Done",
-            "Pillar Deleted Succcessfly"
+            "Pillar Deleted successfully"
           );
           refetchAdminPillars();
         })
@@ -75,7 +75,7 @@ const SportPillars = (props: Props) => {
           AppUtils.showNotificationFun(
             "Success",
             "Done",
-            "Pillar Deleted Succcessfly"
+            "Pillar Deleted successfully"
           );
           refetchSuperPillars();
         })

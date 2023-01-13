@@ -49,7 +49,7 @@ const KpiMetrics = (props: Props) => {
           AppUtils.showNotificationFun(
             "Success",
             "Done",
-            "Successfl Deleted Metric"
+            "Metric Deleted successfully"
           );
         })
         .catch((err) => {
@@ -65,7 +65,7 @@ const KpiMetrics = (props: Props) => {
           AppUtils.showNotificationFun(
             "Success",
             "Done",
-            "Successfl Deleted Metric"
+            "Metric Deleted successfully"
           );
         })
         .catch((err) => {

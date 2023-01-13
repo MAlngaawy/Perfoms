@@ -72,7 +72,7 @@ export const SinglePlayer = ({ id, image, name, teamId }: any) => {
       superRemovePlayer({ team_id: teamId, player_id: playerId })
         .then((res) => {
           showNotification({
-            message: "Deleted Succefly",
+            message: "Deleted successfully",
             color: "green",
             title: "Done",
             styles: {
@@ -114,7 +114,7 @@ export const SinglePlayer = ({ id, image, name, teamId }: any) => {
       adminRemovePlayer({ team_id: teamId, player_id: playerId })
         .then((res) => {
           showNotification({
-            message: "Deleted Succefly",
+            message: "Deleted successfully",
             color: "green",
             title: "Done",
             styles: {
