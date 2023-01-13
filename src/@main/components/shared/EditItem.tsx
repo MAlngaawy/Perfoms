@@ -21,17 +21,19 @@ type Props = {
 const EditItem = ({ data, apiUrl, refetchFunction }: Props) => {
   const [opened, setOpened] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [iconEdited, setIconEdited] = useState<File | null>(null);
   const [playerImagePreview, setPlayerImagePreview] =
     useState<string | null>(null);
 
-  const onSubmitFunction = (e: any) => {
+  const onSubmitFunction = async (e: any) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    // if there is no image added .. remove empty icon field
-    console.log(formData.get("icon"));
-    if (!playerImagePreview) formData.delete("icon");
-    console.log(formData.get("icon"));
-    console.log(formData.get("name"));
+    if (!playerImagePreview) {
+      formData.delete("icon");
+    } else {
+      let icon = await AppUtils.resizeImage(iconEdited);
+      formData.set("icon", icon as string);
+    }
 
     setIsLoading(true);
     axiosInstance
@@ -92,6 +94,7 @@ const EditItem = ({ data, apiUrl, refetchFunction }: Props) => {
                     setPlayerImagePreview(
                       URL.createObjectURL(e.target.files[0])
                     );
+                    setIconEdited(e.target.files[0]);
                   }}
                 />
               </Button>

@@ -7,6 +7,7 @@ import SubmitButton from "../../SubmitButton";
 import { Sport } from "~/app/store/types/parent-types";
 import { showNotification } from "@mantine/notifications";
 import { axiosInstance } from "~/app/configs/dataService";
+import AppUtils from "~/@main/utils/AppUtils";
 import {
   useAdminClubQuery,
   useAdminSportsQuery,
@@ -43,6 +44,7 @@ const EditSport = ({ sportData }: Props) => {
     if (adminClub?.id) {
       formData.append("club", JSON.stringify(adminClub?.id));
     }
+    formData.set("icon", playerImage as string);
     axiosInstance
       .patch(`/club-manager/sports/${sportData.id}/update/`, formData)
       .then(() => {
@@ -97,7 +99,8 @@ const EditSport = ({ sportData }: Props) => {
   const uploadImage = async (e: any) => {
     try {
       const file = e.target.files[0];
-      setPlayerImage(file);
+      const image = await AppUtils.resizeImage(file);
+      setPlayerImage(image);
     } catch (err) {
       console.log(err);
     }

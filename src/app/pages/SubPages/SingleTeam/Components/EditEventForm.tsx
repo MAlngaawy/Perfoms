@@ -65,7 +65,6 @@ const EditEventForm = ({ event, refetch }: Props) => {
     try {
       const file = e.target.files[0];
       const image = await AppUtils.resizeImage(file);
-      console.log(image);
       setPlayerImage(image);
     } catch (err) {
       console.log(err);
@@ -85,6 +84,7 @@ const EditEventForm = ({ event, refetch }: Props) => {
     const formData = new FormData(e.currentTarget);
     formData.append("team", team_id || "0");
     formData.append("club", JSON.stringify(clubData?.id));
+    formData.set("icon", playerImage as string);
 
     axiosInstance
       .patch(
@@ -95,6 +95,8 @@ const EditEventForm = ({ event, refetch }: Props) => {
       )
       .then(() => {
         setLoading(false);
+        refetch();
+        setOpened(false);
         showNotification({
           message: "Event Updated",
           color: "green",
@@ -113,12 +115,20 @@ const EditEventForm = ({ event, refetch }: Props) => {
             },
           },
         });
-        refetch();
-        setOpened(false);
+
+        setPlayerImagePreview("null");
+        reset({
+          eventName: "",
+          eventLocation: "",
+        });
       })
       .catch((err) => {
         setLoading(false);
-
+        setPlayerImagePreview("null");
+        reset({
+          eventName: "",
+          eventLocation: "",
+        });
         showNotification({
           message: "please try again",
           color: "ref",
@@ -138,12 +148,6 @@ const EditEventForm = ({ event, refetch }: Props) => {
           },
         });
       });
-
-    setPlayerImagePreview("null");
-    reset({
-      eventName: "",
-      eventLocation: "",
-    });
   };
 
   const [changed, setChanged] = useState(false);

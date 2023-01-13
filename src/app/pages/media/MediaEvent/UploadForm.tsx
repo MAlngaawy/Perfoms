@@ -10,17 +10,18 @@ import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {
   refetch: any;
+  videoUrl: string | undefined;
 };
 
-const UploadForm = ({ refetch }: Props) => {
+const UploadForm = ({ refetch, videoUrl }: Props) => {
   const [opened, setOpened] = useState(false);
-  const [link, setLink] = useState<string>();
+  const [link, setLink] = useState<string | undefined>(videoUrl);
   const [isLoading, setIsLoading] = useState(false);
   const { id } = useParams();
   const [images, setImages] = useState<any>();
   const { data: user } = useUserQuery({});
 
-  const upload = (e: any) => {
+  const upload = async (e: any) => {
     e.preventDefault();
 
     // Youtube link upload
@@ -62,7 +63,8 @@ const UploadForm = ({ refetch }: Props) => {
     if (images) {
       // take these steps if there are an image to upload
       const formData = new FormData();
-      formData.append("file", images);
+      const resizedImage = await AppUtils.resizeImage(images);
+      formData.append("file", resizedImage as string);
       setIsLoading(true);
 
       try {
@@ -128,6 +130,7 @@ const UploadForm = ({ refetch }: Props) => {
             type="text"
             name="youtubeLink"
             placeholder="Add youtube Link"
+            defaultValue={videoUrl}
             onChange={(v: any) => setLink(v.target.value)}
             sx={{
               ".mantine-Input-input": {
@@ -146,7 +149,6 @@ const UploadForm = ({ refetch }: Props) => {
             }}
             placeholder="Upload files"
             onChange={(e) => {
-              console.log(e);
               setImages(e);
             }}
             name="file"

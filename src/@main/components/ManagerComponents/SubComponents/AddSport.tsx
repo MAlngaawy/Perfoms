@@ -13,6 +13,7 @@ import {
   useAdminClubQuery,
   useAdminSportsQuery,
 } from "~/app/store/clubManager/clubManagerApi";
+import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {};
 
@@ -46,6 +47,8 @@ const AddSport = (props: Props) => {
       formData.append("club", JSON.stringify(adminClub?.id));
     }
 
+    formData.set("icon", playerImage as string);
+
     axiosInstance
       .post("/club-manager/add-sport/", formData)
       .then(() => {
@@ -74,7 +77,7 @@ const AddSport = (props: Props) => {
       })
       .catch((err) => {
         showNotification({
-          message: err.response.data.message,
+          message: "Can't Add Now",
           color: "red",
           title: "Wrong",
           styles: {
@@ -99,7 +102,8 @@ const AddSport = (props: Props) => {
   const uploadImage = async (e: any) => {
     try {
       const file = e.target.files[0];
-      setPlayerImage(file);
+      const image = await AppUtils.resizeImage(file);
+      setPlayerImage(image);
     } catch (err) {
       console.log(err);
     }

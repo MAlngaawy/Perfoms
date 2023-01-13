@@ -88,7 +88,9 @@ const Sports = (props: Props) => {
               >
                 <Avatar size={"lg"} src={sport?.icon_url} alt="icon" />
               </Link>
-              <h2 className="text-xl text-perfBlue">{sport?.name}</h2>
+              <h2 className="text-xl w-40 text-center text-perfBlue">
+                {sport?.name}
+              </h2>
               {/* Edit and Delete Buttons */}
               <div className="flex absolute right-2 top-5 gap-2">
                 <EditSport sportData={sport} />
@@ -110,7 +112,9 @@ const Sports = (props: Props) => {
           >
             <Avatar size={"xl"} src={sport?.icon_url} alt="icon" />
           </Link>
-          <h2 className="text-xl text-perfBlue">{sport?.name}</h2>
+          <h2 className="text-xl w-40 text-center text-perfBlue">
+            {sport?.name}
+          </h2>
         </div>
       )}
       {sports && <AddSport />}

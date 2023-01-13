@@ -56,7 +56,6 @@ const AddKpi = (props: Props) => {
     try {
       const file = e.target.files[0];
       const image = await AppUtils.resizeImage(file);
-      console.log(image);
       setPlayerImage(image);
     } catch (err) {
       console.log(err);
@@ -66,6 +65,7 @@ const AddKpi = (props: Props) => {
   const addKpiFun = (e: any) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
+    formData.set("icon", playerImage as string);
     setError(false);
     try {
       setIsLoading(true);

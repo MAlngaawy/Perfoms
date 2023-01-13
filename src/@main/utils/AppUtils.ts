@@ -384,8 +384,8 @@ class AppUtils {
     new Promise((resolve) => {
       Resizer.imageFileResizer(
         file,
-        200,
-        200,
+        1000,
+        1000,
         "JPEG",
         100,
         0,

@@ -66,11 +66,6 @@ const AddEventForm = ({ refetch }: Props) => {
   // Submit Form Function
   const onSubmitFunction = (e: any) => {
     e.preventDefault();
-
-    // const paramData = {
-    //   team: team_id,
-    //   club: clubData?.id,
-    // };
     const formData = new FormData(e.currentTarget);
     if (team_id) {
       formData.append("team", team_id);

@@ -75,6 +75,9 @@ const EditButton = ({ teamData }: Props) => {
     e.preventDefault();
     setLoading(true);
     const formData = new FormData(e.currentTarget);
+    if (playerImage) {
+      formData.set("icon", playerImage as string);
+    }
 
     try {
       axiosInstance

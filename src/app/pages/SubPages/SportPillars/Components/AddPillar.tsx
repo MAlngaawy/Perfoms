@@ -49,7 +49,6 @@ const AddPillar = (props: Props) => {
     try {
       const file = e.target.files[0];
       const image = await AppUtils.resizeImage(file);
-      console.log(image);
       setPlayerImage(image);
     } catch (err) {
       console.log(err);
@@ -59,6 +58,7 @@ const AddPillar = (props: Props) => {
   const addPillarFun = (e: any) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
+    formData.set("icon", playerImage as string);
     if (sport_id) formData.append("sport", sport_id);
     setError(false);
     try {

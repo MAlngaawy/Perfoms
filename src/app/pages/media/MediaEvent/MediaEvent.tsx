@@ -67,6 +67,7 @@ const MediaEvent = () => {
       </div>
       {(user?.user_type === "Supervisor" || user?.user_type === "Admin") && (
         <UploadForm
+          videoUrl={files?.video_url}
           refetch={() => {
             if (user?.user_type === "Supervisor") {
               superRefetch();

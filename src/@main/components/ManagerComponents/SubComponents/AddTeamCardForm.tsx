@@ -76,6 +76,7 @@ const AddTeamCardForm = (props: Props) => {
     e.preventDefault();
     setLoading(true);
     const formData = new FormData(e.currentTarget);
+    formData.set("icon", playerImage as string);
     try {
       axiosInstance
         .post(
@@ -118,7 +119,6 @@ const AddTeamCardForm = (props: Props) => {
     try {
       const file = e.target.files[0];
       const image = await AppUtils.resizeImage(file);
-      console.log(image);
       setPlayerImage(image);
     } catch (err) {
       console.log(err);
