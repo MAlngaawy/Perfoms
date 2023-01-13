@@ -24,6 +24,7 @@ type Props = {
 const AddEventForm = ({ refetch }: Props) => {
   const [opened, setOpened] = useState(false);
   const [playerImage, setPlayerImage] = useState<any>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [playerImagePreview, setPlayerImagePreview] = useState("null");
   const [clubData, setclubData] = useState<ParentClub>();
   const { team_id } = useParams();
@@ -65,6 +66,7 @@ const AddEventForm = ({ refetch }: Props) => {
 
   // Submit Form Function
   const onSubmitFunction = (e: any) => {
+    setIsLoading(true);
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     if (team_id) {
@@ -89,8 +91,10 @@ const AddEventForm = ({ refetch }: Props) => {
         });
         refetch();
         setOpened(false);
+        setIsLoading(false);
       })
       .catch((err) => {
+        setIsLoading(false);
         AppUtils.showNotificationFun("Error", "Sorry", "please try again");
         setPlayerImagePreview("null");
         reset({
@@ -229,7 +233,7 @@ const AddEventForm = ({ refetch }: Props) => {
               />
             </Input.Wrapper>
 
-            <SubmitButton isLoading={false} text="Add Event" />
+            <SubmitButton isLoading={isLoading} text="Add Event" />
           </form>
         </Modal>
 
