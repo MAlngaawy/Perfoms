@@ -11,7 +11,13 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { usePlayerKpisMetricsQuery } from "~/app/store/parent/parentApi";
+import {
+  usePlayerWeaknessQuery,
+  usePlayerKpisMetricsQuery,
+  usePlayerStrengthQuery,
+  usePlayerActionsQuery,
+  usePlayerRecommendationsQuery,
+} from "~/app/store/parent/parentApi";
 import {
   selectedPlayerFn,
   selectedPlayerTeamFn,
@@ -28,6 +34,9 @@ import { useAdminPlayerKpisMetricsStatisticsQuery } from "~/app/store/clubManage
 import { useUserQuery } from "~/app/store/user/userApi";
 
 const SaleStaticChart = () => {
+  const [data, setData] = useState<any>();
+  const [newActions, setNewActions] = useState<{}[]>();
+  const [newRecommendations, setNewRecommendations] = useState<{}[]>();
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const timeFilter = useSelector(timeFilterFn);
@@ -98,12 +107,63 @@ const SaleStaticChart = () => {
     }
   );
 
+  // Fetch data for Parent
+  const { data: strength } = usePlayerStrengthQuery(
+    { player_id: selectedPlayer?.id },
+    { skip: !selectedPlayer?.id || user?.user_type !== "Parent" }
+  );
+  const { data: weakness } = usePlayerWeaknessQuery(
+    { player_id: selectedPlayer?.id },
+    { skip: !selectedPlayer?.id || user?.user_type !== "Parent" }
+  );
+  const { data: parentPlayerActions } = usePlayerActionsQuery(
+    { id: selectedPlayer?.id },
+    { skip: !selectedPlayer?.id || user?.user_type !== "Parent" }
+  );
+  const { data: parentPlayerRecommendations } = usePlayerRecommendationsQuery(
+    { id: selectedPlayer?.id },
+    { skip: !selectedPlayer?.id || user?.user_type !== "Parent" }
+  );
+
   useEffect(() => {
+    // Edit PlayerAction formates to match the components needed formate
+
+    if (parentPlayerActions) {
+      const newActionsTest = parentPlayerActions.results.map((action) => {
+        return {
+          id: action.id,
+          metric: action.metric.name,
+          name: action.name,
+        };
+      });
+
+      setNewActions(newActionsTest);
+    }
+    if (parentPlayerRecommendations) {
+      const newRecommendationsTest = parentPlayerRecommendations.results.map(
+        (action) => {
+          return {
+            id: action.id,
+            metric: action.metric.name,
+            name: action.name,
+          };
+        }
+      );
+      setNewRecommendations(newRecommendationsTest);
+    }
+
     if (parentPlayerKpis) setPlayerKpis(parentPlayerKpis);
     if (coachPlayerKpis) setPlayerKpis(coachPlayerKpis);
     if (superPlayerKpis) setPlayerKpis(superPlayerKpis);
     if (adminPlayerKpis) setPlayerKpis(adminPlayerKpis);
-  }, [parentPlayerKpis, coachPlayerKpis, superPlayerKpis, adminPlayerKpis]);
+  }, [
+    parentPlayerKpis,
+    coachPlayerKpis,
+    superPlayerKpis,
+    adminPlayerKpis,
+    parentPlayerActions,
+    parentPlayerRecommendations,
+  ]);
 
   if (!playerKpis) {
     return (
@@ -134,6 +194,8 @@ const SaleStaticChart = () => {
           number={playerKpis ? playerKpis.strength_count : 0}
           bgColor="rgba(0, 224, 150, 0.1)"
           textColor="#27AE60"
+          player_id={selectedPlayer?.id}
+          data={strength?.results}
         >
           <Image
             width={30}
@@ -148,6 +210,8 @@ const SaleStaticChart = () => {
           number={playerKpis ? playerKpis.weakness_count : 0}
           bgColor="rgba(235, 87, 87, 0.1)"
           textColor="#EB5757"
+          player_id={selectedPlayer?.id}
+          data={weakness?.results}
         >
           <Image
             width={30}
@@ -162,6 +226,8 @@ const SaleStaticChart = () => {
           number={playerKpis ? playerKpis.action_count : 0}
           bgColor="rgba(47, 128, 237, 0.1)"
           textColor="#2F80ED"
+          player_id={selectedPlayer?.id}
+          data={newActions && newActions}
         >
           <Image
             width={30}
@@ -176,6 +242,8 @@ const SaleStaticChart = () => {
           number={playerKpis ? playerKpis.recommendation_count : 0}
           bgColor="rgba(0, 161, 255, 0.1)"
           textColor="#00A1FF"
+          player_id={selectedPlayer?.id}
+          data={newRecommendations && newRecommendations}
         >
           <Image
             width={30}
