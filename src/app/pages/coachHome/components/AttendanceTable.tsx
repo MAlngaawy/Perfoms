@@ -152,3 +152,17 @@ const TestCheckbox = ({ theDate, thisDate, theStatus, theID }: any) => {
     </>
   );
 };
+
+/**
+ *               .then((res) => {
+                //@ts-ignore
+                if (res.error) {
+                  console.log("Errorrrr");
+                } else {
+                  console.log("NOT Error");
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+ */

@@ -130,9 +130,9 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
     <div className="flex flex-col pdf-print bg-white py-2 min-h-fit overflow-scroll rounded-3xl">
       <div className="power_type px-5 py-2 flex flex-row justify-between items-center">
         <span className={` text-lg ${color}`}>{powerType}</span>
-        <p className="text-sm text-perfGray3">
+        {/* <p className="text-sm text-perfGray3">
           Score is out of {data?.results?.length}
-        </p>
+        </p> */}
       </div>
       <div
         className={`power_header ${bg}  px-5 py-2 bg-white flex flex-row justify-between`}

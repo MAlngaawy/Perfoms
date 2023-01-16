@@ -111,6 +111,9 @@ export type PerformanceCardProps = {
   textColor: string;
   children?: any;
   icon?: string;
+  data?: any;
+  powerType?: string;
+  player_id?: number;
 };
 
 export type PersonData = {

@@ -87,12 +87,28 @@ const TeamCalendar = ({ teamId }: Props) => {
                     superAddDay({
                       day: AppUtils.formatDate(date),
                       team: +teamId,
-                    });
+                    })
+                      .then(() => {})
+                      .catch(() => {
+                        AppUtils.showNotificationFun(
+                          "Error",
+                          "Can't add",
+                          "Please add players first"
+                        );
+                      });
                   } else if (user?.user_type === "Admin") {
                     adminAddDay({
                       day: AppUtils.formatDate(date),
                       team: +teamId,
-                    });
+                    })
+                      .then(() => {})
+                      .catch(() => {
+                        AppUtils.showNotificationFun(
+                          "Error",
+                          "Can't add",
+                          "Please add players first"
+                        );
+                      });
                   }
                 }}
               >
