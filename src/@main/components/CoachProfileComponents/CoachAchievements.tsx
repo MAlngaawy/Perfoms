@@ -17,6 +17,7 @@ import { UserAchievements } from "~/app/store/types/user-types";
 import { useParams } from "react-router-dom";
 import AppUtils from "~/@main/utils/AppUtils";
 import DeleteButton from "../ManagerComponents/SubComponents/DeleteButton";
+import InputMask from "react-input-mask";
 
 type Props = {
   data: Details | undefined;
@@ -120,7 +121,7 @@ function AddButton() {
   // Form Schema
   const schema = yup.object().shape({
     type: yup.string().required(),
-    year: yup.number().required(),
+    year: yup.string().required(),
     place: yup.string().required(),
   });
 
@@ -177,18 +178,17 @@ function AddButton() {
 
           <Input.Wrapper error={errors.year && "you must enter a valid year."}>
             <Input
-              placeholder="in any year you got this modal"
+              component={InputMask}
+              placeholder="Year"
               {...register("year")}
+              mask="9999"
             />
           </Input.Wrapper>
 
           <Input.Wrapper
             error={errors.place && (errors.place.message as ReactNode)}
           >
-            <Input
-              placeholder="Where you got this medal"
-              {...register("place")}
-            />
+            <Input placeholder="Place" {...register("place")} />
           </Input.Wrapper>
 
           <button type="submit" className="bg-perfBlue text-white p-2">
