@@ -25,6 +25,7 @@ import {
 import DeleteButton from "../ManagerComponents/SubComponents/DeleteButton";
 import { useNavigate, useParams } from "react-router-dom";
 import AppUtils from "~/@main/utils/AppUtils";
+import InputMask from "react-input-mask";
 
 // Props Types
 type Props = {
@@ -271,16 +272,19 @@ function EditCoachData({ data, refetch, educationData }: Edit) {
           />
 
           {/*Degree Input  */}
-          <Input name="degree" placeholder="Degree" />
+          <Input name="degree" placeholder="Degree" required />
 
           {/*Universty Input  */}
-          <Input name="universty" placeholder="Universty Name" />
+          <Input name="universty" placeholder="Universty Name" required />
 
           {/*Universty Input  */}
           <Input
+            component={InputMask}
+            required
             name="year"
-            type={"number"}
+            type={"string"}
             placeholder="Pick Graduation date"
+            mask="9999"
           />
 
           {/* Start And End Year */}
