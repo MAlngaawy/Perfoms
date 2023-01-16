@@ -42,7 +42,7 @@ const OTPComponent = (props: Props) => {
   return (
     <div className="flex flex-col gap-6 w-72 xs:w-96 justify-center items-center">
       <h2 className=" text-2xl font-medium text-perfBlue text-center">
-        Enter 6-Gigital numer you recived on your phone number
+        Enter 6-Digital number you recived on your phone number
       </h2>
       <OtpInput
         value={otp}

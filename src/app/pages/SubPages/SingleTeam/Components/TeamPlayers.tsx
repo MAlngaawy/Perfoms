@@ -40,7 +40,7 @@ const TeamPlayersComponent = ({ teamId }: Props) => {
 
   return (
     <div>
-      <h2>Payers</h2>
+      <h2>Players</h2>
       <div className="flex gap-4 flex-wrap mt-6">
         {players &&
           players.results.map((player) => {
