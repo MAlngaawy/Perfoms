@@ -35,7 +35,7 @@ const Navigation = ({ opened, setOpened }: Props) => {
             // boxShadow: "4px 8px 14px 0px #2D43771F",
             width: "-webkit-fill-available",
           }}
-          className="Test h-full flex flex-col overflow-scroll justify-start items-center gap-2 fixed"
+          className="Test h-full flex flex-col overflow-hidden justify-start items-center gap-2 fixed"
         >
           <Info />
           <NavList role={user?.user_type} setOpened={setOpened} />
