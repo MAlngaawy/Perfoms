@@ -1,4 +1,4 @@
-import React, { useState, ReactNode, useEffect } from "react";
+import React, { useState, ReactNode, useEffect, useRef } from "react";
 import { Modal, Group, Input, Textarea, Checkbox } from "@mantine/core";
 import AppIcons from "~/@main/core/AppIcons";
 import { Controller, useForm } from "react-hook-form";
@@ -276,6 +276,8 @@ const TitleWithIcon = ({ name }: { name: string }) => {
 function AddExperinces({ data: oldDetails }: { data: Details | undefined }) {
   const [opened, setOpened] = useState(false);
   const [checked, setChecked] = useState(false);
+  const checkbox: any = useRef(null);
+  const dateTo: any = useRef(null);
 
   const schema = yup.object().shape({
     date_from: yup.string(),
@@ -292,11 +294,12 @@ function AddExperinces({ data: oldDetails }: { data: Details | undefined }) {
     reset,
     watch,
     control,
+    setValue,
   } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const reserFields = () => {
+  const resetFields = () => {
     reset({
       date_from: null,
       date_to: null,
@@ -304,6 +307,23 @@ function AddExperinces({ data: oldDetails }: { data: Details | undefined }) {
       description: "",
       to_present: yup.boolean(),
     });
+  };
+
+  const handleCheck = () => {
+    if (!checked) {
+      setValue("date_to", new Date());
+      console.log("checked");
+    }
+  };
+
+  const handleUncheck = () => {
+    checkbox.current && checkbox.current?.checked === false;
+    setChecked(false);
+  };
+
+  const handleCloseModal = () => {
+    handleUncheck();
+    setOpened(false);
   };
 
   const [addExperience, { isLoading }] = useAddUserExperiencesMutation();
@@ -317,19 +337,20 @@ function AddExperinces({ data: oldDetails }: { data: Details | undefined }) {
     };
     addExperience(newData)
       .then(() => {
-        AppUtils.showNotificationFun("Success", "Done", "Experienc");
-        reserFields();
+        AppUtils.showNotificationFun("Success", "Done", "Experience");
+        resetFields();
         setOpened(false);
       })
       .catch((err) => {
         AppUtils.showNotificationFun("Error", "Sorry", "Something Went Wrong");
-        reserFields();
+        resetFields();
         setOpened(false);
       });
+    handleUncheck();
   };
   return (
     <>
-      <Modal opened={opened} onClose={() => setOpened(false)}>
+      <Modal opened={opened} onClose={handleCloseModal}>
         <form
           className="flex flex-col gap-4 "
           onSubmit={handleSubmit(onSubmitFunction)}
@@ -361,19 +382,28 @@ function AddExperinces({ data: oldDetails }: { data: Details | undefined }) {
                 inputFormat="YYYY-MM-DD"
                 {...field}
                 placeholder="Pick End date"
+                ref={dateTo}
               />
             )}
             control={control}
           />
-          <Checkbox
-            checked={checked}
-            {...register("to_present")}
-            onChange={(event) => setChecked(event.currentTarget.checked)}
-          />
+          <div className="flex flex-row gap-2">
+            <Checkbox
+              checked={checked}
+              {...register("to_present")}
+              onChange={(event) => setChecked(event.currentTarget.checked)}
+              id="current-job"
+              ref={checkbox}
+              onClick={handleCheck}
+            />
+            <label htmlFor="current-job" className="text-sm opacity-80">
+              I am currently working in this role
+            </label>
+          </div>
 
           {/* Works Input */}
           <Textarea
-            placeholder="Describe the experinces you got"
+            placeholder="Description"
             withAsterisk
             error={errors.bio && (errors.bio.message as ReactNode)}
             {...register("description")}
@@ -385,7 +415,9 @@ function AddExperinces({ data: oldDetails }: { data: Details | undefined }) {
 
       <Group position="center">
         <button
-          onClick={() => setOpened(true)}
+          onClick={() => {
+            setOpened(true);
+          }}
           className="text-sm xl:text-base p-2 transform hover:scale-105 duration-100 bg-white border border-perfGray3 rounded-lg text-perfGray3"
         >
           + Add Experiance
