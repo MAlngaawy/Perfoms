@@ -96,17 +96,10 @@ const TeamCalendar = ({ teamId }: Props) => {
                             "Can't add",
                             "Please add players first"
                           );
-                        } else {
-                          console.log(res);
                         }
                       })
                       .catch((err) => {
                         console.log(err);
-                        AppUtils.showNotificationFun(
-                          "Error",
-                          "Can't add",
-                          "Please add players first"
-                        );
                       });
                   } else if (user?.user_type === "Admin") {
                     adminAddDay({
@@ -120,16 +113,6 @@ const TeamCalendar = ({ teamId }: Props) => {
                             "Error",
                             "Can't add",
                             "Please add players first"
-                          );
-                        }
-
-                        //@ts-ignore
-                        if (res.data.errors === false) {
-                          AppUtils.showNotificationFun(
-                            "Success",
-                            "Done",
-                            //@ts-ignore
-                            res.data.message
                           );
                         }
                       })
