@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Table, Avatar, Skeleton } from "@mantine/core";
 import cn from "classnames";
 import {
@@ -13,57 +13,6 @@ import NoAttendancesYet from "~/@main/components/NoAttendancesYet";
 import NoTeamComp from "~/@main/components/NoTeamComp";
 
 type Props = {};
-// Doesn't matters what the arrange
-const kpiMetrics = [
-  {
-    kpiName: "Punish",
-    metrics: [
-      { name: "Right Leg", id: "1" },
-      { name: "Left Leg", id: "2" },
-    ],
-    id: 2,
-  },
-  {
-    kpiName: "right Leg",
-    metrics: [
-      { name: "Punching Technique", id: "3" },
-      { name: "Behavior", id: "4" },
-    ],
-    id: 3,
-  },
-  {
-    kpiName: "Pushing",
-    metrics: [
-      { name: "Stances Position In Court", id: "5" },
-      { name: "360", id: "6" },
-    ],
-    id: 1,
-  },
-  {
-    kpiName: "Punish",
-    metrics: [
-      { name: "Tifregi", id: "1" },
-      { name: "Titchagi", id: "2" },
-    ],
-    id: 2,
-  },
-  {
-    kpiName: "right Leg",
-    metrics: [
-      { name: "Endurance", id: "3" },
-      { name: "Balance", id: "4" },
-    ],
-    id: 3,
-  },
-  {
-    kpiName: "Pushing",
-    metrics: [
-      { name: "Flexibility", id: "5" },
-      { name: "Attacking Position in court", id: "6" },
-    ],
-    id: 1,
-  },
-];
 
 const PerformanceTable = (props: Props) => {
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);

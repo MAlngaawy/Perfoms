@@ -88,8 +88,20 @@ const TeamCalendar = ({ teamId }: Props) => {
                       day: AppUtils.formatDate(date),
                       team: +teamId,
                     })
-                      .then(() => {})
-                      .catch(() => {
+                      .then((res) => {
+                        //@ts-ignore
+                        if (res.error.status === 409) {
+                          AppUtils.showNotificationFun(
+                            "Error",
+                            "Can't add",
+                            "Please add players first"
+                          );
+                        } else {
+                          console.log(res);
+                        }
+                      })
+                      .catch((err) => {
+                        console.log(err);
                         AppUtils.showNotificationFun(
                           "Error",
                           "Can't add",
@@ -101,13 +113,28 @@ const TeamCalendar = ({ teamId }: Props) => {
                       day: AppUtils.formatDate(date),
                       team: +teamId,
                     })
-                      .then(() => {})
-                      .catch(() => {
-                        AppUtils.showNotificationFun(
-                          "Error",
-                          "Can't add",
-                          "Please add players first"
-                        );
+                      .then((res) => {
+                        //@ts-ignore
+                        if (res.error.status === 409) {
+                          AppUtils.showNotificationFun(
+                            "Error",
+                            "Can't add",
+                            "Please add players first"
+                          );
+                        }
+
+                        //@ts-ignore
+                        if (res.data.errors === false) {
+                          AppUtils.showNotificationFun(
+                            "Success",
+                            "Done",
+                            //@ts-ignore
+                            res.data.message
+                          );
+                        }
+                      })
+                      .catch((err) => {
+                        console.log(err);
                       });
                   }
                 }}

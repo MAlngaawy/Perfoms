@@ -46,76 +46,10 @@ const AttendanceTable = (props: Props) => {
     <>
       {selectedPlayerTeam ? (
         <div className="tableWrapper overflow-scroll relative m-6 bg-white rounded-lg text-center">
-          <Table
-            withBorder
-            highlightOnHover
-            verticalSpacing={"sm"}
-            horizontalSpacing={30}
-          >
-            <thead>
-              <tr className="">
-                <th className="bg-white sticky  top-0 z-20 ">Day</th>
-                {teamAttendance?.results.map((player) => (
-                  <th
-                    key={player.id}
-                    className="bg-white sticky top-0 z-20 text-center "
-                  >
-                    <div className="flex  flex-col justify-center items-center">
-                      <Avatar radius={"xl"} size="md" src={player.icon} />
-                      <span>{player.name}</span>
-                    </div>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="overflow-scroll">
-              {teamAttendanceDays?.results &&
-              teamAttendanceDays?.results.length > 0 ? (
-                <>
-                  {teamAttendanceDays?.results.map((item) => {
-                    const thisDate = item.day;
-                    return (
-                      <tr key={item.day} className="">
-                        <td className="text-xs font-medium text-center px-0 sticky left-0 bg-white z-10 text-perfGray1">
-                          {thisDate}
-                          {/* {thisDate.getDate() - 1}/ {thisDate.getMonth() + 1} /
-                          {thisDate.getFullYear()} */}
-                        </td>
-                        {teamAttendance?.results.map((player) => {
-                          let theDate = "";
-                          let theStatus = "";
-                          let theID = 0;
-                          for (let i of player.player_attendance) {
-                            if (i.day === thisDate) {
-                              theDate = i.day;
-                              theStatus = i.status;
-                              theID = i.id;
-                            }
-                          }
-                          return (
-                            <td key={player.id}>
-                              <TestCheckbox
-                                theDate={theDate}
-                                thisDate={thisDate}
-                                theStatus={theStatus}
-                                theID={theID}
-                              />
-                            </td>
-                          );
-                        })}
-                      </tr>
-                    );
-                  })}
-                </>
-              ) : (
-                <tr>
-                  <td>
-                    <NoAttendancesYet />
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </Table>
+          <CreateContentTable
+            teamAttendance={teamAttendance}
+            teamAttendanceDays={teamAttendanceDays}
+          />
         </div>
       ) : (
         <NoTeamComp />
@@ -125,7 +59,9 @@ const AttendanceTable = (props: Props) => {
 };
 export default memo(AttendanceTable);
 
-const TestCheckbox = ({ theDate, thisDate, theStatus, theID }: any) => {
+const TestCheckbox = memo(({ theDate, thisDate, theStatus, theID }: any) => {
+  console.log("TESTTT3Check");
+
   const [updateAttend, { isLoading: isUpdating }] =
     useCoachUpdateAttendanceMutation();
 
@@ -150,6 +86,88 @@ const TestCheckbox = ({ theDate, thisDate, theStatus, theID }: any) => {
         />
       )}
     </>
+  );
+});
+
+// srparate the code for performance
+const CreateContentTable = ({ teamAttendance, teamAttendanceDays }: any) => {
+  return (
+    <Table
+      withBorder
+      highlightOnHover
+      verticalSpacing={"sm"}
+      horizontalSpacing={30}
+    >
+      <TableHead teamAttendance={teamAttendance} />
+      <tbody className="overflow-scroll">
+        {teamAttendanceDays?.results &&
+        teamAttendanceDays?.results.length > 0 ? (
+          <>
+            {teamAttendanceDays?.results.map((item: any) => {
+              const thisDate = item.day;
+              return (
+                <tr key={item.day} className="">
+                  <td className="text-xs font-medium text-center px-0 sticky left-0 bg-white z-10 text-perfGray1">
+                    {thisDate}
+                    {/* {thisDate.getDate() - 1}/ {thisDate.getMonth() + 1} /
+                  {thisDate.getFullYear()} */}
+                  </td>
+                  {teamAttendance?.results.map((player: any) => {
+                    let theDate = "";
+                    let theStatus = "";
+                    let theID = 0;
+                    for (let i of player.player_attendance) {
+                      if (i.day === thisDate) {
+                        theDate = i.day;
+                        theStatus = i.status;
+                        theID = i.id;
+                      }
+                    }
+                    return (
+                      <td key={player.id}>
+                        <TestCheckbox
+                          theDate={theDate}
+                          thisDate={thisDate}
+                          theStatus={theStatus}
+                          theID={theID}
+                        />
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </>
+        ) : (
+          <tr>
+            <td>
+              <NoAttendancesYet />
+            </td>
+          </tr>
+        )}
+      </tbody>
+    </Table>
+  );
+};
+
+const TableHead = ({ teamAttendance }: any) => {
+  return (
+    <thead>
+      <tr className="">
+        <th className="bg-white sticky  top-0 z-20 ">Day</th>
+        {teamAttendance?.results.map((player: any) => (
+          <th
+            key={player.id}
+            className="bg-white sticky top-0 z-20 text-center "
+          >
+            <div className="flex  flex-col justify-center items-center">
+              <Avatar radius={"xl"} size="md" src={player.icon} />
+              <span>{player.name}</span>
+            </div>
+          </th>
+        ))}
+      </tr>
+    </thead>
   );
 };
 
