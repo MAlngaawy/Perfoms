@@ -350,7 +350,12 @@ export const coachApi = createApi({
 
     coachPlayerCalendar: query<
       PlayerAttendances,
-      { player_id: string | number | undefined; pages?: number }
+      {
+        player_id: string | number | undefined;
+        date_from: string | undefined;
+        date_to: string | undefined;
+        pages?: number;
+      }
     >({
       query: ({ player_id, ...params }) => ({
         url: `${player_id}/calendar`,

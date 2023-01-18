@@ -9,7 +9,7 @@ import { timeFilter, timeFilterFn } from "./../../app/store/parent/parentSlice";
 
 type Props = {};
 
-const thisWeek = () => {
+export const thisWeek = () => {
   var curr = new Date(); // get current date
   var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
   var last = first + 6; // last day is the first day + 6
@@ -20,7 +20,7 @@ const thisWeek = () => {
   };
 };
 
-const lastWeek = () => {
+export const lastWeek = () => {
   var curr = new Date(); // get current date
   var first = curr.getDate() - curr.getDay() - 7; // First day is the day of the month - the day of the week
   var last = first + 6; // last day is the first day + 6
@@ -33,7 +33,7 @@ const lastWeek = () => {
   };
 };
 
-const last2Weeks = () => {
+export const last2Weeks = () => {
   var curr = new Date(); // get current date
   var first = curr.getDate() - curr.getDay() - 14; // First day is the day of the month - the day of the week
   var last = first + 13; // last day is the first day + 6
@@ -46,7 +46,7 @@ const last2Weeks = () => {
   };
 };
 
-const thisMonth = () => {
+export const thisMonth = () => {
   let date = new Date(),
     y = date.getFullYear(),
     m = date.getMonth();
@@ -58,7 +58,7 @@ const thisMonth = () => {
   };
 };
 
-const lastMonth = () => {
+export const lastMonth = () => {
   let date = new Date(),
     y = date.getFullYear(),
     m = date.getMonth() - 1;
@@ -67,13 +67,13 @@ const lastMonth = () => {
   return { firstday, lastday };
 };
 
-const thisYear = () => {
+export const thisYear = () => {
   let firstday = new Date(new Date().getFullYear(), 0, 1);
   let lastday = new Date(new Date().getFullYear(), 11, 31);
   return { firstday, lastday };
 };
 
-const lastYear = () => {
+export const lastYear = () => {
   let firstday = new Date(new Date().getFullYear() - 1, 0, 1);
   let lastday = new Date(new Date().getFullYear() - 1, 11, 31);
   return { firstday, lastday };

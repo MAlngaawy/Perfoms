@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 import { useCoachPlayerCalendarQuery } from "~/app/store/coach/coachApi";
 import { useSuperPlayerCalendarQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { useAdminPlayerCalendarQuery } from "~/app/store/clubManager/clubManagerApi";
+import { thisMonth } from "./TimeFilter";
+import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {
   pageName?: "reports";
@@ -17,15 +19,17 @@ type Props = {
 const CustomCalendar = ({ pageName, player_id }: Props) => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
   const [playerAttendance, setPlayerAttendance] = useState<PlayerAttendances>();
+  const fromDate = AppUtils.formatDate(thisMonth().firstday);
+  const toDate = AppUtils.formatDate(thisMonth().lastday);
 
   const { data: parentPlayerAttendance } = usePlayerCalendarQuery(
-    { id: selectedPlayer?.id },
-    { skip: !selectedPlayer?.id }
+    { id: selectedPlayer?.id, date_from: fromDate, date_to: toDate },
+    { skip: !selectedPlayer?.id || !fromDate || !toDate }
   );
 
   const { data: coachPlayerAttendance } = useCoachPlayerCalendarQuery(
-    { player_id: player_id },
-    { skip: !player_id }
+    { player_id: player_id, date_from: fromDate, date_to: toDate },
+    { skip: !player_id || !fromDate || !toDate }
   );
 
   const { data: superPlayerAttendance } = useSuperPlayerCalendarQuery(
