@@ -60,8 +60,6 @@ const AttendanceTable = (props: Props) => {
 export default memo(AttendanceTable);
 
 const TestCheckbox = memo(({ theDate, thisDate, theStatus, theID }: any) => {
-  console.log("TESTTT3Check");
-
   const [updateAttend, { isLoading: isUpdating }] =
     useCoachUpdateAttendanceMutation();
 
@@ -90,67 +88,69 @@ const TestCheckbox = memo(({ theDate, thisDate, theStatus, theID }: any) => {
 });
 
 // srparate the code for performance
-const CreateContentTable = ({ teamAttendance, teamAttendanceDays }: any) => {
-  return (
-    <Table
-      withBorder
-      highlightOnHover
-      verticalSpacing={"sm"}
-      horizontalSpacing={30}
-    >
-      <TableHead teamAttendance={teamAttendance} />
-      <tbody className="overflow-scroll">
-        {teamAttendanceDays?.results &&
-        teamAttendanceDays?.results.length > 0 ? (
-          <>
-            {teamAttendanceDays?.results.map((item: any) => {
-              const thisDate = item.day;
-              return (
-                <tr key={item.day} className="">
-                  <td className="text-xs font-medium text-center px-0 sticky left-0 bg-white z-10 text-perfGray1">
-                    {thisDate}
-                    {/* {thisDate.getDate() - 1}/ {thisDate.getMonth() + 1} /
+const CreateContentTable = memo(
+  ({ teamAttendance, teamAttendanceDays }: any) => {
+    return (
+      <Table
+        withBorder
+        highlightOnHover
+        verticalSpacing={"sm"}
+        horizontalSpacing={30}
+      >
+        <TableHead teamAttendance={teamAttendance} />
+        <tbody className="overflow-scroll">
+          {teamAttendanceDays?.results &&
+          teamAttendanceDays?.results.length > 0 ? (
+            <>
+              {teamAttendanceDays?.results.map((item: any) => {
+                const thisDate = item.day;
+                return (
+                  <tr key={item.day} className="">
+                    <td className="text-xs font-medium text-center px-0 sticky left-0 bg-white z-10 text-perfGray1">
+                      {thisDate}
+                      {/* {thisDate.getDate() - 1}/ {thisDate.getMonth() + 1} /
                   {thisDate.getFullYear()} */}
-                  </td>
-                  {teamAttendance?.results.map((player: any) => {
-                    let theDate = "";
-                    let theStatus = "";
-                    let theID = 0;
-                    for (let i of player.player_attendance) {
-                      if (i.day === thisDate) {
-                        theDate = i.day;
-                        theStatus = i.status;
-                        theID = i.id;
+                    </td>
+                    {teamAttendance?.results.map((player: any) => {
+                      let theDate = "";
+                      let theStatus = "";
+                      let theID = 0;
+                      for (let i of player.player_attendance) {
+                        if (i.day === thisDate) {
+                          theDate = i.day;
+                          theStatus = i.status;
+                          theID = i.id;
+                        }
                       }
-                    }
-                    return (
-                      <td key={player.id}>
-                        <TestCheckbox
-                          theDate={theDate}
-                          thisDate={thisDate}
-                          theStatus={theStatus}
-                          theID={theID}
-                        />
-                      </td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
-          </>
-        ) : (
-          <tr>
-            <td>
-              <NoAttendancesYet />
-            </td>
-          </tr>
-        )}
-      </tbody>
-    </Table>
-  );
-};
+                      return (
+                        <td key={player.id}>
+                          <TestCheckbox
+                            theDate={theDate}
+                            thisDate={thisDate}
+                            theStatus={theStatus}
+                            theID={theID}
+                          />
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+            </>
+          ) : (
+            <tr>
+              <td>
+                <NoAttendancesYet />
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </Table>
+    );
+  }
+);
 
-const TableHead = ({ teamAttendance }: any) => {
+const TableHead = memo(({ teamAttendance }: any) => {
   return (
     <thead>
       <tr className="">
@@ -169,7 +169,7 @@ const TableHead = ({ teamAttendance }: any) => {
       </tr>
     </thead>
   );
-};
+});
 
 /**
  *               .then((res) => {
