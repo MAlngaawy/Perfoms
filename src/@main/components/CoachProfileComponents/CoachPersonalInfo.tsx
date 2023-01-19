@@ -279,33 +279,14 @@ function EditCoachData({ data, refetch, educationData }: Edit) {
 
           {/*Universty Input  */}
           <Input
-            component={InputMask}
+            // component={InputMask}
             required
             name="year"
-            type={"string"}
-            placeholder="Pick Graduation date"
-            mask="9999"
+            type={"number"}
+            placeholder="Pick Graduation date: e.g 2012"
+            min={1900}
+            max={3000}
           />
-
-          {/* Start And End Year */}
-          {/* <DatePicker
-            inputFormat="DD/MM/YYYY"
-            defaultValue={
-              data?.details?.education?.from
-                ? new Date(data?.details?.education?.from as unknown as Date)
-                : new Date()
-            }
-            name="from"
-            placeholder="Pick Start date"
-          /> */}
-
-          {/* <DatePicker
-            inputFormat="DD/MM/YYYY"
-            name="year"
-            placeholder={
-              JSON.stringify(educationData?.year) || "Pick Graduation date"
-            }
-          /> */}
 
           <SubmitButton isLoading={isLoading} text="Save" />
         </form>
