@@ -1,11 +1,12 @@
 import React from "react";
 import { Player } from "~/app/store/types/parent-types";
 import { useSelector } from "react-redux";
-import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
+import { selectedPlayerFn, timeFilterFn } from "~/app/store/parent/parentSlice";
 import { usePlayerCalendarQuery } from "~/app/store/parent/parentApi";
 import { useCoachPlayerCalendarQuery } from "~/app/store/coach/coachApi";
 import { useSuperPlayerCalendarQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { useAdminPlayerCalendarQuery } from "~/app/store/clubManager/clubManagerApi";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {
   player_id?: number | string | undefined;
@@ -13,14 +14,36 @@ type Props = {
 
 const AttendancesSmallCards = ({ player_id }: Props) => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
-  const { data: playerAttendance } = usePlayerCalendarQuery(
-    { id: selectedPlayer?.id },
-    { skip: !selectedPlayer?.id }
-  );
+  const timeFilter = useSelector(timeFilterFn);
+  const { data: user } = useUserQuery({});
 
+  const { data: parentPlayerAttendance } = usePlayerCalendarQuery(
+    {
+      id: selectedPlayer?.id,
+      date_from: timeFilter?.from_date,
+      date_to: timeFilter?.to_date,
+    },
+    {
+      skip:
+        !selectedPlayer?.id ||
+        !timeFilter?.from_date ||
+        !timeFilter?.to_date ||
+        user?.user_type !== "Parent",
+    }
+  );
   const { data: coachPlayerAttendance } = useCoachPlayerCalendarQuery(
-    { player_id: player_id },
-    { skip: !player_id }
+    {
+      player_id: player_id,
+      date_from: timeFilter?.from_date,
+      date_to: timeFilter?.to_date,
+    },
+    {
+      skip:
+        !player_id ||
+        !timeFilter?.from_date ||
+        !timeFilter?.to_date ||
+        user?.user_type !== "Coach",
+    }
   );
 
   const { data: superPlayerAttendance } = useSuperPlayerCalendarQuery(
@@ -35,11 +58,11 @@ const AttendancesSmallCards = ({ player_id }: Props) => {
 
   const newData = [0, 0];
 
-  if (playerAttendance) {
-    for (let i = 0; i < playerAttendance?.results?.length; i++) {
-      if (playerAttendance?.results[i].status === "ATTENDED") {
+  if (parentPlayerAttendance) {
+    for (let i = 0; i < parentPlayerAttendance?.results?.length; i++) {
+      if (parentPlayerAttendance?.results[i].status === "ATTENDED") {
         newData[0] += 1;
-      } else if (playerAttendance?.results[i].status === "ABSENT") {
+      } else if (parentPlayerAttendance?.results[i].status === "ABSENT") {
         newData[1] += 1;
       }
     }

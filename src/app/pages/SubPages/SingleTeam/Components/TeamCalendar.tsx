@@ -88,26 +88,36 @@ const TeamCalendar = ({ teamId }: Props) => {
                       day: AppUtils.formatDate(date),
                       team: +teamId,
                     })
-                      .then(() => {})
-                      .catch(() => {
-                        AppUtils.showNotificationFun(
-                          "Error",
-                          "Can't add",
-                          "Please add players first"
-                        );
+                      .then((res) => {
+                        //@ts-ignore
+                        if (res.error.status === 409) {
+                          AppUtils.showNotificationFun(
+                            "Error",
+                            "Can't add",
+                            "Please add players first"
+                          );
+                        }
+                      })
+                      .catch((err) => {
+                        console.log(err);
                       });
                   } else if (user?.user_type === "Admin") {
                     adminAddDay({
                       day: AppUtils.formatDate(date),
                       team: +teamId,
                     })
-                      .then(() => {})
-                      .catch(() => {
-                        AppUtils.showNotificationFun(
-                          "Error",
-                          "Can't add",
-                          "Please add players first"
-                        );
+                      .then((res) => {
+                        //@ts-ignore
+                        if (res.error.status === 409) {
+                          AppUtils.showNotificationFun(
+                            "Error",
+                            "Can't add",
+                            "Please add players first"
+                          );
+                        }
+                      })
+                      .catch((err) => {
+                        console.log(err);
                       });
                   }
                 }}

@@ -33,6 +33,7 @@ export type TeamKpiMetric = {
     id: number;
     last_score: number;
     metric: string;
+    kpi: string;
   }[];
 };
 
