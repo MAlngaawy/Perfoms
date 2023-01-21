@@ -204,7 +204,7 @@ export const userApi = createApi({
           const { data } = await queryFulfilled;
           //@ts-ignore
           Cookies.set("token", data.access);
-          eventInstance.emit("Login_Success");
+          // eventInstance.emit("Login_Success");
         } catch (error) {
           showNotification({
             title: "Auth notification",

@@ -28,7 +28,7 @@ const OTPComponent = (props: Props) => {
   useEffect(() => {
     if (isSuccess) {
       if (type === "reset") {
-        navigate(`/reser-password?usermobile=${mobile}`);
+        navigate(`/reset-password?usermobile=${mobile}`);
       } else if (type === "new") {
         if (userRole === "Coach") {
           navigate(`/coachRequestSent`);
