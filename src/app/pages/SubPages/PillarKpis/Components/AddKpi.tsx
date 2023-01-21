@@ -6,7 +6,7 @@ import Resizer from "react-image-file-resizer";
 import cn from "classnames";
 import SubmitButton from "../../../../../@main/components/SubmitButton";
 import { axiosInstance } from "../../../../configs/dataService";
-import { useUserQuery } from "~/app/store/user/userApi";
+import { useGeneralKpisQuery, useUserQuery } from "~/app/store/user/userApi";
 import { useParams } from "react-router-dom";
 import { useAdminKpisQuery } from "~/app/store/clubManager/clubManagerApi";
 import { useSuperKpisQuery } from "~/app/store/supervisor/supervisorMainApi";
@@ -23,6 +23,8 @@ const AddKpi = (props: Props) => {
   const [error, setError] = useState<boolean | string>(false);
   const { data: user } = useUserQuery({});
   const { pillar_id } = useParams();
+
+  const { refetch: refetchGeneralKpis } = useGeneralKpisQuery({});
 
   const { refetch: superRefetchKpis } = useSuperKpisQuery(
     {
@@ -105,6 +107,7 @@ const AddKpi = (props: Props) => {
               },
             },
           });
+          refetchGeneralKpis();
         })
         .catch((err) => {
           setIsLoading(false);

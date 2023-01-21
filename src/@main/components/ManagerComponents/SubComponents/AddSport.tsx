@@ -14,6 +14,7 @@ import {
   useAdminSportsQuery,
 } from "~/app/store/clubManager/clubManagerApi";
 import AppUtils from "~/@main/utils/AppUtils";
+import { useGeneralSportsQuery } from "~/app/store/user/userApi";
 
 type Props = {};
 
@@ -24,7 +25,7 @@ const AddSport = (props: Props) => {
   const { data: adminClub } = useAdminClubQuery({});
   const { refetch } = useAdminSportsQuery({});
   const [loading, setLoading] = useState<boolean>(false);
-
+  const { refetch: refetchGeneralSports } = useGeneralSportsQuery({});
   const resetFields = () => {
     setPlayerImage(null);
   };
@@ -76,6 +77,7 @@ const AddSport = (props: Props) => {
         setLoading(false);
         resetFields();
         refetch();
+        refetchGeneralSports();
       })
       .catch((err) => {
         showNotification({

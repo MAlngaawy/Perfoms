@@ -8,7 +8,7 @@ import Resizer from "react-image-file-resizer";
 import cn from "classnames";
 import SubmitButton from "../../../../../@main/components/SubmitButton";
 import { axiosInstance } from "../../../../configs/dataService";
-import { useUserQuery } from "~/app/store/user/userApi";
+import { useGeneralPillarsQuery, useUserQuery } from "~/app/store/user/userApi";
 import { useParams } from "react-router-dom";
 import { useAdminPillarsQuery } from "~/app/store/clubManager/clubManagerApi";
 import { useSuperPillarsQuery } from "~/app/store/supervisor/supervisorMainApi";
@@ -33,6 +33,8 @@ const AddPillar = (props: Props) => {
     { sport_id: sport_id },
     { skip: !sport_id }
   );
+
+  const { refetch: RefetchGeneralPillars } = useGeneralPillarsQuery({});
 
   const resetFields = () => {
     setPlayerImage(null);
@@ -99,6 +101,7 @@ const AddPillar = (props: Props) => {
               },
             },
           });
+          RefetchGeneralPillars();
         })
         .catch((err) => {
           setIsLoading(false);

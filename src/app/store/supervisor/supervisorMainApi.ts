@@ -52,7 +52,7 @@ export const supervisorApi = createApi({
     baseUrl: `${BASE_URL}/supervisor`,
     prepareHeaders: BASE_HEADERS,
   }),
-  tagTypes: ["supervisor", "calendar", "metrics"],
+  tagTypes: ["supervisor", "calendar", "metrics", "kpis"],
   endpoints: ({ query, mutation }) => ({
     superKpis: query<
       Kpis,
@@ -62,6 +62,7 @@ export const supervisorApi = createApi({
         url: `${pillar_id}/kpis/`,
         params,
       }),
+      providesTags: ["kpis"],
     }),
     superTeams: query<Teams, { page?: number }>({
       query: (params) => ({ url: "teams/", params }),
@@ -152,6 +153,7 @@ export const supervisorApi = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["kpis"],
     }),
 
     superAddAction: mutation<AddAction, AddAction>({

@@ -10,7 +10,7 @@ import SubmitButton from "../../SubmitButton";
 import PerfSelect from "../../Select";
 import { axiosInstance } from "~/app/configs/dataService";
 import { showNotification } from "@mantine/notifications";
-import { useUserQuery } from "~/app/store/user/userApi";
+import { useGeneralTeamsQuery, useUserQuery } from "~/app/store/user/userApi";
 import { Sports } from "~/app/store/types/clubManager-types";
 import {
   useAdminSportsQuery,
@@ -33,6 +33,7 @@ const AddTeamCardForm = (props: Props) => {
   const { refetch: superRefetch } = useSuperTeamsQuery({});
   const { refetch: adminRefetch } = useAdminTeamsQuery({});
   const { data: AdminSports } = useAdminSportsQuery({});
+  const { refetch: RefetchGeneralTeams } = useGeneralTeamsQuery({});
 
   useEffect(() => {
     if (AdminSports) setSports(AdminSports);
@@ -101,6 +102,7 @@ const AddTeamCardForm = (props: Props) => {
             color: "green",
             message: "Team Added",
           });
+          RefetchGeneralTeams();
         })
         .catch(() => {
           setLoading(false);

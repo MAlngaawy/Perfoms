@@ -56,6 +56,7 @@ export const userApi = createApi({
     "courses",
     "qualifications",
     "achievements",
+    "kpis",
   ],
   endpoints: ({ query, mutation }) => ({
     user: query<User, any>({
@@ -193,6 +194,7 @@ export const userApi = createApi({
       }),
     }),
 
+    //OTP verify
     verifyOtp: mutation<OTPVerify, OTPVerify>({
       query: (body) => ({
         url: "verify-otp/",

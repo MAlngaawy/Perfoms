@@ -8,6 +8,7 @@ import {
   useGeneralTeamsQuery,
 } from "~/app/store/user/userApi";
 import __ from "lodash";
+import { useEffect } from "react";
 
 type Props = {};
 
@@ -25,6 +26,18 @@ const SharedBreadCrumbs = (props: Props) => {
   const { data: pillars } = useGeneralPillarsQuery({});
   const { data: kpis } = useGeneralKpisQuery({});
   // const { data: metrics } = useGeneralMetricsQuery({});
+
+  useEffect(() => {}, [
+    teams,
+    sports,
+    pillars,
+    kpis,
+    items,
+    team_id,
+    sport_id,
+    pillar_id,
+    kpi_id,
+  ]);
 
   if (team_id) {
     const myItems = __.find(teams?.results, { id: +team_id });
