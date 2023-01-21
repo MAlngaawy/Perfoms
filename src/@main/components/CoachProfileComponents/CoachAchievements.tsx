@@ -121,7 +121,7 @@ function AddButton() {
   // Form Schema
   const schema = yup.object().shape({
     type: yup.string().required(),
-    year: yup.string().required(),
+    year: yup.number().min(1900).max(3000).required(),
     place: yup.string().required(),
   });
 
@@ -137,7 +137,6 @@ function AddButton() {
 
   // Submit Form Function
   const onSubmitFunction = (data: any) => {
-    console.log(data);
     setOpened(false);
     addAchievements(data)
       .then((res) => {
@@ -176,12 +175,12 @@ function AddButton() {
             <Input placeholder="Medal Type" {...register("type")} />
           </Input.Wrapper>
 
-          <Input.Wrapper error={errors.year && "you must enter a valid year."}>
+          <Input.Wrapper
+            error={errors.year && "You must enter a valid year: e.g 2012"}
+          >
             <Input
-              component={InputMask}
-              placeholder="Year"
-              {...register("year")}
-              mask="9999"
+              placeholder="Year: e.g 2012"
+              {...register("year", { minLength: 4, maxLength: 4 })}
             />
           </Input.Wrapper>
 
