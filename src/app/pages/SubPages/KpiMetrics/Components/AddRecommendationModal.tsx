@@ -113,7 +113,7 @@ const AddRecomendationModal = ({ metricId, opened, setOpened }: Props) => {
             resetFields();
             setOpened(false);
           }}
-          title={`Add Action `}
+          title={`Add Recommendation `}
         >
           <form
             className="flex flex-col gap-4"

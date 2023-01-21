@@ -6,6 +6,7 @@ import { useSuperDeleteTeamMutation } from "~/app/store/supervisor/supervisorMai
 import { showNotification } from "@mantine/notifications";
 import { useAdminDeleteTeamMutation } from "~/app/store/clubManager/clubManagerApi";
 import { useUserQuery } from "~/app/store/user/userApi";
+import AppUtils from "~/@main/utils/AppUtils";
 
 const TeamCard = ({ team }: any) => {
   const [superDeleteTeam] = useSuperDeleteTeamMutation();
@@ -42,49 +43,49 @@ const TeamCard = ({ team }: any) => {
         <EditButton teamData={team} />
         <DeleteButton
           deleteFun={() => {
-            if (team.players_count > 0) {
-              showNotification({
-                title: "Wrong",
-                color: "red",
-                message: "You cannot delete a team that has players",
-              });
-              return;
-            }
+            // if (team.players_count > 0) {
+            //   showNotification({
+            //     title: "Wrong",
+            //     color: "red",
+            //     message: "You cannot delete a team that has players",
+            //   });
+            //   return;
+            // }
             if (user?.user_type === "Supervisor") {
               superDeleteTeam({
                 team_id: team.id,
               })
                 .then(() => {
-                  showNotification({
-                    title: "Done",
-                    color: "green",
-                    message: "Team Deleted",
-                  });
+                  AppUtils.showNotificationFun(
+                    "Success",
+                    "Done",
+                    "Team Deleted"
+                  );
                 })
                 .catch(() => {
-                  showNotification({
-                    title: "Wrong",
-                    color: "red",
-                    message: "Something wend wrong, try again later",
-                  });
+                  AppUtils.showNotificationFun(
+                    "Error",
+                    "Wrong",
+                    "Something wend wrong, try again later"
+                  );
                 });
             } else if (user?.user_type === "Admin") {
               adminDeleteTeam({
                 team_id: team.id,
               })
                 .then(() => {
-                  showNotification({
-                    title: "Done",
-                    color: "green",
-                    message: "Team Deleted",
-                  });
+                  AppUtils.showNotificationFun(
+                    "Success",
+                    "Done",
+                    "Team Deleted"
+                  );
                 })
                 .catch(() => {
-                  showNotification({
-                    title: "Wrong",
-                    color: "red",
-                    message: "Something wend wrong, try again later",
-                  });
+                  AppUtils.showNotificationFun(
+                    "Error",
+                    "Wrong",
+                    "Something wend wrong, try again later"
+                  );
                 });
             }
           }}
