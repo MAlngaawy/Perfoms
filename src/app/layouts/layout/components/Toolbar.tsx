@@ -50,12 +50,12 @@ const Toolbar = ({ setOpened }: Props) => {
     { skip: user?.user_type !== "Admin" }
   );
   useEffect(() => {
-    if (!dataServerToken) {
-      location.reload();
-      console.log("NOTokken");
-    } else {
-      console.log("tokken", dataServerToken);
-    }
+    // if (!dataServerToken) {
+    //   location.reload();
+    //   console.log("NOTokken");
+    // } else {
+    //   console.log("tokken", dataServerToken);
+    // }
     if (playerClub) setClub(playerClub);
     if (coachClub) setClub(coachClub);
     if (superClub) setClub(superClub);
