@@ -70,9 +70,12 @@ const AddPlayer = (props: Props) => {
   const onSubmitFun = async (e: any) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const image = await AppUtils.resizeImage(formData.get("icon"));
-    if (image) {
-      formData.set("icon", image as string);
+    //@ts-ignore
+    if (formData.get("icon")?.name.length) {
+      const image = await AppUtils.resizeImage(formData.get("icon"));
+      if (image) {
+        formData.set("icon", image as string);
+      }
     }
     setError(false);
 
