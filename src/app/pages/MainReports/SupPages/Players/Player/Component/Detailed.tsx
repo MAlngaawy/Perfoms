@@ -84,7 +84,7 @@ const Detailed = ({ reportType }: Props) => {
               <Grid.Col span={12} md={2.5}>
                 <div className="flex flex-col xs:flex-row md:flex-col gap-2 h-full">
                   <HomePlayerInfoCard player_id={id} />
-                  <div className="note bg-white rounded-3xl w-full p-4 h-full">
+                  {/* <div className="note bg-white rounded-3xl w-full p-4 h-full">
                     <h2 className="text-lg font-normal text-perfGray1 pb-4">
                       Overall notes
                     </h2>
@@ -93,7 +93,7 @@ const Detailed = ({ reportType }: Props) => {
                       Flexibility 1. Standing Quad Stretch. Stand with your feet
                       together. ... 2. Standing Side Stretch
                     </p>
-                  </div>
+                  </div> */}
                 </div>
               </Grid.Col>
 

@@ -88,6 +88,7 @@ export type Team = {
   pillar?: number;
   gender?: string;
   sport?: string;
+  current_players_count: number;
 };
 
 export type Coaches = BaseGetAllType & {

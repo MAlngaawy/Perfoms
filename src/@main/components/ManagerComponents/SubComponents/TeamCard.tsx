@@ -43,14 +43,14 @@ const TeamCard = ({ team }: any) => {
         <EditButton teamData={team} />
         <DeleteButton
           deleteFun={() => {
-            // if (team.players_count > 0) {
-            //   showNotification({
-            //     title: "Wrong",
-            //     color: "red",
-            //     message: "You cannot delete a team that has players",
-            //   });
-            //   return;
-            // }
+            if (team.current_players_count > 0) {
+              showNotification({
+                title: "Sorry",
+                color: "red",
+                message: "You can't delete a team that has players",
+              });
+              return;
+            }
             if (user?.user_type === "Supervisor") {
               superDeleteTeam({
                 team_id: team.id,
