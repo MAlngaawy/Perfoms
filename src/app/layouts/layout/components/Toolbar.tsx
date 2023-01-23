@@ -25,10 +25,11 @@ type Props = {
 const Toolbar = ({ setOpened }: Props) => {
   const windowSize = useWindowSize();
   const { data: user } = useUserQuery({});
-
   const [club, setClub] = useState<ParentClub>();
-
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
+  // This is for changing the toolabr color based on the user type
+  const [changableColor, setChangableColor] = useState("#fff");
+
   const { data: playerClub } = usePlayerClubQuery(
     { id: selectedPlayer?.id },
     { skip: !selectedPlayer?.id || user?.user_type !== "Parent" }
@@ -59,10 +60,23 @@ const Toolbar = ({ setOpened }: Props) => {
     if (coachClub) setClub(coachClub);
     if (superClub) setClub(superClub);
     if (adminClub) setClub(adminClub);
+
+    if (user?.user_type === "Coach") {
+      setChangableColor("#225161");
+    } else if (user?.user_type === "Supervisor") {
+      setChangableColor("#2F80ED");
+    } else if (user?.user_type === "Admin") {
+      setChangableColor("#1F2A32");
+    }
   }, [coachClub, playerClub, superClub, adminClub]);
 
   return (
-    <nav className="w-full flex justify-between items-center shadow-md p-2 lg:p-4 bg-perfBlue lg:bg-white overflow-hidden">
+    <nav
+      style={{
+        backgroundColor: windowSize.width < 1200 ? "#2F80ED" : changableColor,
+      }}
+      className={`w-full flex justify-between items-center shadow-md p-2 lg:p-4 overflow-hidden`}
+    >
       <div className="bg-fadedGray flex w-fit gap-2 justify-between items-center">
         <button
           className="block lg:hidden text-white lg:text-black border-0"
@@ -77,7 +91,13 @@ const Toolbar = ({ setOpened }: Props) => {
             src={club?.icon_url}
             alt="club logo"
           />
-          <span>{club?.name || "Alam alryada"}</span>
+          <span
+            style={{
+              color: user?.user_type === "Parent" ? "#000" : "#fff",
+            }}
+          >
+            {club?.name || "Alam alryada"}
+          </span>
         </div>
 
         {/* Select Player For the Parent */}
