@@ -26,6 +26,9 @@ import DeleteButton from "../ManagerComponents/SubComponents/DeleteButton";
 import { useNavigate, useParams } from "react-router-dom";
 import AppUtils from "~/@main/utils/AppUtils";
 import InputMask from "react-input-mask";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 // Props Types
 type Props = {
@@ -108,7 +111,17 @@ const CoachPersonalInfo = ({ data, editMode, refetch, type }: Props) => {
             </div>
           </div>
         </div>
-        <div className="education text-left">
+
+        {type === "profile" && editMode && (
+          <EditCoachData
+            educationData={userEducations?.results[0]}
+            refetch={() => {
+              if (refetch) refetch();
+            }}
+            data={data}
+          />
+        )}
+        <div className="education text-left mt-5">
           <h3 className="text-base font-medium text-perfLightBlack">
             Education
           </h3>
@@ -147,7 +160,7 @@ const CoachPersonalInfo = ({ data, editMode, refetch, type }: Props) => {
       </div>
 
       {type === "profile" && editMode && (
-        <EditCoachData
+        <EditEducation
           educationData={userEducations?.results[0]}
           refetch={() => {
             if (refetch) refetch();
@@ -166,6 +179,94 @@ type Edit = {
   educationData: Education | undefined;
   refetch: any;
 };
+
+// Edit Coach Education
+const EditEducation = ({ data, refetch, educationData }: Edit) => {
+  const [opened, setOpened] = useState(false);
+  const [isLoading] = useState(false);
+  const [addUserEducation] = useAddUserEducationMutation();
+
+  // Form Schema
+  const schema = yup.object().shape({
+    degree: yup.string().required(),
+    universty: yup.string().required(),
+    year: yup.number().min(1900).max(3000).required(),
+  });
+
+  // use Form Config
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const onSubmitFunction = async (data: any, e: any) => {
+    e.preventDefault();
+
+    setOpened(false);
+    console.log(data);
+
+    addUserEducation(data)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    reset({ degree: "", universty: "", year: "" });
+  };
+
+  return (
+    <>
+      <Modal opened={opened} onClose={() => setOpened(false)}>
+        <form
+          className="flex flex-col gap-4 "
+          onSubmit={handleSubmit(onSubmitFunction)}
+        >
+          {/*Degree Input  */}
+          <Input.Wrapper error={errors.degree && "Degree is a required field"}>
+            <Input placeholder="Degree" {...register("degree")} />
+          </Input.Wrapper>
+
+          {/*Universty Input  */}
+          <Input.Wrapper
+            error={errors.universty && "University is a required field"}
+          >
+            <Input placeholder="Universty Name" {...register("universty")} />
+          </Input.Wrapper>
+
+          {/*Universty Input  */}
+
+          <Input.Wrapper
+            error={errors.year && "You must enter a valid year: e.g 2012"}
+          >
+            <Input
+              type={"number"}
+              placeholder="Pick Graduation date"
+              {...register("year")}
+            />
+          </Input.Wrapper>
+
+          <SubmitButton isLoading={isLoading} text="Save" />
+        </form>
+      </Modal>
+
+      <Group position="center">
+        <button
+          onClick={() => setOpened(true)}
+          className="text-sm flex gap-2 xl:text-base p-2 transform hover:scale-105 duration-100 bg-white border border-perfGray3 rounded-lg text-perfGray3"
+        >
+          <span>+ Add Education</span>
+        </button>
+      </Group>
+    </>
+  );
+};
+
 // Edit Coach Personal Data Modal
 function EditCoachData({ data, refetch, educationData }: Edit) {
   const [opened, setOpened] = useState(false);
@@ -177,21 +278,8 @@ function EditCoachData({ data, refetch, educationData }: Edit) {
 
   const onSubmitFunction = async (e: any) => {
     e.preventDefault();
-    const newEducation = {
-      degree: e.target["degree"].value,
-      universty: e.target["universty"].value,
-      year: e.target["year"].value,
-    };
 
-    if (newEducation.degree && newEducation.universty && newEducation.year) {
-      addUserEducation(newEducation)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+    setOpened(false);
 
     const formData = new FormData(e.currentTarget);
     console.log(formData.get("bio"));
@@ -269,23 +357,6 @@ function EditCoachData({ data, refetch, educationData }: Edit) {
             name="bio"
             defaultValue={data?.bio}
             placeholder="Your Bio"
-          />
-
-          {/*Degree Input  */}
-          <Input name="degree" placeholder="Degree" required />
-
-          {/*Universty Input  */}
-          <Input name="universty" placeholder="Universty Name" required />
-
-          {/*Universty Input  */}
-          <Input
-            // component={InputMask}
-            required
-            name="year"
-            type={"number"}
-            placeholder="Pick Graduation date: e.g 2012"
-            min={1900}
-            max={3000}
           />
 
           <SubmitButton isLoading={isLoading} text="Save" />
