@@ -44,11 +44,11 @@ const TeamCard = ({ team }: any) => {
         <DeleteButton
           deleteFun={() => {
             if (team.current_players_count > 0) {
-              showNotification({
-                title: "Sorry",
-                color: "red",
-                message: "You can't delete a team that has players",
-              });
+              AppUtils.showNotificationFun(
+                "Error",
+                "Sorry",
+                "You can't delete a team that has players"
+              );
               return;
             }
             if (user?.user_type === "Supervisor") {

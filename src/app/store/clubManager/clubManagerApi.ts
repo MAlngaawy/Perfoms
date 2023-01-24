@@ -99,7 +99,7 @@ export const clubManagerApi = createApi({
 
     adminTeams: query<Teams, { page?: number }>({
       query: (params) => ({ url: "teams/", params }),
-      providesTags: ["teams"],
+      providesTags: ["teams", "playerUser", "players"],
     }),
 
     adminDeleteTeam: mutation<{}, { team_id: number }>({
@@ -257,7 +257,7 @@ export const clubManagerApi = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["players"],
+      invalidatesTags: ["players", "teams", "playerUser"],
     }),
 
     adminRemoveTeamPlayer: mutation<TeamPlayer, {}>({
