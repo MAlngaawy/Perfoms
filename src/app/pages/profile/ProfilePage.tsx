@@ -9,8 +9,6 @@ const ProfilePage = () => {
 
   return (
     <div className="flex justify-center items-center py-20 md:pt-14">
-      <h1>Test Changes</h1>
-
       {userData && players && (
         <UserInfo
           refetch={() => refetch()}
