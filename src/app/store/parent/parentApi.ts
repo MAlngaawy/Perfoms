@@ -332,6 +332,15 @@ export const parentsApi = createApi({
       }),
       invalidatesTags: ["Subscriptions"],
     }),
+
+    parentDeletePlayer: mutation<{}, { player_id: number }>({
+      query: ({ player_id, ...body }) => ({
+        url: `${player_id}/delete/`,
+        method: "DELETE",
+        body,
+      }),
+      invalidatesTags: ["Parent", "Player"],
+    }),
   }),
 });
 
@@ -367,4 +376,5 @@ export const {
   usePlayerWeaknessQuery,
   usePlayerCertificateQuery,
   usePlayerCertificatesQuery,
+  useParentDeletePlayerMutation,
 } = parentsApi;

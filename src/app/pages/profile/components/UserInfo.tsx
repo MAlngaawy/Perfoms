@@ -1,9 +1,12 @@
 import { Avatar, Modal } from "@mantine/core";
 import { useState } from "react";
+import DeleteButton from "~/@main/components/ManagerComponents/SubComponents/DeleteButton";
 import AppIcons from "~/@main/core/AppIcons";
+import { useParentDeletePlayerMutation } from "~/app/store/parent/parentApi";
 import { Player } from "~/app/store/types/parent-types";
 import { User } from "~/app/store/types/user-types";
 import EditForm from "./EditForm";
+import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {
   user: User;
@@ -13,9 +16,11 @@ type Props = {
 
 const UserInfo = ({ user, players, refetch }: Props) => {
   const [opened, setOpened] = useState(false);
+  const [deletePlayer, { isSuccess, isError }] =
+    useParentDeletePlayerMutation();
 
   return (
-    <div className="content relative flex flex-col justify-center items-center gap-2 bg-white rounded-3xl p-6 w-80">
+    <div className="content relative flex flex-col justify-center items-center gap-2 mx-2 bg-white rounded-3xl p-6 w-80">
       <div
         onClick={() => setOpened((o) => !o)}
         className="absolute cursor-pointer right-6 top-6"
@@ -68,10 +73,42 @@ const UserInfo = ({ user, players, refetch }: Props) => {
             {players?.map((player) => (
               <div
                 key={player.id}
-                className="player flex items-center gap-2 cursor-pointer"
+                className="player flex items-center justify-between gap-6 cursor-pointer"
               >
-                <Avatar radius={"xl"} size="sm" src={player.icon} />
-                <h2 className="name text-base">{player.name}</h2>
+                <div className="flex gap-2">
+                  <Avatar radius={"xl"} size="sm" src={player.icon} />
+                  <h2 className="name text-base">{player.name}</h2>
+                </div>
+                <DeleteButton
+                  name={player.name}
+                  type="Player"
+                  deleteFun={() => {
+                    deletePlayer({ player_id: player.id })
+                      .then(() => {
+                        if (isSuccess) {
+                          AppUtils.showNotificationFun(
+                            "Success",
+                            "Done",
+                            "Player Deleted Successfully"
+                          );
+                        }
+                        if (isError) {
+                          AppUtils.showNotificationFun(
+                            "Error",
+                            "Sorry",
+                            "Try again later"
+                          );
+                        }
+                      })
+                      .catch(() => {
+                        AppUtils.showNotificationFun(
+                          "Error",
+                          "Sorry",
+                          "Try again later"
+                        );
+                      });
+                  }}
+                />
               </div>
             ))}
           </div>

@@ -59,7 +59,7 @@ const OTPComponent = (props: Props) => {
         }}
         className="w-full bg-perfBlue hover:bg-blue-700 text-white py-2 font-medium rounded-md"
       >
-        Confirme
+        Confirm
       </button>
       <p className=" text-xs text-perfGray2">
         didnt recive a SMS?
