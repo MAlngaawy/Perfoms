@@ -9,13 +9,13 @@ const ProfilePage = () => {
 
   return (
     <div className="flex justify-center items-center py-20 md:pt-14">
-      {userData && players && (
+      {/* {userData && players && (
         <UserInfo
           refetch={() => refetch()}
           user={userData}
           players={players.results}
         />
-      )}
+      )} */}
     </div>
   );
 };
