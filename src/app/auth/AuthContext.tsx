@@ -2,6 +2,7 @@ import { createContext, PropsWithChildren, useContext, useEffect } from "react";
 import AppSplashScreen from "~/@main/core/AppSplashScreen";
 import { useUserQuery } from "~/app/store/user/userApi";
 import { eventInstance } from "~/@main/utils/AppUtils";
+import { dataServerToken } from "../configs/dataService";
 
 const AuthContext = createContext({});
 
@@ -12,7 +13,19 @@ function AuthProvider({ children }: PropsWithChildren) {
   useEffect(() => {
     eventInstance.on("Login_Success", () => refetch());
     eventInstance.on("SignUp_Success", () => refetch());
-  }, [refetch]);
+
+    /************************************************************ */
+    /* This if condition I have made to refresh the page after login
+     to make the dataservice.ts file to access token after it changes */
+    if (data) {
+      if (!dataServerToken) {
+        location.reload();
+      }
+    } else {
+      console.log("no data");
+    }
+    /************************************************************ */
+  }, [refetch, data]);
 
   return isLoading ? (
     <AppSplashScreen />
