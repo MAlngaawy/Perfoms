@@ -95,11 +95,11 @@ const formatDate = (date: Date | null) => {
 
 const TimeFilter = (props: Props) => {
   const [value, setValue] = useState<[Date | null, Date | null]>([
-    lastWeek().firstday,
-    lastWeek().lastday,
+    thisWeek().firstday,
+    thisWeek().lastday,
   ]);
   const [opened, setOpened] = useState(false);
-  const [textValue, setTextValue] = useState<string>("Last Week");
+  const [textValue, setTextValue] = useState<string>("This Week");
   const windwSize = useWindowSize();
   const dispatch = useDispatch();
 

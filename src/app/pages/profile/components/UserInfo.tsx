@@ -84,23 +84,16 @@ const UserInfo = ({ user, players, refetch }: Props) => {
                   type="Player"
                   deleteFun={() => {
                     deletePlayer({ player_id: player.id })
-                      .then(() => {
-                        if (isSuccess) {
-                          AppUtils.showNotificationFun(
-                            "Success",
-                            "Done",
-                            "Player Deleted Successfully"
-                          );
-                        }
-                        if (isError) {
-                          AppUtils.showNotificationFun(
-                            "Error",
-                            "Sorry",
-                            "Try again later"
-                          );
-                        }
+                      .then((res) => {
+                        AppUtils.showNotificationFun(
+                          "Error",
+                          "Sorry",
+                          "Try again later"
+                        );
                       })
-                      .catch(() => {
+                      .catch((err) => {
+                        console.log(err);
+
                         AppUtils.showNotificationFun(
                           "Error",
                           "Sorry",
