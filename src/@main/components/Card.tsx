@@ -127,7 +127,7 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
   ]);
 
   return (
-    <div className="flex flex-col pdf-print bg-white py-2 min-h-fit overflow-scroll rounded-3xl">
+    <div className="flex flex-col pdf-print bg-white py-2 min-h-fit overflow-hidden rounded-3xl">
       <div className="power_type px-5 py-2 flex flex-row justify-between items-center">
         <span className={` text-lg ${color}`}>{powerType}</span>
         {/* <p className="text-sm text-perfGray3">
@@ -140,7 +140,7 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
         <h3 className="text-sm">Name</h3>
         <h3 className="text-sm">Score</h3>
       </div>
-      <div className="h-64 overflow-scroll">
+      <div className="h-64 overflow-y-auto">
         {data ? (
           data?.results.map((power) => {
             return (

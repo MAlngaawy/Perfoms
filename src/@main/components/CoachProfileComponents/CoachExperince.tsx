@@ -136,7 +136,7 @@ const CoachExperince = ({ data, editMode }: Props) => {
                           AppUtils.showNotificationFun(
                             "Success",
                             "Done",
-                            "Experience Successfully Deleted"
+                            "Successfully Deleted Experience"
                           );
                         })
                         .catch(() => {
@@ -185,7 +185,7 @@ const CoachExperince = ({ data, editMode }: Props) => {
                             AppUtils.showNotificationFun(
                               "Success",
                               "Done",
-                              "Qualification Successfully Deleted"
+                              "Successfully Deleted Qualification"
                             );
                           })
                           .catch(() => {
@@ -229,7 +229,7 @@ const CoachExperince = ({ data, editMode }: Props) => {
                             AppUtils.showNotificationFun(
                               "Success",
                               "Done",
-                              "Courses Successfully Deleted"
+                              "Successfully Deleted Courses"
                             );
                           })
                           .catch(() => {
@@ -337,7 +337,11 @@ function AddExperinces({ data: oldDetails }: { data: Details | undefined }) {
     };
     addExperience(newData)
       .then(() => {
-        AppUtils.showNotificationFun("Success", "Done", "Experience");
+        AppUtils.showNotificationFun(
+          "Success",
+          "Done",
+          "Successfully added Experience"
+        );
         resetFields();
         setOpened(false);
       })
@@ -453,7 +457,7 @@ function AddQualifications() {
         AppUtils.showNotificationFun(
           "Success",
           "Done",
-          "Qualification added successfully"
+          "Successfully added Qualification"
         );
       })
       .catch(() => {
@@ -528,7 +532,7 @@ function AddCourses({ data: oldDetails }: { data: Details | undefined }) {
         AppUtils.showNotificationFun(
           "Success",
           "Done",
-          "Course added successfully"
+          "Successfully added Course"
         );
       })
       .catch(() => {

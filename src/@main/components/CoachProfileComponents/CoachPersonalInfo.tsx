@@ -146,7 +146,21 @@ const CoachPersonalInfo = ({ data, editMode, refetch, type }: Props) => {
                   {editMode && (
                     <DeleteButton
                       deleteFun={() => {
-                        deleteEducation({ id: education.id });
+                        deleteEducation({ id: education.id })
+                          .then(() => {
+                            AppUtils.showNotificationFun(
+                              "Success",
+                              "Done",
+                              "Successfully Deleted Education"
+                            );
+                          })
+                          .catch(() => {
+                            AppUtils.showNotificationFun(
+                              "Error",
+                              "Sorry",
+                              "Can't add Education now"
+                            );
+                          });
                       }}
                       name={education.degree}
                       type="Degree"
@@ -210,11 +224,19 @@ const EditEducation = ({ data, refetch, educationData }: Edit) => {
     console.log(data);
 
     addUserEducation(data)
-      .then((res) => {
-        console.log(res);
+      .then(() => {
+        AppUtils.showNotificationFun(
+          "Success",
+          "Done",
+          "Successfully added Education"
+        );
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
+        AppUtils.showNotificationFun(
+          "Error",
+          "Sorry",
+          "Can't add Education now"
+        );
       });
 
     reset({ degree: "", universty: "", year: "" });
@@ -295,11 +317,21 @@ function EditCoachData({ data, refetch, educationData }: Edit) {
         .then((res) => {
           setIsLoading(false);
           setOpened(false);
+          AppUtils.showNotificationFun(
+            "Success",
+            "Done",
+            "Successfully Edited Coach Data"
+          );
           setPlayerImage(null);
           refetch();
         })
         .catch(() => {
           setIsLoading(false);
+          AppUtils.showNotificationFun(
+            "Error",
+            "Sorry",
+            "Something went wrong"
+          );
         });
     } catch (err) {
       console.log(err);

@@ -98,7 +98,7 @@ const SignUpPage = (props: Props) => {
   }, [isSuccess, data]);
 
   return (
-    <div className="flex h-screen overflow-scroll justify-center items-center">
+    <div className="flex h-screen overflow-hidden overflow-x-auto justify-center items-center">
       <div className="h-full w-1/2 relative hidden md:block">
         <div className="absolute left-4 top-4  bg-white/60 rounded-2xl p-4">
           <img
@@ -123,7 +123,7 @@ const SignUpPage = (props: Props) => {
       <div className="mx-auto w-full md:w-1/2 flex justify-center">
         {/* <OTPComponent /> */}
         <form
-          className=" mx-4 md:w-96 overflow-scroll"
+          className=" mx-4 md:w-96 overflow-hidden overflow-y-auto"
           onSubmit={handleSubmit((data: any) => submitFun(data))}
         >
           <div className="title text-left mb-4">
@@ -406,6 +406,7 @@ const SignUpPage = (props: Props) => {
                 },
                 ".mantine-PasswordInput-innerInput": {
                   padding: 0,
+                  paddingBottom: 5,
                 },
                 ".mantine-PasswordInput-label": {
                   fontSize: 10,
