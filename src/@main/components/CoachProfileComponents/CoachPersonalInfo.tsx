@@ -50,6 +50,8 @@ const CoachPersonalInfo = ({ data, editMode, refetch, type }: Props) => {
   const [deleteEducation] = useDeleteUserEducationMutation();
   const navigate = useNavigate();
 
+  console.log(userEducations);
+
   useEffect(() => {
     if (user?.user_type === "Parent") {
       setEducations(coachEducations);

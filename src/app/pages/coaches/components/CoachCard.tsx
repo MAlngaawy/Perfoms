@@ -62,7 +62,7 @@ const CoachCard = ({
           }
         )}
       >
-        {sport} Coach
+        {sport}
       </h4>
 
       <div className="flex justify-around gap-4 my-4 text-left">
