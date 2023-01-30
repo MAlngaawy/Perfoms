@@ -2,6 +2,7 @@ import { Button } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import { Team } from "~/app/store/types/coach-types";
 import classNames from "classnames";
+import { useGetCoachEducationsQuery } from "~/app/store/user/userApi";
 
 interface Props {
   id: number | undefined;
@@ -22,6 +23,13 @@ const CoachCard = ({
   photo,
   sport,
 }: Props) => {
+  const { data: coachEducations } = useGetCoachEducationsQuery(
+    { coach_id: id },
+    { skip: !id }
+  );
+
+  console.log(coachEducations);
+
   const navigate = useNavigate();
   return (
     <div
@@ -68,7 +76,10 @@ const CoachCard = ({
       <div className="flex justify-around gap-4 my-4 text-left">
         <div className="education flex flex-col">
           <h3 className="text-base">Education</h3>
-          <p className=" text-xs font-normal">{education}</p>
+          <p className=" text-xs font-normal">
+            {coachEducations?.results[coachEducations?.results.length - 1]
+              ?.degree || "N/A"}
+          </p>
         </div>
         <div className="flex justify-between items-center">
           <div className="teams flex flex-col">

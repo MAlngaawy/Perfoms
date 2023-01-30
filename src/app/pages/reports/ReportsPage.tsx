@@ -137,16 +137,6 @@ const ReportPage = () => {
                   <Grid.Col span={12} md={2.5}>
                     <div className="flex flex-col sm:flex-row md:flex-col gap-2 h-full">
                       <HomePlayerInfoCard />
-                      {/* <div className="note bg-white rounded-3xl w-full p-4 h-full">
-                        <h2 className="text-lg font-normal text-perfGray1 pb-4">
-                          Overall notes
-                        </h2>
-                        <p className=" text-base font-normal text-perfGray3">
-                          Fitness Flexibility 10 Exercises to Improve Your
-                          Flexibility 1. Standing Quad Stretch. Stand with your
-                          feet together. ... 2. Standing Side Stretch
-                        </p>
-                      </div> */}
                     </div>
                   </Grid.Col>
 
@@ -182,7 +172,7 @@ const ReportPage = () => {
           ) : (
             // <PlayerCertificatePage />
             <div className="m-2">
-              <div className="overflow-scroll max-w-full">
+              <div className="overflow-scroll md:overflow-hidden max-w-full">
                 {playerCertificates &&
                   playerCertificates?.results.map((certificate) => (
                     <PlayerCertificatePage
