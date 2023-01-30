@@ -25,7 +25,6 @@ import {
 import DeleteButton from "../ManagerComponents/SubComponents/DeleteButton";
 import { useNavigate, useParams } from "react-router-dom";
 import AppUtils from "~/@main/utils/AppUtils";
-import InputMask from "react-input-mask";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -221,7 +220,6 @@ const EditEducation = ({ data, refetch, educationData }: Edit) => {
     e.preventDefault();
 
     setOpened(false);
-
 
     addUserEducation(data)
       .then(() => {
