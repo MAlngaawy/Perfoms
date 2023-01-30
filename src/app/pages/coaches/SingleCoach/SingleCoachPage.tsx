@@ -22,8 +22,6 @@ const SingleCoachPage = () => {
     { skip: __.isNil(coach_id) }
   );
 
-  console.log(coachData);
-
   return (
     <div className=" container mx-auto">
       <CustomBreadCrumbs items={[{ title: "coaches", href: "/coaches" }]} />
