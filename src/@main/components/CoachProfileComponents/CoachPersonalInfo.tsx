@@ -221,7 +221,7 @@ const EditEducation = ({ data, refetch, educationData }: Edit) => {
     e.preventDefault();
 
     setOpened(false);
-    console.log(data);
+
 
     addUserEducation(data)
       .then(() => {
@@ -304,7 +304,6 @@ function EditCoachData({ data, refetch, educationData }: Edit) {
     setOpened(false);
 
     const formData = new FormData(e.currentTarget);
-    console.log(formData.get("bio"));
 
     if (userAvatar) {
       const minimizedImage = await AppUtils.resizeImage(userAvatar);

@@ -312,7 +312,6 @@ function AddExperinces({ data: oldDetails }: { data: Details | undefined }) {
   const handleCheck = () => {
     if (!checked) {
       setValue("date_to", new Date());
-      console.log("checked");
     }
   };
 

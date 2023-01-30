@@ -28,8 +28,6 @@ const HomeTeamInfoCard = (props: Props) => {
     if (coachTeamInfoData) setTeamInfoData(coachTeamInfoData);
   }, [parentTeamInfoData, coachTeamInfoData]);
 
-  console.log("teamInfoData", teamInfoData);
-
   if (!teamInfoData) {
     return (
       <div className="p-6 h-full bg-white rounded-3xl flex justify-center items-center ">

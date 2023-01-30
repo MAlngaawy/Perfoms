@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Player } from "~/app/store/types/parent-types";
 import Info from "./Info";
 import { useOnePlayerQuery } from "~/app/store/parent/parentApi";
@@ -11,6 +11,8 @@ import { useGetSuperPlayerInfoQuery } from "~/app/store/supervisor/supervisorMai
 import { Skeleton } from "@mantine/core";
 import { useAdminPlayerInfoQuery } from "~/app/store/clubManager/clubManagerApi";
 import { useUserQuery } from "~/app/store/user/userApi";
+import AppIcons from "../core/AppIcons";
+import { changemodalState } from "~/app/store/app/modalSlice";
 
 type Props = {
   player_id?: number | string | undefined;
@@ -20,6 +22,7 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
   const [playerInfoData, setPlayerInfoData] = useState<CoachPlayerInfo>();
   const { data: user } = useUserQuery({});
+  const dispatch = useDispatch();
 
   const { data: parentPlayerInfoData } = useOnePlayerQuery(
     { id: selectedPlayer?.id },
@@ -59,8 +62,18 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
 
   return (
     <div className="p-6 h-full bg-white rounded-3xl">
-      <div className="playerName">
+      <div className="playerName flex justify-between  items-center">
         <h2>{playerInfoData?.name.split(" ")[0]}'s info</h2>
+        <div
+          onClick={() => {
+            dispatch(changemodalState({ open: true, player: playerInfoData }));
+          }}
+        >
+          <AppIcons
+            icon="PencilSquareIcon:outline"
+            className="w-5 cursor-pointer active:scale-110"
+          />
+        </div>
       </div>
       <div className="flex flex-col xs:flex-row sm:flex-col justify-around">
         <div className="img my-2">

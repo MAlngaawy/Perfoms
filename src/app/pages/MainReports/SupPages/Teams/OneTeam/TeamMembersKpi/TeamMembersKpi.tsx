@@ -122,7 +122,7 @@ const TeamMembersKpi = (props: Props) => {
     {
       title:
         reportType === "Performances"
-          ? kpiData?.results[0].kpi.name
+          ? kpiData?.results?.[0]?.kpi?.name
           : "Attendance",
       href: ``,
     },
@@ -189,8 +189,10 @@ const TeamMembersKpi = (props: Props) => {
                     <ReportsChartCard
                       // onClickFun={() => navigate(`kpi/${kpi.id}`)}
                       clickable={false}
-                      name={kpiPlayer.kpi.name + " - " + kpiPlayer.name}
-                      statistics={kpiPlayer.kpi.statistics}
+                      name={
+                        kpiPlayer?.kpi?.name || "" + " - " + kpiPlayer?.name
+                      }
+                      statistics={kpiPlayer?.kpi?.statistics}
                     />
                   </div>
                 );

@@ -64,13 +64,15 @@ const ReportsChartCard = ({
             <h3> Strength </h3>
           </div>
           <h2>
-            {Math.floor(
-              (statistics.strength /
-                (statistics.strength +
-                  statistics.moderate +
-                  statistics.weakness)) *
-                100
-            ) || 0}
+            {statistics
+              ? Math.floor(
+                  (statistics.strength /
+                    (statistics.strength +
+                      statistics.moderate +
+                      statistics.weakness)) *
+                    100
+                )
+              : 0}
             %
           </h2>
         </div>
@@ -86,13 +88,15 @@ const ReportsChartCard = ({
             <h3> Moderate </h3>
           </div>
           <h2>
-            {Math.floor(
-              (statistics.moderate /
-                (statistics.strength +
-                  statistics.moderate +
-                  statistics.weakness)) *
-                100
-            ) || 0}
+            {statistics
+              ? Math.floor(
+                  (statistics.moderate /
+                    (statistics.strength +
+                      statistics.moderate +
+                      statistics.weakness)) *
+                    100
+                )
+              : 0}
             %
           </h2>
         </div>
@@ -108,13 +112,15 @@ const ReportsChartCard = ({
             <h3> Weakness </h3>
           </div>
           <h2>
-            {Math.floor(
-              (statistics.weakness /
-                (statistics.strength +
-                  statistics.moderate +
-                  statistics.weakness)) *
-                100
-            ) || 0}
+            {statistics
+              ? Math.floor(
+                  (statistics.weakness /
+                    (statistics.strength +
+                      statistics.moderate +
+                      statistics.weakness)) *
+                    100
+                )
+              : 0}
             %
           </h2>
         </div>
@@ -129,7 +135,7 @@ const Example = ({ data, chartColors }: any) => {
   const [empty, setEmpty] = useState<boolean>(false);
 
   useEffect(() => {
-    if (data.strength === 0 && data.moderate === 0 && data.weakness === 0) {
+    if (data?.strength === 0 && data?.moderate === 0 && data?.weakness === 0) {
       setEmpty(true);
     }
   }, [data]);
@@ -137,15 +143,15 @@ const Example = ({ data, chartColors }: any) => {
   const newData = [
     {
       name: "strengths",
-      value: data.strength,
+      value: data?.strength,
     },
     {
       name: "moderate",
-      value: data.moderate,
+      value: data?.moderate,
     },
     {
       name: "weaknesses",
-      value: data.weakness,
+      value: data?.weakness,
     },
   ];
 
