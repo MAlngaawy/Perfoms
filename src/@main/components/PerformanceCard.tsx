@@ -81,8 +81,6 @@ PerformanceCardProps) => {
   //   );
 
   // useEffect(() => {
-  //   console.log(data);
-  //   console.log("dataaaaaaaaaaaaaaaaaaaaa");
 
   //   if (name === "Strengths") {
   //     if (strength) setData(strength);

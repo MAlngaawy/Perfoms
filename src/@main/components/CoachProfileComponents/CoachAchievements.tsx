@@ -17,7 +17,6 @@ import { UserAchievements } from "~/app/store/types/user-types";
 import { useParams } from "react-router-dom";
 import AppUtils from "~/@main/utils/AppUtils";
 import DeleteButton from "../ManagerComponents/SubComponents/DeleteButton";
-import InputMask from "react-input-mask";
 
 type Props = {
   data: Details | undefined;
@@ -73,7 +72,7 @@ const CoachAchievements = ({ data, editMode }: Props) => {
                         AppUtils.showNotificationFun(
                           "Success",
                           "Done",
-                          "Successfully Added Achievement"
+                          "Successfully Deleted Achievement"
                         );
                       })
                       .catch((err) => {

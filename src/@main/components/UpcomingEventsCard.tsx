@@ -32,15 +32,18 @@ const UpcomingEventsCard = (props: Props) => {
 
   if (events && events?.length < 1) {
     return (
-      <div className="bg-white rounded-3xl h-full flex justify-center items-center">
-        <NoData className="flex-col items-center" />
+      <div className="bg-white rounded-3xl h-full flex justify-center items-center text-center">
+        <span>
+          There is no upcoming{" "}
+          <p className="text-perfBlue font-medium">Events</p>
+        </span>
       </div>
     );
   }
 
   return (
     <div className="bg-white  p-4 rounded-3xl h-full">
-      <h2 className="title text-lg text-perfGray1">Upcoming Events.</h2>
+      <h2 className="title text-lg text-perfGray1">Events</h2>
       <div className="flex flex-col gap-4 mt-4 h-72 overflow-scroll">
         {events ? (
           events.map((event) => (

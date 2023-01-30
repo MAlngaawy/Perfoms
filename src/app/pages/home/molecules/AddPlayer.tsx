@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import AppIcons from "~/@main/core/AppIcons/AppIcons";
 import { Modal, Button, TextInput, Select, Input, Alert } from "@mantine/core";
-import * as yup from "yup";
 import cn from "classnames";
 import SubmitButton from "~/@main/components/SubmitButton";
 import { useUserQuery } from "~/app/store/user/userApi";
@@ -14,12 +13,15 @@ import {
 } from "~/app/store/parent/parentApi";
 import { DatePicker } from "@mantine/dates";
 import AppUtils from "~/@main/utils/AppUtils";
+import { useDispatch, useSelector } from "react-redux";
+import { changemodalState, playerModalState } from "~/app/store/app/modalSlice";
 
-type Props = {};
+type Props = { playerId?: number };
 
 const AddPlayer = (props: Props) => {
   const { refetch } = useMyPlayersQuery({});
-  const [open, setOpen] = React.useState(false);
+  const dispatch = useDispatch();
+  const { open, player } = useSelector(playerModalState);
   const [playerImage, setPlayerImage] = React.useState<any>();
   const [playerImagePreview, setPlayerImagePreview] = React.useState("null");
   const { data: userData } = useUserQuery(null);
@@ -28,6 +30,7 @@ const AddPlayer = (props: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedSport, setSelectedSport] = useState<number>(0);
   const [error, setError] = useState(false);
+
   // fetch club sports
   const { data: clubSports } = useClubSportsQuery(
     { club_id: userData ? userData?.club && userData.club : 1 },
@@ -64,7 +67,7 @@ const AddPlayer = (props: Props) => {
   }, [clubSports, sportTeams, selectedSport]);
 
   const handleClickOpen = () => {
-    setOpen(true);
+    dispatch(changemodalState({ open: true, player: null }));
   };
 
   const onSubmitFun = async (e: any) => {
@@ -85,7 +88,7 @@ const AddPlayer = (props: Props) => {
         .post("parent/add-player/", formData)
         .then((res) => {
           setIsLoading(false);
-          setOpen(false);
+          dispatch(changemodalState({ open: false, player: null }));
           console.log(res);
           setPlayerImage(null);
           refetch();
@@ -97,6 +100,7 @@ const AddPlayer = (props: Props) => {
         });
     } catch (err) {}
   };
+  console.log(player);
 
   return (
     <div>
@@ -114,7 +118,9 @@ const AddPlayer = (props: Props) => {
       <Modal
         opened={open}
         withCloseButton
-        onClose={() => setOpen(false)}
+        onClose={() =>
+          dispatch(changemodalState({ open: false, player: null }))
+        }
         transition="slide-up"
         transitionDuration={300}
         transitionTimingFunction="ease"
@@ -142,7 +148,11 @@ const AddPlayer = (props: Props) => {
                     hidden: !playerImage,
                   }
                 )}
-                src={playerImagePreview && playerImagePreview}
+                src={
+                  player
+                    ? player.icon
+                    : playerImagePreview && playerImagePreview
+                }
                 alt="upload icon"
               />
               <Input
@@ -168,6 +178,7 @@ const AddPlayer = (props: Props) => {
                   name="name"
                   label="Name"
                   withAsterisk
+                  defaultValue={player?.name}
                   sx={{
                     ".mantine-TextInput-input": {
                       background: "none",
@@ -184,6 +195,7 @@ const AddPlayer = (props: Props) => {
                   label="Date of birth"
                   name="dob"
                   inputFormat="YYYY-MM-DD"
+                  defaultValue={player?.dob && new Date(player?.dob)}
                   sx={{
                     ".mantine-DatePicker-input": {
                       background: "none",
@@ -251,6 +263,8 @@ const AddPlayer = (props: Props) => {
               <TextInput
                 id="weight"
                 label="Weight"
+                name="weight"
+                defaultValue={player?.weight}
                 sx={{
                   ".mantine-TextInput-input": {
                     background: "none",
@@ -265,6 +279,8 @@ const AddPlayer = (props: Props) => {
               <TextInput
                 id="height"
                 label="Height"
+                name="height"
+                defaultValue={player?.height}
                 sx={{
                   ".mantine-TextInput-input": {
                     background: "none",
@@ -282,6 +298,7 @@ const AddPlayer = (props: Props) => {
             <TextInput
               id="phoneNumber"
               label="phone number"
+              name="phone"
               sx={{
                 ".mantine-TextInput-input": {
                   background: "none",
@@ -293,7 +310,10 @@ const AddPlayer = (props: Props) => {
             />
           </div>
 
-          <SubmitButton isLoading={isLoading} text="Add Player" />
+          <SubmitButton
+            isLoading={isLoading}
+            text={player ? "Update Player" : "Add Player"}
+          />
         </form>
       </Modal>
     </div>

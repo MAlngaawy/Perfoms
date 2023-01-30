@@ -47,7 +47,7 @@ const PlayerCertificatePage = ({ certificateId }: Props) => {
 
   return (
     <div className=" relative flex flex-col gap-5 justify-center items-center p-5 h-full w-full">
-      <div className="overflow-scroll max-w-full">
+      <div className="overflow-scroll md:overflow-hidden max-w-full">
         {certificate &&
           dateFilter(certificate.created_at) &&
           (certificate.type === "Encouragement" ? (

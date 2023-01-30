@@ -113,7 +113,7 @@ const AddTeamCardForm = (props: Props) => {
           });
         });
     } catch (err) {
-      console.log(err);
+
       setLoading(false);
     }
   };
@@ -174,7 +174,6 @@ const AddTeamCardForm = (props: Props) => {
                   type="file"
                   // error={errors.image && (errors.image.message as ReactNode)}
                   onChange={(e: any) => {
-                    console.log(e.target.files[0]);
                     setPlayerImagePreview(
                       URL.createObjectURL(e.target.files[0])
                     );

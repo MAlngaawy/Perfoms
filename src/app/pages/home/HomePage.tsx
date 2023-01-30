@@ -18,6 +18,8 @@ import HomePlayerInfoCard from "../../../@main/components/HomePlayerInfoCard";
 import HomeTeamInfoCard from "../../../@main/components/HomeTeamInfoCard";
 import PerformanceSummaryCard from "~/@main/components/PerformanceSummaryCard";
 import NoPlayersComp from "~/@main/components/NoPlayersComp";
+import { useState } from "react";
+import { playerModalState } from "~/app/store/app/modalSlice";
 
 export type Players = {
   name: string;
