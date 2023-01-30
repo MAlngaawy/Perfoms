@@ -36,6 +36,7 @@ const CoachesPage = (props: Props) => {
     { skip: !selectedPlayer }
   );
 
+  console.log(playerCoaches);
   useEffect(() => {
     console.log("selectedPlayer", selectedPlayer);
 

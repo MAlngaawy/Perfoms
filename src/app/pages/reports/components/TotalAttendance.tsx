@@ -103,7 +103,7 @@ const TotalAttendance = ({ player_id }: Props) => {
     <div className="bg-white rounded-3xl p-6 flex sm:flex-col xl:flex-row justify-around items-center">
       <div className="data flex flex-col sm:flex-row xl:flex-col justify-center items-start gap-4">
         <div>
-          <h3 className=" text-lg font-medium text-perfGray1">Total Dayes</h3>
+          <h3 className=" text-lg font-medium text-perfGray1">Total Days</h3>
           <h1 className="text-5xl w-full text-left font-bold text-perfGray1">
             {newData[0].value + newData[1].value}
           </h1>
@@ -112,14 +112,14 @@ const TotalAttendance = ({ player_id }: Props) => {
           <div className="info flex justify-center gap-1 items-start">
             <div className="color w-6 h-4 mt-1 rounded-md bg-perfBlue"></div>
             <div className="flex flex-col">
-              <h2 className="text-base">{newData[0].value} Dayes</h2>
+              <h2 className="text-base">{newData[0].value} Days</h2>
               <p className="text-sm text-perfGray3">Attendence</p>
             </div>
           </div>
           <div className="info flex justify-center gap-1 items-start">
             <div className="color w-6 h-4 mt-1 rounded-md bg-perfSecondary"></div>
             <div className="flex flex-col">
-              <h2 className="text-base">{newData[1].value} Dayes</h2>
+              <h2 className="text-base">{newData[1].value} Days</h2>
               <p className="text-sm text-perfGray3">Absence</p>
             </div>
           </div>

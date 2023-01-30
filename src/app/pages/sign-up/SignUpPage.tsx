@@ -405,8 +405,8 @@ const SignUpPage = (props: Props) => {
                   background: "transparent",
                 },
                 ".mantine-PasswordInput-innerInput": {
-                  padding: 0,
-                  paddingBottom: 5,
+                  paddingLeft: 0,
+                  paddingBottom: 20,
                 },
                 ".mantine-PasswordInput-label": {
                   fontSize: 10,
