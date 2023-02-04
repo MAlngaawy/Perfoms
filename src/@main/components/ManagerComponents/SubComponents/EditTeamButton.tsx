@@ -136,7 +136,7 @@ const EditButton = ({ teamData }: Props) => {
             resetFields();
             setOpened(false);
           }}
-          title="Add Team"
+          title="Edit Team"
         >
           <form className="flex flex-col gap-4" onSubmit={onSubmitFunction}>
             {/* Image Upload */}
@@ -310,7 +310,7 @@ const EditButton = ({ teamData }: Props) => {
               />
             </Input.Wrapper>
 
-            <SubmitButton isLoading={loading} text="Add Team" />
+            <SubmitButton isLoading={loading} text="Save" />
           </form>
         </Modal>
 
