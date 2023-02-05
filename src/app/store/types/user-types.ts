@@ -22,6 +22,10 @@ export type ProfileResponse = {
   data: User;
 };
 
+export type playerEvents = BaseGetAllType & {
+  results: { id: number; name: string }[];
+};
+
 export type User = {
   id: number;
   country: string;

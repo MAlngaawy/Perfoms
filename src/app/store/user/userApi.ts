@@ -13,6 +13,7 @@ import {
   Educations,
   NotificationsType,
   OTPVerify,
+  playerEvents,
   Qualification,
   Qualifications,
   ResetPassword,
@@ -394,6 +395,12 @@ export const userApi = createApi({
         body,
       }),
     }),
+
+    playerEvents: query<playerEvents, { player_id: string | undefined }>({
+      query: ({ player_id }) => ({
+        url: `player-events/${player_id}/`,
+      }),
+    }),
   }),
 });
 
@@ -433,4 +440,5 @@ export const {
   useAddUserAchievementsMutation,
   useDeleteAchievementsMutation,
   useResetPasswordMutation,
+  usePlayerEventsQuery,
 } = userApi;

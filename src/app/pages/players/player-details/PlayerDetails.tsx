@@ -15,7 +15,7 @@ import {
   useGetSuperPlayerInfoQuery,
 } from "~/app/store/supervisor/supervisorMainApi";
 import CustomBreadCrumbs from "~/@main/components/BreadCrumbs";
-import { useUserQuery } from "~/app/store/user/userApi";
+import { usePlayerEventsQuery, useUserQuery } from "~/app/store/user/userApi";
 import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 import { useSelector } from "react-redux";
 
@@ -75,13 +75,17 @@ const playerSummary = [
 const PlayerDetails = () => {
   const [playerData, setPlayerData] = useState<CoachPlayerInfo>();
   const [parentData, setParentData] = useState<PlayerParent>();
+  const params = useParams();
+  console.log(params);
+
+  const { data: playerEvents } = usePlayerEventsQuery(
+    { player_id: params.id },
+    { skip: !params.id }
+  );
 
   const { data: user } = useUserQuery(null);
 
   const status = useLocation().state;
-
-  const params = useParams();
-  console.log(params);
 
   const { data: coachPlayer } = useGetPlayerInfoQuery(
     { player_id: params.id },
@@ -109,7 +113,7 @@ const PlayerDetails = () => {
     if (superPlayer) setPlayerData(superPlayer);
     if (superParent) setParentData(superParent);
     console.log("Parent", parentData);
-  }, [coachParent, coachPlayer, superParent, superPlayer]);
+  }, [coachParent, coachPlayer, superParent, superPlayer, playerEvents]);
 
   return (
     <div className="p-4 pt-0">
@@ -214,45 +218,17 @@ const PlayerDetails = () => {
                 }
                 size={200}
               />
-              {params.id === "2" ? (
-                <div className="flex flex-col gap-4 items-center ">
-                  <Link to="/media/4">
-                    <h2 className="text-2xl underline hover:text-perfBlue transform hover:scale-105">
-                      World Champion 1
-                    </h2>
-                  </Link>
-                  <Link to="/media/5">
-                    <h2 className="text-2xl underline hover:text-perfBlue transform hover:scale-105">
-                      World Champion 2
-                    </h2>
-                  </Link>
-                  <Link to="/media/6">
-                    <h2 className="text-2xl underline hover:text-perfBlue transform hover:scale-105">
-                      World Champion 3
-                    </h2>
-                  </Link>
-                </div>
-              ) : params.id === "3" ? (
-                <div className="flex flex-col gap-4 items-center ">
-                  <Link to="/media/7">
-                    <h2 className="text-2xl underline hover:text-perfBlue transform hover:scale-105">
-                      World Champion 1
-                    </h2>
-                  </Link>
-                  <Link to="/media/8">
-                    <h2 className="text-2xl underline hover:text-perfBlue transform hover:scale-105">
-                      World Champion 2
-                    </h2>
-                  </Link>
-                  <Link to="/media/9">
-                    <h2 className="text-2xl underline hover:text-perfBlue transform hover:scale-105">
-                      World Champion 3
-                    </h2>
-                  </Link>
-                </div>
-              ) : (
-                <></>
-              )}
+              <div className="flex flex-col gap-4 items-center ">
+                {playerEvents?.results.map((event) => {
+                  return (
+                    <Link to={`/media/${event.id}`}>
+                      <h2 className="text-2xl underline hover:text-perfBlue transform hover:scale-105">
+                        {event.name}
+                      </h2>
+                    </Link>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </Grid.Col>
