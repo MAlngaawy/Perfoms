@@ -216,17 +216,17 @@ const PlayerDetails = () => {
               />
               {params.id === "2" ? (
                 <div className="flex flex-col gap-4 items-center ">
-                  <Link to="/media-teams/media/4">
+                  <Link to="/media/4">
                     <h2 className="text-2xl underline hover:text-perfBlue transform hover:scale-105">
                       World Champion 1
                     </h2>
                   </Link>
-                  <Link to="/media-teams/media/5">
+                  <Link to="/media/5">
                     <h2 className="text-2xl underline hover:text-perfBlue transform hover:scale-105">
                       World Champion 2
                     </h2>
                   </Link>
-                  <Link to="/media-teams/media/6">
+                  <Link to="/media/6">
                     <h2 className="text-2xl underline hover:text-perfBlue transform hover:scale-105">
                       World Champion 3
                     </h2>
@@ -234,17 +234,17 @@ const PlayerDetails = () => {
                 </div>
               ) : params.id === "3" ? (
                 <div className="flex flex-col gap-4 items-center ">
-                  <Link to="/media-teams/media/7">
+                  <Link to="/media/7">
                     <h2 className="text-2xl underline hover:text-perfBlue transform hover:scale-105">
                       World Champion 1
                     </h2>
                   </Link>
-                  <Link to="/media-teams/media/8">
+                  <Link to="/media/8">
                     <h2 className="text-2xl underline hover:text-perfBlue transform hover:scale-105">
                       World Champion 2
                     </h2>
                   </Link>
-                  <Link to="/media-teams/media/9">
+                  <Link to="/media/9">
                     <h2 className="text-2xl underline hover:text-perfBlue transform hover:scale-105">
                       World Champion 3
                     </h2>
