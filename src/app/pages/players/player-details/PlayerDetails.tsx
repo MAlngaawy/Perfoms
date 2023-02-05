@@ -145,8 +145,7 @@ const PlayerDetails = () => {
         </Grid.Col>
 
         {/* Achevments card */}
-        {/**
-         * 
+
         <Grid.Col md={6} span={12}>
           <div className="p-4  h-full border border-perfGray4 bg-white rounded-3xl flex flex-col gap-1">
             <h2>Achevements</h2>
@@ -202,10 +201,7 @@ const PlayerDetails = () => {
             </div>
           </div>
         </Grid.Col>
-         */}
 
-        {/**
-          * 
         <Grid.Col md={6} span={12}>
           <div className="p-4  h-full border border-perfGray4 bg-white rounded-3xl flex flex-col gap-1">
             <h2>Media</h2>
@@ -260,8 +256,6 @@ const PlayerDetails = () => {
             </div>
           </div>
         </Grid.Col>
-
-          */}
       </Grid>
     </div>
   );
