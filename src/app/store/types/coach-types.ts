@@ -278,6 +278,7 @@ export type CoachPlayerInfo = {
   icon: string;
   icon_url: string;
   sport: string;
+  parent_name: string;
 };
 
 export type CoachTeamInfo = {

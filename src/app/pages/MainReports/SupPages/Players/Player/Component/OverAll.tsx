@@ -117,7 +117,7 @@ const OverAll = ({ playerInfo, reportType }: Props) => {
               <Info label="Sport" value={playerInfo?.sport} />
               <Info
                 label="Parent"
-                value={id === "3" ? "hasan kamal" : "Wael Emerah"}
+                value={playerInfo?.parent_name || "No Parent Name"}
               />
             </div>
           </div>

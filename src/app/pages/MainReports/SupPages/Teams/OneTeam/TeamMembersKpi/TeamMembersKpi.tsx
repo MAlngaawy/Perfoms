@@ -28,6 +28,8 @@ import {
   useAdminTeamInfoQuery,
   useAdminTeamKpiPlayersStatisticsQuery,
 } from "~/app/store/clubManager/clubManagerApi";
+// import { useSelector } from "react-redux";
+// import { timeFilterFn } from "~/app/store/parent/parentSlice";
 
 type Props = {};
 
@@ -38,6 +40,7 @@ const TeamMembersKpi = (props: Props) => {
   const [kpiData, setKpiData] = useState<TeamKpiPlayersStatistics>();
   const [attendData, setAttendData] = useState<TeamPlayersAttendStatistics>();
   const { data: user } = useUserQuery(null);
+  // const timeFilter = useSelector(timeFilterFn);
 
   // fetch Kpis And Attend for coach user
   const { data: coachTeamplayerskpi, isLoading: performancesLoading } =
@@ -184,14 +187,13 @@ const TeamMembersKpi = (props: Props) => {
                 </>
               )}
               {kpiData?.results.map((kpiPlayer) => {
+                console.log(kpiPlayer.name);
                 return (
                   <div key={kpiPlayer.id}>
                     <ReportsChartCard
                       // onClickFun={() => navigate(`kpi/${kpi.id}`)}
                       clickable={false}
-                      name={
-                        kpiPlayer?.kpi?.name || "" + " - " + kpiPlayer?.name
-                      }
+                      name={kpiPlayer?.kpi?.name + " - " + kpiPlayer?.name}
                       statistics={kpiPlayer?.kpi?.statistics}
                     />
                   </div>

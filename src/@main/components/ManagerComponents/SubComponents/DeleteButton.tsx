@@ -24,7 +24,7 @@ const DeleteButton = ({ name, type, deleteFun }: Props) => {
               onClick={() => {
                 setOpened(false);
               }}
-              className="bg-transparent border border-perfBlue text-perfBlue mx-auto w-fit  rounded-lg py-2 px-4"
+              className="bg-transparent border border-perfBlue text-perfBlue mx-auto w-32  rounded-lg py-2 px-4"
             >
               Cancel
             </button>
@@ -33,7 +33,7 @@ const DeleteButton = ({ name, type, deleteFun }: Props) => {
                 deleteFun();
                 setOpened(false);
               }}
-              className="bg-perfSecondary mx-auto w-fit text-white rounded-lg py-2 px-4"
+              className="bg-perfSecondary mx-auto w-32 text-white rounded-lg py-2 px-4"
             >
               Yes
             </button>
