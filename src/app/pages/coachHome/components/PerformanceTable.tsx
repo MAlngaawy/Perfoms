@@ -1,4 +1,4 @@
-import React, { useEffect, memo } from "react";
+import React, { useEffect, memo, useState } from "react";
 import { Table, Avatar, Skeleton } from "@mantine/core";
 import cn from "classnames";
 import {
@@ -75,70 +75,13 @@ const PerformanceTable = (props: Props) => {
                       </tr>
                       {oneKpi.kpi_metric.map((metric) => {
                         return (
-                          <tr className="border-0" key={metric.id}>
-                            <td className=" text-xs sm:text-sm sticky left-0  bg-white z-10 font-medium text-perfGray1">
-                              <div className="w-20 xs:w-40 text-left pl-6">
-                                {metric.name}
-                              </div>
-                            </td>
-                            {teamPerformance?.results.map((player) => {
-                              let theMetric = 0;
-                              let theScore = 0;
-                              for (let i of player.player_metric) {
-                                if (
-                                  i.metric === metric.name &&
-                                  i.kpi === oneKpi.name
-                                ) {
-                                  theMetric = i.id || 0;
-                                  theScore = i.last_score || 0;
-                                }
-                              }
-                              return (
-                                <td key={player.id}>
-                                  <div
-                                    className={classNames(
-                                      "flex gap-2 justify-center items-center mx-4",
-                                      { "opacity-40": theScore > 0 }
-                                    )}
-                                  >
-                                    {[1, 2, 3, 4, 5].map((number) => (
-                                      <span
-                                        key={number}
-                                        onClick={() => {
-                                          UpdatePlaerKpiMetric({
-                                            id: theMetric,
-                                            score: number,
-                                            team_id: selectedPlayerTeam.id,
-                                            max_score: 5,
-                                          });
-                                          console.log({
-                                            metricID: theMetric,
-                                          });
-                                        }}
-                                        className={cn(
-                                          "px-2 p-1 rounded-md cursor-pointer text-perfGray1 font-bold",
-                                          {
-                                            "bg-scoreGreen text-white":
-                                              theScore > 3 &&
-                                              theScore === number,
-                                            "bg-scoreRed text-white":
-                                              theScore < 3 &&
-                                              theScore === number,
-                                            "bg-scoreYallow text-white":
-                                              theScore === 3 &&
-                                              theScore === number,
-                                            "bg-slate-100": theScore !== number,
-                                          }
-                                        )}
-                                      >
-                                        {number}
-                                      </span>
-                                    ))}
-                                  </div>
-                                </td>
-                              );
-                            })}
-                          </tr>
+                          <TestEl
+                            metric={metric}
+                            teamPerformance={teamPerformance}
+                            oneKpi={oneKpi}
+                            UpdatePlaerKpiMetric={UpdatePlaerKpiMetric}
+                            selectedPlayerTeam={selectedPlayerTeam}
+                          />
                         );
                       })}
                     </>
@@ -161,6 +104,79 @@ const PerformanceTable = (props: Props) => {
   );
 };
 export default PerformanceTable;
+
+const TestEl = memo(
+  ({
+    metric,
+    teamPerformance,
+    oneKpi,
+    UpdatePlaerKpiMetric,
+    selectedPlayerTeam,
+  }: any) => {
+    const [testScore, setTestScore] = useState<number>(0);
+
+    useEffect(() => {
+      console.log(testScore);
+    }, [testScore]);
+
+    return (
+      <tr className="border-0" key={metric.id}>
+        <td className=" text-xs sm:text-sm sticky left-0  bg-white z-10 font-medium text-perfGray1">
+          <div className="w-20 xs:w-40 text-left pl-6">{metric.name}</div>
+        </td>
+        {teamPerformance?.results.map((player: any) => {
+          let theMetric = 0;
+          let theScore = testScore;
+          for (let i of player.player_metric) {
+            if (i.metric === metric.name && i.kpi === oneKpi.name) {
+              theMetric = i.id || 0;
+              theScore = i.last_score || 0;
+            }
+          }
+          return (
+            <td key={player.id}>
+              <div
+                className={classNames(
+                  "flex gap-2 justify-center items-center mx-4",
+                  { "opacity-40": theScore > 0 }
+                )}
+              >
+                {[1, 2, 3, 4, 5].map((number) => (
+                  <span
+                    key={number}
+                    onClick={() => {
+                      setTestScore(number);
+                      UpdatePlaerKpiMetric({
+                        id: theMetric,
+                        score: theScore === number ? 0 : number,
+                        team_id: selectedPlayerTeam.id,
+                        max_score: 5,
+                      });
+                    }}
+                    className={cn(
+                      "px-2 p-1 rounded-md cursor-pointer font-bold",
+                      {
+                        "bg-scoreGreen text-white":
+                          theScore > 3 && theScore === number,
+                        "bg-scoreRed text-white":
+                          theScore < 3 && theScore === number,
+                        "bg-scoreYallow text-white":
+                          theScore === 3 && theScore === number,
+                        "bg-slate-100 text-perfGray1 ": theScore !== number,
+                      }
+                    )}
+                  >
+                    {number}
+                  </span>
+                ))}
+              </div>
+            </td>
+          );
+        })}
+      </tr>
+    );
+  }
+);
 
 // const Scores = memo(() => {
 //   return (
