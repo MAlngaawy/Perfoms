@@ -26,6 +26,7 @@ import {
   AddPlayerType,
   AllPlayers,
   Player,
+  UpdatePlayer,
 } from "./../types/parent-types";
 import { CoachPlayerInfo, CoachTeamInfo } from "../types/coach-types";
 import { Teams } from "../types/clubManager-types";
@@ -65,6 +66,15 @@ export const parentsApi = createApi({
       invalidatesTags: ["Player"],
     }),
 
+    UpdatePlayer: mutation<UpdatePlayer, { player_id: string }>({
+      query: ({ player_id, ...body }) => ({
+        url: `update-player/${player_id}`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["Player"],
+    }),
+
     playerClubs: query<ParentClubs, { page?: number }>({
       query: (params) => ({
         url: "clubs/",
@@ -94,7 +104,7 @@ export const parentsApi = createApi({
         url: `my-players/`,
         params,
       }),
-      providesTags: ["Parent"],
+      providesTags: ["Parent", "Player"],
     }),
 
     onePlayer: query<CoachPlayerInfo, { id: number; page?: number }>({
@@ -377,4 +387,5 @@ export const {
   usePlayerCertificateQuery,
   usePlayerCertificatesQuery,
   useParentDeletePlayerMutation,
+  useUpdatePlayerMutation,
 } = parentsApi;

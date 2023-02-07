@@ -64,7 +64,7 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
     <div className="p-6 h-full bg-white rounded-3xl">
       <div className="playerName flex justify-between  items-center">
         <h2>{playerInfoData?.name.split(" ")[0]}'s info</h2>
-        <div
+        {/* <div
           onClick={() => {
             dispatch(changemodalState({ open: true, player: playerInfoData }));
           }}
@@ -73,7 +73,7 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
             icon="PencilSquareIcon:outline"
             className="w-5 cursor-pointer active:scale-110"
           />
-        </div>
+        </div> */}
       </div>
       <div className="flex flex-col xs:flex-row sm:flex-col justify-around">
         <div className="img my-2">

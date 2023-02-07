@@ -38,6 +38,14 @@ export type AddPlayerType = {
   icon: any;
 };
 
+export type UpdatePlayer = {
+  name: string;
+  dob: string;
+  weight: number;
+  height: number;
+  icon_url: string;
+};
+
 export type ParentClub = {
   id: number;
   name: string;
