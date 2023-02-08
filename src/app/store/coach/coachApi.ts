@@ -93,7 +93,6 @@ export const coachApi = createApi({
         method: "PATCH",
         body,
       }),
-      invalidatesTags: ["performances"],
     }),
     GetTeamPlayers: query<TeamPlayers, { team_id: number; page?: number }>({
       query: ({ team_id, ...params }) => ({
