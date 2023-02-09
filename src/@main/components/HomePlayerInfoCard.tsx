@@ -13,6 +13,7 @@ import { useAdminPlayerInfoQuery } from "~/app/store/clubManager/clubManagerApi"
 import { useUserQuery } from "~/app/store/user/userApi";
 import AppIcons from "../core/AppIcons";
 import { changemodalState } from "~/app/store/app/modalSlice";
+import EditPlayer from "~/app/pages/home/molecules/EditPlayer";
 
 type Props = {
   player_id?: number | string | undefined;
@@ -22,12 +23,12 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
   const [playerInfoData, setPlayerInfoData] = useState<CoachPlayerInfo>();
   const { data: user } = useUserQuery({});
-  const dispatch = useDispatch();
 
-  const { data: parentPlayerInfoData } = useOnePlayerQuery(
-    { id: selectedPlayer?.id },
-    { skip: !selectedPlayer?.id || user?.user_type !== "Parent" }
-  );
+  const { data: parentPlayerInfoData, refetch: refetchPlayerData } =
+    useOnePlayerQuery(
+      { id: selectedPlayer?.id },
+      { skip: !selectedPlayer?.id || user?.user_type !== "Parent" }
+    );
 
   const { data: coachPlayerInfo } = useGetPlayerInfoQuery(
     { player_id: player_id },
@@ -64,16 +65,10 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
     <div className="p-6 h-full bg-white rounded-3xl">
       <div className="playerName flex justify-between  items-center">
         <h2>{playerInfoData?.name.split(" ")[0]}'s info</h2>
-        {/* <div
-          onClick={() => {
-            dispatch(changemodalState({ open: true, player: playerInfoData }));
-          }}
-        >
-          <AppIcons
-            icon="PencilSquareIcon:outline"
-            className="w-5 cursor-pointer active:scale-110"
-          />
-        </div> */}
+        <EditPlayer
+          player={playerInfoData}
+          refetchPlayerData={refetchPlayerData}
+        />
       </div>
       <div className="flex flex-col xs:flex-row sm:flex-col justify-around">
         <div className="img my-2">
