@@ -138,6 +138,7 @@ const EditPlayer = ({ player, refetchPlayerData }: Props) => {
                   label="Date of birth"
                   name="dob"
                   inputFormat="YYYY-MM-DD"
+                  maxDate={new Date()}
                   //@ts-ignore
                   defaultValue={player?.dob && new Date(player?.dob)}
                   sx={{
