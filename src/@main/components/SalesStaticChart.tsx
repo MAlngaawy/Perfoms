@@ -254,7 +254,7 @@ const SaleStaticChart = () => {
         </PerformanceCard>
       </div>
 
-      <div className="py-5 h-80 overflow-hidden performancesCards">
+      <div className="py-5 h-80 overflow-scroll performancesCards">
         <ResponsiveContainer width={"100%"} height="100%" className="min-w-700">
           <BarChart
             data={playerKpis?.player_kpi.map((i) => ({
