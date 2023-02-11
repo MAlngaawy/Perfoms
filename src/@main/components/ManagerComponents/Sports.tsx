@@ -15,13 +15,14 @@ type Props = {};
 
 const Sports = (props: Props) => {
   const { data: user } = useUserQuery({});
+  console.log(user);
   const { data: sport } = useSuperSportQuery(
     {},
     { skip: user?.user_type !== "Supervisor" }
   );
   const { data: sports, refetch: adminRefetchSports } = useAdminSportsQuery(
-    {},
-    { skip: user?.user_type !== "Admin" }
+    { club_id: user?.club },
+    { skip: user?.user_type !== "Admin" || !user?.club }
   );
 
   const [adminDeleteSport] = useAdminDeleteSportMutation();

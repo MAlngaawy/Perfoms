@@ -92,8 +92,8 @@ export const clubManagerApi = createApi({
       invalidatesTags: ["clubManager"],
     }),
 
-    adminSports: query<Sports, { page?: number }>({
-      query: (params) => ({ url: "sports/", params }),
+    adminSports: query<Sports, { club_id: number | undefined; page?: number }>({
+      query: ({ club_id, ...params }) => ({ url: `sports/${club_id}`, params }),
       providesTags: ["clubManager"],
     }),
 

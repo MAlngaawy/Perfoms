@@ -8,6 +8,7 @@ import { Sport } from "~/app/store/types/parent-types";
 import { showNotification } from "@mantine/notifications";
 import { axiosInstance } from "~/app/configs/dataService";
 import AppUtils from "~/@main/utils/AppUtils";
+import { useUserQuery } from "~/app/store/user/userApi";
 import {
   useAdminClubQuery,
   useAdminSportsQuery,
@@ -22,7 +23,11 @@ const EditSport = ({ sportData }: Props) => {
   const [playerImage, setPlayerImage] = useState<string | unknown>("");
   const [playerImagePreview, setPlayerImagePreview] = useState<string>();
   const { data: adminClub } = useAdminClubQuery({});
-  const { refetch } = useAdminSportsQuery({});
+  const { data: user } = useUserQuery({});
+  const { refetch } = useAdminSportsQuery(
+    { club_id: user?.club },
+    { skip: !user?.club }
+  );
   const [loading, setLoading] = useState<boolean>(false);
 
   const {

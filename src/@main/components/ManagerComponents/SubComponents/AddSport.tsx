@@ -14,7 +14,7 @@ import {
   useAdminSportsQuery,
 } from "~/app/store/clubManager/clubManagerApi";
 import AppUtils from "~/@main/utils/AppUtils";
-import { useGeneralSportsQuery } from "~/app/store/user/userApi";
+import { useGeneralSportsQuery, useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {};
 
@@ -23,7 +23,11 @@ const AddSport = (props: Props) => {
   const [playerImage, setPlayerImage] = useState<File | unknown>("");
   const [playerImagePreview, setPlayerImagePreview] = useState("null");
   const { data: adminClub } = useAdminClubQuery({});
-  const { refetch } = useAdminSportsQuery({});
+  const { data: user } = useUserQuery({});
+  const { refetch } = useAdminSportsQuery(
+    { club_id: user?.club },
+    { skip: !user?.club }
+  );
   const [loading, setLoading] = useState<boolean>(false);
   const { refetch: refetchGeneralSports } = useGeneralSportsQuery({});
   const resetFields = () => {
