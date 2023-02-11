@@ -81,6 +81,15 @@ const AddTeamCardForm = (props: Props) => {
       formData.set("icon", playerImage as string);
     }
     try {
+      const theSport = formData.get("sport");
+      if (!theSport && user?.user_type === "Admin") {
+        AppUtils.showNotificationFun(
+          "Error",
+          "Sorry",
+          "You have to select sport first"
+        );
+      }
+
       axiosInstance
         .post(
           user?.user_type === "Supervisor"
@@ -109,11 +118,15 @@ const AddTeamCardForm = (props: Props) => {
           showNotification({
             title: "Wrong",
             color: "red",
-            message: "Something wend wrong, try again later",
+            message: "Something went wrong, try again later",
           });
+          AppUtils.showNotificationFun(
+            "Error",
+            "Sorry",
+            "Something went wrong, try again later"
+          );
         });
     } catch (err) {
-
       setLoading(false);
     }
   };

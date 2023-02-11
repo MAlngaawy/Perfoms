@@ -117,7 +117,7 @@ const Sports = (props: Props) => {
           </h2>
         </div>
       )}
-      {sports && <AddSport />}
+      {user?.user_type === "Admin" && <AddSport />}
     </div>
   );
 };
