@@ -37,6 +37,7 @@ import {
 import {
   CoachPlayerInfo,
   PlayerMonthsAttendancesStatistics,
+  PlayerParent,
   TeamKpiPlayersStatistics,
   TeamPlayersAttendStatistics,
   TeamsStatistics,
@@ -470,6 +471,16 @@ export const clubManagerApi = createApi({
       }),
     }),
 
+    adminPlayerParentInfo: query<
+      PlayerParent,
+      { player_id: number | string | undefined; pages?: number }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `teams/players/${player_id}/parent`,
+        params,
+      }),
+    }),
+
     adminPlayerKpiStatistics: query<
       TeamsStatistics,
       { player_id: string | undefined; pages?: number }
@@ -612,6 +623,7 @@ export const {
   useAdminTeamKpiPlayersStatisticsQuery,
   useAdminTeamAttendPlayersStatisticsQuery,
   useAdminPlayerInfoQuery,
+  useAdminPlayerParentInfoQuery,
   useAdminPlayerKpiStatisticsQuery,
   useAdminPlayersAttendStatisticsQuery,
   useAdminPlayerKpisMetricsStatisticsQuery,

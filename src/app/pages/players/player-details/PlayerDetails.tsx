@@ -16,61 +16,10 @@ import {
 } from "~/app/store/supervisor/supervisorMainApi";
 import CustomBreadCrumbs from "~/@main/components/BreadCrumbs";
 import { usePlayerEventsQuery, useUserQuery } from "~/app/store/user/userApi";
-import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
-import { useSelector } from "react-redux";
-
-// dummy data
-const playerSummary = [
-  {
-    name: "Attendance",
-    number: 8,
-    bgColor: "#00E0961A",
-    textColor: "#27AE60",
-    icon: "/assets/images/gym.png",
-  },
-  {
-    name: "Strengths",
-    number: 8,
-    bgColor: "#00E0961A",
-    textColor: "#27AE60",
-    icon: "/assets/images/gym.png",
-  },
-  {
-    name: "Absence",
-    number: 8,
-    bgColor: "#EB57571A",
-    textColor: "#EB5757",
-    icon: "/assets/images/weakness.png",
-  },
-  {
-    name: "Weaknesses",
-    number: 8,
-    bgColor: "#EB57571A",
-    textColor: "#EB5757",
-    icon: "/assets/images/weakness.png",
-  },
-  {
-    name: "Total",
-    number: 8,
-    bgColor: "#2F80ED1A",
-    textColor: "#2F80ED",
-    icon: "/assets/images/tasks.png",
-  },
-  {
-    name: "Actions",
-    number: 8,
-    bgColor: "#2F80ED1A",
-    textColor: "#2F80ED",
-    icon: "/assets/images/tasks.png",
-  },
-  {
-    name: "Recommendations",
-    number: 8,
-    bgColor: "#00A1FF1A",
-    textColor: "#00A1FF",
-    icon: "/assets/images/discussion.png",
-  },
-];
+import {
+  useAdminPlayerInfoQuery,
+  useAdminPlayerParentInfoQuery,
+} from "~/app/store/clubManager/clubManagerApi";
 
 const PlayerDetails = () => {
   const [playerData, setPlayerData] = useState<CoachPlayerInfo>();
@@ -107,13 +56,35 @@ const PlayerDetails = () => {
     { skip: !params.id || user?.user_type !== "Supervisor" }
   );
 
+  const { data: adminPlayer } = useAdminPlayerInfoQuery(
+    { player_id: params.id },
+    { skip: !params.id || user?.user_type !== "Admin" }
+  );
+
+  const { data: adminParent } = useAdminPlayerParentInfoQuery(
+    { player_id: params.id },
+    { skip: !params.id || user?.user_type !== "Admin" }
+  );
+
   useEffect(() => {
     if (coachPlayer) setPlayerData(coachPlayer);
     if (coachParent) setParentData(coachParent);
+
     if (superPlayer) setPlayerData(superPlayer);
     if (superParent) setParentData(superParent);
+
+    if (adminPlayer) setPlayerData(adminPlayer);
+    if (adminParent) setParentData(adminParent);
     console.log("Parent", parentData);
-  }, [coachParent, coachPlayer, superParent, superPlayer, playerEvents]);
+  }, [
+    coachParent,
+    coachPlayer,
+    superParent,
+    superPlayer,
+    playerEvents,
+    adminPlayer,
+    adminParent,
+  ]);
 
   return (
     <div className="p-4 pt-0">
@@ -131,10 +102,7 @@ const PlayerDetails = () => {
       />
       <Grid columns={12}>
         <Grid.Col md={6} span={12}>
-          <PlayerInfoCard
-            playerData={playerData}
-            playerSummary={playerSummary}
-          />
+          <PlayerInfoCard playerData={playerData} />
         </Grid.Col>
         <Grid.Col md={6} span={12}>
           <ParentInfoCard
