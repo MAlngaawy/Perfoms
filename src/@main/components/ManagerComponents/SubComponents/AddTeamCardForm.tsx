@@ -83,6 +83,7 @@ const AddTeamCardForm = (props: Props) => {
     try {
       const theSport = formData.get("sport");
       if (!theSport && user?.user_type === "Admin") {
+        setLoading(false);
         return AppUtils.showNotificationFun(
           "Error",
           "Sorry",
