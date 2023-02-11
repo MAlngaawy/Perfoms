@@ -83,7 +83,7 @@ const AddTeamCardForm = (props: Props) => {
     try {
       const theSport = formData.get("sport");
       if (!theSport && user?.user_type === "Admin") {
-        AppUtils.showNotificationFun(
+        return AppUtils.showNotificationFun(
           "Error",
           "Sorry",
           "You have to select sport first"
@@ -115,11 +115,6 @@ const AddTeamCardForm = (props: Props) => {
         })
         .catch(() => {
           setLoading(false);
-          showNotification({
-            title: "Wrong",
-            color: "red",
-            message: "Something went wrong, try again later",
-          });
           AppUtils.showNotificationFun(
             "Error",
             "Sorry",
