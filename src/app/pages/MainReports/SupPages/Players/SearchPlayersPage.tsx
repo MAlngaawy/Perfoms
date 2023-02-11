@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { TeamPlayers } from "~/app/store/types/clubManager-types";
 import { useCoachGetAllMyPlayersQuery } from "~/app/store/coach/coachApi";
 import { useAdminPlayersQuery } from "~/app/store/clubManager/clubManagerApi";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {};
 
@@ -14,10 +15,14 @@ const SearchPlayersPage = (props: Props) => {
   const [playersData, setPlayersData] = useState<TeamPlayers | any>();
   const { handleSubmit, register, control } = useForm();
   const navigate = useNavigate();
+  const { data: user } = useUserQuery({});
 
   const { data: coachPlayers } = useCoachGetAllMyPlayersQuery({});
   const { data: superPlayers } = useSuperPlayersQuery({});
-  const { data: adminPlayers } = useAdminPlayersQuery({});
+  const { data: adminPlayers } = useAdminPlayersQuery(
+    { club_id: user?.club },
+    { skip: !user?.club }
+  );
 
   useEffect(() => {
     if (superPlayers) setPlayersData(superPlayers);

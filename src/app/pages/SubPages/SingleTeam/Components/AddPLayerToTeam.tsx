@@ -23,12 +23,15 @@ type Props = {
 
 const AddPlayer = ({ teamPlayers }: Props) => {
   const [opened, setOpened] = useState(false);
+  const { data: user } = useUserQuery({});
   const [playersData, setPlayersData] = useState<any>([]);
   const [players, setPlayers] = useState<SuperVisorPlayers>();
   const [loading, setLoading] = useState<boolean>(false);
   const { data: superPlayers } = useSuperPlayersQuery({});
-  const { data: adminPlayers } = useAdminPlayersQuery({});
-  const { data: user } = useUserQuery({});
+  const { data: adminPlayers } = useAdminPlayersQuery(
+    { club_id: user?.club },
+    { skip: !user?.club }
+  );
 
   const { team_id } = useParams();
 

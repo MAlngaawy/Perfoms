@@ -230,25 +230,34 @@ export const clubManagerApi = createApi({
       invalidatesTags: ["events"],
     }),
 
-    adminPlayers: query<SuperVisorPlayers, { page?: number }>({
-      query: (params) => ({
-        url: `users/players/`,
+    adminPlayers: query<
+      SuperVisorPlayers,
+      { club_id: number | undefined; page?: number }
+    >({
+      query: ({ club_id, ...params }) => ({
+        url: `users/players/${club_id}`,
         params,
       }),
       providesTags: ["players", "playerUser"],
     }),
 
-    adminCoaches: query<AllUsers, { page?: number }>({
-      query: (params) => ({
-        url: `users/coaches/`,
+    adminCoaches: query<
+      AllUsers,
+      { club_id: number | undefined; page?: number }
+    >({
+      query: ({ club_id, ...params }) => ({
+        url: `users/coaches/${club_id}`,
         params,
       }),
       providesTags: ["coachUser"],
     }),
 
-    adminSupervisors: query<AllUsers, { page?: number }>({
-      query: (params) => ({
-        url: `users/supervisors/`,
+    adminSupervisors: query<
+      AllUsers,
+      { club_id: number | undefined; page?: number }
+    >({
+      query: ({ club_id, ...params }) => ({
+        url: `users/supervisors/${club_id}`,
         params,
       }),
       providesTags: ["supervisorUser"],

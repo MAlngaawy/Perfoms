@@ -5,13 +5,25 @@ import {
   useAdminSupervisorsQuery,
 } from "~/app/store/clubManager/clubManagerApi";
 import UsersCard from "./SubComponents/UsersCard";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {};
 
 const Users = (props: Props) => {
-  const { data: players } = useAdminPlayersQuery({});
-  const { data: coaches } = useAdminCoachesQuery({});
-  const { data: supervisors } = useAdminSupervisorsQuery({});
+  const { data: user } = useUserQuery({});
+
+  const { data: players } = useAdminPlayersQuery(
+    { club_id: user?.club },
+    { skip: !user?.club }
+  );
+  const { data: coaches } = useAdminCoachesQuery(
+    { club_id: user?.club },
+    { skip: !user?.club }
+  );
+  const { data: supervisors } = useAdminSupervisorsQuery(
+    { club_id: user?.club },
+    { skip: !user?.club }
+  );
 
   return (
     <div className="flex flex-col gap-6  p-2 sm:p-6 mb-10">
