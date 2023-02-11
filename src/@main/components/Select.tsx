@@ -22,6 +22,8 @@ interface inputTypes {
   placeholder?: string;
   searchable?: boolean;
   itemComponent?: any;
+  disabled?: boolean;
+  normalStyle?: boolean;
 }
 
 const PerfSelect = ({
@@ -36,12 +38,15 @@ const PerfSelect = ({
   placeholder,
   searchable,
   itemComponent,
+  disabled,
+  normalStyle,
 }: inputTypes) => {
   return (
     <Controller
       render={({ field }) => (
         <Select
           placeholder={placeholder}
+          disabled={disabled}
           id={id}
           withAsterisk={required}
           searchable={searchable}
@@ -54,9 +59,9 @@ const PerfSelect = ({
               borderBottom: 1,
               borderStyle: "solid",
               borderRadius: 0,
-              minHeight: 10,
-              maxHeight: 15,
-              fontSize: 12,
+              minHeight: !normalStyle ? 10 : "auto",
+              maxHeight: !normalStyle ? 15 : "auto",
+              fontSize: !normalStyle ? 12 : "auto",
             },
             ".mantine-Select-dropdown": {
               minWidth: 100,

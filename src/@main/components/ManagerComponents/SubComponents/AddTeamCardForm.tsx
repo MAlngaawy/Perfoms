@@ -1,5 +1,5 @@
 import { useState, ReactNode, useEffect } from "react";
-import { Modal, Button, Group, Input } from "@mantine/core";
+import { Modal, Button, Group, Input, Select } from "@mantine/core";
 import AppIcons from "../../../core/AppIcons";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -28,7 +28,7 @@ const AddTeamCardForm = (props: Props) => {
   const [playerImage, setPlayerImage] = useState<string | unknown>("");
   const [playerImagePreview, setPlayerImagePreview] = useState("null");
   const [loading, setLoading] = useState<boolean>(false);
-  const [sports, setSports] = useState<Sports | undefined>();
+  const [sports, setSports] = useState<Sports | undefined | null>();
   const { data: user } = useUserQuery({});
   const { refetch: superRefetch } = useSuperTeamsQuery({});
   const { refetch: adminRefetch } = useAdminTeamsQuery({});
@@ -36,7 +36,7 @@ const AddTeamCardForm = (props: Props) => {
   const { refetch: RefetchGeneralTeams } = useGeneralTeamsQuery({});
 
   useEffect(() => {
-    if (AdminSports) setSports(AdminSports);
+    if (AdminSports) setSports(null);
   }, [AdminSports]);
 
   const schema = yup.object().shape({
@@ -203,6 +203,7 @@ const AddTeamCardForm = (props: Props) => {
                 { label: "Every 2 Week", value: "Two_Weeks" },
                 { label: "Every Month", value: "Month" },
               ]}
+              normalStyle
               name="rate_per"
               error={errors.rate_per && (errors.rate_per.message as ReactNode)}
             />
@@ -231,10 +232,11 @@ const AddTeamCardForm = (props: Props) => {
               />
             </Input.Wrapper>
 
-            {user?.user_type === "Admin" && sports && (
+            {user?.user_type === "Admin" && sports ? (
               <PerfSelect
                 control={control}
                 placeholder="Sport"
+                normalStyle
                 data={sports?.results?.map((sport, idx) => {
                   return {
                     label: sport.name,
@@ -244,9 +246,31 @@ const AddTeamCardForm = (props: Props) => {
                 name="sport"
                 required
               />
+            ) : (
+              <Select
+                placeholder={"This Club Has no sports"}
+                disabled
+                sx={{
+                  ".mantine-Input-input": {
+                    border: 0,
+                    padding: 0,
+                    borderBottom: 1,
+                    borderStyle: "solid",
+                    borderRadius: 0,
+                  },
+                  ".mantine-Select-dropdown": {
+                    minWidth: 100,
+                  },
+                  ".mantine-Select-label": {
+                    fontSize: 10,
+                  },
+                }}
+                data={["No Sports"]}
+              />
             )}
 
             <PerfSelect
+              normalStyle
               control={control}
               placeholder="Gender"
               data={[
