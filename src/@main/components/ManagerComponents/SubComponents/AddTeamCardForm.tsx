@@ -42,7 +42,7 @@ const AddTeamCardForm = (props: Props) => {
   const { refetch: RefetchGeneralTeams } = useGeneralTeamsQuery({});
 
   useEffect(() => {
-    if (AdminSports) setSports(null);
+    if (AdminSports) setSports(AdminSports);
   }, [AdminSports]);
 
   const schema = yup.object().shape({
