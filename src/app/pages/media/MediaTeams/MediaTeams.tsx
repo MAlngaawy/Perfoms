@@ -41,8 +41,8 @@ const SelectMediaTeamPage = (props: Props) => {
   );
 
   const { data: adminTeams } = useAdminTeamsQuery(
-    {},
-    { skip: user?.user_type !== "Admin" }
+    { club_id: user?.club },
+    { skip: user?.user_type !== "Admin" || !user?.club }
   );
 
   useEffect(() => {

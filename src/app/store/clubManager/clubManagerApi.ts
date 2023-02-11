@@ -97,8 +97,11 @@ export const clubManagerApi = createApi({
       providesTags: ["clubManager"],
     }),
 
-    adminTeams: query<Teams, { page?: number }>({
-      query: (params) => ({ url: "teams/", params }),
+    adminTeams: query<Teams, { club_id: number | undefined; page?: number }>({
+      query: ({ club_id, ...params }) => ({
+        url: `teams-list/${club_id}`,
+        params,
+      }),
       providesTags: ["teams", "playerUser", "players"],
     }),
 

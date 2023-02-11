@@ -31,7 +31,10 @@ const AddTeamCardForm = (props: Props) => {
   const [sports, setSports] = useState<Sports | undefined | null>();
   const { data: user } = useUserQuery({});
   const { refetch: superRefetch } = useSuperTeamsQuery({});
-  const { refetch: adminRefetch } = useAdminTeamsQuery({});
+  const { refetch: adminRefetch } = useAdminTeamsQuery(
+    { club_id: user?.club },
+    { skip: !user?.club }
+  );
   const { data: AdminSports } = useAdminSportsQuery(
     { club_id: user?.club },
     { skip: !user?.club }

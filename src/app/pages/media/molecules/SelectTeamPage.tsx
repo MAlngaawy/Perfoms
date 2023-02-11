@@ -39,7 +39,7 @@ const SelectTeamPage = (props: Props) => {
   );
 
   const { data: adminTeams } = useAdminTeamsQuery(
-    {},
+    { club_id: user?.club },
     { skip: user?.user_type !== "Admin" }
   );
 

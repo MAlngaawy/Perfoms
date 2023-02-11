@@ -25,9 +25,15 @@ const EditButton = ({ teamData }: Props) => {
   const [playerImage, setPlayerImage] = useState<string | unknown>("");
   const [playerImagePreview, setPlayerImagePreview] = useState("null");
   const [loading, setLoading] = useState<boolean>(false);
-  const { refetch: superRefetch } = useSuperTeamsQuery({});
-  const { refetch: adminRefetch } = useAdminTeamsQuery({});
   const { data: user } = useUserQuery({});
+  const { refetch: superRefetch } = useSuperTeamsQuery(
+    {},
+    { skip: !user?.club }
+  );
+  const { refetch: adminRefetch } = useAdminTeamsQuery(
+    { club_id: user?.club },
+    { skip: !user?.club }
+  );
 
   const schema = yup.object().shape({
     icon: yup.mixed(),

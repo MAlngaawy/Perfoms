@@ -16,8 +16,8 @@ const TeamsComponent = (props: Props) => {
     { skip: user?.user_type !== "Supervisor" }
   );
   const { data: adminTeams } = useAdminTeamsQuery(
-    {},
-    { skip: user?.user_type !== "Admin" }
+    { club_id: user?.club },
+    { skip: user?.user_type !== "Admin" || !user?.club }
   );
 
   useEffect(() => {
