@@ -8,9 +8,10 @@ import SubmitButton from "~/@main/components/SubmitButton";
 import { axiosInstance } from "~/app/configs/dataService";
 import AppUtils from "~/@main/utils/AppUtils";
 import Cookies from "js-cookie";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {
-  user: User;
+  user: User | undefined;
   setOpened: any;
   refetch: any;
 };
@@ -20,7 +21,6 @@ const EditForm = ({ user, setOpened, refetch }: Props) => {
   const [userAvatar, setUserAvatar] = useState<File | null>(null);
   const [isError, setIsErrror] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
 
   const { register, handleSubmit, control } = useForm({
     defaultValues: { ...user, avatar: undefined },
@@ -49,18 +49,17 @@ const EditForm = ({ user, setOpened, refetch }: Props) => {
   };
 
   useEffect(() => {
-    if (isSuccess) setOpened(false);
     if (isError)
       //@ts-ignore
       showNotification({ title: "Update Error", message: error?.data.message });
-  }, [isSuccess, isError]);
+  }, [isError]);
 
   return (
     <form className="flex flex-col gap-2" onSubmit={onSubmitFn}>
       <div className="relative photo place-self-center w-28 h-28">
         <Avatar
           className="object-cover w-full h-full rounded-lg"
-          src={(userAvatar && URL.createObjectURL(userAvatar)) || user.avatar}
+          src={(userAvatar && URL.createObjectURL(userAvatar)) || user?.avatar}
           alt="user-avatar"
         />
         <div
