@@ -30,6 +30,18 @@ const Toolbar = ({ setOpened }: Props) => {
   // This is for changing the toolabr color based on the user type
   const [changableColor, setChangableColor] = useState("#fff");
 
+  const profileRoute = () => {
+    let route = "profile";
+
+    if (user?.user_type === "Supervisor" || user?.user_type === "Coach") {
+      route = "coach-profile";
+    } else if (user?.user_type === "Admin") {
+      route = "admin-profile";
+    }
+
+    return route;
+  };
+
   const { data: playerClub } = usePlayerClubQuery(
     { id: selectedPlayer?.id },
     { skip: !selectedPlayer?.id || user?.user_type !== "Parent" }
@@ -50,12 +62,6 @@ const Toolbar = ({ setOpened }: Props) => {
     { skip: user?.user_type !== "Admin" }
   );
   useEffect(() => {
-    // if (!dataServerToken) {
-    //   location.reload();
-    //   console.log("NOTokken");
-    // } else {
-    //   console.log("tokken", dataServerToken);
-    // }
     if (playerClub) setClub(playerClub);
     if (coachClub) setClub(coachClub);
     if (superClub) setClub(superClub);
@@ -174,12 +180,7 @@ const Toolbar = ({ setOpened }: Props) => {
           <Menu.Dropdown className="p-0">
             <Menu.Label className="p-0">
               <div className="w-full hover:bg-slate-200 py-2">
-                <Link
-                  className="w-full h-full"
-                  to={
-                    user?.user_type === "Parent" ? "profile" : "coach-profile"
-                  }
-                >
+                <Link className="w-full h-full" to={profileRoute()}>
                   <div className="flex gap-2 mx-10">
                     <AppIcons className="w-4 h-4 " icon="UserIcon:outline" />
                     <p>Profile</p>

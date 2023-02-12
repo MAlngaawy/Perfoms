@@ -45,6 +45,7 @@ import SportPillarsPageConfig from "../pages/SubPages/SportPillars/SportPillarsC
 import ForgotPassConfig from "../pages/sign-in/ForgotPasswordPage/ForgotPassConfig";
 import ResetPasswordConfig from "../pages/ResetPassword/ResetPasswordConfig";
 import RequestSentConfig from "../pages/OTP/RequestSent/RequestSentConfig";
+import AdminProfilePageConfig from "../pages/AdminProfile/AdminProfileConfig";
 
 const routeConfigs: PagesRouteConfig[] = [
   SignInConfig,
@@ -90,6 +91,7 @@ const routeConfigs: PagesRouteConfig[] = [
   ForgotPassConfig,
   ResetPasswordConfig,
   RequestSentConfig,
+  AdminProfilePageConfig,
 ];
 
 const routes: AppRouteObject[] = [

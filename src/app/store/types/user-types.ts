@@ -87,6 +87,7 @@ export type Scores = {
 export type InfoProps = {
   label: string;
   value?: string | number | undefined;
+  center?: boolean;
 };
 
 export type PlayerData = {
