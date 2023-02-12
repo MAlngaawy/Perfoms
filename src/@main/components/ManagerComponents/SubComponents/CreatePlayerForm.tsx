@@ -170,7 +170,7 @@ const AddPlayerForm = (props: Props) => {
       });
       setSelectedTeam(null);
     }
-  }, [clubSports, sportTeams, selectedSport]);
+  }, [clubSports, sportTeams, selectedSport, clubParents]);
 
   const handleChange = (name: string, value: string | number) => {
     setFormInputsData({
