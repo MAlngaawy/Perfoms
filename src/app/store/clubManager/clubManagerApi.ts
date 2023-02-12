@@ -4,6 +4,7 @@ import {
   AddEvent,
   AddRecommendation,
   AllUsers,
+  ClubParents,
   CoachesRequests,
   Sports,
   SportsStatistics,
@@ -240,6 +241,16 @@ export const clubManagerApi = createApi({
         params,
       }),
       providesTags: ["players", "playerUser"],
+    }),
+
+    adminClubParents: query<
+      ClubParents,
+      { club_id: number | undefined; page?: number }
+    >({
+      query: ({ club_id, ...params }) => ({
+        url: `users/parents/${club_id}`,
+        params,
+      }),
     }),
 
     adminCoaches: query<
@@ -633,4 +644,5 @@ export const {
   useAdminPlayerRecommendationsQuery,
   useAdminPlayerActionsQuery,
   useAdminPlayerCalendarQuery,
+  useAdminClubParentsQuery,
 } = clubManagerApi;

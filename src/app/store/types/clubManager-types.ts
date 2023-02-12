@@ -130,3 +130,14 @@ export type AddSupervisorUser = {
 export type SportsStatistics = BaseGetAllType & {
   results: TeamStatistics[];
 };
+
+export type ClubParent = {
+  id: number;
+  first_name: string;
+  last_name: string;
+  avatar: string;
+};
+
+export type ClubParents = BaseGetAllType & {
+  results: ClubParent[];
+};

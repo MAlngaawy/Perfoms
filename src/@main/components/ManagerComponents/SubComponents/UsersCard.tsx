@@ -1,6 +1,6 @@
 import DeleteButton from "./DeleteButton";
 import { Avatar, Grid, TextInput } from "@mantine/core";
-import AddUserForm from "./AddUser";
+import AddPlayerForm from "./CreatePlayerForm";
 import { PlayerCoach } from "~/app/store/types/parent-types";
 import { showNotification } from "@mantine/notifications";
 import {
@@ -11,6 +11,7 @@ import {
 import __ from "lodash";
 import { useEffect, useState } from "react";
 import AppIcons from "~/@main/core/AppIcons";
+import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {
   type: "Player" | "Coach" | "Supervisor";
@@ -49,140 +50,50 @@ const UsersCard = ({ type, data }: Props) => {
     if (type === "Player") {
       deletePlayer({ player_id: userId })
         .then((res) => {
-          showNotification({
-            message: "Successfully Deleted",
-            color: "green",
-            title: "Done",
-            styles: {
-              root: {
-                backgroundColor: "#27AE60",
-                borderColor: "#27AE60",
-                "&::before": { backgroundColor: "#fff" },
-              },
-
-              title: { color: "#fff" },
-              description: { color: "#fff" },
-              closeButton: {
-                color: "#fff",
-              },
-            },
-          });
+          AppUtils.showNotificationFun(
+            "Success",
+            "Done",
+            "Successfully Deleted"
+          );
         })
         .catch((err) => {
-          showNotification({
-            message: err.message,
-            color: "ref",
-            title: "Wrong",
-            styles: {
-              root: {
-                backgroundColor: "#EB5757",
-                borderColor: "#EB5757",
-                "&::before": { backgroundColor: "#fff" },
-              },
-
-              title: { color: "#fff" },
-              description: { color: "#fff" },
-              closeButton: {
-                color: "#fff",
-              },
-            },
-          });
+          AppUtils.showNotificationFun("Error", "Wrong", "err.message");
         });
     } else if (type === "Coach") {
       deleteCoach({ coach_id: userId })
         .then((res) => {
-          showNotification({
-            message: "Successfully Deleted",
-            color: "green",
-            title: "Done",
-            styles: {
-              root: {
-                backgroundColor: "#27AE60",
-                borderColor: "#27AE60",
-                "&::before": { backgroundColor: "#fff" },
-              },
-
-              title: { color: "#fff" },
-              description: { color: "#fff" },
-              closeButton: {
-                color: "#fff",
-              },
-            },
-          });
+          AppUtils.showNotificationFun(
+            "Success",
+            "Done",
+            "Successfully Deleted"
+          );
         })
         .catch((err) => {
-          showNotification({
-            message: err.message,
-            color: "ref",
-            title: "Wrong",
-            styles: {
-              root: {
-                backgroundColor: "#EB5757",
-                borderColor: "#EB5757",
-                "&::before": { backgroundColor: "#fff" },
-              },
-
-              title: { color: "#fff" },
-              description: { color: "#fff" },
-              closeButton: {
-                color: "#fff",
-              },
-            },
-          });
+          AppUtils.showNotificationFun("Error", "Wrong", "err.message");
         });
     } else if (type === "Supervisor") {
       deleteSupervisor({ supervisor_id: userId })
         .then((res) => {
-          showNotification({
-            message: "Successfully Deleted",
-            color: "green",
-            title: "Done",
-            styles: {
-              root: {
-                backgroundColor: "#27AE60",
-                borderColor: "#27AE60",
-                "&::before": { backgroundColor: "#fff" },
-              },
-
-              title: { color: "#fff" },
-              description: { color: "#fff" },
-              closeButton: {
-                color: "#fff",
-              },
-            },
-          });
+          AppUtils.showNotificationFun(
+            "Success",
+            "Done",
+            "Successfully Deleted"
+          );
         })
         .catch((err) => {
-          showNotification({
-            message: err.message,
-            color: "ref",
-            title: "Wrong",
-            styles: {
-              root: {
-                backgroundColor: "#EB5757",
-                borderColor: "#EB5757",
-                "&::before": { backgroundColor: "#fff" },
-              },
-
-              title: { color: "#fff" },
-              description: { color: "#fff" },
-              closeButton: {
-                color: "#fff",
-              },
-            },
-          });
+          AppUtils.showNotificationFun("Error", "Wrong", "err.message");
         });
     }
   };
 
   return (
     <div className="bg-white rounded-lg p-4 pt-0 ">
-      <div className="header flex  justify-between items-center py-4">
-        <h2 className="text-sm sm:text-lg text-perfGray1">
+      <div className="header flex flex-col sm:flex-row justify-between items-start py-4">
+        <h2 className="text-sm sm:text-lg text-perfGray1 mb-2 sm:mb-0">
           {type === "Coach" ? "Coaches" : type + "s"} in the system
         </h2>
-        <div className="flex gap-6">
-          {/* <AddUserForm type={type} /> */}
+        <div className="flex gap-6 justify-center items-center">
+          {type === "Player" && <AddPlayerForm />}
           <TextInput
             onChange={(e) => setSearchKeyword(e.target.value)}
             value={searchKeyword}
