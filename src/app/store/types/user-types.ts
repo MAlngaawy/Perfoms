@@ -289,3 +289,10 @@ export type ResetPassword = {
   new_password: string;
   new_password_confirm: string;
 };
+
+export type ClubTeams = BaseGetAllType & {
+  results: {
+    id: number;
+    name: string;
+  }[];
+};

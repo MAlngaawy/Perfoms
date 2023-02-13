@@ -7,6 +7,7 @@ import {
   AddExperince,
   AddQualification,
   ChangePassword,
+  ClubTeams,
   Course,
   Courses,
   Education,
@@ -41,7 +42,7 @@ import {
 } from "../types/user-types";
 import { ReactNode } from "react";
 import { Kpis, Metrics, Pillars } from "../types/supervisor-types";
-import { Sports } from "../types/clubManager-types";
+import { Sports, Teams } from "../types/clubManager-types";
 import { UserAchievements } from "~/app/store/types/user-types";
 
 export const userApi = createApi({
@@ -202,7 +203,11 @@ export const userApi = createApi({
         url: "teams/",
       }),
     }),
-
+    clubTeams: query<ClubTeams, { club_id: number | string; page?: number }>({
+      query: ({ club_id, ...params }) => ({
+        url: `club-teams/${club_id}`,
+      }),
+    }),
     //OTP verify
     verifyOtp: mutation<OTPVerify, OTPVerify>({
       query: (body) => ({
@@ -428,6 +433,7 @@ export const {
   useGeneralPillarsQuery,
   useGeneralSportsQuery,
   useGeneralTeamsQuery,
+  useClubTeamsQuery,
   useGetUserEducationsQuery,
   useGetCoachEducationsQuery,
   useAddUserEducationMutation,

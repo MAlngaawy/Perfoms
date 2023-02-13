@@ -10,6 +10,7 @@ import PerfSelect, { Option } from "~/@main/components/Select";
 import { Controller } from "react-hook-form";
 import { usePublicClubsQuery, useTeamsQuery } from "~/app/store/core/coreApi";
 import {
+  useClubTeamsQuery,
   useSendOtpMutation,
   useSignupMutation,
 } from "~/app/store/user/userApi";
@@ -58,14 +59,20 @@ const SignUpPage = (props: Props) => {
   });
   const country = watch("country");
   const userRole = watch("userRole");
-  const { data: teamsData } = useTeamsQuery(null, {
-    skip: userRole !== "Coach",
-  });
+  const selectedClub = watch("club");
+  const { data: teamsData } = useClubTeamsQuery(
+    { club_id: selectedClub },
+    {
+      skip: userRole !== "Coach" || !selectedClub,
+    }
+  );
 
   useEffect(() => {
     setValue("city", "");
     setValue("teams", []);
-  }, [country, setValue, userRole]);
+    console.log(selectedClub);
+    console.log(teamsData);
+  }, [country, setValue, userRole, teamsData, selectedClub]);
 
   const submitFun = (data: any) => {
     // handle The request body schema
@@ -317,7 +324,8 @@ const SignUpPage = (props: Props) => {
                         fontSize: 10,
                       },
                     }}
-                    data={teamsData.data.map(
+                    //@ts-ignore
+                    data={teamsData.results.map(
                       (team: { name: string; id: number }) => ({
                         label: team.name,
                         value: team.id,
