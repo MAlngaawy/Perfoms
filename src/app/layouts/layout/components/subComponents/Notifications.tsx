@@ -4,10 +4,14 @@ import Notification from "~/@main/components/Notification";
 import AppIcons from "~/@main/core/AppIcons";
 import { Link } from "react-router-dom";
 import useWindowSize from "~/@main/hooks/useWindowSize";
-import { useNotificationsQuery } from "~/app/store/user/userApi";
+import {
+  useNotificationsQuery,
+  useReadNotificationsQuery,
+} from "~/app/store/user/userApi";
 import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 import { useSelector } from "react-redux";
 import { Player } from "~/app/store/types/parent-types";
+import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {};
 
@@ -31,42 +35,50 @@ const Notifications = (props: Props) => {
   const [selectedPlayerName, setSelectedPlayerName] = useState("");
   const windowSize = useWindowSize();
   const [opened, setOpened] = useState(false);
-  const { data: notifications } = useNotificationsQuery({});
+  const { data: notifications, refetch: refetchNotifications } =
+    useNotificationsQuery({});
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
+  const { refetch } = useReadNotificationsQuery({});
 
   useEffect(() => {
     setSelectedPlayerName(selectedPlayer?.name);
-    console.log(notifications);
   }, [selectedPlayer]);
 
-  const haveNotificaton = true;
+  const readNotificationsFun = () => {
+    refetch();
+    refetchNotifications();
+  };
   return (
     <Menu
       opened={opened}
-      trigger="hover"
+      trigger="click"
       onChange={setOpened}
       shadow="md"
       width={200}
     >
       <Menu.Target>
         <Avatar
-          onClick={() => setOpened(true)}
-          className="cursor-pointer"
+          onClick={() => {
+            setOpened(true);
+            readNotificationsFun();
+          }}
+          className="cursor-pointer overflow-visible"
           radius="xl"
           size={windowSize.width && windowSize.width < 400 ? "sm" : "md"}
         >
           <Indicator
+            label={notifications?.unread_count}
             sx={{
               ".mantine-Indicator-indicator": {
                 marginLeft: 2,
                 marginTop: 2,
+                fontSize: 10,
               },
             }}
             color="red"
             position="top-start"
-            size={windowSize.width && windowSize.width < 400 ? 10 : 12}
-            withBorder
-            disabled={!haveNotificaton}
+            size={windowSize.width && windowSize.width < 400 ? 20 : 20}
+            disabled={!notifications?.unread_count}
           >
             <AppIcons className="w-5 h-5 text-black" icon="BellIcon:outline" />
           </Indicator>
@@ -80,7 +92,7 @@ const Notifications = (props: Props) => {
           .filter((not: any) => {
             return not?.player === selectedPlayerName;
           })
-          .slice(-8)
+          .slice(-5)
           .map((oneNot) => (
             <Menu.Label
               key={oneNot.id}
@@ -88,7 +100,9 @@ const Notifications = (props: Props) => {
               className="p-0"
             >
               <Notification
-                created_at={formatDate(new Date(oneNot.created_at))}
+                created_at={
+                  AppUtils.formatDate(new Date(oneNot.created_at)) || "N/A"
+                }
                 newNotification
                 notification_type={oneNot.notification_type}
                 senderAvatar={oneNot.sender.avatar}

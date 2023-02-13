@@ -138,6 +138,14 @@ export const userApi = createApi({
         params,
       }),
     }),
+
+    readNotifications: query<{}, { page?: number }>({
+      query: (params) => ({
+        url: "read-notifications/",
+        params,
+      }),
+    }),
+
     sendOtp: mutation<SendOtp, SendOtp>({
       query: (body) => ({
         url: "send-otp/",
@@ -410,6 +418,7 @@ export const {
   useSignupMutation,
   useChangePasswordMutation,
   useNotificationsQuery,
+  useReadNotificationsQuery,
   useSendOtpMutation,
   useUserDeviceIdMutation,
   useUpdateProfileMutation,

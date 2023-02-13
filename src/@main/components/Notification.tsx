@@ -20,6 +20,7 @@ const Notification = ({
   senderAvatar,
 }: Props) => {
   const navigate = useNavigate();
+  console.log(created_at);
 
   return (
     <div

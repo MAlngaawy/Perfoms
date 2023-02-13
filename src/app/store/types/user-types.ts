@@ -144,6 +144,7 @@ export type NotificationsType = {
   count: number;
   next: string;
   previous: string;
+  unread_count: number;
   results: [
     {
       id: number;

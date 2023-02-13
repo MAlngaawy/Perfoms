@@ -111,7 +111,7 @@ const Toolbar = ({ setOpened }: Props) => {
       </div>
       <div className="right flex gap-2 justify-center items-center">
         {/* Messages Menu */}
-        <Menu trigger="hover" shadow="md" width={200}>
+        <Menu trigger="click" shadow="md" width={200}>
           <Menu.Target>
             <Avatar
               className="cursor-pointer"
@@ -160,7 +160,7 @@ const Toolbar = ({ setOpened }: Props) => {
         {user?.user_type !== "Admin" && <Notifications />}
 
         {/* User Menu */}
-        <Menu trigger="hover" shadow="md" width={200}>
+        <Menu trigger="click" shadow="md" width={200}>
           <Menu.Target>
             <div className="flex gap-2 cursor-pointer">
               <Avatar
