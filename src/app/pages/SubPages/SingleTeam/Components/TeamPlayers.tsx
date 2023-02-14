@@ -16,6 +16,7 @@ import {
   useAdminTeamPlaersQuery,
 } from "~/app/store/clubManager/clubManagerApi";
 import AppUtils from "~/@main/utils/AppUtils";
+import { useRemoveAddTeamPlayerMutation } from "~/app/store/coach/coachApi";
 
 type Props = {
   teamId: string;
@@ -67,6 +68,7 @@ export const SinglePlayer = ({ id, image, name, teamId }: any) => {
 
   const [superRemovePlayer] = useSuperRemoveTeamPlayerMutation();
   const [adminRemovePlayer] = useAdminRemoveTeamPlayerMutation();
+  const [coachRemovePlayer] = useRemoveAddTeamPlayerMutation();
 
   const removeTeamPlayer = (teamId: number, playerId: number) => {
     if (user?.user_type === "Supervisor") {
@@ -123,6 +125,33 @@ export const SinglePlayer = ({ id, image, name, teamId }: any) => {
             "Can't delete this player now"
           );
         });
+    } else if (user?.user_type === "Coach") {
+      coachRemovePlayer({ team_id: teamId, player_id: playerId })
+        .then((res) => {
+          //@ts-ignore
+          if (res.error && res.error.status === 424) {
+            AppUtils.showNotificationFun(
+              "Error",
+              "Player can't be without team",
+              "Please add this player in another team first"
+            );
+          }
+          //@ts-ignore
+          if (res.data && res.data.errors === false) {
+            AppUtils.showNotificationFun(
+              "Success",
+              "Done",
+              "Player removed successfully"
+            );
+          }
+        })
+        .catch((err) => {
+          AppUtils.showNotificationFun(
+            "Error",
+            "Sorry",
+            "Can't delete this player now"
+          );
+        });
     }
   };
 
@@ -154,6 +183,14 @@ export const SinglePlayer = ({ id, image, name, teamId }: any) => {
           />
         )}
         {user?.user_type === "Supervisor" && (
+          <DeletePlayerFromTeam
+            deleteFun={() => removeTeamPlayer(teamId, id)}
+            id={id}
+            name={name}
+            type="player"
+          />
+        )}
+        {user?.user_type === "Coach" && (
           <DeletePlayerFromTeam
             deleteFun={() => removeTeamPlayer(teamId, id)}
             id={id}

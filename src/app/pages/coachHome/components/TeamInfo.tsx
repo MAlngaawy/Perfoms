@@ -11,6 +11,8 @@ import HomeTeamInfoCard from "~/@main/components/HomeTeamInfoCard";
 import NoTeamComp from "~/@main/components/NoTeamComp";
 import TeamCalendar from "../../SubPages/SingleTeam/Components/TeamCalendar";
 import { useUserQuery } from "~/app/store/user/userApi";
+import AddPlayer from "../../SubPages/SingleTeam/Components/AddPLayerToTeam";
+import { SinglePlayer } from "../../SubPages/SingleTeam/Components/TeamPlayers";
 
 type Props = {};
 
@@ -53,23 +55,37 @@ const TeamInfo = (props: Props) => {
               } items-center flex-wrap`}
               span={12}
             >
-              {coachTeamPlayers &&
-                coachTeamPlayers?.results.map((player, idx) => {
-                  return (
-                    <div
-                      key={idx}
-                      className="shadow-xl cursor-pointer transform hover:scale-105 rounded-lg w-28 text-center bg-white flex flex-col justify-center items-center"
-                      onClick={() => navigate(`/players/${player.id}`)}
-                    >
-                      <Avatar
-                        className="rounded-lg w-full h-28 object-cover"
-                        src={player.icon}
-                        alt="player Image"
+              <div className="flex gap-4 flex-wrap mt-6">
+                {coachTeamPlayers &&
+                  coachTeamPlayers?.results.map((player, idx) => {
+                    return (
+                      // <div
+                      //   key={idx}
+                      //   className="shadow-xl cursor-pointer transform hover:scale-105 rounded-lg w-28 text-center bg-white flex flex-col justify-center items-center"
+                      //   onClick={() => navigate(`/players/${player.id}`)}
+                      // >
+                      //   <Avatar
+                      //     className="rounded-lg w-full h-28 object-cover"
+                      //     src={player.icon}
+                      //     alt="player Image"
+                      //   />
+                      //   <h2 className="text-sm">{player.name}</h2>
+                      // </div>
+                      <SinglePlayer
+                        key={player.id}
+                        teamId={selectedPlayerTeam?.id}
+                        id={player.id}
+                        name={player.name}
+                        image={player.icon}
                       />
-                      <h2 className="text-sm">{player.name}</h2>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                <AddPlayer
+                  teamPlayers={coachTeamPlayers}
+                  coach_team_id={selectedPlayerTeam?.id}
+                />
+              </div>
+
               <>
                 {!coachTeamPlayers?.results.length && (
                   <div className="flex flex-col md:flex-row justify-center items-center gap-3">

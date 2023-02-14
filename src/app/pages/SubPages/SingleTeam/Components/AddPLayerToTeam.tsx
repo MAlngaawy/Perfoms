@@ -17,21 +17,32 @@ import {
 import { SuperVisorPlayers } from "~/app/store/types/supervisor-types";
 import { useUserQuery } from "~/app/store/user/userApi";
 import AppUtils from "~/@main/utils/AppUtils";
+import {
+  useAllClubPlayersQuery,
+  useCoachAddTeamPlayerMutation,
+} from "~/app/store/coach/coachApi";
 
 type Props = {
   teamPlayers: TeamPlayers | undefined;
+  coach_team_id?: number;
 };
 
-const AddPlayer = ({ teamPlayers }: Props) => {
+const AddPlayer = ({ teamPlayers, coach_team_id }: Props) => {
   const [opened, setOpened] = useState(false);
   const { data: user } = useUserQuery({});
   const [playersData, setPlayersData] = useState<any>([]);
   const [players, setPlayers] = useState<SuperVisorPlayers>();
   const [loading, setLoading] = useState<boolean>(false);
+
+  // Fetch All Club Plaers to filter it
   const { data: superPlayers } = useSuperPlayersQuery({});
   const { data: adminPlayers } = useAdminPlayersQuery(
     { club_id: user?.club },
     { skip: !user?.club }
+  );
+  const { data: coachPlayers } = useAllClubPlayersQuery(
+    {},
+    { skip: user?.user_type !== "Coach" }
   );
 
   const { team_id } = useParams();
@@ -39,24 +50,27 @@ const AddPlayer = ({ teamPlayers }: Props) => {
   useEffect(() => {
     if (superPlayers) setPlayers(superPlayers);
     if (adminPlayers) setPlayers(adminPlayers);
+    if (coachPlayers) setPlayers(coachPlayers);
 
     // Filter the team players vs all club players
     //to show only the not team member players in the select input
-    const allPlayers = players?.results;
-    const teamPlayersData = teamPlayers?.results;
-    const filterdPlayers = __.xorBy(allPlayers, teamPlayersData, "id");
+    if (players && teamPlayers) {
+      const allPlayers = players?.results;
+      const teamPlayersData = teamPlayers?.results;
+      const filterdPlayers = __.xorBy(allPlayers, teamPlayersData, "id");
 
-    let test = filterdPlayers.map((player) => {
-      return {
-        label: player.name,
-        image: player.icon,
-        value: player.id,
-        id: player.id,
-      };
-    });
+      let test = filterdPlayers.map((player) => {
+        return {
+          label: player.name,
+          image: player.icon,
+          value: player.id,
+          id: player.id,
+        };
+      });
 
-    setPlayersData(test);
-  }, [players, superPlayers, adminPlayers]);
+      setPlayersData(test);
+    }
+  }, [players, superPlayers, adminPlayers, coachPlayers, teamPlayers]);
 
   const {
     register,
@@ -75,8 +89,13 @@ const AddPlayer = ({ teamPlayers }: Props) => {
     { isSuccess: adminAddSuccess, isError: adminAddError },
   ] = useAdminAddTeamPlayerMutation();
 
+  const [
+    coachAddPlayer,
+    { isSuccess: coachAddSuccess, isError: coachAddError },
+  ] = useCoachAddTeamPlayerMutation();
+
   useEffect(() => {
-    if (superAddSuccess || adminAddSuccess) {
+    if (superAddSuccess || adminAddSuccess || coachAddSuccess) {
       AppUtils.showNotificationFun(
         "Success",
         "Done",
@@ -84,10 +103,17 @@ const AddPlayer = ({ teamPlayers }: Props) => {
       );
     }
 
-    if (adminAddError || superAddError) {
+    if (adminAddError || superAddError || coachAddError) {
       AppUtils.showNotificationFun("Error", "Wrong", "Something went wrong");
     }
-  }, [superAddSuccess, adminAddSuccess, adminAddError, superAddError]);
+  }, [
+    superAddSuccess,
+    adminAddSuccess,
+    adminAddError,
+    superAddError,
+    coachAddSuccess,
+    coachAddError,
+  ]);
 
   const addPlayerFunc = (data: any) => {
     setLoading(true);
@@ -105,6 +131,17 @@ const AddPlayer = ({ teamPlayers }: Props) => {
     } else if (user?.user_type === "Admin") {
       adminAddPlayer({
         team_id: team_id,
+        player_id: data.player,
+      })
+        .then((res) => {
+          setLoading(false);
+        })
+        .catch((err) => {
+          setLoading(false);
+        });
+    } else if (user?.user_type === "Coach") {
+      coachAddPlayer({
+        team_id: coach_team_id,
         player_id: data.player,
       })
         .then((res) => {

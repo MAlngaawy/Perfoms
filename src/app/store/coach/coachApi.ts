@@ -27,9 +27,10 @@ import {
   GeneratePdfDocs,
   GetMyTeams,
 } from "../types/coach-types";
-import { TeamPlayers, Teams } from "../types/clubManager-types";
+import { AddTeamsPlayer, TeamPlayers, Teams } from "../types/clubManager-types";
 import { Attendance, UpdateAttendance } from "../types/attendance-types";
 import {
+  AddPlayerType,
   EventFile,
   EventFiles,
   ParentClub,
@@ -39,7 +40,11 @@ import {
   PlayerRecommendations,
   TeamEvents,
 } from "../types/parent-types";
-import { TeamAttendance } from "../types/supervisor-types";
+import {
+  SuperVisorTeamPlayers,
+  TeamAttendance,
+  TeamPlayer,
+} from "../types/supervisor-types";
 
 export const coachApi = createApi({
   reducerPath: "coachApi",
@@ -47,7 +52,7 @@ export const coachApi = createApi({
     baseUrl: `${BASE_URL}/coach`,
     prepareHeaders: BASE_HEADERS,
   }),
-  tagTypes: ["Attendance", "performances", "calendar"],
+  tagTypes: ["Attendance", "performances", "calendar", "players"],
   endpoints: ({ query, mutation }) => ({
     coaches: query<AllCoachesType, { page: number }>({
       query: (params) => ({ url: "all-coaches/", params }),
@@ -99,6 +104,7 @@ export const coachApi = createApi({
         url: `${team_id}/players`,
         params,
       }),
+      providesTags: ["players"],
     }),
 
     getPlayerInfo: query<
@@ -373,6 +379,33 @@ export const coachApi = createApi({
       }),
       providesTags: ["calendar"],
     }),
+
+    // This is for the calendar in the team info page
+    allClubPlayers: query<TeamPlayers, { page?: number }>({
+      query: (params) => ({
+        url: `all-club-players`,
+        params,
+      }),
+      providesTags: ["players"],
+    }),
+
+    coachAddTeamPlayer: mutation<TeamPlayer, {}>({
+      query: ({ ...body }) => ({
+        url: `teams/add-team-player/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["players"],
+    }),
+
+    removeAddTeamPlayer: mutation<TeamPlayer, {}>({
+      query: ({ ...body }) => ({
+        url: `teams/remove-team-player/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["players"],
+    }),
   }),
 });
 
@@ -414,4 +447,7 @@ export const {
   useCoachPlayerActionsQuery,
   useCoachPlayerCalendarQuery,
   useCoachTeamCalendarQuery,
+  useAllClubPlayersQuery,
+  useCoachAddTeamPlayerMutation,
+  useRemoveAddTeamPlayerMutation,
 } = coachApi;
