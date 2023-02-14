@@ -40,10 +40,11 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
     { skip: !player_id || user?.user_type !== "Supervisor" }
   );
 
-  const { data: adminPlayerInfo } = useAdminPlayerInfoQuery(
-    { player_id: player_id },
-    { skip: !player_id || user?.user_type !== "Admin" }
-  );
+  const { data: adminPlayerInfo, refetch: refetchAdminPlayerData } =
+    useAdminPlayerInfoQuery(
+      { player_id: player_id },
+      { skip: !player_id || user?.user_type !== "Admin" }
+    );
 
   useEffect(() => {
     if (parentPlayerInfoData) setPlayerInfoData(parentPlayerInfoData);
@@ -74,7 +75,7 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
         {user?.user_type === "Admin" && (
           <EditPlayer
             player={playerInfoData}
-            refetchPlayerData={refetchPlayerData}
+            refetchPlayerData={refetchAdminPlayerData}
           />
         )}
       </div>

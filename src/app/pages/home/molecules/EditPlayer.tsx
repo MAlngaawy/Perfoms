@@ -7,6 +7,7 @@ import { useMyPlayersQuery } from "~/app/store/parent/parentApi";
 import { DatePicker } from "@mantine/dates";
 import AppUtils from "~/@main/utils/AppUtils";
 import { CoachPlayerInfo } from "~/app/store/types/coach-types";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {
   player: CoachPlayerInfo;
@@ -16,6 +17,7 @@ type Props = {
 const EditPlayer = ({ player, refetchPlayerData }: Props) => {
   const { refetch } = useMyPlayersQuery({});
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { data: user } = useUserQuery({});
   const [userAvatar, setUserAvatar] = useState<File | null>(null);
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -32,14 +34,20 @@ const EditPlayer = ({ player, refetchPlayerData }: Props) => {
 
     console.log("formData", formData.get("icon52"));
 
+    const REQUEST_URL =
+      user?.user_type === "Parent"
+        ? `parent/update-player/${player.id}/`
+        : `club-manager/update-player/${player.id}/`;
+
     try {
       setIsLoading(true);
       axiosInstance
-        .patch(`parent/update-player/${player.id}/`, formData)
+        .patch(REQUEST_URL, formData)
         .then((res) => {
           setIsLoading(false);
-          console.log(res);
-          refetch();
+          if (user?.user_type === "Parent") {
+            refetch();
+          }
           refetchPlayerData();
           setOpen(false);
           setUserAvatar(null);
