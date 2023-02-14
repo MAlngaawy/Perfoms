@@ -6,7 +6,6 @@ import TeamPlayers from "./Components/TeamPlayers";
 import TeamUpcomingEvents from "./Components/TeamUpcomingEvents";
 import { useUserQuery } from "~/app/store/user/userApi";
 import { useParams } from "react-router-dom";
-import CustomBreadCrumbs from "~/@main/components/BreadCrumbs";
 import SharedBreadCrumbs from "~/@main/components/shared/SharedBreadCrumbs";
 
 type Props = {};

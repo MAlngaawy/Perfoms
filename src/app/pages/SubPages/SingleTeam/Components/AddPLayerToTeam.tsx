@@ -16,6 +16,7 @@ import {
 } from "~/app/store/clubManager/clubManagerApi";
 import { SuperVisorPlayers } from "~/app/store/types/supervisor-types";
 import { useUserQuery } from "~/app/store/user/userApi";
+import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {
   teamPlayers: TeamPlayers | undefined;
@@ -76,45 +77,15 @@ const AddPlayer = ({ teamPlayers }: Props) => {
 
   useEffect(() => {
     if (superAddSuccess || adminAddSuccess) {
-      showNotification({
-        message: "Successfully Added Player",
-        color: "green",
-        title: "Done",
-        styles: {
-          root: {
-            backgroundColor: "#27AE60",
-            borderColor: "#27AE60",
-            "&::before": { backgroundColor: "#fff" },
-          },
-
-          title: { color: "#fff" },
-          description: { color: "#fff" },
-          closeButton: {
-            color: "#fff",
-          },
-        },
-      });
+      AppUtils.showNotificationFun(
+        "Success",
+        "Done",
+        "Successfully Added Player"
+      );
     }
 
     if (adminAddError || superAddError) {
-      showNotification({
-        message: "Something went wrong",
-        color: "ref",
-        title: "Wrong",
-        styles: {
-          root: {
-            backgroundColor: "#EB5757",
-            borderColor: "#EB5757",
-            "&::before": { backgroundColor: "#fff" },
-          },
-
-          title: { color: "#fff" },
-          description: { color: "#fff" },
-          closeButton: {
-            color: "#fff",
-          },
-        },
-      });
+      AppUtils.showNotificationFun("Error", "Wrong", "Something went wrong");
     }
   }, [superAddSuccess, adminAddSuccess, adminAddError, superAddError]);
 
