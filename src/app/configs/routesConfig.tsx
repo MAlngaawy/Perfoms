@@ -45,6 +45,7 @@ import ForgotPassConfig from "../pages/sign-in/ForgotPasswordPage/ForgotPassConf
 import ResetPasswordConfig from "../pages/ResetPassword/ResetPasswordConfig";
 import RequestSentConfig from "../pages/OTP/RequestSent/RequestSentConfig";
 import AdminProfilePageConfig from "../pages/AdminProfile/AdminProfileConfig";
+import AlbumMediaConfig from "../pages/players/player-details/Tabs/PlayerMedia/AlbumMedia/AlbumMediaConfig";
 
 const routeConfigs: PagesRouteConfig[] = [
   SignInConfig,
@@ -90,6 +91,7 @@ const routeConfigs: PagesRouteConfig[] = [
   ResetPasswordConfig,
   RequestSentConfig,
   AdminProfilePageConfig,
+  AlbumMediaConfig,
 ];
 
 const routes: AppRouteObject[] = [
