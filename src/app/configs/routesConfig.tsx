@@ -22,7 +22,6 @@ import PlayerCardConfig from "../pages/players/player-details/PlayerDetailsConfi
 import CertificatePageConfig from "../pages/Certificate/CertificateConfig";
 import CoachProfileConfig from "../pages/CoachProfile/CoachProfileConfig";
 import AdminPageConfig from "../pages/Admin/AdminPageConfig";
-import ParentCardConfig from "../pages/players/parentCard/ParentConfig";
 import NotifyParentConfig from "../pages/players/notifyParent/NotifyParentConfig";
 import SingleTeamPageConfig from "../pages/SubPages/SingleTeam/SingleTeamConfig";
 import PillarKpisPageConfig from "../pages/SubPages/PillarKpis/PillarKpisConfig";
@@ -68,7 +67,6 @@ const routeConfigs: PagesRouteConfig[] = [
   CertificatePageConfig,
   CoachProfileConfig,
   AdminPageConfig,
-  ParentCardConfig,
   NotifyParentConfig,
   SingleTeamPageConfig,
   PillarKpisPageConfig,

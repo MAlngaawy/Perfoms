@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import PlayerCard from "./PlayerCard/PlayerCard";
 import { selectedPlayerTeamFn } from "../../store/parent/parentSlice";
 import { useSelector } from "react-redux";
 import { useGetTeamPlayersQuery } from "~/app/store/coach/coachApi";
