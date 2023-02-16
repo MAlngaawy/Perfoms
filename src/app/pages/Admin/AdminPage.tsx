@@ -18,9 +18,6 @@ const AdminPage = (props: Props) => {
           checked={checked}
           setChecked={setChecked}
         />
-        {/* <Button onClick={() => setChecked("Attendance")}>Attendances</Button>
-        <Button onClick={() => setChecked("Performance")}>Performance</Button>
-        <Button onClick={() => setChecked("Team info")}>Team info</Button> */}
       </div>
 
       <div className={checked !== "Sports" ? "hidden" : "block"}>

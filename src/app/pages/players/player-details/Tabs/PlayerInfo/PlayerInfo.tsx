@@ -87,8 +87,8 @@ const PlayerInfo = (props: Props) => {
   ]);
 
   return (
-    <div className="p-4 pt-0">
-      <CustomBreadCrumbs
+    <div className="">
+      {/* <CustomBreadCrumbs
         items={[
           {
             title: user?.user_type === "Supervisor" ? "Team" : "Players",
@@ -99,7 +99,7 @@ const PlayerInfo = (props: Props) => {
           },
           { title: playerData?.name || "No name", href: "" },
         ]}
-      />
+      /> */}
       <Grid columns={12}>
         <Grid.Col md={6} span={12}>
           <PlayerInfoCard playerData={playerData} />
