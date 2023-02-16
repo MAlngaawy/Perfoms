@@ -8,7 +8,7 @@ type Props = {};
 
 const PlayerBio = (props: Props) => {
   return (
-    <div className="">
+    <div className="pb-6">
       <Grid className="" gutter="sm">
         <Grid.Col xs={12} md={3}>
           <PersonalInfo />

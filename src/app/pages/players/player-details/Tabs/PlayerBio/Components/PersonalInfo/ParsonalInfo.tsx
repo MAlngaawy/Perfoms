@@ -5,7 +5,7 @@ type Props = {};
 
 const ParsonalInfo = (props: Props) => {
   return (
-    <div className="bg-white rounded-3xl p-4 mb-6">
+    <div className="bg-white rounded-3xl p-4 min-h-full">
       <div className="my-4 sm:my-8 flex flex-col justify-center items-center">
         <Avatar
           src={
