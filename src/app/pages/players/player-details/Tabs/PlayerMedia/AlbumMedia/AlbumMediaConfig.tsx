@@ -21,7 +21,7 @@ const AlbumMediaConfig = {
   routes: [
     {
       path: "players/:player_id/albums/:album_id",
-      element: <AlbumMedia />,
+      element: <AlbumMedia player_id={1} />,
     },
   ],
 };
