@@ -83,12 +83,12 @@ const CoachesPage = (props: Props) => {
                   <CoachCard
                     key={coach.id}
                     id={coach.id}
-                    role={"Coach"}
+                    role={coach?.user_type}
                     name={`${coach.first_name} ${coach.last_name}`}
                     education={coach.details?.education?.degree || "NA"}
                     teams={coach.teams}
                     photo={coach.avatar}
-                    sport={coach.job}
+                    sport={coach.sport}
                   />
                 </Grid.Col>
               );

@@ -6,7 +6,7 @@ import { useGetCoachEducationsQuery } from "~/app/store/user/userApi";
 
 interface Props {
   id: number | undefined;
-  role?: "Coach" | "Supervisor";
+  role?: string;
   name: string;
   education: string;
   teams: Partial<Team>[] | undefined;

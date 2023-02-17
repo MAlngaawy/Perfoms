@@ -69,6 +69,8 @@ export type PlayerCoach = {
   job: string;
   dob: string;
   bio?: string;
+  user_type?: string;
+  sport?: string;
   // Missing data
   // sport: string;
   // type: "Coach" | "Supervisor";
