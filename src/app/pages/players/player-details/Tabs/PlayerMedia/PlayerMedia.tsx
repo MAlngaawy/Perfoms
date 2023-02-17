@@ -2,6 +2,7 @@ import { Avatar } from "@mantine/core";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import AppIcons from "~/@main/core/AppIcons";
+import AddAlbum from "./Components/AddAlbum";
 
 type Props = {};
 
@@ -50,6 +51,9 @@ const PlayerMedia = (props: Props) => {
         {mockData.map(({ name, id, image }) => {
           return <SingleAlbum name={name} id={id} image={image} />;
         })}
+        <div>
+          <AddAlbum />
+        </div>
       </div>
     </div>
   );
@@ -72,10 +76,10 @@ const SingleAlbum = ({ image, id, name }: SingleAlbumTypes) => {
           navigate(`albums/${id}`);
         }}
       ></div>
-      <AppIcons
+      {/* <AppIcons
         icon="ArrowLongRightIcon:outline"
         className="w-6 h-6 text-white z-30 opacity-100 absolute left-24 top-20 hidden group-hover:block"
-      />
+      /> */}
       <Avatar src={image} className={"w-60 h-40"} alt="Album Cover" />
       <div className="title m-2">
         <h2>{name}</h2>
