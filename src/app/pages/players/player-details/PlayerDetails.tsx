@@ -6,11 +6,14 @@ import PlayerMedia from "./Tabs/PlayerMedia/PlayerMedia";
 
 const EditModeContext = createContext(false);
 const PlayerDetails = () => {
-  const [checked, setChecked] = useState<"Info" | "Bio" | "Media">("Info");
+  // const [checked, setChecked] = useState<"Info" | "Bio" | "Media">("Info");
 
   return (
     <EditModeContext.Provider value={true}>
-      <div>
+      <div className="m-6">
+        <PlayerInfo />
+      </div>
+      {/* <div>
         <div className="m-6">
           <AppRadioGroub
             values={["Info", "Bio", "Media"]}
@@ -29,7 +32,7 @@ const PlayerDetails = () => {
             <PlayerMedia />
           </div>
         </div>
-      </div>
+      </div> */}
     </EditModeContext.Provider>
   );
 };
