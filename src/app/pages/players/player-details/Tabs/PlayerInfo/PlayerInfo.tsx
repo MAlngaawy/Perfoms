@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import PlayerInfoCard from "../../../components/PlayerInfoCard";
 import ParentInfoCard from "../../../components/ParentInfoCard";
 import { Grid } from "@mantine/core";
@@ -18,12 +18,16 @@ import {
   useAdminPlayerInfoQuery,
   useAdminPlayerParentInfoQuery,
 } from "~/app/store/clubManager/clubManagerApi";
+import { EditModeContext } from "../../PlayerDetails";
 
 type Props = {};
 
 const PlayerInfo = (props: Props) => {
   const [playerData, setPlayerData] = useState<CoachPlayerInfo>();
   const [parentData, setParentData] = useState<PlayerParent>();
+  const editMode = useContext(EditModeContext);
+  console.log("PlayerInfo value", editMode);
+
   const params = useParams();
   console.log(params);
 
