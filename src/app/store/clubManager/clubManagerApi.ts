@@ -414,9 +414,12 @@ export const clubManagerApi = createApi({
 
     // Main reports API
 
-    adminSportStatistics: query<SportsStatistics, { page?: number }>({
-      query: (params) => ({
-        url: `statistics/sports/`,
+    adminSportStatistics: query<
+      SportsStatistics,
+      { club_id: number | undefined; page?: number }
+    >({
+      query: ({ club_id, ...params }) => ({
+        url: `statistics/sports/${club_id}`,
       }),
     }),
 

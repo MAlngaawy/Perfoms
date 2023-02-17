@@ -41,12 +41,14 @@ const MainReports = (props: Props) => {
           type="Supervisor"
         />
       </Link> */}
-        {/* <Link to={"sports/teams"}>
-          <ReportsCategoriesCard
-            image="/assets/images/teams.png"
-            type="Teams"
-          />
-        </Link> */}
+        {user?.user_type === "Coach" && (
+          <Link to={"sports/0/teams"}>
+            <ReportsCategoriesCard
+              image="/assets/images/teams.png"
+              type="Teams"
+            />
+          </Link>
+        )}
         {user?.user_type !== "Coach" && (
           <Link to={"sports"}>
             <ReportsCategoriesCard
