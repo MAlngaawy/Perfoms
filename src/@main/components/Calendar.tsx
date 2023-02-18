@@ -2,7 +2,10 @@ import { Calendar } from "@mantine/dates";
 import classNames from "classnames";
 import { Player, PlayerAttendances } from "~/app/store/types/parent-types";
 import { useSelector } from "react-redux";
-import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
+import {
+  selectedPlayerFn,
+  selectedPlayerTeamFn,
+} from "~/app/store/parent/parentSlice";
 import { usePlayerCalendarQuery } from "~/app/store/parent/parentApi";
 import { useEffect, useState } from "react";
 import { useCoachPlayerCalendarQuery } from "~/app/store/coach/coachApi";
@@ -18,13 +21,22 @@ type Props = {
 
 const CustomCalendar = ({ pageName, player_id }: Props) => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
+  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const [playerAttendance, setPlayerAttendance] = useState<PlayerAttendances>();
   const fromDate = AppUtils.formatDate(thisMonth().firstday);
   const toDate = AppUtils.formatDate(thisMonth().lastday);
 
   const { data: parentPlayerAttendance } = usePlayerCalendarQuery(
-    { id: selectedPlayer?.id, date_from: fromDate, date_to: toDate },
-    { skip: !selectedPlayer?.id || !fromDate || !toDate }
+    {
+      id: selectedPlayer?.id,
+      date_from: fromDate,
+      date_to: toDate,
+      team_id: selectedPlayerTeam.id,
+    },
+    {
+      skip:
+        !selectedPlayer?.id || !fromDate || !toDate || !selectedPlayerTeam.id,
+    }
   );
 
   const { data: coachPlayerAttendance } = useCoachPlayerCalendarQuery(

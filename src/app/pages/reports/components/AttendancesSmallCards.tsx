@@ -1,7 +1,11 @@
 import React from "react";
 import { Player } from "~/app/store/types/parent-types";
 import { useSelector } from "react-redux";
-import { selectedPlayerFn, timeFilterFn } from "~/app/store/parent/parentSlice";
+import {
+  selectedPlayerFn,
+  selectedPlayerTeamFn,
+  timeFilterFn,
+} from "~/app/store/parent/parentSlice";
 import { usePlayerCalendarQuery } from "~/app/store/parent/parentApi";
 import { useCoachPlayerCalendarQuery } from "~/app/store/coach/coachApi";
 import { useSuperPlayerCalendarQuery } from "~/app/store/supervisor/supervisorMainApi";
@@ -14,6 +18,7 @@ type Props = {
 
 const AttendancesSmallCards = ({ player_id }: Props) => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
+  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const timeFilter = useSelector(timeFilterFn);
   const { data: user } = useUserQuery({});
 
@@ -22,12 +27,14 @@ const AttendancesSmallCards = ({ player_id }: Props) => {
       id: selectedPlayer?.id,
       date_from: timeFilter?.from_date,
       date_to: timeFilter?.to_date,
+      team_id: selectedPlayerTeam.id,
     },
     {
       skip:
         !selectedPlayer?.id ||
         !timeFilter?.from_date ||
         !timeFilter?.to_date ||
+        !selectedPlayerTeam.id ||
         user?.user_type !== "Parent",
     }
   );
