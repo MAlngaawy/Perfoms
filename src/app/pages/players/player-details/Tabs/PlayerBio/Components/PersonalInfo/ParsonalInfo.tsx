@@ -1,9 +1,25 @@
 import { Avatar, Progress } from "@mantine/core";
 import AppIcons from "~/@main/core/AppIcons";
+import {
+  useDeleteUserEducationMutation,
+  usePlayerEducationQuery,
+} from "~/app/store/user/userApi";
+import AddEducation from "./Forms/AddEducation";
+import { useParams } from "react-router-dom";
+import { useContext } from "react";
+import DeleteButton from "~/@main/components/ManagerComponents/SubComponents/DeleteButton";
+import { EditModeContext } from "../../../../PlayerDetails";
+import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {};
 
 const ParsonalInfo = (props: Props) => {
+  const { id } = useParams();
+  const editMode = useContext(EditModeContext);
+  const [deleteEducation] = useDeleteUserEducationMutation();
+  const { data: player_educations, refetch: refetchEducation } =
+    usePlayerEducationQuery({ player_id: id }, { skip: !id });
+
   return (
     <div className="bg-white rounded-3xl p-4 min-h-full">
       <div className="my-4 sm:my-8 flex flex-col justify-center items-center">
@@ -66,17 +82,51 @@ const ParsonalInfo = (props: Props) => {
           </p>
         </div>
         <div className="education text-left">
-          <h3 className="text-base font-medium text-perfLightBlack">
-            Education
-          </h3>
-          <div className="my-2 relative">
-            <p className="date text-xs font-normal text-perfGray3">2020</p>
-            <h2>High School</h2>
-            <p className="date text-xs font-normal text-perfGray3">
-              Cairo High school
-            </p>
-            <div className="absolute right-0 top-0"></div>
+          <div className="flex justify-between">
+            <h3 className="text-base font-medium text-perfLightBlack">
+              Education
+            </h3>
+            {editMode && <AddEducation />}
           </div>
+          {player_educations?.results.map((education) => {
+            return (
+              <div className="my-2 relative">
+                <p className="date text-xs font-normal text-perfGray3">
+                  {education.year}
+                </p>
+                <h2>{education.degree}</h2>
+                <p className="date text-xs font-normal text-perfGray3">
+                  {education.universty}
+                </p>
+                <div className="absolute right-0 top-0">
+                  {editMode && (
+                    <DeleteButton
+                      deleteFun={() => {
+                        deleteEducation({ id: education.id })
+                          .then(() => {
+                            AppUtils.showNotificationFun(
+                              "Success",
+                              "Done",
+                              "Successfully Deleted Education"
+                            );
+                            refetchEducation();
+                          })
+                          .catch(() => {
+                            AppUtils.showNotificationFun(
+                              "Error",
+                              "Sorry",
+                              "Can't add Education now"
+                            );
+                          });
+                      }}
+                      name={education.degree}
+                      type="Degree"
+                    />
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
         <div className="skills">
           <h3 className="text-base font-medium text-perfLightBlack">Skills</h3>

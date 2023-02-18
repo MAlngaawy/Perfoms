@@ -59,6 +59,7 @@ export const userApi = createApi({
     "qualifications",
     "achievements",
     "kpis",
+    "player",
   ],
   endpoints: ({ query, mutation }) => ({
     user: query<User, any>({
@@ -414,6 +415,25 @@ export const userApi = createApi({
         url: `player-events/${player_id}/`,
       }),
     }),
+
+    playerEducation: query<Educations, { player_id: string | undefined }>({
+      query: ({ player_id }) => ({
+        url: `player-educations/${player_id}/`,
+      }),
+      providesTags: ["player"],
+    }),
+
+    addPlayerEducation: mutation<
+      AddEducation,
+      { player_id: number | undefined }
+    >({
+      query: ({ player_id, ...body }) => ({
+        url: `player-educations/${player_id}/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["player"],
+    }),
   }),
 });
 
@@ -456,4 +476,6 @@ export const {
   useDeleteAchievementsMutation,
   useResetPasswordMutation,
   usePlayerEventsQuery,
+  usePlayerEducationQuery,
+  useAddPlayerEducationMutation,
 } = userApi;

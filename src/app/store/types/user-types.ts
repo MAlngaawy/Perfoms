@@ -251,6 +251,7 @@ export type Qualifications = BaseGetAllType & {
 };
 
 export type AddEducation = {
+  player_id?: number | undefined;
   year: number;
   degree: string;
   universty: string;

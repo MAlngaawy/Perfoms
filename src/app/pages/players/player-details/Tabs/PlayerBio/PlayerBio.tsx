@@ -1,5 +1,6 @@
 import { Grid } from "@mantine/core";
-import React from "react";
+import React, { useContext } from "react";
+import { EditModeContext } from "../../PlayerDetails";
 import Achievements from "./Components/Achievements/Achievements";
 import Experiences from "./Components/Experiences/Experiences";
 import PersonalInfo from "./Components/PersonalInfo/ParsonalInfo";
@@ -7,6 +8,9 @@ import PersonalInfo from "./Components/PersonalInfo/ParsonalInfo";
 type Props = {};
 
 const PlayerBio = (props: Props) => {
+  const editMode = useContext(EditModeContext);
+  console.log("editMode", editMode);
+
   return (
     <div className="pb-6">
       <Grid className="" gutter="sm">
