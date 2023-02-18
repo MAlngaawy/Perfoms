@@ -1,8 +1,10 @@
 import { Avatar, Progress } from "@mantine/core";
 import AppIcons from "~/@main/core/AppIcons";
 import {
+  useDeleteSkillMutation,
   useDeleteUserEducationMutation,
   usePlayerEducationQuery,
+  usePlayerSkillsQuery,
 } from "~/app/store/user/userApi";
 import AddEducation from "./Forms/AddEducation";
 import { useParams } from "react-router-dom";
@@ -10,6 +12,7 @@ import { useContext } from "react";
 import DeleteButton from "~/@main/components/ManagerComponents/SubComponents/DeleteButton";
 import { EditModeContext } from "../../../../PlayerDetails";
 import AppUtils from "~/@main/utils/AppUtils";
+import AddSkill from "./Forms/AddSkill";
 
 type Props = {};
 
@@ -17,8 +20,11 @@ const ParsonalInfo = (props: Props) => {
   const { id } = useParams();
   const editMode = useContext(EditModeContext);
   const [deleteEducation] = useDeleteUserEducationMutation();
-  const { data: player_educations, refetch: refetchEducation } =
+  const [deleteSkill] = useDeleteSkillMutation();
+  const { data: playerEducations, refetch: refetchEducation } =
     usePlayerEducationQuery({ player_id: id }, { skip: !id });
+  const { data: playerSkills, refetch: refetchPlayerSkills } =
+    usePlayerSkillsQuery({ player_id: id }, { skip: !id });
 
   return (
     <div className="bg-white rounded-3xl p-4 min-h-full">
@@ -88,7 +94,7 @@ const ParsonalInfo = (props: Props) => {
             </h3>
             {editMode && <AddEducation />}
           </div>
-          {player_educations?.results.map((education) => {
+          {playerEducations?.results.map((education) => {
             return (
               <div className="my-2 relative">
                 <p className="date text-xs font-normal text-perfGray3">
@@ -129,11 +135,47 @@ const ParsonalInfo = (props: Props) => {
           })}
         </div>
         <div className="skills">
-          <h3 className="text-base font-medium text-perfLightBlack">Skills</h3>
+          <div className="flex justify-between">
+            <h3 className="text-base font-medium text-perfLightBlack">
+              Skills
+            </h3>
+            {editMode && <AddSkill />}
+          </div>
           <ul className="flex flex-col gap-2">
-            <li className=" text-sm text-perfGray3">Communication skills</li>
-            <li className=" text-sm text-perfGray3">Team Player</li>
-            <li className=" text-sm text-perfGray3">Commitment </li>
+            {playerSkills?.results.map((skill) => {
+              return (
+                <li key={skill.id} className=" text-sm relative text-perfGray3">
+                  {editMode && (
+                    <div className="absolute right-0">
+                      <DeleteButton
+                        name={skill.name}
+                        type="Skill"
+                        deleteFun={() => {
+                          deleteSkill({ id: skill.id })
+                            .then(() => {
+                              AppUtils.showNotificationFun(
+                                "Success",
+                                "Done",
+                                "Successfully Deleted Skill"
+                              );
+                              refetchPlayerSkills();
+                            })
+                            .catch(() => {
+                              AppUtils.showNotificationFun(
+                                "Error",
+                                "Sorry",
+                                "Can't Delete Skill Now"
+                              );
+                              refetchPlayerSkills();
+                            });
+                        }}
+                      />
+                    </div>
+                  )}
+                  {skill.name}
+                </li>
+              );
+            })}
           </ul>
         </div>
       </div>

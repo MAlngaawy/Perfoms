@@ -434,6 +434,30 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["player"],
     }),
+
+    playerSkills: query<Courses, { player_id: string | undefined }>({
+      query: ({ player_id }) => ({
+        url: `player-skills/${player_id}/`,
+      }),
+      providesTags: ["player"],
+    }),
+
+    addPlayerSkills: mutation<AddCourse, { player_id: number | undefined }>({
+      query: ({ player_id, ...body }) => ({
+        url: `player-skills/${player_id}/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["player"],
+    }),
+
+    deleteSkill: mutation<Course, { id: number }>({
+      query: ({ id }) => ({
+        url: `skills/${id}/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["player"],
+    }),
   }),
 });
 
@@ -478,4 +502,7 @@ export const {
   usePlayerEventsQuery,
   usePlayerEducationQuery,
   useAddPlayerEducationMutation,
+  usePlayerSkillsQuery,
+  useAddPlayerSkillsMutation,
+  useDeleteSkillMutation,
 } = userApi;

@@ -23,10 +23,10 @@ const PlayerDetails = () => {
           </div>
           {checked === "Bio" && (
             <div
-              className="edit border border-perfBlue text-perfBlue py-1 px-2 rounded-lg cursor-pointer hover:bg-perfBlue hover:text-white transform transition-all hover:scale-105 "
+              className="edit border border-perfBlue mb-2 sm:m-0 text-perfBlue py-1 px-4 rounded-lg cursor-pointer hover:bg-perfBlue hover:text-white transform transition-all hover:scale-105 "
               onClick={() => setEditModeState(!editModeState)}
             >
-              {editModeState ? "Save" : "Edit"}
+              {editModeState ? "Done" : "Edit"}
             </div>
           )}
         </div>

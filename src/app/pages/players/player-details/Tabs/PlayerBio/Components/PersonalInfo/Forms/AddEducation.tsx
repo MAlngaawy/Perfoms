@@ -19,8 +19,8 @@ const AddEducation = (props: Props) => {
   const [isLoading] = useState(false);
   const [addPlayerEducation] = useAddPlayerEducationMutation();
   const { id } = useParams();
-  console.log("player_id", id);
 
+  console.log("player_id", id);
   // Form Schema
   const schema = yup.object().shape({
     degree: yup.string().required(),
@@ -40,7 +40,6 @@ const AddEducation = (props: Props) => {
 
   const onSubmitFunction = async (data: any, e: any) => {
     e.preventDefault();
-
     setOpened(false);
 
     addPlayerEducation({ player_id: id, ...data })
