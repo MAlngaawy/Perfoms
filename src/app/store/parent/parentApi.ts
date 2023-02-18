@@ -128,10 +128,16 @@ export const parentsApi = createApi({
 
     playerCalendar: query<
       PlayerAttendances,
-      { id: number; page?: number; date_from?: string; date_to?: string }
+      {
+        id: number;
+        team_id: number;
+        page?: number;
+        date_from?: string;
+        date_to?: string;
+      }
     >({
-      query: ({ date_from, date_to, id }) => ({
-        url: `${id}/calendar/`,
+      query: ({ date_from, date_to, id, team_id }) => ({
+        url: `${id}/calendar/${team_id}`,
         params: { date_from, date_to },
       }),
       providesTags: ["Parent"],
