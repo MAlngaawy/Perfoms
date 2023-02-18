@@ -297,3 +297,20 @@ export type ClubTeams = BaseGetAllType & {
     name: string;
   }[];
 };
+
+export type PlayerLeague = {
+  id: number;
+  title: string;
+  start_date: string;
+  end_date: string;
+};
+
+export type PlayerLeagues = BaseGetAllType & {
+  results: PlayerLeague[];
+};
+
+export type AddPlayerLeague = {
+  title: string;
+  start_date: string;
+  end_date: string;
+};

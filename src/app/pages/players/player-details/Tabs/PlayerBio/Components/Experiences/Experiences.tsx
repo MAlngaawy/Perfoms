@@ -1,23 +1,47 @@
 import { Avatar } from "@mantine/core";
-import React from "react";
+import React, { useContext } from "react";
 import AppIcons from "~/@main/core/AppIcons";
+import {
+  useAddPlayerLeagueMutation,
+  useDeleteLeagueMutation,
+  usePlayerLeagueQuery,
+} from "~/app/store/user/userApi";
+import { useParams } from "react-router-dom";
+import DeleteButton from "~/@main/components/ManagerComponents/SubComponents/DeleteButton";
+import { EditModeContext } from "../../../../PlayerDetails";
+import AppUtils from "~/@main/utils/AppUtils";
+import AddLeagueForm from "./Forms/AddLeagueForm";
 
 type Props = {};
 
 const Experiences = (props: Props) => {
+  const editMode = useContext(EditModeContext);
+  const { id } = useParams();
+  const { data: playerLeagues } = usePlayerLeagueQuery(
+    { player_id: id },
+    { skip: !id }
+  );
+
   return (
     <div className="bg-white rounded-3xl p-6 min-h-full">
       <div className="title flex items-center gap-2">
         <Avatar src={"/assets/images/Leagues.png"} />
-        <h2 className="font-medium">Leagues</h2>
+        <div className="flex justify-between w-full">
+          <h3 className="text-base font-medium text-perfLightBlack">Leagues</h3>
+          {editMode && <AddLeagueForm />}
+        </div>
       </div>
       <div className="leagues flex flex-wrap gap-8 justify-center my-6">
-        <OneLeague />
-        <OneLeague />
-        <OneLeague />
-        <OneLeague />
-        <OneLeague />
-        <OneLeague />
+        {playerLeagues?.results.map((league) => {
+          return (
+            <OneLeague
+              from={league.start_date}
+              to={league.end_date}
+              id={JSON.stringify(league.id)}
+              name={league.title}
+            />
+          );
+        })}
       </div>
       <TitleWithIcon name={"Courses"} />
     </div>
@@ -26,13 +50,49 @@ const Experiences = (props: Props) => {
 
 // from and to
 
-const OneLeague = ({ from, to, name }: any) => {
+type oneLeagueTypes = {
+  from: string;
+  to: string;
+  name: string;
+  id: string;
+};
+const OneLeague = ({ from, to, name, id }: oneLeagueTypes) => {
+  const editMode = useContext(EditModeContext);
+  const [deleteLeague] = useDeleteLeagueMutation();
+  const { refetch } = usePlayerLeagueQuery({ player_id: id }, { skip: !id });
+
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex gap-4">
       <div className="date">
-        <span className="text-xs text-perfGray3">15/10/208 - 14/6/20010</span>
-        <h2 className="text-md">Egyptian League</h2>
+        <span className="text-xs text-perfGray3">
+          {from} - {to}
+        </span>
+        <h2 className="text-md">{name}</h2>
       </div>
+      {editMode && (
+        <DeleteButton
+          deleteFun={() => {
+            deleteLeague({ id: +id })
+              .then(() => {
+                AppUtils.showNotificationFun(
+                  "Success",
+                  "Done",
+                  "Successfully Deleted Education"
+                );
+                refetch();
+              })
+              .catch(() => {
+                AppUtils.showNotificationFun(
+                  "Error",
+                  "Sorry",
+                  "Can't add Education now"
+                );
+              });
+          }}
+          name={name}
+          type="Degree"
+        />
+      )}
     </div>
   );
 };

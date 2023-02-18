@@ -5,6 +5,7 @@ import {
   AddCourse,
   AddEducation,
   AddExperince,
+  AddPlayerLeague,
   AddQualification,
   ChangePassword,
   ClubTeams,
@@ -15,6 +16,8 @@ import {
   NotificationsType,
   OTPVerify,
   playerEvents,
+  PlayerLeague,
+  PlayerLeagues,
   Qualification,
   Qualifications,
   ResetPassword,
@@ -458,6 +461,35 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["player"],
     }),
+
+    /**Player Leagues */
+
+    playerLeague: query<PlayerLeagues, { player_id: string | undefined }>({
+      query: ({ player_id }) => ({
+        url: `player-leagues/${player_id}/`,
+      }),
+      providesTags: ["player"],
+    }),
+
+    addPlayerLeague: mutation<
+      AddPlayerLeague,
+      { player_id: number | string | undefined }
+    >({
+      query: ({ player_id, ...body }) => ({
+        url: `player-leagues/${player_id}/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["player"],
+    }),
+
+    deleteLeague: mutation<PlayerLeague, { id: number }>({
+      query: ({ id }) => ({
+        url: `leagues/${id}/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["player"],
+    }),
   }),
 });
 
@@ -505,4 +537,7 @@ export const {
   usePlayerSkillsQuery,
   useAddPlayerSkillsMutation,
   useDeleteSkillMutation,
+  useAddPlayerLeagueMutation,
+  usePlayerLeagueQuery,
+  useDeleteLeagueMutation,
 } = userApi;
