@@ -280,6 +280,7 @@ export type CoachPlayerInfo = {
   sport: string;
   parent_name: string;
   phone?: string;
+  profile?: string;
 };
 
 export type CoachTeamInfo = {

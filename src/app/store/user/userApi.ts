@@ -47,6 +47,7 @@ import { ReactNode } from "react";
 import { Kpis, Metrics, Pillars } from "../types/supervisor-types";
 import { Sports, Teams } from "../types/clubManager-types";
 import { UserAchievements } from "~/app/store/types/user-types";
+import { CoachPlayerInfo } from "../types/coach-types";
 
 export const userApi = createApi({
   reducerPath: "userApi",
@@ -490,6 +491,18 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["player"],
     }),
+
+    /**Player Info */
+    getPlayerInfo: query<
+      CoachPlayerInfo,
+      { player_id: string | number | undefined }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `player-info/${player_id}/`,
+        params,
+      }),
+      providesTags: ["player"],
+    }),
   }),
 });
 
@@ -540,4 +553,5 @@ export const {
   useAddPlayerLeagueMutation,
   usePlayerLeagueQuery,
   useDeleteLeagueMutation,
+  useGetPlayerInfoQuery,
 } = userApi;

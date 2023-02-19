@@ -3,6 +3,7 @@ import AppIcons from "~/@main/core/AppIcons";
 import {
   useDeleteSkillMutation,
   useDeleteUserEducationMutation,
+  useGetPlayerInfoQuery,
   usePlayerEducationQuery,
   usePlayerSkillsQuery,
 } from "~/app/store/user/userApi";
@@ -25,14 +26,16 @@ const ParsonalInfo = (props: Props) => {
     usePlayerEducationQuery({ player_id: id }, { skip: !id });
   const { data: playerSkills, refetch: refetchPlayerSkills } =
     usePlayerSkillsQuery({ player_id: id }, { skip: !id });
+  const { data: playerData } = useGetPlayerInfoQuery(
+    { player_id: id },
+    { skip: !id }
+  );
 
   return (
     <div className="bg-white rounded-3xl p-4 min-h-full">
       <div className="my-4 sm:my-8 flex flex-col justify-center items-center">
         <Avatar
-          src={
-            "https://media.istockphoto.com/id/519767679/photo/hes-one-super-confident-kid.jpg?s=612x612&w=0&k=20&c=2v10ji99BuL19yK8ak-Rd2ZZK0nU9mQA7bk8QefIb3E="
-          }
+          src={playerData?.icon || playerData?.icon_url}
           className="border border-perfBlue"
           sx={{
             ".mantine-Avatar-placeholder": {
@@ -46,7 +49,9 @@ const ParsonalInfo = (props: Props) => {
           radius={100}
           size={100}
         />
-        <h2 className="my-2 font-medium text-perfGray1 text-lg">Player Name</h2>
+        <h2 className="my-2 font-medium text-perfGray1 text-lg">
+          {playerData?.name}
+        </h2>
         <div className="levels text-xs text-perfGray3">
           <span>Epert Level 22</span> |{" "}
           <span>
@@ -75,16 +80,14 @@ const ParsonalInfo = (props: Props) => {
       <div className="data flex flex-col gap-2">
         <div className="title flex flex-col justify-start items-start">
           <h3 className="text-base font-medium text-perfLightBlack">Title</h3>
-          <p className="font-normal text-sm text-perfGray3">Taekwondo</p>
+          <p className="font-normal text-sm text-perfGray3">
+            {playerData?.sport}
+          </p>
         </div>
         <div className="profile flex flex-col justify-start items-start">
           <h3 className="text-base font-medium text-perfLightBlack">Profile</h3>
           <p className="font-normal text-sm text-perfGray3">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis
-            commodi odit placeat dicta! Iure, velit dolore esse nulla veritatis
-            blanditiisLorem ipsum dolor sit amet consectetur adipisicing elit.
-            Facilis commodi odit placeat dicta! Iure, velit dolore esse nulla
-            veritatis blanditiis.
+            {playerData?.profile || "N/A"}
           </p>
         </div>
         <div className="education text-left">
