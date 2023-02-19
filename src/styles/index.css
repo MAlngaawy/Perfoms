@@ -148,3 +148,7 @@ select:-webkit-autofill:focus {
     overflow: visible;
   }
 }
+
+.recharts-wrapper {
+  cursor: inherit !important;
+}
