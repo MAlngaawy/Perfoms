@@ -52,7 +52,7 @@ const ActionsCard = ({ player_id }: Props) => {
   return (
     <div className="flex flex-col p-6 bg-white gap-1 rounded-3xl ">
       <h2 className="text-perfGray1 text-base font-semibold">Actions</h2>
-      <div className="pdf-print flex flex-col gap-4 h-80 overflow-hidden">
+      <div className="pdf-print flex flex-col gap-4 h-80 overflow-scroll">
         {actions ? (
           <>
             {actions.results.length < 1 ? (
