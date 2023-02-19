@@ -31,15 +31,15 @@ const PlayerDetails = () => {
           )}
         </div>
         <div>
-          <div className={checked !== "Info" ? "hidden" : "block px-8"}>
+          <div className={checked !== "Info" ? "hidden" : "block px-4"}>
             <PlayerInfo />
           </div>
-          <div className={checked !== "Bio" ? "hidden" : "block px-8"}>
+          <div className={checked !== "Bio" ? "hidden" : "block px-4"}>
             <PrintComp>
               <PlayerBio />
             </PrintComp>
           </div>
-          <div className={checked !== "Media" ? "hidden" : "block px-8"}>
+          <div className={checked !== "Media" ? "hidden" : "block px-4"}>
             <PlayerMedia />
           </div>
         </div>

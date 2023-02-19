@@ -527,6 +527,29 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["player"],
     }),
+
+    // Achievements
+    getPlayerAchievements: query<
+      UserAchievements,
+      { player_id: string | number | undefined }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `player-achievements/${player_id}`,
+        params,
+      }),
+      providesTags: ["player", "achievements"],
+    }),
+    addPlayerAchievements: mutation<
+      AddAchievements,
+      { player_id: string | number | undefined }
+    >({
+      query: ({ player_id, ...body }) => ({
+        url: `player-achievements/${player_id}/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["player"],
+    }),
   }),
 });
 
@@ -580,4 +603,6 @@ export const {
   useGetPlayerInfoQuery,
   useGetPlayerCoursesQuery,
   useAddPlayerCourseMutation,
+  useGetPlayerAchievementsQuery,
+  useAddPlayerAchievementsMutation,
 } = userApi;
