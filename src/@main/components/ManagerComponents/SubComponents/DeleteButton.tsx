@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Modal, Group } from "@mantine/core";
 import AppIcons from "../../../core/AppIcons";
 import { showNotification } from "@mantine/notifications";
+import useWindowSize from "~/@main/hooks/useWindowSize";
 
 type Props = {
   name: string | undefined;
@@ -11,15 +12,25 @@ type Props = {
 
 const DeleteButton = ({ name, type, deleteFun }: Props) => {
   const [opened, setOpened] = useState(false);
+  const screen = useWindowSize();
 
   return (
     <div>
-      <Modal opened={opened} onClose={() => setOpened(false)} title="Confirm!">
+      <Modal
+        opened={opened}
+        onClose={() => setOpened(false)}
+        sx={{
+          ".mantine-Modal-modal": {
+            width: screen.width < 400 ? 300 : 450,
+          },
+        }}
+        title="Confirm!"
+      >
         <div className="flex flex-col gap-6 m-2 xs:m-10">
           <h2 className="text-perfSecondary text-center">
             Are You Sure You Want To Delete {type} {name} ?
           </h2>
-          <div className="flex justify-center items-center mt-4">
+          <div className="flex justify-between gap-2 xs:justify-center items-center mt-4">
             <button
               onClick={() => {
                 setOpened(false);

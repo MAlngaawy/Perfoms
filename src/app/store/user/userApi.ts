@@ -5,6 +5,7 @@ import {
   AddCourse,
   AddEducation,
   AddExperince,
+  AddPlayerLeague,
   AddQualification,
   ChangePassword,
   ClubTeams,
@@ -14,7 +15,10 @@ import {
   Educations,
   NotificationsType,
   OTPVerify,
+  PlayerEvents,
   playerEvents,
+  PlayerLeague,
+  PlayerLeagues,
   Qualification,
   Qualifications,
   ResetPassword,
@@ -44,6 +48,8 @@ import { ReactNode } from "react";
 import { Kpis, Metrics, Pillars } from "../types/supervisor-types";
 import { Sports, Teams } from "../types/clubManager-types";
 import { UserAchievements } from "~/app/store/types/user-types";
+import { CoachPlayerInfo } from "../types/coach-types";
+import { EventFiles } from "~/app/store/types/parent-types";
 
 export const userApi = createApi({
   reducerPath: "userApi",
@@ -59,6 +65,8 @@ export const userApi = createApi({
     "qualifications",
     "achievements",
     "kpis",
+    "media",
+    "player",
   ],
   endpoints: ({ query, mutation }) => ({
     user: query<User, any>({
@@ -414,6 +422,175 @@ export const userApi = createApi({
         url: `player-events/${player_id}/`,
       }),
     }),
+
+    playerEducation: query<Educations, { player_id: string | undefined }>({
+      query: ({ player_id }) => ({
+        url: `player-educations/${player_id}/`,
+      }),
+      providesTags: ["player"],
+    }),
+
+    addPlayerEducation: mutation<
+      AddEducation,
+      { player_id: number | undefined }
+    >({
+      query: ({ player_id, ...body }) => ({
+        url: `player-educations/${player_id}/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["player"],
+    }),
+
+    playerSkills: query<Courses, { player_id: string | undefined }>({
+      query: ({ player_id }) => ({
+        url: `player-skills/${player_id}/`,
+      }),
+      providesTags: ["player"],
+    }),
+
+    addPlayerSkills: mutation<AddCourse, { player_id: number | undefined }>({
+      query: ({ player_id, ...body }) => ({
+        url: `player-skills/${player_id}/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["player"],
+    }),
+
+    deleteSkill: mutation<Course, { id: number }>({
+      query: ({ id }) => ({
+        url: `skills/${id}/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["player"],
+    }),
+
+    /**Player Leagues */
+
+    playerLeague: query<PlayerLeagues, { player_id: string | undefined }>({
+      query: ({ player_id }) => ({
+        url: `player-leagues/${player_id}/`,
+      }),
+      providesTags: ["player"],
+    }),
+
+    addPlayerLeague: mutation<
+      AddPlayerLeague,
+      { player_id: number | string | undefined }
+    >({
+      query: ({ player_id, ...body }) => ({
+        url: `player-leagues/${player_id}/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["player"],
+    }),
+
+    deleteLeague: mutation<PlayerLeague, { id: number }>({
+      query: ({ id }) => ({
+        url: `leagues/${id}/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["player"],
+    }),
+
+    /**Player Info */
+    getPlayerInfo: query<
+      CoachPlayerInfo,
+      { player_id: string | number | undefined }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `player-info/${player_id}/`,
+        params,
+      }),
+      providesTags: ["player"],
+    }),
+
+    // Player Courses
+    getPlayerCourses: query<
+      Courses,
+      { player_id: number | string | undefined }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `player-courses/${player_id}`,
+        params,
+      }),
+      providesTags: ["player", "courses"],
+    }),
+
+    AddPlayerCourse: mutation<
+      AddCourse,
+      { player_id: string | number | undefined }
+    >({
+      query: ({ player_id, ...body }) => ({
+        url: `player-courses/${player_id}/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["player"],
+    }),
+
+    // Achievements
+    getPlayerAchievements: query<
+      UserAchievements,
+      { player_id: string | number | undefined }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `player-achievements/${player_id}`,
+        params,
+      }),
+      providesTags: ["player", "achievements"],
+    }),
+    addPlayerAchievements: mutation<
+      AddAchievements,
+      { player_id: string | number | undefined }
+    >({
+      query: ({ player_id, ...body }) => ({
+        url: `player-achievements/${player_id}/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["player"],
+    }),
+
+    // Event Queries
+    getPlayerEvents: query<
+      PlayerEvents,
+      { player_id: string | number | undefined }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `player-events/${player_id}`,
+        params,
+      }),
+      providesTags: ["player"],
+    }),
+
+    deleteEvent: mutation<{}, { event_id: number | string | undefined }>({
+      query: ({ event_id }) => ({
+        url: `events/${event_id}/delete/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["player"],
+    }),
+
+    getEventFiles: query<EventFiles, { event_id: number | string | undefined }>(
+      {
+        query: ({ event_id, ...params }) => ({
+          url: `${event_id}/files/`,
+          params,
+        }),
+        providesTags: ["media"],
+      }
+    ),
+
+    deleteEventFile: mutation<{}, { file_id: number | string | undefined }>({
+      query: ({ file_id, ...body }) => ({
+        url: `delete-event-file/${file_id}/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["media"],
+    }),
   }),
 });
 
@@ -456,4 +633,21 @@ export const {
   useDeleteAchievementsMutation,
   useResetPasswordMutation,
   usePlayerEventsQuery,
+  usePlayerEducationQuery,
+  useAddPlayerEducationMutation,
+  usePlayerSkillsQuery,
+  useAddPlayerSkillsMutation,
+  useDeleteSkillMutation,
+  useAddPlayerLeagueMutation,
+  usePlayerLeagueQuery,
+  useDeleteLeagueMutation,
+  useGetPlayerInfoQuery,
+  useGetPlayerCoursesQuery,
+  useAddPlayerCourseMutation,
+  useGetPlayerAchievementsQuery,
+  useAddPlayerAchievementsMutation,
+  useGetPlayerEventsQuery,
+  useDeleteEventMutation,
+  useGetEventFilesQuery,
+  useDeleteEventFileMutation,
 } = userApi;

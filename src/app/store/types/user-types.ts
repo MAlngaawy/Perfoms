@@ -251,6 +251,7 @@ export type Qualifications = BaseGetAllType & {
 };
 
 export type AddEducation = {
+  player_id?: number | undefined;
   year: number;
   degree: string;
   universty: string;
@@ -295,4 +296,39 @@ export type ClubTeams = BaseGetAllType & {
     id: number;
     name: string;
   }[];
+};
+
+export type PlayerLeague = {
+  id: number;
+  title: string;
+  start_date: string;
+  end_date: string;
+};
+
+export type PlayerLeagues = BaseGetAllType & {
+  results: PlayerLeague[];
+};
+
+export type AddPlayerLeague = {
+  title: string;
+  start_date: string;
+  end_date: string;
+};
+
+export type PlayerEvent = {
+  id: number;
+  name: string;
+  icon: string;
+  icon_url: string;
+  video_url: string;
+};
+
+export type PlayerEvents = BaseGetAllType & {
+  results: PlayerEvent[];
+};
+
+export type AddPlayerEvent = {
+  name: string;
+  icon: string;
+  player: number;
 };

@@ -91,7 +91,7 @@ const PlayerInfo = (props: Props) => {
   ]);
 
   return (
-    <div className="">
+    <div className="mb-10">
       {/* <CustomBreadCrumbs
         items={[
           {
