@@ -49,6 +49,7 @@ import { Kpis, Metrics, Pillars } from "../types/supervisor-types";
 import { Sports, Teams } from "../types/clubManager-types";
 import { UserAchievements } from "~/app/store/types/user-types";
 import { CoachPlayerInfo } from "../types/coach-types";
+import { EventFiles } from "~/app/store/types/parent-types";
 
 export const userApi = createApi({
   reducerPath: "userApi",
@@ -64,6 +65,7 @@ export const userApi = createApi({
     "qualifications",
     "achievements",
     "kpis",
+    "media",
     "player",
   ],
   endpoints: ({ query, mutation }) => ({
@@ -571,6 +573,16 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["player"],
     }),
+
+    getEventFiles: query<EventFiles, { event_id: number | string | undefined }>(
+      {
+        query: ({ event_id, ...params }) => ({
+          url: `${event_id}/files/`,
+          params,
+        }),
+        providesTags: ["media"],
+      }
+    ),
   }),
 });
 
@@ -628,4 +640,5 @@ export const {
   useAddPlayerAchievementsMutation,
   useGetPlayerEventsQuery,
   useDeleteEventMutation,
+  useGetEventFilesQuery,
 } = userApi;
