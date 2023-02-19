@@ -301,6 +301,7 @@ export type PlayerMetricScores = BaseGetAllType & {
   results: {
     id: number;
     metric: string;
+    kpi: string;
     last_score: string;
   }[];
 };

@@ -137,7 +137,10 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
       <div
         className={`power_header ${bg}  px-5 py-2 bg-white flex flex-row justify-between`}
       >
-        <h3 className="text-sm">Name</h3>
+        <h3 className="text-sm">
+          <span className=" italic"> Kpi </span> -
+          <span className=" font-medium"> Metric </span>
+        </h3>
         <h3 className="text-sm">Score</h3>
       </div>
       <div className="h-64 overflow-y-auto">
@@ -148,7 +151,10 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
                 key={power.id}
                 className={`power_score px-5 py-2 flex flex-row justify-between`}
               >
-                <h3 className="text-sm">{power.metric}</h3>
+                <h3 className="text-sm">
+                  <span className=" italic"> {power.kpi} </span> -
+                  <span className=" font-medium">{power.metric}</span>
+                </h3>
                 <h3 className={`font-semibold ${color} text-sm`}>
                   {power.last_score}
                 </h3>
