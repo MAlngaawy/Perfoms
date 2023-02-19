@@ -2,7 +2,7 @@ import React, { createContext, useState } from "react";
 import AppRadioGroub from "~/@main/components/AppRadioGroub";
 import PlayerInfo from "./Tabs/PlayerInfo/PlayerInfo";
 import PlayerBio from "./Tabs/PlayerBio/PlayerBio";
-import PlayerMedia from "./Tabs/PlayerMedia/PlayerMedia";
+import PlayerAlbums from "./Tabs/PlayerMedia/PlayerAlbums";
 import PrintComp from "~/@main/PrintComp";
 
 const EditModeContext = createContext<boolean>(false);
@@ -40,7 +40,7 @@ const PlayerDetails = () => {
             </PrintComp>
           </div>
           <div className={checked !== "Media" ? "hidden" : "block px-4"}>
-            <PlayerMedia />
+            <PlayerAlbums />
           </div>
         </div>
       </div>

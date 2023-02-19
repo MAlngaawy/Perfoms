@@ -314,3 +314,21 @@ export type AddPlayerLeague = {
   start_date: string;
   end_date: string;
 };
+
+export type PlayerEvent = {
+  id: number;
+  name: string;
+  icon: string;
+  icon_url: string;
+  video_url: string;
+};
+
+export type PlayerEvents = BaseGetAllType & {
+  results: PlayerEvent[];
+};
+
+export type AddPlayerEvent = {
+  name: string;
+  icon: string;
+  player: number;
+};

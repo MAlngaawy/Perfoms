@@ -15,6 +15,7 @@ import {
   Educations,
   NotificationsType,
   OTPVerify,
+  PlayerEvents,
   playerEvents,
   PlayerLeague,
   PlayerLeagues,
@@ -550,6 +551,26 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["player"],
     }),
+
+    // Event Queries
+    getPlayerEvents: query<
+      PlayerEvents,
+      { player_id: string | number | undefined }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `player-events/${player_id}`,
+        params,
+      }),
+      providesTags: ["player"],
+    }),
+
+    deleteEvent: mutation<{}, { event_id: number | string | undefined }>({
+      query: ({ event_id }) => ({
+        url: `events/${event_id}/delete/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["player"],
+    }),
   }),
 });
 
@@ -605,4 +626,6 @@ export const {
   useAddPlayerCourseMutation,
   useGetPlayerAchievementsQuery,
   useAddPlayerAchievementsMutation,
+  useGetPlayerEventsQuery,
+  useDeleteEventMutation,
 } = userApi;
