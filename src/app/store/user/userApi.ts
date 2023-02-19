@@ -583,6 +583,14 @@ export const userApi = createApi({
         providesTags: ["media"],
       }
     ),
+
+    deleteEventFile: mutation<{}, { file_id: number | string | undefined }>({
+      query: ({ file_id, ...body }) => ({
+        url: `delete-event-file/${file_id}/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["media"],
+    }),
   }),
 });
 
@@ -641,4 +649,5 @@ export const {
   useGetPlayerEventsQuery,
   useDeleteEventMutation,
   useGetEventFilesQuery,
+  useDeleteEventFileMutation,
 } = userApi;

@@ -6,6 +6,9 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Avatar, Image, Skeleton } from "@mantine/core";
 import AppIcons from "~/@main/core/AppIcons";
+import DeleteButton from "~/@main/components/ManagerComponents/SubComponents/DeleteButton";
+import { useDeleteEventFileMutation } from "~/app/store/user/userApi";
+import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {
   images: { id?: number; file?: string }[];
@@ -47,6 +50,7 @@ const Slider = ({ images, isLoading, video_url }: Props) => {
               return (
                 <SwiperSlide key={image.id}>
                   <OneSlide
+                    id={image.id}
                     imageLink={
                       image.file ||
                       "https://shop.australiansportscamps.com.au/wp-content/uploads/2016/12/Benefits-Of-Team-Sports-For-Kids.jpg"
@@ -71,9 +75,39 @@ const Slider = ({ images, isLoading, video_url }: Props) => {
 
 export default Slider;
 
-const OneSlide = ({ imageLink }: { imageLink: string }) => {
+const OneSlide = ({
+  imageLink,
+  id,
+}: {
+  imageLink: string;
+  id: number | undefined;
+}) => {
+  const [deleteImage] = useDeleteEventFileMutation();
   return (
-    <div className=" flex justify-center items-center w-11/12 sm:w-3/5 h-96 mx-auto">
+    <div className=" flex justify-center relative items-center w-11/12 sm:w-3/5 h-96 mx-auto">
+      <div className="absolute z-10 top-5 right-5 bg-white p-1 rounded-full shadow-lg">
+        <DeleteButton
+          type="Image"
+          name=""
+          deleteFun={() => {
+            deleteImage({ file_id: id })
+              .then((res) =>
+                AppUtils.showNotificationFun(
+                  "Success",
+                  "Done",
+                  "Image deleted Successfully"
+                )
+              )
+              .catch((err) =>
+                AppUtils.showNotificationFun(
+                  "Error",
+                  "Sorry",
+                  "Try again later"
+                )
+              );
+          }}
+        />
+      </div>
       <Image className="w-full full object-cover" src={imageLink} />
     </div>
   );

@@ -18,9 +18,7 @@ const UploadMedia = ({ refetch, videoUrl }: Props) => {
   const [link, setLink] = useState<string | undefined>(videoUrl);
   const [isLoading, setIsLoading] = useState(false);
   const { album_id } = useParams();
-  const [images, setImages] = useState<any>();
-  const { data: user } = useUserQuery({});
-  console.log("album_id", album_id);
+  const [images, setImages] = useState<any>(null);
 
   const upload = async (e: any) => {
     e.preventDefault();
@@ -31,14 +29,7 @@ const UploadMedia = ({ refetch, videoUrl }: Props) => {
       formData.append("video_url", link);
       setIsLoading(true);
 
-      let updateEvent = "";
-      if (user?.user_type === "Supervisor") {
-        updateEvent = `supervisor/events/${album_id}/update/`;
-      } else if (user?.user_type === "Admin") {
-        updateEvent = `club-manager/teams/events/${album_id}/update/`;
-      } else if (user?.user_type === "Coach") {
-        updateEvent = `coach/events/${album_id}/update/`;
-      }
+      let updateEvent = `user-generals/events/${album_id}/update/`;
 
       try {
         axiosInstance
@@ -82,6 +73,7 @@ const UploadMedia = ({ refetch, videoUrl }: Props) => {
             setOpened(false);
             setLink("");
             AppUtils.showNotificationFun("Success", "Done", "Media Added");
+            setImages(null);
             refetch();
           })
           .catch((err) => {
