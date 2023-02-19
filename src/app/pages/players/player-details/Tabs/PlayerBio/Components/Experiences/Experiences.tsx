@@ -3,7 +3,9 @@ import React, { useContext } from "react";
 import AppIcons from "~/@main/core/AppIcons";
 import {
   useAddPlayerLeagueMutation,
+  useDeleteCourseMutation,
   useDeleteLeagueMutation,
+  useGetPlayerCoursesQuery,
   usePlayerLeagueQuery,
 } from "~/app/store/user/userApi";
 import { useParams } from "react-router-dom";
@@ -11,6 +13,7 @@ import DeleteButton from "~/@main/components/ManagerComponents/SubComponents/Del
 import { EditModeContext } from "../../../../PlayerDetails";
 import AppUtils from "~/@main/utils/AppUtils";
 import AddLeagueForm from "./Forms/AddLeagueForm";
+import AddPlayerCourse from "./Forms/AddPlayerCourse";
 
 type Props = {};
 
@@ -21,6 +24,11 @@ const Experiences = (props: Props) => {
     { player_id: id },
     { skip: !id }
   );
+  const { data: playerCourses } = useGetPlayerCoursesQuery(
+    { player_id: id },
+    { skip: !id }
+  );
+  const [deleteCourse] = useDeleteCourseMutation();
 
   return (
     <div className="bg-white rounded-3xl p-6 min-h-full">
@@ -43,7 +51,52 @@ const Experiences = (props: Props) => {
           );
         })}
       </div>
-      <TitleWithIcon name={"Courses"} />
+      <div className="courses">
+        <div className="flex justify-between w-full">
+          <TitleWithIcon name="Courses" />
+          {editMode && <AddPlayerCourse />}
+        </div>
+        {playerCourses?.results.length === 0 && (
+          <h2 className="my-4">
+            No <span className="text-perfBlue"> Courses </span> Added Yet!
+          </h2>
+        )}
+        <ul className="list-disc list-outside  ml-8">
+          {playerCourses?.results.map((course) => (
+            <li
+              key={course.id}
+              className="text-xs w-full relative font-normal text-perfGray3 my-4 pr-5 break-words"
+            >
+              {editMode && (
+                <div className="absolute right-0">
+                  <DeleteButton
+                    name={course.name}
+                    type="Courses"
+                    deleteFun={() => {
+                      deleteCourse({ id: course.id })
+                        .then(() => {
+                          AppUtils.showNotificationFun(
+                            "Success",
+                            "Done",
+                            "Successfully Deleted Courses"
+                          );
+                        })
+                        .catch(() => {
+                          AppUtils.showNotificationFun(
+                            "Error",
+                            "Sorry",
+                            "Can't Delete Courses Now"
+                          );
+                        });
+                    }}
+                  />
+                </div>
+              )}
+              {course.name}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };

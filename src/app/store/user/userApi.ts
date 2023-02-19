@@ -503,6 +503,30 @@ export const userApi = createApi({
       }),
       providesTags: ["player"],
     }),
+
+    // Player Courses
+    getPlayerCourses: query<
+      Courses,
+      { player_id: number | string | undefined }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `player-courses/${player_id}`,
+        params,
+      }),
+      providesTags: ["player", "courses"],
+    }),
+
+    AddPlayerCourse: mutation<
+      AddCourse,
+      { player_id: string | number | undefined }
+    >({
+      query: ({ player_id, ...body }) => ({
+        url: `player-courses/${player_id}/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["player"],
+    }),
   }),
 });
 
@@ -554,4 +578,6 @@ export const {
   usePlayerLeagueQuery,
   useDeleteLeagueMutation,
   useGetPlayerInfoQuery,
+  useGetPlayerCoursesQuery,
+  useAddPlayerCourseMutation,
 } = userApi;

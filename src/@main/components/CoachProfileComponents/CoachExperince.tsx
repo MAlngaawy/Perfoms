@@ -26,7 +26,6 @@ import {
   useGetUserCoursesQuery,
   useGetUserExperiencesQuery,
   useGetUserQualificationsQuery,
-  useUpdateProfileMutation,
   useUserQuery,
 } from "~/app/store/user/userApi";
 import AppUtils from "../../utils/AppUtils";
@@ -247,7 +246,7 @@ const CoachExperince = ({ data, editMode }: Props) => {
               </li>
             ))}
           </ul>
-          {editMode && <AddCourses data={data?.details} />}
+          {editMode && <AddCourses />}
         </div>
       </div>
     </div>
@@ -508,7 +507,7 @@ function AddQualifications() {
 /**
  * Add Courses Modal
  */
-function AddCourses({ data: oldDetails }: { data: Details | undefined }) {
+function AddCourses() {
   const [opened, setOpened] = useState(false);
   const [addCourse, { isLoading }] = useAddUserCoursesMutation();
 
