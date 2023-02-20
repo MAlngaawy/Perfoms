@@ -30,6 +30,15 @@ const navigationConfig: NavigationConfigTypes[] = [
     auth: authRoles.Supervisor,
   },
   {
+    id: "scoring",
+    title: "Scoring",
+    translate: "SCORING",
+    type: "item",
+    icon: "ChartBarIcon:outline",
+    url: "scoring",
+    auth: authRoles.Supervisor,
+  },
+  {
     id: "home-page-admin",
     title: "Home",
     translate: "HOME",

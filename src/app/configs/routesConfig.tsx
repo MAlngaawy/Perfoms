@@ -46,6 +46,8 @@ import ResetPasswordConfig from "../pages/ResetPassword/ResetPasswordConfig";
 import RequestSentConfig from "../pages/OTP/RequestSent/RequestSentConfig";
 import AdminProfilePageConfig from "../pages/AdminProfile/AdminProfileConfig";
 import AlbumMediaConfig from "../pages/players/player-details/Tabs/PlayerMedia/AlbumMedia/AlbumMediaConfig";
+import ScoringPageConfig from "../pages/Scoring/ScoringPageConfig";
+import ScoringTablesConfig from "../pages/Scoring/SupPages/ScoringTablesConfig";
 
 const routeConfigs: PagesRouteConfig[] = [
   SignInConfig,
@@ -92,6 +94,8 @@ const routeConfigs: PagesRouteConfig[] = [
   RequestSentConfig,
   AdminProfilePageConfig,
   AlbumMediaConfig,
+  ScoringPageConfig,
+  ScoringTablesConfig,
 ];
 
 const routes: AppRouteObject[] = [
