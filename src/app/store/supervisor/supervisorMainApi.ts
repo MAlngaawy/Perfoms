@@ -37,14 +37,20 @@ import {
 import { Event } from "../types/events-types";
 import {
   CoachPlayerInfo,
+  CoachTeamAttendance,
+  CoachTeamPerformance,
   PlayerMonthsAttendancesStatistics,
   PlayerParent,
+  TeamAttendanceDays,
   TeamKpiPlayersStatistics,
+  TeamPerformanceMetrics,
   TeamPlayersAttendStatistics,
   TeamsStatistics,
   TeamStatistics,
+  UpdatePlayerPKM,
 } from "../types/coach-types";
 import { YearPicker } from "@mantine/dates/lib/components/CalendarBase/YearPicker/YearPicker";
+import { Attendance, UpdateAttendance } from "../types/attendance-types";
 
 export const supervisorApi = createApi({
   reducerPath: "supervisorApi",
@@ -52,7 +58,14 @@ export const supervisorApi = createApi({
     baseUrl: `${BASE_URL}/supervisor`,
     prepareHeaders: BASE_HEADERS,
   }),
-  tagTypes: ["supervisor", "calendar", "metrics", "kpis"],
+  tagTypes: [
+    "supervisor",
+    "calendar",
+    "metrics",
+    "kpis",
+    "Attendance",
+    "performances",
+  ],
   endpoints: ({ query, mutation }) => ({
     superKpis: query<
       Kpis,
@@ -510,6 +523,66 @@ export const supervisorApi = createApi({
       }),
       invalidatesTags: ["metrics"],
     }),
+
+    // Attedance and reports
+    superTeamAttendanceDays: query<
+      TeamAttendanceDays,
+      { team_id: number; page?: number }
+    >({
+      query: ({ team_id, ...params }) => ({
+        url: `team-attendance-days/${team_id}`,
+        params,
+      }),
+    }),
+
+    superGetTeamAttendance: query<
+      CoachTeamAttendance,
+      { team_id: number; page?: number }
+    >({
+      query: ({ team_id, ...params }) => ({
+        url: `team-attendance/${team_id}`,
+        params,
+      }),
+      providesTags: ["Attendance"],
+    }),
+
+    superUpdateAttendance: mutation<Attendance, UpdateAttendance>({
+      query: ({ id, ...body }) => ({
+        url: `update-attendance-day/${id}/`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["Attendance"],
+    }),
+
+    superGetTeamPerformances: query<
+      CoachTeamPerformance,
+      { team_id: number; page?: number }
+    >({
+      query: ({ team_id, ...params }) => ({
+        url: `team-performance/${team_id}`,
+        params,
+      }),
+      providesTags: ["performances"],
+    }),
+
+    superTeamPerformanceMetrics: query<
+      TeamPerformanceMetrics,
+      { team_id: number; page?: number }
+    >({
+      query: ({ team_id, ...params }) => ({
+        url: `team-performance-metrics/${team_id}`,
+        params,
+      }),
+    }),
+
+    superUpdatePlayerPKM: mutation<UpdatePlayerPKM, UpdatePlayerPKM>({
+      query: ({ id, team_id, ...body }) => ({
+        url: `update-player-pkm/${id}/${team_id}/`,
+        method: "PATCH",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -564,4 +637,10 @@ export const {
   useSuperAddNewTeamMutation,
   useSuperDeleteKpiMutation,
   useSuperDeleteMetricMutation,
+  useSuperTeamAttendanceDaysQuery,
+  useSuperGetTeamAttendanceQuery,
+  useSuperUpdateAttendanceMutation,
+  useSuperGetTeamPerformancesQuery,
+  useSuperUpdatePlayerPKMMutation,
+  useSuperTeamPerformanceMetricsQuery,
 } = supervisorApi;

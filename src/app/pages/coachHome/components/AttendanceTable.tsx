@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { Table, Checkbox, Avatar, Skeleton, Loader } from "@mantine/core";
 import {
   useCoachUpdateAttendanceMutation,
@@ -9,30 +9,64 @@ import { useSelector } from "react-redux";
 import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 import NoTeamComp from "~/@main/components/NoTeamComp";
 import NoAttendancesYet from "~/@main/components/NoAttendancesYet";
+import { useUserQuery } from "~/app/store/user/userApi";
+import {
+  useSuperGetTeamAttendanceQuery,
+  useSuperTeamAttendanceDaysQuery,
+  useSuperUpdateAttendanceMutation,
+} from "~/app/store/supervisor/supervisorMainApi";
+import { TeamAttendance } from "~/app/store/types/supervisor-types";
+import {
+  CoachTeamAttendance,
+  TeamAttendanceDays,
+} from "~/app/store/types/coach-types";
 
 type Props = {};
 
 const AttendanceTable = (props: Props) => {
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
+  const { data: user } = useUserQuery({});
+  const [teamAttendance, setTeamAttendance] = useState<CoachTeamAttendance>();
+  const [teamAttendanceDays, setTeamAttendanceDays] =
+    useState<TeamAttendanceDays>();
 
-  const { data: teamAttendance } = useGetTeamAttendanceQuery(
+  const { data: coachTeamAttendance } = useGetTeamAttendanceQuery(
     { team_id: selectedPlayerTeam?.id },
-    { skip: !selectedPlayerTeam }
+    { skip: !selectedPlayerTeam || user?.user_type !== "Coach" }
   );
 
-  // !-- this end point comes with an empty array! ==https://api.performs.app/coach/team-attendance-days/4/==
-  const {
-    data: teamAttendanceDays,
-    isLoading,
-    isError,
-  } = useTeamAttendanceDaysQuery(
+  const { data: superTeamAttendance } = useSuperGetTeamAttendanceQuery(
     { team_id: selectedPlayerTeam?.id },
-    { skip: !selectedPlayerTeam }
+    { skip: !selectedPlayerTeam || user?.user_type !== "Supervisor" }
   );
+
+  const { data: coachTeamAttendanceDays, isLoading: isCoachLoading } =
+    useTeamAttendanceDaysQuery(
+      { team_id: selectedPlayerTeam?.id },
+      { skip: !selectedPlayerTeam || user?.user_type !== "Coach" }
+    );
+
+  const { data: superTeamAttendanceDays, isLoading: isSuperLoading } =
+    useSuperTeamAttendanceDaysQuery(
+      { team_id: selectedPlayerTeam?.id },
+      { skip: !selectedPlayerTeam || user?.user_type !== "Supervisor" }
+    );
+
+  useEffect(() => {
+    if (coachTeamAttendance) setTeamAttendance(coachTeamAttendance);
+    if (superTeamAttendance) setTeamAttendance(superTeamAttendance);
+    if (coachTeamAttendanceDays) setTeamAttendanceDays(coachTeamAttendanceDays);
+    if (superTeamAttendanceDays) setTeamAttendanceDays(superTeamAttendanceDays);
+  }, [
+    coachTeamAttendance,
+    superTeamAttendance,
+    coachTeamAttendanceDays,
+    superTeamAttendanceDays,
+  ]);
 
   // console.log("coahcTeamPlayers", coahcTeamPlayers);
 
-  if (isLoading)
+  if (isCoachLoading || isSuperLoading)
     return (
       <Skeleton
         height={200}
@@ -60,12 +94,15 @@ const AttendanceTable = (props: Props) => {
 export default memo(AttendanceTable);
 
 const TestCheckbox = memo(({ theDate, thisDate, theStatus, theID }: any) => {
+  const { data: user } = useUserQuery({});
   const [updateAttend, { isLoading: isUpdating }] =
     useCoachUpdateAttendanceMutation();
+  const [superUpdateAttend, { isLoading: superUpdating }] =
+    useSuperUpdateAttendanceMutation();
 
   return (
     <>
-      {isUpdating ? (
+      {isUpdating || superUpdating ? (
         <div className=" mx-auto flex items-center justify-center">
           <Loader size={"sm"} />
         </div>
@@ -76,10 +113,17 @@ const TestCheckbox = memo(({ theDate, thisDate, theStatus, theID }: any) => {
           }
           checked={theStatus === "ATTENDED"}
           onChange={(e) => {
-            updateAttend({
-              id: theID,
-              status: theStatus !== "ATTENDED" ? "ATTENDED" : "ABSENT",
-            });
+            if (user?.user_type === "Coach") {
+              updateAttend({
+                id: theID,
+                status: theStatus !== "ATTENDED" ? "ATTENDED" : "ABSENT",
+              });
+            } else if (user?.user_type === "Supervisor") {
+              superUpdateAttend({
+                id: theID,
+                status: theStatus !== "ATTENDED" ? "ATTENDED" : "ABSENT",
+              });
+            }
           }}
         />
       )}
@@ -170,17 +214,3 @@ const TableHead = memo(({ teamAttendance }: any) => {
     </thead>
   );
 });
-
-/**
- *               .then((res) => {
-                //@ts-ignore
-                if (res.error) {
-                  console.log("Errorrrr");
-                } else {
-                  console.log("NOT Error");
-                }
-              })
-              .catch((err) => {
-                console.log(err);
-              });
- */
