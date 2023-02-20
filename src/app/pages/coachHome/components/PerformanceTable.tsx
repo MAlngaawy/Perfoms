@@ -11,24 +11,63 @@ import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 import classNames from "classnames";
 import NoAttendancesYet from "~/@main/components/NoAttendancesYet";
 import NoTeamComp from "~/@main/components/NoTeamComp";
+import {
+  useSuperGetTeamPerformancesQuery,
+  useSuperTeamPerformanceMetricsQuery,
+  useSuperUpdatePlayerPKMMutation,
+} from "~/app/store/supervisor/supervisorMainApi";
+import { useUserQuery } from "~/app/store/user/userApi";
+import {
+  CoachTeamPerformance,
+  TeamPerformanceMetrics,
+} from "~/app/store/types/coach-types";
 
 type Props = {};
 
 const PerformanceTable = (props: Props) => {
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
+  const [teamPerformance, setTeamPerformance] =
+    useState<CoachTeamPerformance>();
+  const [teamPerformanceMetric, setTeamPerformanceMetric] =
+    useState<TeamPerformanceMetrics>();
 
-  const { data: teamPerformance } = useGetTeamPerformancesQuery(
+  const { data: coachTeamPerformance } = useGetTeamPerformancesQuery(
     { team_id: selectedPlayerTeam?.id },
     { skip: !selectedPlayerTeam }
   );
 
-  const { data: teamPerformanceMetric, isLoading } =
+  const { data: coachTeamPerformanceMetric, isLoading: coachIsLoading } =
     useTeamPerformanceMetricsQuery(
       { team_id: selectedPlayerTeam?.id },
       { skip: !selectedPlayerTeam }
     );
 
-  if (isLoading)
+  const { data: superTeamPerformance } = useSuperGetTeamPerformancesQuery(
+    { team_id: selectedPlayerTeam?.id },
+    { skip: !selectedPlayerTeam }
+  );
+
+  const { data: superTeamPerformanceMetric, isLoading: superIsLoading } =
+    useSuperTeamPerformanceMetricsQuery(
+      { team_id: selectedPlayerTeam?.id },
+      { skip: !selectedPlayerTeam }
+    );
+
+  useEffect(() => {
+    if (coachTeamPerformance) setTeamPerformance(coachTeamPerformance);
+    if (superTeamPerformance) setTeamPerformance(superTeamPerformance);
+    if (coachTeamPerformanceMetric)
+      setTeamPerformanceMetric(coachTeamPerformanceMetric);
+    if (superTeamPerformanceMetric)
+      setTeamPerformanceMetric(superTeamPerformanceMetric);
+  }, [
+    coachTeamPerformance,
+    coachTeamPerformanceMetric,
+    superTeamPerformance,
+    superTeamPerformanceMetric,
+  ]);
+
+  if (coachIsLoading || superIsLoading)
     return (
       <Skeleton
         height={200}
@@ -132,8 +171,9 @@ const TestComponent = ({
   selectedPlayerTeam,
   theMetric,
 }: any) => {
-  const [UpdatePlaerKpiMetric] = useUpdatePlayerPKMMutation();
-
+  const [UpdateCoachPlayerKpiMetric] = useUpdatePlayerPKMMutation();
+  const [UpdateSuperPlayerKpiMetric] = useSuperUpdatePlayerPKMMutation();
+  const { data: user } = useUserQuery({});
   const [theScore, setTheScore] = useState(firstScore);
 
   useEffect(() => {
@@ -151,15 +191,27 @@ const TestComponent = ({
           <span
             key={number}
             onClick={() => {
-              UpdatePlaerKpiMetric({
-                id: theMetric,
-                score: theScore === number ? 0 : number,
-                team_id: selectedPlayerTeam.id,
-                max_score: 5,
-              }).then((res) => {
-                //@ts-ignore
-                setTheScore(res.data.data.score);
-              });
+              if (user?.user_type === "Coach") {
+                UpdateCoachPlayerKpiMetric({
+                  id: theMetric,
+                  score: theScore === number ? 0 : number,
+                  team_id: selectedPlayerTeam.id,
+                  max_score: 5,
+                }).then((res) => {
+                  //@ts-ignore
+                  setTheScore(res.data.data.score);
+                });
+              } else if (user?.user_type === "Supervisor") {
+                UpdateSuperPlayerKpiMetric({
+                  id: theMetric,
+                  score: theScore === number ? 0 : number,
+                  team_id: selectedPlayerTeam.id,
+                  max_score: 5,
+                }).then((res) => {
+                  //@ts-ignore
+                  setTheScore(res.data.data.score);
+                });
+              }
             }}
             className={cn("px-2 p-1 rounded-md cursor-pointer font-bold", {
               "bg-scoreGreen text-white": theScore > 3 && theScore === number,
