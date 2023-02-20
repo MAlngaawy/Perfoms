@@ -1,6 +1,6 @@
 import React, { useState, ReactNode, useEffect } from "react";
 import { Modal, Group, Input } from "@mantine/core";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Details } from "~/app/store/types/parent-types";
@@ -17,6 +17,8 @@ import { UserAchievements } from "~/app/store/types/user-types";
 import { useParams } from "react-router-dom";
 import AppUtils from "~/@main/utils/AppUtils";
 import DeleteButton from "../ManagerComponents/SubComponents/DeleteButton";
+import { DatePicker } from "@mantine/dates";
+import AppIcons from "~/@main/core/AppIcons";
 
 type Props = {
   data: Details | undefined;
@@ -98,7 +100,7 @@ const CoachAchievements = ({ data, editMode }: Props) => {
                 {item.type}
               </h2>
               <p className="text-xs text-perfGray3">
-                {item.year}, {item.place}
+                {item.date}, {item.location}
               </p>
             </div>
           </div>
@@ -120,8 +122,9 @@ function AddButton() {
   // Form Schema
   const schema = yup.object().shape({
     type: yup.string().required(),
-    year: yup.number().min(1900).max(3000).required(),
-    place: yup.string().required(),
+    place: yup.number(),
+    date: yup.string(),
+    location: yup.string().required(),
   });
 
   // use Form Config
@@ -130,6 +133,7 @@ function AddButton() {
     handleSubmit,
     formState: { errors },
     reset,
+    control,
   } = useForm({
     resolver: yupResolver(schema),
   });
@@ -137,7 +141,13 @@ function AddButton() {
   // Submit Form Function
   const onSubmitFunction = (data: any) => {
     setOpened(false);
-    addAchievements(data)
+
+    const newData = {
+      ...data,
+      date: AppUtils.formatDate(new Date(data.date)),
+    };
+
+    addAchievements({ newData })
       .then((res) => {
         AppUtils.showNotificationFun(
           "Success",
@@ -152,7 +162,7 @@ function AddButton() {
           "Can't Add Achievement Now"
         );
       });
-    reset({ type: "", year: "", place: "" });
+    reset({ type: "", place: "", date: "", location: "" });
   };
 
   return (
@@ -160,7 +170,7 @@ function AddButton() {
       <Modal
         opened={opened}
         onClose={() => {
-          reset({ type: "", year: "", place: "" });
+          reset({ type: "", place: "", date: "", location: "" });
           setOpened(false);
         }}
       >
@@ -174,19 +184,26 @@ function AddButton() {
             <Input placeholder="Medal Type" {...register("type")} />
           </Input.Wrapper>
 
-          <Input.Wrapper
-            error={errors.year && "You must enter a valid year: e.g 2012"}
-          >
-            <Input
-              placeholder="Year: e.g 2012"
-              {...register("year", { minLength: 4, maxLength: 4 })}
-            />
+          <Input.Wrapper error={errors.place && "Please add your player place"}>
+            <Input placeholder="place" {...register("place")} />
           </Input.Wrapper>
 
+          <Controller
+            {...register("date")}
+            render={({ field }) => (
+              <DatePicker
+                inputFormat="YYYY-MM-DD"
+                {...field}
+                placeholder="Pick date"
+              />
+            )}
+            control={control}
+          />
+
           <Input.Wrapper
-            error={errors.place && (errors.place.message as ReactNode)}
+            error={errors.location && (errors.location.message as ReactNode)}
           >
-            <Input placeholder="Place" {...register("place")} />
+            <Input placeholder="Loaction" {...register("location")} />
           </Input.Wrapper>
 
           <button type="submit" className="bg-perfBlue text-white p-2">
@@ -197,10 +214,12 @@ function AddButton() {
 
       <Group position="center">
         <button
-          onClick={() => setOpened(true)}
+          onClick={() => {
+            setOpened(true);
+          }}
           className="text-sm xl:text-base p-2 transform hover:scale-105 duration-100 bg-white border border-perfGray3 rounded-lg text-perfGray3"
         >
-          + Add achievements
+          + Add Achievements
         </button>
       </Group>
     </>

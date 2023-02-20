@@ -1,12 +1,13 @@
 import React, { useState, ReactNode, useEffect } from "react";
 import { Modal, Group, Input } from "@mantine/core";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import AppUtils from "~/@main/utils/AppUtils";
 import { useAddPlayerAchievementsMutation } from "~/app/store/user/userApi";
 import { useParams } from "react-router-dom";
 import AppIcons from "~/@main/core/AppIcons";
+import { DatePicker } from "@mantine/dates";
 
 type Props = {};
 
@@ -18,8 +19,9 @@ const AddAchievement = (props: Props) => {
   // Form Schema
   const schema = yup.object().shape({
     type: yup.string().required(),
-    year: yup.number().min(1900).max(3000).required(),
-    place: yup.string().required(),
+    place: yup.number(),
+    date: yup.string(),
+    location: yup.string().required(),
   });
 
   // use Form Config
@@ -28,6 +30,7 @@ const AddAchievement = (props: Props) => {
     handleSubmit,
     formState: { errors },
     reset,
+    control,
   } = useForm({
     resolver: yupResolver(schema),
   });
@@ -35,7 +38,13 @@ const AddAchievement = (props: Props) => {
   // Submit Form Function
   const onSubmitFunction = (data: any) => {
     setOpened(false);
-    addAchievements({ player_id: id, ...data })
+
+    const newData = {
+      ...data,
+      date: AppUtils.formatDate(new Date(data.date)),
+    };
+
+    addAchievements({ player_id: id, ...newData })
       .then((res) => {
         AppUtils.showNotificationFun(
           "Success",
@@ -50,7 +59,7 @@ const AddAchievement = (props: Props) => {
           "Can't Add Achievement Now"
         );
       });
-    reset({ type: "", year: "", place: "" });
+    reset({ type: "", place: "", date: "", location: "" });
   };
 
   return (
@@ -58,7 +67,7 @@ const AddAchievement = (props: Props) => {
       <Modal
         opened={opened}
         onClose={() => {
-          reset({ type: "", year: "", place: "" });
+          reset({ type: "", place: "", date: "", location: "" });
           setOpened(false);
         }}
       >
@@ -72,19 +81,26 @@ const AddAchievement = (props: Props) => {
             <Input placeholder="Medal Type" {...register("type")} />
           </Input.Wrapper>
 
-          <Input.Wrapper
-            error={errors.year && "You must enter a valid year: e.g 2012"}
-          >
-            <Input
-              placeholder="Year: e.g 2012"
-              {...register("year", { minLength: 4, maxLength: 4 })}
-            />
+          <Input.Wrapper error={errors.place && "Please add your player place"}>
+            <Input placeholder="place" {...register("place")} />
           </Input.Wrapper>
 
+          <Controller
+            {...register("date")}
+            render={({ field }) => (
+              <DatePicker
+                inputFormat="YYYY-MM-DD"
+                {...field}
+                placeholder="Pick date"
+              />
+            )}
+            control={control}
+          />
+
           <Input.Wrapper
-            error={errors.place && (errors.place.message as ReactNode)}
+            error={errors.location && (errors.location.message as ReactNode)}
           >
-            <Input placeholder="Place" {...register("place")} />
+            <Input placeholder="Loaction" {...register("location")} />
           </Input.Wrapper>
 
           <button type="submit" className="bg-perfBlue text-white p-2">

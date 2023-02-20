@@ -32,7 +32,8 @@ const Achievements = (props: Props) => {
           return (
             <OneAchievement
               type={ach.type}
-              date={ach.year}
+              date={ach.date}
+              location={ach.location}
               place={ach.place}
               key={ach.id}
               id={ach.id}
@@ -46,7 +47,7 @@ const Achievements = (props: Props) => {
 
 export default Achievements;
 
-const OneAchievement = ({ type, date, place, id }: any) => {
+const OneAchievement = ({ type, date, place, id, location }: any) => {
   const editMode = useContext(EditModeContext);
   const [deleteAchievements] = useDeleteAchievementsMutation();
 
@@ -61,7 +62,7 @@ const OneAchievement = ({ type, date, place, id }: any) => {
             {type}
           </h2>
           <p className="text-xs text-perfGray3">
-            {date}, {place}
+            {date}, {location}
           </p>
         </div>
       </div>

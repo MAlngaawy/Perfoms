@@ -270,15 +270,17 @@ export type Educations = BaseGetAllType & {
 
 export type AddAchievements = {
   type: string;
-  year: number;
-  place: string;
+  place: number;
+  location: string;
+  date: string;
 };
 
 export type Achievement = {
   id: number;
   type: string;
-  year: number;
-  place: string;
+  date: string;
+  location: string;
+  place: number;
 };
 
 export type UserAchievements = BaseGetAllType & {
