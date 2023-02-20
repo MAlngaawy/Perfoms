@@ -147,7 +147,7 @@ function AddButton() {
       date: AppUtils.formatDate(new Date(data.date)),
     };
 
-    addAchievements({ newData })
+    addAchievements(newData)
       .then((res) => {
         AppUtils.showNotificationFun(
           "Success",
