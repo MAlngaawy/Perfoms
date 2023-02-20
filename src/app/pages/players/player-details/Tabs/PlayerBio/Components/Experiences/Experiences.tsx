@@ -35,7 +35,9 @@ const Experiences = (props: Props) => {
       <div className="title flex items-center gap-2">
         <Avatar src={"/assets/images/Leagues.png"} />
         <div className="flex justify-between w-full">
-          <h3 className="text-base font-medium text-perfLightBlack">Leagues</h3>
+          <h3 className="text-base font-medium text-perfLightBlack">
+            Tournaments
+          </h3>
           {editMode && <AddLeagueForm />}
         </div>
       </div>
@@ -130,7 +132,7 @@ const OneLeague = ({ from, to, name, id }: oneLeagueTypes) => {
                 AppUtils.showNotificationFun(
                   "Success",
                   "Done",
-                  "Successfully Deleted Education"
+                  "Successfully Deleted tournament"
                 );
                 refetch();
               })
@@ -138,12 +140,12 @@ const OneLeague = ({ from, to, name, id }: oneLeagueTypes) => {
                 AppUtils.showNotificationFun(
                   "Error",
                   "Sorry",
-                  "Can't add Education now"
+                  "Can't add tournament now"
                 );
               });
           }}
           name={name}
-          type="Degree"
+          type="tournament"
         />
       )}
     </div>
