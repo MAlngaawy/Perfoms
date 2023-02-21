@@ -281,6 +281,10 @@ export type CoachPlayerInfo = {
   parent_name: string;
   phone?: string;
   profile?: string;
+  team?: {
+    id: number;
+    name: string;
+  }[];
 };
 
 export type CoachTeamInfo = {

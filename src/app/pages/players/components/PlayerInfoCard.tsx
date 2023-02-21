@@ -4,6 +4,7 @@ import Info from "~/@main/components/Info";
 import { PerformanceCard } from "~/@main/components/PerformanceCard";
 import { CoachPlayerInfo } from "~/app/store/types/coach-types";
 import { Avatar } from "@mantine/core";
+import OneTeam from "../../MainReports/SupPages/Teams/OneTeam/OneTeam";
 
 interface PlayerInfoCardProps {
   playerData: any;
@@ -28,12 +29,25 @@ const PlayerInfoCard = ({ playerData }: PlayerInfoCardProps) => {
         <div>
           <Info label="Name" value={playerData?.name} />
           <Info label="Age" value={playerData?.dob} />
-          <div className="flex flex-row justify-between gap-5">
+          <div className="flex flex-row justify-between gap-10 w-full">
             <div className="flex flex-col justify-center">
               <Info label="Weight" value={`${playerData?.weight} kgm`} />
               <Info label="height" value={`${playerData?.height} cm`} />
             </div>
-            <Info label="Team" value={"14th team"} />
+            <div className="flex flex-col my-1  justify-center items-center">
+              <h3 className=" text-perfGray3 text-sm">Teams</h3>
+              <div className="flex flex-wrap gap-2">
+                {playerData?.team.map(
+                  (OneTeam: { id: number; name: string }) => {
+                    return (
+                      <h2 className="text-perfGray1 text-base font-medium">
+                        {OneTeam.name}
+                      </h2>
+                    );
+                  }
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>

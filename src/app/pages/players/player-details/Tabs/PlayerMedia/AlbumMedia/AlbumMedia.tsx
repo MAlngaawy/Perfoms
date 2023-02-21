@@ -1,16 +1,13 @@
 import { Breadcrumbs } from "@mantine/core";
 import { Link, useParams } from "react-router-dom";
 import Slider from "~/app/pages/media/MediaEvent/Slider";
-import UploadForm from "~/app/pages/media/MediaEvent/UploadForm";
 import { useGetEventFilesQuery } from "~/app/store/user/userApi";
 import UploadMedia from "./Forms/UploadMedia";
 
-type Props = {
-  player_id: number;
-};
+type Props = {};
 
-const AlbumMedia = ({ player_id }: Props) => {
-  const { album_id } = useParams();
+const AlbumMedia = (props: Props) => {
+  const { album_id, player_id } = useParams();
 
   const {
     data: eventMedia,
