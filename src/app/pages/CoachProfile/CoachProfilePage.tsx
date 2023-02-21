@@ -45,10 +45,10 @@ const CoachProfilePage = (props: Props) => {
             type={"profile"}
           />
         </Grid.Col>
-        <Grid.Col xs={12} md={7}>
+        <Grid.Col xs={12} md={6}>
           <CoachExperince editMode={editMode} data={user} />
         </Grid.Col>
-        <Grid.Col xs={12} md={2}>
+        <Grid.Col xs={12} md={3}>
           <CoachAchievements editMode={editMode} data={user?.details} />
         </Grid.Col>
       </Grid>

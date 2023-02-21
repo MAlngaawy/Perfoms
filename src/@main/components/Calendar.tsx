@@ -31,11 +31,11 @@ const CustomCalendar = ({ pageName, player_id }: Props) => {
       id: selectedPlayer?.id,
       date_from: fromDate,
       date_to: toDate,
-      team_id: selectedPlayerTeam.id,
+      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
-        !selectedPlayer?.id || !fromDate || !toDate || !selectedPlayerTeam.id,
+        !selectedPlayer?.id || !fromDate || !toDate || !selectedPlayerTeam?.id,
     }
   );
 
