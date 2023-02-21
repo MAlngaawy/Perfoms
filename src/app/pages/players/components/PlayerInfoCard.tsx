@@ -10,6 +10,8 @@ interface PlayerInfoCardProps {
 }
 
 const PlayerInfoCard = ({ playerData }: PlayerInfoCardProps) => {
+  console.log("playerData", playerData);
+
   return (
     <div className="p-6 bg-white h-full rounded-3xl border border-perfGray4">
       <h2>{playerData?.name?.split(" ")[0]}'s info</h2>

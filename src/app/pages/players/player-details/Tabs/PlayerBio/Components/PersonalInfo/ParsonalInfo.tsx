@@ -52,7 +52,7 @@ const ParsonalInfo = (props: Props) => {
         <h2 className="my-2 font-medium text-perfGray1 text-lg">
           {playerData?.name}
         </h2>
-        <div className="levels text-xs text-perfGray3">
+        {/* <div className="levels text-xs text-perfGray3">
           <span>Epert Level 22</span> |{" "}
           <span>
             760/1,900 xp{" "}
@@ -74,7 +74,7 @@ const ParsonalInfo = (props: Props) => {
               },
             }}
           />
-        </div>
+        </div> */}
       </div>
 
       <div className="data flex flex-col gap-2">
