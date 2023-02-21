@@ -61,6 +61,9 @@ const TeamFilter = (props: Props) => {
     if (playerTeams) setTeams(playerTeams.results);
     if (adminTeams) setTeams(adminTeams.results);
 
+    if (teams) {
+      dispatch(selectPlayerTeam(teams[0]));
+    }
     if (playerTeams)
       dispatch(
         selectPlayerTeam(
@@ -72,7 +75,7 @@ const TeamFilter = (props: Props) => {
               }
         )
       );
-  }, [playerTeams, superTeams, coachTeams, adminTeams]);
+  }, [playerTeams, superTeams, coachTeams, adminTeams, teams]);
 
   return (
     <Menu shadow="md" width={200}>
