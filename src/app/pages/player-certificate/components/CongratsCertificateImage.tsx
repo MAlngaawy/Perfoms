@@ -16,7 +16,7 @@ const CongratsCertificate = forwardRef(({ certificate }: Props, ref) => {
       const ctx = ref.current.getContext("2d");
       const image = new Image();
       image.crossOrigin = "anonymous";
-      image.src = "/assets/images/congrates_certificate.png";
+      image.src = "/assets/images/congrates_certificate2.png";
       image.onload = () => {
         ctx.drawImage(image, 0, 0, 880, 550);
         ctx.letterSpacing = "10px";
@@ -32,7 +32,7 @@ const CongratsCertificate = forwardRef(({ certificate }: Props, ref) => {
           new Date(
             (certificate && certificate && certificate?.created_at) || ""
           ).toLocaleDateString(),
-          410,
+          395,
           450
         );
       };
