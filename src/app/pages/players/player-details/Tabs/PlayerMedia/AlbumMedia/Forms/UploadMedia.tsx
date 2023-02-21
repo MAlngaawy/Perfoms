@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import { Modal, Button, Group, Input, FileInput } from "@mantine/core";
+import { useState } from "react";
+import { Modal, Input, FileInput } from "@mantine/core";
 import AppIcons from "~/@main/core/AppIcons";
 import ReactPlayer from "react-player";
 import SubmitButton from "~/@main/components/SubmitButton";
 import { useParams } from "react-router-dom";
-import { useUserQuery } from "~/app/store/user/userApi";
 import AppUtils from "~/@main/utils/AppUtils";
 import { axiosInstance } from "~/app/configs/dataService";
 
@@ -17,7 +16,7 @@ const UploadMedia = ({ refetch, videoUrl }: Props) => {
   const [opened, setOpened] = useState(false);
   const [link, setLink] = useState<string | undefined>(videoUrl);
   const [isLoading, setIsLoading] = useState(false);
-  const { album_id } = useParams();
+  const { album_id, id } = useParams();
   const [images, setImages] = useState<any>(null);
 
   const upload = async (e: any) => {
@@ -29,7 +28,7 @@ const UploadMedia = ({ refetch, videoUrl }: Props) => {
       formData.append("video_url", link);
       setIsLoading(true);
 
-      let updateEvent = `user-generals/events/${album_id}/update/`;
+      let updateEvent = `user-generals/events/${album_id || id}/update/`;
 
       try {
         axiosInstance
@@ -59,11 +58,14 @@ const UploadMedia = ({ refetch, videoUrl }: Props) => {
     if (images) {
       // take these steps if there are an image to upload
       const formData = new FormData();
-      const resizedImage = await AppUtils.resizeImage(images);
-      formData.append("file", resizedImage as string);
+      const resizedImages = [];
+      for (let img of images) {
+        const resizer = await AppUtils.resizeImage(img);
+        resizedImages.push(resizer);
+        formData.append("file", resizer as string);
+      }
       setIsLoading(true);
-
-      let uploadFileUrl = `user-generals/add-event-files/${album_id}/`;
+      let uploadFileUrl = `user-generals/add-event-files/${album_id || id}/`;
 
       try {
         axiosInstance
@@ -135,13 +137,14 @@ const UploadMedia = ({ refetch, videoUrl }: Props) => {
           />
 
           <FileInput
+            multiple
             sx={{
               ".mantine-Input-input": {
                 borderColor: "rgb(47 128 237)",
                 color: "rgb(47 128 237)",
               },
             }}
-            placeholder="Upload files"
+            placeholder="Upload Images"
             onChange={(e) => {
               setImages(e);
             }}

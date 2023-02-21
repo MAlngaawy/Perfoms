@@ -1,44 +1,18 @@
-import { useState, useEffect } from "react";
 import { Breadcrumbs } from "@mantine/core";
 import { Link, useParams } from "react-router-dom";
 import Slider from "./Slider";
-import { useEventFilesQuery } from "~/app/store/parent/parentApi";
-import { useSuprtEventFilesQuery } from "~/app/store/supervisor/supervisorMainApi";
-import { EventFiles } from "~/app/store/types/parent-types";
-import { useCoachTeamEventFilesQuery } from "~/app/store/coach/coachApi";
-import AppIcons from "~/@main/core/AppIcons";
-import UploadForm from "./UploadForm";
-import { useUserQuery } from "~/app/store/user/userApi";
-import { useAdminEventFilesQuery } from "~/app/store/clubManager/clubManagerApi";
+import { useGetEventFilesQuery, useUserQuery } from "~/app/store/user/userApi";
+import UploadMedia from "../../players/player-details/Tabs/PlayerMedia/AlbumMedia/Forms/UploadMedia";
 
 const MediaEvent = () => {
   const { id } = useParams();
-  const [files, setFiles] = useState<EventFiles>();
-
   const { data: user } = useUserQuery(null);
 
-  const { data: parenteventFiles, isLoading } = useEventFilesQuery(
-    { eventId: id ? +id : 0 },
-    { skip: !id }
-  );
-
-  const { data: superEventFiles, refetch: superRefetch } =
-    useSuprtEventFilesQuery({ event_id: id ? +id : 0 }, { skip: !id });
-
-  const { data: coachEventFiles, refetch: coachRefetch } =
-    useCoachTeamEventFilesQuery({ event_id: id ? +id : 0 }, { skip: !id });
-
-  const { data: adminEventFiles, refetch: adminRefetch } =
-    useAdminEventFilesQuery({ event_id: id ? +id : 0 }, { skip: !id });
-
-  useEffect(() => {
-    console.log("Effect");
-
-    if (parenteventFiles) setFiles(parenteventFiles);
-    if (superEventFiles) setFiles(superEventFiles);
-    if (coachEventFiles) setFiles(coachEventFiles);
-    if (adminEventFiles) setFiles(adminEventFiles);
-  }, [parenteventFiles, superEventFiles, coachEventFiles, adminEventFiles]);
+  const {
+    data: files,
+    isLoading,
+    refetch,
+  } = useGetEventFilesQuery({ event_id: id }, { skip: !id });
 
   const items = [
     { title: "Events", href: "/media" },
@@ -58,24 +32,14 @@ const MediaEvent = () => {
       </div>
       <div className="p-4 sm:pt-20">
         <Slider
+          eventId={id}
           isLoading={isLoading}
           video_url={files?.video_url}
           images={files?.event_files || []}
         />
       </div>
       {user?.user_type !== "Parent" && (
-        <UploadForm
-          videoUrl={files?.video_url}
-          refetch={() => {
-            if (user?.user_type === "Supervisor") {
-              superRefetch();
-            } else if (user?.user_type === "Admin") {
-              adminRefetch();
-            } else if (user?.user_type === "Coach") {
-              coachRefetch();
-            }
-          }}
-        />
+        <UploadMedia videoUrl={files?.video_url} refetch={() => refetch()} />
       )}
     </div>
   );

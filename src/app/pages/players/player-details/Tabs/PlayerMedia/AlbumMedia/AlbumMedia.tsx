@@ -31,6 +31,7 @@ const AlbumMedia = (props: Props) => {
       </div>
       <div className="p-4">
         <Slider
+          eventId={album_id}
           isLoading={isLoading}
           video_url={eventMedia?.video_url}
           images={eventMedia?.event_files || []}

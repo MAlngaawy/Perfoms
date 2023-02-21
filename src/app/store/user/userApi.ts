@@ -574,6 +574,15 @@ export const userApi = createApi({
       invalidatesTags: ["player"],
     }),
 
+    removeEventVideo: mutation<{}, { event_id: number | string | undefined }>({
+      query: ({ event_id, ...body }) => ({
+        url: `events/${event_id}/update/`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["player"],
+    }),
+
     getEventFiles: query<EventFiles, { event_id: number | string | undefined }>(
       {
         query: ({ event_id, ...params }) => ({
@@ -650,4 +659,5 @@ export const {
   useDeleteEventMutation,
   useGetEventFilesQuery,
   useDeleteEventFileMutation,
+  useRemoveEventVideoMutation,
 } = userApi;
