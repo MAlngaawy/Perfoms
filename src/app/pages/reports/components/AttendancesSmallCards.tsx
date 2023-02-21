@@ -22,19 +22,21 @@ const AttendancesSmallCards = ({ player_id }: Props) => {
   const timeFilter = useSelector(timeFilterFn);
   const { data: user } = useUserQuery({});
 
+  console.log("selectedPlayerTeam", selectedPlayerTeam);
+
   const { data: parentPlayerAttendance } = usePlayerCalendarQuery(
     {
       id: selectedPlayer?.id,
       date_from: timeFilter?.from_date,
       date_to: timeFilter?.to_date,
-      team_id: selectedPlayerTeam.id,
+      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !selectedPlayer?.id ||
         !timeFilter?.from_date ||
         !timeFilter?.to_date ||
-        !selectedPlayerTeam.id ||
+        !selectedPlayerTeam?.id ||
         user?.user_type !== "Parent",
     }
   );

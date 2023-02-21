@@ -144,7 +144,7 @@ const ReportPage = () => {
                   <Grid.Col span={12} md={9.5}>
                     <Grid gutter={"sm"}>
                       <Grid.Col span={12}>
-                        <AttendancesSmallCards />
+                        <AttendancesSmallCards player_id={player.id} />
                       </Grid.Col>
                       {/* Attedance Summary Table */}
                       <Grid.Col span={12} sm={8}>

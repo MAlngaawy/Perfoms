@@ -195,7 +195,7 @@ const TestComponent = ({
                 UpdateCoachPlayerKpiMetric({
                   id: theMetric,
                   score: theScore === number ? 0 : number,
-                  team_id: selectedPlayerTeam.id,
+                  team_id: selectedPlayerTeam?.id,
                   max_score: 5,
                 }).then((res) => {
                   //@ts-ignore
@@ -205,7 +205,7 @@ const TestComponent = ({
                 UpdateSuperPlayerKpiMetric({
                   id: theMetric,
                   score: theScore === number ? 0 : number,
-                  team_id: selectedPlayerTeam.id,
+                  team_id: selectedPlayerTeam?.id,
                   max_score: 5,
                 }).then((res) => {
                   //@ts-ignore

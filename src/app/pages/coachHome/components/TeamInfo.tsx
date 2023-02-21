@@ -39,8 +39,8 @@ const TeamInfo = (props: Props) => {
               <div className="bg-white p-4 rounded-3xl min-h-full">
                 <TeamCalendar
                   teamId={
-                    selectedPlayerTeam.id !== undefined
-                      ? JSON.stringify(selectedPlayerTeam.id)
+                    selectedPlayerTeam?.id !== undefined
+                      ? JSON.stringify(selectedPlayerTeam?.id)
                       : "1"
                   }
                 />
