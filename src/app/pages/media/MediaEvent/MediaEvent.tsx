@@ -34,7 +34,7 @@ const MediaEvent = () => {
         <Slider
           eventId={id}
           isLoading={isLoading}
-          video_url={files?.video_url}
+          // video_url={files?.video_url}
           images={files?.event_files || []}
         />
       </div>
