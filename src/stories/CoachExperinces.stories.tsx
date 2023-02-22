@@ -1,7 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { Grid } from "@mantine/core";
-import CoachExperince from "~/@main/components/CoachProfileComponents/CoachExperince";
+import CoachExperince from "../@main/components/CoachProfileComponents/CoachExperince";
 
 export default {
   title: "Cards/Coah Experinces",
