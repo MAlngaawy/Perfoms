@@ -334,3 +334,15 @@ export type AddPlayerEvent = {
   icon: string;
   player: number;
 };
+
+export type AddEventVideo = {
+  video: string;
+};
+
+export type EventVideos = BaseGetAllType & {
+  event_videos: {
+    video: string;
+    id: number;
+  }[];
+  id: number;
+};

@@ -6,6 +6,7 @@ import SubmitButton from "~/@main/components/SubmitButton";
 import { useParams } from "react-router-dom";
 import AppUtils from "~/@main/utils/AppUtils";
 import { axiosInstance } from "~/app/configs/dataService";
+import { useAddEventVideoMutation } from "~/app/store/user/userApi";
 
 type Props = {
   refetch: any;
@@ -14,45 +15,29 @@ type Props = {
 
 const UploadMedia = ({ refetch, videoUrl }: Props) => {
   const [opened, setOpened] = useState(false);
-  const [link, setLink] = useState<string | undefined>(videoUrl);
+  const [link, setLink] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState(false);
   const { album_id, id } = useParams();
   const [images, setImages] = useState<any>(null);
+  const [addEventVideo] = useAddEventVideoMutation();
 
   const upload = async (e: any) => {
     e.preventDefault();
+    setIsLoading(true);
 
     // Youtube link upload
     if (link) {
-      const formData = new FormData();
-      formData.append("video_url", link);
-      setIsLoading(true);
-
-      let updateEvent = `user-generals/events/${album_id || id}/update/`;
-
-      try {
-        axiosInstance
-          .patch(updateEvent, formData)
-          .then((res) => {
-            setIsLoading(false);
-            setOpened(false);
-            setLink("");
-            refetch();
-            AppUtils.showNotificationFun("Success", "Done", "Media Added");
-          })
-          .catch((err) => {
-            AppUtils.showNotificationFun(
-              "Error",
-              "Sorry",
-              "Can't add Media now"
-            );
-            console.log(err);
-            setIsLoading(false);
-          });
-      } catch (err) {
-        AppUtils.showNotificationFun("Error", "Sorry", "Can't add Media now");
-        setIsLoading(false);
-      }
+      addEventVideo({ event_id: album_id || id, video: link })
+        .then((res) => {
+          setIsLoading(false);
+          setOpened(false);
+          setLink("");
+          AppUtils.showNotificationFun("Success", "Done", "Media Added");
+        })
+        .catch((err) => {
+          AppUtils.showNotificationFun("Error", "Sorry", "Can't add Media now");
+          setIsLoading(false);
+        });
     }
 
     if (images) {
@@ -126,7 +111,6 @@ const UploadMedia = ({ refetch, videoUrl }: Props) => {
             type="text"
             name="youtubeLink"
             placeholder="Add youtube Link"
-            defaultValue={videoUrl}
             onChange={(v: any) => setLink(v.target.value)}
             sx={{
               ".mantine-Input-input": {

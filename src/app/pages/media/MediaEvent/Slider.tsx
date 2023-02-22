@@ -9,7 +9,9 @@ import AppIcons from "~/@main/core/AppIcons";
 import DeleteButton from "~/@main/components/ManagerComponents/SubComponents/DeleteButton";
 import {
   useDeleteEventFileMutation,
+  useDeleteEventVideoMutation,
   useGetEventFilesQuery,
+  useGetEventVideoQuery,
   useRemoveEventVideoMutation,
 } from "~/app/store/user/userApi";
 import AppUtils from "~/@main/utils/AppUtils";
@@ -19,10 +21,17 @@ type Props = {
   images: { id?: number; file?: string }[];
   isLoading: boolean;
   eventId: number | string | undefined;
-  video_url?: string;
+  // video_url?: string;
 };
 
-const Slider = ({ images, isLoading, video_url, eventId }: Props) => {
+const Slider = ({ images, isLoading, eventId }: Props) => {
+  const { data: eventVideos } = useGetEventVideoQuery(
+    { event_id: eventId },
+    { skip: !eventId }
+  );
+
+  console.log("eventVideos", eventVideos);
+
   return (
     <div className=" flex justify-center items-center">
       {isLoading ? (
@@ -37,23 +46,24 @@ const Slider = ({ images, isLoading, video_url, eventId }: Props) => {
             enabled: true,
           }}
         >
-          {video_url && (
-            <div className="relative HHHHHHHHHHHHH">
-              <SwiperSlide>
-                <div className=" relative flex justify-center items-center w-40 h-40 xs:w-3/5 xs:h-96 mx-auto">
-                  <DeleteVideoButton eventId={eventId} />
-                  <ReactPlayer
-                    width={"100%"}
-                    height={"100%"}
-                    controls={true}
-                    url={
-                      video_url || "https://www.youtube.com/watch?v=cz7cctS3eHQ"
-                    }
-                  />
+          {eventVideos &&
+            eventVideos.event_videos.map((vid) => {
+              return (
+                <div className="relative">
+                  <SwiperSlide>
+                    <div className=" relative flex justify-center items-center w-40 h-40 xs:w-3/5 xs:h-96 mx-auto">
+                      <DeleteVideoButton video_id={vid.id} />
+                      <ReactPlayer
+                        width={"100%"}
+                        height={"100%"}
+                        controls={true}
+                        url={vid.video}
+                      />
+                    </div>
+                  </SwiperSlide>
                 </div>
-              </SwiperSlide>
-            </div>
-          )}
+              );
+            })}
           {images.length ? (
             images.map((image) => {
               return (
@@ -122,25 +132,13 @@ const OneSlide = ({
   );
 };
 
-const DeleteVideoButton = ({
-  eventId,
-}: {
-  eventId: number | string | undefined;
-}) => {
-  const [removeVideo] = useRemoveEventVideoMutation();
-  // const { album_id } = useParams();
-  const { refetch } = useGetEventFilesQuery(
-    { event_id: eventId },
-    { skip: !eventId }
-  );
+const DeleteVideoButton = ({ video_id }: { video_id: number }) => {
+  const [removeVideo] = useDeleteEventVideoMutation();
+
   const deleteFun = () => {
-    const data = {
-      video_url: null,
-    };
-    removeVideo({ event_id: eventId, ...data })
+    removeVideo({ video_id: video_id })
       .then((res) => {
         AppUtils.showNotificationFun("Success", "Done", "Video Deleted");
-        refetch();
       })
       .catch((err) => {
         AppUtils.showNotificationFun(

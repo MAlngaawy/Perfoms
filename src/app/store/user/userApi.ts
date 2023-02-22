@@ -4,6 +4,7 @@ import {
   AddAchievements,
   AddCourse,
   AddEducation,
+  AddEventVideo,
   AddExperince,
   AddPlayerLeague,
   AddQualification,
@@ -13,6 +14,7 @@ import {
   Courses,
   Education,
   Educations,
+  EventVideos,
   NotificationsType,
   OTPVerify,
   PlayerEvents,
@@ -600,6 +602,38 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["media"],
     }),
+
+    // Handle event videos
+    getEventVideo: query<
+      EventVideos,
+      { event_id: number | string | undefined; pages?: number }
+    >({
+      query: ({ event_id, ...params }) => ({
+        url: `${event_id}/videos`,
+        params,
+      }),
+      providesTags: ["media"],
+    }),
+
+    addEventVideo: mutation<
+      AddEventVideo,
+      { event_id: number | string | undefined; video: string }
+    >({
+      query: ({ event_id, ...body }) => ({
+        url: `add-event-videos/${event_id}/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["media"],
+    }),
+
+    deleteEventVideo: mutation<{}, { video_id: number }>({
+      query: ({ video_id }) => ({
+        url: `delete-event-video/${video_id}/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["media"],
+    }),
   }),
 });
 
@@ -660,4 +694,7 @@ export const {
   useGetEventFilesQuery,
   useDeleteEventFileMutation,
   useRemoveEventVideoMutation,
+  useGetEventVideoQuery,
+  useAddEventVideoMutation,
+  useDeleteEventVideoMutation,
 } = userApi;
