@@ -11,9 +11,9 @@ function AuthProvider({ children }: PropsWithChildren) {
   const { data, isLoading, isError, isSuccess, error, isFetching, refetch } =
     useUserQuery(null);
 
-  console.log("test dataServerToken", dataServerToken);
-  console.log("test cookies", Cookies.get("token"));
-  console.log("test Equal", dataServerToken === Cookies.get("token"));
+  // console.log("test dataServerToken", dataServerToken);
+  // console.log("test cookies", Cookies.get("token"));
+  // console.log("test Equal", dataServerToken === Cookies.get("token"));
 
   useEffect(() => {
     eventInstance.on("Login_Success", () => refetch());

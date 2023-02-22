@@ -83,7 +83,7 @@ const Toolbar = ({ setOpened }: Props) => {
       }}
       className={`w-full flex justify-between items-center shadow-md p-2 lg:p-4 overflow-hidden`}
     >
-      <div className="bg-fadedGray flex w-fit gap-2 justify-between items-center overflow-scroll">
+      <div className="bg-fadedGray flex w-fit gap-2 justify-between items-center">
         <button
           className="block lg:hidden text-white lg:text-black border-0"
           onClick={() => setOpened(true)}
