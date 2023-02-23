@@ -95,7 +95,7 @@ const EditPlayer = ({ player, refetchPlayerData }: Props) => {
                 src={
                   (userAvatar && URL.createObjectURL(userAvatar)) || player.icon
                 }
-                alt="user-avatar"
+                alt="player-avatar"
               />
               <div
                 onClick={() =>

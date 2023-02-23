@@ -241,7 +241,7 @@ const AddPlayerForm = (props: Props) => {
                 <Avatar
                   className="object-cover w-full h-full rounded-lg"
                   src={userAvatar && URL.createObjectURL(userAvatar)}
-                  alt="user-avatar"
+                  alt="player-avatar"
                 />
                 <div
                   onClick={() =>
