@@ -95,10 +95,11 @@ const AddAlbum = (props: Props) => {
 
       <Group position="left">
         <button
-          className="text-4xl font-bold bg-gray-300 text-perfGray3 w-60 h-40 flex justify-center items-center rounded-lg transform transition-all hover:scale-105"
+          className=" font-bold bg-gray-300 text-perfGray3 w-60 h-40 flex flex-col gap-2 justify-center items-center rounded-lg transform transition-all hover:scale-105"
           onClick={() => setOpened(true)}
         >
-          <AppIcons icon="PlusIcon:outline" className="w-10 h-10" />
+          <AppIcons icon="PlusIcon:outline" className="w-10 h-10" />{" "}
+          <div className="text-xl">Add Album </div>
         </button>
       </Group>
     </>

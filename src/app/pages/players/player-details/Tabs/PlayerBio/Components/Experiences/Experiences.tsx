@@ -55,12 +55,12 @@ const Experiences = (props: Props) => {
       </div>
       <div className="courses">
         <div className="flex justify-between w-full">
-          <TitleWithIcon name="Courses" />
+          <TitleWithIcon name="Camps" />
           {editMode && <AddPlayerCourse />}
         </div>
         {playerCourses?.results.length === 0 && (
           <h2 className="my-4">
-            No <span className="text-perfBlue"> Courses </span> Added Yet!
+            No <span className="text-perfBlue"> Camps </span> Added Yet!
           </h2>
         )}
         <ul className="list-disc list-outside  ml-8">
@@ -73,21 +73,21 @@ const Experiences = (props: Props) => {
                 <div className="absolute right-0">
                   <DeleteButton
                     name={course.name}
-                    type="Courses"
+                    type="Camps"
                     deleteFun={() => {
                       deleteCourse({ id: course.id })
                         .then(() => {
                           AppUtils.showNotificationFun(
                             "Success",
                             "Done",
-                            "Successfully Deleted Courses"
+                            "Successfully Deleted Camps"
                           );
                         })
                         .catch(() => {
                           AppUtils.showNotificationFun(
                             "Error",
                             "Sorry",
-                            "Can't Delete Courses Now"
+                            "Can't Delete Camps Now"
                           );
                         });
                     }}
