@@ -18,6 +18,7 @@ import {
 } from "~/app/store/clubManager/clubManagerApi";
 import { useSuperTeamsQuery } from "~/app/store/supervisor/supervisorMainApi";
 import AppUtils from "~/@main/utils/AppUtils";
+import AvatarInput from "~/@main/components/shared/AvatarInput";
 
 type Props = {
   // refetch: any;
@@ -25,8 +26,7 @@ type Props = {
 
 const AddTeamCardForm = (props: Props) => {
   const [opened, setOpened] = useState(false);
-  const [playerImage, setPlayerImage] = useState<string | unknown>("");
-  const [playerImagePreview, setPlayerImagePreview] = useState("null");
+  const [userAvatar, setUserAvatar] = useState<File | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [sports, setSports] = useState<Sports | undefined | null>();
   const { data: user } = useUserQuery({});
@@ -56,7 +56,6 @@ const AddTeamCardForm = (props: Props) => {
   });
 
   const resetFields = () => {
-    setPlayerImage(null);
     reset({
       icon: "",
       rate_per: "",
@@ -79,12 +78,13 @@ const AddTeamCardForm = (props: Props) => {
   });
 
   // Submit Form Function
-  const onSubmitFunction = (e: any) => {
+  const onSubmitFunction = async (e: any) => {
     e.preventDefault();
     setLoading(true);
     const formData = new FormData(e.currentTarget);
-    if (playerImage) {
-      formData.set("icon", playerImage as string);
+    if (userAvatar) {
+      const image = await AppUtils.resizeImage(userAvatar);
+      formData.append("icon", image as string);
     }
     try {
       const theSport = formData.get("sport");
@@ -112,7 +112,6 @@ const AddTeamCardForm = (props: Props) => {
           }
           setLoading(false);
           setOpened(false);
-          setPlayerImage(null);
           showNotification({
             title: "Done",
             color: "green",
@@ -133,17 +132,6 @@ const AddTeamCardForm = (props: Props) => {
     }
   };
 
-  // function to access file uploaded then convert to base64 then add it to the data state
-  const uploadImage = async (e: any) => {
-    try {
-      const file = e.target.files[0];
-      const image = await AppUtils.resizeImage(file);
-      setPlayerImage(image);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   return (
     <div>
       <>
@@ -151,55 +139,18 @@ const AddTeamCardForm = (props: Props) => {
           opened={opened}
           onClose={() => {
             resetFields();
+            setUserAvatar(null);
             setOpened(false);
           }}
           title="Add Team"
         >
           <form className="flex flex-col gap-4" onSubmit={onSubmitFunction}>
             {/* Image Upload */}
-            <div className=" relative my-2 bg-gray-300 overflow-hidden flex justify-center  items-center  mx-auto w-28  h-28 rounded-lg ">
-              <Button
-                {...register("icon")}
-                className="w-full h-full hover:bg-perfGray3"
-                component="label"
-              >
-                <img
-                  className={cn("", {
-                    hidden: playerImage,
-                  })}
-                  src="/assets/images/Vector.png"
-                  alt="upload icon"
-                />
-                <img
-                  className={cn(
-                    " absolute rounded-lg w-full -h-full max-w-full max-h-full object-cover left-0 top-0",
-                    {
-                      hidden: !playerImage,
-                    }
-                  )}
-                  src={playerImagePreview && playerImagePreview}
-                  alt="upload icon"
-                />
-                <Input
-                  hidden
-                  accept={"image/png,image/jpeg,image/jpg"}
-                  {...register("icon")}
-                  name="icon"
-                  multiple
-                  type="file"
-                  // error={errors.image && (errors.image.message as ReactNode)}
-                  onChange={(e: any) => {
-                    setPlayerImagePreview(
-                      URL.createObjectURL(e.target.files[0])
-                    );
-                    uploadImage(e);
-                  }}
-                />
-              </Button>
-              {/* {errors.image && (
-                <p className="text-red text-xs text-left">File is required!</p>
-              )} */}
-            </div>
+            <AvatarInput
+              userAvatar={userAvatar}
+              setUserAvatar={setUserAvatar}
+              inputAlt="Team Icon"
+            />
 
             <PerfSelect
               control={control}

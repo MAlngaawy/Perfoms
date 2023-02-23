@@ -7,6 +7,7 @@ import { useUserQuery } from "~/app/store/user/userApi";
 import AppUtils from "~/@main/utils/AppUtils";
 import SubmitButton from "../SubmitButton";
 import AppIcons from "~/@main/core/AppIcons";
+import AvatarInput from "./AvatarInput";
 
 type Props = {
   data: {
@@ -20,6 +21,7 @@ type Props = {
 
 const EditItem = ({ data, apiUrl, refetchFunction }: Props) => {
   const [opened, setOpened] = useState(false);
+  const [userAvatar, setUserAvatar] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [iconEdited, setIconEdited] = useState<File | null>(null);
   const [playerImagePreview, setPlayerImagePreview] =
@@ -28,11 +30,12 @@ const EditItem = ({ data, apiUrl, refetchFunction }: Props) => {
   const onSubmitFunction = async (e: any) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    if (!playerImagePreview) {
-      formData.delete("icon");
+
+    if (userAvatar) {
+      const image = await AppUtils.resizeImage(userAvatar);
+      formData.append("icon", image as string);
     } else {
-      let icon = await AppUtils.resizeImage(iconEdited);
-      formData.set("icon", icon as string);
+      formData.delete("icon");
     }
 
     setIsLoading(true);
@@ -53,7 +56,6 @@ const EditItem = ({ data, apiUrl, refetchFunction }: Props) => {
         AppUtils.showNotificationFun("Error", "Sorry", "Can't Update Now");
       });
     setOpened(false);
-    setPlayerImagePreview(null);
   };
 
   return (
@@ -68,37 +70,12 @@ const EditItem = ({ data, apiUrl, refetchFunction }: Props) => {
         >
           <form className="flex flex-col gap-4" onSubmit={onSubmitFunction}>
             {/* Image Upload */}
-            <div className=" relative my-2 bg-gray-300 overflow-hidden flex justify-center  items-center  mx-auto w-28  h-28 rounded-lg ">
-              <Button
-                className="w-full h-full hover:bg-perfGray3"
-                component="label"
-              >
-                <Avatar
-                  className={cn(
-                    " absolute rounded-lg w-full h-full object-cover left-0 top-0"
-                  )}
-                  src={
-                    playerImagePreview
-                      ? playerImagePreview
-                      : data.icon_url || data.icon
-                  }
-                  alt="upload icon"
-                />
-                <Input
-                  hidden
-                  accept={"image/png,image/jpeg,image/jpg"}
-                  name="icon"
-                  multiple
-                  type="file"
-                  onChange={(e: any) => {
-                    setPlayerImagePreview(
-                      URL.createObjectURL(e.target.files[0])
-                    );
-                    setIconEdited(e.target.files[0]);
-                  }}
-                />
-              </Button>
-            </div>
+            <AvatarInput
+              userAvatar={userAvatar}
+              setUserAvatar={setUserAvatar}
+              inputAlt="Icon"
+              currentImage={data.icon || data.icon_url}
+            />
 
             <Input.Wrapper id="name" withAsterisk>
               <Input

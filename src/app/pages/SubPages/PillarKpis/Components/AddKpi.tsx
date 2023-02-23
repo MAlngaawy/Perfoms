@@ -12,13 +12,13 @@ import { useAdminKpisQuery } from "~/app/store/clubManager/clubManagerApi";
 import { useSuperKpisQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { showNotification } from "@mantine/notifications";
 import AppUtils from "~/@main/utils/AppUtils";
+import AvatarInput from "~/@main/components/shared/AvatarInput";
 
 type Props = {};
 
 const AddKpi = (props: Props) => {
   const [opened, setOpened] = useState(false);
-  const [playerImage, setPlayerImage] = useState<string | unknown>("");
-  const [playerImagePreview, setPlayerImagePreview] = useState("null");
+  const [userAvatar, setUserAvatar] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<boolean | string>(false);
   const { data: user } = useUserQuery({});
@@ -44,7 +44,6 @@ const AddKpi = (props: Props) => {
   );
 
   const resetFields = () => {
-    setPlayerImage(null);
     reset({
       image: "",
       name: "",
@@ -52,23 +51,12 @@ const AddKpi = (props: Props) => {
   };
 
   const { reset } = useForm({});
-
-  // function to access file uploaded then convert to base64 then add it to the data state
-  const uploadImage = async (e: any) => {
-    try {
-      const file = e.target.files[0];
-      const image = await AppUtils.resizeImage(file);
-      setPlayerImage(image);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const addKpiFun = (e: any) => {
+  const addKpiFun = async (e: any) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    if (playerImage) {
-      formData.set("icon", playerImage as string);
+    if (userAvatar) {
+      const image = await AppUtils.resizeImage(userAvatar);
+      formData.append("icon", image as string);
     }
     setError(false);
     try {
@@ -83,53 +71,22 @@ const AddKpi = (props: Props) => {
         .then((res) => {
           setIsLoading(false);
           setOpened(false);
-          setPlayerImage(null);
           if (user?.user_type === "Supervisor") {
             superRefetchKpis();
           } else {
             adminRefetchKpis();
           }
-          showNotification({
-            message: "Successfully Added Kpi",
-            color: "green",
-            title: "Done",
-            styles: {
-              root: {
-                backgroundColor: "#27AE60",
-                borderColor: "#27AE60",
-                "&::before": { backgroundColor: "#fff" },
-              },
-
-              title: { color: "#fff" },
-              description: { color: "#fff" },
-              closeButton: {
-                color: "#fff",
-              },
-            },
-          });
+          AppUtils.showNotificationFun(
+            "Success",
+            "Done",
+            "Kpi Added Successfully"
+          );
           refetchGeneralKpis();
         })
         .catch((err) => {
           setIsLoading(false);
           setError(err.response.data.message);
-          showNotification({
-            message: err.response.data.message,
-            color: "red",
-            title: "Wrong",
-            styles: {
-              root: {
-                backgroundColor: "#EB5757",
-                borderColor: "#EB5757",
-                "&::before": { backgroundColor: "#fff" },
-              },
-
-              title: { color: "#fff" },
-              description: { color: "#fff" },
-              closeButton: {
-                color: "#fff",
-              },
-            },
-          });
+          AppUtils.showNotificationFun("Error", "Sorry", "Try again later");
         });
     } catch (err) {}
   };
@@ -141,46 +98,17 @@ const AddKpi = (props: Props) => {
           opened={opened}
           onClose={() => {
             resetFields();
+            setUserAvatar(null);
             setOpened(false);
           }}
           title={`Add Kpi`}
         >
-          <form
-            className="flex flex-col gap-4"
-            // onSubmit={handleSubmit(onSubmitFunction)}
-            onSubmit={addKpiFun}
-          >
+          <form className="flex flex-col gap-4" onSubmit={addKpiFun}>
             {/* Image Upload */}
-            <div className=" relative group my-2 bg-gray-300 overflow-hidden hover:bg-gray-300 flex justify-center  items-center  mx-auto w-28  h-28 rounded-lg ">
-              <Button className="w-full h-full" component="label">
-                <AppIcons
-                  className="w-10 h-10 text-perfGray1 group-hover:text-white  "
-                  icon="PhotoIcon:outline"
-                />
-                <img
-                  className={cn(
-                    " absolute rounded-lg w-full -h-full max-w-full max-h-full object-cover left-0 top-0",
-                    {
-                      hidden: !playerImage,
-                    }
-                  )}
-                  src={playerImagePreview && playerImagePreview}
-                  alt="upload icon"
-                />
-                <Input
-                  hidden
-                  accept={"image/png,image/jpeg,image/jpg"}
-                  type="file"
-                  name="icon"
-                  onChange={(e: any) => {
-                    setPlayerImagePreview(
-                      URL.createObjectURL(e.target.files[0])
-                    );
-                    uploadImage(e);
-                  }}
-                />
-              </Button>
-            </div>
+            <AvatarInput
+              userAvatar={userAvatar}
+              setUserAvatar={setUserAvatar}
+            />
 
             <Input.Wrapper
               id="name"

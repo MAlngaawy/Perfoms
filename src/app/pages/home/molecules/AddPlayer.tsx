@@ -14,6 +14,7 @@ import {
 import { DatePicker } from "@mantine/dates";
 import AppUtils from "~/@main/utils/AppUtils";
 import * as yup from "yup";
+import AvatarInput from "~/@main/components/shared/AvatarInput";
 // import { useForm } from "react-hook-form";
 // import { yupResolver } from "@hookform/resolvers/yup";
 
@@ -64,7 +65,6 @@ const AddPlayer = (props: Props) => {
   const [open, setOpen] = useState<boolean>(false);
   const [formInputsData, setFormInputsData] = useState(formInputsDefaultValue);
   const [userAvatar, setUserAvatar] = useState<File | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const { data: userData } = useUserQuery(null);
   const [teams, setTeams] = React.useState<any>([]);
   const [sports, setSports] = React.useState<any>([]);
@@ -177,6 +177,7 @@ const AddPlayer = (props: Props) => {
         </h2>
       </button>
       <Modal
+        title={`Add Player`}
         opened={open}
         withCloseButton
         onClose={() => {
@@ -192,35 +193,11 @@ const AddPlayer = (props: Props) => {
       >
         <form onSubmit={onSubmitFun} className="rounded-3xl">
           {/* add img  */}
-          <div className="w-full flex justify-center items-center">
-            <div className="relative photo place-self-center w-28 h-28">
-              <Avatar
-                className="object-cover w-full h-full rounded-lg"
-                src={userAvatar && URL.createObjectURL(userAvatar)}
-                alt="player-avatar"
-              />
-              <div
-                onClick={() =>
-                  fileInputRef.current && fileInputRef.current.click()
-                }
-              >
-                <AppIcons
-                  className="w-5 h-5 absolute top-2 cursor-pointer right-2 text-perfGray3 hover:text-perfGray1"
-                  icon="PencilSquareIcon:outline"
-                />
-              </div>
-              <input
-                ref={fileInputRef}
-                onChange={(e) =>
-                  setUserAvatar(e?.currentTarget?.files?.[0] as File)
-                }
-                type="file"
-                accept={"image/png,image/jpeg,image/jpg"}
-                className="hidden"
-                id={"avatar"}
-              />
-            </div>
-          </div>
+          <AvatarInput
+            userAvatar={userAvatar}
+            inputAlt="Player photo"
+            setUserAvatar={setUserAvatar}
+          />
 
           <div className="flex flex-col my-4 justify-center items-center gap-2">
             {/* Name and Date of birth */}

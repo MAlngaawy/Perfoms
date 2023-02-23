@@ -16,6 +16,7 @@ import { useSuperClubQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { useAdminClubQuery } from "~/app/store/clubManager/clubManagerApi";
 import { ParentClub } from "~/app/store/types/parent-types";
 import { useUserQuery } from "~/app/store/user/userApi";
+import AvatarInput from "~/@main/components/shared/AvatarInput";
 
 type Props = {
   event: {
@@ -31,8 +32,7 @@ type Props = {
 const EditEventForm = ({ event, refetch }: Props) => {
   const [opened, setOpened] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [playerImage, setPlayerImage] = useState<string | unknown>("");
-  const [playerImagePreview, setPlayerImagePreview] = useState("null");
+  const [userAvatar, setUserAvatar] = useState<File | null>(null);
   const [clubData, setclubData] = useState<ParentClub>();
   const { team_id } = useParams();
   const { data: superClubData } = useSuperClubQuery({});
@@ -60,19 +60,8 @@ const EditEventForm = ({ event, refetch }: Props) => {
     resolver: yupResolver(schema),
   });
 
-  // function to access file uploaded then convert to base64 then add it to the data state
-  const uploadImage = async (e: any) => {
-    try {
-      const file = e.target.files[0];
-      const image = await AppUtils.resizeImage(file);
-      setPlayerImage(image);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   // Submit Form Function
-  const onSubmitFunction = (e: any) => {
+  const onSubmitFunction = async (e: any) => {
     e.preventDefault();
     setLoading(true);
 
@@ -84,8 +73,9 @@ const EditEventForm = ({ event, refetch }: Props) => {
     const formData = new FormData(e.currentTarget);
     formData.append("team", team_id || "0");
     formData.append("club", JSON.stringify(clubData?.id));
-    if (playerImage) {
-      formData.set("icon", playerImage as string);
+    if (userAvatar) {
+      const image = await AppUtils.resizeImage(userAvatar);
+      formData.append("icon", image as string);
     }
 
     axiosInstance
@@ -99,26 +89,11 @@ const EditEventForm = ({ event, refetch }: Props) => {
         setLoading(false);
         refetch();
         setOpened(false);
-        showNotification({
-          message: "Event Updated",
-          color: "green",
-          title: "Done",
-          styles: {
-            root: {
-              backgroundColor: "#27AE60",
-              borderColor: "#27AE60",
-              "&::before": { backgroundColor: "#fff" },
-            },
-
-            title: { color: "#fff" },
-            description: { color: "#fff" },
-            closeButton: {
-              color: "#fff",
-            },
-          },
-        });
-
-        setPlayerImagePreview("null");
+        AppUtils.showNotificationFun(
+          "Success",
+          "Done",
+          "Event edited successfully"
+        );
         reset({
           eventName: "",
           eventLocation: "",
@@ -126,79 +101,31 @@ const EditEventForm = ({ event, refetch }: Props) => {
       })
       .catch((err) => {
         setLoading(false);
-        setPlayerImagePreview("null");
         reset({
           eventName: "",
           eventLocation: "",
         });
-        showNotification({
-          message: "please try again",
-          color: "ref",
-          title: "Wrong",
-          styles: {
-            root: {
-              backgroundColor: "#EB5757",
-              borderColor: "#EB5757",
-              "&::before": { backgroundColor: "#fff" },
-            },
-
-            title: { color: "#fff" },
-            description: { color: "#fff" },
-            closeButton: {
-              color: "#fff",
-            },
-          },
-        });
+        AppUtils.showNotificationFun("Error", "Sorry", "please try again");
       });
   };
-
-  const [changed, setChanged] = useState(false);
-
   return (
     <div>
       <>
-        <Modal opened={opened} onClose={() => setOpened(false)}>
+        <Modal
+          opened={opened}
+          onClose={() => {
+            setUserAvatar(null);
+            setOpened(false);
+          }}
+          title={`Edit Event`}
+        >
           <form className="flex flex-col gap-4" onSubmit={onSubmitFunction}>
             {/* Image Upload */}
-            <div className=" relative my-2 bg-gray-300 overflow-hidden flex justify-center  items-center  mx-auto w-28  h-28 rounded-lg ">
-              <Button
-                // {...register("image")}
-                className="w-full h-full hover:bg-perfGray3"
-                component="label"
-              >
-                <img
-                  className={cn("", {
-                    hidden: playerImage,
-                  })}
-                  src="/assets/images/Vector.png"
-                  alt="upload icon"
-                />
-                <img
-                  className={cn(
-                    " absolute rounded-lg w-full -h-full max-w-full max-h-full object-cover left-0 top-0"
-                  )}
-                  src={playerImage ? playerImagePreview : event.icon}
-                  alt="upload icon"
-                />
-                <Input
-                  hidden
-                  accept={"image/png,image/jpeg,image/jpg"}
-                  // {...register("icon")}
-                  name={changed ? "icon" : ""}
-                  multiple
-                  type="file"
-                  // error={errors.image && (errors.image.message as ReactNode)}
-                  onChange={(e: any) => {
-                    setChanged(true);
-                    console.log(e.target.files[0]);
-                    setPlayerImagePreview(
-                      URL.createObjectURL(e.target.files[0])
-                    );
-                    uploadImage(e);
-                  }}
-                />
-              </Button>
-            </div>
+            <AvatarInput
+              currentImage={event.icon}
+              userAvatar={userAvatar}
+              setUserAvatar={setUserAvatar}
+            />
 
             <Input.Wrapper
               id="eventName"

@@ -15,6 +15,7 @@ import { useUserQuery } from "~/app/store/user/userApi";
 import { useSuperTeamsQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { useAdminTeamsQuery } from "~/app/store/clubManager/clubManagerApi";
 import AppUtils from "~/@main/utils/AppUtils";
+import AvatarInput from "../../shared/AvatarInput";
 
 type Props = {
   teamData: Team;
@@ -22,8 +23,7 @@ type Props = {
 
 const EditButton = ({ teamData }: Props) => {
   const [opened, setOpened] = useState(false);
-  const [playerImage, setPlayerImage] = useState<string | unknown>("");
-  const [playerImagePreview, setPlayerImagePreview] = useState("null");
+  const [userAvatar, setUserAvatar] = useState<File | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const { data: user } = useUserQuery({});
   const { refetch: superRefetch } = useSuperTeamsQuery(
@@ -46,7 +46,6 @@ const EditButton = ({ teamData }: Props) => {
   });
 
   const resetFields = () => {
-    setPlayerImage(null);
     reset({
       icon: "",
       rate_per: teamData.rate_per,
@@ -77,12 +76,14 @@ const EditButton = ({ teamData }: Props) => {
   });
 
   // Submit Form Function
-  const onSubmitFunction = (e: any) => {
+  const onSubmitFunction = async (e: any) => {
     e.preventDefault();
     setLoading(true);
     const formData = new FormData(e.currentTarget);
-    if (playerImage) {
-      formData.set("icon", playerImage as string);
+
+    if (userAvatar) {
+      const image = await AppUtils.resizeImage(userAvatar);
+      formData.append("icon", image as string);
     }
 
     try {
@@ -101,36 +102,19 @@ const EditButton = ({ teamData }: Props) => {
           }
           setLoading(false);
           setOpened(false);
-          setPlayerImage(null);
-          showNotification({
-            title: "Done",
-            color: "green",
-            message: "Team Info Updated",
-          });
+          AppUtils.showNotificationFun(
+            "Success",
+            "Done",
+            "Successfully edited team"
+          );
         })
         .catch((err) => {
           setLoading(false);
-          showNotification({
-            title: "Wrong",
-            color: "red",
-            message: "Something wend wrong, try again later",
-          });
+          AppUtils.showNotificationFun("Error", "Sorry", "Can't edit team now");
         });
     } catch (err) {
       console.log(err);
       setLoading(false);
-    }
-  };
-
-  // function to access file uploaded then convert to base64 then add it to the data state
-  const uploadImage = async (e: any) => {
-    try {
-      const file = e.target.files[0];
-      const image = await AppUtils.resizeImage(file);
-      console.log(image);
-      setPlayerImage(image);
-    } catch (err) {
-      console.log(err);
     }
   };
   return (
@@ -145,51 +129,12 @@ const EditButton = ({ teamData }: Props) => {
           title="Edit Team"
         >
           <form className="flex flex-col gap-4" onSubmit={onSubmitFunction}>
-            {/* Image Upload */}
-            <div className=" relative my-2 bg-gray-300 overflow-hidden flex justify-center  items-center  mx-auto w-28  h-28 rounded-lg ">
-              <Button
-                {...register("icon")}
-                className="w-full h-full hover:bg-perfGray3"
-                component="label"
-              >
-                <img
-                  className={cn("", {
-                    hidden: playerImage,
-                  })}
-                  src={teamData.icon_url}
-                  alt="upload icon"
-                />
-                <img
-                  className={cn(
-                    " absolute rounded-lg w-full -h-full max-w-full max-h-full object-cover left-0 top-0",
-                    {
-                      hidden: !playerImage,
-                    }
-                  )}
-                  src={playerImagePreview && playerImagePreview}
-                  alt="upload icon"
-                />
-                <Input
-                  hidden
-                  accept={"image/png,image/jpeg,image/jpg"}
-                  {...register("icon")}
-                  name="icon"
-                  multiple
-                  type="file"
-                  // error={errors.image && (errors.image.message as ReactNode)}
-                  onChange={(e: any) => {
-                    console.log(e.target.files[0]);
-                    setPlayerImagePreview(
-                      URL.createObjectURL(e.target.files[0])
-                    );
-                    uploadImage(e);
-                  }}
-                />
-              </Button>
-              {/* {errors.image && (
-                <p className="text-red text-xs text-left">File is required!</p>
-              )} */}
-            </div>
+            <AvatarInput
+              userAvatar={userAvatar}
+              setUserAvatar={setUserAvatar}
+              inputAlt="Team Icon"
+              currentImage={teamData.icon_url}
+            />
 
             <PerfSelect
               control={control}

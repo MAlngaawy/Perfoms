@@ -29,7 +29,11 @@ const UserInfo = ({ user, players, refetch }: Props) => {
           className="w-5 h-5  text-perfGray3 hover:text-perfGray1"
           icon="PencilSquareIcon:outline"
         />
-        <Modal opened={opened} onClose={() => setOpened(false)}>
+        <Modal
+          opened={opened}
+          onClose={() => setOpened(false)}
+          title={`Edit user info`}
+        >
           <EditForm refetch={refetch} user={user} setOpened={setOpened} />
         </Modal>
       </div>

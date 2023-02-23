@@ -16,6 +16,7 @@ import { showNotification } from "@mantine/notifications";
 import { useUserQuery } from "~/app/store/user/userApi";
 import { useAdminClubQuery } from "~/app/store/clubManager/clubManagerApi";
 import { ParentClub } from "~/app/store/types/parent-types";
+import AvatarInput from "~/@main/components/shared/AvatarInput";
 
 type Props = {
   refetch: any;
@@ -23,9 +24,8 @@ type Props = {
 
 const AddEventForm = ({ refetch }: Props) => {
   const [opened, setOpened] = useState(false);
-  const [playerImage, setPlayerImage] = useState<any>();
+  const [userAvatar, setUserAvatar] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [playerImagePreview, setPlayerImagePreview] = useState("null");
   const [clubData, setclubData] = useState<ParentClub>();
   const { team_id } = useParams();
   const { data: superClubData } = useSuperClubQuery({});
@@ -53,19 +53,8 @@ const AddEventForm = ({ refetch }: Props) => {
     resolver: yupResolver(schema),
   });
 
-  // function to access file uploaded then convert to base64 then add it to the data state
-  const uploadImage = async (e: any) => {
-    try {
-      const file = e.target.files[0];
-      const image = await AppUtils.resizeImage(file);
-      setPlayerImage(image);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   // Submit Form Function
-  const onSubmitFunction = (e: any) => {
+  const onSubmitFunction = async (e: any) => {
     setIsLoading(true);
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -73,8 +62,9 @@ const AddEventForm = ({ refetch }: Props) => {
       formData.append("team", team_id);
     }
     formData.append("club", JSON.stringify(clubData?.id));
-    if (playerImage) {
-      formData.set("icon", playerImage);
+    if (userAvatar) {
+      const image = await AppUtils.resizeImage(userAvatar);
+      formData.append("icon", image as string);
     }
 
     axiosInstance
@@ -86,7 +76,6 @@ const AddEventForm = ({ refetch }: Props) => {
       )
       .then(() => {
         AppUtils.showNotificationFun("Success", "Done", "Event Created");
-        setPlayerImagePreview("null");
         reset({
           eventName: "",
           eventLocation: "",
@@ -98,7 +87,6 @@ const AddEventForm = ({ refetch }: Props) => {
       .catch((err) => {
         setIsLoading(false);
         AppUtils.showNotificationFun("Error", "Sorry", "please try again");
-        setPlayerImagePreview("null");
         reset({
           eventName: "",
           eventLocation: "",
@@ -109,50 +97,20 @@ const AddEventForm = ({ refetch }: Props) => {
   return (
     <div>
       <>
-        <Modal opened={opened} onClose={() => setOpened(false)}>
+        <Modal
+          opened={opened}
+          onClose={() => {
+            setUserAvatar(null);
+            setOpened(false);
+          }}
+          title={`Add Event`}
+        >
           <form className="flex flex-col gap-4" onSubmit={onSubmitFunction}>
             {/* Image Upload */}
-            <div className=" relative my-2 bg-gray-300 overflow-hidden flex justify-center  items-center  mx-auto w-28  h-28 rounded-lg ">
-              <Button
-                // {...register("image")}
-                className="w-full h-full hover:bg-perfGray3"
-                component="label"
-              >
-                <img
-                  className={cn("", {
-                    hidden: playerImage,
-                  })}
-                  src="/assets/images/Vector.png"
-                  alt="upload icon"
-                />
-                <Avatar
-                  className={cn(
-                    " absolute rounded-lg w-full h-full object-cover left-0 top-0",
-                    {
-                      hidden: !playerImage,
-                    }
-                  )}
-                  src={playerImagePreview && playerImagePreview}
-                  alt="upload icon"
-                />
-                <Input
-                  hidden
-                  accept={"image/png,image/jpeg,image/jpg"}
-                  {...register("icon")}
-                  name="icon"
-                  multiple
-                  type="file"
-                  // error={errors.image && (errors.image.message as ReactNode)}
-                  onChange={(e: any) => {
-                    console.log(e.target.files[0]);
-                    setPlayerImagePreview(
-                      URL.createObjectURL(e.target.files[0])
-                    );
-                    uploadImage(e);
-                  }}
-                />
-              </Button>
-            </div>
+            <AvatarInput
+              userAvatar={userAvatar}
+              setUserAvatar={setUserAvatar}
+            />
 
             <Input.Wrapper
               id="eventName"

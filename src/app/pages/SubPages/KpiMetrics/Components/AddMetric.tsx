@@ -13,6 +13,7 @@ import { useUserQuery } from "~/app/store/user/userApi";
 import { useSuperMetricsQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { useAdminMetricsQuery } from "~/app/store/clubManager/clubManagerApi";
 import AppUtils from "~/@main/utils/AppUtils";
+import AvatarInput from "~/@main/components/shared/AvatarInput";
 
 type Props = {};
 
@@ -22,8 +23,7 @@ const schema = yup.object().shape({
 });
 const AddMetric = (props: Props) => {
   const [opened, setOpened] = useState(false);
-  const [playerImage, setPlayerImage] = useState<string | unknown>("");
-  const [playerImagePreview, setPlayerImagePreview] = useState("null");
+  const [userAvatar, setUserAvatar] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<boolean | string>(false);
   const { kpi_id } = useParams();
@@ -38,7 +38,6 @@ const AddMetric = (props: Props) => {
   );
 
   const resetFields = () => {
-    setPlayerImage(null);
     reset({
       image: "",
       name: "",
@@ -54,32 +53,14 @@ const AddMetric = (props: Props) => {
     resolver: yupResolver(schema),
   });
 
-  // Submit Form Function
-  const onSubmitFunction = (data: any) => {
-    console.log({ ...data, icon: playerImage });
-    setOpened(false);
-    resetFields();
-  };
-
-  // function to access file uploaded then convert to base64 then add it to the data state
-  const uploadImage = async (e: any) => {
-    try {
-      const file = e.target.files[0];
-      const image = await AppUtils.resizeImage(file);
-      setPlayerImage(image);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const addMetricFun = (e: any) => {
+  const addMetricFun = async (e: any) => {
     console.log(typeof e.currentTarget);
 
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    // formData.append("kpi", JSON.stringify(kpi_id));
-    if (playerImage) {
-      formData.set("icon", playerImage as string);
+    if (userAvatar) {
+      const image = await AppUtils.resizeImage(userAvatar);
+      formData.append("icon", image as string);
     }
 
     setError(false);
@@ -96,7 +77,6 @@ const AddMetric = (props: Props) => {
         .then((res) => {
           setIsLoading(false);
           setOpened(false);
-          setPlayerImage(null);
           AppUtils.showNotificationFun(
             "Success",
             "Done",
@@ -124,42 +104,17 @@ const AddMetric = (props: Props) => {
           opened={opened}
           onClose={() => {
             resetFields();
+            setUserAvatar(null);
             setOpened(false);
           }}
           title={`Add Metric `}
         >
           <form className="flex flex-col gap-4" onSubmit={addMetricFun}>
             {/* Image Upload */}
-            <div className=" relative group my-2 bg-gray-300 overflow-hidden hover:bg-gray-300 flex justify-center  items-center  mx-auto w-28  h-28 rounded-lg ">
-              <Button className="w-full h-full" component="label">
-                <AppIcons
-                  className="w-10 h-10 text-perfGray1 group-hover:text-white  "
-                  icon="PhotoIcon:outline"
-                />
-                <img
-                  className={cn(
-                    " absolute rounded-lg w-full -h-full max-w-full max-h-full object-cover left-0 top-0",
-                    {
-                      hidden: !playerImage,
-                    }
-                  )}
-                  src={playerImagePreview && playerImagePreview}
-                  alt="upload icon"
-                />
-                <Input
-                  hidden
-                  accept={"image/png,image/jpeg,image/jpg"}
-                  type="file"
-                  name="icon"
-                  onChange={(e: any) => {
-                    setPlayerImagePreview(
-                      URL.createObjectURL(e.target.files[0])
-                    );
-                    uploadImage(e);
-                  }}
-                />
-              </Button>
-            </div>
+            <AvatarInput
+              userAvatar={userAvatar}
+              setUserAvatar={setUserAvatar}
+            />
 
             <Input.Wrapper
               id="name"

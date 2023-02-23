@@ -187,6 +187,7 @@ const AddPlayer = ({ teamPlayers, coach_team_id }: Props) => {
             setOpened(false);
             reset({ player: "" });
           }}
+          title={`Add Player`}
         >
           <form onSubmit={handleSubmit(onSubmit)}>
             <Controller
