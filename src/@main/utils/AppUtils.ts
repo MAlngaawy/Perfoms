@@ -102,6 +102,15 @@ class AppUtils {
     return value.toLowerCase().includes(searchText);
   }
 
+  static matchYoutubeUrl(url: string): boolean | string {
+    let p =
+      /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+    if (url.match(p)) {
+      return url;
+    }
+    return false;
+  }
+
   static generateGUID() {
     function S4() {
       return Math.floor((1 + Math.random()) * 0x10000)
