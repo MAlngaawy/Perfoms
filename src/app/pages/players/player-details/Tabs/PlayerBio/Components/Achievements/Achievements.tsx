@@ -8,6 +8,7 @@ import {
 } from "~/app/store/user/userApi";
 import { EditModeContext } from "../../../../PlayerDetails";
 import AddAchievement from "./Forms/AddAchievement";
+import { Avatar } from "@mantine/core";
 
 type Props = {};
 
@@ -20,7 +21,7 @@ const Achievements = (props: Props) => {
   );
   return (
     <div className="bg-white rounded-3xl p-6 px-3 min-h-full">
-      <div className="flex justify-between">
+      <div className="flex justify-between mb-4">
         <h3 className="text-base font-medium text-perfLightBlack">
           Achievements
         </h3>
@@ -55,13 +56,13 @@ const OneAchievement = ({ type, date, place, id, location }: any) => {
     <div className="flex justify-between items-center">
       <div className="flex gap-1">
         <div className="icon">
-          <img src="/assets/images/medal.png" className="w-10" alt="medal" />
+          <Avatar src="/assets/images/medal.png" size={40} alt="medal" />
         </div>
         <div className="details break-words">
-          <h2 className="type text-xs font-medium text-perfLightBlack">
+          <h2 className="type text-md font-medium text-perfLightBlack">
             {type}
           </h2>
-          <p className="text-xs text-perfGray3">
+          <p className="text-sm text-perfGray3">
             {date}, {location}
           </p>
         </div>
