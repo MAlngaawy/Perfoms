@@ -75,6 +75,7 @@ const EditForm = ({ user, setOpened, refetch }: Props) => {
           onChange={(e) => setUserAvatar(e?.currentTarget?.files?.[0] as File)}
           type="file"
           className="hidden"
+          accept={"image/png,image/jpeg,image/jpg"}
           id={"avatar"}
         />
       </div>

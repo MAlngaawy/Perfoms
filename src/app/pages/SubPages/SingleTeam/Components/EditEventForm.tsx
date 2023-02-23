@@ -182,7 +182,7 @@ const EditEventForm = ({ event, refetch }: Props) => {
                 />
                 <Input
                   hidden
-                  accept="image/*"
+                  accept={"image/png,image/jpeg,image/jpg"}
                   // {...register("icon")}
                   name={changed ? "icon" : ""}
                   multiple

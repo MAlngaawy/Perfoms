@@ -49,7 +49,13 @@ const AddAlbum = (props: Props) => {
 
   return (
     <>
-      <Modal opened={opened} onClose={() => setOpened(false)}>
+      <Modal
+        opened={opened}
+        onClose={() => {
+          setIsLoading(false);
+          setOpened(false);
+        }}
+      >
         <form onSubmit={submitFun}>
           {/**Event Image */}
           <div className="w-full flex justify-center items-center">
@@ -71,6 +77,7 @@ const AddAlbum = (props: Props) => {
               </div>
               <input
                 ref={fileInputRef}
+                accept={"image/png,image/jpeg,image/jpg"}
                 onChange={(e) => {
                   console.log("CHanges", e);
                   setUserAvatar(e?.currentTarget?.files?.[0] as File);

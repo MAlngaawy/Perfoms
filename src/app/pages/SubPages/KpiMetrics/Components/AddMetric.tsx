@@ -148,7 +148,7 @@ const AddMetric = (props: Props) => {
                 />
                 <Input
                   hidden
-                  accept="image/*"
+                  accept={"image/png,image/jpeg,image/jpg"}
                   type="file"
                   name="icon"
                   onChange={(e: any) => {

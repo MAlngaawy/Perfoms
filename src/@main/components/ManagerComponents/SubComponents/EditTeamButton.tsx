@@ -171,7 +171,7 @@ const EditButton = ({ teamData }: Props) => {
                 />
                 <Input
                   hidden
-                  accept="image/*"
+                  accept={"image/png,image/jpeg,image/jpg"}
                   {...register("icon")}
                   name="icon"
                   multiple

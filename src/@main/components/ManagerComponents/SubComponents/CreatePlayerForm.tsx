@@ -260,6 +260,7 @@ const AddPlayerForm = (props: Props) => {
                   }
                   type="file"
                   className="hidden"
+                  accept={"image/png,image/jpeg,image/jpg"}
                   id={"avatar"}
                 />
               </div>

@@ -109,6 +109,7 @@ const EditPlayer = ({ player, refetchPlayerData }: Props) => {
               </div>
               <input
                 ref={fileInputRef}
+                accept={"image/png,image/jpeg,image/jpg"}
                 onChange={(e) =>
                   setUserAvatar(e?.currentTarget?.files?.[0] as File)
                 }

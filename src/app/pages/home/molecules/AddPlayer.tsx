@@ -215,6 +215,7 @@ const AddPlayer = (props: Props) => {
                   setUserAvatar(e?.currentTarget?.files?.[0] as File)
                 }
                 type="file"
+                accept={"image/png,image/jpeg,image/jpg"}
                 className="hidden"
                 id={"avatar"}
               />

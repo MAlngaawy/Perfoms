@@ -155,7 +155,7 @@ const AddSport = (props: Props) => {
                 />
                 <Input
                   hidden
-                  accept="image/*"
+                  accept={"image/png,image/jpeg,image/jpg"}
                   {...register("icon")}
                   name="icon"
                   multiple

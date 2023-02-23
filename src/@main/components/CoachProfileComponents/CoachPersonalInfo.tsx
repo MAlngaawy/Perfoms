@@ -360,6 +360,7 @@ function EditCoachData({ data, refetch, educationData }: Edit) {
             </div>
             <input
               ref={fileInputRef}
+              accept={"image/png,image/jpeg,image/jpg"}
               onChange={(e) =>
                 setUserAvatar(e?.currentTarget?.files?.[0] as File)
               }

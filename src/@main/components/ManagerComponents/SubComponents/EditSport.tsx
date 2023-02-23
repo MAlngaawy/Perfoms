@@ -140,7 +140,7 @@ const EditSport = ({ sportData }: Props) => {
                 />
                 <Input
                   hidden
-                  accept="image/*"
+                  accept={"image/png,image/jpeg,image/jpg"}
                   {...register("image")}
                   name="icon"
                   multiple

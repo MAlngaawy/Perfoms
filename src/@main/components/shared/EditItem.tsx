@@ -86,7 +86,7 @@ const EditItem = ({ data, apiUrl, refetchFunction }: Props) => {
                 />
                 <Input
                   hidden
-                  accept="image/*"
+                  accept={"image/png,image/jpeg,image/jpg"}
                   name="icon"
                   multiple
                   type="file"
