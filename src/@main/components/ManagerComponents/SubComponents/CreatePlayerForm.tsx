@@ -20,7 +20,7 @@ import {
   useAdminSportsQuery,
   useAdminTeamsStatisticsQuery,
 } from "~/app/store/clubManager/clubManagerApi";
-import { ClubParent, ClubParents } from "~/app/store/types/clubManager-types";
+import AvatarInput from "~/@main/components/shared/AvatarInput";
 
 type Props = {};
 
@@ -96,7 +96,6 @@ const AddPlayerForm = (props: Props) => {
   const [open, setOpen] = useState<boolean>(false);
   const [formInputsData, setFormInputsData] = useState(formInputsDefaultValue);
   const [userAvatar, setUserAvatar] = useState<File | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const [clubParentsData, setClubParentsData] = useState<
     {
       label: string;
@@ -233,37 +232,15 @@ const AddPlayerForm = (props: Props) => {
           onClose={() => {
             setOpen(false);
           }}
+          title={`Create Player`}
         >
           <form onSubmit={onSubmitFun} className="rounded-3xl">
             {/* add img  */}
-            <div className="w-full flex justify-center items-center">
-              <div className="relative photo place-self-center w-28 h-28">
-                <Avatar
-                  className="object-cover w-full h-full rounded-lg"
-                  src={userAvatar && URL.createObjectURL(userAvatar)}
-                  alt="user-avatar"
-                />
-                <div
-                  onClick={() =>
-                    fileInputRef.current && fileInputRef.current.click()
-                  }
-                >
-                  <AppIcons
-                    className="w-5 h-5 absolute top-2 cursor-pointer right-2 text-perfGray3 hover:text-perfGray1"
-                    icon="PencilSquareIcon:outline"
-                  />
-                </div>
-                <input
-                  ref={fileInputRef}
-                  onChange={(e) =>
-                    setUserAvatar(e?.currentTarget?.files?.[0] as File)
-                  }
-                  type="file"
-                  className="hidden"
-                  id={"avatar"}
-                />
-              </div>
-            </div>
+            <AvatarInput
+              inputAlt="Player Photo"
+              userAvatar={userAvatar}
+              setUserAvatar={setUserAvatar}
+            />
 
             <div className="flex flex-col my-4 justify-center items-center gap-2">
               <div className="w-full">

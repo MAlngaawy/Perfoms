@@ -70,7 +70,11 @@ const AddLeagueForm = (props: Props) => {
   return (
     <>
       {" "}
-      <Modal opened={opened} onClose={() => setOpened(false)}>
+      <Modal
+        title={`Add League`}
+        opened={opened}
+        onClose={() => setOpened(false)}
+      >
         <form
           className="flex flex-col gap-4 "
           onSubmit={handleSubmit(onSubmitFunction)}

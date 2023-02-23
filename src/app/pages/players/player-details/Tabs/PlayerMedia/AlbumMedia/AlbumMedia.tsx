@@ -33,11 +33,10 @@ const AlbumMedia = (props: Props) => {
         <Slider
           eventId={album_id}
           isLoading={isLoading}
-          // video_url={eventMedia?.video_url}
           images={eventMedia?.event_files || []}
         />
       </div>
-      <UploadMedia videoUrl={eventMedia?.video_url} refetch={() => refetch()} />
+      <UploadMedia refetch={() => refetch()} />
     </div>
   );
 };

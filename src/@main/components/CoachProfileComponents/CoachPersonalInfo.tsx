@@ -28,6 +28,7 @@ import AppUtils from "~/@main/utils/AppUtils";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import AvatarInput from "../shared/AvatarInput";
 
 // Props Types
 type Props = {
@@ -290,9 +291,7 @@ const EditEducation = ({ data, refetch, educationData }: Edit) => {
 // Edit Coach Personal Data Modal
 function EditCoachData({ data, refetch, educationData }: Edit) {
   const [opened, setOpened] = useState(false);
-  const [playerImage, setPlayerImage] = React.useState<string | unknown>("");
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [userAvatar, setUserAvatar] = useState<File>();
+  const [userAvatar, setUserAvatar] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [addUserEducation] = useAddUserEducationMutation();
 
@@ -319,7 +318,6 @@ function EditCoachData({ data, refetch, educationData }: Edit) {
             "Done",
             "Successfully Edited Coach Data"
           );
-          setPlayerImage(null);
           refetch();
         })
         .catch(() => {
@@ -340,34 +338,11 @@ function EditCoachData({ data, refetch, educationData }: Edit) {
       <Modal opened={opened} onClose={() => setOpened(false)}>
         <form className="flex flex-col gap-4 " onSubmit={onSubmitFunction}>
           {/* Image Upload */}
-          <div className="relative photo place-self-center w-28 h-28">
-            <Avatar
-              className="object-cover w-full h-full rounded-lg"
-              src={
-                (userAvatar && URL.createObjectURL(userAvatar)) || data?.avatar
-              }
-              alt="user-avatar"
-            />
-            <div
-              onClick={() =>
-                fileInputRef.current && fileInputRef.current.click()
-              }
-            >
-              <AppIcons
-                className="w-5 h-5 absolute top-2 cursor-pointer right-2 text-perfGray3 hover:text-perfGray1"
-                icon="PencilSquareIcon:outline"
-              />
-            </div>
-            <input
-              ref={fileInputRef}
-              onChange={(e) =>
-                setUserAvatar(e?.currentTarget?.files?.[0] as File)
-              }
-              type="file"
-              className="hidden"
-              id={"avatar"}
-            />
-          </div>
+          <AvatarInput
+            userAvatar={userAvatar}
+            currentImage={data?.avatar}
+            setUserAvatar={setUserAvatar}
+          />
 
           {/*Name Input  */}
           <Input

@@ -1,6 +1,7 @@
 import { Avatar, Group, Input, Modal } from "@mantine/core";
 import { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
+import AvatarInput from "~/@main/components/shared/AvatarInput";
 import SubmitButton from "~/@main/components/SubmitButton";
 import AppIcons from "~/@main/core/AppIcons";
 import AppUtils from "~/@main/utils/AppUtils";
@@ -14,7 +15,6 @@ const AddAlbum = (props: Props) => {
   const [opened, setOpened] = useState(false);
   const { refetch } = useGetPlayerEventsQuery({ player_id: id }, { skip: !id });
   const [userAvatar, setUserAvatar] = useState<File | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const submitFun = async (e: any) => {
@@ -49,39 +49,16 @@ const AddAlbum = (props: Props) => {
 
   return (
     <>
-      <Modal opened={opened} onClose={() => setOpened(false)}>
+      <Modal
+        opened={opened}
+        onClose={() => {
+          setIsLoading(false);
+          setOpened(false);
+        }}
+        title={`Add Album`}
+      >
         <form onSubmit={submitFun}>
-          {/**Event Image */}
-          <div className="w-full flex justify-center items-center">
-            <div className="relative photo place-self-center w-28 h-28">
-              <Avatar
-                className="object-cover w-full h-full rounded-lg"
-                src={userAvatar && URL.createObjectURL(userAvatar)}
-                alt="user-avatar"
-              />
-              <div
-                onClick={() =>
-                  fileInputRef.current && fileInputRef.current.click()
-                }
-              >
-                <AppIcons
-                  className="w-5 h-5 absolute top-2 cursor-pointer right-2 text-perfGray3 hover:text-perfGray1"
-                  icon="PencilSquareIcon:outline"
-                />
-              </div>
-              <input
-                ref={fileInputRef}
-                onChange={(e) => {
-                  console.log("CHanges", e);
-                  setUserAvatar(e?.currentTarget?.files?.[0] as File);
-                }}
-                type="file"
-                className="hidden"
-                id={"avatar"}
-              />
-            </div>
-          </div>
-
+          <AvatarInput userAvatar={userAvatar} setUserAvatar={setUserAvatar} />
           <Input
             className="my-4"
             placeholder="Album Name"

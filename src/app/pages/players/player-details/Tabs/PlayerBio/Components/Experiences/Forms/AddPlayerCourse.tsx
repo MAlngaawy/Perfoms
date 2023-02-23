@@ -55,6 +55,7 @@ const AddPlayerCourse = (props: Props) => {
           reset({ name: "" });
           setOpened(false);
         }}
+        title={`Add Camp`}
       >
         <form onSubmit={handleSubmit(onSubmit)}>
           <Input.Wrapper

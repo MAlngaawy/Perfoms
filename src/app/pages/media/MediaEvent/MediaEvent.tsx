@@ -39,7 +39,7 @@ const MediaEvent = () => {
         />
       </div>
       {user?.user_type !== "Parent" && (
-        <UploadMedia videoUrl={files?.video_url} refetch={() => refetch()} />
+        <UploadMedia refetch={() => refetch()} />
       )}
     </div>
   );
