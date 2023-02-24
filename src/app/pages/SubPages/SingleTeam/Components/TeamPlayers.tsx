@@ -17,6 +17,7 @@ import {
 } from "~/app/store/clubManager/clubManagerApi";
 import AppUtils from "~/@main/utils/AppUtils";
 import { useRemoveAddTeamPlayerMutation } from "~/app/store/coach/coachApi";
+import { Avatar } from "@mantine/core";
 
 type Props = {
   teamId: string;
@@ -158,9 +159,9 @@ export const SinglePlayer = ({ id, image, name, teamId }: any) => {
   return (
     <div
       key={id}
-      className="shadow-lg relative items-stretch rounded-lg w-36 text-center bg-white h-full flex flex-col justify-center"
+      className=" border border-perfBlue bottom-2 pt-2 relative w-fit items-center rounded-lg text-center bg-white h-full flex flex-col justify-center"
     >
-      <div className="overlay flex justify-center items-stretch flex-col gap-2 rounded-lg w-full h-full absolute left-0 top-0 bg-transparent group hover:bg-black/60">
+      <div className="overlay flex justify-center items-stretch flex-col gap-2 rounded-lg w-full h-full absolute z-30 left-0 top-0 bg-transparent group hover:bg-black/60">
         <div
           onClick={() =>
             navigate(`/players/${id}`, {
@@ -169,10 +170,10 @@ export const SinglePlayer = ({ id, image, name, teamId }: any) => {
               },
             })
           }
-          className="hidden group-hover:flex text-white gap-2 cursor-pointer justify-center items-center bg-perfBlue p-2 w-full"
+          className="hidden group-hover:flex text-white gap-2 cursor-pointer justify-center items-center bg-perfBlue py-1 w-full"
         >
           <AppIcons className="w-5 h-5 text-white" icon="UserIcon:outline" />
-          <span className="text-white">View profile</span>
+          <span className="text-white text-xs">View profile</span>
         </div>
         {user?.user_type === "Admin" && (
           <DeletePlayerFromTeam
@@ -199,13 +200,9 @@ export const SinglePlayer = ({ id, image, name, teamId }: any) => {
           />
         )}
       </div>
-      <img
-        className="rounded-lg w-full h-32 object-cover"
-        src={image}
-        alt="player Image"
-      />
+      <Avatar size={100} src={image} alt="player Image" />
       <div>
-        <h2 className="text-sm my-2 mx-2">{name}</h2>
+        <h2 className="text-xs my-2 mx-2">{name}</h2>
       </div>
     </div>
   );
