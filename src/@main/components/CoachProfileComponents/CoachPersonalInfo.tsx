@@ -61,12 +61,13 @@ const CoachPersonalInfo = ({ data, editMode, refetch, type }: Props) => {
   return (
     <div className="bg-white flex flex-col gap-4 h-full rounded-lg md:rounded-2xl p-4">
       <h3 className="text-base font-medium text-center">{data?.user_type}</h3>
-      <div className="flex md:flex-col justify-center items-center gap-4">
+      <div className="flex flex-col justify-center items-center gap-4">
         <div className="flex justify-center items-center">
           <Avatar
-            className="w-32 h-32 object-cover transition-all delay-75 rounded-lg group-hover:border border-white box-border"
+            className="object-cover transition-all delay-75 rounded-lg group-hover:border border-white box-border"
             src={data?.avatar}
             alt="Profile_Picture"
+            size={200}
           />
         </div>
         <div className="flex flex-col justify-center items-center gap-2">
@@ -76,18 +77,18 @@ const CoachPersonalInfo = ({ data, editMode, refetch, type }: Props) => {
           <h4 className="text-perfBlue group-hover:text-white text-xs">
             {data?.job}
           </h4>
-          {data?.user_type == "Parent" && (
+          {/* {data?.user_type == "Parent" && (
             <Button
               onClick={() => navigate("/chat")}
               className=" border border-perfBlue rounded-lg font-normal text-perfBlue hover:text-white"
             >
               Send Message
             </Button>
-          )}
+          )} */}
         </div>
       </div>
 
-      <div className="flex flex-wrap sm:flex-col justify-between">
+      <div className="flex flex-col sm:flex-row md:flex-col justify-around">
         <div className="profile text-left">
           <div>
             <h3 className="text-base font-medium text-perfLightBlack">
@@ -110,17 +111,17 @@ const CoachPersonalInfo = ({ data, editMode, refetch, type }: Props) => {
               ))}
             </div>
           </div>
+          {type === "profile" && editMode && (
+            <EditCoachData
+              educationData={userEducations?.results[0]}
+              refetch={() => {
+                if (refetch) refetch();
+              }}
+              data={data}
+            />
+          )}
         </div>
 
-        {type === "profile" && editMode && (
-          <EditCoachData
-            educationData={userEducations?.results[0]}
-            refetch={() => {
-              if (refetch) refetch();
-            }}
-            data={data}
-          />
-        )}
         <div className="education text-left mt-5">
           <h3 className="text-base font-medium text-perfLightBlack">
             Education
@@ -170,18 +171,17 @@ const CoachPersonalInfo = ({ data, editMode, refetch, type }: Props) => {
               </div>
             );
           })}
+          {type === "profile" && editMode && (
+            <EditEducation
+              educationData={userEducations?.results[0]}
+              refetch={() => {
+                if (refetch) refetch();
+              }}
+              data={data}
+            />
+          )}
         </div>
       </div>
-
-      {type === "profile" && editMode && (
-        <EditEducation
-          educationData={userEducations?.results[0]}
-          refetch={() => {
-            if (refetch) refetch();
-          }}
-          data={data}
-        />
-      )}
     </div>
   );
 };
@@ -276,10 +276,10 @@ const EditEducation = ({ data, refetch, educationData }: Edit) => {
         </form>
       </Modal>
 
-      <Group position="center">
+      <Group>
         <button
           onClick={() => setOpened(true)}
-          className="text-sm flex gap-2 xl:text-base p-2 transform hover:scale-105 duration-100 bg-white border border-perfGray3 rounded-lg text-perfGray3"
+          className="text-xs flex gap-2 xl:text-base p-2 transform hover:scale-105 duration-100 bg-white border border-perfGray3 rounded-lg text-perfGray3"
         >
           <span>+ Add Education</span>
         </button>
@@ -367,10 +367,10 @@ function EditCoachData({ data, refetch, educationData }: Edit) {
         </form>
       </Modal>
 
-      <Group position="center">
+      <Group>
         <button
           onClick={() => setOpened(true)}
-          className="text-sm flex gap-2 xl:text-base p-2 transform hover:scale-105 duration-100 bg-white border border-perfGray3 rounded-lg text-perfGray3"
+          className="text-xs flex gap-2 items-center xl:text-base p-2 transform hover:scale-105 duration-100 bg-white border border-perfGray3 rounded-lg text-perfGray3"
         >
           <AppIcons
             className="w-5 h-5 text-perfGray3"

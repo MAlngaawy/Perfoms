@@ -19,7 +19,7 @@ const CoachProfilePage = (props: Props) => {
 
   return (
     <div className="mx-2">
-      <div className="edit w-full px-20 flex justify-end items-center mt-2">
+      <div className="edit w-full flex px-4 justify-end items-center mt-4">
         {editMode ? (
           <button
             className="bg-perfBlue  border rounded-lg text-white py-1 px-6 cursor-pointer transform hover:scale-105"

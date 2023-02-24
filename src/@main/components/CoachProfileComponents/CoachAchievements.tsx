@@ -105,8 +105,8 @@ const CoachAchievements = ({ data, editMode }: Props) => {
             </div>
           </div>
         ))}
-        {editMode && <AddButton />}
       </div>
+      {editMode && <AddButton />}
     </div>
   );
 };
@@ -212,12 +212,12 @@ function AddButton() {
         </form>
       </Modal>
 
-      <Group position="center">
+      <Group>
         <button
           onClick={() => {
             setOpened(true);
           }}
-          className="text-sm xl:text-base p-2 transform hover:scale-105 duration-100 bg-white border border-perfGray3 rounded-lg text-perfGray3"
+          className="text-xs p-2 transform hover:scale-105 duration-100 bg-white border border-perfGray3 rounded-lg text-perfGray3"
         >
           + Add Achievements
         </button>
