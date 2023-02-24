@@ -123,7 +123,7 @@ const Certificate = (props: Props) => {
       <div className="flex flex-col justify-center items-center">
         <form
           onSubmit={handleSubmit(sendCertificate)}
-          className=" py-28 w-72 flex flex-col justify-center items-center gap-4"
+          className=" py-10 sm:py-28 w-72 flex flex-col justify-center items-center gap-4"
         >
           <Controller
             control={control}
@@ -141,6 +141,7 @@ const Certificate = (props: Props) => {
                 data={inputData ? inputData : []}
                 searchable
                 maxDropdownHeight={300}
+                dropdownPosition="bottom"
                 nothingFound="Nobody here"
               />
             )}
@@ -161,6 +162,7 @@ const Certificate = (props: Props) => {
                 data={["Performance", "Congratulations", "Encouragement"]}
                 searchable
                 maxDropdownHeight={300}
+                dropdownPosition="bottom"
                 nothingFound="Nobody here"
               />
             )}

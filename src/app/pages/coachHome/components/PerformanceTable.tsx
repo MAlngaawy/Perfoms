@@ -85,7 +85,7 @@ const PerformanceTable = (props: Props) => {
             <thead>
               <tr className="">
                 <th className="bg-white sticky left-0  top-0 z-50 text-center">
-                  Technic
+                  Technique
                 </th>
                 {teamPerformance?.results.map((player) => (
                   <th
@@ -107,7 +107,7 @@ const PerformanceTable = (props: Props) => {
                   {teamPerformanceMetric?.results.map((oneKpi) => (
                     <>
                       <tr>
-                        <td className="border-0 font-bold text-left px-4 text-sm sticky left-0 bg-white z-10 text-perfGray1">
+                        <td className="border-0 font-bold text-left text-sm sticky left-0 bg-white z-10 text-perfGray1">
                           {oneKpi.name}
                         </td>
                       </tr>
@@ -115,7 +115,7 @@ const PerformanceTable = (props: Props) => {
                         return (
                           <tr className="border-0" key={metric.id}>
                             <td className=" text-xs sm:text-sm sticky left-0  bg-white z-10 font-medium text-perfGray1">
-                              <div className="w-20 xs:w-40 text-left pl-6">
+                              <div className="w-20 xs:w-40 text-left">
                                 {metric.name}
                               </div>
                             </td>

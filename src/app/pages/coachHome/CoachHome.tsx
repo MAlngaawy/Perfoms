@@ -17,7 +17,7 @@ const CoachHome = (props: Props) => {
 
   return (
     <div className="coach-home">
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 my-4 mx-8">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 m-4 ">
         <div className="flex items-center flex-wrap gap-1 xs:gap-4">
           {/* <AppRadioGroub
             values={["Attendance", "Performance", "Team info"]}
@@ -40,7 +40,7 @@ const CoachHome = (props: Props) => {
             type={"Team info"}
           />
 
-          <button className="border text-perfBlue border-perfBlue hover:text-white bg-transparent hover:bg-perfBlue  text-xs py-2 px-10 rounded-3xl">
+          <button className="border text-perfBlue border-perfBlue hover:text-white bg-transparent hover:bg-perfBlue  text-xs sm:text-sm p-1 md:px-2 rounded-xl ">
             <Link to="/certificate">Certificate</Link>
           </button>
         </div>
