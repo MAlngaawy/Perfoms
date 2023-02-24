@@ -115,10 +115,17 @@ const OverAll = ({ playerInfo, reportType }: Props) => {
             </div>
             <div className="flex  gap-6 justify-between">
               <Info label="Sport" value={playerInfo?.sport} />
-              <Info
-                label="Parent"
-                value={playerInfo?.parent_name || "No Parent Name"}
-              />
+              <div className="flex flex-col items-center justify-center">
+                <h3 className=" text-perfGray3 text-xs">Teams</h3>
+                <div className="flex gap-2">
+                  {playerInfo &&
+                    playerInfo?.team?.map((team) => (
+                      <h2 className="text-perfGray1 text-sm font-normal">
+                        {team.name}
+                      </h2>
+                    ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>

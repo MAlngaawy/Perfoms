@@ -34,14 +34,14 @@ const Experiences = (props: Props) => {
     <div className="bg-white rounded-3xl p-6 min-h-full">
       <div className="title flex items-center gap-2">
         <Avatar src={"/assets/images/Leagues.png"} />
-        <div className="flex justify-between w-full">
+        <div className="flex items-center justify-between w-full">
           <h3 className="text-base font-medium text-perfLightBlack">
             Tournaments
           </h3>
           {editMode && <AddLeagueForm />}
         </div>
       </div>
-      <div className="leagues flex flex-wrap gap-8 justify-center my-6">
+      <div className="leagues flex flex-wrap gap-4 my-6">
         {playerLeagues?.results.map((league) => {
           return (
             <OneLeague
@@ -54,7 +54,7 @@ const Experiences = (props: Props) => {
         })}
       </div>
       <div className="courses">
-        <div className="flex justify-between w-full">
+        <div className="flex items-center justify-between w-full mb-2">
           <TitleWithIcon name="Camps" />
           {editMode && <AddPlayerCourse />}
         </div>
@@ -117,12 +117,12 @@ const OneLeague = ({ from, to, name, id }: oneLeagueTypes) => {
   const { refetch } = usePlayerLeagueQuery({ player_id: id }, { skip: !id });
 
   return (
-    <div className="flex gap-4">
+    <div className="flex items-center gap-4">
       <div className="date">
-        <span className="text-xs text-perfGray3">
+        <span className="text-xs flex flex-col text-perfGray3">
           {from} - {to}
         </span>
-        <h2 className="text-md">{name}</h2>
+        <h2 className="text-sm">{name}</h2>
       </div>
       {editMode && (
         <DeleteButton
@@ -154,7 +154,7 @@ const OneLeague = ({ from, to, name, id }: oneLeagueTypes) => {
 
 const TitleWithIcon = ({ name }: { name: string }) => {
   return (
-    <div className="flex gap-2 items-center mb-6">
+    <div className="flex gap-2 items-center">
       <div className="icon bg-perfBlue p-1 rounded-full">
         <AppIcons className="w-5 h-5 text-white" icon="BriefcaseIcon:solid" />
         {/* <AppIcons icon="Briefcase:solid" /> */}

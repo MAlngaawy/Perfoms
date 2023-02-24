@@ -158,12 +158,7 @@ const Certificate = (props: Props) => {
                 id={"type"}
                 name="type"
                 placeholder="Certificate Type"
-                data={[
-                  "Performance",
-                  "Congratulations",
-                  "Encouragement",
-                  "Other",
-                ]}
+                data={["Performance", "Congratulations", "Encouragement"]}
                 searchable
                 maxDropdownHeight={300}
                 nothingFound="Nobody here"

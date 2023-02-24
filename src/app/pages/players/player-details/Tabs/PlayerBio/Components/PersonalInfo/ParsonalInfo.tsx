@@ -14,6 +14,7 @@ import DeleteButton from "~/@main/components/ManagerComponents/SubComponents/Del
 import { EditModeContext } from "../../../../PlayerDetails";
 import AppUtils from "~/@main/utils/AppUtils";
 import AddSkill from "./Forms/AddSkill";
+import Info from "~/@main/components/Info";
 
 type Props = {};
 
@@ -32,58 +33,50 @@ const ParsonalInfo = (props: Props) => {
   );
 
   return (
-    <div className="bg-white rounded-3xl p-4 min-h-full">
-      <div className="my-4 sm:my-8 flex flex-col justify-center items-center">
-        <Avatar
-          src={playerData?.icon || playerData?.icon_url}
-          className="border border-perfBlue"
-          sx={{
-            ".mantine-Avatar-placeholder": {
-              border: "2px solid #2F80ED",
-            },
-            ".mantine-Avatar-image": {
-              border: "2px solid #2F80ED",
-              borderRadius: "100%",
-            },
-          }}
-          radius={100}
-          size={100}
-        />
-        <h2 className="my-2 font-medium text-perfGray1 text-lg">
-          {playerData?.name}
-        </h2>
-        {/* <div className="levels text-xs text-perfGray3">
-          <span>Epert Level 22</span> |{" "}
-          <span>
-            760/1,900 xp{" "}
-            <AppIcons
-              icon="ExclamationCircleIcon:outline"
-              className="w-5 h-5 inline"
-            />
-          </span>
-        </div>
-        <div className="w-40 my-2">
-          <Progress
-            radius="xl"
-            size="xl"
-            value={40}
+    <div className="flex flex-col gap-4">
+      <div className="bg-white rounded-3xl p-4">
+        <div className="my-4 sm:my-8 flex flex-col justify-center items-center">
+          <Avatar
+            src={playerData?.icon || playerData?.icon_url}
+            className="border border-perfBlue"
             sx={{
-              ".mantine-Progress-bar": {
-                background:
-                  "linear-gradient(180deg, #2F80ED 12.5%, #1865CD 133.31%)",
+              ".mantine-Avatar-placeholder": {
+                border: "2px solid #2F80ED",
+              },
+              ".mantine-Avatar-image": {
+                border: "2px solid #2F80ED",
+                borderRadius: "100%",
               },
             }}
+            radius={100}
+            size={100}
           />
-        </div> */}
+          <h2 className="my-2 font-medium text-perfGray1 text-lg">
+            {playerData?.name}
+          </h2>
+        </div>
+        <div className="h2 font-medium">INFO</div>
+        <div className="data flex flex-wrap jus gap-4 mt-2">
+          <Info label="Age" value={playerData?.dob} />
+          <Info label="Weight" value={playerData?.weight} />
+          <Info label="Height" value={playerData?.height} />
+          <Info label="Phone" value={playerData?.phone || "N/A"} />
+          <div className="flex flex-col items-center justify-center">
+            <h3 className=" text-perfGray3 text-xs">Teams</h3>
+            <div className="flex gap-2">
+              {playerData &&
+                playerData?.team?.map((team) => (
+                  <h2 className="text-perfGray1 text-sm font-normal">
+                    {team.name}
+                  </h2>
+                ))}
+            </div>
+          </div>
+          <Info label="Sport" value={playerData?.sport} />
+        </div>
       </div>
 
-      <div className="data flex flex-col gap-2">
-        <div className="title flex flex-col justify-start items-start">
-          <h3 className="text-base font-medium text-perfLightBlack">Title</h3>
-          <p className="font-normal text-sm text-perfGray3">
-            {playerData?.sport}
-          </p>
-        </div>
+      <div className="bg-white rounded-3xl p-4 flex flex-col gap-4">
         <div className="profile flex flex-col justify-start items-start">
           <h3 className="text-base font-medium text-perfLightBlack">Profile</h3>
           <p className="font-normal text-sm text-perfGray3">
@@ -97,6 +90,11 @@ const ParsonalInfo = (props: Props) => {
             </h3>
             {editMode && <AddEducation />}
           </div>
+          {playerEducations && playerEducations?.results.length === 0 && (
+            <h2 className="m-2 text-sm font-medium">
+              No <span className=" text-perfBlue"> Education </span> added yet
+            </h2>
+          )}
           {playerEducations?.results.map((education) => {
             return (
               <div className="my-2 relative">
@@ -144,6 +142,11 @@ const ParsonalInfo = (props: Props) => {
             </h3>
             {editMode && <AddSkill />}
           </div>
+          {playerSkills && playerSkills?.results.length === 0 && (
+            <h2 className="m-2 text-sm font-medium">
+              No <span className=" text-perfBlue"> Skills </span> added yet
+            </h2>
+          )}
           <ul className="flex flex-col gap-2">
             {playerSkills?.results.map((skill) => {
               return (
@@ -187,3 +190,29 @@ const ParsonalInfo = (props: Props) => {
 };
 
 export default ParsonalInfo;
+
+{
+  /* <div className="levels text-xs text-perfGray3">
+          <span>Epert Level 22</span> |{" "}
+          <span>
+            760/1,900 xp{" "}
+            <AppIcons
+              icon="ExclamationCircleIcon:outline"
+              className="w-5 h-5 inline"
+            />
+          </span>
+        </div>
+        <div className="w-40 my-2">
+          <Progress
+            radius="xl"
+            size="xl"
+            value={40}
+            sx={{
+              ".mantine-Progress-bar": {
+                background:
+                  "linear-gradient(180deg, #2F80ED 12.5%, #1865CD 133.31%)",
+              },
+            }}
+          />
+        </div> */
+}

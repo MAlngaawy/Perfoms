@@ -17,10 +17,10 @@ const PlayerBio = (props: Props) => {
         <Grid.Col xs={12} md={3}>
           <PersonalInfo />
         </Grid.Col>
-        <Grid.Col xs={12} md={5}>
+        <Grid.Col xs={12} md={4}>
           <Experiences />
         </Grid.Col>
-        <Grid.Col xs={12} md={4}>
+        <Grid.Col xs={12} md={5}>
           <Achievements />
         </Grid.Col>
       </Grid>

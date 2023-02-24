@@ -15,7 +15,7 @@ const PrintComp = (props: Props) => {
       @page { size: landscape; }
     }
     @page {
-      size: 330mm 400mm;
+      size: 330mm 450mm;
     }
   
     @media all {
