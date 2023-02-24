@@ -128,7 +128,7 @@ const Toolbar = ({ setOpened }: Props) => {
           <Menu.Dropdown className="w-96 max-w-full">
             <h2 className="m-2 text-perfLightBlack text-sm">Messages</h2>
             <Divider />
-            <Menu.Label>
+            {/* <Menu.Label>
               <OneMessageBox
                 image="https://img.freepik.com/free-photo/senior-man-face-portrait-wearing-bowler-hat_53876-148154.jpg?w=2000"
                 id={1}
@@ -147,9 +147,9 @@ const Toolbar = ({ setOpened }: Props) => {
                 lastMessageTime="11:43 pm"
                 unreadMessagesNumber={3}
               />
-            </Menu.Label>
+            </Menu.Label> */}
             <Link
-              to="messages"
+              to="chat"
               className="flex w-full justify-center items-center p-2 hover:bg-pagesBg text-sm"
             >
               <span>All Messages</span>
