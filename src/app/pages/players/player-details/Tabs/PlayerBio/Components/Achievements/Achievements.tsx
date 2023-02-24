@@ -21,7 +21,7 @@ const Achievements = (props: Props) => {
   );
   return (
     <div className="bg-white rounded-3xl p-6 px-3 min-h-full">
-      <div className="flex justify-between mb-4">
+      <div className="flex items-center justify-between mb-4">
         <h3 className="text-base font-medium text-perfLightBlack">
           Achievements
         </h3>
