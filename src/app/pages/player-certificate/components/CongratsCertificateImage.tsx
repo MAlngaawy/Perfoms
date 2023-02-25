@@ -39,10 +39,7 @@ const CongratsCertificate = forwardRef(({ certificate }: Props, ref) => {
     });
   }, [certificate, ref]);
   return (
-    <div
-      id={"" + 564654}
-      className="flex flex-col bg-black justify-center items-center"
-    >
+    <div id={"" + 564654} className="flex flex-col bg-black">
       {/* @ts-ignore */}
       <canvas className="bg-black" ref={ref} width={880} height={550} />
     </div>
