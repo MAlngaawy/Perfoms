@@ -77,12 +77,12 @@ const ParsonalInfo = (props: Props) => {
       </div>
 
       <div className="bg-white rounded-3xl p-4 flex flex-col gap-4">
-        <div className="profile flex flex-col justify-start items-start">
+        {/* <div className="profile flex flex-col justify-start items-start">
           <h3 className="text-base font-medium text-perfLightBlack">Profile</h3>
           <p className="font-normal text-sm text-perfGray3">
             {playerData?.profile || "N/A"}
           </p>
-        </div>
+        </div> */}
         <div className="education text-left">
           <div className="flex justify-between">
             <h3 className="text-base font-medium text-perfLightBlack">

@@ -7,7 +7,7 @@ import PrintComp from "~/@main/PrintComp";
 
 const EditModeContext = createContext<boolean>(false);
 const PlayerDetails = () => {
-  const [checked, setChecked] = useState<"Info" | "Bio" | "Media">("Info");
+  const [checked, setChecked] = useState<"Info" | "Bio" | "Media">("Bio");
   const [editModeState, setEditModeState] = useState(false);
 
   return (
@@ -16,7 +16,7 @@ const PlayerDetails = () => {
         <div className="flex flex-col sm:flex-row justify-between items-center mx-8">
           <div className="my-6">
             <AppRadioGroub
-              values={["Info", "Bio", "Media"]}
+              values={["Bio", "Media"]}
               checked={checked}
               setChecked={setChecked}
             />
@@ -31,9 +31,9 @@ const PlayerDetails = () => {
           )}
         </div>
         <div>
-          <div className={checked !== "Info" ? "hidden" : "block px-4"}>
+          {/* <div className={checked !== "Info" ? "hidden" : "block px-4"}>
             <PlayerInfo />
-          </div>
+          </div> */}
           <div className={checked !== "Bio" ? "hidden" : "block px-4"}>
             <PrintComp>
               <PlayerBio />

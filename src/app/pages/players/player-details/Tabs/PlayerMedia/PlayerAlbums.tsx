@@ -43,7 +43,7 @@ const SingleAlbum = ({ image, id, name }: SingleAlbumTypes) => {
   const [deletePlayerEvent] = useDeleteEventMutation();
 
   return (
-    <div className="bg-white rounded-lg cursor-pointer relative group shadow-sm">
+    <div className="bg-white rounded-lg w-60 flex flex-col cursor-pointer relative group shadow-sm">
       <div className="absolute right-4 top-4 z-50 bg-white p-1 rounded-full">
         <DeleteButton
           deleteFun={() => {

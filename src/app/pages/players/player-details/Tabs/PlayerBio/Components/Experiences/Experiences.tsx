@@ -63,11 +63,11 @@ const Experiences = (props: Props) => {
             No <span className="text-perfBlue"> Camps </span> Added Yet!
           </h2>
         )}
-        <ul className="list-disc list-outside  ml-8">
+        <ul className="list-disc list-outside  ml-6">
           {playerCourses?.results.map((course) => (
             <li
               key={course.id}
-              className="text-xs w-full relative font-normal text-perfGray3 my-4 pr-5 break-words"
+              className="text-md w-full relative font-normal text-perfGray3 my-4 pr-5 break-words"
             >
               {editMode && (
                 <div className="absolute right-0">
@@ -119,10 +119,10 @@ const OneLeague = ({ from, to, name, id }: oneLeagueTypes) => {
   return (
     <div className="flex items-center gap-4">
       <div className="date">
-        <span className="text-xs flex flex-col text-perfGray3">
-          {from} - {to}
-        </span>
         <h2 className="text-sm">{name}</h2>
+        <span className="text-xs flex flex-col text-perfGray3">
+          {from} / {to}
+        </span>
       </div>
       {editMode && (
         <DeleteButton
