@@ -159,7 +159,7 @@ export const SinglePlayer = ({ id, image, name, teamId }: any) => {
   return (
     <div
       key={id}
-      className=" border border-perfBlue bottom-2 pt-2 relative w-fit items-center rounded-lg text-center bg-white h-full flex flex-col justify-center"
+      className=" shadow-md w-30 h-62 bottom-2 p-2 relative items-center rounded-lg text-center bg-white flex flex-col justify-center"
     >
       <div className="overlay flex justify-center items-stretch flex-col gap-2 rounded-lg w-full h-full absolute z-30 left-0 top-0 bg-transparent group hover:bg-black/60">
         <div
@@ -200,7 +200,7 @@ export const SinglePlayer = ({ id, image, name, teamId }: any) => {
           />
         )}
       </div>
-      <Avatar size={100} src={image} alt="player Image" />
+      <Avatar className="w-28 h-28" src={image} alt="player Image" />
       <div>
         <h2 className="text-xs my-2 mx-2">{name}</h2>
       </div>

@@ -28,16 +28,16 @@ const PlayersPage = () => {
 
   return (
     <>
-      <div className="m-5">
+      <div className="m-2">
         <div className="flex justify-end">
           {/* <CustomBreadCrumbs items={[{ title: "Players", href: "" }]} /> */}
           <TeamFilter />
         </div>
       </div>
-      <div className="players-page bg-white p-6 rounded-3xl m-5">
+      <div className="players-page bg-white p-2 rounded-3xl m-2">
         <p className="pb-2">Players</p>
         <div className="flex flex-wrap">
-          <div className="flex flex-wrap justify-start gap-2 xs:gap-4">
+          <div className="flex flex-wrap items-center gap-2 xs:gap-4  mt-4">
             {coahcTeamPlayers &&
               coahcTeamPlayers?.results.map((player) => {
                 return (

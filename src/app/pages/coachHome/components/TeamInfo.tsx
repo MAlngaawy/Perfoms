@@ -50,11 +50,12 @@ const TeamInfo = (props: Props) => {
               <UpcomingEventsCard />
             </Grid.Col>
             <Grid.Col
-              className={`bg-white p-4 rounded-3xl flex gap-4 ${
+              className={`bg-white p-2 rounded-3xl ${
                 !coachTeamPlayers ? "justify-center" : "flex-start"
               } items-center flex-wrap`}
               span={12}
             >
+              <h2 className="m-4">Team Players</h2>
               <div className="flex gap-4 flex-wrap mt-6">
                 {coachTeamPlayers &&
                   coachTeamPlayers?.results.map((player, idx) => {
