@@ -56,12 +56,15 @@ const TeamFilter = (props: Props) => {
   // if (!selectedPlayer) playerTeams = coachTeams as PlayerTeams | undefined;
 
   useEffect(() => {
+    console.log("Select Team");
+
     if (superTeams) setTeams(superTeams.results);
     if (coachTeams) setTeams(coachTeams.results);
     if (playerTeams) setTeams(playerTeams.results);
     if (adminTeams) setTeams(adminTeams.results);
 
     if (teams) {
+      console.log("Select Team IF");
       dispatch(selectPlayerTeam(teams[0]));
     }
     if (playerTeams)

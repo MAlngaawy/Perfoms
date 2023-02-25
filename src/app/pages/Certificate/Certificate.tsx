@@ -171,7 +171,7 @@ const Certificate = (props: Props) => {
           <SubmitButton isLoading={isLoading} text="Send Certificate" />
         </form>
         {watchedPlayer && watchedType ? (
-          <div className="flex flex-col bg-black justify-center items-center overflow-auto max-w-full">
+          <div className="flex flex-col bg-black overflow-auto max-w-full">
             {watchedType === "Encouragement" ? (
               <EncourageCertificate certificate={certificate} ref={canvasRef} />
             ) : watchedType === "Congratulations" ? (
