@@ -1,7 +1,7 @@
 import { Avatar, Divider, Menu } from "@mantine/core";
 import Cookies from "js-cookie";
 import AppIcons from "~/@main/core/AppIcons";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Notifications from "./subComponents/Notifications";
 import SelectUser from "./subComponents/SelectUser";
 import useWindowSize from "~/@main/hooks/useWindowSize";
