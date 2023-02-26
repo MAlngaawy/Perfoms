@@ -7,6 +7,7 @@ import SubmitButton from "~/@main/components/SubmitButton";
 import { axiosInstance } from "~/app/configs/dataService";
 import AppUtils from "~/@main/utils/AppUtils";
 import AvatarInput from "~/@main/components/shared/AvatarInput";
+import DeleteUserPhoto from "~/@main/components/shared/DeleteUserPhoto";
 
 type Props = {
   user: User | undefined;
@@ -25,6 +26,8 @@ const EditForm = ({ user, setOpened, refetch }: Props) => {
 
   const onSubmitFn = async (e: any) => {
     e.preventDefault();
+    console.log("onSubmitFn CLICKED");
+
     const formData = new FormData(e.currentTarget);
     if (userAvatar) {
       const image = await AppUtils.resizeImage(userAvatar);
@@ -59,6 +62,9 @@ const EditForm = ({ user, setOpened, refetch }: Props) => {
         setUserAvatar={setUserAvatar}
         inputAlt="User Photo"
       />
+      <DeleteUserPhoto>
+        <p className="text-blue-500 text-sm">Delete my photo</p>
+      </DeleteUserPhoto>
 
       {/* Image Upload Input */}
       <Input.Wrapper id="firstName" label="First name" className="w-full">

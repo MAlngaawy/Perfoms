@@ -156,7 +156,7 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
                   <span className=" font-medium">{power.metric}</span>
                 </h3>
                 <h3 className={`font-semibold ${color} text-sm`}>
-                  {power.last_score}
+                  {power.avg_score}
                 </h3>
               </div>
             );
