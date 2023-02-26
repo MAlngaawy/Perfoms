@@ -88,21 +88,26 @@ const KpiMetrics = (props: Props) => {
           return (
             <div
               key={metric.id}
-              className="sport-card relative bg-white rounded-3xl p-12 flex flex-col justify-center items-center gap-4"
+              className="sport-card relative bg-white rounded-3xl p-4 xs:p-12 flex flex-col justify-center items-center gap-4"
             >
-              <div className="bg-pagesBg rounded-full w-24 h-24 flex justify-center items-center">
+              <div className="bg-pagesBg rounded-full w-16 xs:w-24 h-16 xs:h-24 mt-6 xs:mt-0 flex justify-center items-center">
                 <Avatar
+                  sx={{
+                    ".mantine-Avatar-image": {
+                      borderRadius: "100%",
+                    },
+                  }}
                   radius={"xl"}
-                  className="w-3/5 h-3/5"
+                  className="w-full h-full"
                   src={metric.icon_url || metric.icon}
                   alt="icon"
                 />
               </div>
-              <h2 className="text-xl break-words text-perfBlue w-28 text-center mx-auto">
+              <h2 className="text-md xs:text-xl break-words text-perfBlue w-28 text-center mx-auto">
                 {metric.name}
               </h2>
               {/* Edit and Delete Buttons */}
-              <div className="flex absolute left-2 top-5 gap-2">
+              <div className="flex absolute left-3 xs:left-2 top-2 xs:top-5 gap-2">
                 <EditMetric metricData={metric} />
                 <DeleteButton
                   deleteFun={() => deleteFun(JSON.stringify(metric.id))}
@@ -110,7 +115,7 @@ const KpiMetrics = (props: Props) => {
                   type="Metric"
                 />
               </div>
-              <div className="flex absolute right-2 top-5 gap-2">
+              <div className="absolute right-2 top-2 xs:top-5 gap-2">
                 <CreateActionsAndRecomm metricId={metric.id} />
               </div>
             </div>

@@ -16,6 +16,7 @@ import {
 import AppUtils from "~/@main/utils/AppUtils";
 import { useUserQuery } from "~/app/store/user/userApi";
 import SharedBreadCrumbs from "~/@main/components/shared/SharedBreadCrumbs";
+import ItemBox from "~/@main/components/shared/ItemBox";
 
 type Props = {};
 
@@ -106,31 +107,18 @@ const SportPillars = (props: Props) => {
       <div className="flex xs:flex-row flex-wrap justify-center sm:justify-start items-stretch gap-4 ">
         {pillars?.results.map((pillar) => {
           return (
-            <div className="sport-card relative bg-white rounded-3xl p-12 flex flex-col justify-center items-center gap-4">
-              <Link
-                to={`${pillar.id}/kpis`}
-                className="bg-pagesBg rounded-full w-24 h-24 flex justify-center items-center"
-              >
-                <Avatar
-                  radius={"xl"}
-                  className="w-3/5 h-3/5"
-                  src={pillar.icon}
-                  alt="icon"
-                />
-              </Link>
-              <h2 className="text-xl  break-words text-perfBlue w-28 text-center mx-auto">
-                {pillar.name}
-              </h2>
-              {/* Edit and Delete Buttons */}
-              <div className="flex absolute right-2 top-5 gap-2">
-                <EditPillar pillarData={pillar} />
-                <DeleteButton
-                  deleteFun={() => deletePillarFun(pillar.id)}
-                  name={pillar.name}
-                  type="pillar"
-                />
-              </div>
-            </div>
+            <ItemBox
+              icon={pillar.icon || pillar.icon_url}
+              name={pillar.name}
+              url={`${pillar.id}/kpis`}
+            >
+              <EditPillar pillarData={pillar} />
+              <DeleteButton
+                deleteFun={() => deletePillarFun(pillar.id)}
+                name={pillar.name}
+                type="pillar"
+              />
+            </ItemBox>
           );
         })}
 

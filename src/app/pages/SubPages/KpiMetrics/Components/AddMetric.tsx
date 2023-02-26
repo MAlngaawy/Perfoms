@@ -147,7 +147,7 @@ const AddMetric = (props: Props) => {
         <Group position="center" className="h-full">
           <div
             onClick={() => setOpened(true)}
-            className="h-full group hover:bg-white cursor-pointer  relative w-full bg-slate-300 p-12 rounded-xl flex flex-col justify-center items-center gap-4"
+            className="h-full group hover:bg-white cursor-pointer  relative w-full bg-slate-300 p-4 xs:p-12 rounded-xl flex flex-col justify-center items-center gap-4"
           >
             <AppIcons
               className="text-perfGray2 w-16 h-16 group-hover:text-perfBlue"
