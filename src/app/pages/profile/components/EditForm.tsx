@@ -8,14 +8,14 @@ import { axiosInstance } from "~/app/configs/dataService";
 import AppUtils from "~/@main/utils/AppUtils";
 import AvatarInput from "~/@main/components/shared/AvatarInput";
 import DeleteUserPhoto from "~/@main/components/shared/DeleteUserPhoto";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {
-  user: User | undefined;
   setOpened: any;
-  refetch: any;
 };
 
-const EditForm = ({ user, setOpened, refetch }: Props) => {
+const EditForm = ({ setOpened }: Props) => {
+  const { data: user, refetch } = useUserQuery({});
   const [userAvatar, setUserAvatar] = useState<File | null>(null);
   const [isError, setIsErrror] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

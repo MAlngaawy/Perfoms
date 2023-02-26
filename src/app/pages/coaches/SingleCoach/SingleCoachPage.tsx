@@ -27,7 +27,7 @@ const SingleCoachPage = () => {
       <CustomBreadCrumbs items={[{ title: "coaches", href: "/coaches" }]} />
       <Grid className="p-1 m-2" gutter="sm">
         <Grid.Col xs={12} md={3}>
-          <CoachPersonalInfo type={"cv"} data={coachData} />
+          <CoachPersonalInfo type={"cv"} />
         </Grid.Col>
         <Grid.Col xs={12} md={7}>
           <CoachExperince data={coachData} />

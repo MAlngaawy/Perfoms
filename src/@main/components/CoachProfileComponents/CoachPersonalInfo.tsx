@@ -29,19 +29,18 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import AvatarInput from "../shared/AvatarInput";
+import DeleteUserPhoto from "../shared/DeleteUserPhoto";
 
 // Props Types
 type Props = {
-  data: Partial<User> | undefined;
   editMode?: boolean;
-  refetch?: any;
   type: "profile" | "cv";
 };
 
-const CoachPersonalInfo = ({ data, editMode, refetch, type }: Props) => {
+const CoachPersonalInfo = ({ editMode, type }: Props) => {
   const [educations, setEducations] = useState<Educations>();
   const { coach_id } = useParams();
-  const { data: user } = useUserQuery({});
+  const { data, refetch } = useUserQuery({});
   const { data: userEducations } = useGetUserEducationsQuery({});
   const { data: coachEducations } = useGetCoachEducationsQuery(
     { coach_id: coach_id },
@@ -51,7 +50,7 @@ const CoachPersonalInfo = ({ data, editMode, refetch, type }: Props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user?.user_type === "Parent") {
+    if (data?.user_type === "Parent") {
       setEducations(coachEducations);
     } else {
       setEducations(userEducations);
@@ -289,7 +288,8 @@ const EditEducation = ({ data, refetch, educationData }: Edit) => {
 };
 
 // Edit Coach Personal Data Modal
-function EditCoachData({ data, refetch, educationData }: Edit) {
+function EditCoachData({ data, educationData }: Edit) {
+  const { data: user, refetch } = useUserQuery({});
   const [opened, setOpened] = useState(false);
   const [userAvatar, setUserAvatar] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -343,6 +343,9 @@ function EditCoachData({ data, refetch, educationData }: Edit) {
             currentImage={data?.avatar}
             setUserAvatar={setUserAvatar}
           />
+          <DeleteUserPhoto>
+            <p className="text-blue-500 text-sm">Delete my photo</p>
+          </DeleteUserPhoto>
 
           {/*Name Input  */}
           <Input

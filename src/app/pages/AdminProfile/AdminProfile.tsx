@@ -25,7 +25,7 @@ const AdminProfile = (props: Props) => {
             opened={opened}
             onClose={() => setOpened(false)}
           >
-            <EditForm refetch={refetch} user={user} setOpened={setOpened} />
+            <EditForm setOpened={setOpened} />
           </Modal>
           <div
             className="edit absolute right-5 top-5"

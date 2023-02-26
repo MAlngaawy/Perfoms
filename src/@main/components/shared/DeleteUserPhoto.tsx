@@ -13,7 +13,7 @@ type Props = {
 
 const DeleteUserPhoto = ({ children }: Props) => {
   const [updateProfile] = useUpdateProfileMutation();
-  const { refetch } = useUserQuery({});
+  const { data: user, refetch } = useUserQuery({});
   const [opened, setOpened] = useState(false);
   const screen = useWindowSize();
 

@@ -38,12 +38,7 @@ const CoachProfilePage = (props: Props) => {
       </div>
       <Grid className="p-4" gutter="sm">
         <Grid.Col xs={12} md={3}>
-          <CoachPersonalInfo
-            editMode={editMode}
-            refetch={refetch}
-            data={user}
-            type={"profile"}
-          />
+          <CoachPersonalInfo editMode={editMode} type={"profile"} />
         </Grid.Col>
         <Grid.Col xs={12} md={6}>
           <CoachExperince editMode={editMode} data={user} />
