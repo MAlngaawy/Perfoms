@@ -57,11 +57,15 @@ const AddLeagueForm = (props: Props) => {
         AppUtils.showNotificationFun(
           "Success",
           "Done",
-          "Successfully added League"
+          "Successfully added Tournament"
         );
       })
       .catch(() => {
-        AppUtils.showNotificationFun("Error", "Sorry", "Can't add League now");
+        AppUtils.showNotificationFun(
+          "Error",
+          "Sorry",
+          "Can't add Tournament now"
+        );
       });
 
     reset({ start_date: "", end_date: "", title: "" });
