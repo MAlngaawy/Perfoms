@@ -56,7 +56,7 @@ const TeamInfo = (props: Props) => {
               span={12}
             >
               <h2 className="m-4">Team Players</h2>
-              <div className="flex gap-4 flex-wrap mt-6">
+              <div className="flex gap-4 flex-wrap mt-6 justify-center sm:justify-start">
                 {coachTeamPlayers &&
                   coachTeamPlayers?.results.map((player, idx) => {
                     return (
