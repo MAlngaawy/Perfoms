@@ -9,6 +9,7 @@ import AppUtils from "~/@main/utils/AppUtils";
 import { CoachPlayerInfo } from "~/app/store/types/coach-types";
 import { useUserQuery } from "~/app/store/user/userApi";
 import AvatarInput from "~/@main/components/shared/AvatarInput";
+import DeletePlayerPhoto from "./DeletePlayerPhoto";
 
 type Props = {
   player: CoachPlayerInfo;
@@ -17,7 +18,6 @@ type Props = {
 
 const EditPlayer = ({ player, refetchPlayerData }: Props) => {
   const { refetch } = useMyPlayersQuery({});
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const { data: user } = useUserQuery({});
   const [userAvatar, setUserAvatar] = useState<File | null>(null);
   const [open, setOpen] = useState(false);
@@ -32,9 +32,6 @@ const EditPlayer = ({ player, refetchPlayerData }: Props) => {
       formData.append("icon", image as string);
     }
     setError(false);
-
-    console.log("formData", formData.get("icon52"));
-
     const REQUEST_URL =
       user?.user_type === "Parent"
         ? `parent/update-player/${player.id}/`
@@ -96,6 +93,9 @@ const EditPlayer = ({ player, refetchPlayerData }: Props) => {
             setUserAvatar={setUserAvatar}
             inputAlt="Player Photo"
           />
+          <DeletePlayerPhoto refetchFun={refetchPlayerData} player={player}>
+            <p className="text-blue-500 text-sm">Delete Player photo</p>
+          </DeletePlayerPhoto>
 
           <div className="flex flex-col my-4 justify-center items-center gap-2">
             {/* Name and Date of birth */}
