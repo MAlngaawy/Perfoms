@@ -29,7 +29,6 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import AvatarInput from "../shared/AvatarInput";
-import DeleteUserPhoto from "../shared/DeleteUserPhoto";
 
 // Props Types
 type Props = {
@@ -294,6 +293,18 @@ function EditCoachData({ data, educationData }: Edit) {
   const [userAvatar, setUserAvatar] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [addUserEducation] = useAddUserEducationMutation();
+  const [noImage, setNoImage] = useState<boolean>(user?.avatar ? false : true);
+
+  const deleteImage = () => {
+    setNoImage(true);
+    setUserAvatar(null);
+  };
+
+  useEffect(() => {
+    if (userAvatar) {
+      setNoImage(false);
+    }
+  }, [userAvatar]);
 
   const onSubmitFunction = async (e: any) => {
     e.preventDefault();
@@ -305,6 +316,9 @@ function EditCoachData({ data, educationData }: Edit) {
     if (userAvatar) {
       const minimizedImage = await AppUtils.resizeImage(userAvatar);
       formData.append("avatar", minimizedImage as string);
+    }
+    if (noImage) {
+      formData.append("avatar", "");
     }
     setIsLoading(true);
     try {
@@ -339,13 +353,18 @@ function EditCoachData({ data, educationData }: Edit) {
         <form className="flex flex-col gap-4 " onSubmit={onSubmitFunction}>
           {/* Image Upload */}
           <AvatarInput
+            currentImage={noImage === true ? "" : user?.avatar}
             userAvatar={userAvatar}
-            currentImage={data?.avatar}
             setUserAvatar={setUserAvatar}
           />
-          <DeleteUserPhoto>
-            <p className="text-blue-500 text-sm">Delete my photo</p>
-          </DeleteUserPhoto>
+          {noImage === false && (
+            <p
+              onClick={() => deleteImage()}
+              className="text-blue-500 text-xs my-2 cursor-pointer w-full text-center"
+            >
+              Delete My photo
+            </p>
+          )}
 
           {/*Name Input  */}
           <Input

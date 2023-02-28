@@ -7,7 +7,6 @@ import SubmitButton from "~/@main/components/SubmitButton";
 import { axiosInstance } from "~/app/configs/dataService";
 import AppUtils from "~/@main/utils/AppUtils";
 import AvatarInput from "~/@main/components/shared/AvatarInput";
-import DeleteUserPhoto from "~/@main/components/shared/DeleteUserPhoto";
 import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {
@@ -19,6 +18,18 @@ const EditForm = ({ setOpened }: Props) => {
   const [userAvatar, setUserAvatar] = useState<File | null>(null);
   const [isError, setIsErrror] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [noImage, setNoImage] = useState<boolean>(user?.avatar ? false : true);
+
+  const deleteImage = () => {
+    setNoImage(true);
+    setUserAvatar(null);
+  };
+
+  useEffect(() => {
+    if (userAvatar) {
+      setNoImage(false);
+    }
+  }, [userAvatar]);
 
   const { register, handleSubmit, control } = useForm({
     defaultValues: { ...user, avatar: undefined },
@@ -32,6 +43,9 @@ const EditForm = ({ setOpened }: Props) => {
     if (userAvatar) {
       const image = await AppUtils.resizeImage(userAvatar);
       formData.append("avatar", image as string);
+    }
+    if (noImage) {
+      formData.append("avatar", "");
     }
     setIsLoading(true);
     try {
@@ -57,14 +71,19 @@ const EditForm = ({ setOpened }: Props) => {
   return (
     <form className="flex flex-col gap-2" onSubmit={onSubmitFn}>
       <AvatarInput
-        currentImage={user?.avatar}
+        currentImage={noImage === true ? "" : user?.avatar}
         userAvatar={userAvatar}
         setUserAvatar={setUserAvatar}
         inputAlt="User Photo"
       />
-      <DeleteUserPhoto>
-        <p className="text-blue-500 text-sm">Delete my photo</p>
-      </DeleteUserPhoto>
+      {noImage === false && (
+        <p
+          onClick={() => deleteImage()}
+          className="text-blue-500 text-xs my-2 cursor-pointer w-full text-center"
+        >
+          Delete My photo
+        </p>
+      )}
 
       {/* Image Upload Input */}
       <Input.Wrapper id="firstName" label="First name" className="w-full">

@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AppIcons from "~/@main/core/AppIcons/AppIcons";
 import { Modal, TextInput, Alert, Avatar } from "@mantine/core";
 import SubmitButton from "~/@main/components/SubmitButton";
@@ -9,7 +9,6 @@ import AppUtils from "~/@main/utils/AppUtils";
 import { CoachPlayerInfo } from "~/app/store/types/coach-types";
 import { useUserQuery } from "~/app/store/user/userApi";
 import AvatarInput from "~/@main/components/shared/AvatarInput";
-import DeletePlayerPhoto from "./DeletePlayerPhoto";
 
 type Props = {
   player: CoachPlayerInfo;
@@ -23,6 +22,18 @@ const EditPlayer = ({ player, refetchPlayerData }: Props) => {
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [noImage, setNoImage] = useState<boolean>(player.icon ? false : true);
+
+  const deleteImage = () => {
+    setNoImage(true);
+    setUserAvatar(null);
+  };
+
+  useEffect(() => {
+    if (userAvatar) {
+      setNoImage(false);
+    }
+  }, [userAvatar]);
 
   const onSubmitFun = async (e: any) => {
     e.preventDefault();
@@ -30,6 +41,9 @@ const EditPlayer = ({ player, refetchPlayerData }: Props) => {
     if (userAvatar) {
       const image = await AppUtils.resizeImage(userAvatar);
       formData.append("icon", image as string);
+    }
+    if (noImage) {
+      formData.append("icon", "");
     }
     setError(false);
     const REQUEST_URL =
@@ -48,7 +62,6 @@ const EditPlayer = ({ player, refetchPlayerData }: Props) => {
           }
           refetchPlayerData();
           setOpen(false);
-          setUserAvatar(null);
         })
         .catch((err) => {
           setIsLoading(false);
@@ -88,14 +101,19 @@ const EditPlayer = ({ player, refetchPlayerData }: Props) => {
             </Alert>
           )}
           <AvatarInput
-            currentImage={player.icon}
+            currentImage={noImage === true ? "" : player.icon}
             userAvatar={userAvatar}
             setUserAvatar={setUserAvatar}
             inputAlt="Player Photo"
           />
-          <DeletePlayerPhoto refetchFun={refetchPlayerData} player={player}>
-            <p className="text-blue-500 text-sm">Delete Player photo</p>
-          </DeletePlayerPhoto>
+          {noImage === false && (
+            <p
+              onClick={() => deleteImage()}
+              className="text-blue-500 text-xs my-2 cursor-pointer w-full text-center"
+            >
+              Delete Player photo
+            </p>
+          )}
 
           <div className="flex flex-col my-4 justify-center items-center gap-2">
             {/* Name and Date of birth */}

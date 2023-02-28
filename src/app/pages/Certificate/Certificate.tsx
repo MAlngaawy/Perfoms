@@ -154,9 +154,11 @@ const Certificate = (props: Props) => {
               <Select
                 sx={{
                   width: "100%",
+                  background: !watchedPlayer ? "#eee" : "transparent",
                 }}
                 {...field}
                 id={"type"}
+                disabled={!watchedPlayer}
                 name="type"
                 placeholder="Certificate Type"
                 data={["Performance", "Congratulations", "Encouragement"]}
