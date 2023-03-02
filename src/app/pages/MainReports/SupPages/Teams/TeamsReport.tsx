@@ -16,7 +16,7 @@ import { useAdminTeamsStatisticsQuery } from "~/app/store/clubManager/clubManage
 type Props = {};
 
 const items = [
-  { title: "Categories", href: "/main-reports" },
+  { title: "Reports", href: "/main-reports" },
   { title: "Teams", href: "" },
 ].map((item, index) => (
   <Link to={item.href} key={index}>

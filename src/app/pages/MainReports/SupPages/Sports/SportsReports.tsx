@@ -10,7 +10,7 @@ import { useUserQuery } from "~/app/store/user/userApi";
 type Props = {};
 
 const items = [
-  { title: "categories", href: "/main-reports" },
+  { title: "Reports", href: "/main-reports" },
   { title: "Sports", href: "" },
 ].map((item, index) => (
   <Link to={item.href} key={index}>

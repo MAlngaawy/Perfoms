@@ -61,7 +61,7 @@ const SearchPlayersPage = (props: Props) => {
   );
 
   const items = [
-    { title: "categories", href: "/main-reports" },
+    { title: "Reports", href: "/main-reports" },
     { title: "Search Players", href: "" },
   ].map((item, index) => (
     <Link to={item.href} key={index}>

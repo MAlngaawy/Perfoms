@@ -72,7 +72,7 @@ const OneTeam = (props: Props) => {
   ]);
 
   const items = [
-    { title: "Categories", href: "/main-reports" },
+    { title: "Reports", href: "/main-reports" },
     { title: "Teams", href: `/main-reports/sports/${sport_id}/teams` },
     {
       title: `Team ${

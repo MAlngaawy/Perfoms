@@ -6,7 +6,7 @@ import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {};
 
-const items = [{ title: "categories", href: "" }].map((item, index) => (
+const items = [{ title: "Reports", href: "" }].map((item, index) => (
   <Link to={item.href} key={index}>
     {item.title}
   </Link>
@@ -57,6 +57,13 @@ const MainReports = (props: Props) => {
             />
           </Link>
         )}
+
+        <Link to={"top10"}>
+          <ReportsCategoriesCard
+            image="/assets/images/topten.png"
+            type="Top 10"
+          />
+        </Link>
       </div>
     </div>
   );

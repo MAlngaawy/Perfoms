@@ -48,6 +48,8 @@ import AdminProfilePageConfig from "../pages/AdminProfile/AdminProfileConfig";
 import AlbumMediaConfig from "../pages/players/player-details/Tabs/PlayerMedia/AlbumMedia/AlbumMediaConfig";
 import ScoringPageConfig from "../pages/Scoring/ScoringPageConfig";
 import ScoringTablesConfig from "../pages/Scoring/SupPages/ScoringTablesConfig";
+import Top10Config from "../pages/MainReports/SupPages/Top10/Top10Config";
+import Top10CoachesConfig from "../pages/MainReports/SupPages/Top10/SupPages/Coaches/Top10CoachesConfig";
 
 const routeConfigs: PagesRouteConfig[] = [
   SignInConfig,
@@ -96,6 +98,8 @@ const routeConfigs: PagesRouteConfig[] = [
   AlbumMediaConfig,
   ScoringPageConfig,
   ScoringTablesConfig,
+  Top10Config,
+  Top10CoachesConfig,
 ];
 
 const routes: AppRouteObject[] = [
