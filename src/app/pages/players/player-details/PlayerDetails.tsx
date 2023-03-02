@@ -14,8 +14,8 @@ const PlayerDetails = () => {
   return (
     <EditModeContext.Provider value={editModeState}>
       <div>
-        <div className="flex flex-col sm:flex-row justify-between items-center mx-1 xs:mx-8">
-          <div className="mt-6 container">
+        <div className="flex mt-6 flex-col gap-4 sm:flex-row justify-between items-start mx-4 xs:mx-8">
+          <div className=" container">
             <AppRadioGroub
               values={["Bio", "Media", "Reports"]}
               checked={checked}
