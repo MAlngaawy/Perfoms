@@ -17,7 +17,7 @@ const AddPlayerCourse = (props: Props) => {
   const [addCourse, { isLoading }] = useAddPlayerCourseMutation();
 
   const schema = yup.object().shape({
-    name: yup.string().required("Please add your Course to send"),
+    name: yup.string().required("Please add your Camps to send"),
   });
 
   const {
@@ -37,11 +37,11 @@ const AddPlayerCourse = (props: Props) => {
         AppUtils.showNotificationFun(
           "Success",
           "Done",
-          "Successfully added Course"
+          "Successfully added Camp"
         );
       })
       .catch(() => {
-        AppUtils.showNotificationFun("Error", "Sorry", "Can't add Course now");
+        AppUtils.showNotificationFun("Error", "Sorry", "Can't add Camp now");
       });
     reset({ name: "" });
     setOpened(false);
@@ -55,15 +55,16 @@ const AddPlayerCourse = (props: Props) => {
           reset({ name: "" });
           setOpened(false);
         }}
+        title={`Add Camp`}
       >
         <form onSubmit={handleSubmit(onSubmit)}>
           <Input.Wrapper
             error={errors.course && (errors.course.message as ReactNode)}
           >
-            <Input placeholder="Add Course" {...register("name")} />
+            <Input placeholder="Add Camp" {...register("name")} />
           </Input.Wrapper>
 
-          <SubmitButton isLoading={isLoading} text="Save" />
+          <SubmitButton isLoading={isLoading} text="Add" />
         </form>
       </Modal>
 

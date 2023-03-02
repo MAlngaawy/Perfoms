@@ -57,11 +57,15 @@ const AddLeagueForm = (props: Props) => {
         AppUtils.showNotificationFun(
           "Success",
           "Done",
-          "Successfully added League"
+          "Successfully added Tournament"
         );
       })
       .catch(() => {
-        AppUtils.showNotificationFun("Error", "Sorry", "Can't add League now");
+        AppUtils.showNotificationFun(
+          "Error",
+          "Sorry",
+          "Can't add Tournament now"
+        );
       });
 
     reset({ start_date: "", end_date: "", title: "" });
@@ -70,7 +74,11 @@ const AddLeagueForm = (props: Props) => {
   return (
     <>
       {" "}
-      <Modal opened={opened} onClose={() => setOpened(false)}>
+      <Modal
+        title={`Add League`}
+        opened={opened}
+        onClose={() => setOpened(false)}
+      >
         <form
           className="flex flex-col gap-4 "
           onSubmit={handleSubmit(onSubmitFunction)}

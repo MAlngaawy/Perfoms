@@ -1,7 +1,7 @@
 import { Avatar, Divider, Menu } from "@mantine/core";
 import Cookies from "js-cookie";
 import AppIcons from "~/@main/core/AppIcons";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Notifications from "./subComponents/Notifications";
 import SelectUser from "./subComponents/SelectUser";
 import useWindowSize from "~/@main/hooks/useWindowSize";
@@ -83,7 +83,7 @@ const Toolbar = ({ setOpened }: Props) => {
       }}
       className={`w-full flex justify-between items-center shadow-md p-2 lg:p-4 overflow-hidden`}
     >
-      <div className="bg-fadedGray flex w-fit gap-2 justify-between items-center">
+      <div className="bg-fadedGray flex w-fit gap-2 justify-between items-center overflow-scroll">
         <button
           className="block lg:hidden text-white lg:text-black border-0"
           onClick={() => setOpened(true)}
@@ -128,7 +128,7 @@ const Toolbar = ({ setOpened }: Props) => {
           <Menu.Dropdown className="w-96 max-w-full">
             <h2 className="m-2 text-perfLightBlack text-sm">Messages</h2>
             <Divider />
-            <Menu.Label>
+            {/* <Menu.Label>
               <OneMessageBox
                 image="https://img.freepik.com/free-photo/senior-man-face-portrait-wearing-bowler-hat_53876-148154.jpg?w=2000"
                 id={1}
@@ -147,9 +147,9 @@ const Toolbar = ({ setOpened }: Props) => {
                 lastMessageTime="11:43 pm"
                 unreadMessagesNumber={3}
               />
-            </Menu.Label>
+            </Menu.Label> */}
             <Link
-              to="messages"
+              to="chat"
               className="flex w-full justify-center items-center p-2 hover:bg-pagesBg text-sm"
             >
               <span>All Messages</span>

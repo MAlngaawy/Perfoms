@@ -8,6 +8,7 @@ import {
 } from "~/app/store/user/userApi";
 import { EditModeContext } from "../../../../PlayerDetails";
 import AddAchievement from "./Forms/AddAchievement";
+import { Avatar, Grid } from "@mantine/core";
 
 type Props = {};
 
@@ -20,27 +21,29 @@ const Achievements = (props: Props) => {
   );
   return (
     <div className="bg-white rounded-3xl p-6 px-3 min-h-full">
-      <div className="flex justify-between">
+      <div className="flex items-center justify-between mb-4">
         <h3 className="text-base font-medium text-perfLightBlack">
           Achievements
         </h3>
         {editMode && <AddAchievement />}
       </div>
 
-      <div className="flex flex-col gap-5">
+      <Grid>
         {playerAchievements?.results.map((ach) => {
           return (
-            <OneAchievement
-              type={ach.type}
-              date={ach.date}
-              location={ach.location}
-              place={ach.place}
-              key={ach.id}
-              id={ach.id}
-            />
+            <Grid.Col span={12} xs={6}>
+              <OneAchievement
+                type={ach.type}
+                date={ach.date}
+                location={ach.location}
+                place={ach.place}
+                key={ach.id}
+                id={ach.id}
+              />
+            </Grid.Col>
           );
         })}
-      </div>
+      </Grid>
     </div>
   );
 };
@@ -55,10 +58,10 @@ const OneAchievement = ({ type, date, place, id, location }: any) => {
     <div className="flex justify-between items-center">
       <div className="flex gap-1">
         <div className="icon">
-          <img src="/assets/images/medal.png" className="w-10" alt="medal" />
+          <Avatar src="/assets/images/medal.png" size={30} alt="medal" />
         </div>
         <div className="details break-words">
-          <h2 className="type text-xs font-medium text-perfLightBlack">
+          <h2 className="type text-sm font-medium text-perfLightBlack">
             {type}
           </h2>
           <p className="text-xs text-perfGray3">

@@ -51,6 +51,7 @@ function AddSkill() {
           reset({ name: "" });
           setOpened(false);
         }}
+        title={`Add Skill`}
       >
         <form onSubmit={handleSubmit(onSubmit)}>
           <Input.Wrapper

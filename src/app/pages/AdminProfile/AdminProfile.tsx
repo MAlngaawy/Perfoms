@@ -20,8 +20,12 @@ const AdminProfile = (props: Props) => {
       </div>
       <div className="flex justify-center">
         <div className="content relative bg-white my-10 p-10 rounded-xl flex flex-col justify-center items-center">
-          <Modal opened={opened} onClose={() => setOpened(false)}>
-            <EditForm refetch={refetch} user={user} setOpened={setOpened} />
+          <Modal
+            title={`Edit Profile`}
+            opened={opened}
+            onClose={() => setOpened(false)}
+          >
+            <EditForm setOpened={setOpened} />
           </Modal>
           <div
             className="edit absolute right-5 top-5"

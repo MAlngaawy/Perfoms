@@ -10,23 +10,37 @@ import { useAddEventVideoMutation } from "~/app/store/user/userApi";
 
 type Props = {
   refetch: any;
-  videoUrl: string | undefined;
 };
 
-const UploadMedia = ({ refetch, videoUrl }: Props) => {
+const UploadMedia = ({ refetch }: Props) => {
   const [opened, setOpened] = useState(false);
-  const [link, setLink] = useState<string | undefined>();
+  const [link, setLink] = useState<string | undefined | null>();
   const [isLoading, setIsLoading] = useState(false);
   const { album_id, id } = useParams();
   const [images, setImages] = useState<any>(null);
   const [addEventVideo] = useAddEventVideoMutation();
+  const [mediaTypeErrorMessage, setMediaTypeErrorMessage] = useState<boolean>();
+  const [youtubeLinkError, setYoutubeLinkError] = useState<boolean>(false);
+
+  const checkFilesType = (e: any) => {
+    for (let file of e) {
+      if (file.type === "image/jpeg" || file.type === "image/png") {
+        console.log(file.type, "Passed");
+      } else {
+        setMediaTypeErrorMessage(true);
+        return console.log("Fail");
+      }
+    }
+    setMediaTypeErrorMessage(false);
+    setImages(e);
+  };
 
   const upload = async (e: any) => {
     e.preventDefault();
-    setIsLoading(true);
 
     // Youtube link upload
     if (link) {
+      setIsLoading(true);
       addEventVideo({ event_id: album_id || id, video: link })
         .then((res) => {
           setIsLoading(false);
@@ -41,7 +55,7 @@ const UploadMedia = ({ refetch, videoUrl }: Props) => {
     }
 
     if (images) {
-      // take these steps if there are an image to upload
+      setIsLoading(true);
       const formData = new FormData();
       const resizedImages = [];
       for (let img of images) {
@@ -94,48 +108,77 @@ const UploadMedia = ({ refetch, videoUrl }: Props) => {
 
       <Modal
         opened={opened}
-        onClose={() => setOpened(false)}
+        onClose={() => {
+          setImages(null);
+          setLink(null);
+          setOpened(false);
+          setMediaTypeErrorMessage(false);
+        }}
         title="Upload Media"
       >
-        <div className="m-6">
-          <ReactPlayer
-            width={"100%"}
-            height={"100%"}
-            controls={true}
-            url={link}
-          />
-        </div>
+        {link && (
+          <div className="m-6">
+            <ReactPlayer
+              width={"100%"}
+              height={"100%"}
+              controls={true}
+              url={link}
+            />
+          </div>
+        )}
 
         <form onSubmit={upload} className="flex flex-col gap-4">
-          <Input
-            type="text"
-            name="youtubeLink"
-            placeholder="Add youtube Link"
-            onChange={(v: any) => setLink(v.target.value)}
-            sx={{
-              ".mantine-Input-input": {
-                borderColor: "rgb(47 128 237)",
-                color: "rgb(47 128 237)",
-              },
-            }}
-          />
+          <div className="flex flex-col gap-2">
+            <Input
+              type="text"
+              name="youtubeLink"
+              placeholder="Add youtube Link"
+              onChange={(v: any) => {
+                let validLink = AppUtils.matchYoutubeUrl(v.target.value);
+                if (validLink) {
+                  setLink(v.target.value);
+                  setYoutubeLinkError(false);
+                } else {
+                  setLink(null);
+                  setYoutubeLinkError(true);
+                }
+              }}
+              sx={{
+                ".mantine-Input-input": {
+                  borderColor: "rgb(47 128 237)",
+                  color: "rgb(47 128 237)",
+                },
+              }}
+            />
+            {youtubeLinkError && (
+              <div className="text-red text-xs">Not valid youtube video</div>
+            )}
+          </div>
 
-          <FileInput
-            multiple
-            sx={{
-              ".mantine-Input-input": {
-                borderColor: "rgb(47 128 237)",
-                color: "rgb(47 128 237)",
-              },
-            }}
-            placeholder="Upload Images"
-            onChange={(e) => {
-              setImages(e);
-            }}
-            name="file"
-            accept="image/png,image/jpeg"
-            // multiple
-          />
+          <div className="flex flex-col gap-2">
+            <FileInput
+              multiple
+              sx={{
+                ".mantine-Input-input": {
+                  borderColor: "rgb(47 128 237)",
+                  color: "rgb(47 128 237)",
+                },
+              }}
+              placeholder="Upload Images"
+              onChange={(e) => {
+                checkFilesType(e);
+                // setImages(e);
+              }}
+              name="file"
+              accept="image/png,image/jpeg"
+              // multiple
+            />
+            {mediaTypeErrorMessage && (
+              <div className="text-red text-xs">
+                This field accept only images with type (*/jpg, */jpeg, */png)
+              </div>
+            )}
+          </div>
 
           <SubmitButton isLoading={isLoading} text="Upload" />
         </form>

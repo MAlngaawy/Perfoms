@@ -3,6 +3,7 @@ import { PlayerCertificate } from "~/app/store/types/parent-types";
 
 type Props = {
   certificate: Partial<PlayerCertificate>;
+  forPrint?: boolean;
 };
 
 const EncourageCertificate = forwardRef(({ certificate }: Props, ref) => {
@@ -10,7 +11,6 @@ const EncourageCertificate = forwardRef(({ certificate }: Props, ref) => {
 
   useEffect(() => {
     myFont.load().then((font) => {
-      console.log(certificate);
       document.fonts.add(font);
 
       //@ts-ignore
@@ -40,10 +40,7 @@ const EncourageCertificate = forwardRef(({ certificate }: Props, ref) => {
     });
   }, [certificate, ref]);
   return (
-    <div
-      id={"" + 564654}
-      className="flex flex-col bg-black justify-center items-center"
-    >
+    <div id={"" + 564654} className="flex flex-col bg-black">
       {/* @ts-ignore */}
       <canvas className="bg-black" ref={ref} width={880} height={550} />
     </div>

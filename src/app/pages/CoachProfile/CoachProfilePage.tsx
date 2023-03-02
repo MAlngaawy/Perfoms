@@ -19,7 +19,7 @@ const CoachProfilePage = (props: Props) => {
 
   return (
     <div className="mx-2">
-      <div className="edit w-full px-20 flex justify-end items-center mt-2">
+      <div className="edit w-full flex px-4 justify-end items-center mt-4">
         {editMode ? (
           <button
             className="bg-perfBlue  border rounded-lg text-white py-1 px-6 cursor-pointer transform hover:scale-105"
@@ -38,12 +38,7 @@ const CoachProfilePage = (props: Props) => {
       </div>
       <Grid className="p-4" gutter="sm">
         <Grid.Col xs={12} md={3}>
-          <CoachPersonalInfo
-            editMode={editMode}
-            refetch={refetch}
-            data={user}
-            type={"profile"}
-          />
+          <CoachPersonalInfo editMode={editMode} type={"profile"} />
         </Grid.Col>
         <Grid.Col xs={12} md={6}>
           <CoachExperince editMode={editMode} data={user} />

@@ -4,19 +4,20 @@ import PlayerInfo from "./Tabs/PlayerInfo/PlayerInfo";
 import PlayerBio from "./Tabs/PlayerBio/PlayerBio";
 import PlayerAlbums from "./Tabs/PlayerMedia/PlayerAlbums";
 import PrintComp from "~/@main/PrintComp";
+import Player from "../../MainReports/SupPages/Players/Player/Player";
 
 const EditModeContext = createContext<boolean>(false);
 const PlayerDetails = () => {
-  const [checked, setChecked] = useState<"Info" | "Bio" | "Media">("Info");
+  const [checked, setChecked] = useState<"Reports" | "Bio" | "Media">("Bio");
   const [editModeState, setEditModeState] = useState(false);
 
   return (
     <EditModeContext.Provider value={editModeState}>
       <div>
-        <div className="flex flex-col sm:flex-row justify-between items-center mx-8">
-          <div className="my-6">
+        <div className="flex mt-6 flex-col gap-4 sm:flex-row justify-between items-start mx-4 xs:mx-8">
+          <div className=" container">
             <AppRadioGroub
-              values={["Info", "Bio", "Media"]}
+              values={["Bio", "Media", "Reports"]}
               checked={checked}
               setChecked={setChecked}
             />
@@ -31,8 +32,8 @@ const PlayerDetails = () => {
           )}
         </div>
         <div>
-          <div className={checked !== "Info" ? "hidden" : "block px-4"}>
-            <PlayerInfo />
+          <div className={checked !== "Reports" ? "hidden" : "block px-4"}>
+            <Player asComponent />
           </div>
           <div className={checked !== "Bio" ? "hidden" : "block px-4"}>
             <PrintComp>

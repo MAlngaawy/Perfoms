@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AppIcons from "~/@main/core/AppIcons/AppIcons";
 import { Modal, TextInput, Alert, Avatar } from "@mantine/core";
 import SubmitButton from "~/@main/components/SubmitButton";
@@ -8,6 +8,7 @@ import { DatePicker } from "@mantine/dates";
 import AppUtils from "~/@main/utils/AppUtils";
 import { CoachPlayerInfo } from "~/app/store/types/coach-types";
 import { useUserQuery } from "~/app/store/user/userApi";
+import AvatarInput from "~/@main/components/shared/AvatarInput";
 
 type Props = {
   player: CoachPlayerInfo;
@@ -16,12 +17,23 @@ type Props = {
 
 const EditPlayer = ({ player, refetchPlayerData }: Props) => {
   const { refetch } = useMyPlayersQuery({});
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const { data: user } = useUserQuery({});
   const [userAvatar, setUserAvatar] = useState<File | null>(null);
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [noImage, setNoImage] = useState<boolean>(player.icon ? false : true);
+
+  const deleteImage = () => {
+    setNoImage(true);
+    setUserAvatar(null);
+  };
+
+  useEffect(() => {
+    if (userAvatar) {
+      setNoImage(false);
+    }
+  }, [userAvatar]);
 
   const onSubmitFun = async (e: any) => {
     e.preventDefault();
@@ -30,10 +42,10 @@ const EditPlayer = ({ player, refetchPlayerData }: Props) => {
       const image = await AppUtils.resizeImage(userAvatar);
       formData.append("icon", image as string);
     }
+    if (noImage) {
+      formData.append("icon", "");
+    }
     setError(false);
-
-    console.log("formData", formData.get("icon52"));
-
     const REQUEST_URL =
       user?.user_type === "Parent"
         ? `parent/update-player/${player.id}/`
@@ -50,7 +62,6 @@ const EditPlayer = ({ player, refetchPlayerData }: Props) => {
           }
           refetchPlayerData();
           setOpen(false);
-          setUserAvatar(null);
         })
         .catch((err) => {
           setIsLoading(false);
@@ -81,6 +92,7 @@ const EditPlayer = ({ player, refetchPlayerData }: Props) => {
         transitionTimingFunction="ease"
         shadow="xl"
         radius="xl"
+        title={`Edit Player`}
       >
         <form onSubmit={onSubmitFun} className="rounded-3xl">
           {error && (
@@ -88,36 +100,20 @@ const EditPlayer = ({ player, refetchPlayerData }: Props) => {
               Something went wrong
             </Alert>
           )}
-          <div className="w-full flex justify-center items-center">
-            <div className="relative photo place-self-center w-28 h-28">
-              <Avatar
-                className="object-cover w-full h-full rounded-lg"
-                src={
-                  (userAvatar && URL.createObjectURL(userAvatar)) || player.icon
-                }
-                alt="user-avatar"
-              />
-              <div
-                onClick={() =>
-                  fileInputRef.current && fileInputRef.current.click()
-                }
-              >
-                <AppIcons
-                  className="w-5 h-5 absolute top-2 cursor-pointer right-2 text-perfGray3 hover:text-perfGray1"
-                  icon="PencilSquareIcon:outline"
-                />
-              </div>
-              <input
-                ref={fileInputRef}
-                onChange={(e) =>
-                  setUserAvatar(e?.currentTarget?.files?.[0] as File)
-                }
-                type="file"
-                className="hidden"
-                id={"avatar"}
-              />
-            </div>
-          </div>
+          <AvatarInput
+            currentImage={noImage === true ? "" : player.icon}
+            userAvatar={userAvatar}
+            setUserAvatar={setUserAvatar}
+            inputAlt="Player Photo"
+          />
+          {noImage === false && (
+            <p
+              onClick={() => deleteImage()}
+              className="text-blue-500 text-xs my-2 cursor-pointer w-full text-center"
+            >
+              Delete Player photo
+            </p>
+          )}
 
           <div className="flex flex-col my-4 justify-center items-center gap-2">
             {/* Name and Date of birth */}

@@ -8,6 +8,7 @@ import TeamPlayers, {
   SinglePlayer,
 } from "../SubPages/SingleTeam/Components/TeamPlayers";
 import Placeholders from "~/@main/components/Placeholders";
+import { Grid } from "@mantine/core";
 
 interface PlayersProps {
   id: number;
@@ -27,30 +28,30 @@ const PlayersPage = () => {
 
   return (
     <>
-      <div className="m-5">
+      <div className="m-2">
         <div className="flex justify-end">
           {/* <CustomBreadCrumbs items={[{ title: "Players", href: "" }]} /> */}
           <TeamFilter />
         </div>
       </div>
-      <div className="players-page bg-white p-6 rounded-3xl m-5">
+      <div className="players-page bg-white p-2 rounded-3xl m-2">
         <p className="pb-2">Players</p>
-        <div
-          className={`flex gap-5 ${
-            !coahcTeamPlayers && "justify-center"
-          } flex-wrap`}
-        >
-          {coahcTeamPlayers &&
-            coahcTeamPlayers?.results.map((player) => {
-              return (
-                <SinglePlayer
-                  key={player.id}
-                  id={player.id}
-                  image={player.icon}
-                  name={player.name}
-                />
-              );
-            })}
+        <div className="flex flex-wrap">
+          <div className="flex flex-wrap justify-center sm:justify-start gap-2 xs:gap-4  mt-4">
+            {coahcTeamPlayers &&
+              coahcTeamPlayers?.results.map((player) => {
+                return (
+                  <div className=" ">
+                    <SinglePlayer
+                      key={player.id}
+                      id={player.id}
+                      image={player.icon}
+                      name={player.name}
+                    />
+                  </div>
+                );
+              })}
+          </div>
           <>
             {!coahcTeamPlayers?.results.length && (
               <div className="flex flex-col md:flex-row justify-center items-center gap-3">

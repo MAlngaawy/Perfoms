@@ -28,19 +28,18 @@ import AppUtils from "~/@main/utils/AppUtils";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import AvatarInput from "../shared/AvatarInput";
 
 // Props Types
 type Props = {
-  data: Partial<User> | undefined;
   editMode?: boolean;
-  refetch?: any;
   type: "profile" | "cv";
 };
 
-const CoachPersonalInfo = ({ data, editMode, refetch, type }: Props) => {
+const CoachPersonalInfo = ({ editMode, type }: Props) => {
   const [educations, setEducations] = useState<Educations>();
   const { coach_id } = useParams();
-  const { data: user } = useUserQuery({});
+  const { data, refetch } = useUserQuery({});
   const { data: userEducations } = useGetUserEducationsQuery({});
   const { data: coachEducations } = useGetCoachEducationsQuery(
     { coach_id: coach_id },
@@ -50,7 +49,7 @@ const CoachPersonalInfo = ({ data, editMode, refetch, type }: Props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user?.user_type === "Parent") {
+    if (data?.user_type === "Parent") {
       setEducations(coachEducations);
     } else {
       setEducations(userEducations);
@@ -60,12 +59,13 @@ const CoachPersonalInfo = ({ data, editMode, refetch, type }: Props) => {
   return (
     <div className="bg-white flex flex-col gap-4 h-full rounded-lg md:rounded-2xl p-4">
       <h3 className="text-base font-medium text-center">{data?.user_type}</h3>
-      <div className="flex md:flex-col justify-center items-center gap-4">
+      <div className="flex flex-col justify-center items-center gap-4">
         <div className="flex justify-center items-center">
           <Avatar
-            className="w-32 h-32 object-cover transition-all delay-75 rounded-lg group-hover:border border-white box-border"
+            className="object-cover transition-all delay-75 rounded-lg group-hover:border border-white box-border"
             src={data?.avatar}
             alt="Profile_Picture"
+            size={200}
           />
         </div>
         <div className="flex flex-col justify-center items-center gap-2">
@@ -75,18 +75,18 @@ const CoachPersonalInfo = ({ data, editMode, refetch, type }: Props) => {
           <h4 className="text-perfBlue group-hover:text-white text-xs">
             {data?.job}
           </h4>
-          {data?.user_type == "Parent" && (
+          {/* {data?.user_type == "Parent" && (
             <Button
               onClick={() => navigate("/chat")}
               className=" border border-perfBlue rounded-lg font-normal text-perfBlue hover:text-white"
             >
               Send Message
             </Button>
-          )}
+          )} */}
         </div>
       </div>
 
-      <div className="flex flex-wrap sm:flex-col justify-between">
+      <div className="flex flex-col sm:flex-row md:flex-col justify-around">
         <div className="profile text-left">
           <div>
             <h3 className="text-base font-medium text-perfLightBlack">
@@ -109,17 +109,17 @@ const CoachPersonalInfo = ({ data, editMode, refetch, type }: Props) => {
               ))}
             </div>
           </div>
+          {type === "profile" && editMode && (
+            <EditCoachData
+              educationData={userEducations?.results[0]}
+              refetch={() => {
+                if (refetch) refetch();
+              }}
+              data={data}
+            />
+          )}
         </div>
 
-        {type === "profile" && editMode && (
-          <EditCoachData
-            educationData={userEducations?.results[0]}
-            refetch={() => {
-              if (refetch) refetch();
-            }}
-            data={data}
-          />
-        )}
         <div className="education text-left mt-5">
           <h3 className="text-base font-medium text-perfLightBlack">
             Education
@@ -169,18 +169,17 @@ const CoachPersonalInfo = ({ data, editMode, refetch, type }: Props) => {
               </div>
             );
           })}
+          {type === "profile" && editMode && (
+            <EditEducation
+              educationData={userEducations?.results[0]}
+              refetch={() => {
+                if (refetch) refetch();
+              }}
+              data={data}
+            />
+          )}
         </div>
       </div>
-
-      {type === "profile" && editMode && (
-        <EditEducation
-          educationData={userEducations?.results[0]}
-          refetch={() => {
-            if (refetch) refetch();
-          }}
-          data={data}
-        />
-      )}
     </div>
   );
 };
@@ -275,10 +274,10 @@ const EditEducation = ({ data, refetch, educationData }: Edit) => {
         </form>
       </Modal>
 
-      <Group position="center">
+      <Group>
         <button
           onClick={() => setOpened(true)}
-          className="text-sm flex gap-2 xl:text-base p-2 transform hover:scale-105 duration-100 bg-white border border-perfGray3 rounded-lg text-perfGray3"
+          className="text-xs flex gap-2 xl:text-base p-2 transform hover:scale-105 duration-100 bg-white border border-perfGray3 rounded-lg text-perfGray3"
         >
           <span>+ Add Education</span>
         </button>
@@ -288,13 +287,24 @@ const EditEducation = ({ data, refetch, educationData }: Edit) => {
 };
 
 // Edit Coach Personal Data Modal
-function EditCoachData({ data, refetch, educationData }: Edit) {
+function EditCoachData({ data, educationData }: Edit) {
+  const { data: user, refetch } = useUserQuery({});
   const [opened, setOpened] = useState(false);
-  const [playerImage, setPlayerImage] = React.useState<string | unknown>("");
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [userAvatar, setUserAvatar] = useState<File>();
+  const [userAvatar, setUserAvatar] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [addUserEducation] = useAddUserEducationMutation();
+  const [noImage, setNoImage] = useState<boolean>(user?.avatar ? false : true);
+
+  const deleteImage = () => {
+    setNoImage(true);
+    setUserAvatar(null);
+  };
+
+  useEffect(() => {
+    if (userAvatar) {
+      setNoImage(false);
+    }
+  }, [userAvatar]);
 
   const onSubmitFunction = async (e: any) => {
     e.preventDefault();
@@ -306,6 +316,9 @@ function EditCoachData({ data, refetch, educationData }: Edit) {
     if (userAvatar) {
       const minimizedImage = await AppUtils.resizeImage(userAvatar);
       formData.append("avatar", minimizedImage as string);
+    }
+    if (noImage) {
+      formData.append("avatar", "");
     }
     setIsLoading(true);
     try {
@@ -319,7 +332,6 @@ function EditCoachData({ data, refetch, educationData }: Edit) {
             "Done",
             "Successfully Edited Coach Data"
           );
-          setPlayerImage(null);
           refetch();
         })
         .catch(() => {
@@ -340,34 +352,19 @@ function EditCoachData({ data, refetch, educationData }: Edit) {
       <Modal opened={opened} onClose={() => setOpened(false)}>
         <form className="flex flex-col gap-4 " onSubmit={onSubmitFunction}>
           {/* Image Upload */}
-          <div className="relative photo place-self-center w-28 h-28">
-            <Avatar
-              className="object-cover w-full h-full rounded-lg"
-              src={
-                (userAvatar && URL.createObjectURL(userAvatar)) || data?.avatar
-              }
-              alt="user-avatar"
-            />
-            <div
-              onClick={() =>
-                fileInputRef.current && fileInputRef.current.click()
-              }
+          <AvatarInput
+            currentImage={noImage === true ? "" : user?.avatar}
+            userAvatar={userAvatar}
+            setUserAvatar={setUserAvatar}
+          />
+          {noImage === false && (
+            <p
+              onClick={() => deleteImage()}
+              className="text-blue-500 text-xs my-2 cursor-pointer w-full text-center"
             >
-              <AppIcons
-                className="w-5 h-5 absolute top-2 cursor-pointer right-2 text-perfGray3 hover:text-perfGray1"
-                icon="PencilSquareIcon:outline"
-              />
-            </div>
-            <input
-              ref={fileInputRef}
-              onChange={(e) =>
-                setUserAvatar(e?.currentTarget?.files?.[0] as File)
-              }
-              type="file"
-              className="hidden"
-              id={"avatar"}
-            />
-          </div>
+              Delete My photo
+            </p>
+          )}
 
           {/*Name Input  */}
           <Input
@@ -392,10 +389,10 @@ function EditCoachData({ data, refetch, educationData }: Edit) {
         </form>
       </Modal>
 
-      <Group position="center">
+      <Group>
         <button
           onClick={() => setOpened(true)}
-          className="text-sm flex gap-2 xl:text-base p-2 transform hover:scale-105 duration-100 bg-white border border-perfGray3 rounded-lg text-perfGray3"
+          className="text-xs flex gap-2 items-center xl:text-base p-2 transform hover:scale-105 duration-100 bg-white border border-perfGray3 rounded-lg text-perfGray3"
         >
           <AppIcons
             className="w-5 h-5 text-perfGray3"

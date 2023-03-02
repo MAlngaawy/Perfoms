@@ -139,6 +139,7 @@ const AddCoachForm = ({ teamId, teamCoaches }: Props) => {
             setOpened(false);
             reset({ coach: "" });
           }}
+          title={`Add Coach`}
         >
           <form onSubmit={handleSubmit(onSubmit)}>
             <Controller

@@ -16,6 +16,7 @@ type Props = {
 
 const PlayerCertificatePage = ({ certificateId }: Props) => {
   const canvasRef = useRef<any>();
+  const printRef = useRef<any>();
   const { id } = useParams();
   const { data: certificate } = usePlayerCertificateQuery(
     certificateId as unknown as string,
@@ -39,19 +40,19 @@ const PlayerCertificatePage = ({ certificateId }: Props) => {
 
   const printDocument = () => {
     //@ts-ignore
-    const imgData = canvasRef?.current.toDataURL("image/png");
+    const imgData = printRef?.current.toDataURL("image/png");
     const pdf = new jsPDF("landscape");
-    pdf.addImage(imgData, "JPEG", 23, 10, 253, 0);
+    pdf.addImage(imgData, "png", 23, 10, 253, 0);
     pdf.save(`${certificate?.player.name} certificate.pdf`);
   };
 
   return (
-    <div className=" relative flex flex-col gap-5 justify-center items-center p-5 h-full w-full">
+    <div className=" relative flex flex-col gap-5 justify-center items-center h-full w-full">
       <div className="overflow-scroll md:overflow-hidden max-w-full">
         {certificate &&
           dateFilter(certificate.created_at) &&
           (certificate.type === "Encouragement" ? (
-            <>
+            <div className="my-6">
               <div
                 onClick={() => printDocument()}
                 className="z-50 flex flex-col border items-center justify-center absolute  right-0 bottom-0 opacity-70 hover:opacity-100 w-20 h-20 rounded-full cursor-pointer bg-perfBlue text-white"
@@ -62,10 +63,23 @@ const PlayerCertificatePage = ({ certificateId }: Props) => {
                 />
                 <span>PDF</span>
               </div>
-              <EncourageCertificate certificate={certificate} ref={canvasRef} />
-            </>
+              <div>
+                <EncourageCertificate
+                  forPrint={false}
+                  ref={canvasRef}
+                  certificate={certificate}
+                />
+              </div>
+              <div className="hidden">
+                <EncourageCertificate
+                  certificate={certificate}
+                  ref={printRef}
+                  forPrint={true}
+                />
+              </div>
+            </div>
           ) : certificate.type === "Congratulations" ? (
-            <>
+            <div className="my-6">
               <div
                 onClick={() => printDocument()}
                 className="z-50 flex flex-col border items-center justify-center absolute  right-0 bottom-0 opacity-70 hover:opacity-100 w-20 h-20 rounded-full cursor-pointer bg-perfBlue text-white"
@@ -76,10 +90,23 @@ const PlayerCertificatePage = ({ certificateId }: Props) => {
                 />
                 <span>PDF</span>
               </div>
-              <CongratsCertificate certificate={certificate} ref={canvasRef} />
-            </>
+              <div>
+                <CongratsCertificate
+                  forPrint={false}
+                  ref={canvasRef}
+                  certificate={certificate}
+                />
+              </div>
+              <div className="hidden">
+                <CongratsCertificate
+                  certificate={certificate}
+                  ref={printRef}
+                  forPrint={true}
+                />
+              </div>
+            </div>
           ) : (
-            <>
+            <div className="my-6">
               <div
                 onClick={() => printDocument()}
                 className="z-50 flex flex-col border items-center justify-center absolute  right-0 bottom-0 opacity-70 hover:opacity-100 w-20 h-20 rounded-full cursor-pointer bg-perfBlue text-white"
@@ -90,8 +117,21 @@ const PlayerCertificatePage = ({ certificateId }: Props) => {
                 />
                 <span>PDF</span>
               </div>
-              <CertificateImage certificate={certificate} ref={canvasRef} />
-            </>
+              <div>
+                <CertificateImage
+                  forPrint={false}
+                  ref={canvasRef}
+                  certificate={certificate}
+                />
+              </div>
+              <div className="hidden">
+                <CertificateImage
+                  certificate={certificate}
+                  ref={printRef}
+                  forPrint={true}
+                />
+              </div>
+            </div>
           ))}
       </div>
     </div>

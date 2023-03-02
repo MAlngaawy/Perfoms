@@ -415,12 +415,12 @@ function AddExperinces({ data: oldDetails }: { data: Details | undefined }) {
         </form>
       </Modal>
 
-      <Group position="center">
+      <Group>
         <button
           onClick={() => {
             setOpened(true);
           }}
-          className="text-sm xl:text-base p-2 transform hover:scale-105 duration-100 bg-white border border-perfGray3 rounded-lg text-perfGray3"
+          className="text-xs p-2 transform hover:scale-105 duration-100 bg-white border border-perfGray3 rounded-lg text-perfGray3"
         >
           + Add Experiance
         </button>
@@ -492,10 +492,10 @@ function AddQualifications() {
         </form>
       </Modal>
 
-      <Group position="center">
+      <Group>
         <button
           onClick={() => setOpened(true)}
-          className="text-sm xl:text-base p-2 transform hover:scale-105 duration-100 bg-white border border-perfGray3 rounded-lg text-perfGray3"
+          className="text-xs p-2 transform hover:scale-105 duration-100 bg-white border border-perfGray3 rounded-lg text-perfGray3"
         >
           + Add Qualifications
         </button>
@@ -560,10 +560,10 @@ function AddCourses() {
         </form>
       </Modal>
 
-      <Group position="center">
+      <Group>
         <button
           onClick={() => setOpened(true)}
-          className="text-sm xl:text-base p-2 transform hover:scale-105 duration-100 bg-white border border-perfGray3 rounded-lg text-perfGray3"
+          className="text-xs p-2 transform hover:scale-105 duration-100 bg-white border border-perfGray3 rounded-lg text-perfGray3"
         >
           + Add Courses
         </button>

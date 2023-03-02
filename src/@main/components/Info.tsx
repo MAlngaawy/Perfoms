@@ -9,8 +9,8 @@ const Info = ({ label, value, center }: InfoProps) => {
         "justify-center items-center": center,
       })}
     >
-      <h3 className=" text-perfGray3 text-sm">{label}</h3>
-      <h2 className="text-perfGray1 text-base font-medium">{value}</h2>
+      <h3 className=" text-perfGray3 text-xs">{label}</h3>
+      <h2 className="text-perfGray1 text-sm font-normal">{value}</h2>
     </div>
   );
 };

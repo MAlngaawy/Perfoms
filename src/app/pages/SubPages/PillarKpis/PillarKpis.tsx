@@ -16,6 +16,7 @@ import {
 import AppUtils from "~/@main/utils/AppUtils";
 import { useUserQuery } from "~/app/store/user/userApi";
 import SharedBreadCrumbs from "~/@main/components/shared/SharedBreadCrumbs";
+import ItemBox from "~/@main/components/shared/ItemBox";
 
 type Props = {};
 
@@ -52,70 +53,54 @@ const PillarKpis = (props: Props) => {
       <div className="flex xs:flex-row flex-wrap justify-center sm:justify-start items-stretch gap-4 ">
         {kpis?.results.map((kpi) => {
           return (
-            <div
-              key={kpi?.id}
-              className="sport-card relative bg-white rounded-3xl p-12 flex flex-col justify-center items-center gap-4"
+            <ItemBox
+              icon={kpi.icon || kpi.icon_url}
+              name={kpi.name}
+              url={`${kpi.id}/metrics`}
             >
-              <Link
-                to={`${kpi.id}/metrics`}
-                className="bg-pagesBg rounded-full w-24 h-24 flex justify-center items-center"
-              >
-                <Avatar
-                  radius={"xl"}
-                  className="w-3/5 h-3/5"
-                  src={kpi.icon || kpi.icon_url}
-                  alt="icon"
-                />
-              </Link>
-              <h2 className="text-xl text-perfBlue w-28 text-center mx-auto">
-                {kpi.name}
-              </h2>
-              {/* Edit and Delete Buttons */}
-              <div className="flex absolute right-2 top-5 gap-2">
-                <EditKpi kpiData={kpi} />
-                <DeleteButton
-                  deleteFun={() => {
-                    if (user?.user_type === "Admin") {
-                      adminDeleteKpi({ kpi_id: kpi.id })
-                        .then(() => {
-                          AppUtils.showNotificationFun(
-                            "Success",
-                            "Deleted",
-                            "Kpi Deleted Successfully"
-                          );
-                          adminRefetchKpis();
-                        })
-                        .catch(() => {
-                          AppUtils.showNotificationFun(
-                            "Error",
-                            "Wrong",
-                            "Sorry Can't delete kpi now"
-                          );
-                        });
-                    } else if (user?.user_type === "Supervisor") {
-                      superDeleteKpi({ kpi_id: kpi.id })
-                        .then(() => {
-                          AppUtils.showNotificationFun(
-                            "Success",
-                            "Deleted",
-                            "Kpi Deleted Successfully"
-                          );
-                          superRefetchKpis();
-                        })
-                        .catch(() => {
-                          AppUtils.showNotificationFun(
-                            "Error",
-                            "Wrong",
-                            "Sorry Can't delete kpi now"
-                          );
-                        });
-                    }
-                  }}
-                  name={kpi.name}
-                  type="Kpi"
-                />
-              </div>
-            </div>
+              <EditKpi kpiData={kpi} />
+              <DeleteButton
+                deleteFun={() => {
+                  if (user?.user_type === "Admin") {
+                    adminDeleteKpi({ kpi_id: kpi.id })
+                      .then(() => {
+                        AppUtils.showNotificationFun(
+                          "Success",
+                          "Deleted",
+                          "Kpi Deleted Successfully"
+                        );
+                        adminRefetchKpis();
+                      })
+                      .catch(() => {
+                        AppUtils.showNotificationFun(
+                          "Error",
+                          "Wrong",
+                          "Sorry Can't delete kpi now"
+                        );
+                      });
+                  } else if (user?.user_type === "Supervisor") {
+                    superDeleteKpi({ kpi_id: kpi.id })
+                      .then(() => {
+                        AppUtils.showNotificationFun(
+                          "Success",
+                          "Deleted",
+                          "Kpi Deleted Successfully"
+                        );
+                        superRefetchKpis();
+                      })
+                      .catch(() => {
+                        AppUtils.showNotificationFun(
+                          "Error",
+                          "Wrong",
+                          "Sorry Can't delete kpi now"
+                        );
+                      });
+                  }
+                }}
+                name={kpi.name}
+                type="Kpi"
+              />
+            </ItemBox>
           );
         })}
 

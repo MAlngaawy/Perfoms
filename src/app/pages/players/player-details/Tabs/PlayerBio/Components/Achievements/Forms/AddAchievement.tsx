@@ -65,6 +65,7 @@ const AddAchievement = (props: Props) => {
   return (
     <>
       <Modal
+        title={`Add Achievements`}
         opened={opened}
         onClose={() => {
           reset({ type: "", place: "", date: "", location: "" });

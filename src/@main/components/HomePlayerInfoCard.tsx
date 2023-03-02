@@ -8,7 +8,7 @@ import NoData from "./NoData";
 import { CoachPlayerInfo } from "~/app/store/types/coach-types";
 import { useGetPlayerInfoQuery } from "~/app/store/coach/coachApi";
 import { useGetSuperPlayerInfoQuery } from "~/app/store/supervisor/supervisorMainApi";
-import { Skeleton } from "@mantine/core";
+import { Avatar, Skeleton } from "@mantine/core";
 import { useAdminPlayerInfoQuery } from "~/app/store/clubManager/clubManagerApi";
 import { useUserQuery } from "~/app/store/user/userApi";
 import AppIcons from "../core/AppIcons";
@@ -63,7 +63,7 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
   }
 
   return (
-    <div className="p-6 h-full bg-white rounded-3xl">
+    <div className="p-6 h-full bg-white rounded-3xl w-full">
       <div className="playerName flex justify-between  items-center">
         <h2>{playerInfoData?.name.split(" ")[0]}'s info</h2>
         {user?.user_type === "Parent" && (
@@ -81,13 +81,9 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
       </div>
       <div className="flex flex-col xs:flex-row sm:flex-col justify-around">
         <div className="img my-2">
-          <img
-            src={
-              playerInfoData?.icon
-                ? playerInfoData?.icon
-                : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-            }
-            className=" w-52 rounded-lg object-cover"
+          <Avatar
+            src={playerInfoData?.icon}
+            className=" w-full h-72 rounded-lg object-cover"
             alt="player_image"
           />
         </div>

@@ -4,17 +4,16 @@ import DeleteButton from "~/@main/components/ManagerComponents/SubComponents/Del
 import AppIcons from "~/@main/core/AppIcons";
 import { useParentDeletePlayerMutation } from "~/app/store/parent/parentApi";
 import { Player } from "~/app/store/types/parent-types";
-import { User } from "~/app/store/types/user-types";
 import EditForm from "./EditForm";
 import AppUtils from "~/@main/utils/AppUtils";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {
-  user: User;
   players: Player[];
-  refetch: any;
 };
 
-const UserInfo = ({ user, players, refetch }: Props) => {
+const UserInfo = ({ players }: Props) => {
+  const { data: user } = useUserQuery({});
   const [opened, setOpened] = useState(false);
   const [deletePlayer, { isSuccess, isError }] =
     useParentDeletePlayerMutation();
@@ -29,21 +28,25 @@ const UserInfo = ({ user, players, refetch }: Props) => {
           className="w-5 h-5  text-perfGray3 hover:text-perfGray1"
           icon="PencilSquareIcon:outline"
         />
-        <Modal opened={opened} onClose={() => setOpened(false)}>
-          <EditForm refetch={refetch} user={user} setOpened={setOpened} />
+        <Modal
+          opened={opened}
+          onClose={() => setOpened(false)}
+          title={`Edit user info`}
+        >
+          <EditForm setOpened={setOpened} />
         </Modal>
       </div>
       <div className="photo w-28 md:w-48 h-32 md:h-52">
         <img
           className="object-cover w-full h-full rounded-lg"
           src={
-            user.avatar ||
+            user?.avatar ||
             "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
           }
           alt="user-avatar"
         />
       </div>
-      <h2 className="w-full text-center my-4 text-xl">{`${user.first_name} ${user.last_name}`}</h2>
+      <h2 className="w-full text-center my-4 text-xl">{`${user?.first_name} ${user?.last_name}`}</h2>
       <div className="w-full flex flex-col justify-start ml-10">
         <div className="flex gap-4 text-left w-full sm:gap-12">
           {/* <div className="age">

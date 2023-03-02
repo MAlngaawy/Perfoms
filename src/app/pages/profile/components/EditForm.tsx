@@ -1,26 +1,35 @@
 import { useForm } from "react-hook-form";
-import { Avatar, Input } from "@mantine/core";
-import AppIcons from "~/@main/core/AppIcons";
+import { Input } from "@mantine/core";
 import { User } from "~/app/store/types/user-types";
 import { useEffect, useRef, useState } from "react";
 import { showNotification } from "@mantine/notifications";
 import SubmitButton from "~/@main/components/SubmitButton";
 import { axiosInstance } from "~/app/configs/dataService";
 import AppUtils from "~/@main/utils/AppUtils";
-import Cookies from "js-cookie";
+import AvatarInput from "~/@main/components/shared/AvatarInput";
 import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {
-  user: User | undefined;
   setOpened: any;
-  refetch: any;
 };
 
-const EditForm = ({ user, setOpened, refetch }: Props) => {
-  const fileInputRef = useRef<HTMLInputElement>(null);
+const EditForm = ({ setOpened }: Props) => {
+  const { data: user, refetch } = useUserQuery({});
   const [userAvatar, setUserAvatar] = useState<File | null>(null);
   const [isError, setIsErrror] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [noImage, setNoImage] = useState<boolean>(user?.avatar ? false : true);
+
+  const deleteImage = () => {
+    setNoImage(true);
+    setUserAvatar(null);
+  };
+
+  useEffect(() => {
+    if (userAvatar) {
+      setNoImage(false);
+    }
+  }, [userAvatar]);
 
   const { register, handleSubmit, control } = useForm({
     defaultValues: { ...user, avatar: undefined },
@@ -28,10 +37,15 @@ const EditForm = ({ user, setOpened, refetch }: Props) => {
 
   const onSubmitFn = async (e: any) => {
     e.preventDefault();
+    console.log("onSubmitFn CLICKED");
+
     const formData = new FormData(e.currentTarget);
     if (userAvatar) {
       const image = await AppUtils.resizeImage(userAvatar);
       formData.append("avatar", image as string);
+    }
+    if (noImage) {
+      formData.append("avatar", "");
     }
     setIsLoading(true);
     try {
@@ -56,28 +70,20 @@ const EditForm = ({ user, setOpened, refetch }: Props) => {
 
   return (
     <form className="flex flex-col gap-2" onSubmit={onSubmitFn}>
-      <div className="relative photo place-self-center w-28 h-28">
-        <Avatar
-          className="object-cover w-full h-full rounded-lg"
-          src={(userAvatar && URL.createObjectURL(userAvatar)) || user?.avatar}
-          alt="user-avatar"
-        />
-        <div
-          onClick={() => fileInputRef.current && fileInputRef.current.click()}
+      <AvatarInput
+        currentImage={noImage === true ? "" : user?.avatar}
+        userAvatar={userAvatar}
+        setUserAvatar={setUserAvatar}
+        inputAlt="User Photo"
+      />
+      {noImage === false && (
+        <p
+          onClick={() => deleteImage()}
+          className="text-blue-500 text-xs my-2 cursor-pointer w-full text-center"
         >
-          <AppIcons
-            className="w-5 h-5 absolute top-2 cursor-pointer right-2 text-perfGray3 hover:text-perfGray1"
-            icon="PencilSquareIcon:outline"
-          />
-        </div>
-        <input
-          ref={fileInputRef}
-          onChange={(e) => setUserAvatar(e?.currentTarget?.files?.[0] as File)}
-          type="file"
-          className="hidden"
-          id={"avatar"}
-        />
-      </div>
+          Delete My photo
+        </p>
+      )}
 
       {/* Image Upload Input */}
       <Input.Wrapper id="firstName" label="First name" className="w-full">

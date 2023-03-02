@@ -123,7 +123,7 @@ const Certificate = (props: Props) => {
       <div className="flex flex-col justify-center items-center">
         <form
           onSubmit={handleSubmit(sendCertificate)}
-          className=" py-28 w-72 flex flex-col justify-center items-center gap-4"
+          className=" py-10 sm:py-28 w-72 flex flex-col justify-center items-center gap-4"
         >
           <Controller
             control={control}
@@ -141,6 +141,7 @@ const Certificate = (props: Props) => {
                 data={inputData ? inputData : []}
                 searchable
                 maxDropdownHeight={300}
+                dropdownPosition="bottom"
                 nothingFound="Nobody here"
               />
             )}
@@ -153,19 +154,17 @@ const Certificate = (props: Props) => {
               <Select
                 sx={{
                   width: "100%",
+                  background: !watchedPlayer ? "#eee" : "transparent",
                 }}
                 {...field}
                 id={"type"}
+                disabled={!watchedPlayer}
                 name="type"
                 placeholder="Certificate Type"
-                data={[
-                  "Performance",
-                  "Congratulations",
-                  "Encouragement",
-                  "Other",
-                ]}
+                data={["Performance", "Congratulations", "Encouragement"]}
                 searchable
                 maxDropdownHeight={300}
+                dropdownPosition="bottom"
                 nothingFound="Nobody here"
               />
             )}
@@ -174,7 +173,7 @@ const Certificate = (props: Props) => {
           <SubmitButton isLoading={isLoading} text="Send Certificate" />
         </form>
         {watchedPlayer && watchedType ? (
-          <div className="flex flex-col bg-black justify-center items-center overflow-auto max-w-full">
+          <div className="flex flex-col bg-black overflow-auto max-w-full">
             {watchedType === "Encouragement" ? (
               <EncourageCertificate certificate={certificate} ref={canvasRef} />
             ) : watchedType === "Congratulations" ? (

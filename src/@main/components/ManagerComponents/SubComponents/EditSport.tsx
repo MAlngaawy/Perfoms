@@ -1,14 +1,13 @@
-import { useState, ReactNode, useEffect } from "react";
-import { Modal, Button, Group, Input } from "@mantine/core";
+import { useState, ReactNode } from "react";
+import { Modal, Group, Input } from "@mantine/core";
 import AppIcons from "../../../core/AppIcons";
 import { useForm } from "react-hook-form";
-import cn from "classnames";
 import SubmitButton from "../../SubmitButton";
 import { Sport } from "~/app/store/types/parent-types";
-import { showNotification } from "@mantine/notifications";
 import { axiosInstance } from "~/app/configs/dataService";
 import AppUtils from "~/@main/utils/AppUtils";
 import { useUserQuery } from "~/app/store/user/userApi";
+import AvatarInput from "~/@main/components/shared/AvatarInput";
 import {
   useAdminClubQuery,
   useAdminSportsQuery,
@@ -20,8 +19,7 @@ type Props = {
 
 const EditSport = ({ sportData }: Props) => {
   const [opened, setOpened] = useState(false);
-  const [playerImage, setPlayerImage] = useState<string | unknown>("");
-  const [playerImagePreview, setPlayerImagePreview] = useState<string>();
+  const [userAvatar, setUserAvatar] = useState<File | null>(null);
   const { data: adminClub } = useAdminClubQuery({});
   const { data: user } = useUserQuery({});
   const { refetch } = useAdminSportsQuery(
@@ -38,79 +36,38 @@ const EditSport = ({ sportData }: Props) => {
   } = useForm();
 
   // Submit Form Function
-  const onSubmitFunction = (e: any) => {
+  const onSubmitFunction = async (e: any) => {
     e.preventDefault();
     setLoading(true);
     const formData = new FormData(e.currentTarget);
 
     // if there is no image added .. remove epty icon
-    if (!playerImagePreview) formData.delete("icon");
+    if (!userAvatar) formData.delete("icon");
 
     if (adminClub?.id) {
       formData.append("club", JSON.stringify(adminClub?.id));
     }
-    if (playerImage) {
-      formData.set("icon", playerImage as string);
+    if (userAvatar) {
+      const image = await AppUtils.resizeImage(userAvatar);
+      formData.append("icon", image as string);
     }
     axiosInstance
       .patch(`/club-manager/sports/${sportData.id}/update/`, formData)
       .then(() => {
-        showNotification({
-          message: "Successfully Added Sport",
-          color: "green",
-          title: "Done",
-          styles: {
-            root: {
-              backgroundColor: "#27AE60",
-              borderColor: "#27AE60",
-              "&::before": { backgroundColor: "#fff" },
-            },
-
-            title: { color: "#fff" },
-            description: { color: "#fff" },
-            closeButton: {
-              color: "#fff",
-            },
-          },
-        });
+        AppUtils.showNotificationFun(
+          "Success",
+          "Done",
+          "Successfully edited sport"
+        );
         setOpened(false);
         setLoading(false);
         refetch();
       })
       .catch((err) => {
         console.log(err);
-
-        showNotification({
-          message: err.response.data.message,
-          color: "red",
-          title: "Wrong",
-          styles: {
-            root: {
-              backgroundColor: "#EB5757",
-              borderColor: "#EB5757",
-              "&::before": { backgroundColor: "#fff" },
-            },
-
-            title: { color: "#fff" },
-            description: { color: "#fff" },
-            closeButton: {
-              color: "#fff",
-            },
-          },
-        });
+        AppUtils.showNotificationFun("Error", "Sorry", "Can't edit sport now");
         setLoading(false);
       });
-  };
-
-  // function to access file uploaded then convert to base64 then add it to the data state
-  const uploadImage = async (e: any) => {
-    try {
-      const file = e.target.files[0];
-      const image = await AppUtils.resizeImage(file);
-      setPlayerImage(image);
-    } catch (err) {
-      console.log(err);
-    }
   };
 
   return (
@@ -119,43 +76,18 @@ const EditSport = ({ sportData }: Props) => {
         <Modal
           opened={opened}
           onClose={() => {
+            setUserAvatar(null);
             setOpened(false);
           }}
           title={`Edit (${sportData.name}) Sport `}
         >
           <form className="flex flex-col gap-4" onSubmit={onSubmitFunction}>
-            {/* Image Upload */}
-            <div className=" relative my-2 bg-gray-300 overflow-hidden flex justify-center  items-center  mx-auto w-28  h-28 rounded-lg ">
-              <Button
-                {...register("image")}
-                className="w-full h-full hover:bg-perfGray3"
-                component="label"
-              >
-                <img
-                  className={cn(
-                    " absolute rounded-lg w-full h-full object-cover left-0 top-0"
-                  )}
-                  src={playerImage ? playerImagePreview : sportData.icon_url}
-                  alt="upload icon"
-                />
-                <Input
-                  hidden
-                  accept="image/*"
-                  {...register("image")}
-                  name="icon"
-                  multiple
-                  type="file"
-                  // error={errors.image && (errors.image.message as ReactNode)}
-                  onChange={(e: any) => {
-                    console.log(e.target.files[0]);
-                    setPlayerImagePreview(
-                      URL.createObjectURL(e.target.files[0])
-                    );
-                    uploadImage(e);
-                  }}
-                />
-              </Button>
-            </div>
+            <AvatarInput
+              userAvatar={userAvatar}
+              setUserAvatar={setUserAvatar}
+              inputAlt="Sport Icon"
+              currentImage={sportData.icon_url}
+            />
 
             <Input.Wrapper
               id="name"

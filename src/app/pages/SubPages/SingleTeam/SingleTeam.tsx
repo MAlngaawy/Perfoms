@@ -40,9 +40,9 @@ const SingleTeam = (props: Props) => {
           </CardDiv>
         </Grid.Col>
         <Grid.Col span={12}>
-          <CardDiv>
+          <div className="bg-white p-2 xs:p-4 rounded-3xl min-h-full">
             <TeamPlayers teamId={team_id !== undefined ? team_id : ""} />
-          </CardDiv>
+          </div>
         </Grid.Col>
       </Grid>
     </div>

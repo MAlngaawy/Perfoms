@@ -8,6 +8,7 @@ import {
 import "@zegocloud/zimkit-react/index.css";
 import { useChatTokenQuery } from "~/app/store/core/coreApi";
 import { useUserQuery } from "~/app/store/user/userApi";
+import CommingSoonLayout from "~/@main/components/CommingSoonLayout/CommingSoonLayout";
 const appConfig = {
   appID: 989463489, // AppID - type: number
   serverSecret: "", // ServerSecret - type: 32 byte length string
@@ -33,9 +34,9 @@ const ChatPage = () => {
     }
   }, [isSuccess, user]);
   return (
-    <div className="m-4">
-      {" "}
-      <Common></Common>{" "}
+    <div className="p-4 relative h-screen overflow-hidden">
+      <CommingSoonLayout />
+      <Common></Common>
     </div>
   );
 };

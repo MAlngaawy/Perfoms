@@ -5,6 +5,7 @@ import { Player } from "~/app/store/types/parent-types";
 import { useDispatch, useSelector } from "react-redux";
 import { selectedPlayerFn, selectPlayer } from "~/app/store/parent/parentSlice";
 import SelectPlayer from "./SelectPlayer";
+import { useLocation, useNavigate } from "react-router-dom";
 
 type Props = {};
 
@@ -12,6 +13,8 @@ const SelectUser = (props: Props) => {
   const { data: players, isLoading } = useMyPlayersQuery({});
   const dispatch = useDispatch();
   const selectedPlayer = useSelector(selectedPlayerFn);
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (players && players.results.length > 0)
@@ -33,7 +36,12 @@ const SelectUser = (props: Props) => {
             image={player.icon}
             key={idx}
             selected={player?.id === selectedPlayer?.id}
-            selectFun={() => dispatch(selectPlayer(player))}
+            selectFun={() => {
+              if (pathname === "/profile" || pathname === "/settings") {
+                navigate("/");
+              }
+              dispatch(selectPlayer(player));
+            }}
           />
         ))}
     </div>

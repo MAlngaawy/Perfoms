@@ -81,8 +81,8 @@ const Detailed = ({ reportType }: Props) => {
         <PrintComp>
           <div className="attendances">
             <Grid gutter={"sm"}>
-              <Grid.Col span={12} md={2.5}>
-                <div className="flex flex-col xs:flex-row md:flex-col gap-2 h-full">
+              <Grid.Col span={12} sm={2.5}>
+                <div className="flex flex-col xs:flex-row md:flex-col gap-2 h-full w-full">
                   <HomePlayerInfoCard player_id={id} />
                   {/* <div className="note bg-white rounded-3xl w-full p-4 h-full">
                     <h2 className="text-lg font-normal text-perfGray1 pb-4">
@@ -98,19 +98,19 @@ const Detailed = ({ reportType }: Props) => {
               </Grid.Col>
 
               {/* Right Column Attendance Charts And numbers */}
-              <Grid.Col span={12} md={9.5}>
+              <Grid.Col span={12} sm={9.5}>
                 <Grid gutter={"sm"}>
                   <Grid.Col span={12}>
                     <AttendancesSmallCards player_id={id} />
                   </Grid.Col>
                   {/* Attedance Summary Table */}
-                  <Grid.Col span={12} sm={8}>
-                    <div className="bg-white h-full rounded-3xl p-4">
+                  <Grid.Col span={12} md={8}>
+                    <div className="bg-white h-40 min-h-full rounded-3xl p-4">
                       <AttendanceTable player_id={id} />
                     </div>
                   </Grid.Col>
 
-                  <Grid.Col span={12} sm={4}>
+                  <Grid.Col span={12} md={4}>
                     <div className="flex flex-col gap-4">
                       <div className="bg-white rounded-3xl">
                         <TotalAttendance player_id={id} />
