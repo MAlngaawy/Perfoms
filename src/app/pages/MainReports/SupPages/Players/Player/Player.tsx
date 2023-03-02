@@ -10,10 +10,13 @@ import { useGetSuperPlayerInfoQuery } from "~/app/store/supervisor/supervisorMai
 import { CoachPlayerInfo } from "~/app/store/types/coach-types";
 import Detailed from "./Component/Detailed";
 import { useAdminPlayerInfoQuery } from "~/app/store/clubManager/clubManagerApi";
+import classNames from "classnames";
 
-type Props = {};
+type Props = {
+  asComponent?: boolean;
+};
 
-const Player = (props: Props) => {
+const Player = ({ asComponent }: Props) => {
   const [checked, setChecked] = useState(false);
   const [playerInfo, setPlayerInfo] = useState<CoachPlayerInfo>();
   const [reportType, setReportType] =
@@ -50,12 +53,18 @@ const Player = (props: Props) => {
   ));
 
   return (
-    <div className="conatiner w-11/12 mx-auto">
-      <div className="mt-4">
-        <Breadcrumbs className="text-perfGray3" separator="→">
-          {items}
-        </Breadcrumbs>
-      </div>
+    <div
+      className={classNames("conatiner mx-auto px-4", {
+        "w-11/12 ": !asComponent,
+      })}
+    >
+      {!asComponent && (
+        <div className="mt-4">
+          <Breadcrumbs className="text-perfGray3" separator="→">
+            {items}
+          </Breadcrumbs>
+        </div>
+      )}
       <div className="flex flex-col my-4 xs:flex-row items-center gap-4 justify-between">
         <div className="switch flex ">
           <Switch

@@ -12,7 +12,7 @@ const PlayerBio = (props: Props) => {
   console.log("editMode", editMode);
 
   return (
-    <div className="pb-6">
+    <div className="py-6">
       <Grid className="" gutter="sm">
         <Grid.Col xs={12} md={3}>
           <PersonalInfo />

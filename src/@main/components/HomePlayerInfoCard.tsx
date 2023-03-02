@@ -47,8 +47,6 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
     );
 
   useEffect(() => {
-    console.log("Changeddddddddddddd");
-
     if (parentPlayerInfoData) setPlayerInfoData(parentPlayerInfoData);
     if (coachPlayerInfo) setPlayerInfoData(coachPlayerInfo);
     if (superPlayerInfo) setPlayerInfoData(superPlayerInfo);
@@ -65,7 +63,7 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
   }
 
   return (
-    <div className="p-6 h-full bg-white rounded-3xl">
+    <div className="p-6 h-full bg-white rounded-3xl w-full">
       <div className="playerName flex justify-between  items-center">
         <h2>{playerInfoData?.name.split(" ")[0]}'s info</h2>
         {user?.user_type === "Parent" && (
@@ -85,7 +83,7 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
         <div className="img my-2">
           <Avatar
             src={playerInfoData?.icon}
-            className=" w-full h-44 rounded-lg object-cover"
+            className=" w-full h-72 rounded-lg object-cover"
             alt="player_image"
           />
         </div>

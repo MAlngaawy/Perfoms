@@ -1,5 +1,6 @@
 import React from "react";
 import { Radio } from "@mantine/core";
+import useWindowSize from "../hooks/useWindowSize";
 
 type Props = {
   checked: string;
@@ -8,6 +9,10 @@ type Props = {
 };
 
 const AppRadioGroub = ({ checked, setChecked, values }: Props) => {
+  const screenWidth = useWindowSize().width;
+
+  const radioPadding = screenWidth > 400 ? "10px 25px" : " 5px 10px";
+
   return (
     <div className="">
       <Radio.Group
@@ -32,7 +37,7 @@ const AppRadioGroub = ({ checked, setChecked, values }: Props) => {
                 ".mantine-Radio-body": {
                   backgroundColor: "#fff",
                   alignItems: "baseline",
-                  padding: "10px 25px",
+                  padding: radioPadding,
                   borderRadius: "50px",
                 },
                 ".mantine-Radio-label": {
