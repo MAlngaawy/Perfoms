@@ -159,7 +159,7 @@ export const SinglePlayer = ({ id, image, name, teamId }: any) => {
   return (
     <div
       key={id}
-      className="h-full shadow-md w-30 h-62 bottom-2 p-2 relative items-center rounded-lg text-center bg-white flex flex-col justify-between"
+      className="h-full border border-gray-200 w-30 h-62 bottom-2 p-2 relative items-center rounded-lg text-center bg-white flex flex-col justify-between"
     >
       <div className="overlay flex justify-center items-stretch flex-col gap-2 rounded-lg w-full h-full absolute z-30 left-0 top-0 bg-transparent group hover:bg-black/60">
         <div

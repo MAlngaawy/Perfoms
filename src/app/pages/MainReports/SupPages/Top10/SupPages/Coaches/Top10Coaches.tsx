@@ -1,7 +1,8 @@
-import { Breadcrumbs } from "@mantine/core";
+import { Breadcrumbs, Grid } from "@mantine/core";
 import React from "react";
 import { Link } from "react-router-dom";
 import CardWithTwoSides from "~/@main/components/TopTenComponents/CardWithTwoSides/CardWithTwoSides";
+import { useTopTenCoachesQuery } from "~/app/store/clubManager/clubManagerApi";
 
 type Props = {};
 const items = [
@@ -14,6 +15,8 @@ const items = [
   </Link>
 ));
 const Top10Coaches = (props: Props) => {
+  const { data, isLoading } = useTopTenCoachesQuery({});
+  console.log("dataaaaaaa", data);
   return (
     <div className="container w-11/12 mx-auto">
       <div className="my-4">
@@ -21,13 +24,19 @@ const Top10Coaches = (props: Props) => {
           {items}
         </Breadcrumbs>
       </div>
-      <div className="flex gap-4 justify-center items-center">
-        <CardWithTwoSides />
-        <CardWithTwoSides />
-        <CardWithTwoSides />
-        <CardWithTwoSides />
-        <CardWithTwoSides />
-      </div>
+
+      <Grid gutter={12}>
+        {data &&
+          //@ts-ignore
+          data.map((coachData: any) => {
+            console.log(coachData);
+            return (
+              <Grid.Col span={12} sm={6}>
+                <CardWithTwoSides data={coachData} />
+              </Grid.Col>
+            );
+          })}
+      </Grid>
     </div>
   );
 };

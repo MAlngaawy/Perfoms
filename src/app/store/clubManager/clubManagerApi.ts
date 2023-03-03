@@ -589,6 +589,12 @@ export const clubManagerApi = createApi({
         params,
       }),
     }),
+
+    TopTenCoaches: query<{}, {}>({
+      query: (param) => ({
+        url: "top-ten/sports/coaches",
+      }),
+    }),
   }),
 });
 
@@ -648,4 +654,5 @@ export const {
   useAdminPlayerActionsQuery,
   useAdminPlayerCalendarQuery,
   useAdminClubParentsQuery,
+  useTopTenCoachesQuery,
 } = clubManagerApi;

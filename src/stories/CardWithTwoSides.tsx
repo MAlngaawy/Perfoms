@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import CardWithTwoSides from "../@main/components/TopTenComponents/CardWithTwoSides/CardWithTwoSides";
+import CardWithTwoSides from "../@main/components/TopTenComponents/CardWithTwoSides/CardWithTwoSides/CardWithTwoSides";
 
 export default {
   title: "Cards22 / CardWithTwoSides",

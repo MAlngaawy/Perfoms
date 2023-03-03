@@ -15,6 +15,7 @@ import { EditModeContext } from "../../../../PlayerDetails";
 import AppUtils from "~/@main/utils/AppUtils";
 import AddSkill from "./Forms/AddSkill";
 import Info from "~/@main/components/Info";
+import AvatarWithBlueBorder from "../../../../../../../../@main/components/shared/AvatarWithBlueBorder";
 
 type Props = {};
 
@@ -35,26 +36,11 @@ const ParsonalInfo = (props: Props) => {
   return (
     <div className="flex flex-col gap-4">
       <div className="bg-white rounded-3xl p-4">
-        <div className="my-4 sm:my-8 flex flex-col justify-center items-center">
-          <Avatar
-            src={playerData?.icon || playerData?.icon_url}
-            className="border border-perfBlue"
-            sx={{
-              ".mantine-Avatar-placeholder": {
-                border: "2px solid #2F80ED",
-              },
-              ".mantine-Avatar-image": {
-                border: "2px solid #2F80ED",
-                borderRadius: "100%",
-              },
-            }}
-            radius={100}
-            size={100}
-          />
-          <h2 className="my-2 font-medium text-perfGray1 text-lg">
-            {playerData?.name}
-          </h2>
-        </div>
+        <AvatarWithBlueBorder
+          name={playerData?.name || "No Name"}
+          image={playerData?.icon || playerData?.icon_url || "No Image"}
+        />
+
         <div className="h2 font-medium">INFO</div>
         <div className="data flex flex-wrap jus gap-4 mt-2">
           <Info label="Age" value={playerData?.dob} />
