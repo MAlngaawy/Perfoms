@@ -1,8 +1,10 @@
 import { Breadcrumbs, Grid } from "@mantine/core";
 import React from "react";
 import { Link } from "react-router-dom";
+import AvatarWithBlueBorder from "~/@main/components/shared/AvatarWithBlueBorder";
 import CardWithTwoSides from "~/@main/components/TopTenComponents/CardWithTwoSides/CardWithTwoSides";
 import { useTopTenCoachesQuery } from "~/app/store/clubManager/clubManagerApi";
+import Info from "~/@main/components/Info";
 
 type Props = {};
 const items = [
@@ -28,11 +30,25 @@ const Top10Coaches = (props: Props) => {
       <Grid gutter={12}>
         {data &&
           //@ts-ignore
-          data.map((coachData: any) => {
-            console.log(coachData);
+          data.map((data: any) => {
+            console.log(data);
             return (
               <Grid.Col span={12} sm={6}>
-                <CardWithTwoSides data={coachData} />
+                <CardWithTwoSides number={1} overall_kpis={data.overall_kpis}>
+                  <div className="one flex flex-col gap-2 items-center justify-center">
+                    <AvatarWithBlueBorder
+                      size={80}
+                      subTitle="Coach"
+                      name={data.first_name + " " + data.last_name || "No Name"}
+                      image={data.avatar || "No Image"}
+                    />
+                    <div className="infos tec flex items-center justify-between flex-wrap gap-y-3 gap-x-5 mx-4 md:mx-10">
+                      <Info label="Teams" value={"TEST"} />
+                      <Info label="Sport" value={data.sport} />
+                      <Info label="Phone" value={data.mobile} />
+                    </div>
+                  </div>
+                </CardWithTwoSides>
               </Grid.Col>
             );
           })}
