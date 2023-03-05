@@ -4,6 +4,7 @@ import AppIcons from "~/@main/core/AppIcons";
 import AddActionModal from "./AddActionModal";
 import { Group } from "@mantine/core";
 import AddRecomendationModal from "./AddRecommendationModal";
+import ActionsList from "./SubComponents/ActionsList";
 
 type Props = {
   metricId: number;
@@ -29,11 +30,32 @@ const CreateActionsAndRecomm = ({ metricId }: Props) => {
           setOpened={setOpenedAction}
           metricId={metricId}
         />
-        <AddRecomendationModal
+
+        <ActionsList
+          metricIcon="aks;cnasc"
+          metricName="Metric Name"
+          type="Recommendation"
+          data={[
+            {
+              name: "Test One",
+              description: "Loremmmmmmmmm",
+              id: 1,
+            },
+            {
+              name: "Test Two",
+              description: "Loremmmmmmmmm 22222",
+              id: 2,
+            },
+          ]}
+          opened={openedRecommendation}
+          setOpened={setOpenedRecommendation}
+        />
+
+        {/* <AddRecomendationModal
           opened={openedRecommendation}
           setOpened={setOpenedRecommendation}
           metricId={metricId}
-        />
+        /> */}
 
         <Menu.Dropdown>
           <Menu.Item icon="">
