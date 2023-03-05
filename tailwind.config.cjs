@@ -55,6 +55,8 @@ module.exports = {
         scoreYallow: "#F2C94C",
         scoreGray: "#00E096",
         loginBlue: "#2D4377",
+        perfGreen: "#219653",
+        perfBlue3: "#56CCF2",
       },
       screens: {
         xs: "576px",

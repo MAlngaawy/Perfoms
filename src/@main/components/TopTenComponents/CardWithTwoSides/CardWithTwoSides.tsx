@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import Info from "../../Info";
 import AvatarWithBlueBorder from "../../shared/AvatarWithBlueBorder";
 import ChartSide from "./ChartSide";
+import cn from "classnames";
 
 type Props = {
   overall_kpis: {
@@ -22,8 +23,17 @@ const CardWithTwoSides = ({
   return (
     <div className="p-4 border border-gray-200 relative rounded-md bg-white">
       <Grid gutter={4} className="">
-        <div className="absolute left-4 top-0 bg-perfBlue pb-6 pt-2 px-6 flex flex-col items-start clipPath">
-          <h1 className=" text-white font-bold text-2xl">{number}</h1>
+        <div
+          className={cn(
+            "absolute left-4 top-0  pb-6 pt-2 px-6 flex flex-col items-start clipPath",
+            {
+              "bg-perfGreen": number === 1,
+              "bg-perfBlue": number === 2,
+              "bg-perfBlue3": number !== 2 && number !== 1,
+            }
+          )}
+        >
+          <h1 className=" text-white font-bold text-xl">{number}</h1>
         </div>
         <Grid.Col span={12} sm={6}>
           {children}
