@@ -5,12 +5,14 @@ import AddActionModal from "./AddActionModal";
 import { Group } from "@mantine/core";
 import AddRecomendationModal from "./AddRecommendationModal";
 import ActionsList from "./SubComponents/ActionsList";
+import { Metric } from "~/app/store/types/supervisor-types";
 
 type Props = {
   metricId: number;
+  metric: Metric;
 };
 
-const CreateActionsAndRecomm = ({ metricId }: Props) => {
+const CreateActionsAndRecomm = ({ metricId, metric }: Props) => {
   const [openedAction, setOpenedAction] = useState(false);
   const [openedRecommendation, setOpenedRecommendation] = useState(false);
   return (
@@ -25,15 +27,15 @@ const CreateActionsAndRecomm = ({ metricId }: Props) => {
           </button>
         </Menu.Target>
 
-        <AddActionModal
+        {/* <AddActionModal
           opened={openedAction}
           setOpened={setOpenedAction}
           metricId={metricId}
-        />
+        /> */}
 
         <ActionsList
-          metricIcon="aks;cnasc"
-          metricName="Metric Name"
+          metricIcon={metric.icon || metric.icon_url}
+          metricName={metric.name}
           type="Recommendation"
           data={[
             {
@@ -51,6 +53,26 @@ const CreateActionsAndRecomm = ({ metricId }: Props) => {
           setOpened={setOpenedRecommendation}
         />
 
+        <ActionsList
+          metricIcon={metric.icon || metric.icon_url}
+          metricName={metric.name}
+          type="Action"
+          data={[
+            {
+              name: "Test One",
+              description: "Loremmmmmmmmm",
+              id: 1,
+            },
+            {
+              name: "Test Two",
+              description: "Loremmmmmmmmm 22222",
+              id: 2,
+            },
+          ]}
+          opened={openedAction}
+          setOpened={setOpenedAction}
+        />
+
         {/* <AddRecomendationModal
           opened={openedRecommendation}
           setOpened={setOpenedRecommendation}
@@ -63,7 +85,7 @@ const CreateActionsAndRecomm = ({ metricId }: Props) => {
               className="w-full h-full text-left"
               onClick={() => setOpenedRecommendation(true)}
             >
-              Add Recommendation
+              Recommendations
             </button>
           </Menu.Item>
           <Menu.Item icon="">
@@ -72,7 +94,7 @@ const CreateActionsAndRecomm = ({ metricId }: Props) => {
                 className="w-full h-full text-left"
                 onClick={() => setOpenedAction(true)}
               >
-                Add Action
+                Actions
               </button>
             </Group>
           </Menu.Item>

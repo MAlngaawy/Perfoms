@@ -4,6 +4,8 @@ import cn from "classnames";
 import useWindowSize from "~/@main/hooks/useWindowSize";
 import DeleteButton from "~/@main/components/ManagerComponents/SubComponents/DeleteButton";
 import AppIcons from "~/@main/core/AppIcons";
+import AddRecomendationModal from "../AddRecommendationModal";
+import AddActionModal from "../AddActionModal";
 
 type Props = {
   type: "Action" | "Recommendation";
@@ -28,6 +30,7 @@ const ActionsList = ({
 }: Props) => {
   const screenWidth = useWindowSize().width;
   const isMobile = screenWidth < 700;
+  const [openAddForm, setOpenAddForm] = useState<boolean>(false);
 
   return (
     <Modal
@@ -46,10 +49,10 @@ const ActionsList = ({
         </div>
 
         <div className="flex flex-col items-center justify-center gap-3 sm:mx-6">
-          <span className=" w-full text-xs text-perfGray2">
+          {/* <span className=" w-full text-xs text-perfGray2">
             You can select wich {type} should appear to the players when you
             click on it.
-          </span>
+          </span> */}
           {data.map((single, index) => {
             return (
               <SignleAction
@@ -61,9 +64,29 @@ const ActionsList = ({
             );
           })}
         </div>
+
+        {type === "Recommendation" && (
+          <AddRecomendationModal
+            opened={openAddForm}
+            setOpened={setOpenAddForm}
+            metricId={1}
+          />
+        )}
+
+        {type === "Action" && (
+          <AddActionModal
+            opened={openAddForm}
+            setOpened={setOpenAddForm}
+            metricId={1}
+          />
+        )}
+
         <div className="flex items-center justify-center my-6">
-          <button className="p-2 px-6 bg-blue-500 text-white rounded-md">
-            Add New Recommendation
+          <button
+            onClick={() => setOpenAddForm(true)}
+            className="p-2 px-6 bg-blue-500 text-white rounded-md"
+          >
+            Add New {type}
           </button>
         </div>
       </div>
