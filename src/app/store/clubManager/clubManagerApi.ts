@@ -6,13 +6,13 @@ import {
   AllUsers,
   ClubParents,
   CoachesRequests,
-  MetricActions,
+  MetricNotes,
   Sports,
   SportsStatistics,
   TeamPlayer,
   TeamPlayers,
   Teams,
-  UpdateAction,
+  UpdateNote,
 } from "../types/clubManager-types";
 import {
   EventFiles,
@@ -596,7 +596,7 @@ export const clubManagerApi = createApi({
       }),
     }),
 
-    getMetricActions: query<MetricActions, { metric_id: number }>({
+    getMetricActions: query<MetricNotes, { metric_id: number }>({
       query: ({ metric_id, ...params }) => ({
         url: `metric-actions/${metric_id}`,
         params,
@@ -612,7 +612,7 @@ export const clubManagerApi = createApi({
       invalidatesTags: ["actions"],
     }),
 
-    UpdateOneAction: mutation<UpdateAction, { action_id: number }>({
+    UpdateOneAction: mutation<UpdateNote, { action_id: number }>({
       query: ({ action_id, ...body }) => ({
         url: `update-action/${action_id}/`,
         method: "PATCH",
@@ -621,7 +621,7 @@ export const clubManagerApi = createApi({
       invalidatesTags: ["actions"],
     }),
 
-    getMetricRecommendation: query<MetricActions, { metric_id: number }>({
+    getMetricRecommendation: query<MetricNotes, { metric_id: number }>({
       query: ({ metric_id, ...params }) => ({
         url: `metric-recommendations/${metric_id}`,
         params,
@@ -638,7 +638,7 @@ export const clubManagerApi = createApi({
     }),
 
     UpdateOneRecommendation: mutation<
-      UpdateAction,
+      UpdateNote,
       { recommendation_id: number }
     >({
       query: ({ recommendation_id, ...body }) => ({

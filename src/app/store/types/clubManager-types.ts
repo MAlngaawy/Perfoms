@@ -142,18 +142,18 @@ export type ClubParents = BaseGetAllType & {
   results: ClubParent[];
 };
 
-export type ActionCruds = {
+export type NoteCruds = {
   id: number;
   name: string;
   description: string;
   is_selected: boolean;
 };
 
-export type MetricActions = BaseGetAllType & {
-  results: ActionCruds[];
+export type MetricNotes = BaseGetAllType & {
+  results: NoteCruds[];
 };
 
-export type UpdateAction = {
+export type UpdateNote = {
   name: string;
   description: string;
   is_selected: boolean;

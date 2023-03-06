@@ -1,12 +1,12 @@
-import { Avatar, Indicator, Modal, Input } from "@mantine/core";
-import { useState, ReactNode } from "react";
+import { Avatar, Modal } from "@mantine/core";
+import { useState } from "react";
 import cn from "classnames";
 import useWindowSize from "~/@main/hooks/useWindowSize";
 import DeleteButton from "~/@main/components/ManagerComponents/SubComponents/DeleteButton";
 import AppIcons from "~/@main/core/AppIcons";
 import AddRecomendationModal from "../AddRecommendationModal";
 import AddActionModal from "../AddActionModal";
-import { ActionCruds } from "~/app/store/types/clubManager-types";
+import { NoteCruds } from "~/app/store/types/clubManager-types";
 import EditSignleAction from "./UpdateActionModal";
 import {
   useDeleteMetricActionMutation,
@@ -15,6 +15,11 @@ import {
   useSelectRecommendationMutation,
 } from "~/app/store/clubManager/clubManagerApi";
 import AppUtils from "~/@main/utils/AppUtils";
+import {
+  useSuperDeleteMetricActionMutation,
+  useSuperDeleteMetricRecommendationMutation,
+} from "~/app/store/supervisor/supervisorMainApi";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {
   type: "Action" | "Recommendation";
@@ -22,11 +27,11 @@ type Props = {
   metricIcon: string;
   opened: boolean;
   setOpened: any;
-  data: ActionCruds[] | undefined;
+  data: NoteCruds[] | undefined;
   metricId: number;
 };
 
-const ActionsList = ({
+const NotesList = ({
   type,
   metricName,
   metricIcon,
@@ -62,7 +67,7 @@ const ActionsList = ({
           </span> */}
           {data?.map((single, index) => {
             return (
-              <SignleAction
+              <SignleNote
                 active={single.is_selected}
                 key={single.id}
                 type={type}
@@ -102,19 +107,60 @@ const ActionsList = ({
   );
 };
 
-export default ActionsList;
+export default NotesList;
 
-type SingleActionsProps = {
-  data: ActionCruds;
+type SingleNoteProps = {
+  data: NoteCruds;
   num: number;
   type: "Action" | "Recommendation";
   active: boolean;
 };
 
-const SignleAction = ({ data, num, type, active }: SingleActionsProps) => {
+const SignleNote = ({ data, num, type, active }: SingleNoteProps) => {
   const [openUpdate, setOpenUpdate] = useState<boolean>(false);
-  const [deleteAction] = useDeleteMetricActionMutation();
-  const [deleteRecommendation] = useDeleteMetricRecommendationMutation();
+  const { data: user } = useUserQuery({});
+
+  // Admin Methods
+  const [adminDeleteAction] = useDeleteMetricActionMutation();
+  const [adminDeleteRecommendation] = useDeleteMetricRecommendationMutation();
+  // Supervisor Methods
+  const [superDeleteAction] = useSuperDeleteMetricActionMutation();
+  const [superDeleteRecommendation] =
+    useSuperDeleteMetricRecommendationMutation();
+
+  const deleteMethods = () => {
+    const successMessage = () =>
+      AppUtils.showNotificationFun(
+        "Success",
+        "Done",
+        "Recommendation deleted Successfully"
+      );
+
+    const errorMessage = () =>
+      AppUtils.showNotificationFun(
+        "Success",
+        "Done",
+        "Action deleted Successfully"
+      );
+
+    if (type === "Recommendation") {
+      if (user?.user_type === "Admin") {
+        adminDeleteRecommendation({
+          recommendation_id: data.id,
+        }).then(() => successMessage());
+      } else {
+        superDeleteRecommendation({
+          recommendation_id: data.id,
+        }).then(() => successMessage());
+      }
+    } else {
+      if (user?.user_type === "Admin") {
+        adminDeleteAction({ action_id: data.id }).then(() => successMessage);
+      } else {
+        superDeleteAction({ action_id: data.id }).then(() => successMessage);
+      }
+    }
+  };
 
   return (
     <div
@@ -144,27 +190,10 @@ const SignleAction = ({ data, num, type, active }: SingleActionsProps) => {
           </div>
           <div>
             <DeleteButton
-              type="Recom"
+              type="Note"
               name={data.name}
               deleteFun={() => {
-                if (type === "Recommendation") {
-                  deleteRecommendation({ recommendation_id: data.id }).then(
-                    (res) =>
-                      AppUtils.showNotificationFun(
-                        "Success",
-                        "Done",
-                        "Recommendation deleted Successfully"
-                      )
-                  );
-                } else {
-                  deleteAction({ action_id: data.id }).then((res) =>
-                    AppUtils.showNotificationFun(
-                      "Success",
-                      "Done",
-                      "Action deleted Successfully"
-                    )
-                  );
-                }
+                deleteMethods();
               }}
             />
           </div>
