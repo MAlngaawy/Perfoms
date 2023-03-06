@@ -1,24 +1,25 @@
-import { useState, ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { Modal, Input, Textarea } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import SubmitButton from "~/@main/components/SubmitButton";
-import { useSuperAddActionMutation } from "~/app/store/supervisor/supervisorMainApi";
 import {
-  useAdminAddActopnMutation,
   useUpdateOneActionMutation,
   useUpdateOneRecommendationMutation,
 } from "~/app/store/clubManager/clubManagerApi";
 import { useUserQuery } from "~/app/store/user/userApi";
-import { AddAction } from "~/app/store/types/supervisor-types";
 import AppUtils from "~/@main/utils/AppUtils";
-import { ActionCruds, UpdateAction } from "~/app/store/types/clubManager-types";
+import { NoteCruds } from "~/app/store/types/clubManager-types";
+import {
+  useSuperUpdateOneActionMutation,
+  useSuperUpdateOneRecommendationMutation,
+} from "~/app/store/supervisor/supervisorMainApi";
 
 type EditProps = {
   opened: boolean;
   setOpened: any;
-  actionData: ActionCruds;
+  actionData: NoteCruds;
   type: "Action" | "Recommendation";
 };
 
@@ -35,58 +36,50 @@ const EditSignleAction = ({
 }: EditProps) => {
   const { data: user } = useUserQuery({});
 
-  const [updateAction, { isLoading: actionLoading }] =
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  // Admin Updates Methods
+  const [adminUpdateAction, { isLoading: adminActionLoading }] =
     useUpdateOneActionMutation();
-  const [updateRecommendation, { isLoading: recommendationLoading }] =
+  const [adminUpdateRecommendation, { isLoading: adminRecommendationLoading }] =
     useUpdateOneRecommendationMutation();
 
-  const updateActionFun = (data: any) => {
-    // setLoading(true);
-    if (type === "Action") {
-      updateAction(data).then((res) => {
-        AppUtils.showNotificationFun(
-          "Success",
-          "Done",
-          "Successfully Updated Action"
-        );
-      });
-    } else {
-      updateRecommendation(data).then((res) => {
-        AppUtils.showNotificationFun(
-          "Success",
-          "Done",
-          "Successfully Updated Recommendation"
-        );
-      });
-    }
+  // Supervisor update methods
+  const [superUpdateAction, { isLoading: superActionLoading }] =
+    useSuperUpdateOneActionMutation();
+  const [superUpdateRecommendation, { isLoading: superRecommendationLoading }] =
+    useSuperUpdateOneRecommendationMutation();
 
-    // if (user?.user_type === "Admin") {
-    //   setLoading(adminLoading);
-    //   adminAddAction(data)
-    //     .then(() => {
-    //       AppUtils.showNotificationFun(
-    //         "Success",
-    //         "Done",
-    //         "Successfully Added Action"
-    //       );
-    //     })
-    //     .catch(() => {
-    //       AppUtils.showNotificationFun("Error", "Sorry", "Cant add Action Now");
-    //     });
-    // } else {
-    //   setLoading(superLoading);
-    //   superAddAction(data)
-    //     .then(() => {
-    //       AppUtils.showNotificationFun(
-    //         "Success",
-    //         "Done",
-    //         "Successfully Added Action"
-    //       );
-    //     })
-    //     .catch(() => {
-    //       AppUtils.showNotificationFun("Error", "Sorry", "Cant add Action Now");
-    //     });
-    // }
+  useEffect(() => {
+    setIsLoading(
+      adminActionLoading ||
+        adminRecommendationLoading ||
+        superActionLoading ||
+        superRecommendationLoading
+    );
+  }, [
+    adminActionLoading,
+    adminRecommendationLoading,
+    superActionLoading,
+    superRecommendationLoading,
+  ]);
+
+  const updateActionFun = (data: any) => {
+    const updateAction =
+      user?.user_type === "Admin" ? adminUpdateAction : superUpdateAction;
+    const updateRecommendation =
+      user?.user_type === "Admin"
+        ? adminUpdateRecommendation
+        : superUpdateRecommendation;
+    const updateFunc = type === "Action" ? updateAction : updateRecommendation;
+
+    updateFunc(data).then((res) => {
+      AppUtils.showNotificationFun(
+        "Success",
+        "Done",
+        `Successfully Updated ${type}`
+      );
+    });
   };
 
   const {
@@ -190,10 +183,7 @@ const EditSignleAction = ({
               id="desc"
             />
 
-            <SubmitButton
-              isLoading={actionLoading || recommendationLoading}
-              text="Update Action"
-            />
+            <SubmitButton isLoading={isLoading} text="Update Action" />
           </form>
         </Modal>
       </>

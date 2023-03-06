@@ -18,6 +18,8 @@ import AppUtils from "~/@main/utils/AppUtils";
 import {
   useSuperDeleteMetricActionMutation,
   useSuperDeleteMetricRecommendationMutation,
+  useSuperSelectActionMutation,
+  useSuperSelectRecommendationMutation,
 } from "~/app/store/supervisor/supervisorMainApi";
 import { useUserQuery } from "~/app/store/user/userApi";
 
@@ -129,36 +131,42 @@ const SignleNote = ({ data, num, type, active }: SingleNoteProps) => {
     useSuperDeleteMetricRecommendationMutation();
 
   const deleteMethods = () => {
-    const successMessage = () =>
+    const successMessage = (type: string) => {
       AppUtils.showNotificationFun(
         "Success",
         "Done",
-        "Recommendation deleted Successfully"
+        `${type} deleted Successfully`
       );
+    };
 
-    const errorMessage = () =>
-      AppUtils.showNotificationFun(
-        "Success",
-        "Done",
-        "Action deleted Successfully"
-      );
+    const deleteAction = () => {
+      if (user?.user_type === "Admin") {
+        adminDeleteAction({ action_id: data.id }).then(() => {
+          successMessage("Action");
+        });
+      } else {
+        superDeleteAction({ action_id: data.id }).then(() => {
+          successMessage("Action");
+        });
+      }
+    };
+
+    const deleteRecommendation = () => {
+      if (user?.user_type === "Admin") {
+        adminDeleteRecommendation({ recommendation_id: data.id }).then(() => {
+          successMessage("Recommendation");
+        });
+      } else {
+        superDeleteRecommendation({ recommendation_id: data.id }).then(() => {
+          successMessage("Recommendation");
+        });
+      }
+    };
 
     if (type === "Recommendation") {
-      if (user?.user_type === "Admin") {
-        adminDeleteRecommendation({
-          recommendation_id: data.id,
-        }).then(() => successMessage());
-      } else {
-        superDeleteRecommendation({
-          recommendation_id: data.id,
-        }).then(() => successMessage());
-      }
+      deleteRecommendation();
     } else {
-      if (user?.user_type === "Admin") {
-        adminDeleteAction({ action_id: data.id }).then(() => successMessage);
-      } else {
-        superDeleteAction({ action_id: data.id }).then(() => successMessage);
-      }
+      deleteAction();
     }
   };
 
@@ -219,20 +227,29 @@ const SimpleRadioButton = ({
   item_id: number;
   type: "Action" | "Recommendation";
 }) => {
-  console.log("item_id", item_id);
+  const { data: user } = useUserQuery({});
 
-  const [selectAction] = useSelectActionMutation();
-  const [selectRecommendation] = useSelectRecommendationMutation();
+  const useSelectMutation = (userType: string) => {
+    if (userType === "Admin") {
+      return type === "Action"
+        ? useSelectActionMutation()[0]
+        : useSelectRecommendationMutation()[0];
+    } else if (userType === "Supervisor") {
+      return type === "Action"
+        ? useSuperSelectActionMutation()[0]
+        : useSuperSelectRecommendationMutation()[0];
+    }
+  };
+
+  const user_type = user?.user_type || "Admin"; // provide a default value for user_type
+  const selectItem = useSelectMutation(user_type);
+  const obj =
+    type === "Action" ? { action_id: item_id } : { recommendation_id: item_id };
 
   return (
     <div
-      onClick={() => {
-        if (type === "Action") {
-          selectAction({ action_id: item_id });
-        } else {
-          selectRecommendation({ recommendation_id: item_id });
-        }
-      }}
+      //@ts-ignore
+      onClick={() => selectItem(obj)}
       className={cn(
         "outer border rounded-full w-3 h-3 flex justify-center items-center cursor-pointer",
         {
