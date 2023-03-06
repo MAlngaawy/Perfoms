@@ -1,11 +1,18 @@
-import { Avatar, Indicator, Modal } from "@mantine/core";
-import { useState } from "react";
+import { Avatar, Indicator, Modal, Input } from "@mantine/core";
+import { useState, ReactNode } from "react";
 import cn from "classnames";
 import useWindowSize from "~/@main/hooks/useWindowSize";
 import DeleteButton from "~/@main/components/ManagerComponents/SubComponents/DeleteButton";
 import AppIcons from "~/@main/core/AppIcons";
 import AddRecomendationModal from "../AddRecommendationModal";
 import AddActionModal from "../AddActionModal";
+import { ActionCruds } from "~/app/store/types/clubManager-types";
+import EditSignleAction from "./UpdateActionModal";
+import {
+  useDeleteMetricActionMutation,
+  useDeleteMetricRecommendationMutation,
+} from "~/app/store/clubManager/clubManagerApi";
+import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {
   type: "Action" | "Recommendation";
@@ -13,11 +20,8 @@ type Props = {
   metricIcon: string;
   opened: boolean;
   setOpened: any;
-  data: {
-    id: number;
-    name: string;
-    description: string;
-  }[];
+  data: ActionCruds[] | undefined;
+  metricId: number;
 };
 
 const ActionsList = ({
@@ -27,6 +31,7 @@ const ActionsList = ({
   data,
   opened,
   setOpened,
+  metricId,
 }: Props) => {
   const screenWidth = useWindowSize().width;
   const isMobile = screenWidth < 700;
@@ -53,10 +58,11 @@ const ActionsList = ({
             You can select wich {type} should appear to the players when you
             click on it.
           </span> */}
-          {data.map((single, index) => {
+          {data?.map((single, index) => {
             return (
               <SignleAction
                 active={false}
+                key={single.id}
                 type={type}
                 num={index + 1}
                 data={single}
@@ -69,7 +75,7 @@ const ActionsList = ({
           <AddRecomendationModal
             opened={openAddForm}
             setOpened={setOpenAddForm}
-            metricId={1}
+            metricId={metricId}
           />
         )}
 
@@ -77,7 +83,7 @@ const ActionsList = ({
           <AddActionModal
             opened={openAddForm}
             setOpened={setOpenAddForm}
-            metricId={1}
+            metricId={metricId}
           />
         )}
 
@@ -97,11 +103,7 @@ const ActionsList = ({
 export default ActionsList;
 
 type SingleActionsProps = {
-  data: {
-    id: number;
-    name: string;
-    description: string;
-  };
+  data: ActionCruds;
   num: number;
   type: "Action" | "Recommendation";
   active: boolean;
@@ -109,6 +111,9 @@ type SingleActionsProps = {
 
 const SignleAction = ({ data, num, type, active }: SingleActionsProps) => {
   const [activeStatus, setActiveStatus] = useState<boolean>(active);
+  const [openUpdate, setOpenUpdate] = useState<boolean>(false);
+  const [deleteAction] = useDeleteMetricActionMutation();
+  const [deleteRecommendation] = useDeleteMetricRecommendationMutation();
 
   return (
     <div
@@ -124,17 +129,42 @@ const SignleAction = ({ data, num, type, active }: SingleActionsProps) => {
           {type + " " + num}
         </h3>
         <div className="flex items-center gap-2">
-          <div>
-            <AppIcons
-              icon="PencilSquareIcon:outline"
-              className=" w-4 h-4 text-perfGray3"
-            />
+          <EditSignleAction
+            type={type}
+            actionData={data}
+            opened={openUpdate}
+            setOpened={setOpenUpdate}
+          />
+          <div
+            onClick={() => setOpenUpdate(true)}
+            className="hover:text-perfBlue text-perfGray3  hover:scale-125 cursor-pointer transform"
+          >
+            <AppIcons icon="PencilSquareIcon:outline" className=" w-4 h-4 " />
           </div>
           <div>
             <DeleteButton
               type="Recom"
               name={data.name}
-              deleteFun={() => console.log("LOL")}
+              deleteFun={() => {
+                if (type === "Recommendation") {
+                  deleteRecommendation({ recommendation_id: data.id }).then(
+                    (res) =>
+                      AppUtils.showNotificationFun(
+                        "Success",
+                        "Done",
+                        "Recommendation deleted Successfully"
+                      )
+                  );
+                } else {
+                  deleteAction({ action_id: data.id }).then((res) =>
+                    AppUtils.showNotificationFun(
+                      "Success",
+                      "Done",
+                      "Action deleted Successfully"
+                    )
+                  );
+                }
+              }}
             />
           </div>
           <div>

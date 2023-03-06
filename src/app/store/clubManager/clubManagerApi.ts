@@ -6,11 +6,13 @@ import {
   AllUsers,
   ClubParents,
   CoachesRequests,
+  MetricActions,
   Sports,
   SportsStatistics,
   TeamPlayer,
   TeamPlayers,
   Teams,
+  UpdateAction,
 } from "../types/clubManager-types";
 import {
   EventFiles,
@@ -63,6 +65,8 @@ export const clubManagerApi = createApi({
     "supervisorUser",
     "pillars",
     "metrics",
+    "actions",
+    "recommendations",
   ],
   endpoints: ({ query, mutation }) => ({
     manageCoachesRequests: query<CoachRequests, { page?: number }>({
@@ -395,6 +399,7 @@ export const clubManagerApi = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["recommendations"],
     }),
 
     adminAddActopn: mutation<AddAction, AddAction>({
@@ -403,6 +408,7 @@ export const clubManagerApi = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["actions"],
     }),
 
     adminEventFiles: query<EventFiles, { event_id: number; page?: number }>({
@@ -589,6 +595,59 @@ export const clubManagerApi = createApi({
         params,
       }),
     }),
+
+    getMetricActions: query<MetricActions, { metric_id: number }>({
+      query: ({ metric_id, ...params }) => ({
+        url: `metric-actions/${metric_id}`,
+        params,
+      }),
+      providesTags: ["actions"],
+    }),
+
+    deleteMetricAction: mutation<{}, { action_id: number }>({
+      query: ({ action_id }) => ({
+        url: `delete-action/${action_id}/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["actions"],
+    }),
+
+    UpdateOneAction: mutation<UpdateAction, { action_id: number }>({
+      query: ({ action_id, ...body }) => ({
+        url: `update-action/${action_id}/`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["actions"],
+    }),
+
+    getMetricRecommendation: query<MetricActions, { metric_id: number }>({
+      query: ({ metric_id, ...params }) => ({
+        url: `metric-recommendations/${metric_id}`,
+        params,
+      }),
+      providesTags: ["recommendations"],
+    }),
+
+    deleteMetricRecommendation: mutation<{}, { recommendation_id: number }>({
+      query: ({ recommendation_id }) => ({
+        url: `delete-recommendation/${recommendation_id}/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["recommendations"],
+    }),
+
+    UpdateOneRecommendation: mutation<
+      UpdateAction,
+      { recommendation_id: number }
+    >({
+      query: ({ recommendation_id, ...body }) => ({
+        url: `update-recommendation/${recommendation_id}/`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["recommendations"],
+    }),
   }),
 });
 
@@ -648,4 +707,10 @@ export const {
   useAdminPlayerActionsQuery,
   useAdminPlayerCalendarQuery,
   useAdminClubParentsQuery,
+  useGetMetricActionsQuery,
+  useDeleteMetricActionMutation,
+  useUpdateOneActionMutation,
+  useGetMetricRecommendationQuery,
+  useDeleteMetricRecommendationMutation,
+  useUpdateOneRecommendationMutation,
 } = clubManagerApi;

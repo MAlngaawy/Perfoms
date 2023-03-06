@@ -141,3 +141,20 @@ export type ClubParent = {
 export type ClubParents = BaseGetAllType & {
   results: ClubParent[];
 };
+
+export type ActionCruds = {
+  id: number;
+  name: string;
+  description: string;
+  is_selected: boolean;
+};
+
+export type MetricActions = BaseGetAllType & {
+  results: ActionCruds[];
+};
+
+export type UpdateAction = {
+  name: string;
+  description: string;
+  is_selected: boolean;
+};

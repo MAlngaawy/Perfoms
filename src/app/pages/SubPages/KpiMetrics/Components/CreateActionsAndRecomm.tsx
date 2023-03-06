@@ -6,6 +6,10 @@ import { Group } from "@mantine/core";
 import AddRecomendationModal from "./AddRecommendationModal";
 import ActionsList from "./SubComponents/ActionsList";
 import { Metric } from "~/app/store/types/supervisor-types";
+import {
+  useGetMetricActionsQuery,
+  useGetMetricRecommendationQuery,
+} from "~/app/store/clubManager/clubManagerApi";
 
 type Props = {
   metricId: number;
@@ -13,6 +17,16 @@ type Props = {
 };
 
 const CreateActionsAndRecomm = ({ metricId, metric }: Props) => {
+  const { data: metricActions } = useGetMetricActionsQuery(
+    { metric_id: metricId },
+    { skip: !metricId }
+  );
+
+  const { data: metricRecommendations } = useGetMetricRecommendationQuery(
+    { metric_id: metricId },
+    { skip: !metricId }
+  );
+
   const [openedAction, setOpenedAction] = useState(false);
   const [openedRecommendation, setOpenedRecommendation] = useState(false);
   return (
@@ -27,57 +41,25 @@ const CreateActionsAndRecomm = ({ metricId, metric }: Props) => {
           </button>
         </Menu.Target>
 
-        {/* <AddActionModal
-          opened={openedAction}
-          setOpened={setOpenedAction}
-          metricId={metricId}
-        /> */}
-
         <ActionsList
+          metricId={metric.id}
           metricIcon={metric.icon || metric.icon_url}
           metricName={metric.name}
           type="Recommendation"
-          data={[
-            {
-              name: "Test One",
-              description: "Loremmmmmmmmm",
-              id: 1,
-            },
-            {
-              name: "Test Two",
-              description: "Loremmmmmmmmm 22222",
-              id: 2,
-            },
-          ]}
+          data={metricRecommendations?.results}
           opened={openedRecommendation}
           setOpened={setOpenedRecommendation}
         />
 
         <ActionsList
+          metricId={metric.id}
           metricIcon={metric.icon || metric.icon_url}
           metricName={metric.name}
           type="Action"
-          data={[
-            {
-              name: "Test One",
-              description: "Loremmmmmmmmm",
-              id: 1,
-            },
-            {
-              name: "Test Two",
-              description: "Loremmmmmmmmm 22222",
-              id: 2,
-            },
-          ]}
+          data={metricActions?.results}
           opened={openedAction}
           setOpened={setOpenedAction}
         />
-
-        {/* <AddRecomendationModal
-          opened={openedRecommendation}
-          setOpened={setOpenedRecommendation}
-          metricId={metricId}
-        /> */}
 
         <Menu.Dropdown>
           <Menu.Item icon="">
