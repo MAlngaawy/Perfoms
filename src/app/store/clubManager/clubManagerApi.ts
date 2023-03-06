@@ -648,6 +648,24 @@ export const clubManagerApi = createApi({
       }),
       invalidatesTags: ["recommendations"],
     }),
+
+    // select actions method
+    selectRecommendation: mutation<{}, { recommendation_id: number }>({
+      query: ({ recommendation_id, ...body }) => ({
+        url: `select-recommendation/${recommendation_id}/`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["recommendations"],
+    }),
+    selectAction: mutation<{}, { action_id: number }>({
+      query: ({ action_id, ...body }) => ({
+        url: `select-action/${action_id}/`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["actions"],
+    }),
   }),
 });
 
@@ -713,4 +731,6 @@ export const {
   useGetMetricRecommendationQuery,
   useDeleteMetricRecommendationMutation,
   useUpdateOneRecommendationMutation,
+  useSelectRecommendationMutation,
+  useSelectActionMutation,
 } = clubManagerApi;

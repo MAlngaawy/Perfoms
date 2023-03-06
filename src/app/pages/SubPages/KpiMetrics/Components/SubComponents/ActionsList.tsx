@@ -11,6 +11,8 @@ import EditSignleAction from "./UpdateActionModal";
 import {
   useDeleteMetricActionMutation,
   useDeleteMetricRecommendationMutation,
+  useSelectActionMutation,
+  useSelectRecommendationMutation,
 } from "~/app/store/clubManager/clubManagerApi";
 import AppUtils from "~/@main/utils/AppUtils";
 
@@ -61,7 +63,7 @@ const ActionsList = ({
           {data?.map((single, index) => {
             return (
               <SignleAction
-                active={false}
+                active={single.is_selected}
                 key={single.id}
                 type={type}
                 num={index + 1}
@@ -110,7 +112,6 @@ type SingleActionsProps = {
 };
 
 const SignleAction = ({ data, num, type, active }: SingleActionsProps) => {
-  const [activeStatus, setActiveStatus] = useState<boolean>(active);
   const [openUpdate, setOpenUpdate] = useState<boolean>(false);
   const [deleteAction] = useDeleteMetricActionMutation();
   const [deleteRecommendation] = useDeleteMetricRecommendationMutation();
@@ -120,7 +121,7 @@ const SignleAction = ({ data, num, type, active }: SingleActionsProps) => {
       className={cn(
         "bg-pagesBg flex flex-col gap-2 w-full rounded-xl px-4 md:px-8 py-4",
         {
-          "border border-perfBlue": activeStatus,
+          "border border-perfBlue": active,
         }
       )}
     >
@@ -168,10 +169,7 @@ const SignleAction = ({ data, num, type, active }: SingleActionsProps) => {
             />
           </div>
           <div>
-            <SimpleRadioButton
-              setActiveStatus={setActiveStatus}
-              active={activeStatus}
-            />
+            <SimpleRadioButton item_id={data.id} type={type} active={active} />
           </div>
         </div>
       </div>
@@ -185,14 +183,27 @@ const SignleAction = ({ data, num, type, active }: SingleActionsProps) => {
 
 const SimpleRadioButton = ({
   active,
-  setActiveStatus,
+  item_id,
+  type,
 }: {
   active: boolean;
-  setActiveStatus: any;
+  item_id: number;
+  type: "Action" | "Recommendation";
 }) => {
+  console.log("item_id", item_id);
+
+  const [selectAction] = useSelectActionMutation();
+  const [selectRecommendation] = useSelectRecommendationMutation();
+
   return (
     <div
-      onClick={() => setActiveStatus(!active)}
+      onClick={() => {
+        if (type === "Action") {
+          selectAction({ action_id: item_id });
+        } else {
+          selectRecommendation({ recommendation_id: item_id });
+        }
+      }}
       className={cn(
         "outer border rounded-full w-3 h-3 flex justify-center items-center cursor-pointer",
         {
