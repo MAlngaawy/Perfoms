@@ -15,17 +15,31 @@ type Props = {
   number: number;
 };
 
+const ranges = [
+  "",
+  "1st",
+  "2nd",
+  "3rd",
+  "4th",
+  "5th",
+  "6th",
+  "7th",
+  "8th",
+  "9th",
+  "10th",
+];
+
 const CardWithTwoSides = ({
   number,
   overall_kpis: { strength, moderate, weakness },
   children,
 }: Props) => {
   return (
-    <div className="p-4 border border-gray-200 relative rounded-md bg-white">
+    <div className="p-4 border border-gray-200 relative rounded-md bg-white h-full">
       <Grid gutter={4} className="">
         <div
           className={cn(
-            "absolute left-4 top-0  pb-6 pt-2 px-6 flex flex-col items-start clipPath",
+            "absolute left-4 top-0  pb-6 pt-2 px-3 flex flex-col items-start clipPath",
             {
               "bg-perfGreen": number === 1,
               "bg-perfBlue": number === 2,
@@ -33,7 +47,7 @@ const CardWithTwoSides = ({
             }
           )}
         >
-          <h1 className=" text-white font-bold text-xl">{number}</h1>
+          <h1 className=" text-white font-meduim text-lg">{ranges[number]}</h1>
         </div>
         <Grid.Col span={12} sm={6}>
           {children}

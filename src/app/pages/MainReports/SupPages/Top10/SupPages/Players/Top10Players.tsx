@@ -2,22 +2,20 @@ import { Breadcrumbs } from "@mantine/core";
 import React from "react";
 import { Link } from "react-router-dom";
 import ReportsCategoriesCard from "~/@main/components/MainReports/ReportsCategoriesCard";
-import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {};
 
 const items = [
   { title: "Reports", href: "/main-reports" },
   { title: "Top10", href: "/main-reports/top10" },
+  { title: "players", href: "/main-reports/top10/players" },
 ].map((item, index) => (
   <Link to={item.href} key={index}>
     {item.title}
   </Link>
 ));
 
-const Top10 = (props: Props) => {
-  const { data: user } = useUserQuery(null);
-
+const Top10Players = (props: Props) => {
   return (
     <div className="container w-11/12 mx-auto">
       <div className="my-4">
@@ -26,22 +24,10 @@ const Top10 = (props: Props) => {
         </Breadcrumbs>
       </div>
       <div className="my-6 flex justify-center xs:justify-start flex-wrap gap-4  items-center">
-        {/* <Link to={"search-players"}>
+        <Link to={"all-sports"}>
           <ReportsCategoriesCard
             image="/assets/images/players.png"
-            type="Players"
-          />
-        </Link> */}
-        <Link to={"players"}>
-          <ReportsCategoriesCard
-            image="/assets/images/players.png"
-            type="Players"
-          />
-        </Link>
-        <Link to={"coaches"}>
-          <ReportsCategoriesCard
-            image="/assets/images/coaches.png"
-            type="Coaches"
+            type="All Sports"
           />
         </Link>
       </div>
@@ -49,4 +35,4 @@ const Top10 = (props: Props) => {
   );
 };
 
-export default Top10;
+export default Top10Players;
