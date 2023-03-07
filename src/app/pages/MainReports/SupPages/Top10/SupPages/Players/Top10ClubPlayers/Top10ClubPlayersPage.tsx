@@ -1,5 +1,5 @@
 import { Breadcrumbs, Grid } from "@mantine/core";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import AvatarWithBlueBorder from "~/@main/components/shared/AvatarWithBlueBorder";
 import CardWithTwoSides from "~/@main/components/TopTenComponents/CardWithTwoSides/CardWithTwoSides";
@@ -8,6 +8,7 @@ import {
   useTopTenCoachesQuery,
 } from "~/app/store/clubManager/clubManagerApi";
 import Info from "~/@main/components/Info";
+import TabsContainer from "~/@main/components/shared/TabsContainer";
 type Props = {};
 
 const items = [
@@ -23,12 +24,21 @@ const items = [
 
 const Top10ClubPlayersPage = (props: Props) => {
   const { data, isLoading } = useTopTenClubPlayersQuery({});
+  const [selectedValue, setSelectedValue] =
+    useState<"Players" | "Teams">("Players");
   return (
     <div className="container w-11/12 mx-auto">
-      <div className="my-4">
-        <Breadcrumbs className="text-perfGray3" separator="→">
+      <div className="my-4 flex flex-col gap-2 sm:flex-row justify-between">
+        <Breadcrumbs className="text-perfGray3 text-sm" separator="→">
           {items}
         </Breadcrumbs>
+        <div>
+          <TabsContainer
+            selectedValue={selectedValue}
+            selectValueFun={setSelectedValue}
+            values={["Players", "Teams"]}
+          />
+        </div>
       </div>
 
       <Grid gutter={12}>
