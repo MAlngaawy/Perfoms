@@ -51,7 +51,7 @@ import ScoringTablesConfig from "../pages/Scoring/SupPages/ScoringTablesConfig";
 import Top10Config from "../pages/MainReports/SupPages/Top10/Top10Config";
 import Top10CoachesConfig from "../pages/MainReports/SupPages/Top10/SupPages/Coaches/Top10CoachesConfig";
 import Top10PlayersConfig from "../pages/MainReports/SupPages/Top10/SupPages/Players/Top10PlayersConfig";
-import Top10AllSportsPlayersConfig from "../pages/MainReports/SupPages/Top10/SupPages/Players/AllSports/Top10AllSportsPlayersConfig";
+import Top10ClubPlayersConfig from "../pages/MainReports/SupPages/Top10/SupPages/Players/Top10ClubPlayers/Top10ClubPlayersConfig";
 
 const routeConfigs: PagesRouteConfig[] = [
   SignInConfig,
@@ -103,7 +103,7 @@ const routeConfigs: PagesRouteConfig[] = [
   Top10Config,
   Top10CoachesConfig,
   Top10PlayersConfig,
-  Top10AllSportsPlayersConfig,
+  Top10ClubPlayersConfig,
 ];
 
 const routes: AppRouteObject[] = [

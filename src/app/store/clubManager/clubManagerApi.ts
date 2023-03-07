@@ -11,6 +11,7 @@ import {
   TeamPlayer,
   TeamPlayers,
   Teams,
+  Top10ClubPlayers,
 } from "../types/clubManager-types";
 import {
   EventFiles,
@@ -595,6 +596,12 @@ export const clubManagerApi = createApi({
         url: "top-ten/sports/coaches",
       }),
     }),
+
+    TopTenClubPlayers: query<Top10ClubPlayers, {}>({
+      query: (param) => ({
+        url: "top-ten-club-players",
+      }),
+    }),
   }),
 });
 
@@ -655,4 +662,5 @@ export const {
   useAdminPlayerCalendarQuery,
   useAdminClubParentsQuery,
   useTopTenCoachesQuery,
+  useTopTenClubPlayersQuery,
 } = clubManagerApi;

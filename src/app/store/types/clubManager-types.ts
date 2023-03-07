@@ -4,6 +4,13 @@ import { Event } from "./events-types";
 import { PlayerCoach } from "./parent-types";
 import { TeamStatistics } from "./coach-types";
 
+// shaerd
+export type Statistics = {
+  strength: number;
+  moderate: number;
+  weakness: number;
+};
+
 export type ClubManagerSport = {
   id?: number;
   icon: string;
@@ -140,4 +147,20 @@ export type ClubParent = {
 
 export type ClubParents = BaseGetAllType & {
   results: ClubParent[];
+};
+
+export type Top10ClubPlayer = {
+  id: number;
+  name: string;
+  statistics: Statistics;
+  icon: string;
+  icon_url: string;
+  weight: number;
+  height: number;
+  dob: string;
+  parent: string;
+};
+
+export type Top10ClubPlayers = BaseGetAllType & {
+  results: Top10ClubPlayer[];
 };

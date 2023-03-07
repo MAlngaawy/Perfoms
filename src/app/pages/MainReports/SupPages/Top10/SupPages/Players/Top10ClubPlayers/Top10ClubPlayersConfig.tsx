@@ -1,8 +1,8 @@
 import { PagesRouteConfig } from "~/@main/types/Config-Types";
 import authRoles from "~/app/auth/authRoles";
-import Top10AllSportsPlayersPage from "./Top10AllSportsPlayersPage";
+import Top10ClubPlayersPage from "./Top10ClubPlayersPage";
 
-const Top10AllSportsPlayersConfig: PagesRouteConfig = {
+const Top10ClubPlayersConfig: PagesRouteConfig = {
   settings: {
     layout: {
       config: {
@@ -21,10 +21,10 @@ const Top10AllSportsPlayersConfig: PagesRouteConfig = {
   auth: [...authRoles.Supervisor, ...authRoles.Admin, ...authRoles.Coach],
   routes: [
     {
-      path: "main-reports/top10/players/all-sports",
-      element: <Top10AllSportsPlayersPage />,
+      path: "main-reports/top10/players/club",
+      element: <Top10ClubPlayersPage />,
     },
   ],
 };
 
-export default Top10AllSportsPlayersConfig;
+export default Top10ClubPlayersConfig;

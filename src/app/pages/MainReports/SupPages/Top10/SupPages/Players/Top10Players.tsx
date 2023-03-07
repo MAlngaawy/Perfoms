@@ -24,7 +24,7 @@ const Top10Players = (props: Props) => {
         </Breadcrumbs>
       </div>
       <div className="my-6 flex justify-center xs:justify-start flex-wrap gap-4  items-center">
-        <Link to={"all-sports"}>
+        <Link to={"club"}>
           <ReportsCategoriesCard
             image="/assets/images/players.png"
             type="All Sports"
