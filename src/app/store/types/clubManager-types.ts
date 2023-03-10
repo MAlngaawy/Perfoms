@@ -188,3 +188,20 @@ export type TopTenKpiPlayers = {
   name: string;
   players: Top10ClubPlayer[];
 };
+
+export type NoteCruds = {
+  id: number;
+  name: string;
+  description: string;
+  is_selected: boolean;
+};
+
+export type MetricNotes = BaseGetAllType & {
+  results: NoteCruds[];
+};
+
+export type UpdateNote = {
+  name: string;
+  description: string;
+  is_selected: boolean;
+};

@@ -83,7 +83,10 @@ export const parentsApi = createApi({
       providesTags: ["Parent"],
     }),
 
-    playerCoach: query<PlayerCoach, { id: number; page?: number }>({
+    playerCoach: query<
+      PlayerCoach,
+      { id: number | string | undefined; page?: number }
+    >({
       query: ({ id, ...params }) => ({
         url: `/coaches/${id}/`,
         params,

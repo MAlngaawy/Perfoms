@@ -1,19 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
-import {
-  Grid,
-  Button,
-  Modal,
-  Group,
-  Input,
-  Textarea,
-  Avatar,
-} from "@mantine/core";
-import { DatePicker } from "@mantine/dates";
+import { useState, useEffect } from "react";
+import { Modal, Group, Input, Textarea, Avatar } from "@mantine/core";
 import AppIcons from "~/@main/core/AppIcons";
 import SubmitButton from "~/@main/components/SubmitButton";
 import __ from "lodash";
 import { Education, Educations, User } from "~/app/store/types/user-types";
-import { PlayerCoach } from "~/app/store/types/parent-types";
 import { axiosInstance } from "~/app/configs/dataService";
 import {
   useAddUserEducationMutation,
@@ -29,6 +19,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import AvatarInput from "../shared/AvatarInput";
+import { usePlayerCoachQuery } from "~/app/store/parent/parentApi";
 
 // Props Types
 type Props = {
@@ -38,9 +29,15 @@ type Props = {
 
 const CoachPersonalInfo = ({ editMode, type }: Props) => {
   const [educations, setEducations] = useState<Educations>();
+  const [coachName, setCoachName] = useState<string | undefined>();
+  // const selectedPlayer: Player = useSelector(selectedPlayerFn);
   const { coach_id } = useParams();
   const { data, refetch } = useUserQuery({});
   const { data: userEducations } = useGetUserEducationsQuery({});
+  const { data: playerCoach } = usePlayerCoachQuery(
+    { id: coach_id },
+    { skip: !coach_id || data?.user_type !== "Parent" }
+  );
   const { data: coachEducations } = useGetCoachEducationsQuery(
     { coach_id: coach_id },
     { skip: !coach_id }
@@ -54,26 +51,32 @@ const CoachPersonalInfo = ({ editMode, type }: Props) => {
     } else {
       setEducations(userEducations);
     }
-  }, [userEducations, coachEducations]);
+
+    if (playerCoach) {
+      setCoachName(playerCoach?.first_name + " " + playerCoach?.last_name);
+    } else {
+      setCoachName(data?.first_name + " " + data?.last_name);
+    }
+  }, [userEducations, coachEducations, data, playerCoach]);
 
   return (
     <div className="bg-white flex flex-col gap-4 h-full rounded-lg md:rounded-2xl p-4">
-      <h3 className="text-base font-medium text-center">{data?.user_type}</h3>
+      <h3 className="text-base font-medium text-center">
+        {playerCoach ? "Coach" : data?.user_type}
+      </h3>
       <div className="flex flex-col justify-center items-center gap-4">
         <div className="flex justify-center items-center">
           <Avatar
             className="object-cover transition-all delay-75 rounded-lg group-hover:border border-white box-border"
-            src={data?.avatar}
+            src={playerCoach?.avatar || data?.avatar}
             alt="Profile_Picture"
             size={200}
           />
         </div>
         <div className="flex flex-col justify-center items-center gap-2">
-          <h2 className="text-xl ">
-            {data?.first_name + " " + data?.last_name}
-          </h2>
+          <h2 className="text-xl ">{coachName}</h2>
           <h4 className="text-perfBlue group-hover:text-white text-xs">
-            {data?.job}
+            {playerCoach?.job || data?.job}
           </h4>
           {/* {data?.user_type == "Parent" && (
             <Button

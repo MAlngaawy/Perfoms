@@ -1,7 +1,5 @@
-import React from "react";
 import { useState, ReactNode } from "react";
-import { Modal, Group, Input } from "@mantine/core";
-import AppIcons from "../../../../../@main/core/AppIcons";
+import { Modal, Input, Textarea } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -129,37 +127,26 @@ const AddActionModal = ({ metricId, opened, setOpened }: Props) => {
               />
             </Input.Wrapper>
 
-            <Input.Wrapper
+            <Textarea
+              placeholder="Action description"
+              sx={{
+                "&:hover:not(:disabled)": {
+                  borderColor: "blue",
+                  boxShadow: "unset",
+                },
+                "&:focus:not(:disabled)": {
+                  borderColor: "blue",
+                  boxShadow: "unset",
+                },
+              }}
+              className="border-b"
+              {...register("desc")}
               id="desc"
-              withAsterisk
-              // label="Name"
-              error={errors.desc && (errors.desc.message as ReactNode)}
-            >
-              <Input
-                placeholder="Action description"
-                sx={{
-                  ".mantine-Input-input	": {
-                    border: 0,
-                    padding: 0,
-                    borderBottom: 1,
-                    borderStyle: "solid",
-                    borderRadius: 0,
-                    minHeight: 20,
-                  },
-                }}
-                className="border-b"
-                {...register("desc")}
-                id="desc"
-              />
-            </Input.Wrapper>
+            />
 
             <SubmitButton isLoading={loading} text="Add Action" />
           </form>
         </Modal>
-
-        {/* <Group position="center" className="h-full">
-          <h2 onClick={() => setOpened(true)}>Add Action</h2>
-        </Group> */}
       </>
     </div>
   );

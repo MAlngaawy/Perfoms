@@ -253,8 +253,7 @@ const SaleStaticChart = () => {
           />
         </PerformanceCard>
       </div>
-
-      <div className="py-5 h-80 overflow-scroll performancesCards">
+      <div className="py-5 h-96 overflow-scroll performancesCards">
         <ResponsiveContainer width={"100%"} height="100%" className="min-w-700">
           <BarChart
             data={playerKpis?.player_kpi.map((i) => ({
@@ -271,10 +270,14 @@ const SaleStaticChart = () => {
             />
             <XAxis
               dataKey="name"
+              angle={-75}
               style={{
                 fontSize: 12,
-                maxWidth: 30,
+                fontWeight: "bold",
               }}
+              height={110}
+              textAnchor="end"
+              interval={0}
             />
             <YAxis dataKey="new" />
             <Tooltip labelStyle={{ color: "black" }} />

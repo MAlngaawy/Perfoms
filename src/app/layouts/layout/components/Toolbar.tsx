@@ -83,14 +83,14 @@ const Toolbar = ({ setOpened }: Props) => {
       }}
       className={`w-full flex justify-between items-center shadow-md p-2 lg:p-4 overflow-hidden`}
     >
-      <div className="bg-fadedGray flex w-fit gap-2 justify-between items-center overflow-scroll">
+      <div className="bg-fadedGray flex w-fit gap-2 justify-between items-center overflow-auto">
         <button
           className="block lg:hidden text-white lg:text-black border-0"
           onClick={() => setOpened(true)}
         >
           <AppIcons className="w-6 h-6 " icon="Bars3BottomLeftIcon:solid" />
         </button>
-        <div className="clubLogo gap-2 hidden lg:flex justify-center items-center">
+        <div className="clubLogo gap-2 overflow-hidden hidden lg:flex justify-center items-center">
           <Avatar
             radius={"xl"}
             className="w-10"

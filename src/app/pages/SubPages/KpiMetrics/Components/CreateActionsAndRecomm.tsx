@@ -1,15 +1,77 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu } from "@mantine/core";
 import AppIcons from "~/@main/core/AppIcons";
-import AddActionModal from "./AddActionModal";
-import { Group } from "@mantine/core";
-import AddRecomendationModal from "./AddRecommendationModal";
+import NotesList from "./SubComponents/MetricNotesList";
+import { Metric } from "~/app/store/types/supervisor-types";
+import {
+  useGetMetricActionsQuery,
+  useGetMetricRecommendationQuery,
+} from "~/app/store/clubManager/clubManagerApi";
+import { MetricNotes } from "~/app/store/types/clubManager-types";
+import { useUserQuery } from "~/app/store/user/userApi";
+import {
+  useSuperGetMetricActionsQuery,
+  useSuperGetMetricRecommendationQuery,
+} from "~/app/store/supervisor/supervisorMainApi";
 
 type Props = {
   metricId: number;
+  metric: Metric;
 };
 
-const CreateActionsAndRecomm = ({ metricId }: Props) => {
+const CreateActionsAndRecomm = ({ metricId, metric }: Props) => {
+  const { data: user } = useUserQuery({});
+
+  const [metricActions, setMetricActions] = useState<MetricNotes>();
+  const [metricRecommendations, setMetricRecommendations] =
+    useState<MetricNotes>();
+
+  // Admin Data
+  const { data: adminMetricActions } = useGetMetricActionsQuery(
+    { metric_id: metricId },
+    { skip: !metricId || user?.user_type !== "Admin" }
+  );
+  const { data: adminMetricRecommendations } = useGetMetricRecommendationQuery(
+    { metric_id: metricId },
+    { skip: !metricId || user?.user_type !== "Admin" }
+  );
+
+  //Supervisor
+  const { data: superMetricActions } = useSuperGetMetricActionsQuery(
+    { metric_id: metricId },
+    { skip: !metricId || user?.user_type !== "Supervisor" }
+  );
+  const { data: superMetricRecommendations } =
+    useSuperGetMetricRecommendationQuery(
+      { metric_id: metricId },
+      { skip: !metricId || user?.user_type !== "Supervisor" }
+    );
+
+  // use Effects to set the data
+  useEffect(() => {
+    if (adminMetricActions) {
+      setMetricActions(adminMetricActions);
+    }
+  }, [adminMetricActions]);
+
+  useEffect(() => {
+    if (adminMetricRecommendations) {
+      setMetricRecommendations(adminMetricRecommendations);
+    }
+  }, [adminMetricRecommendations]);
+
+  useEffect(() => {
+    if (superMetricActions) {
+      setMetricActions(superMetricActions);
+    }
+  }, [superMetricActions]);
+
+  useEffect(() => {
+    if (superMetricRecommendations) {
+      setMetricRecommendations(superMetricRecommendations);
+    }
+  }, [superMetricRecommendations]);
+
   const [openedAction, setOpenedAction] = useState(false);
   const [openedRecommendation, setOpenedRecommendation] = useState(false);
   return (
@@ -24,35 +86,38 @@ const CreateActionsAndRecomm = ({ metricId }: Props) => {
           </button>
         </Menu.Target>
 
-        <AddActionModal
-          opened={openedAction}
-          setOpened={setOpenedAction}
-          metricId={metricId}
-        />
-        <AddRecomendationModal
+        <NotesList
+          metricId={metric.id}
+          metricIcon={metric.icon || metric.icon_url}
+          metricName={metric.name}
+          type="Recommendation"
+          data={metricRecommendations?.results}
           opened={openedRecommendation}
           setOpened={setOpenedRecommendation}
-          metricId={metricId}
+        />
+
+        <NotesList
+          metricId={metric.id}
+          metricIcon={metric.icon || metric.icon_url}
+          metricName={metric.name}
+          type="Action"
+          data={metricActions?.results}
+          opened={openedAction}
+          setOpened={setOpenedAction}
         />
 
         <Menu.Dropdown>
-          <Menu.Item icon="">
-            <button
-              className="w-full h-full text-left"
-              onClick={() => setOpenedRecommendation(true)}
-            >
-              Add Recommendation
-            </button>
+          <Menu.Item
+            className="w-full h-full text-left"
+            onClick={() => setOpenedRecommendation(true)}
+          >
+            Recommendations
           </Menu.Item>
-          <Menu.Item icon="">
-            <Group position="center" className="h-full">
-              <button
-                className="w-full h-full text-left"
-                onClick={() => setOpenedAction(true)}
-              >
-                Add Action
-              </button>
-            </Group>
+          <Menu.Item
+            className="w-full h-full text-left"
+            onClick={() => setOpenedAction(true)}
+          >
+            Actions
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>

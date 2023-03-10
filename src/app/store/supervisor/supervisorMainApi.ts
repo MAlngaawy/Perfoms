@@ -3,8 +3,10 @@ import { BASE_HEADERS, BASE_URL } from "~/app/configs/dataService";
 import {
   ClubManagerSport,
   CoachesRequests,
+  MetricNotes,
   TeamPlayers,
   Teams,
+  UpdateNote,
 } from "../types/clubManager-types";
 import {
   EventFiles,
@@ -65,6 +67,8 @@ export const supervisorApi = createApi({
     "kpis",
     "Attendance",
     "performances",
+    "actions",
+    "recommendations",
   ],
   endpoints: ({ query, mutation }) => ({
     superKpis: query<
@@ -175,6 +179,7 @@ export const supervisorApi = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["actions"],
     }),
 
     superAddRecommendations: mutation<AddRecommendation, AddRecommendation>({
@@ -183,6 +188,7 @@ export const supervisorApi = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["recommendations"],
     }),
 
     suprtEvents: query<TeamEvents, { team_id: number; page?: number }>({
@@ -583,6 +589,83 @@ export const supervisorApi = createApi({
         body,
       }),
     }),
+
+    //Actions and Recomm
+
+    superGetMetricActions: query<MetricNotes, { metric_id: number }>({
+      query: ({ metric_id, ...params }) => ({
+        url: `metric-actions/${metric_id}`,
+        params,
+      }),
+      providesTags: ["actions"],
+    }),
+
+    superDeleteMetricAction: mutation<{}, { action_id: number }>({
+      query: ({ action_id }) => ({
+        url: `delete-action/${action_id}/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["actions"],
+    }),
+
+    superUpdateOneAction: mutation<UpdateNote, { action_id: number }>({
+      query: ({ action_id, ...body }) => ({
+        url: `update-action/${action_id}/`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["actions"],
+    }),
+
+    superGetMetricRecommendation: query<MetricNotes, { metric_id: number }>({
+      query: ({ metric_id, ...params }) => ({
+        url: `metric-recommendations/${metric_id}`,
+        params,
+      }),
+      providesTags: ["recommendations"],
+    }),
+
+    superDeleteMetricRecommendation: mutation<
+      {},
+      { recommendation_id: number }
+    >({
+      query: ({ recommendation_id }) => ({
+        url: `delete-recommendation/${recommendation_id}/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["recommendations"],
+    }),
+
+    superUpdateOneRecommendation: mutation<
+      UpdateNote,
+      { recommendation_id: number }
+    >({
+      query: ({ recommendation_id, ...body }) => ({
+        url: `update-recommendation/${recommendation_id}/`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["recommendations"],
+    }),
+
+    // select actions method
+    superSelectRecommendation: mutation<{}, { recommendation_id: number }>({
+      query: ({ recommendation_id, ...body }) => ({
+        url: `select-recommendation/${recommendation_id}/`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["recommendations"],
+    }),
+
+    superSelectAction: mutation<{}, { action_id: number }>({
+      query: ({ action_id, ...body }) => ({
+        url: `select-action/${action_id}/`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["actions"],
+    }),
   }),
 });
 
@@ -643,4 +726,13 @@ export const {
   useSuperGetTeamPerformancesQuery,
   useSuperUpdatePlayerPKMMutation,
   useSuperTeamPerformanceMetricsQuery,
+  // Actions and Recomme
+  useSuperGetMetricActionsQuery,
+  useSuperDeleteMetricActionMutation,
+  useSuperUpdateOneActionMutation,
+  useSuperGetMetricRecommendationQuery,
+  useSuperDeleteMetricRecommendationMutation,
+  useSuperUpdateOneRecommendationMutation,
+  useSuperSelectRecommendationMutation,
+  useSuperSelectActionMutation,
 } = supervisorApi;
