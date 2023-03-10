@@ -12,6 +12,9 @@ import {
   TeamPlayers,
   Teams,
   Top10ClubPlayers,
+  Top10SportPlayers,
+  TopTenKpiPlayers,
+  TopTenSportKpis,
 } from "../types/clubManager-types";
 import {
   EventFiles,
@@ -43,7 +46,6 @@ import {
   TeamKpiPlayersStatistics,
   TeamPlayersAttendStatistics,
   TeamsStatistics,
-  TeamStatistics,
 } from "../types/coach-types";
 
 export const clubManagerApi = createApi({
@@ -602,6 +604,27 @@ export const clubManagerApi = createApi({
         url: "top-ten-club-players",
       }),
     }),
+
+    TopTenSportPlayers: query<Top10SportPlayers, { sport_id: number }>({
+      query: ({ sport_id, ...param }) => ({
+        url: `top-ten-sport-players/${sport_id}`,
+      }),
+    }),
+
+    TopTenSportKpis: query<TopTenSportKpis, { sport_id: number }>({
+      query: ({ sport_id, ...param }) => ({
+        url: `top-ten-sport-kpis/${sport_id}`,
+      }),
+    }),
+
+    TopTenKpiPlayers: query<
+      TopTenKpiPlayers,
+      { kpi_id: number | string | undefined }
+    >({
+      query: ({ kpi_id, ...param }) => ({
+        url: `top-ten-kpi-players/${kpi_id}`,
+      }),
+    }),
   }),
 });
 
@@ -663,4 +686,7 @@ export const {
   useAdminClubParentsQuery,
   useTopTenCoachesQuery,
   useTopTenClubPlayersQuery,
+  useTopTenSportPlayersQuery,
+  useTopTenSportKpisQuery,
+  useTopTenKpiPlayersQuery,
 } = clubManagerApi;

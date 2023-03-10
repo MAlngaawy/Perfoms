@@ -98,38 +98,38 @@ const OverAll = ({ playerInfo, reportType }: Props) => {
     <PrintComp>
       <div className="reports items-stretch justify-center xs:justify-start flex flex-wrap gap-4 my-6">
         {/* <TeamInfoCard /> */}
-
-        <div className="teamInfoCard shadow-lg bg-white h-full flex-col gap-4 rounded-xl p-4 flex w-64">
-          <h2> {playerInfo?.name} </h2>
-          <div className="flex flex-col gap-6">
-            <div className="flex justify-between gap-6">
-              <Avatar src={playerInfo?.icon} className="h-full" size="xl" />
-              <div className="flex flex-col ">
-                <Info label="name" value={playerInfo?.name} />
-                <Info label="Age" value={playerInfo?.dob} />
+        <div>
+          <div className="teamInfoCard shadow-lg bg-white h-full flex-col gap-4 rounded-xl p-4 flex w-64">
+            <h2> {playerInfo?.name} </h2>
+            <div className="flex flex-col gap-6">
+              <div className="flex justify-between gap-6">
+                <Avatar src={playerInfo?.icon} className="h-full" size="xl" />
+                <div className="flex flex-col ">
+                  <Info label="name" value={playerInfo?.name} />
+                  <Info label="Age" value={playerInfo?.dob} />
+                </div>
               </div>
-            </div>
-            <div className="flex  gap-6 justify-between">
-              <Info label="Weight" value={playerInfo?.weight} />
-              <Info label="Height" value={playerInfo?.height} />
-            </div>
-            <div className="flex  gap-6 justify-between">
-              <Info label="Sport" value={playerInfo?.sport} />
-              <div className="flex flex-col items-center justify-center">
-                <h3 className=" text-perfGray3 text-xs">Teams</h3>
-                <div className="flex gap-2">
-                  {playerInfo &&
-                    playerInfo?.team?.map((team) => (
-                      <h2 className="text-perfGray1 text-sm font-normal">
-                        {team.name}
-                      </h2>
-                    ))}
+              <div className="flex  gap-6 justify-between">
+                <Info label="Weight" value={playerInfo?.weight} />
+                <Info label="Height" value={playerInfo?.height} />
+              </div>
+              <div className="flex  gap-6 justify-between">
+                <Info label="Sport" value={playerInfo?.sport} />
+                <div className="flex flex-col items-center justify-center">
+                  <h3 className=" text-perfGray3 text-xs">Teams</h3>
+                  <div className="flex gap-2">
+                    {playerInfo &&
+                      playerInfo?.team?.map((team) => (
+                        <h2 className="text-perfGray1 text-sm font-normal">
+                          {team.name}
+                        </h2>
+                      ))}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
         {reportType === "Performances" ? (
           <>
             {data?.results?.map((kpi) => {

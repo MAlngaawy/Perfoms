@@ -13,6 +13,7 @@ type Props = {
   };
   children: ReactNode;
   number: number;
+  title?: string;
 };
 
 const ranges = [
@@ -33,6 +34,7 @@ const CardWithTwoSides = ({
   number,
   overall_kpis: { strength, moderate, weakness },
   children,
+  title,
 }: Props) => {
   return (
     <div className="p-4 border border-gray-200 relative rounded-md bg-white h-full">
@@ -63,7 +65,7 @@ const CardWithTwoSides = ({
         <Grid.Col span={12} sm={6}>
           <div className="two">
             <ChartSide
-              name="overall kpis"
+              name={title || "overall kpis"}
               statistics={{
                 // strength: data.overall_kpis.strength,
                 // moderate: data.overall_kpis.moderate,

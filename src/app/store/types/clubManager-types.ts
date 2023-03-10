@@ -1,8 +1,12 @@
 import { BaseGetAllType } from "./base-types";
 import { Metric, Team } from "./supervisor-types";
 import { Event } from "./events-types";
-import { PlayerCoach } from "./parent-types";
-import { TeamStatistics } from "./coach-types";
+import { Player, PlayerCoach } from "./parent-types";
+import {
+  TeamKpiPlayersStatistics,
+  TeamKpiPlayerStatistics,
+  TeamStatistics,
+} from "./coach-types";
 
 // shaerd
 export type Statistics = {
@@ -12,7 +16,7 @@ export type Statistics = {
 };
 
 export type ClubManagerSport = {
-  id?: number;
+  id: number;
   icon: string;
   icon_url: string;
   name: string;
@@ -163,4 +167,24 @@ export type Top10ClubPlayer = {
 
 export type Top10ClubPlayers = BaseGetAllType & {
   results: Top10ClubPlayer[];
+};
+
+export type Top10SportPlayers = Top10ClubPlayer[];
+
+export type TopTenSportKpi = {
+  id: number;
+  name: string;
+  statistics: Statistics;
+  icon: string;
+  ison_url: string;
+};
+
+export type TopTenSportKpis = TopTenSportKpi[];
+
+export type TopTenKpiPlayers = {
+  icon: string;
+  icon_url: string;
+  id: number;
+  name: string;
+  players: Top10ClubPlayer[];
 };

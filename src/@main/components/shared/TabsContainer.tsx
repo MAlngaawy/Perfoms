@@ -14,7 +14,7 @@ const TabsContainer = ({ values, selectedValue, selectValueFun }: Props) => {
           <div
             onClick={() => selectValueFun(value)}
             className={cn(
-              "py-1 px-2  text-xs sm:text-sm rounded-full cursor-pointer transition-all ",
+              "py-1 px-3  text-xs sm:text-sm rounded-full cursor-pointer transition-all ",
               {
                 "bg-perfBlue text-white": selectedValue === value,
               }

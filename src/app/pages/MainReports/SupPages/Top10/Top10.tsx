@@ -21,7 +21,7 @@ const Top10 = (props: Props) => {
   return (
     <div className="container w-11/12 mx-auto">
       <div className="my-4">
-        <Breadcrumbs className="text-perfGray3" separator="→">
+        <Breadcrumbs className="text-perfGray3 text-sm" separator="→">
           {items}
         </Breadcrumbs>
       </div>

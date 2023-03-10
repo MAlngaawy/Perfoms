@@ -19,7 +19,7 @@ const COLORS = ["#27AE60", "#F2994A", "#EB5757"];
 const ChartSide = ({ name, icon, statistics, chartColors = COLORS }: Props) => {
   return (
     <div className="bg-white h-full  flex-col gap-3 rounded-xl p-4 sm:p-2 md:p-4 justify-between flex">
-      <h2 className="w-full text-left">{name}</h2>
+      <h2 className="w-full text-left text-sm">{name}</h2>
       <div className="flex relative w-full items-center justify-center">
         <Example chartColors={chartColors} data={statistics} />
       </div>
