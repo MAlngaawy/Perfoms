@@ -67,9 +67,6 @@ const CardWithTwoSides = ({
             <ChartSide
               name={title || "overall kpis"}
               statistics={{
-                // strength: data.overall_kpis.strength,
-                // moderate: data.overall_kpis.moderate,
-                // weakness: data.overall_kpis.weakness,
                 strength,
                 weakness,
                 moderate,

@@ -48,7 +48,7 @@ const Top10KpiPlayers = (props: Props) => {
                   <div className="one flex flex-col gap-2 items-center justify-center">
                     <AvatarWithBlueBorder
                       size={80}
-                      subTitle="Coach"
+                      // subTitle="Coach" == will be player team
                       name={data.name}
                       image={data.icon || "No Image"}
                     />
