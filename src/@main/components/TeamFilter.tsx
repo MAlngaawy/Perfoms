@@ -64,7 +64,6 @@ const TeamFilter = (props: Props) => {
     if (adminTeams) setTeams(adminTeams.results);
 
     if (teams) {
-      console.log("Select Team IF");
       dispatch(selectPlayerTeam(teams[0]));
     }
     if (playerTeams)
