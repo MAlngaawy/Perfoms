@@ -236,7 +236,7 @@ const TestComponent = ({
               "bg-slate-100 text-perfGray1 ": theScore !== number,
             })}
           >
-            {theScore} - {firstScore}
+            {number}
           </span>
         ))}
       </div>
