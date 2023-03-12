@@ -26,6 +26,9 @@ import {
   useGetUserAchievementsQuery,
   useUserQuery,
 } from "~/app/store/user/userApi";
+import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
+import { useGetTeamPlayersQuery } from "~/app/store/coach/coachApi";
+import { useSelector } from "react-redux";
 
 type Props = {
   reportType: string;
@@ -94,9 +97,18 @@ const OverAll = ({ playerInfo, reportType }: Props) => {
     adminPlayerAttendancesStatistics,
   ]);
 
+  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
+
+  const { data: coahcTeamPlayers } = useGetTeamPlayersQuery(
+    { team_id: selectedPlayerTeam?.id },
+    { skip: !selectedPlayerTeam }
+  );
+
+  console.log(coahcTeamPlayers);
+
   return (
     <PrintComp>
-      <div className="reports items-stretch justify-center xs:justify-start flex flex-wrap gap-4 my-6">
+      <div className="reports flex-row items-stretch justify-center flex flex-wrap gap-4 my-6">
         {/* <TeamInfoCard /> */}
 
         <div className="teamInfoCard shadow-lg bg-white h-full flex-col gap-4 rounded-xl p-4 flex w-64">
@@ -118,12 +130,12 @@ const OverAll = ({ playerInfo, reportType }: Props) => {
               <div className="flex flex-col items-center justify-center">
                 <h3 className=" text-perfGray3 text-xs">Teams</h3>
                 <div className="flex gap-2">
-                  {playerInfo &&
+                  {/* {playerInfo &&
                     playerInfo?.team?.map((team) => (
                       <h2 className="text-perfGray1 text-sm font-normal">
                         {team.name}
                       </h2>
-                    ))}
+                    ))} */}
                 </div>
               </div>
             </div>
