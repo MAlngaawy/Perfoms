@@ -541,7 +541,12 @@ export const clubManagerApi = createApi({
 
     adminPlayerKpisMetricsModerateScore: query<
       PlayerMetricScores,
-      { player_id: string | number | undefined; pages?: number }
+      {
+        player_id: string | number | undefined;
+        pages?: number;
+        date_from: string;
+        date_to: string;
+      }
     >({
       query: ({ player_id, ...params }) => ({
         url: `statistics/${player_id}/metrics/scores/moderate`,
@@ -551,7 +556,12 @@ export const clubManagerApi = createApi({
 
     adminPlayerKpisMetricsStrengthScore: query<
       PlayerMetricScores,
-      { player_id: string | number | undefined; pages?: number }
+      {
+        player_id: string | number | undefined;
+        pages?: number;
+        date_from: string;
+        date_to: string;
+      }
     >({
       query: ({ player_id, ...params }) => ({
         url: `statistics/${player_id}/metrics/scores/strength`,
@@ -561,7 +571,12 @@ export const clubManagerApi = createApi({
 
     adminPlayerKpisMetricsWeaknessScore: query<
       PlayerMetricScores,
-      { player_id: string | number | undefined; pages?: number }
+      {
+        player_id: string | number | undefined;
+        pages?: number;
+        date_from: string;
+        date_to: string;
+      }
     >({
       query: ({ player_id, ...params }) => ({
         url: `statistics/${player_id}/metrics/scores/weakness`,
@@ -591,7 +606,12 @@ export const clubManagerApi = createApi({
 
     adminPlayerCalendar: query<
       PlayerAttendances,
-      { player_id: string | number | undefined; pages?: number }
+      {
+        player_id: string | number | undefined;
+        pages?: number;
+        date_from: string;
+        date_to: string;
+      }
     >({
       query: ({ player_id, ...params }) => ({
         url: `statistics/${player_id}/calendar`,

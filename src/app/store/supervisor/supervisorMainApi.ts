@@ -502,7 +502,12 @@ export const supervisorApi = createApi({
 
     superPlayerCalendar: query<
       PlayerAttendances,
-      { player_id: string | number | undefined; pages?: number }
+      {
+        player_id: string | number | undefined;
+        pages?: number;
+        date_from: string;
+        date_to: string;
+      }
     >({
       query: ({ player_id, ...params }) => ({
         url: `statistics/${player_id}/calendar`,

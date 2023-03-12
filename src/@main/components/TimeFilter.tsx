@@ -95,11 +95,11 @@ const formatDate = (date: Date | null) => {
 
 const TimeFilter = (props: Props) => {
   const [value, setValue] = useState<[Date | null, Date | null]>([
-    thisWeek().firstday,
-    thisWeek().lastday,
+    thisMonth().firstday,
+    thisMonth().lastday,
   ]);
   const [opened, setOpened] = useState(false);
-  const [textValue, setTextValue] = useState<string>("This Week");
+  const [textValue, setTextValue] = useState<string>("This Month");
   const windwSize = useWindowSize();
   const dispatch = useDispatch();
 
@@ -151,8 +151,8 @@ const TimeFilter = (props: Props) => {
 
         <Menu.Dropdown>
           <div className="flex flex-col xs:flex-row gap-2">
-            <div className="dates flex flex-col items-center justify-center gap-2 sm:border-r  border-neutral-200">
-              <FilterType
+            <div className="dates flex flex-col items-center justify-center gap-2">
+              {/* <FilterType
                 type="This Week"
                 setTextValue={setTextValue}
                 setValue={setValue}
@@ -172,7 +172,7 @@ const TimeFilter = (props: Props) => {
                 setValue={setValue}
                 textValue={textValue}
                 filterFun={last2Weeks}
-              />
+              /> */}
               <FilterType
                 type="This Month"
                 setTextValue={setTextValue}
@@ -203,7 +203,7 @@ const TimeFilter = (props: Props) => {
               />
             </div>
 
-            <div className="calendar">
+            {/* <div className="calendar">
               <RangeCalendar
                 amountOfMonths={
                   windwSize.width && windwSize.width > 768 ? 2 : 1
@@ -211,7 +211,7 @@ const TimeFilter = (props: Props) => {
                 value={value}
                 onChange={setValue}
               />
-            </div>
+            </div> */}
           </div>
         </Menu.Dropdown>
       </Menu>
@@ -234,14 +234,14 @@ const FilterType = ({
   filterFun: any;
 }) => {
   return (
-    <span className="border-b w-full  ">
+    <span className="border-b w-full ">
       <Menu.Item
         onClick={() => {
           setValue([filterFun().firstday, filterFun().lastday]);
           setTextValue(type);
         }}
         className={classNames(
-          "p-2 w-full text-left cursor-pointer text-perfGray3",
+          "px-6 py-2 w-full text-left cursor-pointer text-perfGray3",
           {
             "bg-gray-100": textValue === type,
           }
