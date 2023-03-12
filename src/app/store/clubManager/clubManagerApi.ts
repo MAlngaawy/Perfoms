@@ -6,11 +6,17 @@ import {
   AllUsers,
   ClubParents,
   CoachesRequests,
+  MetricNotes,
   Sports,
   SportsStatistics,
   TeamPlayer,
   TeamPlayers,
   Teams,
+  Top10ClubPlayers,
+  Top10SportPlayers,
+  TopTenKpiPlayers,
+  TopTenSportKpis,
+  UpdateNote,
 } from "../types/clubManager-types";
 import {
   EventFiles,
@@ -42,7 +48,6 @@ import {
   TeamKpiPlayersStatistics,
   TeamPlayersAttendStatistics,
   TeamsStatistics,
-  TeamStatistics,
 } from "../types/coach-types";
 
 export const clubManagerApi = createApi({
@@ -63,6 +68,8 @@ export const clubManagerApi = createApi({
     "supervisorUser",
     "pillars",
     "metrics",
+    "actions",
+    "recommendations",
   ],
   endpoints: ({ query, mutation }) => ({
     manageCoachesRequests: query<CoachRequests, { page?: number }>({
@@ -395,6 +402,7 @@ export const clubManagerApi = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["recommendations"],
     }),
 
     adminAddActopn: mutation<AddAction, AddAction>({
@@ -403,6 +411,7 @@ export const clubManagerApi = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["actions"],
     }),
 
     adminEventFiles: query<EventFiles, { event_id: number; page?: number }>({
@@ -589,6 +598,110 @@ export const clubManagerApi = createApi({
         params,
       }),
     }),
+
+    TopTenCoaches: query<{}, {}>({
+      query: (param) => ({
+        url: "top-ten/sports/coaches",
+      }),
+    }),
+
+    TopTenClubPlayers: query<Top10ClubPlayers, {}>({
+      query: (param) => ({
+        url: "top-ten-club-players",
+      }),
+    }),
+
+    TopTenSportPlayers: query<Top10SportPlayers, { sport_id: number }>({
+      query: ({ sport_id, ...param }) => ({
+        url: `top-ten-sport-players/${sport_id}`,
+      }),
+    }),
+
+    TopTenSportKpis: query<TopTenSportKpis, { sport_id: number }>({
+      query: ({ sport_id, ...param }) => ({
+        url: `top-ten-sport-kpis/${sport_id}`,
+      }),
+    }),
+
+    TopTenKpiPlayers: query<
+      TopTenKpiPlayers,
+      { kpi_id: number | string | undefined }
+    >({
+      query: ({ kpi_id, ...param }) => ({
+        url: `top-ten-kpi-players/${kpi_id}`,
+      }),
+    }),
+
+    getMetricActions: query<MetricNotes, { metric_id: number }>({
+      query: ({ metric_id, ...params }) => ({
+        url: `metric-actions/${metric_id}`,
+        params,
+      }),
+      providesTags: ["actions"],
+    }),
+
+    deleteMetricAction: mutation<{}, { action_id: number }>({
+      query: ({ action_id }) => ({
+        url: `delete-action/${action_id}/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["actions"],
+    }),
+
+    UpdateOneAction: mutation<UpdateNote, { action_id: number }>({
+      query: ({ action_id, ...body }) => ({
+        url: `update-action/${action_id}/`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["actions"],
+    }),
+
+    getMetricRecommendation: query<MetricNotes, { metric_id: number }>({
+      query: ({ metric_id, ...params }) => ({
+        url: `metric-recommendations/${metric_id}`,
+        params,
+      }),
+      providesTags: ["recommendations"],
+    }),
+
+    deleteMetricRecommendation: mutation<{}, { recommendation_id: number }>({
+      query: ({ recommendation_id }) => ({
+        url: `delete-recommendation/${recommendation_id}/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["recommendations"],
+    }),
+
+    UpdateOneRecommendation: mutation<
+      UpdateNote,
+      { recommendation_id: number }
+    >({
+      query: ({ recommendation_id, ...body }) => ({
+        url: `update-recommendation/${recommendation_id}/`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["recommendations"],
+    }),
+
+    // select actions method
+    selectRecommendation: mutation<{}, { recommendation_id: number }>({
+      query: ({ recommendation_id, ...body }) => ({
+        url: `select-recommendation/${recommendation_id}/`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["recommendations"],
+    }),
+    selectAction: mutation<{}, { action_id: number }>({
+      query: ({ action_id, ...body }) => ({
+        url: `select-action/${action_id}/`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["actions"],
+    }),
   }),
 });
 
@@ -648,4 +761,17 @@ export const {
   useAdminPlayerActionsQuery,
   useAdminPlayerCalendarQuery,
   useAdminClubParentsQuery,
+  useTopTenCoachesQuery,
+  useTopTenClubPlayersQuery,
+  useTopTenSportPlayersQuery,
+  useTopTenSportKpisQuery,
+  useTopTenKpiPlayersQuery,
+  useGetMetricActionsQuery,
+  useDeleteMetricActionMutation,
+  useUpdateOneActionMutation,
+  useGetMetricRecommendationQuery,
+  useDeleteMetricRecommendationMutation,
+  useUpdateOneRecommendationMutation,
+  useSelectRecommendationMutation,
+  useSelectActionMutation,
 } = clubManagerApi;

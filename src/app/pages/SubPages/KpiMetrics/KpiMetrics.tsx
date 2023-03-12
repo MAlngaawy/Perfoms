@@ -116,7 +116,7 @@ const KpiMetrics = (props: Props) => {
                 />
               </div>
               <div className="absolute right-2 top-2 xs:top-5 gap-2">
-                <CreateActionsAndRecomm metricId={metric.id} />
+                <CreateActionsAndRecomm metric={metric} metricId={metric.id} />
               </div>
             </div>
           );

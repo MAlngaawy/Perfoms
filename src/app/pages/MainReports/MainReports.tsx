@@ -6,7 +6,7 @@ import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {};
 
-// const items = [{ title: "reports", href: "" }].map((item, index) => (
+// const items = [{ title: "Reports", href: "" }].map((item, index) => (
 //   <Link to={item.href} key={index}>
 //     {item.title}
 //   </Link>
@@ -54,6 +54,15 @@ const MainReports = (props: Props) => {
             <ReportsCategoriesCard
               image="/assets/images/sports.png"
               type="Sports"
+            />
+          </Link>
+        )}
+
+        {user?.user_type === "Admin" && (
+          <Link to={"top10"}>
+            <ReportsCategoriesCard
+              image="/assets/images/topten.png"
+              type="Top 10"
             />
           </Link>
         )}

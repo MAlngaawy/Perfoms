@@ -25,33 +25,48 @@ import {
 type Props = {};
 
 const PerformanceTable = (props: Props) => {
+  const { data: user } = useUserQuery({});
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const [teamPerformance, setTeamPerformance] =
     useState<CoachTeamPerformance>();
   const [teamPerformanceMetric, setTeamPerformanceMetric] =
     useState<TeamPerformanceMetrics>();
 
-  const { data: coachTeamPerformance } = useGetTeamPerformancesQuery(
-    { team_id: selectedPlayerTeam?.id },
-    { skip: !selectedPlayerTeam }
-  );
+  const { data: coachTeamPerformance, refetch: refetchCoachTeamPerformances } =
+    useGetTeamPerformancesQuery(
+      { team_id: selectedPlayerTeam?.id },
+      { skip: !selectedPlayerTeam || user?.user_type !== "Coach" }
+    );
 
   const { data: coachTeamPerformanceMetric, isLoading: coachIsLoading } =
     useTeamPerformanceMetricsQuery(
       { team_id: selectedPlayerTeam?.id },
-      { skip: !selectedPlayerTeam }
+      { skip: !selectedPlayerTeam || user?.user_type !== "Coach" }
     );
 
-  const { data: superTeamPerformance } = useSuperGetTeamPerformancesQuery(
-    { team_id: selectedPlayerTeam?.id },
-    { skip: !selectedPlayerTeam }
-  );
+  const { data: superTeamPerformance, refetch: refetchSuperTeamPerformances } =
+    useSuperGetTeamPerformancesQuery(
+      { team_id: selectedPlayerTeam?.id },
+      { skip: !selectedPlayerTeam || user?.user_type !== "Supervisor" }
+    );
 
   const { data: superTeamPerformanceMetric, isLoading: superIsLoading } =
     useSuperTeamPerformanceMetricsQuery(
       { team_id: selectedPlayerTeam?.id },
-      { skip: !selectedPlayerTeam }
+      { skip: !selectedPlayerTeam || user?.user_type !== "Supervisor" }
     );
+
+  // Refetch data when `selectedPlayerTeam` changes
+  useEffect(() => {
+    if (selectedPlayerTeam?.id) {
+      if (user?.user_type === "Coach") {
+        refetchCoachTeamPerformances();
+      }
+      if (user?.user_type === "Supervisor") {
+        refetchSuperTeamPerformances();
+      }
+    }
+  }, [selectedPlayerTeam, user]);
 
   useEffect(() => {
     if (coachTeamPerformance) setTeamPerformance(coachTeamPerformance);
@@ -177,8 +192,8 @@ const TestComponent = ({
   const [theScore, setTheScore] = useState(firstScore);
 
   useEffect(() => {
-    console.log(theScore);
-  }, [theScore]);
+    setTheScore(firstScore);
+  }, [firstScore]);
 
   return (
     <td key={player.id}>

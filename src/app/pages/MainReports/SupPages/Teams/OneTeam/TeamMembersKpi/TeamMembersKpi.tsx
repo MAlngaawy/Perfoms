@@ -114,7 +114,7 @@ const TeamMembersKpi = (props: Props) => {
   );
 
   const items = [
-    { title: "reports", href: "/main-reports" },
+    { title: "Reports", href: "/main-reports" },
     { title: "Teams", href: `/main-reports/sports/${sport_id}/teams` },
     {
       title: `Team ${

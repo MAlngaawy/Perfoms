@@ -270,7 +270,7 @@ const SaleStaticChart = () => {
             />
             <XAxis
               dataKey="name"
-              angle={-90}
+              angle={-75}
               style={{
                 fontSize: 12,
                 fontWeight: "bold",

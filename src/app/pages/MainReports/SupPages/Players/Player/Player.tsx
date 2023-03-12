@@ -43,7 +43,7 @@ const Player = ({ asComponent }: Props) => {
   }, [coachPlayerInfo, superPlayerInfo, adminPlayerInfo]);
 
   const items = [
-    { title: "reports", href: "/main-reports" },
+    { title: "Reports", href: "/main-reports" },
     { title: "Search Players", href: "/main-reports/search-players" },
     { title: playerInfo?.name, href: "" },
   ].map((item, index) => (
