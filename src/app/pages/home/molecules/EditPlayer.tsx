@@ -11,18 +11,21 @@ import { useUserQuery } from "~/app/store/user/userApi";
 import AvatarInput from "~/@main/components/shared/AvatarInput";
 
 type Props = {
-  player: CoachPlayerInfo;
+  player: CoachPlayerInfo | undefined;
   refetchPlayerData: any;
 };
 
 const EditPlayer = ({ player, refetchPlayerData }: Props) => {
+  console.log("player?.icon", player?.icon);
+  console.log("player?.icon_url", player?.icon_url);
+
   const { refetch } = useMyPlayersQuery({});
   const { data: user } = useUserQuery({});
   const [userAvatar, setUserAvatar] = useState<File | null>(null);
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [noImage, setNoImage] = useState<boolean>(player.icon ? false : true);
+  const [noImage, setNoImage] = useState<boolean>(true);
 
   const deleteImage = () => {
     setNoImage(true);
@@ -30,6 +33,16 @@ const EditPlayer = ({ player, refetchPlayerData }: Props) => {
   };
 
   useEffect(() => {
+    console.log("Efffect Player");
+
+    if (player?.icon) {
+      setNoImage(false);
+    }
+  }, [player]);
+
+  useEffect(() => {
+    console.log("Efffect userAvatar");
+
     if (userAvatar) {
       setNoImage(false);
     }
@@ -48,8 +61,8 @@ const EditPlayer = ({ player, refetchPlayerData }: Props) => {
     setError(false);
     const REQUEST_URL =
       user?.user_type === "Parent"
-        ? `parent/update-player/${player.id}/`
-        : `club-manager/update-player/${player.id}/`;
+        ? `parent/update-player/${player?.id}/`
+        : `club-manager/update-player/${player?.id}/`;
 
     try {
       setIsLoading(true);
@@ -101,7 +114,7 @@ const EditPlayer = ({ player, refetchPlayerData }: Props) => {
             </Alert>
           )}
           <AvatarInput
-            currentImage={noImage === true ? "" : player.icon}
+            currentImage={noImage ? "" : player?.icon}
             userAvatar={userAvatar}
             setUserAvatar={setUserAvatar}
             inputAlt="Player Photo"

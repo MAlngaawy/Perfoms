@@ -72,12 +72,6 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
             refetchPlayerData={refetchPlayerData}
           />
         )}
-        {user?.user_type === "Admin" && (
-          <EditPlayer
-            player={playerInfoData}
-            refetchPlayerData={refetchAdminPlayerData}
-          />
-        )}
       </div>
       <div className="flex flex-col xs:flex-row sm:flex-col justify-around">
         <div className="img my-2">

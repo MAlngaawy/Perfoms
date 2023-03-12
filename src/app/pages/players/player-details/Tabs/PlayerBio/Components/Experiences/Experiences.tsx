@@ -19,6 +19,7 @@ type Props = {};
 
 const Experiences = (props: Props) => {
   const editMode = useContext(EditModeContext);
+
   const { id } = useParams();
   const { data: playerLeagues } = usePlayerLeagueQuery(
     { player_id: id },

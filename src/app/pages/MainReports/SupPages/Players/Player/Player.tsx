@@ -54,7 +54,7 @@ const Player = ({ asComponent }: Props) => {
 
   return (
     <div
-      className={classNames("conatiner mx-auto px-4", {
+      className={classNames("conatiner mx-auto", {
         "w-11/12 ": !asComponent,
       })}
     >
