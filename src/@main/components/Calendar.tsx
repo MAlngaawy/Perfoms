@@ -33,13 +33,17 @@ const CustomCalendar = ({ pageName, player_id }: Props) => {
   const { data: parentPlayerAttendance } = usePlayerCalendarQuery(
     {
       id: selectedPlayer?.id,
-      date_from: fromDate,
-      date_to: toDate,
+      date_from: timeFilter?.from_date,
+      date_to: timeFilter?.to_date,
       team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
-        !selectedPlayer?.id || !fromDate || !toDate || !selectedPlayerTeam?.id,
+        !selectedPlayer?.id ||
+        !timeFilter?.from_date ||
+        !timeFilter?.to_date ||
+        !selectedPlayerTeam?.id ||
+        user?.user_type !== "Parent",
     }
   );
 

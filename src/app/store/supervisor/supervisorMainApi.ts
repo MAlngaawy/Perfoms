@@ -452,7 +452,12 @@ export const supervisorApi = createApi({
 
     superPlayerKpisMetricsModerateScore: query<
       PlayerMetricScores,
-      { player_id: string | number | undefined; pages?: number }
+      {
+        player_id: string | number | undefined;
+        pages?: number;
+        date_from: string;
+        date_to: string;
+      }
     >({
       query: ({ player_id, ...params }) => ({
         url: `statistics/${player_id}/metrics/scores/moderate`,
@@ -462,7 +467,12 @@ export const supervisorApi = createApi({
 
     superPlayerKpisMetricsStrengthScore: query<
       PlayerMetricScores,
-      { player_id: string | number | undefined; pages?: number }
+      {
+        player_id: string | number | undefined;
+        pages?: number;
+        date_from: string;
+        date_to: string;
+      }
     >({
       query: ({ player_id, ...params }) => ({
         url: `statistics/${player_id}/metrics/scores/strength`,
@@ -472,7 +482,12 @@ export const supervisorApi = createApi({
 
     superPlayerKpisMetricsWeaknessScore: query<
       PlayerMetricScores,
-      { player_id: string | number | undefined; pages?: number }
+      {
+        player_id: string | number | undefined;
+        pages?: number;
+        date_from: string;
+        date_to: string;
+      }
     >({
       query: ({ player_id, ...params }) => ({
         url: `statistics/${player_id}/metrics/scores/weakness`,

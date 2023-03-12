@@ -34,7 +34,6 @@ import { useAdminPlayerKpisMetricsStatisticsQuery } from "~/app/store/clubManage
 import { useUserQuery } from "~/app/store/user/userApi";
 
 const SaleStaticChart = () => {
-  const [data, setData] = useState<any>();
   const [newActions, setNewActions] = useState<{}[]>();
   const [newRecommendations, setNewRecommendations] = useState<{}[]>();
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
@@ -109,12 +108,32 @@ const SaleStaticChart = () => {
 
   // Fetch data for Parent
   const { data: strength } = usePlayerStrengthQuery(
-    { player_id: selectedPlayer?.id },
-    { skip: !selectedPlayer?.id || user?.user_type !== "Parent" }
+    {
+      player_id: selectedPlayer?.id,
+      date_from: timeFilter?.from_date,
+      date_to: timeFilter?.to_date,
+    },
+    {
+      skip:
+        !selectedPlayer?.id ||
+        !timeFilter?.from_date ||
+        !timeFilter?.to_date ||
+        user?.user_type !== "Parent",
+    }
   );
   const { data: weakness } = usePlayerWeaknessQuery(
-    { player_id: selectedPlayer?.id },
-    { skip: !selectedPlayer?.id || user?.user_type !== "Parent" }
+    {
+      player_id: selectedPlayer?.id,
+      date_from: timeFilter?.from_date,
+      date_to: timeFilter?.to_date,
+    },
+    {
+      skip:
+        !selectedPlayer?.id ||
+        !timeFilter?.from_date ||
+        !timeFilter?.to_date ||
+        user?.user_type !== "Parent",
+    }
   );
   const { data: parentPlayerActions } = usePlayerActionsQuery(
     { id: selectedPlayer?.id },
