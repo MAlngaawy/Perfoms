@@ -152,7 +152,7 @@ const TimeFilter = (props: Props) => {
         <Menu.Dropdown>
           <div className="flex flex-col xs:flex-row gap-2">
             <div className="dates flex flex-col items-center justify-center gap-2">
-              {/* <FilterType
+              <FilterType
                 type="This Week"
                 setTextValue={setTextValue}
                 setValue={setValue}
@@ -172,7 +172,7 @@ const TimeFilter = (props: Props) => {
                 setValue={setValue}
                 textValue={textValue}
                 filterFun={last2Weeks}
-              /> */}
+              />
               <FilterType
                 type="This Month"
                 setTextValue={setTextValue}
@@ -203,7 +203,7 @@ const TimeFilter = (props: Props) => {
               />
             </div>
 
-            {/* <div className="calendar">
+            <div className="calendar">
               <RangeCalendar
                 amountOfMonths={
                   windwSize.width && windwSize.width > 768 ? 2 : 1
@@ -211,7 +211,7 @@ const TimeFilter = (props: Props) => {
                 value={value}
                 onChange={setValue}
               />
-            </div> */}
+            </div>
           </div>
         </Menu.Dropdown>
       </Menu>
