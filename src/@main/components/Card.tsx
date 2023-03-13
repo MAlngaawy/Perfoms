@@ -31,106 +31,168 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
   const [data, setData] = useState<PlayerMetricScores | undefined>();
   const { data: user } = useUserQuery({});
   const timeFilter = useSelector(timeFilterFn);
-  const getUserData = (queryFn: any, userTypes: string[]) => {
-    if (!userTypes.includes(user?.user_type || "")) {
-      return null;
-    }
 
-    const { data } = queryFn({
+  // Fetch data for Parent
+  const { data: moderate } = usePlayerModerateQuery(
+    {
       player_id: player_id,
       date_from: timeFilter?.from_date,
       date_to: timeFilter?.to_date,
-    });
+    },
+    {
+      skip:
+        !player_id ||
+        !timeFilter?.from_date ||
+        !timeFilter?.to_date ||
+        user?.user_type !== "Parent",
+    }
+  );
+  const { data: strength } = usePlayerStrengthQuery(
+    {
+      player_id: player_id,
+      date_from: timeFilter?.from_date,
+      date_to: timeFilter?.to_date,
+    },
+    {
+      skip:
+        !player_id ||
+        !timeFilter?.from_date ||
+        !timeFilter?.to_date ||
+        user?.user_type !== "Parent",
+    }
+  );
+  const { data: weakness } = usePlayerWeaknessQuery(
+    {
+      player_id: player_id,
+      date_from: timeFilter?.from_date,
+      date_to: timeFilter?.to_date,
+    },
+    {
+      skip:
+        !player_id ||
+        !timeFilter?.from_date ||
+        !timeFilter?.to_date ||
+        user?.user_type !== "Parent",
+    }
+  );
 
-    return data;
-  };
+  // Fetch data for coach
+  const { data: coachPlayerModerate } =
+    useCoachPlayerKpisMetricsModerateScoreQuery(
+      {
+        player_id: player_id,
+        date_from: timeFilter?.from_date,
+        date_to: timeFilter?.to_date,
+      },
+      { skip: !player_id || user?.user_type !== "Coach" }
+    );
+  const { data: coachPlayerStrength } =
+    useCoachPlayerKpisMetricsStrengthScoreQuery(
+      {
+        player_id: player_id,
+        date_from: timeFilter?.from_date,
+        date_to: timeFilter?.to_date,
+      },
+      { skip: !player_id || user?.user_type !== "Coach" }
+    );
+  const { data: coachPlayerWeakness } =
+    useCoachPlayerKpisMetricsWeaknessScoreQuery(
+      {
+        player_id: player_id,
+        date_from: timeFilter?.from_date,
+        date_to: timeFilter?.to_date,
+      },
+      { skip: !player_id || user?.user_type !== "Coach" }
+    );
 
-  const moderateData = getUserData(usePlayerModerateQuery, ["Parent"]);
-  const strengthData = getUserData(usePlayerStrengthQuery, ["Parent"]);
-  const weaknessData = getUserData(usePlayerWeaknessQuery, ["Parent"]);
+  // Fetch Supervisor Data
+  const { data: superPlayerModerate } =
+    useSuperPlayerKpisMetricsModerateScoreQuery(
+      {
+        player_id: player_id,
+        date_from: timeFilter?.from_date,
+        date_to: timeFilter?.to_date,
+      },
+      { skip: !player_id || user?.user_type !== "Supervisor" }
+    );
+  const { data: superPlayerStrength } =
+    useSuperPlayerKpisMetricsStrengthScoreQuery(
+      {
+        player_id: player_id,
+        date_from: timeFilter?.from_date,
+        date_to: timeFilter?.to_date,
+      },
+      { skip: !player_id || user?.user_type !== "Supervisor" }
+    );
+  const { data: superPlayerWeakness } =
+    useSuperPlayerKpisMetricsWeaknessScoreQuery(
+      {
+        player_id: player_id,
+        date_from: timeFilter?.from_date,
+        date_to: timeFilter?.to_date,
+      },
+      { skip: !player_id || user?.user_type !== "Supervisor" }
+    );
 
-  const coachModerateData = getUserData(
-    useCoachPlayerKpisMetricsModerateScoreQuery,
-    ["Coach"]
-  );
-  const coachStrengthData = getUserData(
-    useCoachPlayerKpisMetricsStrengthScoreQuery,
-    ["Coach"]
-  );
-  const coachWeaknessData = getUserData(
-    useCoachPlayerKpisMetricsWeaknessScoreQuery,
-    ["Coach"]
-  );
-
-  const superModerateData = getUserData(
-    useSuperPlayerKpisMetricsModerateScoreQuery,
-    ["Supervisor"]
-  );
-  const superStrengthData = getUserData(
-    useSuperPlayerKpisMetricsStrengthScoreQuery,
-    ["Supervisor"]
-  );
-  const superWeaknessData = getUserData(
-    useSuperPlayerKpisMetricsWeaknessScoreQuery,
-    ["Supervisor"]
-  );
-
-  const adminModerateData = getUserData(
-    useAdminPlayerKpisMetricsModerateScoreQuery,
-    ["Admin"]
-  );
-  const adminStrengthData = getUserData(
-    useAdminPlayerKpisMetricsStrengthScoreQuery,
-    ["Admin"]
-  );
-  const adminWeaknessData = getUserData(
-    useAdminPlayerKpisMetricsWeaknessScoreQuery,
-    ["Admin"]
-  );
+  // Fetch Supervisor Data
+  const { data: adminPlayerModerate } =
+    useAdminPlayerKpisMetricsModerateScoreQuery(
+      {
+        player_id: player_id,
+        date_from: timeFilter?.from_date,
+        date_to: timeFilter?.to_date,
+      },
+      { skip: !player_id || user?.user_type !== "Admin" }
+    );
+  const { data: adminPlayerStrength } =
+    useAdminPlayerKpisMetricsStrengthScoreQuery(
+      {
+        player_id: player_id,
+        date_from: timeFilter?.from_date,
+        date_to: timeFilter?.to_date,
+      },
+      { skip: !player_id || user?.user_type !== "Admin" }
+    );
+  const { data: adminPlayerWeakness } =
+    useAdminPlayerKpisMetricsWeaknessScoreQuery(
+      {
+        player_id: player_id,
+        date_from: timeFilter?.from_date,
+        date_to: timeFilter?.to_date,
+      },
+      { skip: !player_id || user?.user_type !== "Admin" }
+    );
 
   useEffect(() => {
-    switch (powerType) {
-      case "Moderate":
-        setData(
-          moderateData ??
-            coachModerateData ??
-            superModerateData ??
-            adminModerateData
-        );
-        break;
-      case "Strengths":
-        setData(
-          strengthData ??
-            coachStrengthData ??
-            superStrengthData ??
-            adminStrengthData
-        );
-        break;
-      case "Weaknesses":
-        setData(
-          weaknessData ??
-            coachWeaknessData ??
-            superWeaknessData ??
-            adminWeaknessData
-        );
-        break;
-      default:
-        setData(undefined);
+    if (powerType === "Moderate") {
+      if (moderate) setData(moderate);
+      if (coachPlayerModerate) setData(coachPlayerModerate);
+      if (superPlayerModerate) setData(superPlayerModerate);
+      if (adminPlayerModerate) setData(adminPlayerModerate);
+    } else if (powerType === "Strengths") {
+      if (strength) setData(strength);
+      if (coachPlayerStrength) setData(coachPlayerStrength);
+      if (superPlayerStrength) setData(superPlayerStrength);
+      if (adminPlayerStrength) setData(adminPlayerStrength);
+    } else if (powerType === "Weaknesses") {
+      if (weakness) setData(weakness);
+      if (coachPlayerWeakness) setData(coachPlayerWeakness);
+      if (superPlayerWeakness) setData(superPlayerWeakness);
+      if (adminPlayerWeakness) setData(adminPlayerWeakness);
     }
   }, [
-    moderateData,
-    strengthData,
-    weaknessData,
-    coachModerateData,
-    coachStrengthData,
-    coachWeaknessData,
-    superModerateData,
-    superStrengthData,
-    superWeaknessData,
-    adminModerateData,
-    adminStrengthData,
-    adminWeaknessData,
-    powerType,
+    moderate,
+    strength,
+    weakness,
+    coachPlayerModerate,
+    coachPlayerStrength,
+    coachPlayerWeakness,
+    superPlayerModerate,
+    superPlayerStrength,
+    superPlayerWeakness,
+    adminPlayerModerate,
+    adminPlayerStrength,
+    adminPlayerWeakness,
   ]);
 
   return (
