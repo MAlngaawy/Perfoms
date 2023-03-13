@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import {
   selectedPlayerFn,
   selectedPlayerTeamFn,
+  timeFilterFn,
 } from "~/app/store/parent/parentSlice";
 import { usePlayerCalendarQuery } from "~/app/store/parent/parentApi";
 import { useEffect, useState } from "react";
@@ -13,6 +14,7 @@ import { useSuperPlayerCalendarQuery } from "~/app/store/supervisor/supervisorMa
 import { useAdminPlayerCalendarQuery } from "~/app/store/clubManager/clubManagerApi";
 import { thisMonth } from "./TimeFilter";
 import AppUtils from "~/@main/utils/AppUtils";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {
   pageName?: "reports";
@@ -20,38 +22,74 @@ type Props = {
 };
 
 const CustomCalendar = ({ pageName, player_id }: Props) => {
+  const { data: user } = useUserQuery({});
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const [playerAttendance, setPlayerAttendance] = useState<PlayerAttendances>();
+  const timeFilter = useSelector(timeFilterFn);
   const fromDate = AppUtils.formatDate(thisMonth().firstday);
   const toDate = AppUtils.formatDate(thisMonth().lastday);
 
   const { data: parentPlayerAttendance } = usePlayerCalendarQuery(
     {
       id: selectedPlayer?.id,
-      date_from: fromDate,
-      date_to: toDate,
+      date_from: timeFilter?.from_date,
+      date_to: timeFilter?.to_date,
       team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
-        !selectedPlayer?.id || !fromDate || !toDate || !selectedPlayerTeam?.id,
+        !selectedPlayer?.id ||
+        !timeFilter?.from_date ||
+        !timeFilter?.to_date ||
+        !selectedPlayerTeam?.id ||
+        user?.user_type !== "Parent",
     }
   );
 
   const { data: coachPlayerAttendance } = useCoachPlayerCalendarQuery(
-    { player_id: player_id, date_from: fromDate, date_to: toDate },
-    { skip: !player_id || !fromDate || !toDate }
+    {
+      player_id: player_id,
+      date_from: timeFilter?.from_date,
+      date_to: timeFilter?.to_date,
+    },
+    {
+      skip:
+        !player_id ||
+        !timeFilter?.from_date ||
+        !timeFilter?.to_date ||
+        user?.user_type !== "Coach",
+    }
   );
 
   const { data: superPlayerAttendance } = useSuperPlayerCalendarQuery(
-    { player_id: player_id },
-    { skip: !player_id }
+    {
+      player_id: player_id,
+      date_from: timeFilter?.from_date,
+      date_to: timeFilter?.to_date,
+    },
+    {
+      skip:
+        !player_id ||
+        !timeFilter?.from_date ||
+        !timeFilter?.to_date ||
+        user?.user_type !== "Supervisor",
+    }
   );
 
   const { data: adminPlayerAttendance } = useAdminPlayerCalendarQuery(
-    { player_id: player_id },
-    { skip: !player_id }
+    {
+      player_id: player_id,
+      date_from: timeFilter?.from_date,
+      date_to: timeFilter?.to_date,
+    },
+    {
+      skip:
+        !player_id ||
+        !timeFilter?.from_date ||
+        !timeFilter?.to_date ||
+        user?.user_type !== "Admin",
+    }
   );
 
   useEffect(() => {

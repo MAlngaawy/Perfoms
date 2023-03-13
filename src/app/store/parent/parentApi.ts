@@ -287,7 +287,12 @@ export const parentsApi = createApi({
 
     playerModerate: query<
       PlayerMetricScores,
-      { player_id: number | string | undefined; page?: number }
+      {
+        player_id: number | string | undefined;
+        page?: number;
+        date_from: string;
+        date_to: string;
+      }
     >({
       query: ({ player_id, ...params }) => ({
         url: `${player_id}/metrics/scores/moderate`,
@@ -298,7 +303,12 @@ export const parentsApi = createApi({
 
     playerStrength: query<
       PlayerMetricScores,
-      { player_id: number | string | undefined; page?: number }
+      {
+        player_id: number | string | undefined;
+        page?: number;
+        date_from: string;
+        date_to: string;
+      }
     >({
       query: ({ player_id, ...params }) => ({
         url: `${player_id}/metrics/scores/strength`,
@@ -309,7 +319,12 @@ export const parentsApi = createApi({
 
     playerWeakness: query<
       PlayerMetricScores,
-      { player_id: number | string | undefined; page?: number }
+      {
+        player_id: number | string | undefined;
+        page?: number;
+        date_from: string;
+        date_to: string;
+      }
     >({
       query: ({ player_id, ...params }) => ({
         url: `${player_id}/metrics/scores/weakness`,

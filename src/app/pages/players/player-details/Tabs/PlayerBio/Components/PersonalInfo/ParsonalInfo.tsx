@@ -16,6 +16,7 @@ import AppUtils from "~/@main/utils/AppUtils";
 import AddSkill from "./Forms/AddSkill";
 import Info from "~/@main/components/Info";
 import AvatarWithBlueBorder from "../../../../../../../../@main/components/shared/AvatarWithBlueBorder";
+import EditPlayer from "~/app/pages/home/molecules/EditPlayer";
 
 type Props = {};
 
@@ -28,17 +29,21 @@ const ParsonalInfo = (props: Props) => {
     usePlayerEducationQuery({ player_id: id }, { skip: !id });
   const { data: playerSkills, refetch: refetchPlayerSkills } =
     usePlayerSkillsQuery({ player_id: id }, { skip: !id });
-  const { data: playerData } = useGetPlayerInfoQuery(
-    { player_id: id },
-    { skip: !id }
-  );
+  const { data: playerData, refetch: refetchPlayerData } =
+    useGetPlayerInfoQuery({ player_id: id }, { skip: !id });
 
   return (
     <div className="flex flex-col gap-4">
       <div className="bg-white rounded-3xl p-4">
+        {editMode && (
+          <EditPlayer
+            player={playerData}
+            refetchPlayerData={refetchPlayerData}
+          />
+        )}
         <AvatarWithBlueBorder
           name={playerData?.name || "No Name"}
-          image={playerData?.icon || playerData?.icon_url || "No Image"}
+          image={playerData?.icon || "No Image"}
         />
 
         <div className="h2 font-medium">INFO</div>

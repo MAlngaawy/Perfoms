@@ -58,15 +58,34 @@ const TotalAttendance = ({ player_id }: Props) => {
   );
 
   const { data: superPlayerAttendance } = useSuperPlayerCalendarQuery(
-    { player_id: player_id },
-    { skip: !player_id }
+    {
+      player_id: player_id,
+      date_from: timeFilter?.from_date,
+      date_to: timeFilter?.to_date,
+    },
+    {
+      skip:
+        !player_id ||
+        !timeFilter?.from_date ||
+        !timeFilter?.to_date ||
+        user?.user_type !== "Supervisor",
+    }
   );
 
   const { data: adminPlayerAttendance } = useAdminPlayerCalendarQuery(
-    { player_id: player_id },
-    { skip: !player_id }
+    {
+      player_id: player_id,
+      date_from: timeFilter?.from_date,
+      date_to: timeFilter?.to_date,
+    },
+    {
+      skip:
+        !player_id ||
+        !timeFilter?.from_date ||
+        !timeFilter?.to_date ||
+        user?.user_type !== "Admin",
+    }
   );
-
   useEffect(() => {
     if (parentPlayerAttendance) setPlayerAttendance(parentPlayerAttendance);
     if (coachPlayerAttendance) setPlayerAttendance(coachPlayerAttendance);

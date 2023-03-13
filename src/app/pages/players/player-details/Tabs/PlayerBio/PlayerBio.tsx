@@ -9,7 +9,6 @@ type Props = {};
 
 const PlayerBio = (props: Props) => {
   const editMode = useContext(EditModeContext);
-  console.log("editMode", editMode);
 
   return (
     <div className="py-6">
