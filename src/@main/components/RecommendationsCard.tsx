@@ -104,7 +104,7 @@ const RecommendationsCard = ({ player_id }: Props) => {
       <h2 className="pdf-print text-perfGray1 text-base font-semibold ">
         Recommendations
       </h2>
-      <div className="flex flex-col gap-4 h-80 overflow-hidden">
+      <div className="flex flex-col gap-4 h-80">
         {recommendations ? (
           <>
             {recommendations.results.length < 1 ? (

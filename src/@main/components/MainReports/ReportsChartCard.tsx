@@ -136,6 +136,8 @@ const Example = ({ data, chartColors }: any) => {
   useEffect(() => {
     if (data?.strength === 0 && data?.moderate === 0 && data?.weakness === 0) {
       setEmpty(true);
+    } else {
+      setEmpty(false);
     }
   }, [data]);
 
