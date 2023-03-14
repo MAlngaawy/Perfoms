@@ -22,6 +22,8 @@ import {
   useAdminPlayerKpiStatisticsQuery,
   useAdminPlayersAttendStatisticsQuery,
 } from "~/app/store/clubManager/clubManagerApi";
+import { useSelector } from "react-redux";
+import { timeFilterFn } from "~/app/store/parent/parentSlice";
 import {
   useGetUserAchievementsQuery,
   useUserQuery,
@@ -35,14 +37,25 @@ type Props = {
 const OverAll = ({ playerInfo, reportType }: Props) => {
   const [data, setData] = useState<TeamsStatistics>();
   const { data: user } = useUserQuery({});
+  const timefilter = useSelector(timeFilterFn);
   const [attendData, setAttendData] =
     useState<PlayerMonthsAttendancesStatistics>();
   const { id } = useParams();
 
   const { data: coachPlayerKpisStatisticsData } =
     useCoachPlayerKpiStatisticsQuery(
-      { player_id: id },
-      { skip: !id || user?.user_type !== "Coach" }
+      {
+        player_id: id,
+        date_from: timefilter.from_date,
+        date_to: timefilter.to_date,
+      },
+      {
+        skip:
+          !id ||
+          !timefilter.from_date ||
+          !timefilter.to_date ||
+          user?.user_type !== "Coach",
+      }
     );
   const { data: coachPlayerAttendancesStatistics } =
     useCoachPlayersAttendStatisticsQuery(
@@ -52,19 +65,39 @@ const OverAll = ({ playerInfo, reportType }: Props) => {
 
   const { data: superPlayerKpisStatisticsData } =
     useSuperPlayerKpiStatisticsQuery(
-      { player_id: id },
+      {
+        player_id: id,
+        date_from: timefilter.from_date,
+        date_to: timefilter.to_date,
+      },
       { skip: !id || user?.user_type !== "Supervisor" }
     );
   const { data: superPlayerAttendancesStatistics } =
     useSuperPlayersAttendStatisticsQuery(
       { player_id: id },
-      { skip: !id || user?.user_type !== "Supervisor" }
+      {
+        skip:
+          !id ||
+          !timefilter.from_date ||
+          !timefilter.to_date ||
+          user?.user_type !== "Supervisor",
+      }
     );
 
   const { data: adminPlayerKpisStatisticsData } =
     useAdminPlayerKpiStatisticsQuery(
-      { player_id: id },
-      { skip: !id || user?.user_type !== "Admin" }
+      {
+        player_id: id,
+        date_from: timefilter.from_date,
+        date_to: timefilter.to_date,
+      },
+      {
+        skip:
+          !id ||
+          !timefilter.from_date ||
+          !timefilter.to_date ||
+          user?.user_type !== "Admin",
+      }
     );
 
   const { data: adminPlayerAttendancesStatistics } =
@@ -125,6 +158,7 @@ const OverAll = ({ playerInfo, reportType }: Props) => {
               return (
                 <div key={kpi.id}>
                   <ReportsChartCard
+                    clickable={false}
                     name={kpi.name}
                     statistics={kpi.statistics}
                   />

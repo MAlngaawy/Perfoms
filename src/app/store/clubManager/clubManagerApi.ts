@@ -506,7 +506,12 @@ export const clubManagerApi = createApi({
 
     adminPlayerKpiStatistics: query<
       TeamsStatistics,
-      { player_id: string | undefined; pages?: number }
+      {
+        player_id: string | undefined;
+        pages?: number;
+        date_from: string;
+        date_to: string;
+      }
     >({
       query: ({ player_id, ...params }) => ({
         url: `statistics/player-kpis/${player_id}`,
