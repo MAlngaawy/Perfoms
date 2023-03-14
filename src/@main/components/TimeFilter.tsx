@@ -170,7 +170,7 @@ const TimeFilter = (props: Props) => {
         </Menu.Target>
 
         <Menu.Dropdown>
-          <div className="flex flex-col xs:flex-row gap-2">
+          <div className="flex flex-col xs:flex-row gap-2 border-r border-gray-500">
             <div className="dates flex flex-col items-center justify-center gap-2">
               <FilterType
                 type="This Week"
