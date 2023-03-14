@@ -57,7 +57,7 @@ const MainReports = (props: Props) => {
             />
           </Link>
         )}
-        {/* 
+
         {user?.user_type === "Admin" && (
           <Link to={"top10"}>
             <ReportsCategoriesCard
@@ -65,7 +65,7 @@ const MainReports = (props: Props) => {
               type="Top 10"
             />
           </Link>
-        )} */}
+        )}
       </div>
     </div>
   );

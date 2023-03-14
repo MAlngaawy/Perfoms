@@ -340,7 +340,12 @@ export const coachApi = createApi({
 
     coachPlayerRecommendations: query<
       PlayerRecommendations,
-      { player_id: string | number | undefined; pages?: number }
+      {
+        player_id: string | number | undefined;
+        pages?: number;
+        date_from: string;
+        date_to: string;
+      }
     >({
       query: ({ player_id, ...params }) => ({
         url: `${player_id}/recommendations`,
@@ -350,7 +355,12 @@ export const coachApi = createApi({
 
     coachPlayerActions: query<
       PlayerRecommendations,
-      { player_id: string | number | undefined; pages?: number }
+      {
+        player_id: string | number | undefined;
+        pages?: number;
+        date_from: string;
+        date_to: string;
+      }
     >({
       query: ({ player_id, ...params }) => ({
         url: `${player_id}/actions`,

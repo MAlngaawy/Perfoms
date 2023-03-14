@@ -120,7 +120,12 @@ export const parentsApi = createApi({
 
     playerActions: query<
       PlayerActions,
-      { id: number | string | undefined; page?: number }
+      {
+        id: number | string | undefined;
+        page?: number;
+        date_from: string;
+        date_to: string;
+      }
     >({
       query: ({ id, ...params }) => ({
         url: `${id}/actions/`,
@@ -180,7 +185,12 @@ export const parentsApi = createApi({
 
     playerRecommendations: query<
       PlayerRecommendations,
-      { id: number | string | undefined; page?: number }
+      {
+        id: number | string | undefined;
+        page?: number;
+        date_from: string;
+        date_to: string;
+      }
     >({
       query: ({ id, ...params }) => ({
         url: `${id}/recommendations/`,

@@ -586,7 +586,12 @@ export const clubManagerApi = createApi({
 
     adminPlayerRecommendations: query<
       PlayerRecommendations,
-      { player_id: string | number | undefined; pages?: number }
+      {
+        player_id: string | number | undefined;
+        pages?: number;
+        date_from: string;
+        date_to: string;
+      }
     >({
       query: ({ player_id, ...params }) => ({
         url: `statistics/${player_id}/recommendations`,
@@ -596,7 +601,12 @@ export const clubManagerApi = createApi({
 
     adminPlayerActions: query<
       PlayerRecommendations,
-      { player_id: string | number | undefined; pages?: number }
+      {
+        player_id: string | number | undefined;
+        pages?: number;
+        date_from: string;
+        date_to: string;
+      }
     >({
       query: ({ player_id, ...params }) => ({
         url: `statistics/${player_id}/actions`,

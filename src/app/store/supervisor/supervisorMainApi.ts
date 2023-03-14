@@ -497,7 +497,12 @@ export const supervisorApi = createApi({
 
     superPlayerRecommendations: query<
       PlayerRecommendations,
-      { player_id: string | number | undefined; pages?: number }
+      {
+        player_id: string | number | undefined;
+        pages?: number;
+        date_from: string;
+        date_to: string;
+      }
     >({
       query: ({ player_id, ...params }) => ({
         url: `statistics/${player_id}/recommendations`,
@@ -507,7 +512,12 @@ export const supervisorApi = createApi({
 
     superPlayerActions: query<
       PlayerRecommendations,
-      { player_id: string | number | undefined; pages?: number }
+      {
+        player_id: string | number | undefined;
+        pages?: number;
+        date_from: string;
+        date_to: string;
+      }
     >({
       query: ({ player_id, ...params }) => ({
         url: `statistics/${player_id}/actions`,

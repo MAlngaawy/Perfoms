@@ -214,28 +214,33 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
       </div>
       <div className="h-64 overflow-y-auto">
         {data ? (
-          data?.results.map((power) => {
-            return (
-              <div
-                key={power.id}
-                className={`power_score px-5 py-2 flex flex-row justify-between`}
-              >
-                <h3 className="text-sm">
-                  <span className=" italic"> {power.kpi} </span> -
-                  <span className=" font-medium">{power.metric}</span>
-                </h3>
-                <h3 className={`font-semibold ${color} text-sm`}>
-                  {power.avg_score}
-                </h3>
-              </div>
-            );
-          })
+          data?.results
+            .filter((power) => power.avg_score > 0)
+            .map((power) => {
+              return (
+                <div
+                  key={power.id}
+                  className={`power_score px-5 py-2 flex flex-row justify-between`}
+                >
+                  <h3 className="text-sm">
+                    <span className=" italic"> {power.kpi} </span> -
+                    <span className=" font-medium">{power.metric}</span>
+                  </h3>
+                  <h3 className={`font-semibold ${color} text-sm`}>
+                    {power.avg_score}
+                  </h3>
+                </div>
+              );
+            })
         ) : (
           <div className="p-2 w-full h-full">
             <Skeleton width={"100%"} height={"100%"} radius="lg" />
           </div>
         )}
-        {data && data?.results?.length < 1 && <NoReport />}
+        {data &&
+          data?.results.filter((power) => power.avg_score > 0)?.length < 1 && (
+            <NoReport />
+          )}
       </div>
     </div>
   );
