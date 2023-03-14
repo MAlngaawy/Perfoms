@@ -32,25 +32,30 @@ const PerformanceTable = (props: Props) => {
   const [teamPerformanceMetric, setTeamPerformanceMetric] =
     useState<TeamPerformanceMetrics>();
 
-  const { data: coachTeamPerformance, refetch: refetchCoachTeamPerformances } =
-    useGetTeamPerformancesQuery(
-      { team_id: selectedPlayerTeam?.id },
-      { skip: !selectedPlayerTeam || user?.user_type !== "Coach" }
-    );
+  const {
+    data: coachTeamPerformance,
+    refetch: refetchCoachTeamPerformances,
+    isFetching: coachIsFetching,
+  } = useGetTeamPerformancesQuery(
+    { team_id: selectedPlayerTeam?.id },
+    { skip: !selectedPlayerTeam || user?.user_type !== "Coach" }
+  );
 
-  const { data: coachTeamPerformanceMetric, isLoading: coachIsLoading } =
-    useTeamPerformanceMetricsQuery(
-      { team_id: selectedPlayerTeam?.id },
-      { skip: !selectedPlayerTeam || user?.user_type !== "Coach" }
-    );
+  const { data: coachTeamPerformanceMetric } = useTeamPerformanceMetricsQuery(
+    { team_id: selectedPlayerTeam?.id },
+    { skip: !selectedPlayerTeam || user?.user_type !== "Coach" }
+  );
 
-  const { data: superTeamPerformance, refetch: refetchSuperTeamPerformances } =
-    useSuperGetTeamPerformancesQuery(
-      { team_id: selectedPlayerTeam?.id },
-      { skip: !selectedPlayerTeam || user?.user_type !== "Supervisor" }
-    );
+  const {
+    data: superTeamPerformance,
+    refetch: refetchSuperTeamPerformances,
+    isFetching: superIsFetching,
+  } = useSuperGetTeamPerformancesQuery(
+    { team_id: selectedPlayerTeam?.id },
+    { skip: !selectedPlayerTeam || user?.user_type !== "Supervisor" }
+  );
 
-  const { data: superTeamPerformanceMetric, isLoading: superIsLoading } =
+  const { data: superTeamPerformanceMetric } =
     useSuperTeamPerformanceMetricsQuery(
       { team_id: selectedPlayerTeam?.id },
       { skip: !selectedPlayerTeam || user?.user_type !== "Supervisor" }
@@ -82,15 +87,13 @@ const PerformanceTable = (props: Props) => {
     superTeamPerformanceMetric,
   ]);
 
-  if (coachIsLoading || superIsLoading)
-    return (
-      <Skeleton
-        height={200}
-        width="80%"
-        className="mx-auto my-20"
-        radius="lg"
-      />
-    );
+  if (coachIsFetching || superIsFetching) {
+    console.log("Loading");
+
+    return <PerformanceTableSkelaton />;
+  } else {
+    console.log("Not Loading");
+  }
 
   return (
     <>
@@ -241,5 +244,14 @@ const TestComponent = ({
         ))}
       </div>
     </td>
+  );
+};
+
+const PerformanceTableSkelaton = () => {
+  return (
+    <>
+      <Skeleton height={100} width="95%" className="mx-auto mb-2" radius="lg" />
+      <Skeleton height={"70vh"} width="95%" className="mx-auto" radius="lg" />
+    </>
   );
 };
