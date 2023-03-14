@@ -41,7 +41,7 @@ export type TeamAttendances = {
   };
 }[];
 
-export type RatePer = "Week" | "Two_Weeks" | "Month";
+export type RatePer = "Week" | "Two_Weeks" | "Month" | "Three_Months";
 
 export type AddAction = {
   id?: number;

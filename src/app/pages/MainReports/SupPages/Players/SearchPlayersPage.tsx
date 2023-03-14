@@ -1,4 +1,11 @@
-import { Avatar, Breadcrumbs, Group, Select, Text } from "@mantine/core";
+import {
+  Avatar,
+  Breadcrumbs,
+  Group,
+  Select,
+  Skeleton,
+  Text,
+} from "@mantine/core";
 import React, { forwardRef, useEffect, useState } from "react";
 import AppIcons from "~/@main/core/AppIcons";
 import { Controller, useForm } from "react-hook-form";
@@ -84,7 +91,7 @@ const SearchPlayersPage = (props: Props) => {
           className="flex w-11/12 justify-center"
           onSubmit={handleSubmit(send)}
         >
-          {data && (
+          {data ? (
             <>
               <Controller
                 control={control}
@@ -128,6 +135,8 @@ const SearchPlayersPage = (props: Props) => {
                 Go
               </button>
             </>
+          ) : (
+            <Skeleton width={"66.666666%"} height={40} radius={30} />
           )}
         </form>
       </div>
