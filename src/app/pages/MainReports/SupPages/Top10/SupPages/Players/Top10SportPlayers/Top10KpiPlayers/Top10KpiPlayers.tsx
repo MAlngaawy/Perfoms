@@ -5,6 +5,7 @@ import { Breadcrumbs, Grid } from "@mantine/core";
 import CardWithTwoSides from "~/@main/components/TopTenComponents/CardWithTwoSides/CardWithTwoSides";
 import AvatarWithBlueBorder from "~/@main/components/shared/AvatarWithBlueBorder";
 import Info from "~/@main/components/Info";
+import PlayerCard from "../../SharedComponents/PlayerCard";
 
 type Props = {};
 
@@ -40,26 +41,7 @@ const Top10KpiPlayers = (props: Props) => {
           top10KpiPlayers.players.map((data, index: any) => {
             return (
               <Grid.Col span={12} sm={6}>
-                <CardWithTwoSides
-                  title={top10KpiPlayers.name + " Kpi"}
-                  number={index + 1}
-                  overall_kpis={data.statistics}
-                >
-                  <div className="one flex flex-col gap-2 items-center justify-center">
-                    <AvatarWithBlueBorder
-                      size={80}
-                      // subTitle="Coach" == will be player team
-                      name={data.name}
-                      image={data.icon || "No Image"}
-                    />
-                    <div className="infos tec flex items-start justify-between flex-wrap gap-y-3 gap-x-5 mx-4">
-                      <Info label="Age" value={data.dob} />
-                      <Info label="Parent" value={data.parent} />
-                      <Info label="Weight" value={data.weight} />
-                      <Info label="Height" value={data.height} />
-                    </div>
-                  </div>
-                </CardWithTwoSides>
+                <PlayerCard index={index} data={data} />
               </Grid.Col>
             );
           })}

@@ -163,6 +163,7 @@ export type Top10ClubPlayer = {
   height: number;
   dob: string;
   parent: string;
+  team: { id: number; name: string }[];
 };
 
 export type Top10ClubPlayers = BaseGetAllType & {
@@ -187,6 +188,7 @@ export type TopTenKpiPlayers = {
   id: number;
   name: string;
   players: Top10ClubPlayer[];
+  team: { id: number; name: string }[];
 };
 
 export type NoteCruds = {

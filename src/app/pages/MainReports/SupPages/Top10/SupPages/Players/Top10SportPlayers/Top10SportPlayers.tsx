@@ -12,6 +12,7 @@ import Info from "~/@main/components/Info";
 import TabsContainer from "~/@main/components/shared/TabsContainer";
 import { useUserQuery } from "~/app/store/user/userApi";
 import ReportsChartCard from "~/@main/components/MainReports/ReportsChartCard";
+import PlayerCard from "../SharedComponents/PlayerCard";
 
 type Props = {};
 
@@ -128,25 +129,7 @@ const Top10SportPlayers = (props: Props) => {
             top10SportPlayers.map((data, index: any) => {
               return (
                 <Grid.Col span={12} sm={6}>
-                  <CardWithTwoSides
-                    number={index + 1}
-                    overall_kpis={data.statistics}
-                  >
-                    <div className="one flex flex-col gap-2 items-center justify-center">
-                      <AvatarWithBlueBorder
-                        size={80}
-                        subTitle="Coach"
-                        name={data.name}
-                        image={data.icon || "No Image"}
-                      />
-                      <div className="infos tec flex items-start justify-between flex-wrap gap-y-3 gap-x-5 mx-4">
-                        <Info label="Age" value={data.dob} />
-                        <Info label="Parent" value={data.parent} />
-                        <Info label="Weight" value={data.weight} />
-                        <Info label="Height" value={data.height} />
-                      </div>
-                    </div>
-                  </CardWithTwoSides>
+                  <PlayerCard index={index} data={data} />
                 </Grid.Col>
               );
             })

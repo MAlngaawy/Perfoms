@@ -26,8 +26,10 @@ const AvatarWithBlueBorder = ({ image, name, size, subTitle }: Props) => {
         radius={100}
         size={size || 100}
       />
-      <h2 className="my-2 font-medium text-perfGray1 text-lg">{name}</h2>
-      {subTitle && <span className="text-sm text-perfGray3">{subTitle}</span>}
+      <h2 className=" font-medium text-perfGray1 text-lg">{name}</h2>
+      {subTitle && (
+        <span className="text-sm mt-2 text-perfGray3">{subTitle}</span>
+      )}
     </div>
   );
 };
