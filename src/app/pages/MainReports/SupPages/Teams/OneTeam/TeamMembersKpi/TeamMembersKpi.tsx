@@ -1,103 +1,24 @@
-import { Breadcrumbs, Menu, Skeleton } from "@mantine/core";
-import React, { useEffect, useState } from "react";
+import { Breadcrumbs, Menu } from "@mantine/core";
+import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import ReportsChartCard from "~/@main/components/MainReports/ReportsChartCard";
 import AppIcons from "~/@main/core/AppIcons";
 import TeamInfoCard from "../components/TeamInfoCard";
 import TimeFilter from "~/@main/components/TimeFilter";
 import PrintComp from "~/@main/PrintComp";
-import {
-  useCoachTeamInfoQuery,
-  useCoachTeamPlayersAttendancesStatisticsQuery,
-  useCoachTeamPlayersKpiStatisticsQuery,
-} from "~/app/store/coach/coachApi";
-import AttendReportsChart from "~/@main/components/MainReports/AttendReportsChart";
-import {
-  useSuperSportStatisticsQuery,
-  useSuperTeamAttendPlayersStatisticsQuery,
-  useSuperTeamInfoQuery,
-  useSuperTeamKpiPlayersStatisticsQuery,
-} from "~/app/store/supervisor/supervisorMainApi";
-import {
-  TeamKpiPlayersStatistics,
-  TeamPlayersAttendStatistics,
-} from "~/app/store/types/coach-types";
+import { useCoachTeamInfoQuery } from "~/app/store/coach/coachApi";
+import { useSuperTeamInfoQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { useUserQuery } from "~/app/store/user/userApi";
-import {
-  useAdminTeamAttendPlayersStatisticsQuery,
-  useAdminTeamInfoQuery,
-  useAdminTeamKpiPlayersStatisticsQuery,
-} from "~/app/store/clubManager/clubManagerApi";
-// import { useSelector } from "react-redux";
-// import { timeFilterFn } from "~/app/store/parent/parentSlice";
+import { useAdminTeamInfoQuery } from "~/app/store/clubManager/clubManagerApi";
+import PerformancesCards from "./SupComponents/PerformancesCards";
+import AttendancesCards from "./SupComponents/AttendancesCards";
 
 type Props = {};
 
 const TeamMembersKpi = (props: Props) => {
   const [reportType, setReportType] =
     useState<"Performances" | "Attendances">("Performances");
-  const { sport_id, team_id, kpi_id } = useParams();
-  const [kpiData, setKpiData] = useState<TeamKpiPlayersStatistics>();
-  const [attendData, setAttendData] = useState<TeamPlayersAttendStatistics>();
-  const { data: user } = useUserQuery(null);
-  // const timeFilter = useSelector(timeFilterFn);
-
-  // fetch Kpis And Attend for coach user
-  const { data: coachTeamplayerskpi, isLoading: performancesLoading } =
-    useCoachTeamPlayersKpiStatisticsQuery(
-      { team_id: team_id, kpi_id: kpi_id },
-      { skip: !team_id || !kpi_id || user?.user_type !== "Coach" }
-    );
-  const { data: coachTeamPlayersAttends } =
-    useCoachTeamPlayersAttendancesStatisticsQuery(
-      { team_id: team_id },
-      { skip: !team_id || user?.user_type !== "Coach" }
-    );
-
-  // Fetch Kpis and Attends for the supervisor
-  const { data: superTeamPlayersKpi } = useSuperTeamKpiPlayersStatisticsQuery(
-    { team_id: team_id, kpi_id: kpi_id },
-    { skip: !team_id || !kpi_id || user?.user_type !== "Supervisor" }
-  );
-  const { data: superTeamPlayersAttends } =
-    useSuperTeamAttendPlayersStatisticsQuery(
-      {
-        team_id: team_id,
-        sport_id: sport_id,
-      },
-      { skip: !team_id || !sport_id || user?.user_type !== "Supervisor" }
-    );
-
-  // Fetch Kpis and Attends for the Admin
-  const { data: adminTeamPlayersKpi } = useAdminTeamKpiPlayersStatisticsQuery(
-    { team_id: team_id, kpi_id: kpi_id },
-    { skip: !team_id || !kpi_id || user?.user_type !== "Admin" }
-  );
-  const { data: adminTeamPlayersAttends } =
-    useAdminTeamAttendPlayersStatisticsQuery(
-      {
-        team_id: team_id,
-        sport_id: sport_id,
-      },
-      { skip: !team_id || !sport_id || user?.user_type !== "Admin" }
-    );
-
-  useEffect(() => {
-    if (superTeamPlayersAttends) setAttendData(superTeamPlayersAttends);
-    if (coachTeamPlayersAttends) setAttendData(coachTeamPlayersAttends);
-    if (adminTeamPlayersAttends) setAttendData(adminTeamPlayersAttends);
-
-    if (superTeamPlayersKpi) setKpiData(superTeamPlayersKpi);
-    if (coachTeamplayerskpi) setKpiData(coachTeamplayerskpi);
-    if (adminTeamPlayersKpi) setKpiData(adminTeamPlayersKpi);
-  }, [
-    superTeamPlayersAttends,
-    superTeamPlayersKpi,
-    coachTeamPlayersAttends,
-    coachTeamplayerskpi,
-    adminTeamPlayersAttends,
-    adminTeamPlayersKpi,
-  ]);
+  const { sport_id, team_id } = useParams();
+  const [kpiName, setKpiName] = useState<string>();
 
   // Fetch Team info
   const { data: coachTeamInfo } = useCoachTeamInfoQuery(
@@ -123,10 +44,7 @@ const TeamMembersKpi = (props: Props) => {
       href: `/main-reports/sports/${sport_id}/teams/${team_id}/kpis`,
     },
     {
-      title:
-        reportType === "Performances"
-          ? kpiData?.results?.[0]?.kpi?.name
-          : "Attendance",
+      title: reportType === "Performances" ? kpiName : "Attendance",
       href: ``,
     },
   ].map((item, index) => (
@@ -174,45 +92,9 @@ const TeamMembersKpi = (props: Props) => {
           </div>
 
           {reportType === "Performances" ? (
-            <>
-              {performancesLoading && (
-                <>
-                  <Skeleton height={300} width={250} radius="lg" />
-                  <Skeleton height={300} width={250} radius="lg" />
-                  <Skeleton height={300} width={250} radius="lg" />
-                  <Skeleton height={300} width={250} radius="lg" />
-                  <Skeleton height={300} width={250} radius="lg" />
-                  <Skeleton height={300} width={250} radius="lg" />
-                  <Skeleton height={300} width={250} radius="lg" />
-                </>
-              )}
-              {kpiData?.results.map((kpiPlayer) => {
-                console.log(kpiPlayer.name);
-                return (
-                  <div key={kpiPlayer.id}>
-                    <ReportsChartCard
-                      // onClickFun={() => navigate(`kpi/${kpi.id}`)}
-                      clickable={false}
-                      name={kpiPlayer?.kpi?.name + " - " + kpiPlayer?.name}
-                      statistics={kpiPlayer?.kpi?.statistics}
-                    />
-                  </div>
-                );
-              })}
-            </>
+            <PerformancesCards setKpiName={setKpiName} />
           ) : (
-            <>
-              {attendData?.results.map((attendsPlayer) => {
-                return (
-                  <div key={attendsPlayer.id}>
-                    <AttendReportsChart
-                      player_attendance={attendsPlayer.player_attendance}
-                      name={attendsPlayer.name}
-                    />
-                  </div>
-                );
-              })}
-            </>
+            <AttendancesCards />
           )}
         </div>
       </PrintComp>

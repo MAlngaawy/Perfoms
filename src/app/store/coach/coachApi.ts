@@ -216,6 +216,8 @@ export const coachApi = createApi({
       {
         team_id: string | undefined;
         kpi_id: string | undefined;
+        date_from: string;
+        date_to: string;
         pages?: number;
       }
     >({
@@ -229,6 +231,8 @@ export const coachApi = createApi({
       TeamPlayersAttendStatistics,
       {
         team_id: string | undefined;
+        date_from: string;
+        date_to: string;
         pages?: number;
       }
     >({

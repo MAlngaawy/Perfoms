@@ -461,6 +461,8 @@ export const clubManagerApi = createApi({
       {
         kpi_id: string | number | undefined;
         team_id: string | number | undefined;
+        date_from: string;
+        date_to: string;
         pages?: number;
       }
     >({
@@ -475,6 +477,8 @@ export const clubManagerApi = createApi({
       {
         sport_id: number | string | undefined;
         team_id: number | string | undefined;
+        date_from: string;
+        date_to: string;
         pages?: number;
       }
     >({
