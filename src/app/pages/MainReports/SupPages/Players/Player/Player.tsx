@@ -17,6 +17,7 @@ type Props = {
 };
 
 const Player = ({ asComponent }: Props) => {
+  const [showTimeFilter, setShowTimeFiter] = useState<boolean>(true);
   const [checked, setChecked] = useState(false);
   const [playerInfo, setPlayerInfo] = useState<CoachPlayerInfo>();
   const [reportType, setReportType] =
@@ -35,6 +36,14 @@ const Player = ({ asComponent }: Props) => {
     { player_id: id },
     { skip: !id }
   );
+
+  useEffect(() => {
+    if (checked === true && reportType === "Attendances") {
+      setShowTimeFiter(false);
+    } else {
+      setShowTimeFiter(true);
+    }
+  }, [checked, reportType]);
 
   useEffect(() => {
     if (coachPlayerInfo) setPlayerInfo(coachPlayerInfo);
@@ -101,7 +110,7 @@ const Player = ({ asComponent }: Props) => {
               </Menu.Item>
             </Menu.Dropdown>
           </Menu>
-          <TimeFilter />
+          {showTimeFilter && <TimeFilter />}
         </div>
       </div>
       <div className="my-6">

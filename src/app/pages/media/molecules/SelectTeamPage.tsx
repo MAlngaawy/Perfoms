@@ -88,7 +88,7 @@ const SelectTeamPage = (props: Props) => {
           );
         })
       ) : (
-        <div>LOL</div>
+        <div>No Teams</div>
       )}
     </div>
   );

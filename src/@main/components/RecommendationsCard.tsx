@@ -7,37 +7,80 @@ import { Skeleton } from "@mantine/core";
 import { useSuperPlayerRecommendationsQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { useAdminPlayerRecommendationsQuery } from "~/app/store/clubManager/clubManagerApi";
 import { useUserQuery } from "~/app/store/user/userApi";
+import { useSelector } from "react-redux";
+import { timeFilterFn } from "~/app/store/parent/parentSlice";
 
 type Props = {
   player_id: number | string | undefined;
 };
 
 const RecommendationsCard = ({ player_id }: Props) => {
+  const timeFilter = useSelector(timeFilterFn);
   const [recommendations, setRecommendations] =
     useState<PlayerRecommendations>();
   const { data: user } = useUserQuery({});
 
   const { data: parentPlayerRecommendations } = usePlayerRecommendationsQuery(
-    { id: player_id },
-    { skip: !player_id || user?.user_type !== "Parent" }
+    {
+      id: player_id,
+      date_from: timeFilter?.from_date,
+      date_to: timeFilter?.to_date,
+    },
+    {
+      skip:
+        !player_id ||
+        !timeFilter?.from_date ||
+        !timeFilter?.to_date ||
+        user?.user_type !== "Parent",
+    }
   );
 
   const { data: coachPlayerRecomendations } =
     useCoachPlayerRecommendationsQuery(
-      { player_id: player_id },
-      { skip: !player_id || user?.user_type !== "Coach" }
+      {
+        player_id: player_id,
+        date_from: timeFilter?.from_date,
+        date_to: timeFilter?.to_date,
+      },
+      {
+        skip:
+          !player_id ||
+          !timeFilter?.from_date ||
+          !timeFilter?.to_date ||
+          user?.user_type !== "Coach",
+      }
     );
 
   const { data: superPlayerRecomendations } =
     useSuperPlayerRecommendationsQuery(
-      { player_id: player_id },
-      { skip: !player_id || user?.user_type !== "Supervisor" }
+      {
+        player_id: player_id,
+        date_from: timeFilter?.from_date,
+        date_to: timeFilter?.to_date,
+      },
+      {
+        skip:
+          !player_id ||
+          !timeFilter?.from_date ||
+          !timeFilter?.to_date ||
+          user?.user_type !== "Supervisor",
+      }
     );
 
   const { data: adminPlayerRecomendations } =
     useAdminPlayerRecommendationsQuery(
-      { player_id: player_id },
-      { skip: !player_id || user?.user_type !== "Admin" }
+      {
+        player_id: player_id,
+        date_from: timeFilter?.from_date,
+        date_to: timeFilter?.to_date,
+      },
+      {
+        skip:
+          !player_id ||
+          !timeFilter?.from_date ||
+          !timeFilter?.to_date ||
+          user?.user_type !== "Admin",
+      }
     );
 
   useEffect(() => {
@@ -61,7 +104,7 @@ const RecommendationsCard = ({ player_id }: Props) => {
       <h2 className="pdf-print text-perfGray1 text-base font-semibold ">
         Recommendations
       </h2>
-      <div className="flex flex-col gap-4 h-80 overflow-hidden">
+      <div className="flex flex-col gap-4 h-80">
         {recommendations ? (
           <>
             {recommendations.results.length < 1 ? (

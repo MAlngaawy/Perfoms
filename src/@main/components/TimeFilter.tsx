@@ -10,73 +10,93 @@ import { timeFilter, timeFilterFn } from "./../../app/store/parent/parentSlice";
 type Props = {};
 
 export const thisWeek = () => {
-  var curr = new Date(); // get current date
-  var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
-  var last = first + 6; // last day is the first day + 6
-
-  return {
-    firstday: new Date(curr.setDate(first)),
-    lastday: new Date(curr.setDate(last)),
-  };
+  const today = new Date();
+  const daysToSaturday = 6 - today.getDay();
+  const saturday = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate() + daysToSaturday
+  );
+  const firstDay = new Date(
+    saturday.getFullYear(),
+    saturday.getMonth(),
+    saturday.getDate() - 6
+  );
+  const lastDay = saturday;
+  return { firstday: firstDay, lastday: lastDay };
 };
 
 export const lastWeek = () => {
-  var curr = new Date(); // get current date
-  var first = curr.getDate() - curr.getDay() - 7; // First day is the day of the month - the day of the week
-  var last = first + 6; // last day is the first day + 6
-
-  var firstday = new Date(curr.setDate(first));
-  var lastday = new Date(curr.setDate(last));
-  return {
-    firstday,
-    lastday,
-  };
+  const today = new Date();
+  const daysToSaturday = 6 - today.getDay();
+  const saturday = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate() + daysToSaturday
+  );
+  const lastSaturday = new Date(
+    saturday.getFullYear(),
+    saturday.getMonth(),
+    saturday.getDate() - 7
+  );
+  const firstDay = new Date(
+    lastSaturday.getFullYear(),
+    lastSaturday.getMonth(),
+    lastSaturday.getDate() - 6
+  );
+  const lastDay = lastSaturday;
+  return { firstday: firstDay, lastday: lastDay };
 };
 
 export const last2Weeks = () => {
-  var curr = new Date(); // get current date
-  var first = curr.getDate() - curr.getDay() - 14; // First day is the day of the month - the day of the week
-  var last = first + 13; // last day is the first day + 6
-
-  var firstday = new Date(curr.setDate(first));
-  var lastday = new Date(curr.setDate(last));
-  return {
-    firstday,
-    lastday,
-  };
+  const today = new Date();
+  const daysToSaturday = 6 - today.getDay();
+  const saturday = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate() + daysToSaturday
+  );
+  const firstDay = new Date(
+    saturday.getFullYear(),
+    saturday.getMonth(),
+    saturday.getDate() - 13
+  );
+  const lastDay = saturday;
+  return { firstday: firstDay, lastday: lastDay };
 };
 
 export const thisMonth = () => {
-  let date = new Date(),
-    y = date.getFullYear(),
-    m = date.getMonth();
-  let firstday = new Date(y, m, 1);
-  let lastday = new Date(y, m + 1, 0);
-  return {
-    firstday,
-    lastday,
-  };
+  const today = new Date();
+  const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+  return { firstday: firstDayOfMonth, lastday: lastDayOfMonth };
 };
 
 export const lastMonth = () => {
-  let date = new Date(),
-    y = date.getFullYear(),
-    m = date.getMonth() - 1;
-  let firstday = new Date(y, m, 1);
-  let lastday = new Date(y, m + 1, 0);
-  return { firstday, lastday };
+  const today = new Date();
+  const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+  const firstDayOfLastMonth = new Date(
+    lastMonth.getFullYear(),
+    lastMonth.getMonth(),
+    1
+  );
+  const lastDayOfLastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+  return { firstday: firstDayOfLastMonth, lastday: lastDayOfLastMonth };
 };
 
 export const thisYear = () => {
-  let firstday = new Date(new Date().getFullYear(), 0, 1);
-  let lastday = new Date(new Date().getFullYear(), 11, 31);
-  return { firstday, lastday };
+  const today = new Date();
+  const firstDayOfYear = new Date(today.getFullYear(), 0, 1);
+  const lastDayOfYear = new Date(today.getFullYear(), 11, 31);
+  return { firstday: firstDayOfYear, lastday: lastDayOfYear };
 };
 
 export const lastYear = () => {
-  let firstday = new Date(new Date().getFullYear() - 1, 0, 1);
-  let lastday = new Date(new Date().getFullYear() - 1, 11, 31);
-  return { firstday, lastday };
+  const today = new Date();
+  const lastYear = new Date(today.getFullYear() - 1, 0, 1);
+  const firstDayOfLastYear = new Date(lastYear.getFullYear(), 0, 1);
+  const lastDayOfLastYear = new Date(today.getFullYear() - 1, 11, 31);
+  return { firstday: firstDayOfLastYear, lastday: lastDayOfLastYear };
 };
 
 const formatDate = (date: Date | null) => {
@@ -150,9 +170,9 @@ const TimeFilter = (props: Props) => {
         </Menu.Target>
 
         <Menu.Dropdown>
-          <div className="flex flex-col xs:flex-row gap-2">
+          <div className="flex flex-col xs:flex-row gap-2 border-r border-gray-500">
             <div className="dates flex flex-col items-center justify-center gap-2">
-              {/* <FilterType
+              <FilterType
                 type="This Week"
                 setTextValue={setTextValue}
                 setValue={setValue}
@@ -172,7 +192,7 @@ const TimeFilter = (props: Props) => {
                 setValue={setValue}
                 textValue={textValue}
                 filterFun={last2Weeks}
-              /> */}
+              />
               <FilterType
                 type="This Month"
                 setTextValue={setTextValue}
@@ -203,7 +223,7 @@ const TimeFilter = (props: Props) => {
               />
             </div>
 
-            {/* <div className="calendar">
+            <div className="calendar">
               <RangeCalendar
                 amountOfMonths={
                   windwSize.width && windwSize.width > 768 ? 2 : 1
@@ -211,7 +231,7 @@ const TimeFilter = (props: Props) => {
                 value={value}
                 onChange={setValue}
               />
-            </div> */}
+            </div>
           </div>
         </Menu.Dropdown>
       </Menu>

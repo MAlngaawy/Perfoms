@@ -73,7 +73,7 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
           />
         )}
       </div>
-      <div className="flex flex-col xs:flex-row sm:flex-col justify-around">
+      <div className="flex flex-col xs:flex-row md:flex-col justify-around">
         <div className="img my-2">
           <Avatar
             src={playerInfoData?.icon}

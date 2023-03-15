@@ -136,12 +136,32 @@ const SaleStaticChart = () => {
     }
   );
   const { data: parentPlayerActions } = usePlayerActionsQuery(
-    { id: selectedPlayer?.id },
-    { skip: !selectedPlayer?.id || user?.user_type !== "Parent" }
+    {
+      id: selectedPlayer?.id,
+      date_from: timeFilter?.from_date,
+      date_to: timeFilter?.to_date,
+    },
+    {
+      skip:
+        !selectedPlayer?.id ||
+        !timeFilter?.from_date ||
+        !timeFilter?.to_date ||
+        user?.user_type !== "Parent",
+    }
   );
   const { data: parentPlayerRecommendations } = usePlayerRecommendationsQuery(
-    { id: selectedPlayer?.id },
-    { skip: !selectedPlayer?.id || user?.user_type !== "Parent" }
+    {
+      id: selectedPlayer?.id,
+      date_from: timeFilter?.from_date,
+      date_to: timeFilter?.to_date,
+    },
+    {
+      skip:
+        !selectedPlayer?.id ||
+        !timeFilter?.from_date ||
+        !timeFilter?.to_date ||
+        user?.user_type !== "Parent",
+    }
   );
 
   useEffect(() => {

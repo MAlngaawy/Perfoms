@@ -119,6 +119,7 @@ const OneTeam = (props: Props) => {
                   onClickFun={() => navigate(`${kpi.id}/players`)}
                   name={kpi.name}
                   statistics={kpi.statistics}
+                  clickable={true}
                 />
               </div>
             );

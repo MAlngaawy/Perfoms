@@ -173,10 +173,10 @@ const SignleNote = ({ data, num, type, active }: SingleNoteProps) => {
   return (
     <div
       className={cn(
-        "bg-pagesBg flex flex-col gap-2 w-full rounded-xl px-4 md:px-8 py-4",
-        {
-          "border border-perfBlue": active,
-        }
+        "bg-pagesBg flex flex-col gap-2 w-full rounded-xl px-4 md:px-8 py-4"
+        // {
+        //   "border border-perfBlue": active,
+        // }
       )}
     >
       <div className="flex justify-between">
@@ -205,9 +205,9 @@ const SignleNote = ({ data, num, type, active }: SingleNoteProps) => {
               }}
             />
           </div>
-          <div>
+          {/* <div>
             <SimpleRadioButton item_id={data.id} type={type} active={active} />
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="flex flex-col items-start justify-start">
@@ -218,52 +218,52 @@ const SignleNote = ({ data, num, type, active }: SingleNoteProps) => {
   );
 };
 
-const SimpleRadioButton = ({
-  active,
-  item_id,
-  type,
-}: {
-  active: boolean;
-  item_id: number;
-  type: "Action" | "Recommendation";
-}) => {
-  const { data: user } = useUserQuery({});
+// const SimpleRadioButton = ({
+//   active,
+//   item_id,
+//   type,
+// }: {
+//   active: boolean;
+//   item_id: number;
+//   type: "Action" | "Recommendation";
+// }) => {
+//   const { data: user } = useUserQuery({});
 
-  const useSelectMutation = (userType: string) => {
-    if (userType === "Admin") {
-      return type === "Action"
-        ? useSelectActionMutation()[0]
-        : useSelectRecommendationMutation()[0];
-    } else if (userType === "Supervisor") {
-      return type === "Action"
-        ? useSuperSelectActionMutation()[0]
-        : useSuperSelectRecommendationMutation()[0];
-    }
-  };
+//   const useSelectMutation = (userType: string) => {
+//     if (userType === "Admin") {
+//       return type === "Action"
+//         ? useSelectActionMutation()[0]
+//         : useSelectRecommendationMutation()[0];
+//     } else if (userType === "Supervisor") {
+//       return type === "Action"
+//         ? useSuperSelectActionMutation()[0]
+//         : useSuperSelectRecommendationMutation()[0];
+//     }
+//   };
 
-  const user_type = user?.user_type || "Admin"; // provide a default value for user_type
-  const selectItem = useSelectMutation(user_type);
-  const obj =
-    type === "Action" ? { action_id: item_id } : { recommendation_id: item_id };
+//   const user_type = user?.user_type || "Admin"; // provide a default value for user_type
+//   const selectItem = useSelectMutation(user_type);
+//   const obj =
+//     type === "Action" ? { action_id: item_id } : { recommendation_id: item_id };
 
-  return (
-    <div
-      //@ts-ignore
-      onClick={() => selectItem(obj)}
-      className={cn(
-        "outer border rounded-full w-3 h-3 flex justify-center items-center cursor-pointer",
-        {
-          "border-perfBlue": active,
-          "border-perfGray3": !active,
-        }
-      )}
-    >
-      <div
-        className={cn("inner w-2 h-2 rounded-full", {
-          "bg-perfBlue": active,
-          "bg-perfGray3": !active,
-        })}
-      ></div>
-    </div>
-  );
-};
+//   return (
+//     <div
+//       //@ts-ignore
+//       onClick={() => selectItem(obj)}
+//       className={cn(
+//         "outer border rounded-full w-3 h-3 flex justify-center items-center cursor-pointer",
+//         {
+//           "border-perfBlue": active,
+//           "border-perfGray3": !active,
+//         }
+//       )}
+//     >
+//       <div
+//         className={cn("inner w-2 h-2 rounded-full", {
+//           "bg-perfBlue": active,
+//           "bg-perfGray3": !active,
+//         })}
+//       ></div>
+//     </div>
+//   );
+// };

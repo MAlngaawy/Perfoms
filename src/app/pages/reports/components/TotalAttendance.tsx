@@ -91,7 +91,12 @@ const TotalAttendance = ({ player_id }: Props) => {
     if (coachPlayerAttendance) setPlayerAttendance(coachPlayerAttendance);
     if (superPlayerAttendance) setPlayerAttendance(superPlayerAttendance);
     if (adminPlayerAttendance) setPlayerAttendance(adminPlayerAttendance);
-  }, [parentPlayerAttendance, coachPlayerAttendance, superPlayerAttendance]);
+  }, [
+    parentPlayerAttendance,
+    coachPlayerAttendance,
+    superPlayerAttendance,
+    adminPlayerAttendance,
+  ]);
 
   const newData = [
     { name: "Attended", value: 0, color: "#1B59F8" },

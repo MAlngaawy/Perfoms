@@ -302,7 +302,7 @@ export type PlayerMetricScores = BaseGetAllType & {
     id: number;
     metric: string;
     kpi: string;
-    avg_score: string;
+    avg_score: number;
   }[];
 };
 

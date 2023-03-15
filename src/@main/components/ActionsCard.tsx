@@ -8,33 +8,76 @@ import { useSuperPlayerActionsQuery } from "~/app/store/supervisor/supervisorMai
 import { Skeleton } from "@mantine/core";
 import { useAdminPlayerActionsQuery } from "~/app/store/clubManager/clubManagerApi";
 import { useUserQuery } from "~/app/store/user/userApi";
+import { timeFilterFn } from "~/app/store/parent/parentSlice";
+import { useSelector } from "react-redux";
 
 type Props = {
   player_id: number | string | undefined;
 };
 
 const ActionsCard = ({ player_id }: Props) => {
+  const timeFilter = useSelector(timeFilterFn);
   const [actions, setActions] = useState<PlayerActions>();
   const { data: user } = useUserQuery({});
 
   const { data: parentPlayerActions } = usePlayerActionsQuery(
-    { id: player_id },
-    { skip: !player_id || user?.user_type !== "Parent" }
+    {
+      id: player_id,
+      date_from: timeFilter?.from_date,
+      date_to: timeFilter?.to_date,
+    },
+    {
+      skip:
+        !player_id ||
+        !timeFilter?.from_date ||
+        !timeFilter?.to_date ||
+        user?.user_type !== "Parent",
+    }
   );
 
   const { data: coachPlayerActions } = useCoachPlayerActionsQuery(
-    { player_id: player_id },
-    { skip: !player_id || user?.user_type !== "Coach" }
+    {
+      player_id: player_id,
+      date_from: timeFilter?.from_date,
+      date_to: timeFilter?.to_date,
+    },
+    {
+      skip:
+        !player_id ||
+        !timeFilter?.from_date ||
+        !timeFilter?.to_date ||
+        user?.user_type !== "Coach",
+    }
   );
 
   const { data: superPlayerActions } = useSuperPlayerActionsQuery(
-    { player_id: player_id },
-    { skip: !player_id || user?.user_type !== "Supervisor" }
+    {
+      player_id: player_id,
+      date_from: timeFilter?.from_date,
+      date_to: timeFilter?.to_date,
+    },
+    {
+      skip:
+        !player_id ||
+        !timeFilter?.from_date ||
+        !timeFilter?.to_date ||
+        user?.user_type !== "Supervisor",
+    }
   );
 
   const { data: adminPlayerActions } = useAdminPlayerActionsQuery(
-    { player_id: player_id },
-    { skip: !player_id || user?.user_type !== "Admin" }
+    {
+      player_id: player_id,
+      date_from: timeFilter?.from_date,
+      date_to: timeFilter?.to_date,
+    },
+    {
+      skip:
+        !player_id ||
+        !timeFilter?.from_date ||
+        !timeFilter?.to_date ||
+        user?.user_type !== "Admin",
+    }
   );
 
   useEffect(() => {
