@@ -34,7 +34,8 @@ const ReportsChartCard = ({
       className={classNames(
         "bg-white h-full  flex-col gap-3 rounded-xl shadow-md p-4 justify-between flex w-60",
         {
-          "transition-all  hover:shadow-xl  cursor-pointer": clickable,
+          "transition-all transform hover:scale-105 hover:shadow-xl  cursor-pointer":
+            (clickable = false),
         }
       )}
     >

@@ -28,6 +28,7 @@ import {
   useGetUserAchievementsQuery,
   useUserQuery,
 } from "~/app/store/user/userApi";
+import { axiosInstance } from "~/app/configs/dataService";
 
 type Props = {
   reportType: string;
@@ -36,6 +37,7 @@ type Props = {
 
 const OverAll = ({ playerInfo, reportType }: Props) => {
   const [data, setData] = useState<TeamsStatistics>();
+  const [playerTeams, setPlayerTeams] = useState<any[]>([]);
   const { data: user } = useUserQuery({});
   const timefilter = useSelector(timeFilterFn);
   const [attendData, setAttendData] =
@@ -127,6 +129,24 @@ const OverAll = ({ playerInfo, reportType }: Props) => {
     adminPlayerAttendancesStatistics,
   ]);
 
+  const fetchData = async () => {
+    axiosInstance
+      .get(`/user-generals/player-info/${playerInfo?.id}`)
+      .then((res) => {
+        return res.data;
+      })
+      .then((data: any) => {
+        setPlayerTeams([...data.team]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <PrintComp>
       <div className="reports flex-row items-stretch justify-center flex flex-wrap gap-4 my-6">
@@ -146,8 +166,21 @@ const OverAll = ({ playerInfo, reportType }: Props) => {
                 <Info label="Weight" value={playerInfo?.weight} />
                 <Info label="Height" value={playerInfo?.height} />
               </div>
-              <div className="flex  gap-6 justify-between">
-                <Info label="Sport" value={playerInfo?.sport} />
+              <div className="flex flex-row justify-between">
+                <div className="flex  gap-6 justify-between">
+                  <Info label="Sport" value={playerInfo?.sport} />
+                </div>
+                <div>
+                  <Info label="Teams" />
+                  {playerTeams &&
+                    playerTeams.map((team) => {
+                      return (
+                        <p className="text-sm" key={team.id}>
+                          {team.name}
+                        </p>
+                      );
+                    })}
+                </div>
               </div>
             </div>
           </div>
