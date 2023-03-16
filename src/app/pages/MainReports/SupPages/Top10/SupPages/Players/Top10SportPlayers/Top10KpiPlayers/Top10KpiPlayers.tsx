@@ -1,20 +1,30 @@
-import React from "react";
 import { useTopTenKpiPlayersQuery } from "~/app/store/clubManager/clubManagerApi";
 import { Link, useParams } from "react-router-dom";
 import { Breadcrumbs, Grid } from "@mantine/core";
-import CardWithTwoSides from "~/@main/components/TopTenComponents/CardWithTwoSides/CardWithTwoSides";
-import AvatarWithBlueBorder from "~/@main/components/shared/AvatarWithBlueBorder";
-import Info from "~/@main/components/Info";
 import PlayerCard from "../../SharedComponents/PlayerCard";
+import { useState } from "react";
+import { TopTenKpiPlayers } from "~/app/store/types/clubManager-types";
+import { useEffect } from "react";
+import { useSuperTopTenKpiPlayersQuery } from "~/app/store/supervisor/supervisorMainApi";
 
 type Props = {};
 
 const Top10KpiPlayers = (props: Props) => {
   const { kpi_id } = useParams();
-  const { data: top10KpiPlayers } = useTopTenKpiPlayersQuery(
+  const [top10KpiPlayers, setTop10KpiPlayers] = useState<TopTenKpiPlayers>();
+  const { data: adminTop10KpiPlayers } = useTopTenKpiPlayersQuery(
     { kpi_id },
     { skip: !kpi_id }
   );
+  const { data: superTop10KpiPlayers } = useSuperTopTenKpiPlayersQuery(
+    { kpi_id },
+    { skip: !kpi_id }
+  );
+
+  useEffect(() => {
+    if (adminTop10KpiPlayers) setTop10KpiPlayers(adminTop10KpiPlayers);
+    if (superTop10KpiPlayers) setTop10KpiPlayers(superTop10KpiPlayers);
+  }, [adminTop10KpiPlayers, superTop10KpiPlayers]);
 
   const items = [
     { title: "Reports", href: "/main-reports" },
@@ -41,7 +51,11 @@ const Top10KpiPlayers = (props: Props) => {
           top10KpiPlayers.players.map((data, index: any) => {
             return (
               <Grid.Col span={12} sm={6}>
-                <PlayerCard index={index} data={data} />
+                <PlayerCard
+                  title={top10KpiPlayers?.name}
+                  index={index}
+                  data={data}
+                />
               </Grid.Col>
             );
           })}

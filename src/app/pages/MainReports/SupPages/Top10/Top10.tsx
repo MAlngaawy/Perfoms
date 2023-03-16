@@ -38,12 +38,14 @@ const Top10 = (props: Props) => {
             type="Players"
           />
         </Link>
-        <Link to={"coaches"}>
-          <ReportsCategoriesCard
-            image="/assets/images/coaches.png"
-            type="Coaches"
-          />
-        </Link>
+        {user?.user_type === "Admin" && (
+          <Link to={"coaches"}>
+            <ReportsCategoriesCard
+              image="/assets/images/coaches.png"
+              type="Coaches"
+            />
+          </Link>
+        )}
       </div>
     </div>
   );

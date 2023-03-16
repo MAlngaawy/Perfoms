@@ -1,6 +1,6 @@
 import { PagesRouteConfig } from "~/@main/types/Config-Types";
 import authRoles from "~/app/auth/authRoles";
-import Top10SportPlayers from "./Top10SportPlayers";
+import Top10SportPlayersPage from "./Top10SportPlayers";
 
 const Top10SportPlayersConfig: PagesRouteConfig = {
   settings: {
@@ -22,7 +22,7 @@ const Top10SportPlayersConfig: PagesRouteConfig = {
   routes: [
     {
       path: "main-reports/top10/players/sport",
-      element: <Top10SportPlayers />,
+      element: <Top10SportPlayersPage />,
     },
   ],
 };

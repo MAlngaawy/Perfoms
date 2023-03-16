@@ -2,6 +2,8 @@ import { Breadcrumbs } from "@mantine/core";
 import React from "react";
 import { Link } from "react-router-dom";
 import ReportsCategoriesCard from "~/@main/components/MainReports/ReportsCategoriesCard";
+import cn from "classnames";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {};
 
@@ -16,6 +18,7 @@ const items = [
 ));
 
 const Top10Players = (props: Props) => {
+  const { data: user } = useUserQuery({});
   return (
     <div className="container w-11/12 mx-auto">
       <div className="my-4">
@@ -30,10 +33,16 @@ const Top10Players = (props: Props) => {
             type="Sport"
           />
         </Link>
-        <Link to={"club"}>
+        <Link
+          to={user?.user_type === "Supervisor" ? "" : "club"} // dont redirect if the user is supervisor
+          className={cn({
+            "opacity-30 cursor-auto": user?.user_type === "Supervisor",
+          })}
+        >
           <ReportsCategoriesCard
             image="/assets/images/all-sports.png"
             type="All Sports"
+            clickable={false} // don't add clickable styles
           />
         </Link>
       </div>

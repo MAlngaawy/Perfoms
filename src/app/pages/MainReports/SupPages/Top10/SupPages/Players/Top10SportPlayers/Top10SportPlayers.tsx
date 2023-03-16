@@ -1,22 +1,28 @@
 import { Breadcrumbs, Grid, Select } from "@mantine/core";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import AvatarWithBlueBorder from "~/@main/components/shared/AvatarWithBlueBorder";
-import CardWithTwoSides from "~/@main/components/TopTenComponents/CardWithTwoSides/CardWithTwoSides";
 import {
   useAdminSportsQuery,
   useTopTenSportKpisQuery,
   useTopTenSportPlayersQuery,
 } from "~/app/store/clubManager/clubManagerApi";
-import Info from "~/@main/components/Info";
 import TabsContainer from "~/@main/components/shared/TabsContainer";
 import { useUserQuery } from "~/app/store/user/userApi";
 import ReportsChartCard from "~/@main/components/MainReports/ReportsChartCard";
 import PlayerCard from "../SharedComponents/PlayerCard";
+import {
+  Top10SportPlayers,
+  TopTenSportKpis,
+} from "~/app/store/types/clubManager-types";
+import {
+  useSuperSportQuery,
+  useSuperTopTenSportKpisQuery,
+  useSuperTopTenSportPlayersQuery,
+} from "~/app/store/supervisor/supervisorMainApi";
 
 type Props = {};
 
-const Top10SportPlayers = (props: Props) => {
+const Top10SportPlayersPage = (props: Props) => {
   const [selectedSport, setSelectedSport] = useState<number>(0);
   const [selectedValue, setSelectedValue] =
     useState<"Players" | "Teams">("Players");
@@ -26,6 +32,13 @@ const Top10SportPlayers = (props: Props) => {
   const navigate = useNavigate();
   const selectSportRef = useRef(null);
   const [crumbsName, setCrumbsName] = useState("");
+  const [top10SportKpis, setTop10SportKpis] = useState<TopTenSportKpis>();
+  const [top10SportPlayersData, setTop10SportPlayersData] =
+    useState<Top10SportPlayers>();
+  const { data: supervisorSport } = useSuperSportQuery(
+    {},
+    { skip: user?.user_type !== "Supervisor" }
+  );
 
   const items = [
     { title: "Reports", href: "/main-reports" },
@@ -43,15 +56,36 @@ const Top10SportPlayers = (props: Props) => {
     setCrumbsName(name);
   }, [selectedValue2, selectSportRef, selectedSport]);
 
-  const { data: top10SportKpis } = useTopTenSportKpisQuery(
+  const { data: adminTop10SportKpis } = useTopTenSportKpisQuery(
     { sport_id: +selectedSport },
-    { skip: !selectedSport }
+    { skip: !selectedSport || user?.user_type !== "Admin" }
   );
 
-  const { data: top10SportPlayers } = useTopTenSportPlayersQuery(
-    { sport_id: +selectedSport },
-    { skip: !selectedSport }
+  const { data: superTop10SportKpis } = useSuperTopTenSportKpisQuery(
+    { sport_id: supervisorSport?.id },
+    { skip: !supervisorSport?.id || user?.user_type !== "Supervisor" }
   );
+
+  useEffect(() => {
+    if (adminTop10SportKpis) setTop10SportKpis(adminTop10SportKpis);
+    if (superTop10SportKpis) setTop10SportKpis(superTop10SportKpis);
+  }, [adminTop10SportKpis, superTop10SportKpis]);
+
+  const { data: adminTop10SportPlayers } = useTopTenSportPlayersQuery(
+    { sport_id: +selectedSport },
+    { skip: !selectedSport || user?.user_type !== "Admin" }
+  );
+  const { data: superTop10SportPlayers } = useSuperTopTenSportPlayersQuery(
+    {},
+    { skip: user?.user_type !== "Supervisor" }
+  );
+
+  useEffect(() => {
+    if (adminTop10SportPlayers)
+      setTop10SportPlayersData(adminTop10SportPlayers);
+    if (superTop10SportPlayers)
+      setTop10SportPlayersData(superTop10SportPlayers);
+  }, [adminTop10SportPlayers, superTop10SportPlayers]);
 
   // get sports for filter
   const { data: adminSports } = useAdminSportsQuery(
@@ -84,16 +118,18 @@ const Top10SportPlayers = (props: Props) => {
             selectValueFun={setSelectedValue2}
             values={["Kpi", "Overall"]}
           />
-          <Select
-            ref={selectSportRef}
-            radius={100}
-            value={JSON.stringify(selectedSport)}
-            onChange={(e) => {
-              e && setSelectedSport(+e);
-            }}
-            placeholder="Pick a Sport"
-            data={formatSports}
-          />
+          {user?.user_type === "Admin" && (
+            <Select
+              ref={selectSportRef}
+              radius={100}
+              value={JSON.stringify(selectedSport)}
+              onChange={(e) => {
+                e && setSelectedSport(+e);
+              }}
+              placeholder="Pick a Sport"
+              data={formatSports}
+            />
+          )}
         </div>
       </div>
 
@@ -125,8 +161,8 @@ const Top10SportPlayers = (props: Props) => {
         </div>
       ) : (
         <Grid gutter={12}>
-          {top10SportPlayers && top10SportPlayers.length ? (
-            top10SportPlayers.map((data, index: any) => {
+          {top10SportPlayersData && top10SportPlayersData.length ? (
+            top10SportPlayersData.map((data, index: any) => {
               return (
                 <Grid.Col span={12} sm={6}>
                   <PlayerCard index={index} data={data} />
@@ -149,4 +185,4 @@ const Top10SportPlayers = (props: Props) => {
   );
 };
 
-export default Top10SportPlayers;
+export default Top10SportPlayersPage;
