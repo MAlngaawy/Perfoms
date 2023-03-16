@@ -58,14 +58,14 @@ const MainReports = (props: Props) => {
           </Link>
         )}
 
-        {user?.user_type === "Admin" && (
+        {/* {user?.user_type === "Admin" && (
           <Link to={"top10"}>
             <ReportsCategoriesCard
               image="/assets/images/topten.png"
               type="Top 10"
             />
           </Link>
-        )}
+        )} */}
       </div>
     </div>
   );
