@@ -62,7 +62,7 @@ const MainReports = (props: Props) => {
           <Link to={"top10"}>
             <ReportsCategoriesCard
               image="/assets/images/topten.png"
-              type="Top 10"
+              type="Best Of"
             />
           </Link>
         )} */}

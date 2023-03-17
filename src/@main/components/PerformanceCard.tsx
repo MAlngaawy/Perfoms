@@ -165,12 +165,12 @@ PerformanceCardProps) => {
                         ) : (
                           <h3 className="text-sm">{power.metric}</h3>
                         )}
-                        {power.last_score && (
+                        {power.avg_score && (
                           <h3
                             style={{ color: textColor }}
                             className={`font-semibold ${textColor} text-sm`}
                           >
-                            {power.last_score}
+                            {power.avg_score}
                           </h3>
                         )}
                       </div>

@@ -6,6 +6,10 @@ import {
   MetricNotes,
   TeamPlayers,
   Teams,
+  Top10ClubPlayers,
+  Top10SportPlayers,
+  TopTenKpiPlayers,
+  TopTenSportKpis,
   UpdateNote,
 } from "../types/clubManager-types";
 import {
@@ -386,7 +390,7 @@ export const supervisorApi = createApi({
         params,
       }),
     }),
-    //!/**************** */
+
     superTeamKpiPlayersStatistics: query<
       TeamKpiPlayersStatistics,
       {
@@ -705,6 +709,38 @@ export const supervisorApi = createApi({
       }),
       invalidatesTags: ["actions"],
     }),
+
+    // Top 10 Reports
+
+    superTopTenClubPlayers: query<Top10ClubPlayers, {}>({
+      query: (param) => ({
+        url: "top-ten-club-players",
+      }),
+    }),
+
+    superTopTenSportPlayers: query<Top10SportPlayers, {}>({
+      query: (param) => ({
+        url: `top-ten-sport-players`,
+      }),
+    }),
+
+    superTopTenSportKpis: query<
+      TopTenSportKpis,
+      { sport_id: number | undefined }
+    >({
+      query: ({ sport_id, ...param }) => ({
+        url: `top-ten-sport-kpis/${sport_id}`,
+      }),
+    }),
+
+    superTopTenKpiPlayers: query<
+      TopTenKpiPlayers,
+      { kpi_id: number | string | undefined }
+    >({
+      query: ({ kpi_id, ...param }) => ({
+        url: `top-ten-kpi-players/${kpi_id}`,
+      }),
+    }),
   }),
 });
 
@@ -774,4 +810,8 @@ export const {
   useSuperUpdateOneRecommendationMutation,
   useSuperSelectRecommendationMutation,
   useSuperSelectActionMutation,
+  useSuperTopTenClubPlayersQuery,
+  useSuperTopTenSportPlayersQuery,
+  useSuperTopTenSportKpisQuery,
+  useSuperTopTenKpiPlayersQuery,
 } = supervisorApi;

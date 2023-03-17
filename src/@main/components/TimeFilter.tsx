@@ -6,6 +6,10 @@ import useWindowSize from "../hooks/useWindowSize";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import { timeFilter, timeFilterFn } from "./../../app/store/parent/parentSlice";
+import { selectedPlayerTeamFn } from "../../app/store/parent/parentSlice";
+import { useTeamInfoQuery } from "~/app/store/parent/parentApi";
+import { useCoachTeamInfoQuery } from "~/app/store/coach/coachApi";
+import { CoachTeamInfo } from "~/app/store/types/coach-types";
 
 type Props = {};
 
@@ -120,8 +124,26 @@ const TimeFilter = (props: Props) => {
   ]);
   const [opened, setOpened] = useState(false);
   const [textValue, setTextValue] = useState<string>("This Month");
+  const [teamInfoData, setTeamInfoData] = useState<CoachTeamInfo>();
   const windwSize = useWindowSize();
   const dispatch = useDispatch();
+
+  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
+
+  const { data: parentTeamInfoData } = useTeamInfoQuery(
+    { team_id: selectedPlayerTeam?.id },
+    { skip: !selectedPlayerTeam }
+  );
+
+  const { data: coachTeamInfoData } = useCoachTeamInfoQuery(
+    { team_id: selectedPlayerTeam?.id },
+    { skip: !selectedPlayerTeam }
+  );
+
+  useEffect(() => {
+    if (parentTeamInfoData) setTeamInfoData(parentTeamInfoData);
+    if (coachTeamInfoData) setTeamInfoData(coachTeamInfoData);
+  }, [parentTeamInfoData, coachTeamInfoData]);
 
   dispatch(
     timeFilter(
@@ -172,27 +194,36 @@ const TimeFilter = (props: Props) => {
         <Menu.Dropdown>
           <div className="flex flex-col xs:flex-row gap-2 border-r border-gray-500">
             <div className="dates flex flex-col items-center justify-center gap-2">
-              <FilterType
-                type="This Week"
-                setTextValue={setTextValue}
-                setValue={setValue}
-                textValue={textValue}
-                filterFun={thisWeek}
-              />
-              <FilterType
-                type="Last Week"
-                setTextValue={setTextValue}
-                setValue={setValue}
-                textValue={textValue}
-                filterFun={lastWeek}
-              />
-              <FilterType
-                type="Last Two Week"
-                setTextValue={setTextValue}
-                setValue={setValue}
-                textValue={textValue}
-                filterFun={last2Weeks}
-              />
+              {teamInfoData?.rate_per === "Week" && (
+                <>
+                  <FilterType
+                    type="This Week"
+                    setTextValue={setTextValue}
+                    setValue={setValue}
+                    textValue={textValue}
+                    filterFun={thisWeek}
+                  />
+                  <FilterType
+                    type="Last Week"
+                    setTextValue={setTextValue}
+                    setValue={setValue}
+                    textValue={textValue}
+                    filterFun={lastWeek}
+                  />
+                </>
+              )}
+              {teamInfoData?.rate_per === "Two_Weeks" ||
+                (teamInfoData?.rate_per === "Week" && (
+                  <>
+                    <FilterType
+                      type="Last Two Week"
+                      setTextValue={setTextValue}
+                      setValue={setValue}
+                      textValue={textValue}
+                      filterFun={last2Weeks}
+                    />
+                  </>
+                ))}
               <FilterType
                 type="This Month"
                 setTextValue={setTextValue}

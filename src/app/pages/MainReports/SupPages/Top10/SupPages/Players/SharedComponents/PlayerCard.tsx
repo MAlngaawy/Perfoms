@@ -1,4 +1,3 @@
-import React from "react";
 import Info from "~/@main/components/Info";
 import AvatarWithBlueBorder from "~/@main/components/shared/AvatarWithBlueBorder";
 import CardWithTwoSides from "~/@main/components/TopTenComponents/CardWithTwoSides/CardWithTwoSides";
@@ -7,11 +6,16 @@ import { Top10ClubPlayer } from "~/app/store/types/clubManager-types";
 type Props = {
   data: Top10ClubPlayer;
   index: number;
+  title?: string;
 };
 
-const PlayerCard = ({ data, index }: Props) => {
+const PlayerCard = ({ data, index, title }: Props) => {
   return (
-    <CardWithTwoSides number={index + 1} overall_kpis={data.statistics}>
+    <CardWithTwoSides
+      title={title}
+      number={index + 1}
+      overall_kpis={data.statistics}
+    >
       <div className="one flex flex-col gap-2 items-center justify-center">
         <AvatarWithBlueBorder
           size={80}
