@@ -19,6 +19,7 @@ export type Event = {
   team: number;
   club: number;
   video_url: string;
+  location: string;
 };
 
 export type AllEvents = BaseGetAllType & {

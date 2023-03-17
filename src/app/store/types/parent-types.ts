@@ -313,6 +313,7 @@ export type TeamEvent = {
   icon_url: string;
   date: string;
   club: ParentClub;
+  location: string;
 };
 export type TeamEvents = BaseGetAllType & {
   results: TeamEvent[];
