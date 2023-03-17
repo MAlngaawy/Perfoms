@@ -105,7 +105,7 @@ const Detailed = ({ reportType }: Props) => {
                   </Grid.Col>
                   {/* Attedance Summary Table */}
                   <Grid.Col span={12} md={8}>
-                    <div className="bg-white h-40 min-h-full rounded-3xl p-4">
+                    <div className="bg-white overflow-scroll max-h-700 rounded-3xl p-4">
                       <AttendanceTable player_id={id} />
                     </div>
                   </Grid.Col>

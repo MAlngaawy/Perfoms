@@ -121,7 +121,9 @@ const TeamUpcomingEvents = ({ teamId }: Props) => {
                       <span>{event.date}</span>
                     </>
                   </h3>
-                  <h3 className="text-sm text-perfGray3">{event.club.name}</h3>
+                  <h3 className="text-sm text-perfGray3">
+                    {event.location || "No Location"}
+                  </h3>
                 </div>
               </div>
 

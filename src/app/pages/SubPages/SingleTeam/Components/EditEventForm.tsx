@@ -14,18 +14,12 @@ import { showNotification } from "@mantine/notifications";
 import { useParams } from "react-router-dom";
 import { useSuperClubQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { useAdminClubQuery } from "~/app/store/clubManager/clubManagerApi";
-import { ParentClub } from "~/app/store/types/parent-types";
+import { ParentClub, TeamEvent } from "~/app/store/types/parent-types";
 import { useUserQuery } from "~/app/store/user/userApi";
 import AvatarInput from "~/@main/components/shared/AvatarInput";
 
 type Props = {
-  event: {
-    icon: string;
-    name: string;
-    date: string;
-    address?: string;
-    id: number;
-  };
+  event: TeamEvent;
   refetch: any;
 };
 
@@ -47,7 +41,7 @@ const EditEventForm = ({ event, refetch }: Props) => {
   const schema = yup.object().shape({
     eventName: yup.string().required("please add the Event name"),
     eventDate: yup.date().required("Please add the event date"),
-    eventLocation: yup.string().required("please add the Event Location"),
+    location: yup.string().required("please add the Event Location"),
   });
 
   const {
@@ -96,14 +90,14 @@ const EditEventForm = ({ event, refetch }: Props) => {
         );
         reset({
           eventName: "",
-          eventLocation: "",
+          location: "",
         });
       })
       .catch((err) => {
         setLoading(false);
         reset({
           eventName: "",
-          eventLocation: "",
+          location: "",
         });
         AppUtils.showNotificationFun("Error", "Sorry", "please try again");
       });
@@ -185,14 +179,12 @@ const EditEventForm = ({ event, refetch }: Props) => {
             />
 
             <Input.Wrapper
-              id="eventLocation"
+              id="location"
               withAsterisk
-              error={
-                errors.eventLocation &&
-                (errors.eventLocation.message as ReactNode)
-              }
+              error={errors.location && (errors.location.message as ReactNode)}
             >
               <Input
+                defaultValue={event.location}
                 placeholder="Event Location"
                 sx={{
                   ".mantine-Input-input	": {
@@ -205,8 +197,8 @@ const EditEventForm = ({ event, refetch }: Props) => {
                   },
                 }}
                 className="border-b"
-                {...register("eventLocation")}
-                id="eventLocation"
+                {...register("location")}
+                id="location"
               />
             </Input.Wrapper>
 

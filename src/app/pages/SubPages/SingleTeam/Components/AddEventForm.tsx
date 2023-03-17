@@ -40,7 +40,7 @@ const AddEventForm = ({ refetch }: Props) => {
   const schema = yup.object().shape({
     eventName: yup.string().required("please add the Event name"),
     eventDate: yup.date().required("Please add the event date"),
-    eventLocation: yup.string().required("please add the Event Location"),
+    location: yup.string().required("please add the Event Location"),
   });
 
   const {
@@ -78,7 +78,7 @@ const AddEventForm = ({ refetch }: Props) => {
         AppUtils.showNotificationFun("Success", "Done", "Event Created");
         reset({
           eventName: "",
-          eventLocation: "",
+          location: "",
         });
         refetch();
         setOpened(false);
@@ -89,7 +89,7 @@ const AddEventForm = ({ refetch }: Props) => {
         AppUtils.showNotificationFun("Error", "Sorry", "please try again");
         reset({
           eventName: "",
-          eventLocation: "",
+          location: "",
         });
       });
   };
@@ -170,10 +170,7 @@ const AddEventForm = ({ refetch }: Props) => {
             <Input.Wrapper
               id="eventLocation"
               withAsterisk
-              error={
-                errors.eventLocation &&
-                (errors.eventLocation.message as ReactNode)
-              }
+              error={errors.location && (errors.location.message as ReactNode)}
             >
               <Input
                 placeholder="Event Location"
@@ -188,8 +185,8 @@ const AddEventForm = ({ refetch }: Props) => {
                   },
                 }}
                 className="border-b"
-                {...register("eventLocation")}
-                id="eventLocation"
+                {...register("location")}
+                id="location"
               />
             </Input.Wrapper>
 
