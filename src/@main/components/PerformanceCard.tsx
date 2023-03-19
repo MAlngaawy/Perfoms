@@ -31,6 +31,8 @@ export const PerformanceCard = ({
   data,
 }: // data,
 PerformanceCardProps) => {
+  console.log(name, " || DATAAAAA || ", data);
+
   // const [data, setData] = useState<any>();
   // const { data: user } = useUserQuery({});
 
@@ -146,36 +148,38 @@ PerformanceCardProps) => {
               </div>
               <div className="h-44 overflow-scroll">
                 {data ? (
-                  data?.map((power: any) => {
-                    return (
-                      <div
-                        key={power.id}
-                        className={`power_score px-5 py-2 flex flex-row justify-between`}
-                      >
-                        {power.name ? (
-                          <div>
-                            <h3 className="text-xs">
-                              {" "}
-                              name of the metric "{power.metric}"
+                  data
+                    ?.filter((item: any) => item.avg_score > 0) // Don't show the item if avg score is 0
+                    .map((power: any) => {
+                      return (
+                        <div
+                          key={power.id}
+                          className={`power_score px-5 py-2 flex flex-row justify-between`}
+                        >
+                          {power.name ? (
+                            <div>
+                              <h3 className="text-xs">
+                                {" "}
+                                name of the metric "{power.metric}"
+                              </h3>
+                              <h3 className="text-xs mt-1">
+                                name of the action "{power.name}"
+                              </h3>
+                            </div>
+                          ) : (
+                            <h3 className="text-sm">{power.metric}</h3>
+                          )}
+                          {power.avg_score && (
+                            <h3
+                              style={{ color: textColor }}
+                              className={`font-semibold ${textColor} text-sm`}
+                            >
+                              {power.avg_score}
                             </h3>
-                            <h3 className="text-xs mt-1">
-                              name of the action "{power.name}"
-                            </h3>
-                          </div>
-                        ) : (
-                          <h3 className="text-sm">{power.metric}</h3>
-                        )}
-                        {power.avg_score && (
-                          <h3
-                            style={{ color: textColor }}
-                            className={`font-semibold ${textColor} text-sm`}
-                          >
-                            {power.avg_score}
-                          </h3>
-                        )}
-                      </div>
-                    );
-                  })
+                          )}
+                        </div>
+                      );
+                    })
                 ) : (
                   <div className="p-2 w-full h-full">
                     <Skeleton width={"100%"} height={"100%"} radius="lg" />

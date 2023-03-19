@@ -26,22 +26,39 @@ const CustomCalendar = ({ pageName, player_id }: Props) => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const [playerAttendance, setPlayerAttendance] = useState<PlayerAttendances>();
-  const timeFilter = useSelector(timeFilterFn);
-  const fromDate = AppUtils.formatDate(thisMonth().firstday);
-  const toDate = AppUtils.formatDate(thisMonth().lastday);
+  const [month, onMonthChange] = useState(new Date());
+  const [firstDay, setFirstDay] = useState<string>();
+  const [lastDay, setLastDay] = useState<string>();
+
+  useEffect(() => {
+    const year = month.getFullYear();
+    const monthIndex = month.getMonth();
+
+    // Get the first day of the month
+    const firstDayOfMonth = AppUtils.formatDate(new Date(year, monthIndex, 1));
+    setFirstDay(firstDayOfMonth);
+
+    // Get the last day of the month
+    const lastDayOfMonth = AppUtils.formatDate(
+      new Date(year, monthIndex + 1, 0)
+    );
+    setLastDay(lastDayOfMonth);
+
+    console.log(firstDay, lastDay);
+  }, [month]);
 
   const { data: parentPlayerAttendance } = usePlayerCalendarQuery(
     {
       id: selectedPlayer?.id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      date_from: firstDay,
+      date_to: lastDay,
       team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !selectedPlayer?.id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
+        !firstDay ||
+        !lastDay ||
         !selectedPlayerTeam?.id ||
         user?.user_type !== "Parent",
     }
@@ -50,45 +67,34 @@ const CustomCalendar = ({ pageName, player_id }: Props) => {
   const { data: coachPlayerAttendance } = useCoachPlayerCalendarQuery(
     {
       player_id: player_id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      date_from: firstDay,
+      date_to: lastDay,
     },
     {
-      skip:
-        !player_id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
-        user?.user_type !== "Coach",
+      skip: !player_id || !firstDay || !lastDay || user?.user_type !== "Coach",
     }
   );
 
   const { data: superPlayerAttendance } = useSuperPlayerCalendarQuery(
     {
       player_id: player_id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      date_from: firstDay,
+      date_to: lastDay,
     },
     {
       skip:
-        !player_id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
-        user?.user_type !== "Supervisor",
+        !player_id || !firstDay || !lastDay || user?.user_type !== "Supervisor",
     }
   );
 
   const { data: adminPlayerAttendance } = useAdminPlayerCalendarQuery(
     {
       player_id: player_id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      date_from: firstDay,
+      date_to: lastDay,
     },
     {
-      skip:
-        !player_id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
-        user?.user_type !== "Admin",
+      skip: !player_id || !firstDay || !lastDay || user?.user_type !== "Admin",
     }
   );
 
@@ -144,7 +150,11 @@ const CustomCalendar = ({ pageName, player_id }: Props) => {
         </div>
         <div className="datePicker overflow-auto">
           <Calendar
+            month={month}
+            onMonthChange={onMonthChange}
             initialMonth={new Date()}
+            onChange={(e) => console.log(e)}
+            // initialMonth={new Date()}
             sx={{
               ".mantine-Calendar-day": {
                 borderRadius: "50%",

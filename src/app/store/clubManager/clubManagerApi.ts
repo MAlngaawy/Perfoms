@@ -628,8 +628,8 @@ export const clubManagerApi = createApi({
       {
         player_id: string | number | undefined;
         pages?: number;
-        date_from: string;
-        date_to: string;
+        date_from: string | undefined;
+        date_to: string | undefined;
       }
     >({
       query: ({ player_id, ...params }) => ({
