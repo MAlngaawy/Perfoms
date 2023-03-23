@@ -13,7 +13,7 @@ const MediaCard = ({ event }: props) => {
   const navigate = useNavigate();
 
   return (
-    <Card shadow="sm" className="rounded-b-xl" p={0} radius="md" withBorder>
+    <Card shadow="sm" className="rounded-b-md" p={0} radius="md" withBorder>
       <Card.Section component="a">
         <Avatar
           src={event.icon_url}
@@ -49,7 +49,7 @@ const MediaCard = ({ event }: props) => {
       <Button
         onClick={() => navigate(`/media/${event.id}`)}
         variant="light"
-        className="bg-perfBlue text-white rounded-b-xl"
+        className="bg-perfBlue text-white rounded-none rounded-b-md"
         fullWidth
       >
         View full Profile

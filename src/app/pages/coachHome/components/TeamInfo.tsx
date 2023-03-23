@@ -17,6 +17,8 @@ import { SinglePlayer } from "../../SubPages/SingleTeam/Components/TeamPlayers";
 type Props = {};
 
 const TeamInfo = (props: Props) => {
+  console.log("TEAM Info Here");
+
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const { data: user } = useUserQuery({});
 

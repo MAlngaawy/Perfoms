@@ -149,7 +149,11 @@ const TeamUpcomingEvents = ({ teamId }: Props) => {
           if (superEvents) superRefetch();
           if (adminEvents) adminRefetch();
         }}
-      />
+      >
+        <button className="px-6 py-2 my-2 bg-slate-300 text-perfGray3 rounded-3xl">
+          + Add Event
+        </button>
+      </AddEventForm>
     </div>
   );
 };

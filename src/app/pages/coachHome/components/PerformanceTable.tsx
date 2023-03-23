@@ -25,6 +25,8 @@ import {
 type Props = {};
 
 const PerformanceTable = (props: Props) => {
+  console.log("Perfoemance Table Here");
+
   const { data: user } = useUserQuery({});
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const [teamPerformance, setTeamPerformance] =

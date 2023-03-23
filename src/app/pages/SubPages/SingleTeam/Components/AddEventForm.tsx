@@ -1,18 +1,14 @@
 import { useState, ReactNode, useEffect } from "react";
-import { Modal, Button, Group, Input, Avatar } from "@mantine/core";
+import { Modal, Group, Input } from "@mantine/core";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import Resizer from "react-image-file-resizer";
-import cn from "classnames";
-import SubmitButton from "../../../../../@main/components/SubmitButton";
-import AppIcons from "../../../../../@main/core/AppIcons";
+import SubmitButton from "~/@main/components/SubmitButton";
 import { DatePicker } from "@mantine/dates";
 import { useParams } from "react-router-dom";
 import { useSuperClubQuery } from "~/app/store/supervisor/supervisorMainApi";
 import AppUtils from "~/@main/utils/AppUtils";
 import { axiosInstance } from "~/app/configs/dataService";
-import { showNotification } from "@mantine/notifications";
 import { useUserQuery } from "~/app/store/user/userApi";
 import { useAdminClubQuery } from "~/app/store/clubManager/clubManagerApi";
 import { ParentClub } from "~/app/store/types/parent-types";
@@ -20,14 +16,18 @@ import AvatarInput from "~/@main/components/shared/AvatarInput";
 
 type Props = {
   refetch: any;
+  teamID?: string;
+  mediaPage?: boolean;
+  children: ReactNode;
 };
 
-const AddEventForm = ({ refetch }: Props) => {
+const AddEventForm = ({ refetch, teamID, children }: Props) => {
   const [opened, setOpened] = useState(false);
   const [userAvatar, setUserAvatar] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [clubData, setclubData] = useState<ParentClub>();
-  const { team_id } = useParams();
+  const { team_id: selectedTeam } = useParams();
+  const team_id = selectedTeam || teamID;
   const { data: superClubData } = useSuperClubQuery({});
   const { data: adminClubData } = useAdminClubQuery({});
   const { data: user } = useUserQuery({});
@@ -44,7 +44,6 @@ const AddEventForm = ({ refetch }: Props) => {
   });
 
   const {
-    handleSubmit,
     register,
     formState: { errors },
     control,
@@ -53,45 +52,47 @@ const AddEventForm = ({ refetch }: Props) => {
     resolver: yupResolver(schema),
   });
 
-  // Submit Form Function
   const onSubmitFunction = async (e: any) => {
-    setIsLoading(true);
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    if (team_id) {
-      formData.append("team", team_id);
-    }
-    formData.append("club", JSON.stringify(clubData?.id));
-    if (userAvatar) {
-      const image = await AppUtils.resizeImage(userAvatar);
-      formData.append("icon", image as string);
-    }
+    try {
+      setIsLoading(true);
+      e.preventDefault();
 
-    axiosInstance
-      .post(
+      const formData = new FormData(e.currentTarget);
+
+      if (team_id) {
+        formData.append("team", team_id);
+      }
+
+      formData.append("club", JSON.stringify(clubData?.id));
+
+      if (userAvatar) {
+        const image = await AppUtils.resizeImage(userAvatar);
+        formData.append("icon", image as string);
+      }
+
+      const endpoint =
         user?.user_type === "Supervisor"
           ? "supervisor/add-event/"
-          : "club-manager/teams/events/add-event/",
-        formData
-      )
-      .then(() => {
-        AppUtils.showNotificationFun("Success", "Done", "Event Created");
-        reset({
-          eventName: "",
-          location: "",
-        });
-        refetch();
-        setOpened(false);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        setIsLoading(false);
-        AppUtils.showNotificationFun("Error", "Sorry", "please try again");
-        reset({
-          eventName: "",
-          location: "",
-        });
+          : "club-manager/teams/events/add-event/";
+
+      await axiosInstance.post(endpoint, formData);
+
+      AppUtils.showNotificationFun("Success", "Done", "Event Created");
+      reset({
+        eventName: "",
+        location: "",
       });
+      refetch();
+      setOpened(false);
+    } catch (error) {
+      AppUtils.showNotificationFun("Error", "Sorry", "please try again");
+      reset({
+        eventName: "",
+        location: "",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -194,13 +195,8 @@ const AddEventForm = ({ refetch }: Props) => {
           </form>
         </Modal>
 
-        <Group position="left">
-          <button
-            className="px-6 py-2 my-2 bg-slate-300 text-perfGray3 rounded-3xl"
-            onClick={() => setOpened(true)}
-          >
-            + Add Event
-          </button>
+        <Group position="left" onClick={() => setOpened(true)}>
+          {children}
         </Group>
       </>
     </div>
