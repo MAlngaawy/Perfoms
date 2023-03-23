@@ -42,7 +42,7 @@ const Top10Players = (props: Props) => {
           <ReportsCategoriesCard
             image="/assets/images/all-sports.png"
             type="All Sports"
-            clickable={false} // don't add clickable styles
+            clickable={user?.user_type === "Admin"} // don't add clickable styles
           />
         </Link>
       </div>

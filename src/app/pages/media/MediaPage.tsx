@@ -15,9 +15,8 @@ import AddEventForm from "../SubPages/SingleTeam/Components/AddEventForm";
 
 const MediaPage = () => {
   const [events, setEvents] = useState<TeamEvents | undefined>();
-
-  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const { data: user } = useUserQuery(null);
+  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
 
   const { data: parentEvents } = useTeamEventsQuery(
     { teamId: selectedPlayerTeam?.id },
@@ -53,7 +52,26 @@ const MediaPage = () => {
   ]);
   return (
     <div className="container w-11/12 mx-auto">
-      <div className="my-4 flex justify-end items-center">
+      <div className=" text-xs sm:text-sm my-4 flex gap-2 justify-end items-center">
+        {events &&
+        events?.results.length > 0 &&
+        //@ts-ignore
+        ["Supervisor", "Admin"].includes(user?.user_type) ? (
+          <AddEventForm
+            teamID={JSON.stringify(selectedPlayerTeam && selectedPlayerTeam.id)}
+            refetch={() => {
+              if (superEvents) superRefetch();
+              if (adminEvents) adminRefetch();
+            }}
+          >
+            <button className=" px-4 py-2 bg-slate-300 text-perfGray3 rounded-full">
+              + Add Event
+            </button>
+          </AddEventForm>
+        ) : (
+          ""
+        )}
+
         <TeamFilter />
       </div>
       <div className="relative">
@@ -63,24 +81,6 @@ const MediaPage = () => {
               {events.results.map((data) => {
                 return <MediaCard key={data.id} event={data} />;
               })}
-              {user?.user_type === "Supervisor" ||
-              user?.user_type === "Admin" ? (
-                <AddEventForm
-                  teamID={JSON.stringify(
-                    selectedPlayerTeam && selectedPlayerTeam.id
-                  )}
-                  refetch={() => {
-                    if (superEvents) superRefetch();
-                    if (adminEvents) adminRefetch();
-                  }}
-                >
-                  <button className=" w-60 h-full bg-slate-300 text-perfGray3 rounded-xl p-4">
-                    + Add Event
-                  </button>
-                </AddEventForm>
-              ) : (
-                ""
-              )}
             </div>
           ) : (
             <MediaPageLoading />
