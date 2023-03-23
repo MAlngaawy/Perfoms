@@ -31,7 +31,7 @@ const Top10ClubPlayersPage = (props: Props) => {
           <TabsContainer
             selectedValue={selectedValue}
             selectValueFun={setSelectedValue}
-            values={["Players", "Teams"]}
+            values={["Players"]}
           />
         </div>
       </div>
