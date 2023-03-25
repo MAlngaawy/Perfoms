@@ -79,7 +79,13 @@ const MediaPage = () => {
           events ? (
             <div className="flex flex-col xs:flex-row xs:items-center flex-wrap gap-2 my-4">
               {events.results.map((data) => {
-                return <MediaCard key={data.id} event={data} />;
+                return (
+                  <MediaCard
+                    teamId={selectedPlayerTeam.id}
+                    key={data.id}
+                    event={data}
+                  />
+                );
               })}
             </div>
           ) : (

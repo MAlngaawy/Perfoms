@@ -98,7 +98,10 @@ export const supervisorApi = createApi({
       providesTags: ["supervisor"],
     }),
 
-    superTeamEvents: query<TeamEvents, { team_id: string; page?: number }>({
+    superTeamEvents: query<
+      TeamEvents,
+      { team_id: string | number | undefined; page?: number }
+    >({
       query: ({ team_id, ...params }) => ({
         url: `${team_id}/events/`,
         params,
