@@ -14,6 +14,7 @@ import {
   useAdminDeleteEventMutation,
   useAdminTeamEventsQuery,
 } from "~/app/store/clubManager/clubManagerApi";
+import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {
   teamId: string;
@@ -40,50 +41,21 @@ const TeamUpcomingEvents = ({ teamId }: Props) => {
 
   const [superDeleteEvent] = useSuperDeleteEventMutation();
   const [adminDeleteEvent] = useAdminDeleteEventMutation();
+  const deleteEvent = async (eventId: number) => {
+    let deleteFn: any = superDeleteEvent;
+    if (user?.user_type === "Admin") {
+      deleteFn = adminDeleteEvent;
+    }
 
-  const deleteEvent = (eventId: number) => {
-    if (user?.user_type === "Supervisor") {
-      superDeleteEvent({ event_id: eventId }).then((res) => {
-        showNotification({
-          message: "Successfully Deleted",
-          color: "green",
-          title: "Done",
-          styles: {
-            root: {
-              backgroundColor: "#27AE60",
-              borderColor: "#27AE60",
-              "&::before": { backgroundColor: "#fff" },
-            },
-
-            title: { color: "#fff" },
-            description: { color: "#fff" },
-            closeButton: {
-              color: "#fff",
-            },
-          },
-        });
-      });
-    } else if (user?.user_type === "Admin") {
-      adminDeleteEvent({ event_id: eventId }).then((res) => {
-        showNotification({
-          message: "Successfully Deleted",
-          color: "green",
-          title: "Done",
-          styles: {
-            root: {
-              backgroundColor: "#27AE60",
-              borderColor: "#27AE60",
-              "&::before": { backgroundColor: "#fff" },
-            },
-
-            title: { color: "#fff" },
-            description: { color: "#fff" },
-            closeButton: {
-              color: "#fff",
-            },
-          },
-        });
-      });
+    try {
+      const res = await deleteFn({ event_id: eventId });
+      AppUtils.showNotificationFun(
+        "Success",
+        "Done",
+        "Successfully Deleted Experience"
+      );
+    } catch (err) {
+      // handle error
     }
   };
 
@@ -134,6 +106,7 @@ const TeamUpcomingEvents = ({ teamId }: Props) => {
                   type="event"
                 />
                 <EditEventForm
+                  team_id={teamId}
                   refetch={() => {
                     if (superEvents) superRefetch();
                     if (adminEvents) adminRefetch();

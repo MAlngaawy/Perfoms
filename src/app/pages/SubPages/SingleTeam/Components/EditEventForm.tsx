@@ -21,14 +21,15 @@ import AvatarInput from "~/@main/components/shared/AvatarInput";
 type Props = {
   event: TeamEvent;
   refetch: any;
+  team_id: string;
 };
 
-const EditEventForm = ({ event, refetch }: Props) => {
+const EditEventForm = ({ event, refetch, team_id }: Props) => {
   const [opened, setOpened] = useState(false);
   const [loading, setLoading] = useState(false);
   const [userAvatar, setUserAvatar] = useState<File | null>(null);
   const [clubData, setclubData] = useState<ParentClub>();
-  const { team_id } = useParams();
+  // const { team_id } = useParams();
   const { data: superClubData } = useSuperClubQuery({});
   const { data: adminClubData } = useAdminClubQuery({});
   const { data: user } = useUserQuery({});
