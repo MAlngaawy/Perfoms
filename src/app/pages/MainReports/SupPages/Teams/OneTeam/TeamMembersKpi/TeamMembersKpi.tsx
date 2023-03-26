@@ -63,7 +63,7 @@ const TeamMembersKpi = (props: Props) => {
         </Breadcrumbs>
       </div>
 
-      <div className="flex gap-4 justify-end">
+      {/* <div className="flex gap-4 justify-end">
         <Menu shadow="md" width={200}>
           <Menu.Target>
             <button className="flex gap-2 text-xs sm:text-sm justify-center items-center text-white bg-perfBlue py-2 px-2 xs:px-4 rounded-3xl">
@@ -82,7 +82,7 @@ const TeamMembersKpi = (props: Props) => {
           </Menu.Dropdown>
         </Menu>
         <TimeFilter />
-      </div>
+      </div> */}
       <PrintComp>
         <div className="reports items-stretch justify-center xs:justify-start flex flex-wrap gap-4 my-6">
           <div>
