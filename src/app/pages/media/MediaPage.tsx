@@ -97,9 +97,7 @@ const MediaPage = () => {
               img="/assets/images/novideo.png"
               preText={"No"}
               pageName={"events"}
-              postText={
-                "here yet, come again later OR choose another team or click the button below to add event in this team."
-              }
+              postText={"here yet, come again later OR choose another team."}
             />
             {user?.user_type === "Supervisor" || user?.user_type === "Admin" ? (
               <AddEventForm
