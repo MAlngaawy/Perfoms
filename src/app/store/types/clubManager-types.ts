@@ -162,6 +162,7 @@ export type Top10ClubPlayer = {
   weight: number;
   height: number;
   dob: string;
+  sport: string;
   parent: string;
   team: { id: number; name: string }[];
 };
