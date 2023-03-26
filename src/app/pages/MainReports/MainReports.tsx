@@ -58,7 +58,7 @@ const MainReports = (props: Props) => {
           </Link>
         )}
 
-        {user?.user_type === "Admin" && (
+        {(user?.user_type === "Admin" || user?.user_type === "Supervisor") && (
           <Link to={"top10"}>
             <ReportsCategoriesCard
               image="/assets/images/topten.png"
