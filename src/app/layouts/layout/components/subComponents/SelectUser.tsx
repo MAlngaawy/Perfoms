@@ -17,6 +17,8 @@ const SelectUser = (props: Props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log("TEST");
+
     if (players && players.results.length > 0)
       dispatch(
         selectPlayer(
