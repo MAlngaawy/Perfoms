@@ -2,7 +2,10 @@ import { Avatar, Modal } from "@mantine/core";
 import { useState } from "react";
 import DeleteButton from "~/@main/components/ManagerComponents/SubComponents/DeleteButton";
 import AppIcons from "~/@main/core/AppIcons";
-import { useParentDeletePlayerMutation } from "~/app/store/parent/parentApi";
+import {
+  useMyPlayersQuery,
+  useParentDeletePlayerMutation,
+} from "~/app/store/parent/parentApi";
 import { Player } from "~/app/store/types/parent-types";
 import EditForm from "./EditForm";
 import AppUtils from "~/@main/utils/AppUtils";
@@ -17,6 +20,7 @@ const UserInfo = ({ players }: Props) => {
   const [opened, setOpened] = useState(false);
   const [deletePlayer, { isSuccess, isError }] =
     useParentDeletePlayerMutation();
+  const { refetch } = useMyPlayersQuery({});
 
   return (
     <div className="content relative flex flex-col justify-center items-center gap-2 mx-2 bg-white rounded-3xl p-6 w-80">
@@ -93,6 +97,9 @@ const UserInfo = ({ players }: Props) => {
                           "Done",
                           "Successfully Deleted"
                         );
+                        refetch();
+                        localStorage.removeItem("SelectedPlayer");
+                        localStorage.removeItem("SelectedPlayerTeam");
                       })
                       .catch((err) => {
                         console.log(err);

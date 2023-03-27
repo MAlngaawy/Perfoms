@@ -64,6 +64,7 @@ const ChangePhone = ({ setChange, mobile }: Props) => {
           </Grid.Col>
           <Grid.Col span={3}>
             <PerfSelect
+              normalStyle
               id="code"
               required
               error={errors.code && errors.code.message}
