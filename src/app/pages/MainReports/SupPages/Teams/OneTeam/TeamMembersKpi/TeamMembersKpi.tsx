@@ -57,14 +57,14 @@ const TeamMembersKpi = (props: Props) => {
 
   return (
     <div className="container w-11/12 mx-auto">
-      <div className="my-4">
+      <div className="mt-4 mb-2">
         <Breadcrumbs className="text-perfGray3 flex-wrap gap-y-2" separator="→">
           {items}
         </Breadcrumbs>
       </div>
 
-      {/* <div className="flex gap-4 justify-end">
-        <Menu shadow="md" width={200}>
+      <div className="flex gap-4 justify-end">
+        {/* <Menu shadow="md" width={200}>
           <Menu.Target>
             <button className="flex gap-2 text-xs sm:text-sm justify-center items-center text-white bg-perfBlue py-2 px-2 xs:px-4 rounded-3xl">
               <span>{reportType}</span>
@@ -80,9 +80,9 @@ const TeamMembersKpi = (props: Props) => {
               Attendances
             </Menu.Item>
           </Menu.Dropdown>
-        </Menu>
+        </Menu> */}
         <TimeFilter />
-      </div> */}
+      </div>
       <PrintComp>
         <div className="reports items-stretch justify-center xs:justify-start flex flex-wrap gap-4 my-6">
           <div>
