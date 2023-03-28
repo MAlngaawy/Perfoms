@@ -15,6 +15,7 @@ import { TeamPlayers } from "~/app/store/types/clubManager-types";
 import { useCoachGetAllMyPlayersQuery } from "~/app/store/coach/coachApi";
 import { useAdminPlayersQuery } from "~/app/store/clubManager/clubManagerApi";
 import { useUserQuery } from "~/app/store/user/userApi";
+import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {};
 
@@ -38,7 +39,15 @@ const SearchPlayersPage = (props: Props) => {
   }, [superPlayers, coachPlayers, adminPlayers]);
 
   const send = (data: any) => {
-    navigate(`player/${data.id}`);
+    if (data.id === undefined) {
+      AppUtils.showNotificationFun(
+        "Error",
+        "Wrong",
+        "This player doesn't exist!"
+      );
+    } else {
+      navigate(`player/${data.id}`);
+    }
   };
 
   const data = playersData?.results.map((player: any) => {

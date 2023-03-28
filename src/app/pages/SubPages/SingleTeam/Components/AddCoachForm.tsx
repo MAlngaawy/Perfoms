@@ -22,11 +22,13 @@ type Props = {
 const AddCoachForm = ({ teamId, teamCoaches }: Props) => {
   const [opened, setOpened] = useState(false);
   const [coachesData, setCoachesData] = useState<any>([]);
-
   const { data: user } = useUserQuery({});
 
   const { data: superCoaches } = useSuperAllCoachesQuery({});
-  const { data: adminCoaches } = useAdminAllCoachesQuery({});
+  const { data: adminCoaches } = useAdminAllCoachesQuery(
+    { club_id: user?.club },
+    { skip: !user?.club }
+  );
 
   const [superAddCoach] = useSuperAddTeamCoachesMutation();
   const [adminAddCoach] = useAdminAddTeamCoachesMutation();

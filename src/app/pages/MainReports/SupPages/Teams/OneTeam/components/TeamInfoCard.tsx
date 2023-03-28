@@ -17,28 +17,18 @@ type Props = {
 };
 
 const TeamInfoCard = ({ TeamInfoData: data }: Props) => {
-  console.log(data);
-
-  const { team_id } = useParams();
-  // const [data, setData] = useState<CoachTeamInfo | SuperVisorTeamInfo>();
-
-  // const { data: coachTeamInfo, isLoading: coachLoading } =
-  //   useCoachTeamInfoQuery({ team_id: team_id }, { skip: !team_id });
-
-  // const { data: superTeamInfo, isLoading: superLoading } =
-  //   useSuperTeamInfoQuery({ team_id: team_id }, { skip: !team_id });
-
-  // const { data: adminTeamInfo, isLoading: adminLoading } =
-  //   useAdminTeamInfoQuery({ team_id: team_id }, { skip: !team_id });
-
-  // useEffect(() => {
-  //   if (coachTeamInfo) setData(coachTeamInfo);
-  //   if (superTeamInfo) setData(superTeamInfo);
-  //   if (adminTeamInfo) setData(adminTeamInfo);
-  // }, [coachTeamInfo, superTeamInfo, adminTeamInfo]);
-
-  // if (coachLoading || superLoading || adminLoading)
-  //   return <Skeleton height={360} width={300} radius="lg" />;
+  const gender = () => {
+    switch (data?.gender) {
+      case "M":
+        return "Male";
+      case "F":
+        return "Female";
+      case "B":
+        return "Mixed";
+      default:
+        return "Gender";
+    }
+  };
 
   return (
     <div className="teamInfoCard bg-white h-full flex-col gap-4 rounded-xl p-4 flex w-64">
@@ -57,7 +47,7 @@ const TeamInfoCard = ({ TeamInfoData: data }: Props) => {
         <div className="flex  gap-6 justify-between">
           <Info label="Sport" value={data?.sport} />
           {/* teamInfo?.gender */}
-          <Info label="Gender" value={"Male"} />
+          <Info label="Gender" value={gender()} />
         </div>
         <div className="flex  gap-6 justify-between">
           <Info label="Rating schedule" value={` Every ${data?.rate_per}`} />
