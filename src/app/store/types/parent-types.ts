@@ -32,8 +32,8 @@ export type AddPlayerType = {
   name: string;
   dob?: string;
   team: number[];
-  weight: number;
-  height: number;
+  weight: string;
+  height: string;
   phone: string;
   icon: any;
 };
@@ -41,8 +41,8 @@ export type AddPlayerType = {
 export type UpdatePlayer = {
   name: string;
   dob: string;
-  weight: number;
-  height: number;
+  weight: string;
+  height: string;
   icon_url: string;
 };
 
@@ -135,8 +135,8 @@ export type Player = {
   max_score: number;
   coverage: number;
   gender: string;
-  weight: number;
-  height: number;
+  weight: string;
+  height: string;
   dob: string;
   phone: string;
 };
