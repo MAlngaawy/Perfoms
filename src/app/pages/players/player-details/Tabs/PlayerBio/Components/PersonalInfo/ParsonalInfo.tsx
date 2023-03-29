@@ -48,22 +48,8 @@ const ParsonalInfo = (props: Props) => {
         <div className="h2 font-medium">INFO</div>
         <div className="data flex flex-wrap jus gap-4 mt-2">
           <Info label="Age" value={playerData?.dob} />
-          <Info
-            label="Weight"
-            value={
-              playerData?.weight !== undefined
-                ? `${playerData.weight >= 0 ? "+" : ""}${playerData.weight}`
-                : "NA"
-            }
-          />
-          <Info
-            label="Height"
-            value={
-              playerData?.height !== undefined
-                ? `${playerData.height >= 0 ? "+" : ""}${playerData.height}`
-                : "NA"
-            }
-          />
+          <Info label="Weight" value={playerData?.weight || "NA"} />
+          <Info label="Height" value={playerData?.height || "NA"} />
           <Info label="Phone" value={playerData?.phone || "N/A"} />
           <div className="flex flex-col items-center justify-center">
             <h3 className=" text-perfGray3 text-xs">Teams</h3>

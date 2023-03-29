@@ -23,9 +23,6 @@ const EditItem = ({ data, apiUrl, refetchFunction }: Props) => {
   const [opened, setOpened] = useState(false);
   const [userAvatar, setUserAvatar] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [iconEdited, setIconEdited] = useState<File | null>(null);
-  const [playerImagePreview, setPlayerImagePreview] =
-    useState<string | null>(null);
 
   const onSubmitFunction = async (e: any) => {
     e.preventDefault();

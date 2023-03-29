@@ -54,6 +54,7 @@ const PillarKpis = (props: Props) => {
         {kpis?.results.map((kpi) => {
           return (
             <ItemBox
+              key={kpi.id}
               icon={kpi.icon || kpi.icon_url}
               name={kpi.name}
               url={`${kpi.id}/metrics`}
