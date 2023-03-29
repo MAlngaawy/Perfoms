@@ -273,8 +273,8 @@ export type CoachPlayerInfo = {
   id: number;
   name: string;
   dob: string;
-  weight: number;
-  height: number;
+  weight: string;
+  height: string;
   icon: string;
   icon_url: string;
   sport: string;

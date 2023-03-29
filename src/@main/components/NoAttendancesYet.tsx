@@ -1,11 +1,13 @@
 import React from "react";
 
-type Props = {};
+type Props = {
+  type: string;
+};
 
-const NoAttendancesYet = (props: Props) => {
+const NoAttendancesYet = ({ type }: Props) => {
   return (
     <div className="text-center bg-white  p-4 mx-anto font-semibold">
-      No Attendances
+      No {type}
     </div>
   );
 };

@@ -184,7 +184,7 @@ const CreateContentTable = memo(
           ) : (
             <tr>
               <td>
-                <NoAttendancesYet />
+                <NoAttendancesYet type="Attendances" />
               </td>
             </tr>
           )}

@@ -71,6 +71,7 @@ const AddKpi = (props: Props) => {
         .then((res) => {
           setIsLoading(false);
           setOpened(false);
+          setUserAvatar(null);
           if (user?.user_type === "Supervisor") {
             superRefetchKpis();
           } else {

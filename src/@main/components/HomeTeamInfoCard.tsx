@@ -55,13 +55,21 @@ const HomeTeamInfoCard = (props: Props) => {
           </div>
           <div className="geder flex flex-col">
             <p className=" text-perfGray3 text-sm font-normal">Gender</p>
-            <h2 className=" text-perfGray1 text-base font-normal">
+            <h2 className="text-perfGray1 text-base font-normal">
               {teamInfoData?.gender
-                ? teamInfoData.gender === "M"
-                  ? "Male"
-                  : "Female"
+                ? (() => {
+                    switch (teamInfoData.gender) {
+                      case "M":
+                        return "Male";
+                      case "F":
+                        return "Female";
+                      case "B":
+                        return "Mixed";
+                      default:
+                        return "Gender";
+                    }
+                  })()
                 : "Gender"}
-              {}
             </h2>
           </div>
           <div className="geder flex flex-col">

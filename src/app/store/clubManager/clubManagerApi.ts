@@ -174,8 +174,14 @@ export const clubManagerApi = createApi({
       invalidatesTags: ["coaches"],
     }),
 
-    adminAllCoaches: query<Coaches, { page?: number }>({
-      query: (params) => ({ url: "users/coaches/", params }),
+    adminAllCoaches: query<
+      Coaches,
+      { club_id: number | string | undefined; page?: number }
+    >({
+      query: ({ club_id, ...params }) => ({
+        url: `users/coaches/${club_id}`,
+        params,
+      }),
       providesTags: ["coaches"],
     }),
 

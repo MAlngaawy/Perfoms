@@ -54,12 +54,18 @@ const SportPillars = (props: Props) => {
         pillar_id,
       })
         .then((res) => {
-          AppUtils.showNotificationFun(
-            "Success",
-            "Done",
-            "Pillar Deleted successfully"
-          );
-          refetchAdminPillars();
+          //@ts-ignore
+          if (res.error) {
+            //@ts-ignore
+            AppUtils.showNotificationFun("Error", "Sorry", error.data.message);
+          } else {
+            AppUtils.showNotificationFun(
+              "Success",
+              "Done",
+              "Pillar Deleted successfully"
+            );
+            refetchSuperPillars();
+          }
         })
         .catch(() => {
           AppUtils.showNotificationFun(
@@ -73,12 +79,18 @@ const SportPillars = (props: Props) => {
         pillar_id,
       })
         .then((res) => {
-          AppUtils.showNotificationFun(
-            "Success",
-            "Done",
-            "Pillar Deleted successfully"
-          );
-          refetchSuperPillars();
+          //@ts-ignore
+          if (res.error) {
+            //@ts-ignore
+            AppUtils.showNotificationFun("Error", "Sorry", error.data.message);
+          } else {
+            AppUtils.showNotificationFun(
+              "Success",
+              "Done",
+              "Pillar Deleted successfully"
+            );
+            refetchSuperPillars();
+          }
         })
         .catch(() => {
           AppUtils.showNotificationFun(

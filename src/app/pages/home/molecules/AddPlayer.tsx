@@ -34,16 +34,8 @@ const schema = yup.object().shape({
     .number()
     .required("You  Must select a team")
     .typeError("You Have to select a team"),
-  weight: yup
-    .number()
-    .max(999)
-    .min(0, "weight can't be negative value!")
-    .typeError("weight must be a number"),
-  height: yup
-    .number()
-    .max(999)
-    .min(0, "height can't be negative value!")
-    .typeError("height must be a number"),
+  weight: yup.string(),
+  height: yup.string(),
   phoneNumber: yup
     .string()
     .length(11, "phone number must be 11 characters long")

@@ -84,18 +84,15 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
         <div className="infos">
           <Info label="Name" value={playerInfoData?.name} />
           <Info label="Age" value={playerInfoData?.dob} />
-          <div className="flex justify-between">
+          <div className="flex gap-2 justify-between">
             <Info
               label="Weight"
-              value={`${
-                playerInfoData?.weight ? playerInfoData?.weight : "NA"
-              } kgm`}
+              value={`${playerInfoData.weight || "NA"} kgm`}
             />
+
             <Info
               label="height"
-              value={`${
-                playerInfoData?.height ? playerInfoData?.height : "NA"
-              } cm`}
+              value={`${playerInfoData.height || "NA"} cm`}
             />
           </div>
           <Info label="Sport" value={playerInfoData?.sport} />

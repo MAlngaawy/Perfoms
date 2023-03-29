@@ -150,6 +150,7 @@ export type SuperVisorTeamInfo = {
   players_count: number;
   from_age: number;
   to_age: number;
+  gender: string;
 };
 
 export type SuperVisorAttendance = BaseGetAllType & {

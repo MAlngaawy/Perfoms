@@ -20,12 +20,11 @@ type Props = {
 };
 
 const EditItem = ({ data, apiUrl, refetchFunction }: Props) => {
+  console.log("DATA", data);
+
   const [opened, setOpened] = useState(false);
   const [userAvatar, setUserAvatar] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [iconEdited, setIconEdited] = useState<File | null>(null);
-  const [playerImagePreview, setPlayerImagePreview] =
-    useState<string | null>(null);
 
   const onSubmitFunction = async (e: any) => {
     e.preventDefault();
@@ -45,11 +44,8 @@ const EditItem = ({ data, apiUrl, refetchFunction }: Props) => {
         setIsLoading(false);
         setOpened(false);
         refetchFunction();
-        AppUtils.showNotificationFun(
-          "Success",
-          "Done",
-          " Successfully Updated"
-        );
+        setUserAvatar(null);
+        AppUtils.showNotificationFun("Success", "Done", "Successfully Updated");
       })
       .catch((err) => {
         setIsLoading(false);
@@ -60,58 +56,56 @@ const EditItem = ({ data, apiUrl, refetchFunction }: Props) => {
 
   return (
     <div>
-      <>
-        <Modal
-          opened={opened}
-          onClose={() => {
-            setOpened(false);
-          }}
-          title={`Edit ${data.name}`}
+      <Modal
+        opened={opened}
+        onClose={() => {
+          setOpened(false);
+        }}
+        title={`Edit ${data.name}`}
+      >
+        <form className="flex flex-col gap-4" onSubmit={onSubmitFunction}>
+          {/* Image Upload */}
+          <AvatarInput
+            userAvatar={userAvatar}
+            setUserAvatar={setUserAvatar}
+            inputAlt="Icon"
+            currentImage={data.icon || data.icon_url}
+          />
+
+          <Input.Wrapper id="name" withAsterisk>
+            <Input
+              defaultValue={data.name}
+              name={"name"}
+              placeholder="Name"
+              sx={{
+                ".mantine-Input-input	": {
+                  border: 0,
+                  padding: 0,
+                  borderBottom: 1,
+                  borderStyle: "solid",
+                  borderRadius: 0,
+                  minHeight: 20,
+                },
+              }}
+              className="border-b"
+              id="name"
+            />
+          </Input.Wrapper>
+          <SubmitButton isLoading={isLoading} text="Edit" />
+        </form>
+      </Modal>
+
+      <Group position="center">
+        <button
+          className="transform hover:scale-150"
+          onClick={() => setOpened(true)}
         >
-          <form className="flex flex-col gap-4" onSubmit={onSubmitFunction}>
-            {/* Image Upload */}
-            <AvatarInput
-              userAvatar={userAvatar}
-              setUserAvatar={setUserAvatar}
-              inputAlt="Icon"
-              currentImage={data.icon || data.icon_url}
-            />
-
-            <Input.Wrapper id="name" withAsterisk>
-              <Input
-                defaultValue={data.name}
-                name={"name"}
-                placeholder="Name"
-                sx={{
-                  ".mantine-Input-input	": {
-                    border: 0,
-                    padding: 0,
-                    borderBottom: 1,
-                    borderStyle: "solid",
-                    borderRadius: 0,
-                    minHeight: 20,
-                  },
-                }}
-                className="border-b"
-                id="name"
-              />
-            </Input.Wrapper>
-            <SubmitButton isLoading={isLoading} text="Edit" />
-          </form>
-        </Modal>
-
-        <Group position="center">
-          <button
-            className="transform hover:scale-150"
-            onClick={() => setOpened(true)}
-          >
-            <AppIcons
-              className="w-4 h-4 text-perfGray3"
-              icon="PencilSquareIcon:outline"
-            />
-          </button>
-        </Group>
-      </>
+          <AppIcons
+            className="w-4 h-4 text-perfGray3"
+            icon="PencilSquareIcon:outline"
+          />
+        </button>
+      </Group>
     </div>
   );
 };
