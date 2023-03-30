@@ -27,13 +27,13 @@ const Top10ClubPlayersPage = (props: Props) => {
         <Breadcrumbs className="text-perfGray3 text-sm" separator="→">
           {items}
         </Breadcrumbs>
-        <div>
+        {/* <div>
           <TabsContainer
             selectedValue={selectedValue}
             selectValueFun={setSelectedValue}
             values={["Players"]}
           />
-        </div>
+        </div> */}
       </div>
 
       <Grid gutter={12}>
