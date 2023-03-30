@@ -108,11 +108,11 @@ const Top10SportPlayersPage = (props: Props) => {
           {items}
         </Breadcrumbs>
         <div className="flex gap-2 flex-wrap justify-center">
-          <TabsContainer
+          {/* <TabsContainer
             selectedValue={selectedValue}
             selectValueFun={setSelectedValue}
             values={["Players"]}
-          />
+          /> */}
           <TabsContainer
             selectedValue={selectedValue2}
             selectValueFun={setSelectedValue2}
