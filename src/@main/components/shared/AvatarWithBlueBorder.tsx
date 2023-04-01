@@ -1,19 +1,32 @@
 import { Avatar } from "@mantine/core";
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import cn from "classnames";
 
 type Props = {
   image: string;
   name: string;
   size?: number;
   subTitle?: string;
+  navigateLink?: string;
 };
 
-const AvatarWithBlueBorder = ({ image, name, size, subTitle }: Props) => {
+const AvatarWithBlueBorder = ({
+  image,
+  name,
+  size,
+  subTitle,
+  navigateLink,
+}: Props) => {
+  const navigate = useNavigate();
   return (
     <div className="my-4 sm:my-6 flex flex-col justify-center items-center">
       <Avatar
+        onClick={() => navigateLink && navigate(navigateLink)}
         src={image}
-        className="border border-perfBlue"
+        className={cn("border border-perfBlue ", {
+          "cursor-pointer": navigateLink,
+        })}
         sx={{
           ".mantine-Avatar-placeholder": {
             border: "2px solid #2F80ED",

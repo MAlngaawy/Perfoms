@@ -21,10 +21,12 @@ import {
   CoachTeamPerformance,
   TeamPerformanceMetrics,
 } from "~/app/store/types/coach-types";
+import { useNavigate } from "react-router-dom";
 
 type Props = {};
 
 const PerformanceTable = (props: Props) => {
+  const navigate = useNavigate();
   const { data: user } = useUserQuery({});
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const [teamPerformance, setTeamPerformance] =
@@ -111,7 +113,13 @@ const PerformanceTable = (props: Props) => {
                     className="bg-white sticky top-0 z-20 text-center "
                   >
                     <div className="flex  flex-col justify-center items-center">
-                      <Avatar radius={"xl"} size="md" src={player.icon} />
+                      <Avatar
+                        onClick={() => navigate(`/players/${player.id}`)}
+                        className="cursor-pointer"
+                        radius={"xl"}
+                        size="md"
+                        src={player.icon}
+                      />
                       <span>{player.name}</span>
                     </div>
                   </th>

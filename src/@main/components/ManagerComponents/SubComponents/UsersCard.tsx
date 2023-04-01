@@ -12,6 +12,7 @@ import __ from "lodash";
 import { useEffect, useState } from "react";
 import AppIcons from "~/@main/core/AppIcons";
 import AppUtils from "~/@main/utils/AppUtils";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   type: "Player" | "Coach" | "Supervisor";
@@ -24,6 +25,7 @@ const UsersCard = ({ type, data }: Props) => {
   const [deleteCoach] = useAdminDeleteCoachMutation();
   const [deleteSupervisor] = useAdminDeleteSupervisorMutation();
   const [newData, setNewData] = useState<any>(data);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (searchKeyword.length > 0) {
@@ -120,8 +122,16 @@ const UsersCard = ({ type, data }: Props) => {
                   xs={6}
                   sm={4}
                 >
-                  <div className="flex justify-between rounded-3xl items-center p-1  hover:bg-pagesBg transition-all">
-                    <div className="coach-data flex gap-2 items-center cursor-default">
+                  <div
+                    onClick={() =>
+                      type === "Player" && navigate(`/players/${user.id}`)
+                    }
+                    style={{
+                      cursor: type === "Player" ? "pointer" : "auto",
+                    }}
+                    className="flex justify-between rounded-3xl items-center p-1  hover:bg-pagesBg transition-all"
+                  >
+                    <div className="coach-data flex gap-2 items-center">
                       <Avatar
                         src={user.avatar || user.icon}
                         size="sm"
