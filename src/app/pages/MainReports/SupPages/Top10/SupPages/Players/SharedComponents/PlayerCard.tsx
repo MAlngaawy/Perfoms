@@ -21,6 +21,7 @@ const PlayerCard = ({ data, index, title }: Props) => {
           size={80}
           name={data.name}
           image={data.icon || "No Image"}
+          navigateLink={`/players/${data.id}`}
           subTitle={data.sport}
         />
         <div className="infos tec flex items-start justify-between flex-wrap gap-y-3 gap-x-5 mx-4">

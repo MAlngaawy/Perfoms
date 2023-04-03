@@ -20,6 +20,8 @@ import {
   CoachTeamAttendance,
   TeamAttendanceDays,
 } from "~/app/store/types/coach-types";
+import { useNavigate } from "react-router-dom";
+import { Player } from "~/app/store/types/parent-types";
 
 type Props = {};
 
@@ -195,17 +197,25 @@ const CreateContentTable = memo(
 );
 
 const TableHead = memo(({ teamAttendance }: any) => {
+  const navigate = useNavigate();
+
   return (
     <thead>
       <tr className="">
         <th className="bg-white sticky  top-0 z-20 ">Day</th>
-        {teamAttendance?.results.map((player: any) => (
+        {teamAttendance?.results.map((player: Player) => (
           <th
             key={player.id}
             className="bg-white sticky top-0 z-20 text-center "
           >
             <div className="flex  flex-col justify-center items-center">
-              <Avatar radius={"xl"} size="md" src={player.icon} />
+              <Avatar
+                onClick={() => navigate(`/players/${player.id}`)}
+                radius={"xl"}
+                size="md"
+                className="cursor-pointer"
+                src={player.icon}
+              />
               <span>{player.name}</span>
             </div>
           </th>
