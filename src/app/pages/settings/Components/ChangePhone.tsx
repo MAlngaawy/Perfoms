@@ -3,10 +3,14 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import SubmitButton from "~/@main/components/SubmitButton";
-import { useEffect, useState } from "react";
-import { useChangePasswordMutation } from "~/app/store/user/userApi";
-import { showNotification } from "@mantine/notifications";
-import PerfSelect from "~/@main/components/Select";
+// import { useEffect, useState } from "react";
+// import { useChangePasswordMutation } from "~/app/store/user/userApi";
+// import { showNotification } from "@mantine/notifications";
+// import PerfSelect from "~/@main/components/Select";
+import { useChangePhoneMutation } from "~/app/store/user/userApi";
+import AppUtils from "~/@main/utils/AppUtils";
+import Cookies from "js-cookie";
+import { useEffect } from "react";
 
 type Props = {
   setChange: any;
@@ -14,12 +18,14 @@ type Props = {
 };
 
 const schema = yup.object().shape({
-  code: yup.string().required(),
+  code: yup.string(),
   new_phone: yup.number().required(),
   password: yup.string().min(8).max(24).required(),
 });
 
 const ChangePhone = ({ setChange, mobile }: Props) => {
+  const [changePhoneFun, { isSuccess, isLoading }] = useChangePhoneMutation();
+
   const {
     register,
     handleSubmit,
@@ -36,8 +42,32 @@ const ChangePhone = ({ setChange, mobile }: Props) => {
   });
 
   const onSubmit = (data: any) => {
-    console.log(data);
+    const newData = {
+      mobile: "+20" + data.new_phone,
+      password: data.password,
+    };
+
+    if (newData.mobile === mobile) {
+      AppUtils.showNotificationFun(
+        "Error",
+        "Wrong",
+        "The two phone numbers is the same"
+      );
+    } else {
+      changePhoneFun(newData);
+    }
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      AppUtils.showNotificationFun("Success", "Done", "Please Sign in Again");
+      setTimeout(() => {
+        Cookies.remove("token");
+        window.location.reload();
+        localStorage.clear();
+      }, 1000);
+    }
+  }, [isSuccess]);
 
   return (
     <div className="flex flex-col justify-center items-center gap-6 bg-white rounded-3xl p-6 w-11/12 sm:w-96">
@@ -62,7 +92,7 @@ const ChangePhone = ({ setChange, mobile }: Props) => {
               />
             </Input.Wrapper>
           </Grid.Col>
-          <Grid.Col span={3}>
+          {/* <Grid.Col span={3}>
             <PerfSelect
               normalStyle
               id="code"
@@ -80,8 +110,8 @@ const ChangePhone = ({ setChange, mobile }: Props) => {
                 { value: "🇯🇴 +962", label: "🇯🇴 +962" },
               ]}
             />
-          </Grid.Col>
-          <Grid.Col span={9}>
+          </Grid.Col> */}
+          <Grid.Col span={12}>
             <Input.Wrapper
               id="phoneNumber"
               withAsterisk
@@ -100,6 +130,7 @@ const ChangePhone = ({ setChange, mobile }: Props) => {
                     minHeight: 20,
                   },
                 }}
+                autoComplete="off"
                 className="border-b"
                 {...register("new_phone")}
                 id="phoneNumber"
@@ -124,7 +155,7 @@ const ChangePhone = ({ setChange, mobile }: Props) => {
           error={errors.password?.message}
           withAsterisk
         />
-        <SubmitButton text="Next" isLoading={false} />
+        <SubmitButton text="Change Phone" isLoading={isLoading} />
       </form>
     </div>
   );

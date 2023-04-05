@@ -15,6 +15,7 @@ import {
   useSignupMutation,
 } from "~/app/store/user/userApi";
 import SubmitButton from "~/@main/components/SubmitButton";
+import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {};
 
@@ -98,9 +99,19 @@ const SignUpPage = (props: Props) => {
 
   useEffect(() => {
     if (isSuccess && data) {
-      navigator(
-        `/verify-otp?usermobile=${data.data.mobile}&type=new&role=${userRole}`
+      //! We Stoped the OTP for now, and will be work later
+      // navigator(
+      //   `/verify-otp?usermobile=${data.data.mobile}&type=new&role=${userRole}`
+      // );
+
+      AppUtils.showNotificationFun(
+        "Success",
+        "Registered Successfully",
+        "Please Sign in"
       );
+
+      //* Now we will redirect the user to login
+      navigator("/signin");
     }
   }, [isSuccess, data]);
 

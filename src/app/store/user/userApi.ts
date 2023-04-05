@@ -9,6 +9,7 @@ import {
   AddPlayerLeague,
   AddQualification,
   ChangePassword,
+  ChangePhone,
   ClubTeams,
   Course,
   Courses,
@@ -634,6 +635,13 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["media"],
     }),
+    changePhone: mutation<ChangePhone, ChangePhone>({
+      query: (body) => ({
+        url: `change-phone/`,
+        method: "PATCH",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -697,4 +705,5 @@ export const {
   useGetEventVideoQuery,
   useAddEventVideoMutation,
   useDeleteEventVideoMutation,
+  useChangePhoneMutation,
 } = userApi;
