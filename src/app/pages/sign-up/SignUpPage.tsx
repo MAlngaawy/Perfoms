@@ -99,6 +99,8 @@ const SignUpPage = (props: Props) => {
 
   useEffect(() => {
     if (isSuccess && data) {
+      console.log("Data", data);
+
       //! We Stoped the OTP for now, and will be work later
       // navigator(
       //   `/verify-otp?usermobile=${data.data.mobile}&type=new&role=${userRole}`
@@ -111,7 +113,7 @@ const SignUpPage = (props: Props) => {
       );
 
       //* Now we will redirect the user to login
-      navigator("/signin");
+      navigator("/sign-in");
     }
   }, [isSuccess, data]);
 

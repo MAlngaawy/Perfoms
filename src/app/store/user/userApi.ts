@@ -123,7 +123,7 @@ export const userApi = createApi({
       async onQueryStarted(arg, { queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          eventInstance.emit("SignUp_Success");
+          // eventInstance.emit("SignUp_Success");
         } catch (error: any) {
           showNotification({
             title: "Login Error",
