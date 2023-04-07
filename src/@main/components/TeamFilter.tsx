@@ -56,8 +56,6 @@ const TeamFilter = (props: Props) => {
   // if (!selectedPlayer) playerTeams = coachTeams as PlayerTeams | undefined;
 
   useEffect(() => {
-    console.log("Select Team");
-
     if (superTeams) setTeams(superTeams.results);
     if (coachTeams) setTeams(coachTeams.results);
     if (playerTeams) setTeams(playerTeams.results);
@@ -80,7 +78,7 @@ const TeamFilter = (props: Props) => {
   }, [playerTeams, superTeams, coachTeams, adminTeams, teams]);
 
   return (
-    <Menu shadow="md" width={200}>
+    <Menu shadow="md" width={user?.user_type === "Admin" ? 300 : 200}>
       <Menu.Target>
         <button className="flex gap-2 text-sm justify-center items-center  py-2 px-6 rounded-3xl border bg-white ">
           <span> Team {selectedPlayerTeam?.name}</span>
@@ -93,10 +91,17 @@ const TeamFilter = (props: Props) => {
             <Menu.Item
               key={value.id}
               onClick={() =>
-                dispatch(selectPlayerTeam({ id: value.id, name: value.name }))
+                dispatch(
+                  selectPlayerTeam({
+                    id: value.id,
+                    name: value.name,
+                  })
+                )
               }
             >
-              {value.name}
+              {user?.user_type === "Admin"
+                ? value.sport + " - " + value.name
+                : value.name}
             </Menu.Item>
           ))}
       </Menu.Dropdown>
