@@ -7,7 +7,7 @@ type Props = {
 };
 
 const EncourageCertificate = forwardRef(({ certificate }: Props, ref) => {
-  let myFont = new FontFace("old-english", "url(/assets/fonts/OLD.ttf)");
+  let myFont = new FontFace("Poppins", "url(/assets/fonts/Poppins.ttf)");
 
   useEffect(() => {
     myFont.load().then((font) => {
@@ -21,7 +21,7 @@ const EncourageCertificate = forwardRef(({ certificate }: Props, ref) => {
       image.onload = () => {
         ctx.drawImage(image, 0, 0, 880, 550);
         ctx.letterSpacing = "10px";
-        ctx.font = "40px old-english";
+        ctx.font = "30px Poppins";
         ctx.textAlign = "center";
         ctx.fillStyle = "#000000";
         ctx.fillText(certificate && certificate?.player?.name, 500, 270);

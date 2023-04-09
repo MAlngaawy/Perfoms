@@ -112,9 +112,13 @@ const RecommendationsCard = ({ player_id }: Props) => {
             ) : (
               recommendations?.results.map((recommendation) => (
                 <div key={recommendation.id}>
-                  <p>{recommendation.metric.name}</p>
-                  <p>{recommendation.name}</p>
-                  <p className=" text-perfGray3 text-sm">
+                  <p title="Kpi name" className="font-bold">
+                    &#x2022; {recommendation.metric.name}
+                  </p>
+                  <p title="Recommendation title" className="text-perfGray3">
+                    {recommendation.name}
+                  </p>
+                  <p title="Recommendation description" className="text-sm">
                     {recommendation.description}
                   </p>
                 </div>
