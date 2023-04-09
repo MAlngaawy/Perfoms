@@ -91,39 +91,50 @@ const MediaPage = () => {
           ""
         )}
 
-        {/* Select Sport To Filter teams chooices */}
-        <Select
-          placeholder="Pick Sport"
-          value={selectedSport}
-          onChange={(v: string) => {
-            setSelectedSport(v);
-            setEvents(undefined);
-            setSelectedTeam("0");
-          }}
-          data={
-            adminSports
-              ? adminSports.results.map((sport) => {
-                  return { value: JSON.stringify(sport.id), label: sport.name };
-                })
-              : ["No Sports"]
-          }
-        />
+        {user?.user_type === "Admin" ? (
+          <div className="flex gap-2">
+            {/* Select Sport To Filter teams chooices */}
+            <Select
+              placeholder="Pick Sport"
+              value={selectedSport}
+              onChange={(v: string) => {
+                setSelectedSport(v);
+                setEvents(undefined);
+                setSelectedTeam("0");
+              }}
+              data={
+                adminSports
+                  ? adminSports.results.map((sport) => {
+                      return {
+                        value: JSON.stringify(sport.id),
+                        label: sport.name,
+                      };
+                    })
+                  : ["No Sports"]
+              }
+            />
 
-        {/* Select Team to filter events */}
-        <Select
-          placeholder="Pick Team"
-          value={selectedTeam}
-          //@ts-ignore
-          onChange={setSelectedTeam}
-          data={
-            sportTeams
-              ? sportTeams.results.map((team) => {
-                  return { value: JSON.stringify(team.id), label: team.name };
-                })
-              : ["No Teams"]
-          }
-        />
-        {/* <TeamFilter /> */}
+            {/* Select Team to filter events */}
+            <Select
+              placeholder="Pick Team"
+              value={selectedTeam}
+              //@ts-ignore
+              onChange={setSelectedTeam}
+              data={
+                sportTeams
+                  ? sportTeams.results.map((team) => {
+                      return {
+                        value: JSON.stringify(team.id),
+                        label: team.name,
+                      };
+                    })
+                  : ["No Teams"]
+              }
+            />
+          </div>
+        ) : (
+          <TeamFilter />
+        )}
       </div>
       <div className="relative">
         {events && events.results.length > 0 ? (
