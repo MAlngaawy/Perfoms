@@ -20,7 +20,7 @@ const CongratsCertificate = forwardRef(({ certificate }: Props, ref) => {
       image.onload = () => {
         ctx.drawImage(image, 0, 0, 880, 550);
         ctx.letterSpacing = "10px";
-        ctx.font = "40px old-english";
+        ctx.font = "30px  Poppins";
         ctx.textAlign = "center";
         ctx.fillStyle = "#000000";
         ctx.fillText(certificate && certificate?.player?.name, 360, 265);
