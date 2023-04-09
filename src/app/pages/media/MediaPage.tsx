@@ -10,12 +10,30 @@ import { TeamEvents } from "~/app/store/types/parent-types";
 import { useCoachTeamEventQuery } from "~/app/store/coach/coachApi";
 import { useSuprtEventsQuery } from "~/app/store/supervisor/supervisorMainApi";
 import Placeholders from "~/@main/components/Placeholders";
-import { useAdminTeamEventsQuery } from "~/app/store/clubManager/clubManagerApi";
+import {
+  useAdminTeamEventsQuery,
+  useAdminSportsQuery,
+  useAdminTeamsStatisticsQuery,
+} from "~/app/store/clubManager/clubManagerApi";
 import AddEventForm from "../SubPages/SingleTeam/Components/AddEventForm";
+import { Select } from "@mantine/core";
 
 const MediaPage = () => {
   const [events, setEvents] = useState<TeamEvents | undefined>();
   const { data: user } = useUserQuery(null);
+
+  const [selectedSport, setSelectedSport] = useState<string>("0");
+  const [selectedTeam, setSelectedTeam] = useState<string>("0");
+
+  const { data: adminSports } = useAdminSportsQuery(
+    { club_id: user?.club },
+    { skip: !user?.club }
+  );
+  const { data: sportTeams } = useAdminTeamsStatisticsQuery(
+    { sport_id: selectedSport },
+    { skip: [null, "0"].includes(selectedSport) }
+  );
+
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
 
   const { data: parentEvents } = useTeamEventsQuery(
@@ -33,8 +51,8 @@ const MediaPage = () => {
   );
 
   const { data: adminEvents, refetch: adminRefetch } = useAdminTeamEventsQuery(
-    { team_id: selectedPlayerTeam?.id },
-    { skip: !selectedPlayerTeam || user?.user_type !== "Admin" }
+    { team_id: selectedTeam },
+    { skip: user?.user_type !== "Admin" }
   );
 
   useEffect(() => {
@@ -50,6 +68,7 @@ const MediaPage = () => {
     selectedPlayerTeam,
     adminEvents,
   ]);
+
   return (
     <div className="container w-11/12 mx-auto">
       <div className=" text-xs sm:text-sm my-4 flex gap-2 justify-end items-center">
@@ -72,7 +91,39 @@ const MediaPage = () => {
           ""
         )}
 
-        <TeamFilter />
+        {/* Select Sport To Filter teams chooices */}
+        <Select
+          placeholder="Pick Sport"
+          value={selectedSport}
+          onChange={(v: string) => {
+            setSelectedSport(v);
+            setEvents(undefined);
+            setSelectedTeam("0");
+          }}
+          data={
+            adminSports
+              ? adminSports.results.map((sport) => {
+                  return { value: JSON.stringify(sport.id), label: sport.name };
+                })
+              : ["No Sports"]
+          }
+        />
+
+        {/* Select Team to filter events */}
+        <Select
+          placeholder="Pick Team"
+          value={selectedTeam}
+          //@ts-ignore
+          onChange={setSelectedTeam}
+          data={
+            sportTeams
+              ? sportTeams.results.map((team) => {
+                  return { value: JSON.stringify(team.id), label: team.name };
+                })
+              : ["No Teams"]
+          }
+        />
+        {/* <TeamFilter /> */}
       </div>
       <div className="relative">
         {events && events.results.length > 0 ? (
@@ -81,7 +132,7 @@ const MediaPage = () => {
               {events.results.map((data) => {
                 return (
                   <MediaCard
-                    teamId={selectedPlayerTeam.id}
+                    teamId={+selectedTeam || selectedPlayerTeam.id}
                     key={data.id}
                     event={data}
                   />
