@@ -15,7 +15,7 @@ import { useMyClubQuery } from "~/app/store/coach/coachApi";
 import { useEffect, useState } from "react";
 import { useSuperClubQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { useAdminClubQuery } from "~/app/store/clubManager/clubManagerApi";
-import { dataServerToken } from "../../../configs/dataService";
+import cn from "classnames";
 
 type Props = {
   opened: boolean;
@@ -32,8 +32,8 @@ const Toolbar = ({ setOpened }: Props) => {
 
   const profileRoute = () => {
     let route = "profile";
-
-    if (user?.user_type === "Supervisor" || user?.user_type === "Coach") {
+    //@ts-ignore
+    if (["Supervisor", "Coach", "SubCoach"].includes(user?.user_type)) {
       route = "coach-profile";
     } else if (user?.user_type === "Admin") {
       route = "admin-profile";
@@ -47,10 +47,7 @@ const Toolbar = ({ setOpened }: Props) => {
     { skip: !selectedPlayer?.id || user?.user_type !== "Parent" }
   );
 
-  const { data: coachClub } = useMyClubQuery(
-    {},
-    { skip: user?.user_type !== "Coach" }
-  );
+  const { data: coachClub } = useMyClubQuery({});
 
   const { data: superClub } = useSuperClubQuery(
     {},

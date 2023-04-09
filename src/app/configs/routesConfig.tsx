@@ -54,6 +54,7 @@ import Top10PlayersConfig from "../pages/MainReports/SupPages/Top10/SupPages/Pla
 import Top10ClubPlayersConfig from "../pages/MainReports/SupPages/Top10/SupPages/Players/Top10ClubPlayers/Top10ClubPlayersConfig";
 import Top10SportPlayersConfig from "../pages/MainReports/SupPages/Top10/SupPages/Players/Top10SportPlayers/Top10SportPlayersConig";
 import Top10KpiPlayersConfig from "../pages/MainReports/SupPages/Top10/SupPages/Players/Top10SportPlayers/Top10KpiPlayers/Top10KpiPlayersConfig";
+import SubCoachConfig from "../pages/SubCoach/SubCoachConfig";
 
 const routeConfigs: PagesRouteConfig[] = [
   SignInConfig,
@@ -108,6 +109,7 @@ const routeConfigs: PagesRouteConfig[] = [
   Top10ClubPlayersConfig,
   Top10SportPlayersConfig,
   Top10KpiPlayersConfig,
+  SubCoachConfig,
 ];
 
 const routes: AppRouteObject[] = [

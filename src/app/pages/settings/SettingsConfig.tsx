@@ -18,7 +18,7 @@ const SettingsConfig: PagesRouteConfig = {
       },
     },
   },
-  auth: authRoles.All,
+  auth: [...authRoles.All, ...authRoles.SubCoach],
   routes: [
     {
       path: "settings",

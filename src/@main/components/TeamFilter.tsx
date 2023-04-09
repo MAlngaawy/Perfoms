@@ -40,7 +40,8 @@ const TeamFilter = (props: Props) => {
 
   const { data: coachTeams } = useMyTeamsQuery(
     {},
-    { skip: user?.user_type !== "Coach" }
+    //@ts-ignore
+    { skip: !["Coach", "SubCoach"].includes(user?.user_type) }
   );
 
   const { data: superTeams } = useSuperTeamsQuery(

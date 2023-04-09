@@ -20,6 +20,17 @@ const navigationConfig: NavigationConfigTypes[] = [
     url: "coach-home",
     auth: authRoles.Coach,
   },
+
+  {
+    id: "home-page-subcoach",
+    title: "Home",
+    translate: "HOME",
+    type: "item",
+    icon: "HomeIcon:outline",
+    url: "sub-coach",
+    auth: authRoles.SubCoach,
+  },
+
   {
     id: "home-page-supervisor",
     title: "Home",
