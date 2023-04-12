@@ -122,16 +122,16 @@ const UsersCard = ({ type, data }: Props) => {
                   xs={6}
                   sm={4}
                 >
-                  <div
-                    onClick={() =>
-                      type === "Player" && navigate(`/players/${user.id}`)
-                    }
-                    style={{
-                      cursor: type === "Player" ? "pointer" : "auto",
-                    }}
-                    className="flex justify-between rounded-3xl items-center p-1  hover:bg-pagesBg transition-all"
-                  >
-                    <div className="coach-data flex gap-2 items-center">
+                  <div className="flex justify-between rounded-3xl items-center p-1  hover:bg-pagesBg transition-all">
+                    <div
+                      onClick={() =>
+                        type === "Player" && navigate(`/players/${user.id}`)
+                      }
+                      style={{
+                        cursor: type === "Player" ? "pointer" : "auto",
+                      }}
+                      className="coach-data flex gap-2 items-center"
+                    >
                       <Avatar
                         src={user.avatar || user.icon}
                         size="sm"
