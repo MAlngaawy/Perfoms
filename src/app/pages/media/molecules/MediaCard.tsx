@@ -18,12 +18,10 @@ import { useUserQuery } from "~/app/store/user/userApi";
 
 type props = {
   event: TeamEvent;
-  teamId: number;
+  teamId: number | string;
 };
 
 const MediaCard = ({ event, teamId }: props) => {
-  console.log("teamId", teamId);
-
   const navigate = useNavigate();
   const { data: user } = useUserQuery({});
 
@@ -31,7 +29,7 @@ const MediaCard = ({ event, teamId }: props) => {
   const [adminDeleteEvent] = useAdminDeleteEventMutation();
 
   const { data: superEvents, refetch: superRefetch } = useSuprtEventsQuery(
-    { team_id: teamId },
+    { team_id: +teamId },
     { skip: !teamId || user?.user_type !== "Supervisor" }
   );
 

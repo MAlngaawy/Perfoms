@@ -25,6 +25,8 @@ const MediaPage = () => {
   const [selectedSport, setSelectedSport] = useState<string>("0");
   const [selectedTeam, setSelectedTeam] = useState<string>("0");
 
+  const [teamId, setTeamId] = useState<string>();
+
   const { data: adminSports } = useAdminSportsQuery(
     { club_id: user?.club },
     { skip: !user?.club }
@@ -56,6 +58,12 @@ const MediaPage = () => {
   );
 
   useEffect(() => {
+    if (user?.user_type === "Admin") {
+      setTeamId(selectedTeam);
+    } else {
+      setTeamId(JSON.stringify(selectedPlayerTeam?.id));
+    }
+
     if (superEvents) setEvents(superEvents);
     if (coachEvents) setEvents(coachEvents);
     if (parentEvents) setEvents(parentEvents);
@@ -65,8 +73,9 @@ const MediaPage = () => {
     superEvents,
     coachEvents,
     parentEvents,
-    selectedPlayerTeam,
     adminEvents,
+    selectedTeam,
+    selectedPlayerTeam,
   ]);
 
   return (
@@ -143,7 +152,7 @@ const MediaPage = () => {
               {events.results.map((data) => {
                 return (
                   <MediaCard
-                    teamId={+selectedTeam || selectedPlayerTeam.id}
+                    teamId={selectedTeam || selectedPlayerTeam.id}
                     key={data.id}
                     event={data}
                   />
@@ -161,11 +170,9 @@ const MediaPage = () => {
               pageName={"events"}
               postText={"here yet, come again later OR choose another team."}
             />
-            {user?.user_type === "Supervisor" || user?.user_type === "Admin" ? (
+            {["Supervisor", "Admin"].includes(user?.user_type || "No User") ? (
               <AddEventForm
-                teamID={JSON.stringify(
-                  selectedPlayerTeam && selectedPlayerTeam.id
-                )}
+                teamID={teamId}
                 refetch={() => {
                   if (superEvents) superRefetch();
                   if (adminEvents) adminRefetch();
