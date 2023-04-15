@@ -190,6 +190,11 @@ export type OTPVerify = {
   otp: string;
 };
 
+export type ChangePhone = {
+  mobile: string;
+  password: string;
+};
+
 export type UserDeviceId = {
   device_id: string;
   registration_token: string;

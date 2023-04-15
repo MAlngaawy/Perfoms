@@ -16,7 +16,7 @@ import AvatarInput from "~/@main/components/shared/AvatarInput";
 
 type Props = {
   refetch: any;
-  teamID?: string;
+  teamID?: string | null;
   mediaPage?: boolean;
   children: ReactNode;
 };
@@ -195,7 +195,20 @@ const AddEventForm = ({ refetch, teamID, children }: Props) => {
           </form>
         </Modal>
 
-        <Group position="left" onClick={() => setOpened(true)}>
+        <Group
+          position="left"
+          onClick={() => {
+            if ([null, "0", undefined].includes(teamID)) {
+              AppUtils.showNotificationFun(
+                "Error",
+                "Wrog",
+                "Please Select Team first"
+              );
+            } else {
+              setOpened(true);
+            }
+          }}
+        >
           {children}
         </Group>
       </>

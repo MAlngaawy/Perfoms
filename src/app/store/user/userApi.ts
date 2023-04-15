@@ -9,6 +9,7 @@ import {
   AddPlayerLeague,
   AddQualification,
   ChangePassword,
+  ChangePhone,
   ClubTeams,
   Course,
   Courses,
@@ -122,7 +123,7 @@ export const userApi = createApi({
       async onQueryStarted(arg, { queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          eventInstance.emit("SignUp_Success");
+          // eventInstance.emit("SignUp_Success");
         } catch (error: any) {
           showNotification({
             title: "Login Error",
@@ -634,6 +635,13 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["media"],
     }),
+    changePhone: mutation<ChangePhone, ChangePhone>({
+      query: (body) => ({
+        url: `change-phone/`,
+        method: "PATCH",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -697,4 +705,5 @@ export const {
   useGetEventVideoQuery,
   useAddEventVideoMutation,
   useDeleteEventVideoMutation,
+  useChangePhoneMutation,
 } = userApi;

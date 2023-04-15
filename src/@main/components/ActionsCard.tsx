@@ -103,9 +103,14 @@ const ActionsCard = ({ player_id }: Props) => {
             ) : (
               actions?.results.map((action) => (
                 <div key={action.id}>
-                  <p>{action.metric.name}</p>
-                  <p>{action.name}</p>
-                  <p className=" text-perfGray3 text-sm">
+                  <p title="Kpi name" className="font-bold">
+                    &#x2022;
+                    {action.metric.name}
+                  </p>
+                  <p title="Action title" className="text-perfGray3">
+                    {action.name}
+                  </p>
+                  <p title="Action description" className="text-sm">
                     {action.description}
                   </p>
                 </div>

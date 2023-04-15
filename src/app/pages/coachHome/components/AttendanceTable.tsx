@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { Table, Checkbox, Avatar, Skeleton, Loader } from "@mantine/core";
 import {
   useCoachUpdateAttendanceMutation,
@@ -15,7 +15,6 @@ import {
   useSuperTeamAttendanceDaysQuery,
   useSuperUpdateAttendanceMutation,
 } from "~/app/store/supervisor/supervisorMainApi";
-import { TeamAttendance } from "~/app/store/types/supervisor-types";
 import {
   CoachTeamAttendance,
   TeamAttendanceDays,
@@ -27,6 +26,7 @@ type Props = {};
 
 const AttendanceTable = (props: Props) => {
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
+  console.log("selectedPlayerTeam", selectedPlayerTeam);
   const { data: user } = useUserQuery({});
   const [teamAttendance, setTeamAttendance] = useState<CoachTeamAttendance>();
   const [teamAttendanceDays, setTeamAttendanceDays] =
@@ -34,7 +34,9 @@ const AttendanceTable = (props: Props) => {
 
   const { data: coachTeamAttendance } = useGetTeamAttendanceQuery(
     { team_id: selectedPlayerTeam?.id },
-    { skip: !selectedPlayerTeam || user?.user_type !== "Coach" }
+    {
+      skip: !selectedPlayerTeam,
+    }
   );
 
   const { data: superTeamAttendance } = useSuperGetTeamAttendanceQuery(
@@ -45,7 +47,9 @@ const AttendanceTable = (props: Props) => {
   const { data: coachTeamAttendanceDays, isLoading: isCoachLoading } =
     useTeamAttendanceDaysQuery(
       { team_id: selectedPlayerTeam?.id },
-      { skip: !selectedPlayerTeam || user?.user_type !== "Coach" }
+      {
+        skip: !selectedPlayerTeam,
+      }
     );
 
   const { data: superTeamAttendanceDays, isLoading: isSuperLoading } =
@@ -68,15 +72,15 @@ const AttendanceTable = (props: Props) => {
 
   // console.log("coahcTeamPlayers", coahcTeamPlayers);
 
-  if (isCoachLoading || isSuperLoading)
-    return (
-      <Skeleton
-        height={200}
-        width="80%"
-        className="mx-auto my-20"
-        radius="lg"
-      />
-    );
+  // if (isCoachLoading || isSuperLoading)
+  //   return (
+  //     <Skeleton
+  //       height={200}
+  //       width="80%"
+  //       className="mx-auto my-20"
+  //       radius="lg"
+  //     />
+  //   );
 
   return (
     <>
@@ -115,7 +119,8 @@ const TestCheckbox = memo(({ theDate, thisDate, theStatus, theID }: any) => {
           }
           checked={theStatus === "ATTENDED"}
           onChange={(e) => {
-            if (user?.user_type === "Coach") {
+            //@ts-ignore
+            if (["Coach", "SubCoach"].includes(user?.user_type)) {
               updateAttend({
                 id: theID,
                 status: theStatus !== "ATTENDED" ? "ATTENDED" : "ABSENT",
