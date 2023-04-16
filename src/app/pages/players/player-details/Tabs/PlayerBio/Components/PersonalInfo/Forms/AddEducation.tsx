@@ -20,12 +20,11 @@ const AddEducation = (props: Props) => {
   const [addPlayerEducation] = useAddPlayerEducationMutation();
   const { id } = useParams();
 
-  console.log("player_id", id);
   // Form Schema
   const schema = yup.object().shape({
     degree: yup.string().required(),
     universty: yup.string().required(),
-    year: yup.number().min(1900).max(3000).required(),
+    // year: yup.number().optional(),
   });
 
   // use Form Config
@@ -74,20 +73,26 @@ const AddEducation = (props: Props) => {
           onSubmit={handleSubmit(onSubmitFunction)}
         >
           {/*Degree Input  */}
-          <Input.Wrapper error={errors.degree && "Degree is a required field"}>
-            <Input placeholder="Degree" {...register("degree")} />
-          </Input.Wrapper>
-
-          {/*Universty Input  */}
           <Input.Wrapper
-            error={errors.universty && "University is a required field"}
+            error={errors.degree && "studay field is a required field"}
           >
-            <Input placeholder="Universty Name" {...register("universty")} />
+            <Input placeholder="studay field" {...register("degree")} />
           </Input.Wrapper>
 
           {/*Universty Input  */}
-
           <Input.Wrapper
+            error={
+              errors.universty &&
+              "high school Or Universty Name is a required field"
+            }
+          >
+            <Input
+              placeholder="high school Or Universty Name"
+              {...register("universty")}
+            />
+          </Input.Wrapper>
+
+          {/* <Input.Wrapper
             error={errors.year && "You must enter a valid year: e.g 2012"}
           >
             <Input
@@ -95,7 +100,7 @@ const AddEducation = (props: Props) => {
               placeholder="Pick Graduation date"
               {...register("year")}
             />
-          </Input.Wrapper>
+          </Input.Wrapper> */}
 
           <SubmitButton isLoading={isLoading} text="Save" />
         </form>

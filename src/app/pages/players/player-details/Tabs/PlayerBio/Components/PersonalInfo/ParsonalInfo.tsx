@@ -89,7 +89,7 @@ const ParsonalInfo = (props: Props) => {
             return (
               <div className="my-2 relative">
                 <p className="date text-xs font-normal text-perfGray3">
-                  {education.year}
+                  {education.year > 0 && education.year}
                 </p>
                 <h2>{education.degree}</h2>
                 <p className="date text-xs font-normal text-perfGray3">
