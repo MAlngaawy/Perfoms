@@ -208,3 +208,17 @@ export type UpdateNote = {
   description: string;
   is_selected: boolean;
 };
+
+export type AddSubCoach = {
+  mobile: string;
+  password: string;
+  first_name: string;
+  last_name: string;
+  teams: number[];
+  avatar: string;
+};
+
+export type UpdateUserType = {
+  user_type: "Coach" | "SubCoach";
+  id: string;
+};
