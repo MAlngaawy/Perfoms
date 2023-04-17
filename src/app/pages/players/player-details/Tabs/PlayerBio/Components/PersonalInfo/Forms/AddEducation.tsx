@@ -74,9 +74,9 @@ const AddEducation = (props: Props) => {
         >
           {/*Degree Input  */}
           <Input.Wrapper
-            error={errors.degree && "studay field is a required field"}
+            error={errors.degree && "study field is a required field"}
           >
-            <Input placeholder="studay field" {...register("degree")} />
+            <Input placeholder="study field" {...register("degree")} />
           </Input.Wrapper>
 
           {/*Universty Input  */}
