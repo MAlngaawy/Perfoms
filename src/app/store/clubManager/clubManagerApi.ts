@@ -3,6 +3,7 @@ import { BASE_HEADERS, BASE_URL } from "~/app/configs/dataService";
 import {
   AddEvent,
   AddRecommendation,
+  AddSubCoach,
   AllUsers,
   ClubParents,
   CoachesRequests,
@@ -17,6 +18,7 @@ import {
   TopTenKpiPlayers,
   TopTenSportKpis,
   UpdateNote,
+  UpdateUserType,
 } from "../types/clubManager-types";
 import {
   EventFiles,
@@ -66,6 +68,7 @@ export const clubManagerApi = createApi({
     "playerUser",
     "coachUser",
     "supervisorUser",
+    "subCoachesUser",
     "pillars",
     "metrics",
     "actions",
@@ -274,7 +277,7 @@ export const clubManagerApi = createApi({
         url: `users/coaches/${club_id}`,
         params,
       }),
-      providesTags: ["coachUser"],
+      providesTags: ["coachUser", "subCoachesUser"],
     }),
 
     adminSupervisors: query<
@@ -286,6 +289,17 @@ export const clubManagerApi = createApi({
         params,
       }),
       providesTags: ["supervisorUser"],
+    }),
+
+    adminSubCoach: query<
+      AllUsers,
+      { club_id: number | undefined; page?: number }
+    >({
+      query: ({ club_id, ...params }) => ({
+        url: `users/sub-coaches/${club_id}`,
+        params,
+      }),
+      providesTags: ["subCoachesUser", "coachUser"],
     }),
 
     adminAddTeamPlayer: mutation<TeamPlayer, {}>({
@@ -331,6 +345,33 @@ export const clubManagerApi = createApi({
         body,
       }),
       invalidatesTags: ["supervisorUser"],
+    }),
+
+    adminDeleteSubCoach: mutation<{}, { subCoach_id: string }>({
+      query: ({ subCoach_id, ...body }) => ({
+        url: `users/sub-coaches/${subCoach_id}/delete/`,
+        method: "DELETE",
+        body,
+      }),
+      invalidatesTags: ["subCoachesUser"],
+    }),
+
+    adminAddSubCoach: mutation<AddSubCoach, AddSubCoach>({
+      query: (body) => ({
+        url: `users/sub-coaches/add-sub-coach/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["subCoachesUser"],
+    }),
+
+    adminUpdateUserType: mutation<UpdateUserType, UpdateUserType>({
+      query: ({ id, ...body }) => ({
+        url: `users/update-user-type/${id}/`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["subCoachesUser", "coachUser"],
     }),
 
     adminDeleteSport: mutation<{}, { sport_id: string }>({
@@ -773,11 +814,15 @@ export const {
   useAdminPlayersQuery,
   useAdminCoachesQuery,
   useAdminSupervisorsQuery,
+  useAdminSubCoachQuery,
   useAdminAddTeamPlayerMutation,
   useAdminRemoveTeamPlayerMutation,
   useAdminDeletePlayerMutation,
   useAdminDeleteCoachMutation,
   useAdminDeleteSupervisorMutation,
+  useAdminDeleteSubCoachMutation,
+  useAdminAddSubCoachMutation,
+  useAdminUpdateUserTypeMutation,
   useAdminDeleteSportMutation,
   useAdminPillarsQuery,
   useAdminDeletePillarMutation,

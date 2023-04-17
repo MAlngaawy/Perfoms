@@ -2,6 +2,7 @@ import React from "react";
 import {
   useAdminCoachesQuery,
   useAdminPlayersQuery,
+  useAdminSubCoachQuery,
   useAdminSupervisorsQuery,
 } from "~/app/store/clubManager/clubManagerApi";
 import UsersCard from "./SubComponents/UsersCard";
@@ -24,10 +25,17 @@ const Users = (props: Props) => {
     { club_id: user?.club },
     { skip: !user?.club }
   );
+  const { data: subCoaches } = useAdminSubCoachQuery(
+    { club_id: user?.club },
+    { skip: !user?.club }
+  );
 
   return (
     <div className="flex flex-col gap-6  p-2 sm:p-6 mb-10">
       <UsersCard type="Coach" data={coaches?.results} />
+      {subCoaches && (
+        <UsersCard type="Attendance Moderator" data={subCoaches?.results} />
+      )}
       <UsersCard type="Supervisor" data={supervisors?.results} />
       <UsersCard type="Player" data={players?.results} />
     </div>
