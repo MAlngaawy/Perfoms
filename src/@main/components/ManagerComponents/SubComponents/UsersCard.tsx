@@ -6,6 +6,7 @@ import AddPlayerForm from "./CreatePlayerForm";
 import {
   useAdminDeleteCoachMutation,
   useAdminDeletePlayerMutation,
+  useAdminDeleteSubCoachMutation,
   useAdminDeleteSupervisorMutation,
 } from "~/app/store/clubManager/clubManagerApi";
 import __ from "lodash";
@@ -25,6 +26,7 @@ const UsersCard = ({ type, data }: Props) => {
   const [deletePlayer] = useAdminDeletePlayerMutation();
   const [deleteCoach] = useAdminDeleteCoachMutation();
   const [deleteSupervisor] = useAdminDeleteSupervisorMutation();
+  const [deleteSubCoach] = useAdminDeleteSubCoachMutation();
   const [newData, setNewData] = useState<any>(data);
   const navigate = useNavigate();
 
@@ -76,6 +78,18 @@ const UsersCard = ({ type, data }: Props) => {
         });
     } else if (type === "Supervisor") {
       deleteSupervisor({ supervisor_id: userId })
+        .then((res) => {
+          AppUtils.showNotificationFun(
+            "Success",
+            "Done",
+            "Successfully Deleted"
+          );
+        })
+        .catch((err) => {
+          AppUtils.showNotificationFun("Error", "Wrong", "err.message");
+        });
+    } else if (type === "Attendance Moderator") {
+      deleteSubCoach({ subCoach_id: userId })
         .then((res) => {
           AppUtils.showNotificationFun(
             "Success",

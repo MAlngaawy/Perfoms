@@ -212,10 +212,10 @@ export type UpdateNote = {
 export type AddSubCoach = {
   mobile: string;
   password: string;
-  first_name: string;
-  last_name: string;
-  teams: number[];
-  avatar: string;
+  first_name?: string;
+  last_name?: string;
+  teams?: number[];
+  avatar?: string;
 };
 
 export type UpdateUserType = {

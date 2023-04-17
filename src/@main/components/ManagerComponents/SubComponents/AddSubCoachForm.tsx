@@ -1,27 +1,27 @@
 import { useDisclosure } from "@mantine/hooks";
-import React, { useState, forwardRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Modal,
   Group,
-  Avatar,
-  Text,
   Select,
   TextInput,
   PasswordInput,
+  MultiSelect,
 } from "@mantine/core";
 import SubmitButton from "../../SubmitButton";
-import { DatePicker } from "@mantine/dates";
 import AppUtils from "~/@main/utils/AppUtils";
 import * as yup from "yup";
 import { useUserQuery } from "~/app/store/user/userApi";
 import { axiosInstance } from "~/app/configs/dataService";
 import {
-  useAdminClubParentsQuery,
-  useAdminPlayersQuery,
+  useAdminAddSubCoachMutation,
+  useAdminSportsQuery,
   useAdminSubCoachQuery,
+  useAdminTeamsStatisticsQuery,
 } from "~/app/store/clubManager/clubManagerApi";
 import AvatarInput from "~/@main/components/shared/AvatarInput";
-import SelectTeamsFromSportInputs from "../../shared/SelectTeamsFromSportInputs";
+// import SelectTeamsFromSportInputs from "../../shared/SelectTeamsFromSportInputs";
+import { PlayerSport, SportTeam } from "~/app/store/types/parent-types";
 
 type Props = {};
 
@@ -37,10 +37,7 @@ const schema = yup.object().shape({
     .number()
     .required("You Must select a sport")
     .typeError("You Have to select a sport"),
-  team: yup
-    .number()
-    .required("You  Must select a team")
-    .typeError("You Have to select a team"),
+  teams: yup.array().of(yup.number()).min(1, "At least on team is required"),
   password: yup
     .string()
     .required("Password is required")
@@ -55,7 +52,7 @@ const formInputsDefaultValue = {
   first_name: "",
   last_name: "",
   sport: "",
-  team: "",
+  teams: [],
   password: "",
   confirmPassword: "",
   mobile: "",
@@ -72,7 +69,7 @@ const AddSubCoachForm = (props: Props) => {
     first_name?: string;
     last_name?: string;
     sport?: string;
-    team?: string;
+    teams?: string;
     password?: string;
     confirmPassword?: string;
     mobile?: string;
@@ -81,12 +78,53 @@ const AddSubCoachForm = (props: Props) => {
     { club_id: user?.club },
     { skip: !user?.club }
   );
-  const handleChange = (name: string, value: string | number) => {
+  const handleChange = (name: string, value: string | number | any[]) => {
     setFormInputsData({
       ...formInputsData,
       [name]: value,
     });
   };
+
+  const [sports, setSports] = useState<any>([]);
+  const [teams, setTeams] = React.useState<any>([]);
+  const [selectedSport, setSelectedSport] = useState<number>(0);
+
+  // Handle fetching club Sport Teams to select wich teams will be added
+  // fetch club sports
+  const { data: clubSports } = useAdminSportsQuery(
+    { club_id: user?.club },
+    { skip: !user?.club }
+  );
+  // fetch sport Teams data
+  const { data: sportTeams } = useAdminTeamsStatisticsQuery(
+    { sport_id: selectedSport },
+    { skip: !selectedSport }
+  );
+
+  useEffect(() => {
+    // setTeams([]);
+    // setFormInputsData({
+    //   ...formInputsData,
+    //   teams: [],
+    // });
+    // setSelectedTeam(null);
+
+    if (clubSports && clubSports.results) {
+      setSports(clubSports.results);
+    }
+    if (sportTeams && sportTeams.results.length > 0) {
+      setTeams(sportTeams.results);
+    } else {
+      setTeams([]);
+      setFormInputsData({
+        ...formInputsData,
+        teams: [],
+      });
+      setSelectedTeam(null);
+    }
+  }, [clubSports, sportTeams, selectedSport]);
+
+  const [createSubCoach] = useAdminAddSubCoachMutation();
 
   const onSubmitFun = async (e: any) => {
     e.preventDefault();
@@ -96,44 +134,85 @@ const AddSubCoachForm = (props: Props) => {
       console.log(`${key}: ${value}`);
     }
 
-    try {
-      await schema.validate(formInputsData, { abortEarly: false });
-      formData.set("mobile", "+2" + formData.get("mobile"));
-      //@ts-ignore
-      if (userAvatar) {
-        const image = await AppUtils.resizeImage(userAvatar);
-        formData.append("icon", image as string);
-      }
-      try {
-        setIsLoading(true);
-        axiosInstance
-          .post("club-manager/users/sub-coaches/add-sub-coach/", formData)
-          .then((res) => {
-            setIsLoading(false);
-            close();
-            setUserAvatar(null);
-            refetch();
-            setFormInputsData(formInputsDefaultValue);
-          })
-          .catch((err) => {
-            setIsLoading(false);
-            console.log(err.response.statusText);
-          });
-      } catch (err) {
-        console.log(err);
-      }
-    } catch (error) {
-      console.log(error);
+    const newData = {
+      mobile: "+2" + formInputsData.mobile,
+      first_name: formInputsData.first_name,
+      last_name: formInputsData.last_name,
+      password: formInputsData.password,
+      teams: formInputsData.teams,
+    };
 
-      const validationErrors = {};
-      if (error instanceof yup.ValidationError) {
-        error.inner.forEach((error) => {
-          //@ts-ignore
-          validationErrors[error.path] = error.message;
+    try {
+      setIsLoading(true);
+      await schema.validate(formInputsData, { abortEarly: false });
+      createSubCoach(newData)
+        .then(() => {
+          setIsLoading(false);
+          close();
+          setUserAvatar(null);
+          refetch();
+          setFormInputsData(formInputsDefaultValue);
+          AppUtils.showNotificationFun(
+            "Success",
+            "Done",
+            "Attendance Modeartor Added Successfully"
+          );
+        })
+        .catch((err) => {
+          setIsLoading(false);
+          console.log();
+          AppUtils.showNotificationFun(
+            "Error",
+            "Sorry",
+            err.response.statusText
+          );
         });
-        setErrors(validationErrors);
-      }
+    } catch (err) {
+      setIsLoading(false);
+      console.log(err);
+      AppUtils.showNotificationFun("Error", "Sorry", "Can't Add Moderator Now");
     }
+
+    // try {
+    //   await schema.validate(formInputsData, { abortEarly: false });
+    //   formData.set("mobile", "+2" + formData.get("mobile"));
+    //   const teamIds = formInputsData.teams.map((teamId) => +teamId);
+    //   formData.set("teams", JSON.stringify(teamIds));
+    //   //@ts-ignore
+    //   if (userAvatar) {
+    //     const image = await AppUtils.resizeImage(userAvatar);
+    //     formData.append("icon", image as string);
+    //   }
+    //   try {
+    //     setIsLoading(true);
+    //     axiosInstance
+    //       .post("club-manager/users/sub-coaches/add-sub-coach/", formData)
+    //       .then((res) => {
+    //         setIsLoading(false);
+    //         close();
+    //         setUserAvatar(null);
+    //         refetch();
+    //         setFormInputsData(formInputsDefaultValue);
+    //       })
+    //       .catch((err) => {
+    //         setIsLoading(false);
+    //         console.log(err.response.statusText);
+    //       });
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+
+    //   const validationErrors = {};
+    //   if (error instanceof yup.ValidationError) {
+    //     error.inner.forEach((error) => {
+    //       //@ts-ignore
+    //       validationErrors[error.path] = error.message;
+    //     });
+    //     setErrors(validationErrors);
+    //   }
+    // }
   };
 
   return (
@@ -143,11 +222,11 @@ const AddSubCoachForm = (props: Props) => {
           onSubmit={onSubmitFun}
           className="rounded-xl py-4 flex flex-col gap-4 justify-between"
         >
-          <AvatarInput
+          {/* <AvatarInput
             inputAlt="Player Photo"
             userAvatar={userAvatar}
             setUserAvatar={setUserAvatar}
-          />
+          /> */}
           <TextInput
             id="mobile"
             name="mobile"
@@ -204,14 +283,74 @@ const AddSubCoachForm = (props: Props) => {
             />
           </div>
 
-          <SelectTeamsFromSportInputs
+          {/* Sport and teams */}
+          <div className="flex flex-col gap-4 w-full my-4">
+            <Select
+              error={errors.sport}
+              id="sport"
+              required
+              className="w-full"
+              label="Sport"
+              name="sport"
+              sx={{
+                ".mantine-Select-input": {
+                  background: "none",
+                  border: 0,
+                  borderBottom: "1px solid",
+                  borderRadius: 0,
+                  width: "100%",
+                },
+              }}
+              data={sports?.map((item: Partial<PlayerSport>) => {
+                return { value: item.id, label: item.name };
+              })}
+              onChange={(e) => {
+                e && setSelectedSport(+e);
+                if (e) {
+                  handleChange("sport", +e);
+                }
+              }}
+            />
+
+            <MultiSelect
+              id="teams"
+              error={errors.teams}
+              required
+              className="w-full"
+              label="Teams"
+              name="teams"
+              value={selectedTeam}
+              onChange={(e) => {
+                console.log(e);
+
+                if (e) {
+                  setSelectedTeam(e);
+                  handleChange("teams", e);
+                }
+              }}
+              sx={{
+                ".mantine-MultiSelect-input": {
+                  background: "none",
+                  border: 0,
+                  borderBottom: "1px solid",
+                  borderRadius: 0,
+                  width: "100%",
+                },
+              }}
+              data={teams?.map((item: Partial<SportTeam>) => {
+                return { label: item.name, value: item.id };
+              })}
+            />
+          </div>
+
+          {/* <SelectTeamsFromSportInputs
             errors={errors}
             formInputsData={formInputsData}
             handleChange={handleChange}
             selectedTeam={selectedTeam}
             setFormInputsData={setFormInputsData}
             setSelectedTeam={setSelectedTeam}
-          />
+          /> */}
 
           <PasswordInput
             autoComplete="new-password"
