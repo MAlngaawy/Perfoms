@@ -138,6 +138,7 @@ export type Player = {
   weight: string;
   height: string;
   dob: string;
+  front_leg: string;
   phone: string;
 };
 

@@ -1,26 +1,17 @@
-import React, { useState, forwardRef, useEffect, useRef } from "react";
+import React, { useState, forwardRef, useEffect } from "react";
 import { Modal, Group, Avatar, Text, Select, TextInput } from "@mantine/core";
 import SubmitButton from "../../SubmitButton";
-import { Controller, useForm } from "react-hook-form";
-import {
-  useClubSportsQuery,
-  useMyPlayersQuery,
-  useSportTeamsQuery,
-} from "~/app/store/parent/parentApi";
 import { DatePicker } from "@mantine/dates";
 import AppUtils from "~/@main/utils/AppUtils";
 import * as yup from "yup";
 import { useUserQuery } from "~/app/store/user/userApi";
 import { axiosInstance } from "~/app/configs/dataService";
-import AppIcons from "~/@main/core/AppIcons";
-import { PlayerSport, SportTeam } from "~/app/store/types/parent-types";
 import {
   useAdminClubParentsQuery,
   useAdminPlayersQuery,
-  useAdminSportsQuery,
-  useAdminTeamsStatisticsQuery,
 } from "~/app/store/clubManager/clubManagerApi";
 import AvatarInput from "~/@main/components/shared/AvatarInput";
+import SelectTeamsFromSportInputs from "../../shared/SelectTeamsFromSportInputs";
 
 type Props = {};
 
@@ -71,6 +62,7 @@ const schema = yup.object().shape({
     .max(999)
     .min(0, "height can't be negative value!")
     .typeError("height must be a number"),
+  front_leg: yup.string(),
   phoneNumber: yup
     .string()
     .length(11, "phone number must be 11 characters long")
@@ -84,6 +76,7 @@ const formInputsDefaultValue = {
   team: "",
   weight: "",
   height: "",
+  front_leg: "",
   phoneNumber: "",
 };
 
@@ -109,10 +102,7 @@ const AddPlayerForm = (props: Props) => {
       image: "",
     },
   ]);
-  const [teams, setTeams] = React.useState<any>([]);
-  const [sports, setSports] = React.useState<any>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedSport, setSelectedSport] = useState<number>(0);
   const [errors, setErrors] = useState<{
     name?: string;
     dob?: string;
@@ -120,6 +110,7 @@ const AddPlayerForm = (props: Props) => {
     team?: string;
     weight?: string;
     height?: string;
+    front_leg?: string;
     phoneNumber?: string;
     parent?: string;
   }>({});
@@ -130,20 +121,7 @@ const AddPlayerForm = (props: Props) => {
     { skip: !userData?.club }
   );
 
-  // fetch club sports
-  const { data: clubSports } = useAdminSportsQuery(
-    { club_id: userData?.club },
-    { skip: !userData?.club }
-  );
-  // fetch sport Teams data
-  const { data: sportTeams } = useAdminTeamsStatisticsQuery(
-    { sport_id: selectedSport },
-    { skip: !selectedSport }
-  );
-
   useEffect(() => {
-    setTeams([]);
-
     if (clubParents) {
       const data = clubParents?.results.map((parent: any) => {
         return {
@@ -155,21 +133,7 @@ const AddPlayerForm = (props: Props) => {
 
       setClubParentsData(data);
     }
-
-    if (clubSports && clubSports.results) {
-      setSports(clubSports.results);
-    }
-    if (sportTeams && sportTeams.results.length > 0) {
-      setTeams(sportTeams.results);
-    } else {
-      setTeams([]);
-      setFormInputsData({
-        ...formInputsData,
-        team: "",
-      });
-      setSelectedTeam(null);
-    }
-  }, [clubSports, sportTeams, selectedSport, clubParents]);
+  }, [clubParents]);
 
   const handleChange = (name: string, value: string | number) => {
     setFormInputsData({
@@ -182,7 +146,6 @@ const AddPlayerForm = (props: Props) => {
     e.preventDefault();
     setErrors({});
     const formData = new FormData(e.currentTarget);
-    console.log(formData.get("parent"));
 
     try {
       await schema.validate(formInputsData, { abortEarly: false });
@@ -265,8 +228,8 @@ const AddPlayerForm = (props: Props) => {
                   className="m-0 p-0 h-fit border-0"
                 />
               </div>
-              {/* Name and Date of birth */}
 
+              {/* Name and Date of birth */}
               <div className="flex gap-4 w-full">
                 <div className="w-1/2">
                   <TextInput
@@ -311,66 +274,14 @@ const AddPlayerForm = (props: Props) => {
             </div>
 
             {/* Sport and team */}
-            <div className="flex gap-4 w-full my-4">
-              <div className="w-1/2">
-                <Select
-                  error={errors.sport}
-                  id="sport"
-                  required
-                  className="w-full"
-                  label="Sport"
-                  name="sport"
-                  sx={{
-                    ".mantine-Select-input": {
-                      background: "none",
-                      border: 0,
-                      borderBottom: "1px solid",
-                      borderRadius: 0,
-                      width: "100%",
-                    },
-                  }}
-                  data={sports?.map((item: Partial<PlayerSport>) => {
-                    return { value: item.id, label: item.name };
-                  })}
-                  onChange={(e) => {
-                    e && setSelectedSport(+e);
-                    if (e) {
-                      handleChange("sport", +e);
-                    }
-                  }}
-                />
-              </div>
-
-              <div className="w-1/2">
-                <Select
-                  id="team"
-                  error={errors.team}
-                  required
-                  className="w-full"
-                  label="Team"
-                  name="team"
-                  value={selectedTeam}
-                  onChange={(e) => {
-                    if (e) {
-                      setSelectedTeam(e);
-                      handleChange("team", +e);
-                    }
-                  }}
-                  sx={{
-                    ".mantine-Select-input": {
-                      background: "none",
-                      border: 0,
-                      borderBottom: "1px solid",
-                      borderRadius: 0,
-                      width: "100%",
-                    },
-                  }}
-                  data={teams?.map((item: Partial<SportTeam>) => {
-                    return { label: item.name, value: item.id };
-                  })}
-                />
-              </div>
-            </div>
+            <SelectTeamsFromSportInputs
+              errors={errors}
+              formInputsData={formInputsData}
+              handleChange={handleChange}
+              selectedTeam={selectedTeam}
+              setFormInputsData={setFormInputsData}
+              setSelectedTeam={setSelectedTeam}
+            />
 
             {/* Weight & Height */}
             <div className="flex gap-4 my-4">
@@ -409,6 +320,29 @@ const AddPlayerForm = (props: Props) => {
                 />
               </div>
             </div>
+
+            <Select
+              id="front_leg"
+              error={errors.front_leg}
+              required
+              className="w-full"
+              label="Front Leg"
+              name="front_leg"
+              sx={{
+                ".mantine-Select-input": {
+                  background: "none",
+                  border: 0,
+                  borderBottom: "1px solid",
+                  borderRadius: 0,
+                  width: "100%",
+                },
+              }}
+              data={[
+                { value: "LEFT", label: "Left" },
+                { value: "RIGHT", label: "Right" },
+                { value: "BOTH", label: "Both" },
+              ]}
+            />
 
             {/* Phone number  */}
             <div className="w-full my-4">

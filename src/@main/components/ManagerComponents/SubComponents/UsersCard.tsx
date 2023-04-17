@@ -1,11 +1,12 @@
 import DeleteButton from "./DeleteButton";
 import { Avatar, Grid, TextInput } from "@mantine/core";
 import AddPlayerForm from "./CreatePlayerForm";
-import { PlayerCoach } from "~/app/store/types/parent-types";
-import { showNotification } from "@mantine/notifications";
+// import { PlayerCoach } from "~/app/store/types/parent-types";
+// import { showNotification } from "@mantine/notifications";
 import {
   useAdminDeleteCoachMutation,
   useAdminDeletePlayerMutation,
+  useAdminDeleteSubCoachMutation,
   useAdminDeleteSupervisorMutation,
 } from "~/app/store/clubManager/clubManagerApi";
 import __ from "lodash";
@@ -13,9 +14,10 @@ import { useEffect, useState } from "react";
 import AppIcons from "~/@main/core/AppIcons";
 import AppUtils from "~/@main/utils/AppUtils";
 import { useNavigate } from "react-router-dom";
+import AddSubCoachForm from "./AddSubCoachForm";
 
 type Props = {
-  type: "Player" | "Coach" | "Supervisor";
+  type: "Player" | "Coach" | "Supervisor" | "Attendance Moderator";
   data: any;
 };
 
@@ -24,6 +26,7 @@ const UsersCard = ({ type, data }: Props) => {
   const [deletePlayer] = useAdminDeletePlayerMutation();
   const [deleteCoach] = useAdminDeleteCoachMutation();
   const [deleteSupervisor] = useAdminDeleteSupervisorMutation();
+  const [deleteSubCoach] = useAdminDeleteSubCoachMutation();
   const [newData, setNewData] = useState<any>(data);
   const navigate = useNavigate();
 
@@ -85,6 +88,18 @@ const UsersCard = ({ type, data }: Props) => {
         .catch((err) => {
           AppUtils.showNotificationFun("Error", "Wrong", "err.message");
         });
+    } else if (type === "Attendance Moderator") {
+      deleteSubCoach({ subCoach_id: userId })
+        .then((res) => {
+          AppUtils.showNotificationFun(
+            "Success",
+            "Done",
+            "Successfully Deleted"
+          );
+        })
+        .catch((err) => {
+          AppUtils.showNotificationFun("Error", "Wrong", "err.message");
+        });
     }
   };
 
@@ -96,6 +111,7 @@ const UsersCard = ({ type, data }: Props) => {
         </h2>
         <div className="flex gap-6 justify-center items-center">
           {type === "Player" && <AddPlayerForm />}
+          {type === "Attendance Moderator" && <AddSubCoachForm />}
           <TextInput
             onChange={(e) => setSearchKeyword(e.target.value)}
             value={searchKeyword}
