@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import AppIcons from "~/@main/core/AppIcons/AppIcons";
-import { Modal, TextInput, Alert, Avatar } from "@mantine/core";
+import { Modal, TextInput, Alert, Avatar, Select } from "@mantine/core";
 import SubmitButton from "~/@main/components/SubmitButton";
 import { axiosInstance } from "../../../configs/dataService";
 import { useMyPlayersQuery } from "~/app/store/parent/parentApi";
@@ -206,6 +206,29 @@ const EditPlayer = ({ player, refetchPlayerData }: Props) => {
               />
             </div>
           </div>
+
+          <Select
+            id="front_leg"
+            required
+            className="w-full"
+            label="Front Leg"
+            name="front_leg"
+            defaultValue={player?.front_leg}
+            sx={{
+              ".mantine-Select-input": {
+                background: "none",
+                border: 0,
+                borderBottom: "1px solid",
+                borderRadius: 0,
+                width: "100%",
+              },
+            }}
+            data={[
+              { value: "LEFT", label: "Left" },
+              { value: "RIGHT", label: "Right" },
+              { value: "BOTH", label: "Both" },
+            ]}
+          />
 
           {/* Phone number  */}
           <div className="w-full my-4">

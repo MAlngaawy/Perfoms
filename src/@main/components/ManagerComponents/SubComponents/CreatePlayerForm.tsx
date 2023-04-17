@@ -71,6 +71,7 @@ const schema = yup.object().shape({
     .max(999)
     .min(0, "height can't be negative value!")
     .typeError("height must be a number"),
+  front_leg: yup.string(),
   phoneNumber: yup
     .string()
     .length(11, "phone number must be 11 characters long")
@@ -84,6 +85,7 @@ const formInputsDefaultValue = {
   team: "",
   weight: "",
   height: "",
+  front_leg: "",
   phoneNumber: "",
 };
 
@@ -120,6 +122,7 @@ const AddPlayerForm = (props: Props) => {
     team?: string;
     weight?: string;
     height?: string;
+    front_leg?: string;
     phoneNumber?: string;
     parent?: string;
   }>({});
@@ -409,6 +412,29 @@ const AddPlayerForm = (props: Props) => {
                 />
               </div>
             </div>
+
+            <Select
+              id="front_leg"
+              error={errors.front_leg}
+              required
+              className="w-full"
+              label="Front Leg"
+              name="front_leg"
+              sx={{
+                ".mantine-Select-input": {
+                  background: "none",
+                  border: 0,
+                  borderBottom: "1px solid",
+                  borderRadius: 0,
+                  width: "100%",
+                },
+              }}
+              data={[
+                { value: "LEFT", label: "Left" },
+                { value: "RIGHT", label: "Right" },
+                { value: "BOTH", label: "Both" },
+              ]}
+            />
 
             {/* Phone number  */}
             <div className="w-full my-4">

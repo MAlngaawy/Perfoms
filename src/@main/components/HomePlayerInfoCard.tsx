@@ -95,7 +95,10 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
               value={`${playerInfoData.height || "NA"} cm`}
             />
           </div>
-          <Info label="Sport" value={playerInfoData?.sport} />
+          <div className="flex justify-between gap-x-4 flex-wrap">
+            <Info label="Sport" value={playerInfoData?.sport} />
+            <Info label="Front Leg" value={playerInfoData?.front_leg} />
+          </div>
         </div>
       </div>
     </div>

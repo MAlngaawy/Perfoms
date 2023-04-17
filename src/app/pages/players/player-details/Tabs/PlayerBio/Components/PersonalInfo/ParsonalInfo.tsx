@@ -63,6 +63,7 @@ const ParsonalInfo = (props: Props) => {
             </div>
           </div>
           <Info label="Sport" value={playerData?.sport} />
+          <Info label="Front Leg" value={playerData?.front_leg} />
         </div>
       </div>
 
@@ -89,7 +90,7 @@ const ParsonalInfo = (props: Props) => {
             return (
               <div className="my-2 relative">
                 <p className="date text-xs font-normal text-perfGray3">
-                  {education.year > 0 && education.year}
+                  {education.year}
                 </p>
                 <h2>{education.degree}</h2>
                 <p className="date text-xs font-normal text-perfGray3">

@@ -92,15 +92,15 @@ const AddEducation = (props: Props) => {
             />
           </Input.Wrapper>
 
-          {/* <Input.Wrapper
+          <Input.Wrapper
             error={errors.year && "You must enter a valid year: e.g 2012"}
           >
             <Input
-              type={"number"}
+              type={"string"}
               placeholder="Pick Graduation date"
               {...register("year")}
             />
-          </Input.Wrapper> */}
+          </Input.Wrapper>
 
           <SubmitButton isLoading={isLoading} text="Save" />
         </form>

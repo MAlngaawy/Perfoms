@@ -36,6 +36,7 @@ const schema = yup.object().shape({
     .typeError("You Have to select a team"),
   weight: yup.string(),
   height: yup.string(),
+  front_leg: yup.string(),
   phoneNumber: yup
     .string()
     .length(11, "phone number must be 11 characters long")
@@ -49,6 +50,7 @@ const formInputsDefaultValue = {
   team: "",
   weight: "",
   height: "",
+  front_leg: "",
   phoneNumber: "",
 };
 
@@ -69,6 +71,7 @@ const AddPlayer = (props: Props) => {
     team?: string;
     weight?: string;
     height?: string;
+    front_leg?: string;
     phoneNumber?: string;
   }>({});
   const [selectedTeam, setSelectedTeam] = useState<any>(null);
@@ -336,6 +339,28 @@ const AddPlayer = (props: Props) => {
               />
             </div>
           </div>
+          <Select
+            id="front_leg"
+            error={errors.front_leg}
+            required
+            className="w-full"
+            label="Front Leg"
+            name="front_leg"
+            sx={{
+              ".mantine-Select-input": {
+                background: "none",
+                border: 0,
+                borderBottom: "1px solid",
+                borderRadius: 0,
+                width: "100%",
+              },
+            }}
+            data={[
+              { value: "LEFT", label: "Left" },
+              { value: "RIGHT", label: "Right" },
+              { value: "BOTH", label: "Both" },
+            ]}
+          />
 
           {/* Phone number  */}
           <div className="w-full my-4">

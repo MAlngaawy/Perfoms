@@ -281,6 +281,7 @@ export type CoachPlayerInfo = {
   parent_name: string;
   phone?: string;
   profile?: string;
+  front_leg: string;
   team?: {
     id: number;
     name: string;
