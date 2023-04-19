@@ -19,9 +19,10 @@ import AvatarInput from "../../shared/AvatarInput";
 
 type Props = {
   teamData: Team;
+  sport_id: string;
 };
 
-const EditButton = ({ teamData }: Props) => {
+const EditButton = ({ teamData, sport_id }: Props) => {
   const [opened, setOpened] = useState(false);
   const [userAvatar, setUserAvatar] = useState<File | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -31,7 +32,7 @@ const EditButton = ({ teamData }: Props) => {
     { skip: !user?.club }
   );
   const { refetch: adminRefetch } = useAdminTeamsQuery(
-    { club_id: user?.club },
+    { club_id: user?.club, sport_id: +sport_id },
     { skip: !user?.club }
   );
 

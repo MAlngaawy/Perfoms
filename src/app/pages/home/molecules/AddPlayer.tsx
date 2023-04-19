@@ -23,7 +23,7 @@ type Props = {};
 const schema = yup.object().shape({
   name: yup
     .string()
-    .max(20, "Name Can't be more than 20 character")
+    .max(100, "Name Can't be more than 100 character")
     .required("Player Name is required"),
   dob: yup.string(),
   sport: yup
@@ -40,6 +40,7 @@ const schema = yup.object().shape({
   phoneNumber: yup
     .string()
     .length(11, "phone number must be 11 characters long")
+    .optional()
     .matches(/^\d+$/, "phone number must only contain numbers"),
 });
 

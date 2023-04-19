@@ -24,9 +24,11 @@ import {
 import { Team } from "~/app/store/types/supervisor-types";
 import { useAdminTeamsQuery } from "~/app/store/clubManager/clubManagerApi";
 
-type Props = {};
+type Props = {
+  adminSportId?: string;
+};
 
-const TeamFilter = (props: Props) => {
+const TeamFilter = ({ adminSportId }: Props) => {
   const { data: user } = useUserQuery(null);
   const [teams, setTeams] = useState<Team[]>();
   const dispatch = useDispatch();
@@ -50,7 +52,7 @@ const TeamFilter = (props: Props) => {
   );
 
   const { data: adminTeams } = useAdminTeamsQuery(
-    { club_id: user?.club },
+    { club_id: user?.club, sport_id: adminSportId ? +adminSportId : 0 },
     { skip: user?.user_type !== "Admin" || !user?.club }
   );
 

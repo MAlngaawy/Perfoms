@@ -41,7 +41,7 @@ const schema = yup.object().shape({
     .typeError("It Must Be Number"),
   name: yup
     .string()
-    .max(20, "Name Can't be more than 20 character")
+    .max(100, "Name Can't be more than 100 character")
     .required("Player Name is required"),
   dob: yup.string(),
   sport: yup
@@ -52,20 +52,13 @@ const schema = yup.object().shape({
     .number()
     .required("You  Must select a team")
     .typeError("You Have to select a team"),
-  weight: yup
-    .number()
-    .max(999)
-    .min(0, "weight can't be negative value!")
-    .typeError("weight must be a number"),
-  height: yup
-    .number()
-    .max(999)
-    .min(0, "height can't be negative value!")
-    .typeError("height must be a number"),
+  weight: yup.string(),
+  height: yup.string(),
   front_leg: yup.string(),
   phoneNumber: yup
     .string()
     .length(11, "phone number must be 11 characters long")
+    .optional()
     .matches(/^\d+$/, "phone number must only contain numbers"),
 });
 
@@ -324,7 +317,6 @@ const AddPlayerForm = (props: Props) => {
             <Select
               id="front_leg"
               error={errors.front_leg}
-              required
               className="w-full"
               label="Front Leg"
               name="front_leg"

@@ -7,6 +7,7 @@ import {
 } from "~/app/store/supervisor/supervisorMainApi";
 import {
   useAdminDeleteTeamMutation,
+  useAdminSportsQuery,
   useAdminTeamsQuery,
 } from "~/app/store/clubManager/clubManagerApi";
 import { Teams } from "~/app/store/types/clubManager-types";
@@ -15,18 +16,27 @@ import { Link } from "react-router-dom";
 import AppUtils from "~/@main/utils/AppUtils";
 import DeleteButton from "./SubComponents/DeleteButton";
 import EditButton from "./SubComponents/EditTeamButton";
+import { Select } from "@mantine/core";
+import Placeholders from "../Placeholders";
 
 type Props = {};
 
 const TeamsComponent = (props: Props) => {
-  const [teams, setTeams] = useState<Teams>();
   const { data: user } = useUserQuery({});
+  const [selectedSport, setSelectedSport] = useState<string>("0");
+
+  const { data: adminSports } = useAdminSportsQuery(
+    { club_id: user?.club },
+    { skip: !user?.club }
+  );
+
+  const [teams, setTeams] = useState<Teams>();
   const { data: superTeams } = useSuperTeamsQuery(
     {},
     { skip: user?.user_type !== "Supervisor" }
   );
   const { data: adminTeams } = useAdminTeamsQuery(
-    { club_id: user?.club },
+    { club_id: user?.club, sport_id: +selectedSport },
     { skip: user?.user_type !== "Admin" || !user?.club }
   );
 
@@ -35,11 +45,37 @@ const TeamsComponent = (props: Props) => {
     if (adminTeams) setTeams(adminTeams);
   }, [superTeams, adminTeams]);
 
+  useEffect(() => {
+    if (adminSports) {
+      setSelectedSport(JSON.stringify(adminSports.results[0].id));
+    }
+  }, [adminSports]);
+
   const [superDeleteTeam] = useSuperDeleteTeamMutation();
   const [adminDeleteTeam] = useAdminDeleteTeamMutation();
 
   return (
-    <div className="admin-teams flex flex-col xs:flex-row flex-wrap items-stretch gap-6 p-2 sm:p-6">
+    <div className="admin-teams flex flex-col xs:flex-row flex-wrap items-stretch gap-6 p-2 sm:p-4">
+      <div className=" w-full flex justify-end">
+        <Select
+          className="w-60 mt-2 mx-10"
+          placeholder="Pick Sport"
+          value={selectedSport}
+          onChange={(v: string) => {
+            setSelectedSport(v);
+          }}
+          data={
+            adminSports
+              ? adminSports.results.map((sport) => {
+                  return {
+                    value: JSON.stringify(sport.id),
+                    label: sport.name,
+                  };
+                })
+              : ["No Sports"]
+          }
+        />
+      </div>
       {teams?.results.map((team) => {
         return (
           <div className="relative">
@@ -47,7 +83,7 @@ const TeamsComponent = (props: Props) => {
               <TeamCard team={team} />
             </Link>
             <div className="flex absolute right-5 top-5 gap-2">
-              <EditButton teamData={team} />
+              <EditButton sport_id={selectedSport} teamData={team} />
               <DeleteButton
                 deleteFun={() => {
                   if (team.current_players_count > 0) {
@@ -103,7 +139,16 @@ const TeamsComponent = (props: Props) => {
           </div>
         );
       })}
-      <AddTeamCardForm />
+      {selectedSport !== "0" ? (
+        <AddTeamCardForm sport_id={selectedSport} />
+      ) : (
+        <Placeholders
+          img="/assets/images/novideo.png"
+          preText={"Please select"}
+          pageName={"Sport"}
+          postText={"To Get it's teams"}
+        />
+      )}
     </div>
   );
 };

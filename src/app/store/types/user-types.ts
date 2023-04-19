@@ -310,6 +310,7 @@ export type PlayerLeague = {
   title: string;
   start_date: string;
   end_date: string;
+  location: string;
 };
 
 export type PlayerLeagues = BaseGetAllType & {
