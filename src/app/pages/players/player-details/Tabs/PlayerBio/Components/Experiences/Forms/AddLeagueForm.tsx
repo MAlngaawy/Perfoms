@@ -28,6 +28,7 @@ const AddLeagueForm = (props: Props) => {
     start_date: yup.string().required(),
     end_date: yup.string().required(),
     title: yup.string().required(),
+    location: yup.string(),
   });
 
   // use Form Config
@@ -48,6 +49,7 @@ const AddLeagueForm = (props: Props) => {
     setOpened(false);
     const newData = {
       title: data.title,
+      location: data.location,
       start_date: AppUtils.formatDate(new Date(data.start_date)),
       end_date: AppUtils.formatDate(new Date(data.end_date)),
     };
@@ -75,7 +77,7 @@ const AddLeagueForm = (props: Props) => {
     <>
       {" "}
       <Modal
-        title={`Add League`}
+        title={`Add tournaments`}
         opened={opened}
         onClose={() => setOpened(false)}
       >
@@ -84,8 +86,17 @@ const AddLeagueForm = (props: Props) => {
           onSubmit={handleSubmit(onSubmitFunction)}
         >
           {/*Degree Input  */}
-          <Input.Wrapper error={errors.degree && "League Name is required "}>
+          <Input.Wrapper
+            error={errors.degree && "tournaments Name is required "}
+          >
             <Input placeholder="name" {...register("title")} />
+          </Input.Wrapper>
+
+          {/*Degree Input  */}
+          <Input.Wrapper
+            error={errors.location && "tournaments Location is required "}
+          >
+            <Input placeholder="location" {...register("location")} />
           </Input.Wrapper>
 
           {/* Start And End Year */}

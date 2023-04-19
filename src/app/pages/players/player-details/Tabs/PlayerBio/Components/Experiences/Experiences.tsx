@@ -2,7 +2,6 @@ import { Avatar } from "@mantine/core";
 import React, { useContext } from "react";
 import AppIcons from "~/@main/core/AppIcons";
 import {
-  useAddPlayerLeagueMutation,
   useDeleteCourseMutation,
   useDeleteLeagueMutation,
   useGetPlayerCoursesQuery,
@@ -50,6 +49,7 @@ const Experiences = (props: Props) => {
               to={league.end_date}
               id={JSON.stringify(league.id)}
               name={league.title}
+              location={league.location}
             />
           );
         })}
@@ -111,8 +111,9 @@ type oneLeagueTypes = {
   to: string;
   name: string;
   id: string;
+  location: string;
 };
-const OneLeague = ({ from, to, name, id }: oneLeagueTypes) => {
+const OneLeague = ({ from, to, name, id, location }: oneLeagueTypes) => {
   const editMode = useContext(EditModeContext);
   const [deleteLeague] = useDeleteLeagueMutation();
   const { refetch } = usePlayerLeagueQuery({ player_id: id }, { skip: !id });
@@ -124,6 +125,7 @@ const OneLeague = ({ from, to, name, id }: oneLeagueTypes) => {
         <span className="text-xs flex flex-col text-perfGray3">
           {from} / {to}
         </span>
+        <h3 className="text-xs text-perfGray3">{location}</h3>
       </div>
       {editMode && (
         <DeleteButton

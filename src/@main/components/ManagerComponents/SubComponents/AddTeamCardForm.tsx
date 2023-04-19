@@ -22,9 +22,10 @@ import AvatarInput from "~/@main/components/shared/AvatarInput";
 
 type Props = {
   // refetch: any;
+  sport_id: string;
 };
 
-const AddTeamCardForm = (props: Props) => {
+const AddTeamCardForm = ({ sport_id }: Props) => {
   const [opened, setOpened] = useState(false);
   const [userAvatar, setUserAvatar] = useState<File | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -32,7 +33,7 @@ const AddTeamCardForm = (props: Props) => {
   const { data: user } = useUserQuery({});
   const { refetch: superRefetch } = useSuperTeamsQuery({});
   const { refetch: adminRefetch } = useAdminTeamsQuery(
-    { club_id: user?.club },
+    { club_id: user?.club, sport_id: +sport_id },
     { skip: !user?.club }
   );
   const { data: AdminSports } = useAdminSportsQuery(
