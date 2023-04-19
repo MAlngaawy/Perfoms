@@ -45,6 +45,12 @@ const TeamsComponent = (props: Props) => {
     if (adminTeams) setTeams(adminTeams);
   }, [superTeams, adminTeams]);
 
+  useEffect(() => {
+    if (adminSports) {
+      setSelectedSport(JSON.stringify(adminSports.results[0].id));
+    }
+  }, [adminSports]);
+
   const [superDeleteTeam] = useSuperDeleteTeamMutation();
   const [adminDeleteTeam] = useAdminDeleteTeamMutation();
 
