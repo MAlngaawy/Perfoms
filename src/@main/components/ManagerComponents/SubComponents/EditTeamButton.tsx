@@ -1,4 +1,4 @@
-import { useState, ReactNode } from "react";
+import { useState, ReactNode, useEffect } from "react";
 import { Modal, Button, Group, Input } from "@mantine/core";
 import AppIcons from "../../../core/AppIcons";
 import { useForm } from "react-hook-form";
@@ -23,6 +23,8 @@ type Props = {
 };
 
 const EditButton = ({ teamData, sport_id }: Props) => {
+  console.log("teamData", teamData);
+
   const [opened, setOpened] = useState(false);
   const [userAvatar, setUserAvatar] = useState<File | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -57,6 +59,10 @@ const EditButton = ({ teamData, sport_id }: Props) => {
       gender: teamData.gender,
     });
   };
+
+  useEffect(() => {
+    resetFields();
+  }, [teamData]);
 
   const {
     register,
@@ -124,7 +130,6 @@ const EditButton = ({ teamData, sport_id }: Props) => {
         <Modal
           opened={opened}
           onClose={() => {
-            resetFields();
             setOpened(false);
           }}
           title="Edit Team"
