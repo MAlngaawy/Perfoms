@@ -63,7 +63,9 @@ const ParsonalInfo = (props: Props) => {
             </div>
           </div>
           <Info label="Sport" value={playerData?.sport} />
-          <Info label="Front Leg" value={playerData?.front_leg} />
+          {playerData?.front_leg !== "NONE" && (
+            <Info label="Front Leg" value={playerData?.front_leg} />
+          )}
         </div>
       </div>
 

@@ -39,7 +39,9 @@ const AvatarWithBlueBorder = ({
         radius={100}
         size={size || 100}
       />
-      <h2 className=" font-medium text-perfGray1 text-lg">{name}</h2>
+      <h2 className=" font-medium text-perfGray1 text-lg text-center">
+        {name}
+      </h2>
       {subTitle && (
         <span className="text-sm mt-2 text-perfGray3">{subTitle}</span>
       )}
