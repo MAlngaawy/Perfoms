@@ -55,7 +55,7 @@ const TeamsComponent = (props: Props) => {
   const [adminDeleteTeam] = useAdminDeleteTeamMutation();
 
   return (
-    <div className="admin-teams flex flex-col xs:flex-row flex-wrap items-stretch gap-6 p-2 sm:p-4">
+    <div className="admin-teams flex flex-col xs:flex-row flex-wrap items-stretch gap-4 p-2 sm:p-4">
       <div className=" w-full flex justify-end">
         <Select
           className="w-60 mt-2 mx-10"

@@ -1,13 +1,4 @@
-import { Link } from "react-router-dom";
-import DeleteButton from "./DeleteButton";
-import EditButton from "./EditTeamButton";
 import { Avatar } from "@mantine/core";
-import { useSuperDeleteTeamMutation } from "~/app/store/supervisor/supervisorMainApi";
-import { showNotification } from "@mantine/notifications";
-import { useAdminDeleteTeamMutation } from "~/app/store/clubManager/clubManagerApi";
-import { useUserQuery } from "~/app/store/user/userApi";
-import AppUtils from "~/@main/utils/AppUtils";
-import { Team } from "~/app/store/types/supervisor-types";
 
 type TeamPropsType = {
   team: any;
@@ -15,12 +6,8 @@ type TeamPropsType = {
 };
 
 const TeamCard = ({ team }: TeamPropsType) => {
-  const [superDeleteTeam] = useSuperDeleteTeamMutation();
-  const [adminDeleteTeam] = useAdminDeleteTeamMutation();
-  const { data: user } = useUserQuery({});
-
   return (
-    <div className="team-card relative w-full xs:w-72 bg-white p-8 rounded-xl flex flex-col justify-center items-center gap-4">
+    <div className="team-card relative w-full xs:w-64 bg-white p-8 rounded-xl flex flex-col justify-center items-center gap-4">
       <div className="bg-pagesBg rounded-full w-32 h-32 flex justify-center items-center">
         <Avatar size={"xl"} src={team.icon_url} alt="icon" />
       </div>
