@@ -5,7 +5,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import SubmitButton from "~/@main/components/SubmitButton";
 import { DatePicker } from "@mantine/dates";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useSuperClubQuery } from "~/app/store/supervisor/supervisorMainApi";
 import AppUtils from "~/@main/utils/AppUtils";
 import { axiosInstance } from "~/app/configs/dataService";
@@ -31,6 +31,7 @@ const AddEventForm = ({ refetch, teamID, children }: Props) => {
   const { data: superClubData } = useSuperClubQuery({});
   const { data: adminClubData } = useAdminClubQuery({});
   const { data: user } = useUserQuery({});
+  const { pathname } = useLocation();
 
   useEffect(() => {
     if (superClubData) setclubData(superClubData);
@@ -198,7 +199,10 @@ const AddEventForm = ({ refetch, teamID, children }: Props) => {
         <Group
           position="left"
           onClick={() => {
-            if ([null, "0", undefined].includes(teamID)) {
+            if (
+              [null, "0", undefined].includes(teamID) &&
+              pathname === "/media"
+            ) {
               AppUtils.showNotificationFun(
                 "Error",
                 "Wrog",
