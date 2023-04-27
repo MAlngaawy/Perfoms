@@ -89,6 +89,7 @@ export type Team = {
   gender?: string;
   sport?: string;
   current_players_count: number;
+  attend_per: "DAY" | "SESSION";
 };
 
 export type Coaches = BaseGetAllType & {
@@ -151,6 +152,7 @@ export type SuperVisorTeamInfo = {
   from_age: number;
   to_age: number;
   gender: string;
+  attend_per: "DAY" | "SESSION";
 };
 
 export type SuperVisorAttendance = BaseGetAllType & {

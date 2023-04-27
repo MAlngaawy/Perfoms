@@ -7,12 +7,31 @@ import TeamUpcomingEvents from "./Components/TeamUpcomingEvents";
 import { useUserQuery } from "~/app/store/user/userApi";
 import { useParams } from "react-router-dom";
 import SharedBreadCrumbs from "~/@main/components/shared/SharedBreadCrumbs";
+import { useEffect, useState } from "react";
+import { useSuperTeamInfoQuery } from "~/app/store/supervisor/supervisorMainApi";
+import { useAdminTeamInfoQuery } from "~/app/store/clubManager/clubManagerApi";
+import { SuperVisorTeamInfo } from "~/app/store/types/supervisor-types";
 
 type Props = {};
 
 const SingleTeam = (props: Props) => {
   const { data: user } = useUserQuery(null);
+  const [selectedDay, setSelectedDay] = useState<string>("");
   const { team_id } = useParams();
+  const [teamInfo, setTeamInfo] = useState<SuperVisorTeamInfo | null>(null);
+  const { data: superTeam } = useSuperTeamInfoQuery(
+    { team_id },
+    { skip: !team_id }
+  );
+  const { data: adminTeam } = useAdminTeamInfoQuery(
+    { team_id },
+    { skip: !team_id }
+  );
+
+  useEffect(() => {
+    if (superTeam) setTeamInfo(superTeam);
+    if (adminTeam) setTeamInfo(adminTeam);
+  }, [superTeam, adminTeam]);
 
   return (
     <div className="p-2">
@@ -23,6 +42,18 @@ const SingleTeam = (props: Props) => {
           <CardDiv>
             <TeamCalendar teamId={team_id !== undefined ? team_id : ""} />
           </CardDiv>
+          {/* {teamInfo && teamInfo?.attend_per === "DAY" ? (
+            <CardDiv>
+              <TeamCalendar teamId={team_id !== undefined ? team_id : ""} />
+            </CardDiv>
+          ) : (
+            <CardDiv>
+              <TeamSessionAttCalendar
+                selectedDay={selectedDay}
+                setSelectedDay={setSelectedDay}
+              />
+            </CardDiv>
+          )} */}
         </Grid.Col>
         <Grid.Col span={12} sm={5} lg={3}>
           <CardDiv>

@@ -56,26 +56,29 @@ const TeamsComponent = (props: Props) => {
 
   return (
     <div className="admin-teams flex flex-col xs:flex-row flex-wrap items-stretch gap-4 p-2 sm:p-4">
-      <div className=" w-full flex justify-end">
-        <Select
-          className="w-60 mt-2 mx-10"
-          placeholder="Pick Sport"
-          value={selectedSport}
-          onChange={(v: string) => {
-            setSelectedSport(v);
-          }}
-          data={
-            adminSports
-              ? adminSports.results.map((sport) => {
-                  return {
-                    value: JSON.stringify(sport.id),
-                    label: sport.name,
-                  };
-                })
-              : ["No Sports"]
-          }
-        />
-      </div>
+      {user?.user_type === "Admin" && (
+        <div className=" w-full flex justify-end">
+          <Select
+            className="w-60 mt-2 mx-10"
+            placeholder="Pick Sport"
+            value={selectedSport}
+            onChange={(v: string) => {
+              setSelectedSport(v);
+            }}
+            data={
+              adminSports
+                ? adminSports.results.map((sport) => {
+                    return {
+                      value: JSON.stringify(sport.id),
+                      label: sport.name,
+                    };
+                  })
+                : ["No Sports"]
+            }
+          />
+        </div>
+      )}
+
       {teams?.results.map((team) => {
         return (
           <div className="relative">
@@ -139,15 +142,19 @@ const TeamsComponent = (props: Props) => {
           </div>
         );
       })}
-      {selectedSport !== "0" ? (
-        <AddTeamCardForm sport_id={selectedSport} />
+      {user?.user_type === "Admin" ? (
+        selectedSport !== "0" ? (
+          <AddTeamCardForm sport_id={selectedSport} />
+        ) : (
+          <Placeholders
+            img="/assets/images/novideo.png"
+            preText={"Please select"}
+            pageName={" Sport"}
+            postText={"To Get it's teams"}
+          />
+        )
       ) : (
-        <Placeholders
-          img="/assets/images/novideo.png"
-          preText={"Please select"}
-          pageName={"Sport"}
-          postText={"To Get it's teams"}
-        />
+        ""
       )}
     </div>
   );

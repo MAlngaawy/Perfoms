@@ -12,6 +12,9 @@ import {
   useAdminTeamAttendanceQuery,
 } from "~/app/store/clubManager/clubManagerApi";
 import { useCoachTeamCalendarQuery } from "~/app/store/coach/coachApi";
+import { Menu } from "@mantine/core";
+import AppIcons from "~/@main/core/AppIcons";
+import DaySessions from "./DaySessions";
 
 type Props = {
   teamId: string;
@@ -48,6 +51,46 @@ const TeamCalendar = ({ teamId }: Props) => {
   const [adminAddDay] = useAdminAddTeamCalendarMutation();
   const [superAddDay] = useSuperAddTeamCalendarMutation();
 
+  const addAndRemoveDayAttendance = (date: Date) => {
+    if (user?.user_type === "Supervisor") {
+      superAddDay({
+        day: AppUtils.formatDate(date),
+        team: +teamId,
+      })
+        .then((res) => {
+          //@ts-ignore
+          if (res.error.status === 409) {
+            AppUtils.showNotificationFun(
+              "Error",
+              "Can't add",
+              "Please add players first"
+            );
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else if (user?.user_type === "Admin") {
+      adminAddDay({
+        day: AppUtils.formatDate(date),
+        team: +teamId,
+      })
+        .then((res) => {
+          //@ts-ignore
+          if (res.error.status === 409) {
+            AppUtils.showNotificationFun(
+              "Error",
+              "Can't add",
+              "Please add players first"
+            );
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
   useEffect(() => {
     if (superAttDates) setAttDates(superAttDates);
     if (adminAttDates) setAttDates(adminAttDates);
@@ -65,7 +108,7 @@ const TeamCalendar = ({ teamId }: Props) => {
           onMonthChange={onMonthChange}
           dayStyle={(date) => {
             if (attDates?.results) {
-              return testFun(date, attDates?.results);
+              return dateHighlighter(date, attDates?.results);
             } else {
               return { background: "#fff" };
             }
@@ -81,49 +124,53 @@ const TeamCalendar = ({ teamId }: Props) => {
           renderDay={(date) => {
             const day = date.getDate();
             return (
-              <div
-                onClick={() => {
-                  if (user?.user_type === "Supervisor") {
-                    superAddDay({
-                      day: AppUtils.formatDate(date),
-                      team: +teamId,
-                    })
-                      .then((res) => {
-                        //@ts-ignore
-                        if (res.error.status === 409) {
-                          AppUtils.showNotificationFun(
-                            "Error",
-                            "Can't add",
-                            "Please add players first"
-                          );
+              <Menu closeOnItemClick={false} withArrow shadow="md" width={120}>
+                <Menu.Target>
+                  <div>{day}</div>
+                </Menu.Target>
+
+                <Menu.Dropdown
+                  sx={{
+                    zIndex: 10,
+                  }}
+                >
+                  {attDates && checkTheDaySelected(date, attDates?.results) ? (
+                    <Menu.Item
+                      icon={
+                        <AppIcons
+                          icon={"AcademicCapIcon:outline"}
+                          className="w-4 h-4"
+                        />
+                      }
+                    >
+                      <DaySessions />
+                    </Menu.Item>
+                  ) : (
+                    ""
+                  )}
+                  <Menu.Item
+                    icon={
+                      <AppIcons
+                        icon={
+                          attDates &&
+                          checkTheDaySelected(date, attDates?.results)
+                            ? "XMarkIcon:outline"
+                            : "CheckIcon:outline"
                         }
-                      })
-                      .catch((err) => {
-                        console.log(err);
-                      });
-                  } else if (user?.user_type === "Admin") {
-                    adminAddDay({
-                      day: AppUtils.formatDate(date),
-                      team: +teamId,
-                    })
-                      .then((res) => {
-                        //@ts-ignore
-                        if (res.error.status === 409) {
-                          AppUtils.showNotificationFun(
-                            "Error",
-                            "Can't add",
-                            "Please add players first"
-                          );
-                        }
-                      })
-                      .catch((err) => {
-                        console.log(err);
-                      });
-                  }
-                }}
-              >
-                {day}
-              </div>
+                        className="w-4 h-4"
+                      />
+                    }
+                    onClick={() => addAndRemoveDayAttendance(date)}
+                  >
+                    {attDates?.results &&
+                    checkTheDaySelected(date, attDates?.results) ? (
+                      <span>Remove</span>
+                    ) : (
+                      <span>Add</span>
+                    )}
+                  </Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
             );
           }}
         />
@@ -134,17 +181,37 @@ const TeamCalendar = ({ teamId }: Props) => {
 
 export default TeamCalendar;
 
-const testFun = (thisDate: Date, data: { day: string }[]): any => {
+const dateHighlighter = (selectedDate: Date, data: { day: string }[]): any => {
   for (let oneDate of data) {
-    if (
-      new Date(oneDate.day).getDate() === thisDate.getDate() &&
-      new Date(oneDate.day).getMonth() === thisDate.getMonth() &&
-      new Date(oneDate.day).getFullYear() === thisDate.getFullYear()
-    ) {
+    if (checkTheDay(selectedDate, oneDate.day)) {
       return {
         border: "1px solid #00f",
         borderRadius: "50%",
       };
     }
+  }
+};
+
+const checkTheDaySelected = (
+  selectedDate: Date,
+  data: { day: string }[]
+): boolean => {
+  for (let oneDate of data) {
+    if (checkTheDay(selectedDate, oneDate.day)) {
+      return true;
+    }
+  }
+  return false;
+};
+
+const checkTheDay = (selectedDate: Date, compareDay: string) => {
+  if (
+    new Date(compareDay).getDate() === selectedDate.getDate() &&
+    new Date(compareDay).getMonth() === selectedDate.getMonth() &&
+    new Date(compareDay).getFullYear() === selectedDate.getFullYear()
+  ) {
+    return true;
+  } else {
+    return false;
   }
 };
