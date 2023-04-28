@@ -61,7 +61,7 @@ const CertificateImage = forwardRef(({ certificate, clubLogo }: Props, ref) => {
   const logoImage = new Image();
   logoImage.src =
     clubLogo ||
-    "https://djangoperforms.blob.core.windows.net/media/icons/bee6cf690e4a4634a30acd310644c3d6.jpeg";
+    "https://djangoperforms.blob.core.windows.net/media/icons/0afcc4caf5964f97ab7393d97bff37a3.png";
 
   return (
     <div id={"" + 564654} className="flex flex-col bg-black">
