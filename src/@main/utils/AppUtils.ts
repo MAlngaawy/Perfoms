@@ -389,6 +389,12 @@ class AppUtils {
     }
   };
 
+  static convertDateToString(date: Date): string {
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    return `${hours}:${minutes}`;
+  }
+
   static resizeImage = async (file: any) =>
     new Promise((resolve) => {
       Resizer.imageFileResizer(

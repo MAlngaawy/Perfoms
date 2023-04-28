@@ -192,10 +192,30 @@ export type CoachRequests = BaseGetAllType & {
 };
 
 export type TeamAttendance = BaseGetAllType & {
-  results: { day: string }[];
+  results: {
+    day: string;
+    id: number;
+    status: string;
+    attendance_sessions: daySessions;
+  }[];
 };
 
 export type AddTeamCalendar = {
   day: string;
   team: number;
+};
+
+export type daySession = {
+  id: number;
+  from_hour: string;
+  to_hour: string;
+  status: string;
+};
+
+export type daySessions = daySession[];
+
+export type AddAttendanceSession = {
+  from_hour: string;
+  to_hour: string;
+  day: string;
 };

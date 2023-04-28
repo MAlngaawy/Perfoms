@@ -32,6 +32,7 @@ import {
 import { TeamEvents } from "~/app/store/types/parent-types";
 import {
   AddAction,
+  AddAttendanceSession,
   AddTeamCalendar,
   Coaches,
   CoachRequests,
@@ -73,6 +74,7 @@ export const clubManagerApi = createApi({
     "metrics",
     "actions",
     "recommendations",
+    "attendance",
   ],
   endpoints: ({ query, mutation }) => ({
     manageCoachesRequests: query<CoachRequests, { page?: number }>({
@@ -795,6 +797,17 @@ export const clubManagerApi = createApi({
       }),
       invalidatesTags: ["actions"],
     }),
+    adminAddTeamAttendanceSession: mutation<
+      AddAttendanceSession,
+      { team_id: number | string | undefined }
+    >({
+      query: ({ team_id, ...body }) => ({
+        url: `teams/add-team-attendance-session/${team_id}/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["calendar"],
+    }),
   }),
 });
 
@@ -871,4 +884,5 @@ export const {
   useUpdateOneRecommendationMutation,
   useSelectRecommendationMutation,
   useSelectActionMutation,
+  useAdminAddTeamAttendanceSessionMutation,
 } = clubManagerApi;

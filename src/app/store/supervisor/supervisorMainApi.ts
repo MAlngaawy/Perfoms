@@ -24,6 +24,7 @@ import {
 import { ParentClub } from "~/app/store/types/parent-types";
 import {
   AddAction,
+  AddAttendanceSession,
   AddEvent,
   AddRecommendation,
   AddTeamCalendar,
@@ -744,6 +745,17 @@ export const supervisorApi = createApi({
         url: `top-ten-kpi-players/${kpi_id}`,
       }),
     }),
+    superAddTeamAttendanceSession: mutation<
+      AddAttendanceSession,
+      { team_id: number | string | undefined }
+    >({
+      query: ({ team_id, ...body }) => ({
+        url: `teams/add-team-attendance-session/${team_id}/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["calendar"],
+    }),
   }),
 });
 
@@ -817,4 +829,5 @@ export const {
   useSuperTopTenSportPlayersQuery,
   useSuperTopTenSportKpisQuery,
   useSuperTopTenKpiPlayersQuery,
+  useSuperAddTeamAttendanceSessionMutation,
 } = supervisorApi;

@@ -12,15 +12,18 @@ import {
   useAdminTeamAttendanceQuery,
 } from "~/app/store/clubManager/clubManagerApi";
 import { useCoachTeamCalendarQuery } from "~/app/store/coach/coachApi";
-import { Menu } from "@mantine/core";
+import { Group, Menu } from "@mantine/core";
 import AppIcons from "~/@main/core/AppIcons";
 import DaySessions from "./DaySessions";
+import { useDisclosure } from "@mantine/hooks";
 
 type Props = {
   teamId: string;
 };
 
 const TeamCalendar = ({ teamId }: Props) => {
+  const [opened, { open, close }] = useDisclosure(false);
+  const [selectedDay, setSelectedDay] = useState<string>("");
   const { data: user } = useUserQuery({});
   const [attDates, setAttDates] = useState<TeamAttendance>();
   const [month, onMonthChange] = useState(new Date());
@@ -92,6 +95,7 @@ const TeamCalendar = ({ teamId }: Props) => {
   };
 
   useEffect(() => {
+    console.log("attDates", attDates);
     if (superAttDates) setAttDates(superAttDates);
     if (adminAttDates) setAttDates(adminAttDates);
     if (coachAttDates) setAttDates(coachAttDates);
@@ -99,6 +103,12 @@ const TeamCalendar = ({ teamId }: Props) => {
 
   return (
     <div>
+      <DaySessions
+        attendanceDates={attDates}
+        selectedDay={selectedDay}
+        opened={opened}
+        close={close}
+      />
       <h2>Team Calendar</h2>
       <div className="w-full flex justify-center">
         <Calendar
@@ -124,7 +134,7 @@ const TeamCalendar = ({ teamId }: Props) => {
           renderDay={(date) => {
             const day = date.getDate();
             return (
-              <Menu closeOnItemClick={false} withArrow shadow="md" width={120}>
+              <Menu withArrow shadow="md" width={120}>
                 <Menu.Target>
                   <div>{day}</div>
                 </Menu.Target>
@@ -136,6 +146,10 @@ const TeamCalendar = ({ teamId }: Props) => {
                 >
                   {attDates && checkTheDaySelected(date, attDates?.results) ? (
                     <Menu.Item
+                      onClick={() => {
+                        open();
+                        setSelectedDay(AppUtils.formatDate(date) || "NO Day");
+                      }}
                       icon={
                         <AppIcons
                           icon={"AcademicCapIcon:outline"}
@@ -143,7 +157,9 @@ const TeamCalendar = ({ teamId }: Props) => {
                         />
                       }
                     >
-                      <DaySessions />
+                      <Group position="center">
+                        <div>Sessions</div>
+                      </Group>
                     </Menu.Item>
                   ) : (
                     ""
