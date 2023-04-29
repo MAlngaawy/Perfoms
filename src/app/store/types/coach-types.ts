@@ -301,6 +301,7 @@ export type CoachTeamInfo = {
   from_age: number;
   to_age: number;
   gender: string;
+  attend_per: "DAY" | "SESSION";
 };
 
 export type CoachTeamPerformance = BaseGetAllType & {

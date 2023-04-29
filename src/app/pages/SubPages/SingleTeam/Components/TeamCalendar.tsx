@@ -6,7 +6,10 @@ import {
 } from "~/app/store/supervisor/supervisorMainApi";
 import AppUtils from "~/@main/utils/AppUtils";
 import { useUserQuery } from "~/app/store/user/userApi";
-import { TeamAttendance } from "~/app/store/types/supervisor-types";
+import {
+  SuperVisorTeamInfo,
+  TeamAttendance,
+} from "~/app/store/types/supervisor-types";
 import {
   useAdminAddTeamCalendarMutation,
   useAdminTeamAttendanceQuery,
@@ -16,12 +19,14 @@ import { Group, Menu } from "@mantine/core";
 import AppIcons from "~/@main/core/AppIcons";
 import DaySessions from "./DaySessions";
 import { useDisclosure } from "@mantine/hooks";
+import { CoachTeamInfo } from "~/app/store/types/coach-types";
 
 type Props = {
   teamId: string;
+  teamInfo: SuperVisorTeamInfo | CoachTeamInfo | undefined;
 };
 
-const TeamCalendar = ({ teamId }: Props) => {
+const TeamCalendar = ({ teamId, teamInfo }: Props) => {
   const [opened, { open, close }] = useDisclosure(false);
   const [selectedDay, setSelectedDay] = useState<string>("");
   const { data: user } = useUserQuery({});
@@ -133,61 +138,75 @@ const TeamCalendar = ({ teamId }: Props) => {
           }}
           renderDay={(date) => {
             const day = date.getDate();
-            return (
-              <Menu withArrow shadow="md" width={120}>
-                <Menu.Target>
-                  <div>{day}</div>
-                </Menu.Target>
 
-                <Menu.Dropdown
-                  sx={{
-                    zIndex: 10,
+            if (teamInfo?.attend_per === "DAY") {
+              return (
+                <div
+                  onClick={() => {
+                    addAndRemoveDayAttendance(date);
                   }}
                 >
-                  {attDates && checkTheDaySelected(date, attDates?.results) ? (
+                  {day}
+                </div>
+              );
+            } else {
+              return (
+                <Menu withArrow shadow="md" width={120}>
+                  <Menu.Target>
+                    <div>{day}</div>
+                  </Menu.Target>
+
+                  <Menu.Dropdown
+                    sx={{
+                      zIndex: 10,
+                    }}
+                  >
+                    {attDates &&
+                    checkTheDaySelected(date, attDates?.results) ? (
+                      <Menu.Item
+                        onClick={() => {
+                          open();
+                          setSelectedDay(AppUtils.formatDate(date) || "NO Day");
+                        }}
+                        icon={
+                          <AppIcons
+                            icon={"AcademicCapIcon:outline"}
+                            className="w-4 h-4"
+                          />
+                        }
+                      >
+                        <Group position="center">
+                          <div>Sessions</div>
+                        </Group>
+                      </Menu.Item>
+                    ) : (
+                      ""
+                    )}
                     <Menu.Item
-                      onClick={() => {
-                        open();
-                        setSelectedDay(AppUtils.formatDate(date) || "NO Day");
-                      }}
                       icon={
                         <AppIcons
-                          icon={"AcademicCapIcon:outline"}
+                          icon={
+                            attDates &&
+                            checkTheDaySelected(date, attDates?.results)
+                              ? "XMarkIcon:outline"
+                              : "CheckIcon:outline"
+                          }
                           className="w-4 h-4"
                         />
                       }
+                      onClick={() => addAndRemoveDayAttendance(date)}
                     >
-                      <Group position="center">
-                        <div>Sessions</div>
-                      </Group>
+                      {attDates?.results &&
+                      checkTheDaySelected(date, attDates?.results) ? (
+                        <span>Remove</span>
+                      ) : (
+                        <span>Add</span>
+                      )}
                     </Menu.Item>
-                  ) : (
-                    ""
-                  )}
-                  <Menu.Item
-                    icon={
-                      <AppIcons
-                        icon={
-                          attDates &&
-                          checkTheDaySelected(date, attDates?.results)
-                            ? "XMarkIcon:outline"
-                            : "CheckIcon:outline"
-                        }
-                        className="w-4 h-4"
-                      />
-                    }
-                    onClick={() => addAndRemoveDayAttendance(date)}
-                  >
-                    {attDates?.results &&
-                    checkTheDaySelected(date, attDates?.results) ? (
-                      <span>Remove</span>
-                    ) : (
-                      <span>Add</span>
-                    )}
-                  </Menu.Item>
-                </Menu.Dropdown>
-              </Menu>
-            );
+                  </Menu.Dropdown>
+                </Menu>
+              );
+            }
           }}
         />
       </div>
@@ -231,3 +250,13 @@ const checkTheDay = (selectedDate: Date, compareDay: string) => {
     return false;
   }
 };
+
+/**
+
+
+ return (
+            
+            );
+
+
+ */
