@@ -1,6 +1,5 @@
 import { PlayerCoach, Player } from "./parent-types";
 import { BaseGetAllType } from "./base-types";
-import { TeamAttendanceDays } from "./coach-types";
 
 // Reused
 export type Metric = {
@@ -192,12 +191,14 @@ export type CoachRequests = BaseGetAllType & {
 };
 
 export type TeamAttendance = BaseGetAllType & {
-  results: {
-    day: string;
-    id: number;
-    status: string;
-    attendance_sessions: daySessions;
-  }[];
+  results: AttendanceDay[];
+};
+
+export type AttendanceDay = {
+  day: string;
+  id: number;
+  status: string;
+  attendance_sessions: daySessions;
 };
 
 export type AddTeamCalendar = {

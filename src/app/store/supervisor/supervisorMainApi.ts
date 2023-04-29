@@ -609,6 +609,18 @@ export const supervisorApi = createApi({
       invalidatesTags: ["Attendance"],
     }),
 
+    superUpdateAttendanceSession: mutation<
+      { status: string },
+      UpdateAttendance
+    >({
+      query: ({ id, ...body }) => ({
+        url: `update-attendance-session/${id}/`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["Attendance"],
+    }),
+
     superGetTeamPerformances: query<
       CoachTeamPerformance,
       { team_id: number; page?: number }
@@ -826,6 +838,7 @@ export const {
   useSuperTeamAttendanceDaysQuery,
   useSuperGetTeamAttendanceQuery,
   useSuperUpdateAttendanceMutation,
+  useSuperUpdateAttendanceSessionMutation,
   useSuperGetTeamPerformancesQuery,
   useSuperUpdatePlayerPKMMutation,
   useSuperTeamPerformanceMetricsQuery,

@@ -23,7 +23,7 @@ import { CoachTeamInfo } from "~/app/store/types/coach-types";
 
 type Props = {
   teamId: string;
-  teamInfo: SuperVisorTeamInfo | CoachTeamInfo | undefined;
+  teamInfo?: SuperVisorTeamInfo | CoachTeamInfo | undefined;
 };
 
 const TeamCalendar = ({ teamId, teamInfo }: Props) => {
@@ -139,17 +139,7 @@ const TeamCalendar = ({ teamId, teamInfo }: Props) => {
           renderDay={(date) => {
             const day = date.getDate();
 
-            if (teamInfo?.attend_per === "DAY") {
-              return (
-                <div
-                  onClick={() => {
-                    addAndRemoveDayAttendance(date);
-                  }}
-                >
-                  {day}
-                </div>
-              );
-            } else {
+            if (teamInfo?.attend_per === "SESSION") {
               return (
                 <Menu withArrow shadow="md" width={120}>
                   <Menu.Target>
@@ -205,6 +195,16 @@ const TeamCalendar = ({ teamId, teamInfo }: Props) => {
                     </Menu.Item>
                   </Menu.Dropdown>
                 </Menu>
+              );
+            } else {
+              return (
+                <div
+                  onClick={() => {
+                    addAndRemoveDayAttendance(date);
+                  }}
+                >
+                  {day}
+                </div>
               );
             }
           }}
