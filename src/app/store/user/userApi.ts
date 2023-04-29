@@ -16,6 +16,7 @@ import {
   Education,
   Educations,
   EventVideos,
+  MyClub,
   NotificationsType,
   OTPVerify,
   PlayerEvents,
@@ -642,6 +643,9 @@ export const userApi = createApi({
         body,
       }),
     }),
+    getMyClub: query<MyClub, {}>({
+      query: (params) => "my-club/",
+    }),
   }),
 });
 
@@ -706,4 +710,5 @@ export const {
   useAddEventVideoMutation,
   useDeleteEventVideoMutation,
   useChangePhoneMutation,
+  useGetMyClubQuery,
 } = userApi;

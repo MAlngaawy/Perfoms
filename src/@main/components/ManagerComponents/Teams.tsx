@@ -55,7 +55,7 @@ const TeamsComponent = (props: Props) => {
   const [adminDeleteTeam] = useAdminDeleteTeamMutation();
 
   return (
-    <div className="admin-teams flex flex-col xs:flex-row flex-wrap items-stretch gap-4 p-2 sm:p-4">
+    <div className="admin-teams flex flex-col xs:flex-row flex-wrap items-stretch gap-4 pt-4">
       {user?.user_type === "Admin" && (
         <div className=" w-full flex justify-end">
           <Select
@@ -78,7 +78,6 @@ const TeamsComponent = (props: Props) => {
           />
         </div>
       )}
-
       {teams?.results.map((team) => {
         return (
           <div className="relative">
@@ -142,20 +141,17 @@ const TeamsComponent = (props: Props) => {
           </div>
         );
       })}
-      {user?.user_type === "Admin" ? (
-        selectedSport !== "0" ? (
+      {user?.user_type === "Admin" &&
+        (selectedSport !== "0" ? (
           <AddTeamCardForm sport_id={selectedSport} />
         ) : (
           <Placeholders
             img="/assets/images/novideo.png"
             preText={"Please select"}
-            pageName={" Sport"}
+            pageName={"Sport"}
             postText={"To Get it's teams"}
           />
-        )
-      ) : (
-        ""
-      )}
+        ))}
     </div>
   );
 };

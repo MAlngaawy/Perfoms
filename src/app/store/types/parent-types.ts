@@ -354,10 +354,10 @@ export type PlayerCertificate = {
     parent?: number;
   };
   coach: {
-    id: number;
-    first_name: string;
-    last_name: string;
-    avatar: string;
+    id?: number;
+    first_name?: string;
+    last_name?: string;
+    avatar?: string;
   };
   club: {
     id: number;

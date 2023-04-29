@@ -352,3 +352,10 @@ export type EventVideos = BaseGetAllType & {
   }[];
   id: number;
 };
+
+export type MyClub = {
+  id: number;
+  name: string;
+  icon: string;
+  icon_url: string;
+};
