@@ -9,12 +9,14 @@ import CertificateImage from "./components/CertificateImage";
 import CongratsCertificate from "./components/CongratsCertificateImage";
 import EncourageCertificate from "./components/EncourageCertificateImage";
 import { timeFilterFn } from "~/app/store/parent/parentSlice";
+import { useGetMyClubQuery } from "~/app/store/user/userApi";
 
 type Props = {
   certificateId?: number;
 };
 
 const PlayerCertificatePage = ({ certificateId }: Props) => {
+  const { data: myClub } = useGetMyClubQuery({});
   const canvasRef = useRef<any>();
   const printRef = useRef<any>();
   const { id } = useParams();
@@ -65,6 +67,7 @@ const PlayerCertificatePage = ({ certificateId }: Props) => {
               </div>
               <div>
                 <EncourageCertificate
+                  clubLogo={myClub?.icon}
                   forPrint={false}
                   ref={canvasRef}
                   certificate={certificate}
@@ -72,6 +75,7 @@ const PlayerCertificatePage = ({ certificateId }: Props) => {
               </div>
               <div className="hidden">
                 <EncourageCertificate
+                  clubLogo={myClub?.icon}
                   certificate={certificate}
                   ref={printRef}
                   forPrint={true}
@@ -92,6 +96,7 @@ const PlayerCertificatePage = ({ certificateId }: Props) => {
               </div>
               <div>
                 <CongratsCertificate
+                  clubLogo={myClub?.icon}
                   forPrint={false}
                   ref={canvasRef}
                   certificate={certificate}
@@ -99,6 +104,7 @@ const PlayerCertificatePage = ({ certificateId }: Props) => {
               </div>
               <div className="hidden">
                 <CongratsCertificate
+                  clubLogo={myClub?.icon}
                   certificate={certificate}
                   ref={printRef}
                   forPrint={true}
@@ -119,6 +125,7 @@ const PlayerCertificatePage = ({ certificateId }: Props) => {
               </div>
               <div>
                 <CertificateImage
+                  clubLogo={myClub?.icon}
                   forPrint={false}
                   ref={canvasRef}
                   certificate={certificate}
@@ -126,6 +133,7 @@ const PlayerCertificatePage = ({ certificateId }: Props) => {
               </div>
               <div className="hidden">
                 <CertificateImage
+                  clubLogo={myClub?.icon}
                   certificate={certificate}
                   ref={printRef}
                   forPrint={true}

@@ -15,6 +15,7 @@ import EncourageCertificate from "../player-certificate/components/EncourageCert
 import CongratsCertificate from "../player-certificate/components/CongratsCertificateImage";
 import CertificateImage from "../player-certificate/components/CertificateImage";
 import __ from "lodash";
+import { useUserQuery } from "~/app/store/user/userApi";
 import {
   CertificateTypes,
   PlayerCertificate,
@@ -29,6 +30,7 @@ const schema = yup.object().shape({
 
 const Certificate = (props: Props) => {
   const { data: allTeamsPlayers } = useCoachGetAllMyPlayersQuery({});
+  const { data: user } = useUserQuery({});
   const [certificate, setCertificate] = useState<Partial<PlayerCertificate>>(
     {}
   );
@@ -106,6 +108,10 @@ const Certificate = (props: Props) => {
       player: {
         name: playerName,
       },
+      coach: {
+        first_name: user?.first_name || "No Name",
+        last_name: user?.last_name || "No Name",
+      },
       type: watchedType as CertificateTypes,
     });
   }, [watchedPlayer, watchedType]);
@@ -175,11 +181,23 @@ const Certificate = (props: Props) => {
         {watchedPlayer && watchedType ? (
           <div className="flex flex-col bg-black overflow-auto max-w-full">
             {watchedType === "Encouragement" ? (
-              <EncourageCertificate certificate={certificate} ref={canvasRef} />
+              <EncourageCertificate
+                clubLogo={myClub?.icon}
+                certificate={certificate}
+                ref={canvasRef}
+              />
             ) : watchedType === "Congratulations" ? (
-              <CongratsCertificate certificate={certificate} ref={canvasRef} />
+              <CongratsCertificate
+                clubLogo={myClub?.icon}
+                certificate={certificate}
+                ref={canvasRef}
+              />
             ) : (
-              <CertificateImage certificate={certificate} ref={canvasRef} />
+              <CertificateImage
+                clubLogo={myClub?.icon}
+                certificate={certificate}
+                ref={canvasRef}
+              />
             )}
           </div>
         ) : null}

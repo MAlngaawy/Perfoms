@@ -10,7 +10,7 @@ const AdminPage = (props: Props) => {
   const [checked, setChecked] = useState<"Teams" | "Sports" | "Users">("Teams");
 
   return (
-    <div>
+    <div className="mx-6">
       <div className="flex gap-2 xs:gap-4  p-2 sm:p-6 sm:pb-0">
         <AppRadioGroub
           values={["Teams", "Sports", "Users"]}
