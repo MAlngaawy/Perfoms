@@ -586,6 +586,7 @@ export const supervisorApi = createApi({
         url: `team-attendance-days/${team_id}`,
         params,
       }),
+      providesTags: ["calendar"],
     }),
 
     superGetTeamAttendance: query<
@@ -756,6 +757,18 @@ export const supervisorApi = createApi({
       }),
       invalidatesTags: ["calendar"],
     }),
+
+    superDeleteTeamAttendanceSession: mutation<
+      AddAttendanceSession,
+      { team_id: number | string | undefined }
+    >({
+      query: ({ team_id, ...body }) => ({
+        url: `teams/delete-team-attendance-session/${team_id}/`,
+        method: "DELETE",
+        body,
+      }),
+      invalidatesTags: ["calendar"],
+    }),
   }),
 });
 
@@ -830,4 +843,5 @@ export const {
   useSuperTopTenSportKpisQuery,
   useSuperTopTenKpiPlayersQuery,
   useSuperAddTeamAttendanceSessionMutation,
+  useSuperDeleteTeamAttendanceSessionMutation,
 } = supervisorApi;

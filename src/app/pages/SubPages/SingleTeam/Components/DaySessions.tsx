@@ -10,10 +10,17 @@ import {
   TeamAttendance,
 } from "~/app/store/types/supervisor-types";
 import AppUtils from "~/@main/utils/AppUtils";
-import { useSuperAddTeamAttendanceSessionMutation } from "~/app/store/supervisor/supervisorMainApi";
-import { useAdminAddTeamAttendanceSessionMutation } from "~/app/store/clubManager/clubManagerApi";
+import {
+  useSuperAddTeamAttendanceSessionMutation,
+  useSuperDeleteTeamAttendanceSessionMutation,
+} from "~/app/store/supervisor/supervisorMainApi";
+import {
+  useAdminAddTeamAttendanceSessionMutation,
+  useAdminDeleteTeamAttendanceSessionMutation,
+} from "~/app/store/clubManager/clubManagerApi";
 import { useUserQuery } from "~/app/store/user/userApi";
 import { useParams } from "react-router-dom";
+import { axiosInstance } from "~/app/configs/dataService";
 
 type Props = {
   close: () => void;
@@ -103,7 +110,7 @@ const DaySessions = ({
       >
         <div className="flex flex-col gap-2">
           {selectedDaySessions?.map((session) => {
-            return <OneSession session={session} />;
+            return <OneSession selectedDay={selectedDay} session={session} />;
           })}
         </div>
         <Divider my="sm" />
@@ -139,16 +146,74 @@ export default DaySessions;
 
 type OneSessionProps = {
   session: daySession;
+  selectedDay: string;
 };
 
-const OneSession = ({ session }: OneSessionProps) => {
+const OneSession = ({ session, selectedDay }: OneSessionProps) => {
+  const { data: user } = useUserQuery({});
+  const { team_id } = useParams();
+  const [superDelete] = useSuperDeleteTeamAttendanceSessionMutation();
+  const [adminDelete] = useAdminDeleteTeamAttendanceSessionMutation();
+  const deleteFunction = () => {
+    const data = {
+      from_hour: session.from_hour,
+      to_hour: session.to_hour,
+      day: selectedDay,
+    };
+    if (user?.user_type === "Admin") {
+      adminDelete({
+        team_id,
+        ...data,
+      })
+        .then((res) =>
+          AppUtils.showNotificationFun(
+            "Success",
+            "Done",
+            "session deleted successfully"
+          )
+        )
+        .catch((err) => {
+          AppUtils.showNotificationFun(
+            "Error",
+            "Sorry",
+            "Something went wrong while deleting session"
+          );
+        });
+    } else {
+      superDelete({
+        team_id,
+        ...data,
+      })
+        .then((res) =>
+          AppUtils.showNotificationFun(
+            "Success",
+            "Done",
+            "session deleted successfully"
+          )
+        )
+        .catch((err) => {
+          AppUtils.showNotificationFun(
+            "Error",
+            "Sorry",
+            "Something went wrong while deleting session"
+          );
+        });
+    }
+  };
+
   return (
     <div className="flex justify-between">
       <div className="flex">
         <h3>{session.from_hour}</h3> - <h3>{session.to_hour}</h3>
       </div>
       <div>
-        <DeleteButton deleteFun={() => {}} name="this" type="session" />
+        <DeleteButton
+          deleteFun={() => {
+            deleteFunction();
+          }}
+          name="this"
+          type="session"
+        />
       </div>
     </div>
   );

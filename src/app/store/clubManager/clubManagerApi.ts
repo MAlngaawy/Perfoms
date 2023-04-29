@@ -808,6 +808,18 @@ export const clubManagerApi = createApi({
       }),
       invalidatesTags: ["calendar"],
     }),
+
+    adminDeleteTeamAttendanceSession: mutation<
+      AddAttendanceSession,
+      { team_id: number | string | undefined }
+    >({
+      query: ({ team_id, ...body }) => ({
+        url: `teams/add-team-attendance-session/${team_id}/`,
+        method: "DELETE",
+        body,
+      }),
+      invalidatesTags: ["calendar"],
+    }),
   }),
 });
 
@@ -885,4 +897,5 @@ export const {
   useSelectRecommendationMutation,
   useSelectActionMutation,
   useAdminAddTeamAttendanceSessionMutation,
+  useAdminDeleteTeamAttendanceSessionMutation,
 } = clubManagerApi;

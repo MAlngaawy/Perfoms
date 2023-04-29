@@ -59,6 +59,8 @@ const AttendanceTable = (props: Props) => {
     );
 
   useEffect(() => {
+    console.log("superTeamAttendance", superTeamAttendance);
+    console.log("superTeamAttendanceDays", superTeamAttendanceDays);
     if (coachTeamAttendance) setTeamAttendance(coachTeamAttendance);
     if (superTeamAttendance) setTeamAttendance(superTeamAttendance);
     if (coachTeamAttendanceDays) setTeamAttendanceDays(coachTeamAttendanceDays);
