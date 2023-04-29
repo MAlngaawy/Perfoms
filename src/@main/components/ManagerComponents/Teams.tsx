@@ -23,7 +23,9 @@ type Props = {};
 
 const TeamsComponent = (props: Props) => {
   const { data: user } = useUserQuery({});
-  const [selectedSport, setSelectedSport] = useState<string>("0");
+  const [selectedSport, setSelectedSport] = useState<string>(
+    localStorage.getItem("selectedSport") || "0"
+  );
 
   const { data: adminSports } = useAdminSportsQuery(
     { club_id: user?.club },
@@ -46,10 +48,14 @@ const TeamsComponent = (props: Props) => {
   }, [superTeams, adminTeams]);
 
   useEffect(() => {
-    if (adminSports) {
+    if (adminSports && !localStorage.getItem("selectedSport")) {
       setSelectedSport(JSON.stringify(adminSports.results[0].id));
     }
   }, [adminSports]);
+
+  useEffect(() => {
+    localStorage.setItem("selectedSport", selectedSport);
+  }, [selectedSport]);
 
   const [superDeleteTeam] = useSuperDeleteTeamMutation();
   const [adminDeleteTeam] = useAdminDeleteTeamMutation();
@@ -141,17 +147,16 @@ const TeamsComponent = (props: Props) => {
           </div>
         );
       })}
-      {user?.user_type === "Admin" &&
-        (selectedSport !== "0" ? (
-          <AddTeamCardForm sport_id={selectedSport} />
-        ) : (
-          <Placeholders
-            img="/assets/images/novideo.png"
-            preText={"Please select"}
-            pageName={"Sport"}
-            postText={"To Get it's teams"}
-          />
-        ))}
+      {user?.user_type === "Admin" && selectedSport === "0" ? (
+        <Placeholders
+          img="/assets/images/novideo.png"
+          preText={"Please select"}
+          pageName={"Sport"}
+          postText={"To Get it's teams"}
+        />
+      ) : (
+        <AddTeamCardForm sport_id={selectedSport} />
+      )}
     </div>
   );
 };

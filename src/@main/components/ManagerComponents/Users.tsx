@@ -31,7 +31,7 @@ const Users = (props: Props) => {
   );
 
   return (
-    <div className="flex flex-col gap-6  p-2 sm:p-6 mb-10">
+    <div className="flex flex-col gap-6  pt-6 mb-10">
       <UsersCard type="Coach" data={coaches?.results} />
       {subCoaches && (
         <UsersCard type="Attendance Moderator" data={subCoaches?.results} />
