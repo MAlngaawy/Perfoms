@@ -345,7 +345,7 @@ const AddPlayer = (props: Props) => {
             error={errors.front_leg}
             required
             className="w-full"
-            label="Front Leg"
+            label="Preferred Front Leg"
             name="front_leg"
             sx={{
               ".mantine-Select-input": {

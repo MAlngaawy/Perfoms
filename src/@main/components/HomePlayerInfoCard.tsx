@@ -98,7 +98,10 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
           <div className="flex justify-between gap-x-4 flex-wrap">
             <Info label="Sport" value={playerInfoData?.sport} />
             {playerInfoData?.front_leg !== "NONE" && (
-              <Info label="Front Leg" value={playerInfoData?.front_leg} />
+              <Info
+                label="Preferred Front Leg"
+                value={playerInfoData?.front_leg}
+              />
             )}
           </div>
         </div>
