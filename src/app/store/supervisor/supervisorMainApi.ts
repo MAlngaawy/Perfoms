@@ -24,6 +24,7 @@ import {
 import { ParentClub } from "~/app/store/types/parent-types";
 import {
   AddAction,
+  AddAttendanceSession,
   AddEvent,
   AddRecommendation,
   AddTeamCalendar,
@@ -585,6 +586,7 @@ export const supervisorApi = createApi({
         url: `team-attendance-days/${team_id}`,
         params,
       }),
+      providesTags: ["calendar"],
     }),
 
     superGetTeamAttendance: query<
@@ -601,6 +603,18 @@ export const supervisorApi = createApi({
     superUpdateAttendance: mutation<Attendance, UpdateAttendance>({
       query: ({ id, ...body }) => ({
         url: `update-attendance-day/${id}/`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["Attendance"],
+    }),
+
+    superUpdateAttendanceSession: mutation<
+      { status: string },
+      UpdateAttendance
+    >({
+      query: ({ id, ...body }) => ({
+        url: `update-attendance-session/${id}/`,
         method: "PATCH",
         body,
       }),
@@ -744,6 +758,29 @@ export const supervisorApi = createApi({
         url: `top-ten-kpi-players/${kpi_id}`,
       }),
     }),
+    superAddTeamAttendanceSession: mutation<
+      AddAttendanceSession,
+      { team_id: number | string | undefined }
+    >({
+      query: ({ team_id, ...body }) => ({
+        url: `teams/add-team-attendance-session/${team_id}/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["calendar"],
+    }),
+
+    superDeleteTeamAttendanceSession: mutation<
+      AddAttendanceSession,
+      { team_id: number | string | undefined }
+    >({
+      query: ({ team_id, ...body }) => ({
+        url: `teams/delete-team-attendance-session/${team_id}/`,
+        method: "DELETE",
+        body,
+      }),
+      invalidatesTags: ["calendar"],
+    }),
   }),
 });
 
@@ -801,6 +838,7 @@ export const {
   useSuperTeamAttendanceDaysQuery,
   useSuperGetTeamAttendanceQuery,
   useSuperUpdateAttendanceMutation,
+  useSuperUpdateAttendanceSessionMutation,
   useSuperGetTeamPerformancesQuery,
   useSuperUpdatePlayerPKMMutation,
   useSuperTeamPerformanceMetricsQuery,
@@ -817,4 +855,6 @@ export const {
   useSuperTopTenSportPlayersQuery,
   useSuperTopTenSportKpisQuery,
   useSuperTopTenKpiPlayersQuery,
+  useSuperAddTeamAttendanceSessionMutation,
+  useSuperDeleteTeamAttendanceSessionMutation,
 } = supervisorApi;

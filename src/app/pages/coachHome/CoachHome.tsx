@@ -1,12 +1,16 @@
 import { useState, lazy, Suspense } from "react";
 import { Button, Skeleton } from "@mantine/core";
 import { Link } from "react-router-dom";
-import classNames from "classnames";
-import AppRadioGroub from "../../../@main/components/AppRadioGroub";
 import TeamFilter from "~/@main/components/TeamFilter";
 import SwitchButton from "~/@main/components/SwitchButton";
+import { useCoachTeamInfoQuery } from "~/app/store/coach/coachApi";
+import { useSelector } from "react-redux";
+import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 
 const LazyAttendanceTable = lazy(() => import("./components/AttendanceTable"));
+const LazySessionsAttendanceTable = lazy(
+  () => import("./components/SessionsAttendanceTable")
+);
 const LazyPerformanceTable = lazy(
   () => import("./components/PerformanceTable")
 );
@@ -17,6 +21,12 @@ type Props = {};
 const CoachHome = (props: Props) => {
   const [checked, setChecked] =
     useState<"Attendance" | "Performance" | "Team info">("Attendance");
+  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
+
+  const { data: coachTeamInfoData } = useCoachTeamInfoQuery(
+    { team_id: selectedPlayerTeam?.id },
+    { skip: !selectedPlayerTeam }
+  );
 
   const renderTable = () => {
     switch (checked) {
@@ -25,7 +35,11 @@ const CoachHome = (props: Props) => {
       case "Performance":
         return (
           <Suspense fallback={<SkelatonComponent />}>
-            <LazyPerformanceTable />
+            {coachTeamInfoData?.attend_per === "SESSION" ? (
+              <LazySessionsAttendanceTable />
+            ) : (
+              <LazyPerformanceTable />
+            )}
           </Suspense>
         );
       case "Team info":

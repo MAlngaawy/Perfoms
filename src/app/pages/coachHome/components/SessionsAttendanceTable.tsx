@@ -2,6 +2,7 @@ import { memo, useEffect, useState } from "react";
 import { Table, Checkbox, Avatar, Skeleton, Loader } from "@mantine/core";
 import {
   useCoachUpdateAttendanceMutation,
+  useCoachUpdateAttendanceSessionMutation,
   useGetTeamAttendanceQuery,
   useTeamAttendanceDaysQuery,
 } from "~/app/store/coach/coachApi";
@@ -14,6 +15,7 @@ import {
   useSuperGetTeamAttendanceQuery,
   useSuperTeamAttendanceDaysQuery,
   useSuperUpdateAttendanceMutation,
+  useSuperUpdateAttendanceSessionMutation,
 } from "~/app/store/supervisor/supervisorMainApi";
 import {
   CoachTeamAttendance,
@@ -21,12 +23,12 @@ import {
 } from "~/app/store/types/coach-types";
 import { useNavigate } from "react-router-dom";
 import { Player } from "~/app/store/types/parent-types";
+import { AttendanceDay } from "~/app/store/types/supervisor-types";
 
 type Props = {};
 
 const AttendanceTable = (props: Props) => {
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
-  console.log("selectedPlayerTeam", selectedPlayerTeam);
   const { data: user } = useUserQuery({});
   const [teamAttendance, setTeamAttendance] = useState<CoachTeamAttendance>();
   const [teamAttendanceDays, setTeamAttendanceDays] =
@@ -89,12 +91,90 @@ const AttendanceTable = (props: Props) => {
 };
 export default memo(AttendanceTable);
 
-const TestCheckbox = memo(({ theDate, thisDate, theStatus, theID }: any) => {
+// srparate the code for performance
+const CreateContentTable = memo(
+  ({ teamAttendance, teamAttendanceDays }: any) => {
+    return (
+      <Table highlightOnHover verticalSpacing={"sm"} horizontalSpacing={30}>
+        <TableHead teamAttendance={teamAttendance} />
+        <tbody className="overflow-scroll">
+          {teamAttendanceDays?.results &&
+          teamAttendanceDays?.results.length > 0 ? (
+            <>
+              {teamAttendanceDays?.results.map((item: AttendanceDay) => {
+                return (
+                  <>
+                    {item.attendance_sessions.length > 0 && (
+                      <tr className="">
+                        <td className="border-0 px-0 pl-1 font-light text-left text-xs sticky left-0 bg-white z-10 text-perfGray1">
+                          {item.day}
+                        </td>
+                      </tr>
+                    )}
+
+                    {item.attendance_sessions.map((session) => (
+                      <tr key={session.id} className="">
+                        <td className="text-xs font-medium text-center px-0 sticky left-0 bg-white z-10 text-perfGray1">
+                          {session.from_hour.substring(0, 5)}-
+                          {session.to_hour.substring(0, 5)}
+                        </td>
+                        {teamAttendance?.results.map((player: any) => {
+                          let from = "";
+                          let to = "";
+                          let sessionId = 0;
+                          let sessionStatus = "";
+
+                          for (let i of player.player_attendance) {
+                            console.log("iiiiiii", i);
+                            for (let playerSession of i.attendance_sessions) {
+                              if (
+                                playerSession.from_hour === session.from_hour &&
+                                playerSession.to_hour === session.to_hour &&
+                                i.day === item.day
+                              ) {
+                                from = playerSession.from_hour;
+                                to = playerSession.to_hour;
+                                sessionId = playerSession.id;
+                                sessionStatus = playerSession.status;
+                              }
+                            }
+                          }
+                          return (
+                            <td key={player.id}>
+                              <TestCheckbox
+                                theStatus={sessionStatus}
+                                theID={sessionId}
+                              />
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    ))}
+                  </>
+                );
+              })}
+            </>
+          ) : (
+            <tr>
+              <td>
+                <NoAttendancesYet type="Attendances" />
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </Table>
+    );
+  }
+);
+
+const TestCheckbox = memo(({ theStatus, theID }: any) => {
+  console.log("theStatus", theStatus);
+
   const { data: user } = useUserQuery({});
   const [updateAttend, { isLoading: isUpdating }] =
-    useCoachUpdateAttendanceMutation();
+    useCoachUpdateAttendanceSessionMutation();
   const [superUpdateAttend, { isLoading: superUpdating }] =
-    useSuperUpdateAttendanceMutation();
+    useSuperUpdateAttendanceSessionMutation();
 
   return (
     <>
@@ -104,9 +184,7 @@ const TestCheckbox = memo(({ theDate, thisDate, theStatus, theID }: any) => {
         </div>
       ) : (
         <Checkbox
-          disabled={
-            (theDate === thisDate && theStatus === "UPCOMING") || isUpdating
-          }
+          disabled={theStatus === "UPCOMING"}
           checked={theStatus === "ATTENDED"}
           onChange={(e) => {
             //@ts-ignore
@@ -127,69 +205,6 @@ const TestCheckbox = memo(({ theDate, thisDate, theStatus, theID }: any) => {
     </>
   );
 });
-
-// srparate the code for performance
-const CreateContentTable = memo(
-  ({ teamAttendance, teamAttendanceDays }: any) => {
-    return (
-      <Table
-        withBorder
-        highlightOnHover
-        verticalSpacing={"sm"}
-        horizontalSpacing={30}
-      >
-        <TableHead teamAttendance={teamAttendance} />
-        <tbody className="overflow-scroll">
-          {teamAttendanceDays?.results &&
-          teamAttendanceDays?.results.length > 0 ? (
-            <>
-              {teamAttendanceDays?.results.map((item: any) => {
-                const thisDate = item.day;
-                return (
-                  <tr key={item.day} className="">
-                    <td className="text-xs font-medium text-center px-0 sticky left-0 bg-white z-10 text-perfGray1">
-                      {thisDate}
-                      {/* {thisDate.getDate() - 1}/ {thisDate.getMonth() + 1} /
-                  {thisDate.getFullYear()} */}
-                    </td>
-                    {teamAttendance?.results.map((player: any) => {
-                      let theDate = "";
-                      let theStatus = "";
-                      let theID = 0;
-                      for (let i of player.player_attendance) {
-                        if (i.day === thisDate) {
-                          theDate = i.day;
-                          theStatus = i.status;
-                          theID = i.id;
-                        }
-                      }
-                      return (
-                        <td key={player.id}>
-                          <TestCheckbox
-                            theDate={theDate}
-                            thisDate={thisDate}
-                            theStatus={theStatus}
-                            theID={theID}
-                          />
-                        </td>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
-            </>
-          ) : (
-            <tr>
-              <td>
-                <NoAttendancesYet type="Attendances" />
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </Table>
-    );
-  }
-);
 
 const TableHead = memo(({ teamAttendance }: any) => {
   const navigate = useNavigate();

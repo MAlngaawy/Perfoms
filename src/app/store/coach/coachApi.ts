@@ -137,9 +137,22 @@ export const coachApi = createApi({
       }),
       providesTags: ["Attendance"],
     }),
+
     coachUpdateAttendance: mutation<Attendance, UpdateAttendance>({
       query: ({ id, ...body }) => ({
         url: `update-attendance-day/${id}/`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["Attendance"],
+    }),
+
+    coachUpdateAttendanceSession: mutation<
+      { status: string },
+      UpdateAttendance
+    >({
+      query: ({ id, ...body }) => ({
+        url: `update-attendance-session/${id}/`,
         method: "PATCH",
         body,
       }),
@@ -484,4 +497,5 @@ export const {
   useAllClubPlayersQuery,
   useCoachAddTeamPlayerMutation,
   useRemoveAddTeamPlayerMutation,
+  useCoachUpdateAttendanceSessionMutation,
 } = coachApi;

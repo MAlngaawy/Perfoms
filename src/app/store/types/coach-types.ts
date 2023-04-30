@@ -2,7 +2,7 @@ import { string } from "yup";
 import { Attendance } from "./attendance-types";
 import { BaseGetAllType } from "./base-types";
 import { TeamPlayer } from "./clubManager-types";
-import { RatePer } from "./supervisor-types";
+import { daySessions, RatePer } from "./supervisor-types";
 
 export enum NotificationType {
   Report = "Report",
@@ -169,7 +169,12 @@ export type TeamsStatistics = BaseGetAllType & {
 // };
 
 export type TeamAttendanceDays = BaseGetAllType & {
-  results: { day: string }[];
+  results: {
+    day: string;
+    id: number;
+    status: string;
+    attendance_sessions: daySessions;
+  }[];
 };
 
 export type TeamPerformanceMetrics = BaseGetAllType & {
@@ -262,6 +267,7 @@ export type CoachAttendance = {
     id: number;
     day: string;
     status: "ATTENDED" | "ABSENT" | "UPCOMING";
+    attendance_sessions: daySessions;
   }[];
 };
 
@@ -301,6 +307,7 @@ export type CoachTeamInfo = {
   from_age: number;
   to_age: number;
   gender: string;
+  attend_per: "DAY" | "SESSION";
 };
 
 export type CoachTeamPerformance = BaseGetAllType & {
