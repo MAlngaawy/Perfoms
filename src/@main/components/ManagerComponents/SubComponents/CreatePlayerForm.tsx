@@ -318,7 +318,7 @@ const AddPlayerForm = (props: Props) => {
               id="front_leg"
               error={errors.front_leg}
               className="w-full"
-              label="Front Leg"
+              label="Preferred Front Leg"
               name="front_leg"
               sx={{
                 ".mantine-Select-input": {

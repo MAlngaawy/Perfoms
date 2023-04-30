@@ -211,7 +211,7 @@ const EditPlayer = ({ player, refetchPlayerData }: Props) => {
             id="front_leg"
             required
             className="w-full"
-            label="Front Leg"
+            label="Preferred Front Leg"
             name="front_leg"
             defaultValue={player?.front_leg}
             sx={{

@@ -36,7 +36,8 @@ const CoachCard = ({
       className={classNames(
         "coachCard h-full transition-all group flex flex-col justify-between rounded-3xl text-center p-5 font-medium",
         {
-          "bg-white text-perfLightBlack": role === "Coach",
+          "bg-white text-perfLightBlack":
+            role && ["Coach", "SubCoach"].includes(role),
         },
         {
           "bg-perfBlue text-white": role === "Supervisor",
@@ -95,13 +96,13 @@ const CoachCard = ({
         </div>
       </div>
       {/* <Link to={`${location.pathname}/single-coach/${id}`}> */}
-      <Button
+      <button
         onClick={() => navigate(`${id}`)}
         className={classNames(
           " font-normal border text-base py-2 px-4 my-4 rounded-xl",
           {
             "text-perfBlue border-perfBlue  hover:text-white hover:bg-perfBlue":
-              role === "Coach",
+              role && ["Coach", "SubCoach"].includes(role),
           },
           {
             "text-white bg-perfBlue border-white  hover:bg-white hover:text-perfBlue":
@@ -110,7 +111,7 @@ const CoachCard = ({
         )}
       >
         View full profile
-      </Button>
+      </button>
       {/* </Link> */}
     </div>
   );

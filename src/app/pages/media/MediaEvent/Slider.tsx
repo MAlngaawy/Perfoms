@@ -13,6 +13,7 @@ import {
   useGetEventFilesQuery,
   useGetEventVideoQuery,
   useRemoveEventVideoMutation,
+  useUserQuery,
 } from "~/app/store/user/userApi";
 import AppUtils from "~/@main/utils/AppUtils";
 import { useParams } from "react-router-dom";
@@ -25,6 +26,7 @@ type Props = {
 };
 
 const Slider = ({ images, isLoading, eventId }: Props) => {
+  const { data: user } = useUserQuery({});
   const { data: eventVideos } = useGetEventVideoQuery(
     { event_id: eventId },
     { skip: !eventId }
@@ -52,7 +54,9 @@ const Slider = ({ images, isLoading, eventId }: Props) => {
                 <div className="relative">
                   <SwiperSlide>
                     <div className=" relative flex justify-center items-center w-40 h-40 xs:w-3/5 xs:h-96 mx-auto">
-                      <DeleteVideoButton video_id={vid.id} />
+                      {user?.user_type !== "Parent" && (
+                        <DeleteVideoButton video_id={vid.id} />
+                      )}
                       <ReactPlayer
                         width={"100%"}
                         height={"100%"}
@@ -101,32 +105,35 @@ const OneSlide = ({
   imageLink: string;
   id: number | undefined;
 }) => {
+  const { data: user } = useUserQuery({});
   const [deleteImage] = useDeleteEventFileMutation();
   return (
     <div className=" flex justify-center relative items-center w-11/12 sm:w-3/5 h-96 mx-auto">
-      <div className="absolute z-10 top-5 right-5 bg-white p-1 rounded-full shadow-lg">
-        <DeleteButton
-          type="Image"
-          name=""
-          deleteFun={() => {
-            deleteImage({ file_id: id })
-              .then((res) =>
-                AppUtils.showNotificationFun(
-                  "Success",
-                  "Done",
-                  "Image deleted Successfully"
+      {user?.user_type !== "Parent" && (
+        <div className="absolute z-10 top-5 right-5 bg-white p-1 rounded-full shadow-lg">
+          <DeleteButton
+            type="Image"
+            name=""
+            deleteFun={() => {
+              deleteImage({ file_id: id })
+                .then((res) =>
+                  AppUtils.showNotificationFun(
+                    "Success",
+                    "Done",
+                    "Image deleted Successfully"
+                  )
                 )
-              )
-              .catch((err) =>
-                AppUtils.showNotificationFun(
-                  "Error",
-                  "Sorry",
-                  "Try again later"
-                )
-              );
-          }}
-        />
-      </div>
+                .catch((err) =>
+                  AppUtils.showNotificationFun(
+                    "Error",
+                    "Sorry",
+                    "Try again later"
+                  )
+                );
+            }}
+          />
+        </div>
+      )}
       <Image className="w-full full object-cover" src={imageLink} />
     </div>
   );

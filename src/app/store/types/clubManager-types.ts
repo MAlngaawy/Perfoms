@@ -2,11 +2,7 @@ import { BaseGetAllType } from "./base-types";
 import { Metric, Team } from "./supervisor-types";
 import { Event } from "./events-types";
 import { Player, PlayerCoach } from "./parent-types";
-import {
-  TeamKpiPlayersStatistics,
-  TeamKpiPlayerStatistics,
-  TeamStatistics,
-} from "./coach-types";
+import { TeamStatistics } from "./coach-types";
 
 // shaerd
 export type Statistics = {

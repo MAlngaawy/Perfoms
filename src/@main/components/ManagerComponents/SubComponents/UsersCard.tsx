@@ -138,7 +138,7 @@ const UsersCard = ({ type, data }: Props) => {
                   xs={6}
                   sm={4}
                 >
-                  <div className="flex justify-between rounded-3xl items-center p-1  hover:bg-pagesBg transition-all">
+                  <div className="flex justify-between rounded-3xl mr-10 items-center p-1  hover:bg-pagesBg transition-all">
                     <div
                       onClick={() =>
                         type === "Player" && navigate(`/players/${user.id}`)

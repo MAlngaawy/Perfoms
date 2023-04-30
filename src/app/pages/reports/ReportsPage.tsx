@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Grid, Menu, Button } from "@mantine/core";
 import Card from "~/@main/components/Card";
 import AppIcons from "~/@main/core/AppIcons";
-import AttendanceTable from "./components/AttendanceTable";
+import AttendanceDaysReports from "./components/AttendanceDaysReports";
 import TotalAttendance from "./components/TotalAttendance";
 import CustomCalendar from "~/@main/components/Calendar";
 import AddPlayer from "../home/molecules/AddPlayer";
@@ -149,7 +149,7 @@ const ReportPage = () => {
                       {/* Attedance Summary Table */}
                       <Grid.Col span={12} sm={8}>
                         <div className="bg-white h-full rounded-3xl p-4">
-                          <AttendanceTable />
+                          <AttendanceDaysReports />
                         </div>
                       </Grid.Col>
 
