@@ -97,71 +97,72 @@ const CreateContentTable = memo(
     return (
       <Table highlightOnHover verticalSpacing={"sm"} horizontalSpacing={30}>
         <TableHead teamAttendance={teamAttendance} />
-        <tbody className="overflow-scroll">
-          {teamAttendanceDays?.results &&
-          teamAttendanceDays?.results.length > 0 ? (
-            <>
-              {teamAttendanceDays?.results.map((item: AttendanceDay) => {
-                return (
-                  <>
-                    {item.attendance_sessions.length > 0 && (
-                      <tr className="">
-                        <td className="border-0 px-0 pl-1 font-light text-left text-xs sticky left-0 bg-white z-10 text-perfGray1">
-                          {item.day}
-                        </td>
-                      </tr>
-                    )}
+        {teamAttendanceDays?.results &&
+        teamAttendanceDays?.results.length > 0 ? (
+          <tbody className="overflow-scroll">
+            {teamAttendanceDays?.results.map((item: AttendanceDay) => {
+              return (
+                <>
+                  {item.attendance_sessions.length > 0 && (
+                    <tr className="">
+                      <td className="border-0 px-0 pl-1 font-light text-left text-xs sticky left-0 bg-white z-10 text-perfGray1">
+                        {item.day}
+                      </td>
+                    </tr>
+                  )}
 
-                    {item.attendance_sessions.map((session) => (
-                      <tr key={session.id} className="">
-                        <td className="text-xs font-medium text-center px-0 sticky left-0 bg-white z-10 text-perfGray1">
-                          {session.from_hour.substring(0, 5)}-
-                          {session.to_hour.substring(0, 5)}
-                        </td>
-                        {teamAttendance?.results.map((player: any) => {
-                          let from = "";
-                          let to = "";
-                          let sessionId = 0;
-                          let sessionStatus = "";
+                  {item.attendance_sessions.map((session) => (
+                    <tr key={session.id} className="">
+                      <td className="text-xs font-medium text-center px-0 sticky left-0 bg-white z-10 text-perfGray1">
+                        {session.from_hour.substring(0, 5)}-
+                        {session.to_hour.substring(0, 5)}
+                      </td>
+                      {teamAttendance?.results.map((player: any) => {
+                        let from = "";
+                        let to = "";
+                        let sessionId = 0;
+                        let sessionStatus = "";
 
-                          for (let i of player.player_attendance) {
-                            console.log("iiiiiii", i);
-                            for (let playerSession of i.attendance_sessions) {
-                              if (
-                                playerSession.from_hour === session.from_hour &&
-                                playerSession.to_hour === session.to_hour &&
-                                i.day === item.day
-                              ) {
-                                from = playerSession.from_hour;
-                                to = playerSession.to_hour;
-                                sessionId = playerSession.id;
-                                sessionStatus = playerSession.status;
-                              }
+                        for (let i of player.player_attendance) {
+                          console.log("iiiiiii", i);
+                          for (let playerSession of i.attendance_sessions) {
+                            if (
+                              playerSession.from_hour === session.from_hour &&
+                              playerSession.to_hour === session.to_hour &&
+                              i.day === item.day
+                            ) {
+                              from = playerSession.from_hour;
+                              to = playerSession.to_hour;
+                              sessionId = playerSession.id;
+                              sessionStatus = playerSession.status;
                             }
                           }
-                          return (
-                            <td key={player.id}>
-                              <TestCheckbox
-                                theStatus={sessionStatus}
-                                theID={sessionId}
-                              />
-                            </td>
-                          );
-                        })}
-                      </tr>
-                    ))}
-                  </>
-                );
-              })}
-            </>
-          ) : (
-            <tr>
-              <td>
-                <NoAttendancesYet type="Attendances" />
-              </td>
-            </tr>
-          )}
-        </tbody>
+                        }
+                        return (
+                          <td key={player.id}>
+                            <TestCheckbox
+                              theStatus={sessionStatus}
+                              theID={sessionId}
+                            />
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))}
+                </>
+              );
+            })}
+          </tbody>
+        ) : (
+          <tr className="w-full p-4 m-10 bg-white">
+            <td colSpan={100} className="bg-pagesBg p-10 w-full">
+              No attendance added for this Team in this month yet, <br />
+              if you want to add attendance you can go to the team info page
+              <br />
+              and add attendance to calendar
+            </td>
+          </tr>
+        )}
       </Table>
     );
   }
@@ -212,7 +213,18 @@ const TableHead = memo(({ teamAttendance }: any) => {
   return (
     <thead>
       <tr className="">
-        <th className="bg-white sticky  top-0 z-20 ">Day</th>
+        {teamAttendance?.results.length == 0 ? (
+          <th
+            className="w-full font-normal flex justify-center items-center p-4 text-center"
+            colSpan={100}
+          >
+            No Players in this Team, <br />
+            You can add players on the team info page first, and then add there
+            attendance from here.
+          </th>
+        ) : (
+          <th className="bg-white sticky  top-0 z-20 ">Day</th>
+        )}{" "}
         {teamAttendance?.results.map((player: Player) => (
           <th
             key={player.id}

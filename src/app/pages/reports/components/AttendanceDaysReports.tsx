@@ -32,7 +32,7 @@ const myDate = (theDate: string) => {
   return r;
 };
 
-const AttendanceTable = ({ player_id }: Props) => {
+const AttendanceDaysReports = ({ player_id }: Props) => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const timeFilter = useSelector(timeFilterFn);
@@ -160,4 +160,4 @@ const AttendanceTable = ({ player_id }: Props) => {
   );
 };
 
-export default AttendanceTable;
+export default AttendanceDaysReports;
