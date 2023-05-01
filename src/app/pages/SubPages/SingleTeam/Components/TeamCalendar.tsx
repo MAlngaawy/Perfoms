@@ -42,18 +42,37 @@ const TeamCalendar = ({ teamId, teamInfo }: Props) => {
 
   const { data: superAttDates } = useSuperTeamAttendanceQuery(
     { team_id: +teamId, year: requestYear, month: requestMonth },
-    { skip: !teamId || user?.user_type !== "Supervisor" }
+    {
+      skip:
+        !teamId ||
+        user?.user_type !== "Supervisor" ||
+        !requestYear ||
+        !requestMonth,
+    }
   );
 
   const { data: adminAttDates } = useAdminTeamAttendanceQuery(
     { team_id: +teamId, year: requestYear, month: requestMonth },
-    { skip: !teamId || user?.user_type !== "Admin" }
+    {
+      skip:
+        !teamId || user?.user_type !== "Admin" || !requestYear || !requestMonth,
+    }
   );
 
   const { data: coachAttDates } = useCoachTeamCalendarQuery(
     { team_id: +teamId, year: requestYear, month: requestMonth },
-    { skip: !teamId || user?.user_type !== "Coach" }
+    {
+      skip:
+        !teamId || user?.user_type !== "Coach" || !requestYear || !requestMonth,
+    }
   );
+
+  useEffect(() => {
+    console.log("attDates", attDates);
+    if (superAttDates) setAttDates(superAttDates);
+    if (adminAttDates) setAttDates(adminAttDates);
+    if (coachAttDates) setAttDates(coachAttDates);
+  }, [superAttDates, adminAttDates, coachAttDates]);
 
   //useGetTeamAttendanceQuery
   const [adminAddDay] = useAdminAddTeamCalendarMutation();
@@ -98,13 +117,6 @@ const TeamCalendar = ({ teamId, teamInfo }: Props) => {
         });
     }
   };
-
-  useEffect(() => {
-    console.log("attDates", attDates);
-    if (superAttDates) setAttDates(superAttDates);
-    if (adminAttDates) setAttDates(adminAttDates);
-    if (coachAttDates) setAttDates(coachAttDates);
-  }, [superAttDates, adminAttDates, coachAttDates]);
 
   return (
     <div>
