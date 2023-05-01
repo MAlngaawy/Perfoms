@@ -355,7 +355,7 @@ const AddSubCoachForm = (props: Props) => {
             +
           </button>
           <button
-            className="py-1 px-4 hidden xs:block transform hover:scale-105 transition-all text-sm sm:text-base border border-perfGray3 text-perfGray3 rounded-3xl"
+            className="py-1 px-4 hidden xs:block transform hover:scale-105 transition-all text-xs border border-perfGray3 text-perfGray3 rounded-3xl"
             onClick={open}
           >
             + Add Attendance Moderator

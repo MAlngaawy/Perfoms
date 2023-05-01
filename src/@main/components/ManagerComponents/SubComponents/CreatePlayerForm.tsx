@@ -360,7 +360,7 @@ const AddPlayerForm = (props: Props) => {
 
         <Group position="left">
           <button
-            className="py-1 px-4 transform hover:scale-105 transition-all text-xs sm:text-base border border-perfGray3 text-perfGray3 rounded-3xl"
+            className="py-1 px-4 transform hover:scale-105 transition-all text-xs border border-perfGray3 text-perfGray3 rounded-3xl"
             onClick={() => setOpen(true)}
           >
             + Create Player
