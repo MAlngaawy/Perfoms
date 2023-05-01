@@ -194,6 +194,9 @@ const CreateContentTable = memo(
 
 const TableHead = memo(({ teamAttendance }: any) => {
   const navigate = useNavigate();
+  const { data: user } = useUserQuery({});
+
+  const isNotSubCoach = user?.user_type !== "SubCoach";
 
   return (
     <thead>
@@ -218,10 +221,12 @@ const TableHead = memo(({ teamAttendance }: any) => {
           >
             <div className="flex  flex-col justify-center items-center">
               <Avatar
-                onClick={() => navigate(`/players/${player.id}`)}
+                onClick={() =>
+                  isNotSubCoach && navigate(`/players/${player.id}`)
+                }
                 radius={"xl"}
                 size="md"
-                className="cursor-pointer"
+                className={isNotSubCoach ? "cursor-pointer" : ""}
                 src={player.icon}
               />
               <span>{player.name}</span>

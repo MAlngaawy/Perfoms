@@ -209,6 +209,9 @@ const TestCheckbox = memo(({ theStatus, theID }: any) => {
 
 const TableHead = memo(({ teamAttendance }: any) => {
   const navigate = useNavigate();
+  const { data: user } = useUserQuery({});
+
+  const isNotSubCoach = user?.user_type !== "SubCoach";
 
   return (
     <thead>
@@ -224,7 +227,8 @@ const TableHead = memo(({ teamAttendance }: any) => {
           </th>
         ) : (
           <th className="bg-white sticky  top-0 z-20 ">Day</th>
-        )}{" "}
+        )}
+
         {teamAttendance?.results.map((player: Player) => (
           <th
             key={player.id}
@@ -232,10 +236,12 @@ const TableHead = memo(({ teamAttendance }: any) => {
           >
             <div className="flex  flex-col justify-center items-center">
               <Avatar
-                onClick={() => navigate(`/players/${player.id}`)}
+                onClick={() =>
+                  isNotSubCoach && navigate(`/players/${player.id}`)
+                }
                 radius={"xl"}
                 size="md"
-                className="cursor-pointer"
+                className={isNotSubCoach ? "cursor-pointer" : ""}
                 src={player.icon}
               />
               <span>{player.name}</span>

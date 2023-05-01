@@ -33,9 +33,10 @@ const Toolbar = ({ setOpened }: Props) => {
   const profileRoute = () => {
     let route = "profile";
     //@ts-ignore
-    if (["Supervisor", "Coach", "SubCoach"].includes(user?.user_type)) {
+    if (["Supervisor", "Coach"].includes(user?.user_type)) {
       route = "coach-profile";
-    } else if (user?.user_type === "Admin") {
+      //@ts-ignore
+    } else if (["Admin", "SubCoach"].includes(user?.user_type)) {
       route = "admin-profile";
     }
 
