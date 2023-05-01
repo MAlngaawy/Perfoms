@@ -12,14 +12,12 @@ import SubmitButton from "../../SubmitButton";
 import AppUtils from "~/@main/utils/AppUtils";
 import * as yup from "yup";
 import { useUserQuery } from "~/app/store/user/userApi";
-import { axiosInstance } from "~/app/configs/dataService";
 import {
   useAdminAddSubCoachMutation,
   useAdminSportsQuery,
   useAdminSubCoachQuery,
   useAdminTeamsStatisticsQuery,
 } from "~/app/store/clubManager/clubManagerApi";
-import AvatarInput from "~/@main/components/shared/AvatarInput";
 // import SelectTeamsFromSportInputs from "../../shared/SelectTeamsFromSportInputs";
 import { PlayerSport, SportTeam } from "~/app/store/types/parent-types";
 
@@ -62,7 +60,6 @@ const AddSubCoachForm = (props: Props) => {
   const [opened, { open, close }] = useDisclosure(false);
   const { data: user } = useUserQuery(null);
   const [formInputsData, setFormInputsData] = useState(formInputsDefaultValue);
-  const [userAvatar, setUserAvatar] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState<any>(null);
   const [errors, setErrors] = useState<{
@@ -102,13 +99,6 @@ const AddSubCoachForm = (props: Props) => {
   );
 
   useEffect(() => {
-    // setTeams([]);
-    // setFormInputsData({
-    //   ...formInputsData,
-    //   teams: [],
-    // });
-    // setSelectedTeam(null);
-
     if (clubSports && clubSports.results) {
       setSports(clubSports.results);
     }
@@ -128,7 +118,6 @@ const AddSubCoachForm = (props: Props) => {
 
   const onSubmitFun = async (e: any) => {
     e.preventDefault();
-    setErrors({});
     const formData = new FormData(e.currentTarget);
     for (const [key, value] of formData.entries()) {
       console.log(`${key}: ${value}`);
@@ -149,7 +138,6 @@ const AddSubCoachForm = (props: Props) => {
         .then(() => {
           setIsLoading(false);
           close();
-          setUserAvatar(null);
           refetch();
           setFormInputsData(formInputsDefaultValue);
           AppUtils.showNotificationFun(
@@ -167,52 +155,17 @@ const AddSubCoachForm = (props: Props) => {
             err.response.statusText
           );
         });
-    } catch (err) {
+    } catch (error) {
       setIsLoading(false);
-      console.log(err);
-      AppUtils.showNotificationFun("Error", "Sorry", "Can't Add Moderator Now");
+      const validationErrors = {};
+      if (error instanceof yup.ValidationError) {
+        error.inner.forEach((error) => {
+          //@ts-ignore
+          validationErrors[error.path] = error.message;
+        });
+        setErrors(validationErrors);
+      }
     }
-
-    // try {
-    //   await schema.validate(formInputsData, { abortEarly: false });
-    //   formData.set("mobile", "+2" + formData.get("mobile"));
-    //   const teamIds = formInputsData.teams.map((teamId) => +teamId);
-    //   formData.set("teams", JSON.stringify(teamIds));
-    //   //@ts-ignore
-    //   if (userAvatar) {
-    //     const image = await AppUtils.resizeImage(userAvatar);
-    //     formData.append("icon", image as string);
-    //   }
-    //   try {
-    //     setIsLoading(true);
-    //     axiosInstance
-    //       .post("club-manager/users/sub-coaches/add-sub-coach/", formData)
-    //       .then((res) => {
-    //         setIsLoading(false);
-    //         close();
-    //         setUserAvatar(null);
-    //         refetch();
-    //         setFormInputsData(formInputsDefaultValue);
-    //       })
-    //       .catch((err) => {
-    //         setIsLoading(false);
-    //         console.log(err.response.statusText);
-    //       });
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-
-    //   const validationErrors = {};
-    //   if (error instanceof yup.ValidationError) {
-    //     error.inner.forEach((error) => {
-    //       //@ts-ignore
-    //       validationErrors[error.path] = error.message;
-    //     });
-    //     setErrors(validationErrors);
-    //   }
-    // }
   };
 
   return (
@@ -222,11 +175,6 @@ const AddSubCoachForm = (props: Props) => {
           onSubmit={onSubmitFun}
           className="rounded-xl py-4 flex flex-col gap-4 justify-between"
         >
-          {/* <AvatarInput
-            inputAlt="Player Photo"
-            userAvatar={userAvatar}
-            setUserAvatar={setUserAvatar}
-          /> */}
           <TextInput
             id="mobile"
             name="mobile"
@@ -399,12 +347,20 @@ const AddSubCoachForm = (props: Props) => {
       </Modal>
 
       <Group position="left">
-        <button
-          className="py-1 px-4 transform hover:scale-105 transition-all text-sm sm:text-base border border-perfGray3 text-perfGray3 rounded-3xl"
-          onClick={open}
-        >
-          +
-        </button>
+        <>
+          <button
+            className="py-1 xs:hidden px-4 transform hover:scale-105 transition-all text-xs sm:text-base border border-perfGray3 text-perfGray3 rounded-3xl"
+            onClick={open}
+          >
+            +
+          </button>
+          <button
+            className="py-1 px-4 hidden xs:block transform hover:scale-105 transition-all text-sm sm:text-base border border-perfGray3 text-perfGray3 rounded-3xl"
+            onClick={open}
+          >
+            + Add Attendance Moderator
+          </button>
+        </>
       </Group>
     </>
   );
