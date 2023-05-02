@@ -258,7 +258,7 @@ export const clubManagerApi = createApi({
     }),
 
     adminPlayers: query<
-      SuperVisorPlayers,
+      TeamPlayers,
       { club_id: number | undefined; page?: number }
     >({
       query: ({ club_id, ...params }) => ({

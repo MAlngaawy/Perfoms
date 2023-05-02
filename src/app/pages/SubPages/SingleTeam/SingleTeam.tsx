@@ -82,7 +82,10 @@ const SingleTeam = (props: Props) => {
         </Grid.Col>
         <Grid.Col span={12}>
           <div className="bg-white p-2 xs:p-4 rounded-3xl min-h-full">
-            <TeamPlayers teamId={team_id !== undefined ? team_id : ""} />
+            <TeamPlayers
+              teamInfo={teamInfo}
+              teamId={team_id !== undefined ? team_id : ""}
+            />
           </div>
         </Grid.Col>
       </Grid>

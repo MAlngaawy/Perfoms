@@ -104,9 +104,24 @@ export type TeamPlayer = {
   icon_url: string;
   name: string;
   dob: string;
+  world_weight: string;
+  olympic_weight: string;
   weight: number;
   height: number;
+  sport: string;
+  parent_name: string;
+  profile: string;
+  team: TeamShortInfo[];
+  phone: string;
+  front_leg: FrontLeg;
 };
+
+export type TeamShortInfo = {
+  id: number;
+  name: string;
+};
+
+export type FrontLeg = "NONE" | "LEFT" | "RIGHT" | "BOTH";
 
 export type plaerParent = PlayerCoach;
 
