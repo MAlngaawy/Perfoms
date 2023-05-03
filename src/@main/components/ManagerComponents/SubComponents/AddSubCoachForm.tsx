@@ -170,7 +170,7 @@ const AddSubCoachForm = (props: Props) => {
 
   return (
     <>
-      <Modal opened={opened} onClose={close} title="Add Att Moderator">
+      <Modal opened={opened} onClose={close} title="Add Attendance Moderator">
         <form
           onSubmit={onSubmitFun}
           className="rounded-xl py-4 flex flex-col gap-4 justify-between"
@@ -325,7 +325,7 @@ const AddSubCoachForm = (props: Props) => {
             autoComplete="new-password"
             id="confirmPassword"
             name="confirm Password"
-            label="confirmPassword"
+            label="Confirm Password"
             error={errors.confirmPassword}
             withAsterisk
             onChange={(e) => handleChange("confirmPassword", e.target.value)}
