@@ -32,7 +32,7 @@ import {
   UserDeviceId,
   UserExperinces,
 } from "./../types/user-types";
-import { eventInstance } from "~/@main/utils/AppUtils";
+import AppUtils, { eventInstance } from "~/@main/utils/AppUtils";
 import { showNotification } from "@mantine/notifications";
 import {
   BaseQueryFn,
@@ -42,12 +42,7 @@ import {
 } from "@reduxjs/toolkit/query/react";
 import { BASE_HEADERS, BASE_URL } from "~/app/configs/dataService";
 import Cookies from "js-cookie";
-import {
-  LoginResponse,
-  LoginUserBody,
-  ProfileResponse,
-  UserSignup,
-} from "../types/user-types";
+import { LoginResponse, LoginUserBody, UserSignup } from "../types/user-types";
 import { ReactNode } from "react";
 import { Kpis, Metrics, Pillars } from "../types/supervisor-types";
 import { Sports, Teams } from "../types/clubManager-types";
@@ -96,22 +91,12 @@ export const userApi = createApi({
               //@ts-ignore
               `/verify-otp?userid=${error.error.data.id}`
             );
-          showNotification({
-            title: "Login Error",
+          AppUtils.showNotificationFun(
+            "Error",
+            "Login Error",
             //@ts-ignore
-            message: error.error.data,
-            styles: (theme) => ({
-              root: {
-                backgroundColor: theme.colors.red[6],
-                borderColor: theme.colors.red[6],
-
-                "&::before": { backgroundColor: theme.white },
-              },
-
-              title: { color: theme.white },
-              description: { color: theme.white },
-            }),
-          });
+            error.error.data
+          );
         }
       },
     }),
@@ -126,21 +111,9 @@ export const userApi = createApi({
           const { data } = await queryFulfilled;
           // eventInstance.emit("SignUp_Success");
         } catch (error: any) {
-          showNotification({
-            title: "Login Error",
-            //@ts-ignore
-            message: error.error.data.message,
-            styles: (theme) => ({
-              root: {
-                backgroundColor: theme.colors.red[6],
-                borderColor: theme.colors.red[6],
-
-                "&::before": { backgroundColor: theme.white },
-              },
-
-              title: { color: theme.white },
-              description: { color: theme.white },
-            }),
+          const errorsobject = error.error.data;
+          Object.keys(errorsobject).forEach((key) => {
+            AppUtils.showNotificationFun("Error", key, errorsobject[key]);
           });
         }
       },

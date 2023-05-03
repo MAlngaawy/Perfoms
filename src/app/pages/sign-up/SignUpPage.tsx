@@ -22,18 +22,23 @@ type Props = {};
 const schema = yup.object().shape({
   userRole: yup.string().required(),
   firstName: yup.string().required(),
-  lastName: yup.string(),
+  lastName: yup.string().required(),
   country: yup.string().required(),
-  city: yup.string(),
+  city: yup.string().required(),
   club: yup.number().required(),
   countryCode: yup.string().required(),
   phoneNumber: yup.number().required(),
   password: yup.string().min(8).max(24).required(),
-  teams: yup.array().required(),
+  teams: yup.array().when("userRole", {
+    is: "Coach",
+    then: yup.array().min(1).required(),
+    otherwise: yup.array().min(0),
+  }),
 });
 
 const SignUpPage = (props: Props) => {
-  const [signupHandler, { data, isLoading, isSuccess }] = useSignupMutation();
+  const [signupHandler, { data, isLoading, isSuccess, isError }] =
+    useSignupMutation();
   const navigator = useNavigate();
   const { data: AllClubs } = usePublicClubsQuery(null);
   const {
@@ -185,8 +190,8 @@ const SignUpPage = (props: Props) => {
                 className="w-full"
                 id="firstName"
                 withAsterisk
-                label="Name"
-                error={errors.firstName && "Please add your Name"}
+                label="First Name"
+                error={errors.firstName && "Please add your First Name"}
                 sx={{
                   ".mantine-InputWrapper-label": {
                     fontSize: 10,
@@ -219,7 +224,7 @@ const SignUpPage = (props: Props) => {
                 className="w-full"
                 id="lastName"
                 label="Last Name"
-                error={errors.lastName && "Please add your Name"}
+                error={errors.lastName && "Please add your Last Name"}
                 sx={{
                   ".mantine-InputWrapper-label": {
                     fontSize: 10,
@@ -353,10 +358,10 @@ const SignUpPage = (props: Props) => {
               />
             )}
 
-            <Grid grow gutter="sm" className="w-full">
+            <Grid grow className="w-full">
               {/* Select Country code Input */}
 
-              <Grid.Col span={3} className="px-0">
+              {/* <Grid.Col span={3} className="px-0">
                 <PerfSelect
                   id="countryCode"
                   required
@@ -375,10 +380,10 @@ const SignUpPage = (props: Props) => {
                     { value: "🇯🇴 +962", label: "🇯🇴 +962" },
                   ]}
                 />
-              </Grid.Col>
+              </Grid.Col> */}
 
               {/* Mobile Number Input */}
-              <Grid.Col span={9} className="pr-0">
+              <Grid.Col span={12} className="px-0">
                 <Input.Wrapper
                   id="phoneNumber"
                   withAsterisk
