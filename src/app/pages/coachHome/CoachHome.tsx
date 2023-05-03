@@ -27,21 +27,22 @@ const CoachHome = (props: Props) => {
     { team_id: selectedPlayerTeam?.id },
     { skip: !selectedPlayerTeam }
   );
+  console.log("coachTeamInfoData", coachTeamInfoData);
 
   const renderTable = () => {
     switch (checked) {
       case "Attendance":
-        return <LazyAttendanceTable />;
-      case "Performance":
         return (
           <Suspense fallback={<SkelatonComponent />}>
             {coachTeamInfoData?.attend_per === "SESSION" ? (
               <LazySessionsAttendanceTable />
             ) : (
-              <LazyPerformanceTable />
+              <LazyAttendanceTable />
             )}
           </Suspense>
         );
+      case "Performance":
+        return <LazyPerformanceTable />;
       case "Team info":
         return (
           <Suspense fallback={<SkelatonComponent />}>

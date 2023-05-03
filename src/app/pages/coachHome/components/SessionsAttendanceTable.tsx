@@ -1,7 +1,6 @@
 import { memo, useEffect, useState } from "react";
-import { Table, Checkbox, Avatar, Skeleton, Loader } from "@mantine/core";
+import { Table, Checkbox, Avatar, Loader } from "@mantine/core";
 import {
-  useCoachUpdateAttendanceMutation,
   useCoachUpdateAttendanceSessionMutation,
   useGetTeamAttendanceQuery,
   useTeamAttendanceDaysQuery,
@@ -9,12 +8,10 @@ import {
 import { useSelector } from "react-redux";
 import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 import NoTeamComp from "~/@main/components/NoTeamComp";
-import NoAttendancesYet from "~/@main/components/NoAttendancesYet";
 import { useUserQuery } from "~/app/store/user/userApi";
 import {
   useSuperGetTeamAttendanceQuery,
   useSuperTeamAttendanceDaysQuery,
-  useSuperUpdateAttendanceMutation,
   useSuperUpdateAttendanceSessionMutation,
 } from "~/app/store/supervisor/supervisorMainApi";
 import {
@@ -61,8 +58,6 @@ const AttendanceTable = (props: Props) => {
     );
 
   useEffect(() => {
-    console.log("superTeamAttendance", superTeamAttendance);
-    console.log("superTeamAttendanceDays", superTeamAttendanceDays);
     if (coachTeamAttendance) setTeamAttendance(coachTeamAttendance);
     if (superTeamAttendance) setTeamAttendance(superTeamAttendance);
     if (coachTeamAttendanceDays) setTeamAttendanceDays(coachTeamAttendanceDays);
