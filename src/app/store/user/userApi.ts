@@ -87,8 +87,9 @@ export const userApi = createApi({
           //@ts-ignore
           if (error.error.status === 409)
             return window.location.replace(
+              "/coachRequestSent"
               //@ts-ignore
-              `/verify-otp?userid=${error.error.data.id}`
+              // `/verify-otp?userid=${error.error.data.id}`
             );
           AppUtils.showNotificationFun(
             "Error",
