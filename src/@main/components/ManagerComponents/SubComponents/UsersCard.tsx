@@ -76,6 +76,7 @@ const UsersCard = ({ type, data }: Props) => {
         </h2>
         <div className="flex gap-6 justify-center items-center">
           {type === "Player" && <AddPlayerForm />}
+          {type === "Attendance Moderator" && <AddSubCoachForm />}
 
           <Select
             placeholder="Filter By Sport"
@@ -84,7 +85,6 @@ const UsersCard = ({ type, data }: Props) => {
             data={sports}
           />
 
-          {type === "Attendance Moderator" && <AddSubCoachForm />}
           <TextInput
             onChange={(e) => setSearchKeyword(e.target.value)}
             value={searchKeyword}
