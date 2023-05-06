@@ -1,4 +1,4 @@
-import { Input, Grid, MultiSelect, Loader, Select } from "@mantine/core";
+import { Input, Grid, MultiSelect, Select } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import { PasswordInput } from "@mantine/core";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,11 +8,9 @@ import { useEffect, useState } from "react";
 import { State } from "country-state-city";
 import PerfSelect, { Option } from "~/@main/components/Select";
 import { Controller } from "react-hook-form";
-import { usePublicClubsQuery, useTeamsQuery } from "~/app/store/core/coreApi";
+import { usePublicClubsQuery } from "~/app/store/core/coreApi";
 import {
   useClubSportsQuery,
-  useClubTeamsQuery,
-  useSendOtpMutation,
   useSignupMutation,
   useSportTeamsQuery,
 } from "~/app/store/user/userApi";

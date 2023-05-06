@@ -21,6 +21,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { Player } from "~/app/store/types/parent-types";
 import { AttendanceDay } from "~/app/store/types/supervisor-types";
+import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {};
 
@@ -108,9 +109,10 @@ const CreateContentTable = memo(
 
                   {item.attendance_sessions.map((session) => (
                     <tr key={session.id} className="">
-                      <td className="text-xs font-medium text-center px-0 sticky left-0 bg-white z-10 text-perfGray1">
-                        {session.from_hour.substring(0, 5)}-
-                        {session.to_hour.substring(0, 5)}
+                      <td className="text-xs tracking-wider font-medium text-center px-0 sticky left-0 bg-white z-10 text-perfGray1">
+                        {AppUtils.formatTime(session.from_hour)}
+                        <br />
+                        {AppUtils.formatTime(session.to_hour)}
                       </td>
                       {teamAttendance?.results.map((player: any) => {
                         let from = "";
