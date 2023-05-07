@@ -1,7 +1,6 @@
 import { memo, useEffect, useState } from "react";
-import { Table, Checkbox, Avatar, Skeleton, Loader } from "@mantine/core";
+import { Table, Checkbox, Avatar, Loader } from "@mantine/core";
 import {
-  useCoachUpdateAttendanceMutation,
   useCoachUpdateAttendanceSessionMutation,
   useGetTeamAttendanceQuery,
   useTeamAttendanceDaysQuery,
@@ -9,12 +8,10 @@ import {
 import { useSelector } from "react-redux";
 import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 import NoTeamComp from "~/@main/components/NoTeamComp";
-import NoAttendancesYet from "~/@main/components/NoAttendancesYet";
 import { useUserQuery } from "~/app/store/user/userApi";
 import {
   useSuperGetTeamAttendanceQuery,
   useSuperTeamAttendanceDaysQuery,
-  useSuperUpdateAttendanceMutation,
   useSuperUpdateAttendanceSessionMutation,
 } from "~/app/store/supervisor/supervisorMainApi";
 import {
@@ -24,6 +21,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { Player } from "~/app/store/types/parent-types";
 import { AttendanceDay } from "~/app/store/types/supervisor-types";
+import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {};
 
@@ -61,8 +59,6 @@ const AttendanceTable = (props: Props) => {
     );
 
   useEffect(() => {
-    console.log("superTeamAttendance", superTeamAttendance);
-    console.log("superTeamAttendanceDays", superTeamAttendanceDays);
     if (coachTeamAttendance) setTeamAttendance(coachTeamAttendance);
     if (superTeamAttendance) setTeamAttendance(superTeamAttendance);
     if (coachTeamAttendanceDays) setTeamAttendanceDays(coachTeamAttendanceDays);
@@ -113,9 +109,10 @@ const CreateContentTable = memo(
 
                   {item.attendance_sessions.map((session) => (
                     <tr key={session.id} className="">
-                      <td className="text-xs font-medium text-center px-0 sticky left-0 bg-white z-10 text-perfGray1">
-                        {session.from_hour.substring(0, 5)}-
-                        {session.to_hour.substring(0, 5)}
+                      <td className="text-xs tracking-wider font-medium text-center px-0 sticky left-0 bg-white z-10 text-perfGray1">
+                        {AppUtils.formatTime(session.from_hour)}
+                        <br />
+                        {AppUtils.formatTime(session.to_hour)}
                       </td>
                       {teamAttendance?.results.map((player: any) => {
                         let from = "";
@@ -209,6 +206,9 @@ const TestCheckbox = memo(({ theStatus, theID }: any) => {
 
 const TableHead = memo(({ teamAttendance }: any) => {
   const navigate = useNavigate();
+  const { data: user } = useUserQuery({});
+
+  const isNotSubCoach = user?.user_type !== "SubCoach";
 
   return (
     <thead>
@@ -224,7 +224,8 @@ const TableHead = memo(({ teamAttendance }: any) => {
           </th>
         ) : (
           <th className="bg-white sticky  top-0 z-20 ">Day</th>
-        )}{" "}
+        )}
+
         {teamAttendance?.results.map((player: Player) => (
           <th
             key={player.id}
@@ -232,10 +233,12 @@ const TableHead = memo(({ teamAttendance }: any) => {
           >
             <div className="flex  flex-col justify-center items-center">
               <Avatar
-                onClick={() => navigate(`/players/${player.id}`)}
+                onClick={() =>
+                  isNotSubCoach && navigate(`/players/${player.id}`)
+                }
                 radius={"xl"}
                 size="md"
-                className="cursor-pointer"
+                className={isNotSubCoach ? "cursor-pointer" : ""}
                 src={player.icon}
               />
               <span>{player.name}</span>

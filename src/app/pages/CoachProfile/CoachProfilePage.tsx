@@ -1,21 +1,15 @@
 import { Grid } from "@mantine/core";
-
 import CoachPersonalInfo from "~/@main/components/CoachProfileComponents/CoachPersonalInfo";
 import CoachExperince from "~/@main/components/CoachProfileComponents/CoachExperince";
 import CoachAchievements from "~/@main/components/CoachProfileComponents/CoachAchievements";
 import { useState } from "react";
-import {
-  useUpdateProfileMutation,
-  useUserQuery,
-} from "~/app/store/user/userApi";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {};
 
 const CoachProfilePage = (props: Props) => {
   const [editMode, setEditMode] = useState(false);
-  const { data: user, refetch } = useUserQuery(null);
-
-  const [updateProfile] = useUpdateProfileMutation();
+  const { data: user } = useUserQuery(null);
 
   return (
     <div className="mx-2">
