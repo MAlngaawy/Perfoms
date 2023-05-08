@@ -32,7 +32,10 @@ export type AddPlayerType = {
   name: string;
   dob?: string;
   team: number[];
-  weight: string;
+  weight?: string;
+  world_weight?: string;
+  olympic_weight?: string;
+  front_leg?: "NONE" | "LEFT" | "RIGHT" | "BOTH";
   height: string;
   phone: string;
   icon: any;
@@ -40,8 +43,11 @@ export type AddPlayerType = {
 
 export type UpdatePlayer = {
   name: string;
-  dob: string;
-  weight: string;
+  dob?: string;
+  weight?: string;
+  world_weight?: string;
+  olympic_weight?: string;
+  front_leg?: "NONE" | "LEFT" | "RIGHT" | "BOTH";
   height: string;
   icon_url: string;
 };

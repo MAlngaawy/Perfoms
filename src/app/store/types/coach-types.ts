@@ -279,7 +279,10 @@ export type CoachPlayerInfo = {
   id: number;
   name: string;
   dob: string;
-  weight: string;
+  weight?: string;
+  world_weight?: string;
+  olympic_weight?: string;
+  front_leg?: "NONE" | "LEFT" | "RIGHT" | "BOTH";
   height: string;
   icon: string;
   icon_url: string;
@@ -287,7 +290,6 @@ export type CoachPlayerInfo = {
   parent_name: string;
   phone?: string;
   profile?: string;
-  front_leg: string;
   team?: {
     id: number;
     name: string;

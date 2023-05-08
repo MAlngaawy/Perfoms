@@ -51,8 +51,19 @@ const ParsonalInfo = (props: Props) => {
         <div className="h2 font-medium">INFO</div>
         <div className="data flex flex-wrap jus gap-4 mt-2">
           <Info label="Age" value={playerData?.dob} />
-          <Info label="Weight" value={playerData?.weight || "NA"} />
-          <Info label="Height" value={playerData?.height || "NA"} />
+          {playerData?.sport.toLocaleLowerCase() === "taekwondo" ? (
+            <>
+              <Info label="Height" value={playerData?.height || "NA"} />
+              <Info label="World Weight" value={playerData?.world_weight} />
+              <Info label="Olympic Weight" value={playerData?.olympic_weight} />
+              <Info label="Preferred Front Leg" value={playerData?.front_leg} />
+            </>
+          ) : (
+            <>
+              <Info label="Weight" value={playerData?.weight} />
+              <Info label="Height" value={playerData?.height || "NA"} />
+            </>
+          )}
           <Info label="Phone" value={playerData?.phone || "N/A"} />
           <div className="flex flex-col items-center justify-center">
             <h3 className=" text-perfGray3 text-xs">Teams</h3>
@@ -66,9 +77,6 @@ const ParsonalInfo = (props: Props) => {
             </div>
           </div>
           <Info label="Sport" value={playerData?.sport} />
-          {playerData?.front_leg !== "NONE" && (
-            <Info label="Preferred Front Leg" value={playerData?.front_leg} />
-          )}
         </div>
       </div>
 

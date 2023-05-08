@@ -84,25 +84,32 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
         <div className="infos">
           <Info label="Name" value={playerInfoData?.name} />
           <Info label="Age" value={playerInfoData?.dob} />
-          <div className="flex gap-2 justify-between">
-            <Info
-              label="Weight"
-              value={`${playerInfoData.weight || "NA"} kgm`}
-            />
-
-            <Info
-              label="height"
-              value={`${playerInfoData.height || "NA"} cm`}
-            />
+          <div className="flex gap-x-4 flex-wrap">
+            {playerInfoData?.sport.toLocaleLowerCase() === "taekwondo" ? (
+              <>
+                <Info label="Height" value={playerInfoData?.height || "NA"} />
+                <Info
+                  label="World Weight"
+                  value={playerInfoData?.world_weight}
+                />
+                <Info
+                  label="Olympic Weight"
+                  value={playerInfoData?.olympic_weight}
+                />
+                <Info
+                  label="Preferred Front Leg"
+                  value={playerInfoData?.front_leg}
+                />
+              </>
+            ) : (
+              <>
+                <Info label="Weight" value={playerInfoData?.weight} />
+                <Info label="Height" value={playerInfoData?.height || "NA"} />
+              </>
+            )}
           </div>
           <div className="flex justify-between gap-x-4 flex-wrap">
             <Info label="Sport" value={playerInfoData?.sport} />
-            {playerInfoData?.front_leg !== "NONE" && (
-              <Info
-                label="Preferred Front Leg"
-                value={playerInfoData?.front_leg}
-              />
-            )}
           </div>
         </div>
       </div>
