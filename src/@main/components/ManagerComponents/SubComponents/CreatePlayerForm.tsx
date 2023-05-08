@@ -148,6 +148,9 @@ const AddPlayerForm = (props: Props) => {
         const image = await AppUtils.resizeImage(userAvatar);
         formData.append("icon", image as string);
       }
+
+      formData.set("phone", "+2" + formData.get("phone"));
+
       try {
         setIsLoading(true);
         axiosInstance
