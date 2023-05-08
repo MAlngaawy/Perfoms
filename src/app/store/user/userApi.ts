@@ -43,9 +43,8 @@ import {
 import { BASE_HEADERS, BASE_URL } from "~/app/configs/dataService";
 import Cookies from "js-cookie";
 import { LoginResponse, LoginUserBody, UserSignup } from "../types/user-types";
-import { ReactNode } from "react";
 import { Kpis, Metrics, Pillars } from "../types/supervisor-types";
-import { Sports, Teams } from "../types/clubManager-types";
+import { Sports } from "../types/clubManager-types";
 import { UserAchievements } from "~/app/store/types/user-types";
 import { CoachPlayerInfo } from "../types/coach-types";
 import { EventFiles } from "~/app/store/types/parent-types";
@@ -88,8 +87,9 @@ export const userApi = createApi({
           //@ts-ignore
           if (error.error.status === 409)
             return window.location.replace(
+              "/coachRequestSent"
               //@ts-ignore
-              `/verify-otp?userid=${error.error.data.id}`
+              // `/verify-otp?userid=${error.error.data.id}`
             );
           AppUtils.showNotificationFun(
             "Error",
@@ -188,6 +188,22 @@ export const userApi = createApi({
         url: "teams/",
       }),
     }),
+
+    clubSports: query<Sports, { club_id: number; page?: number }>({
+      query: ({ club_id, ...params }) => ({
+        url: `${club_id}/sports`,
+      }),
+    }),
+
+    sportTeams: query<
+      ClubTeams,
+      { sport_id: string | undefined; page?: number }
+    >({
+      query: ({ sport_id, ...params }) => ({
+        url: `${sport_id}/teams`,
+      }),
+    }),
+
     clubTeams: query<ClubTeams, { club_id: number | string; page?: number }>({
       query: ({ club_id, ...params }) => ({
         url: `club-teams/${club_id}`,
@@ -684,4 +700,6 @@ export const {
   useDeleteEventVideoMutation,
   useChangePhoneMutation,
   useGetMyClubQuery,
+  useClubSportsQuery,
+  useSportTeamsQuery,
 } = userApi;

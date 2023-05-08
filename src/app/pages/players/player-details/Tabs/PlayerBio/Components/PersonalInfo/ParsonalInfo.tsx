@@ -1,11 +1,10 @@
-import { Avatar, Progress } from "@mantine/core";
-import AppIcons from "~/@main/core/AppIcons";
 import {
   useDeleteSkillMutation,
   useDeleteUserEducationMutation,
   useGetPlayerInfoQuery,
   usePlayerEducationQuery,
   usePlayerSkillsQuery,
+  useUserQuery,
 } from "~/app/store/user/userApi";
 import AddEducation from "./Forms/AddEducation";
 import { useParams } from "react-router-dom";
@@ -15,13 +14,14 @@ import { EditModeContext } from "../../../../PlayerDetails";
 import AppUtils from "~/@main/utils/AppUtils";
 import AddSkill from "./Forms/AddSkill";
 import Info from "~/@main/components/Info";
-import AvatarWithBlueBorder from "../../../../../../../../@main/components/shared/AvatarWithBlueBorder";
+import AvatarWithBlueBorder from "~/@main/components/shared/AvatarWithBlueBorder";
 import EditPlayer from "~/app/pages/home/molecules/EditPlayer";
 
 type Props = {};
 
 const ParsonalInfo = (props: Props) => {
   const { id } = useParams();
+  const { data: user } = useUserQuery({});
   const editMode = useContext(EditModeContext);
   const [deleteEducation] = useDeleteUserEducationMutation();
   const [deleteSkill] = useDeleteSkillMutation();
@@ -35,12 +35,15 @@ const ParsonalInfo = (props: Props) => {
   return (
     <div className="flex flex-col gap-4">
       <div className="bg-white rounded-3xl p-4">
-        {editMode && (
-          <EditPlayer
-            player={playerData}
-            refetchPlayerData={refetchPlayerData}
-          />
-        )}
+        {
+          //@ts-ignore
+          editMode && ["Parent", "Admin"].includes(user?.user_type) && (
+            <EditPlayer
+              player={playerData}
+              refetchPlayerData={refetchPlayerData}
+            />
+          )
+        }
         <AvatarWithBlueBorder
           name={playerData?.name || "No Name"}
           image={playerData?.icon || "No Image"}

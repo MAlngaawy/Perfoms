@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import AppRadioGroub from "~/@main/components/AppRadioGroub";
-import Sports from "../../../@main/components/ManagerComponents/Sports";
-import Teams from "../../../@main/components/ManagerComponents/Teams";
-import Users from "../../../@main/components/ManagerComponents/Users";
 
 type Props = {};
+
+const Teams = lazy(() => import("~/@main/components/ManagerComponents/Teams"));
+const Sports = lazy(
+  () => import("~/@main/components/ManagerComponents/Sports")
+);
+const Users = lazy(() => import("~/@main/components/ManagerComponents/Users"));
 
 const AdminPage = (props: Props) => {
   const [checked, setChecked] = useState<"Teams" | "Sports" | "Users">(
@@ -26,17 +29,17 @@ const AdminPage = (props: Props) => {
         />
       </div>
 
-      <div className={checked !== "Teams" ? "hidden" : "block"}>
-        <Teams />
-      </div>
-      <div className={checked !== "Sports" ? "hidden" : "block"}>
-        <Sports />
-      </div>
-      <div className={checked !== "Users" ? "hidden" : "block"}>
-        <h1>
-          <Users />
-        </h1>
-      </div>
+      <Suspense fallback={<div>Loading...</div>}>
+        {checked === "Teams" && <Teams />}
+        {checked === "Sports" && <Sports />}
+        {checked === "Users" && (
+          <div>
+            <h1>
+              <Users />
+            </h1>
+          </div>
+        )}
+      </Suspense>
     </div>
   );
 };

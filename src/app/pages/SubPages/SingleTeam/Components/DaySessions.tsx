@@ -1,7 +1,6 @@
-import { Button, Divider, Group, Modal } from "@mantine/core";
+import { ActionIcon, Divider, Modal } from "@mantine/core";
 import { TimeInput } from "@mantine/dates";
-import { useDisclosure } from "@mantine/hooks";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SubmitButton from "~/@main/components/SubmitButton";
 import DeleteButton from "~/@main/components/ManagerComponents/SubComponents/DeleteButton";
 import {
@@ -20,7 +19,6 @@ import {
 } from "~/app/store/clubManager/clubManagerApi";
 import { useUserQuery } from "~/app/store/user/userApi";
 import { useParams } from "react-router-dom";
-import { axiosInstance } from "~/app/configs/dataService";
 
 type Props = {
   close: () => void;
@@ -56,7 +54,6 @@ const DaySessions = ({
 
   const addSession = (e: any) => {
     e.preventDefault();
-    console.log(e);
     if (from && to) {
       const data = {
         from_hour: AppUtils.convertDateToString(from),
@@ -80,8 +77,13 @@ const DaySessions = ({
       } else {
         superAddSession({ team_id, ...data })
           .then((res: any) => {
+            if (typeof res.error.data === "string") {
+              setError(
+                "there is a Session with the same hours and attendance day already exists"
+              );
+            }
             if (res.error) {
-              setError(res.error.data.non_field_errors[0]);
+              setError("to hour must be greater than from hour");
             } else {
               setFrom(null);
               setTo(null);
@@ -123,7 +125,9 @@ const DaySessions = ({
             radius="md"
             size="sm"
             withAsterisk
+            format="12"
           />
+
           <TimeInput
             value={to}
             onChange={setTo}
@@ -131,6 +135,7 @@ const DaySessions = ({
             radius="md"
             size="sm"
             withAsterisk
+            format="12"
           />
           <SubmitButton
             isLoading={superAddLoading || adminAddLoading}
@@ -204,7 +209,8 @@ const OneSession = ({ session, selectedDay }: OneSessionProps) => {
   return (
     <div className="flex justify-between">
       <div className="flex">
-        <h3>{session.from_hour}</h3> - <h3>{session.to_hour}</h3>
+        <h3>{AppUtils.formatTime(session.from_hour)}</h3> -
+        <h3>{AppUtils.formatTime(session.to_hour)}</h3>
       </div>
       <div>
         <DeleteButton
