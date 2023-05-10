@@ -182,9 +182,11 @@ export type TeamPerformanceMetrics = BaseGetAllType & {
     {
       id: number;
       name: string;
+      description: string;
       kpi_metric: {
         id: number;
         name: string;
+        description: string;
       }[];
     }
   ];

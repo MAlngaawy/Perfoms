@@ -1,5 +1,5 @@
-import React, { useEffect, memo, useState } from "react";
-import { Table, Avatar, Skeleton } from "@mantine/core";
+import { useEffect, useState } from "react";
+import { Table, Avatar, Skeleton, HoverCard } from "@mantine/core";
 import cn from "classnames";
 import {
   useGetTeamPerformancesQuery,
@@ -9,7 +9,6 @@ import {
 import { useSelector } from "react-redux";
 import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 import classNames from "classnames";
-import NoAttendancesYet from "~/@main/components/NoAttendancesYet";
 import NoTeamComp from "~/@main/components/NoTeamComp";
 import {
   useSuperGetTeamPerformancesQuery,
@@ -22,7 +21,6 @@ import {
   TeamPerformanceMetrics,
 } from "~/app/store/types/coach-types";
 import { useNavigate } from "react-router-dom";
-import { t } from "i18next";
 
 type Props = {};
 
@@ -144,16 +142,32 @@ const PerformanceTable = (props: Props) => {
                 {teamPerformanceMetric?.results.map((oneKpi) => (
                   <>
                     <tr>
-                      <td className="border-0 font-bold text-left text-sm sticky left-0 bg-white z-10 text-perfGray1">
-                        {oneKpi.name}
-                      </td>
+                      <HoverCard width={200} position="top" shadow="md">
+                        <HoverCard.Target>
+                          <td className="border-0 font-bold text-left text-sm sticky left-0 bg-white z-10 text-perfGray1">
+                            <p>{oneKpi.name}</p>
+                          </td>
+                        </HoverCard.Target>
+                        <HoverCard.Dropdown className="bg-gray-100 p-2">
+                          <p className="text-xs">{oneKpi.description}</p>
+                        </HoverCard.Dropdown>
+                      </HoverCard>
                     </tr>
                     {oneKpi.kpi_metric.map((metric) => {
                       return (
                         <tr className="border-0" key={metric.id}>
                           <td className=" text-xs sm:text-sm sticky left-0  bg-white z-10 font-medium text-perfGray1">
                             <div className="w-20 xs:w-40 text-left">
-                              {metric.name}
+                              <HoverCard width={200} position="top" shadow="md">
+                                <HoverCard.Target>
+                                  <p>{metric.name}</p>
+                                </HoverCard.Target>
+                                <HoverCard.Dropdown className="bg-gray-100 p-2">
+                                  <p className="text-xs">
+                                    {metric.description}
+                                  </p>
+                                </HoverCard.Dropdown>
+                              </HoverCard>
                             </div>
                           </td>
                           {teamPerformance?.results.map((player: any) => {
