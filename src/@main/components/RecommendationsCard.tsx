@@ -8,13 +8,17 @@ import { useSuperPlayerRecommendationsQuery } from "~/app/store/supervisor/super
 import { useAdminPlayerRecommendationsQuery } from "~/app/store/clubManager/clubManagerApi";
 import { useUserQuery } from "~/app/store/user/userApi";
 import { useSelector } from "react-redux";
-import { timeFilterFn } from "~/app/store/parent/parentSlice";
+import {
+  selectedPlayerTeamFn,
+  timeFilterFn,
+} from "~/app/store/parent/parentSlice";
 
 type Props = {
   player_id: number | string | undefined;
 };
 
 const RecommendationsCard = ({ player_id }: Props) => {
+  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const timeFilter = useSelector(timeFilterFn);
   const [recommendations, setRecommendations] =
     useState<PlayerRecommendations>();
@@ -25,12 +29,14 @@ const RecommendationsCard = ({ player_id }: Props) => {
       id: player_id,
       date_from: timeFilter?.from_date,
       date_to: timeFilter?.to_date,
+      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
         !timeFilter?.from_date ||
         !timeFilter?.to_date ||
+        !selectedPlayerTeam?.id ||
         user?.user_type !== "Parent",
     }
   );
@@ -41,12 +47,14 @@ const RecommendationsCard = ({ player_id }: Props) => {
         player_id: player_id,
         date_from: timeFilter?.from_date,
         date_to: timeFilter?.to_date,
+        team_id: selectedPlayerTeam?.id,
       },
       {
         skip:
           !player_id ||
           !timeFilter?.from_date ||
           !timeFilter?.to_date ||
+          !selectedPlayerTeam?.id ||
           user?.user_type !== "Coach",
       }
     );
@@ -57,12 +65,14 @@ const RecommendationsCard = ({ player_id }: Props) => {
         player_id: player_id,
         date_from: timeFilter?.from_date,
         date_to: timeFilter?.to_date,
+        team_id: selectedPlayerTeam?.id,
       },
       {
         skip:
           !player_id ||
           !timeFilter?.from_date ||
           !timeFilter?.to_date ||
+          !selectedPlayerTeam?.id ||
           user?.user_type !== "Supervisor",
       }
     );
@@ -73,12 +83,14 @@ const RecommendationsCard = ({ player_id }: Props) => {
         player_id: player_id,
         date_from: timeFilter?.from_date,
         date_to: timeFilter?.to_date,
+        team_id: selectedPlayerTeam?.id,
       },
       {
         skip:
           !player_id ||
           !timeFilter?.from_date ||
           !timeFilter?.to_date ||
+          !selectedPlayerTeam?.id ||
           user?.user_type !== "Admin",
       }
     );

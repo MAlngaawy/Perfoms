@@ -23,7 +23,10 @@ import {
   useAdminPlayersAttendStatisticsQuery,
 } from "~/app/store/clubManager/clubManagerApi";
 import { useSelector } from "react-redux";
-import { timeFilterFn } from "~/app/store/parent/parentSlice";
+import {
+  selectedPlayerTeamFn,
+  timeFilterFn,
+} from "~/app/store/parent/parentSlice";
 import {
   useGetUserAchievementsQuery,
   useUserQuery,
@@ -37,6 +40,7 @@ type Props = {
 
 const OverAll = ({ playerInfo, reportType }: Props) => {
   const [data, setData] = useState<TeamsStatistics>();
+  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const [playerTeams, setPlayerTeams] = useState<any[]>([]);
   const { data: user } = useUserQuery({});
   const timefilter = useSelector(timeFilterFn);
@@ -50,19 +54,21 @@ const OverAll = ({ playerInfo, reportType }: Props) => {
         player_id: id,
         date_from: timefilter.from_date,
         date_to: timefilter.to_date,
+        team_id: selectedPlayerTeam?.id,
       },
       {
         skip:
           !id ||
           !timefilter.from_date ||
           !timefilter.to_date ||
+          !selectedPlayerTeam?.id ||
           user?.user_type !== "Coach",
       }
     );
   const { data: coachPlayerAttendancesStatistics } =
     useCoachPlayersAttendStatisticsQuery(
-      { player_id: id },
-      { skip: !id || user?.user_type !== "Coach" }
+      { player_id: id, team_id: selectedPlayerTeam?.id },
+      { skip: !id || !selectedPlayerTeam?.id || user?.user_type !== "Coach" }
     );
 
   const { data: superPlayerKpisStatisticsData } =
@@ -71,17 +77,22 @@ const OverAll = ({ playerInfo, reportType }: Props) => {
         player_id: id,
         date_from: timefilter.from_date,
         date_to: timefilter.to_date,
+        team_id: selectedPlayerTeam?.id,
       },
-      { skip: !id || user?.user_type !== "Supervisor" }
+      {
+        skip:
+          !id || !selectedPlayerTeam?.id || user?.user_type !== "Supervisor",
+      }
     );
   const { data: superPlayerAttendancesStatistics } =
     useSuperPlayersAttendStatisticsQuery(
-      { player_id: id },
+      { player_id: id, team_id: selectedPlayerTeam?.id },
       {
         skip:
           !id ||
           !timefilter.from_date ||
           !timefilter.to_date ||
+          !selectedPlayerTeam?.id ||
           user?.user_type !== "Supervisor",
       }
     );
@@ -92,20 +103,22 @@ const OverAll = ({ playerInfo, reportType }: Props) => {
         player_id: id,
         date_from: timefilter.from_date,
         date_to: timefilter.to_date,
+        team_id: selectedPlayerTeam?.id,
       },
       {
         skip:
           !id ||
           !timefilter.from_date ||
           !timefilter.to_date ||
+          !selectedPlayerTeam?.id ||
           user?.user_type !== "Admin",
       }
     );
 
   const { data: adminPlayerAttendancesStatistics } =
     useAdminPlayersAttendStatisticsQuery(
-      { player_id: id },
-      { skip: !id || user?.user_type !== "Admin" }
+      { player_id: id, team_id: selectedPlayerTeam?.id },
+      { skip: !id || !selectedPlayerTeam?.id || user?.user_type !== "Admin" }
     );
 
   useEffect(() => {
@@ -149,7 +162,7 @@ const OverAll = ({ playerInfo, reportType }: Props) => {
 
   return (
     <PrintComp>
-      <div className="reports flex-row items-stretch justify-center flex flex-wrap gap-4 my-6">
+      <div className="reports flex-row items-stretch justify-center flex flex-wrap gap-4 gap-x-8 my-6">
         {/* <TeamInfoCard /> */}
         <div>
           <div className="teamInfoCard shadow-lg bg-white h-full flex-col gap-4 rounded-xl p-4 flex w-64">
