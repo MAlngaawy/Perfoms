@@ -94,7 +94,7 @@ const EditKpi = ({ kpiData }: Props) => {
             currentImage={kpiData.icon || kpiData.icon_url}
           />
 
-          <Input.Wrapper id="name" withAsterisk>
+          <Input.Wrapper id="name" label="Kpi Name" withAsterisk>
             <Input
               defaultValue={kpiData.name}
               name={"name"}
@@ -113,6 +113,27 @@ const EditKpi = ({ kpiData }: Props) => {
               id="name"
             />
           </Input.Wrapper>
+
+          <Input.Wrapper id="description" label="Kpi Description">
+            <Input
+              defaultValue={kpiData.description}
+              name={"description"}
+              placeholder="Description"
+              sx={{
+                ".mantine-Input-input	": {
+                  border: 0,
+                  padding: 0,
+                  borderBottom: 1,
+                  borderStyle: "solid",
+                  borderRadius: 0,
+                  minHeight: 20,
+                },
+              }}
+              className="border-b"
+              id="description"
+            />
+          </Input.Wrapper>
+
           <SubmitButton isLoading={isLoading} text="Edit" />
         </form>
       </Modal>
