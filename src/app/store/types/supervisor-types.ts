@@ -8,6 +8,7 @@ export type Metric = {
   icon: string;
   icon_url: string;
   kpi?: number;
+  description: string;
 };
 
 export type kpi = {
@@ -15,6 +16,7 @@ export type kpi = {
   name: string;
   icon: string;
   icon_url: string;
+  description: string;
 };
 
 export type Pillar = {
