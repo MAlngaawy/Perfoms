@@ -1,8 +1,8 @@
-import { useState, ReactNode } from "react";
-import { Modal, Button, Group, Input } from "@mantine/core";
-import AppIcons from "../../../../../@main/core/AppIcons";
+import { useState } from "react";
+import { Modal, Group, Input } from "@mantine/core";
+import AppIcons from "~/@main/core/AppIcons";
 import { useForm } from "react-hook-form";
-import SubmitButton from "../../../../../@main/components/SubmitButton";
+import SubmitButton from "~/@main/components/SubmitButton";
 import { axiosInstance } from "../../../../configs/dataService";
 import { useGeneralKpisQuery, useUserQuery } from "~/app/store/user/userApi";
 import { useParams } from "react-router-dom";

@@ -16,7 +16,7 @@ import {
   useMyTeamsQuery,
 } from "~/app/store/coach/coachApi";
 import { PlayerTeams } from "~/app/store/types/parent-types";
-import { useUserQuery } from "~/app/store/user/userApi";
+import { useGetPlayerTeamsQuery, useUserQuery } from "~/app/store/user/userApi";
 import {
   useSuperTeamsQuery,
   useSuprtEventsQuery,
@@ -26,13 +26,19 @@ import { useAdminTeamsQuery } from "~/app/store/clubManager/clubManagerApi";
 
 type Props = {
   adminSportId?: string;
+  player_id?: string;
 };
 
-const TeamFilter = ({ adminSportId }: Props) => {
+const TeamFilter = ({ adminSportId, player_id }: Props) => {
   const { data: user } = useUserQuery(null);
   const [teams, setTeams] = useState<Team[]>();
   const dispatch = useDispatch();
   const selectedPlayer = useSelector(selectedPlayerFn);
+
+  const { data: userGetPlayerTeams } = useGetPlayerTeamsQuery(
+    { player_id },
+    { skip: !player_id }
+  );
 
   let { data: playerTeams } = usePlayerTeamsQuery(
     { id: selectedPlayer?.id },
@@ -56,13 +62,19 @@ const TeamFilter = ({ adminSportId }: Props) => {
     { skip: user?.user_type !== "Admin" || !user?.club }
   );
 
-  // if (!selectedPlayer) playerTeams = coachTeams as PlayerTeams | undefined;
-
   useEffect(() => {
-    if (superTeams) setTeams(superTeams.results);
-    if (coachTeams) setTeams(coachTeams.results);
-    if (playerTeams) setTeams(playerTeams.results);
-    if (adminTeams) setTeams(adminTeams.results);
+    if (!player_id) {
+      if (superTeams) setTeams(superTeams.results);
+      if (coachTeams) setTeams(coachTeams.results);
+      if (playerTeams) setTeams(playerTeams.results);
+      if (adminTeams) setTeams(adminTeams.results);
+    }
+
+    if (player_id) {
+      console.log("userGetPlayerTeams", userGetPlayerTeams);
+      //@ts-ignore
+      setTeams(userGetPlayerTeams?.results);
+    }
 
     if (teams) {
       dispatch(selectPlayerTeam(teams[0]));
