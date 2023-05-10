@@ -88,14 +88,18 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
             {playerInfoData?.sport.toLocaleLowerCase() === "taekwondo" ? (
               <>
                 <Info label="Height" value={playerInfoData?.height || "NA"} />
-                <Info
-                  label="World Weight"
-                  value={playerInfoData?.world_weight}
-                />
-                <Info
-                  label="Olympic Weight"
-                  value={playerInfoData?.olympic_weight}
-                />
+                {playerInfoData?.world_weight && (
+                  <Info
+                    label="World Weight"
+                    value={playerInfoData?.world_weight}
+                  />
+                )}
+                {playerInfoData?.olympic_weight && (
+                  <Info
+                    label="Olympic Weight"
+                    value={playerInfoData?.olympic_weight}
+                  />
+                )}
                 <Info
                   label="Preferred Front Leg"
                   value={playerInfoData?.front_leg}
@@ -103,7 +107,7 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
               </>
             ) : (
               <>
-                <Info label="Weight" value={playerInfoData?.weight} />
+                <Info label="Weight" value={playerInfoData?.weight || "NA"} />
                 <Info label="Height" value={playerInfoData?.height || "NA"} />
               </>
             )}

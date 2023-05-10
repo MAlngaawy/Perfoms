@@ -259,7 +259,12 @@ export const clubManagerApi = createApi({
 
     adminPlayers: query<
       TeamPlayers,
-      { club_id: number | undefined; page?: number }
+      {
+        club_id: number | undefined;
+        page?: number;
+        search?: string | null;
+        sport?: string | undefined;
+      }
     >({
       query: ({ club_id, ...params }) => ({
         url: `users/players/${club_id}`,
@@ -280,7 +285,12 @@ export const clubManagerApi = createApi({
 
     adminCoaches: query<
       AllUsers,
-      { club_id: number | undefined; page?: number }
+      {
+        club_id: number | undefined;
+        page?: number;
+        search?: string | null;
+        sport?: string | undefined;
+      }
     >({
       query: ({ club_id, ...params }) => ({
         url: `users/coaches/${club_id}`,
@@ -291,7 +301,12 @@ export const clubManagerApi = createApi({
 
     adminSupervisors: query<
       AllUsers,
-      { club_id: number | undefined; page?: number }
+      {
+        club_id: number | undefined;
+        page?: number;
+        search?: string | null;
+        sport?: string | undefined;
+      }
     >({
       query: ({ club_id, ...params }) => ({
         url: `users/supervisors/${club_id}`,
@@ -302,7 +317,12 @@ export const clubManagerApi = createApi({
 
     adminSubCoach: query<
       AllUsers,
-      { club_id: number | undefined; page?: number }
+      {
+        club_id: number | undefined;
+        page?: number;
+        search?: string | null;
+        sport?: string | undefined;
+      }
     >({
       query: ({ club_id, ...params }) => ({
         url: `users/sub-coaches/${club_id}`,

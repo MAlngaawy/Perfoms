@@ -54,13 +54,20 @@ const ParsonalInfo = (props: Props) => {
           {playerData?.sport.toLocaleLowerCase() === "taekwondo" ? (
             <>
               <Info label="Height" value={playerData?.height || "NA"} />
-              <Info label="World Weight" value={playerData?.world_weight} />
-              <Info label="Olympic Weight" value={playerData?.olympic_weight} />
+              {playerData?.world_weight && (
+                <Info label="World Weight" value={playerData?.world_weight} />
+              )}
+              {playerData?.olympic_weight && (
+                <Info
+                  label="Olympic Weight"
+                  value={playerData?.olympic_weight}
+                />
+              )}
               <Info label="Preferred Front Leg" value={playerData?.front_leg} />
             </>
           ) : (
             <>
-              <Info label="Weight" value={playerData?.weight} />
+              <Info label="Weight" value={playerData?.weight || "NA"} />
               <Info label="Height" value={playerData?.height || "NA"} />
             </>
           )}

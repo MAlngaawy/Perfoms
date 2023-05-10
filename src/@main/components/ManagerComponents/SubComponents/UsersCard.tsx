@@ -1,8 +1,13 @@
 import DeleteButton from "./DeleteButton";
-import { Avatar, Grid, Menu, Select, TextInput } from "@mantine/core";
+import {
+  Avatar,
+  Grid,
+  Loader,
+  Select,
+  SelectItem,
+  TextInput,
+} from "@mantine/core";
 import AddPlayerForm from "./CreatePlayerForm";
-// import { PlayerCoach } from "~/app/store/types/parent-types";
-// import { showNotification } from "@mantine/notifications";
 import {
   useAdminDeleteCoachMutation,
   useAdminDeletePlayerMutation,
@@ -11,25 +16,45 @@ import {
   useAdminSportsQuery,
 } from "~/app/store/clubManager/clubManagerApi";
 import __ from "lodash";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import AppIcons from "~/@main/core/AppIcons";
 import AppUtils from "~/@main/utils/AppUtils";
 import { useNavigate } from "react-router-dom";
 import AddSubCoachForm from "./AddSubCoachForm";
 import { useUserQuery } from "~/app/store/user/userApi";
+import Pagenation from "../../Pagenation/Pagenation";
 
 type Props = {
   type: "Player" | "Coach" | "Supervisor" | "Attendance Moderator";
   data: any;
+  setUserSearch: Dispatch<SetStateAction<string | undefined>>;
+  pageCount: number | undefined;
+  setPage: Dispatch<SetStateAction<number | undefined>>;
+  fetching: boolean;
+  sport: string | undefined;
+  setSport: Dispatch<SetStateAction<string | undefined>>;
 };
 
-const UsersCard = ({ type, data }: Props) => {
-  const [searchKeyword, setSearchKeyword] = useState<string>("");
+const UsersCard = ({
+  type,
+  data,
+  setUserSearch,
+  pageCount,
+  setPage,
+  fetching,
+  sport,
+  setSport,
+}: Props) => {
+  // const [selectedSport, setSelectedSport] = useState<string | null>();
+  const safeSetSport = setSport ?? (() => {});
+  console.log("newData", data);
 
-  const [newData, setNewData] = useState<any>(data);
-  const [selectedSport, setSelectedSport] = useState<string | null>();
-
-  const [sports, setSports] = useState<string[]>(["All"]);
+  const [sports, setSports] = useState<SelectItem[]>([
+    {
+      label: "All",
+      value: "0",
+    },
+  ]);
   const {
     //@ts-ignore
     data: user,
@@ -39,93 +64,115 @@ const UsersCard = ({ type, data }: Props) => {
 
   useEffect(() => {
     if (clubSports) {
-      let newSportSData = ["All"];
+      let newSportSData = [
+        {
+          label: "All",
+          value: "0",
+        },
+      ];
       for (let sport of clubSports.results) {
-        newSportSData.push(sport.name);
+        newSportSData.push({
+          label: sport.name,
+          value: JSON.stringify(sport.id),
+        });
       }
       setSports(newSportSData);
     }
   }, [clubSports]);
 
-  useEffect(() => {
-    if (searchKeyword.length > 0) {
-      let test;
-      if (type === "Player") {
-        test = __.filter(data, (user) =>
-          user.name?.toLowerCase().includes(searchKeyword.toLocaleLowerCase())
-        );
-      } else {
-        test = __.filter(data, (user) => {
-          let name = user.first_name + user.last_name;
-          return name
-            ?.toLowerCase()
-            .includes(searchKeyword.toLocaleLowerCase());
-        });
-      }
-      setNewData(test);
-    } else {
-      setNewData(data);
-    }
-  }, [searchKeyword, data]);
-
+  const inputRef = useRef<HTMLInputElement>(null);
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const inputValue = inputRef.current?.value;
+    setUserSearch(inputValue);
+    setPage(undefined);
+  };
   return (
     <div className="bg-white rounded-lg p-4 pt-0 ">
       <div className="header flex flex-col sm:flex-row justify-between items-start py-4">
         <h2 className="text-sm sm:text-lg text-perfGray1 mb-2 sm:mb-0">
           {type === "Coach" ? "Coaches" : type + "s"} in the system
         </h2>
-        <div className="flex gap-6 justify-center items-center">
+        <div className="  flex flex-wrap xs:flex-nowrap gap-6 justify-center items-center">
           {type === "Player" && <AddPlayerForm />}
           {type === "Attendance Moderator" && <AddSubCoachForm />}
 
           <Select
             placeholder="Filter By Sport"
-            value={selectedSport}
-            onChange={(e: string) => setSelectedSport(e)}
+            value={sport}
+            onChange={(e: string) => {
+              if (e && e != "0") {
+                safeSetSport(e);
+              } else {
+                safeSetSport("0");
+              }
+            }}
             data={sports}
           />
 
-          <TextInput
-            onChange={(e) => setSearchKeyword(e.target.value)}
-            value={searchKeyword}
-            icon={
+          <form
+            onSubmit={handleSubmit}
+            className={"flex justify-center items-center gap-2"}
+          >
+            <TextInput
+              onChange={(e) => {
+                if (e.target.value.length === 0) {
+                  setUserSearch(undefined);
+                }
+              }}
+              ref={inputRef}
+              icon={
+                <AppIcons
+                  className="w-5 h-5 pointer"
+                  icon="MagnifyingGlassIcon:outline"
+                />
+              }
+              placeholder="Search"
+            />
+            <button type="submit" className="p-2 rounded-md bg-perfBlue">
               <AppIcons
-                className="w-5 h-5"
+                className="w-5 h-5 pointer text-white"
                 icon="MagnifyingGlassIcon:outline"
               />
-            }
-            placeholder="Search"
-          />
+            </button>
+          </form>
         </div>
       </div>
       <div className="h-60 overflow-y-scroll">
-        <Grid className="w-full" gutter={"sm"}>
-          {newData && newData.length > 0 ? (
-            <FilteredUsers
-              newData={newData}
-              selectedSport={selectedSport}
-              type={type}
-            />
-          ) : (
-            <div className="flex w-full items-center justify-center pt-10">
-              <h1 className="bg-pagesBg p-6">No {type} In this Club</h1>
-            </div>
-          )}
-        </Grid>
+        {fetching ? (
+          <div className="flex justify-center items-center w-full h-full">
+            <Loader />
+          </div>
+        ) : (
+          <Grid className="w-full" gutter={"sm"}>
+            {data && data.length > 0 ? (
+              <FilteredUsers
+                newData={data}
+                // selectedSport={selectedSport}
+                type={type}
+              />
+            ) : (
+              <div className="flex w-full items-center justify-center pt-10">
+                <h1 className="bg-pagesBg p-6">No {type} In this Club</h1>
+              </div>
+            )}
+          </Grid>
+        )}
       </div>
+      <Pagenation pageCount={pageCount} setPage={setPage} />
     </div>
   );
 };
 
 type FilteredUsersProps = {
   newData: any;
-  selectedSport: string | null | undefined;
+  // selectedSport: string | null | undefined;
   type: string;
 };
 
 const FilteredUsers = ({
   newData,
-  selectedSport,
+  // selectedSport,
   type,
 }: FilteredUsersProps) => {
   const navigate = useNavigate();
@@ -162,25 +209,25 @@ const FilteredUsers = ({
       });
   };
 
-  const filteredData = newData.filter((user: any) => {
-    if (!selectedSport || selectedSport === "All") {
-      return true;
-    } else {
-      return user.sport === selectedSport;
-    }
-  });
+  // const filteredData = newData.filter((user: any) => {
+  //   if (!selectedSport || selectedSport === "All") {
+  //     return true;
+  //   } else {
+  //     return user.sport === selectedSport;
+  //   }
+  // });
 
-  if (filteredData.length === 0) {
-    return (
-      <div className="flex w-full items-center justify-center pt-10">
-        <h1 className="bg-pagesBg p-6">
-          {selectedSport} Sport doesn't have any {type}
-        </h1>
-      </div>
-    );
-  }
+  // if (filteredData.length === 0) {
+  //   return (
+  //     <div className="flex w-full items-center justify-center pt-10">
+  //       <h1 className="bg-pagesBg p-6">
+  //         {selectedSport} Sport doesn't have any {type}
+  //       </h1>
+  //     </div>
+  //   );
+  // }
 
-  return filteredData.map((user: any) => {
+  return newData.map((user: any) => {
     return (
       <Grid.Col key={user.id} className="w-fit h-fit" span={12} xs={6} sm={4}>
         <div className="flex justify-between rounded-3xl mr-10 items-center p-1  hover:bg-pagesBg transition-all">
