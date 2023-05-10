@@ -11,6 +11,7 @@ import { CoachPlayerInfo } from "~/app/store/types/coach-types";
 import Detailed from "./Component/Detailed";
 import { useAdminPlayerInfoQuery } from "~/app/store/clubManager/clubManagerApi";
 import classNames from "classnames";
+import TeamFilter from "~/@main/components/TeamFilter";
 
 type Props = {
   asComponent?: boolean;
@@ -90,6 +91,7 @@ const Player = ({ asComponent }: Props) => {
           />
         </div>
         <div className="flex gap-4 xs:justify-end items-center">
+          <TeamFilter player_id={id} />
           <Menu shadow="md" width={200}>
             <Menu.Target>
               <button className="flex gap-2 text-xs h-fit sm:text-sm justify-center items-center text-white bg-perfBlue py-2 px-2 xs:px-4 rounded-3xl">

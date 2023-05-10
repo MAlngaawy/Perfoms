@@ -406,11 +406,12 @@ export const coachApi = createApi({
         player_id: string | number | undefined;
         date_from: string | undefined;
         date_to: string | undefined;
+        team_id: string | number | undefined;
         pages?: number;
       }
     >({
-      query: ({ player_id, ...params }) => ({
-        url: `${player_id}/calendar`,
+      query: ({ player_id, team_id, ...params }) => ({
+        url: `${player_id}/calendar/${team_id}`,
         params,
       }),
     }),

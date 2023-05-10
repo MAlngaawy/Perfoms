@@ -47,12 +47,14 @@ const TotalAttendance = ({ player_id }: Props) => {
       player_id: player_id,
       date_from: timeFilter?.from_date,
       date_to: timeFilter?.to_date,
+      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
         !timeFilter?.from_date ||
         !timeFilter?.to_date ||
+        !selectedPlayerTeam?.id ||
         user?.user_type !== "Coach",
     }
   );
@@ -62,12 +64,14 @@ const TotalAttendance = ({ player_id }: Props) => {
       player_id: player_id,
       date_from: timeFilter?.from_date,
       date_to: timeFilter?.to_date,
+      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
         !timeFilter?.from_date ||
         !timeFilter?.to_date ||
+        !selectedPlayerTeam?.id ||
         user?.user_type !== "Supervisor",
     }
   );
@@ -77,12 +81,14 @@ const TotalAttendance = ({ player_id }: Props) => {
       player_id: player_id,
       date_from: timeFilter?.from_date,
       date_to: timeFilter?.to_date,
+      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
         !timeFilter?.from_date ||
         !timeFilter?.to_date ||
+        !selectedPlayerTeam?.id ||
         user?.user_type !== "Admin",
     }
   );

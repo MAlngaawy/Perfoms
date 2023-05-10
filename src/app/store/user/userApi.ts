@@ -47,7 +47,7 @@ import { Kpis, Metrics, Pillars } from "../types/supervisor-types";
 import { Sports } from "../types/clubManager-types";
 import { UserAchievements } from "~/app/store/types/user-types";
 import { CoachPlayerInfo } from "../types/coach-types";
-import { EventFiles } from "~/app/store/types/parent-types";
+import { EventFiles, PlayerTeams } from "~/app/store/types/parent-types";
 
 export const userApi = createApi({
   reducerPath: "userApi",
@@ -500,6 +500,18 @@ export const userApi = createApi({
       providesTags: ["player"],
     }),
 
+    /**Player Info */
+    getPlayerTeams: query<
+      PlayerTeams,
+      { player_id: string | number | undefined }
+    >({
+      query: ({ player_id, ...params }) => ({
+        url: `${player_id}/player-teams/`,
+        params,
+      }),
+      providesTags: ["player"],
+    }),
+
     // Player Courses
     getPlayerCourses: query<
       Courses,
@@ -702,4 +714,5 @@ export const {
   useGetMyClubQuery,
   useClubSportsQuery,
   useSportTeamsQuery,
+  useGetPlayerTeamsQuery,
 } = userApi;

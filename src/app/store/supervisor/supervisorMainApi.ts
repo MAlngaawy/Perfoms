@@ -549,10 +549,11 @@ export const supervisorApi = createApi({
         pages?: number;
         date_from: string | undefined;
         date_to: string | undefined;
+        team_id: string | number | undefined;
       }
     >({
-      query: ({ player_id, ...params }) => ({
-        url: `statistics/${player_id}/calendar`,
+      query: ({ player_id, team_id, ...params }) => ({
+        url: `statistics/${player_id}/calendar/${team_id}`,
         params,
       }),
     }),
