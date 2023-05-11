@@ -100,10 +100,12 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
                     value={playerInfoData?.olympic_weight}
                   />
                 )}
-                <Info
-                  label="Preferred Front Leg"
-                  value={playerInfoData?.front_leg}
-                />
+                {playerInfoData?.front_leg !== "NONE" && (
+                  <Info
+                    label="Preferred Front Leg"
+                    value={playerInfoData?.front_leg}
+                  />
+                )}
               </>
             ) : (
               <>

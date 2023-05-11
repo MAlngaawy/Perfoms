@@ -63,7 +63,12 @@ const ParsonalInfo = (props: Props) => {
                   value={playerData?.olympic_weight}
                 />
               )}
-              <Info label="Preferred Front Leg" value={playerData?.front_leg} />
+              {playerData?.front_leg !== "NONE" && (
+                <Info
+                  label="Preferred Front Leg"
+                  value={playerData?.front_leg}
+                />
+              )}
             </>
           ) : (
             <>
