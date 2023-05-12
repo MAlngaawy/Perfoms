@@ -56,7 +56,7 @@ const formInputsDefaultValue = {
   mobile: "",
 };
 
-const AddSubCoachForm = (props: Props) => {
+const CreateUser = (props: Props) => {
   const [opened, { open, close }] = useDisclosure(false);
   const { data: user } = useUserQuery(null);
   const [formInputsData, setFormInputsData] = useState(formInputsDefaultValue);
@@ -366,4 +366,4 @@ const AddSubCoachForm = (props: Props) => {
   );
 };
 
-export default AddSubCoachForm;
+export default CreateUser;

@@ -20,7 +20,7 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import AppIcons from "~/@main/core/AppIcons";
 import AppUtils from "~/@main/utils/AppUtils";
 import { useNavigate } from "react-router-dom";
-import AddSubCoachForm from "./AddSubCoachForm";
+import CreateUser from "./CreateUser";
 import { useUserQuery } from "~/app/store/user/userApi";
 import Pagenation from "../../Pagenation/Pagenation";
 
@@ -95,7 +95,7 @@ const UsersCard = ({
         </h2>
         <div className="  flex flex-wrap xs:flex-nowrap gap-6 justify-center items-center">
           {type === "Player" && <AddPlayerForm />}
-          {type === "Attendance Moderator" && <AddSubCoachForm />}
+          {type === "Attendance Moderator" && <CreateUser />}
 
           <Select
             placeholder="Filter By Sport"
