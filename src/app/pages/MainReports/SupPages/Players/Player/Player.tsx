@@ -90,7 +90,7 @@ const Player = ({ asComponent }: Props) => {
             onChange={(event) => setChecked(event.currentTarget.checked)}
           />
         </div>
-        <div className="flex gap-4 xs:justify-end items-center">
+        <div className="flex gap-4 xs:justify-end items-center flex-wrap">
           <TeamFilter player_id={id} />
           <Menu shadow="md" width={200}>
             <Menu.Target>

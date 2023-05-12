@@ -109,10 +109,12 @@ const CreateContentTable = memo(
 
                   {item.attendance_sessions.map((session) => (
                     <tr key={session.id} className="">
-                      <td className="text-xs tracking-wider font-medium text-center px-0 sticky left-0 bg-white z-10 text-perfGray1">
-                        {AppUtils.formatTime(session.from_hour)}
-                        <br />
-                        {AppUtils.formatTime(session.to_hour)}
+                      <td className="text-xs tracking-wider font-medium text-left px-0 sticky left-0 bg-white z-10 text-perfGray1">
+                        <p className="ml-8">
+                          {AppUtils.formatTime(session.from_hour)}
+                          <br />
+                          {AppUtils.formatTime(session.to_hour)}
+                        </p>
                       </td>
                       {teamAttendance?.results.map((player: any) => {
                         let from = "";

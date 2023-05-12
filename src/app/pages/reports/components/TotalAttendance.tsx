@@ -12,7 +12,7 @@ import { usePlayerCalendarQuery } from "~/app/store/parent/parentApi";
 import { useCoachPlayerCalendarQuery } from "~/app/store/coach/coachApi";
 import { useSuperPlayerCalendarQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { useAdminPlayerCalendarQuery } from "~/app/store/clubManager/clubManagerApi";
-import { useUserQuery } from "~/app/store/user/userApi";
+import { useGetTeamInfoQuery, useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {
   player_id?: number | string | undefined;
@@ -24,6 +24,13 @@ const TotalAttendance = ({ player_id }: Props) => {
   const [playerAttendance, setPlayerAttendance] = useState<PlayerAttendances>();
   const timeFilter = useSelector(timeFilterFn);
   const { data: user } = useUserQuery({});
+
+  const { data: selectedTeamInfo } = useGetTeamInfoQuery(
+    {
+      team_id: selectedPlayerTeam.id,
+    },
+    { skip: !selectedPlayerTeam.id }
+  );
 
   const { data: parentPlayerAttendance } = usePlayerCalendarQuery(
     {
@@ -110,11 +117,24 @@ const TotalAttendance = ({ player_id }: Props) => {
   ];
 
   if (playerAttendance) {
-    for (let i = 0; i < playerAttendance?.results?.length; i++) {
-      if (playerAttendance?.results[i].status === "ATTENDED") {
-        newData[0].value += 1;
-      } else if (playerAttendance?.results[i].status === "ABSENT") {
-        newData[1].value += 1;
+    if (selectedTeamInfo?.attend_per === "SESSION") {
+      for (let i = 0; i < playerAttendance?.results?.length; i++) {
+        const sessions = playerAttendance?.results[i].attendance_sessions;
+        for (let j = 0; j < sessions?.length; j++) {
+          if (sessions[j].status === "ATTENDED") {
+            newData[0].value += 1;
+          } else if (sessions[j].status === "ABSENT") {
+            newData[1].value += 1;
+          }
+        }
+      }
+    } else {
+      for (let i = 0; i < playerAttendance?.results?.length; i++) {
+        if (playerAttendance?.results[i].status === "ATTENDED") {
+          newData[0].value += 1;
+        } else if (playerAttendance?.results[i].status === "ABSENT") {
+          newData[1].value += 1;
+        }
       }
     }
   }

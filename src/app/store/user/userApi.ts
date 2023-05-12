@@ -43,10 +43,10 @@ import {
 import { BASE_HEADERS, BASE_URL } from "~/app/configs/dataService";
 import Cookies from "js-cookie";
 import { LoginResponse, LoginUserBody, UserSignup } from "../types/user-types";
-import { Kpis, Metrics, Pillars } from "../types/supervisor-types";
+import { Kpis, Metrics, Pillars, Team } from "../types/supervisor-types";
 import { Sports } from "../types/clubManager-types";
 import { UserAchievements } from "~/app/store/types/user-types";
-import { CoachPlayerInfo } from "../types/coach-types";
+import { CoachPlayerInfo, CoachTeamInfo } from "../types/coach-types";
 import { EventFiles, PlayerTeams } from "~/app/store/types/parent-types";
 
 export const userApi = createApi({
@@ -647,6 +647,10 @@ export const userApi = createApi({
     getMyClub: query<MyClub, {}>({
       query: (params) => "my-club/",
     }),
+
+    getTeamInfo: query<Team, { team_id: string | number | undefined }>({
+      query: ({ team_id, ...params }) => `teams/${team_id}`,
+    }),
   }),
 });
 
@@ -715,4 +719,5 @@ export const {
   useClubSportsQuery,
   useSportTeamsQuery,
   useGetPlayerTeamsQuery,
+  useGetTeamInfoQuery,
 } = userApi;

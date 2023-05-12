@@ -221,4 +221,5 @@ export type AddAttendanceSession = {
   from_hour: string;
   to_hour: string;
   day: string;
+  status: "ATTENDED" | "ABSENT" | "UPCOMING";
 };

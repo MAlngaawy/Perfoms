@@ -146,8 +146,8 @@ const CreateContentTable = memo(
               const thisDate = item.day;
               return (
                 <tr key={item.day} className="">
-                  <td className="text-xs font-medium text-center px-0 sticky left-0 bg-white z-10 text-perfGray1">
-                    {thisDate}
+                  <td className="text-xs font-medium text-left px-0 sticky left-0 bg-white z-10 text-perfGray1">
+                    <p className="ml-5">{thisDate}</p>
                     {/* {thisDate.getDate() - 1}/ {thisDate.getMonth() + 1} /
                   {thisDate.getFullYear()} */}
                   </td>
