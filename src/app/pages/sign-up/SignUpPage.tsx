@@ -76,7 +76,7 @@ const SignUpPage = (props: Props) => {
     //@ts-ignore
     { sport_id: selectedSport },
     {
-      skip: userRole !== "Coach" || !selectedSport,
+      skip: !selectedSport,
     }
   );
 
@@ -197,6 +197,12 @@ const SignUpPage = (props: Props) => {
                   image:
                     "https://cdn-icons-png.flaticon.com/512/3564/3564504.png",
                   label: "🏋️ Coach",
+                },
+                {
+                  value: "Player",
+                  image:
+                    "https://cdn-icons-png.flaticon.com/512/3564/3564504.png",
+                  label: "🤽‍♀️Player",
                 },
               ]}
               name="userRole"
@@ -343,7 +349,7 @@ const SignUpPage = (props: Props) => {
             )}
 
             {/* Select Teams */}
-            {userRole === "Coach" && clubSportsData && (
+            {["Coach", "Player"].includes(userRole) && clubSportsData && (
               <div className="flex justify-center items-center gap-2">
                 <Select
                   className="w-full"

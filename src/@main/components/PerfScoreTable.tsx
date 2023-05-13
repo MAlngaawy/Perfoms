@@ -1,6 +1,5 @@
 import { Avatar } from "@mantine/core";
 import React, { useMemo, useRef } from "react";
-// import { useTable, useExpanded } from "react-table";
 
 type Props = {};
 
