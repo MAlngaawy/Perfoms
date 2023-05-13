@@ -163,7 +163,11 @@ const UsersCard = ({
           </Grid>
         )}
       </div>
-      <Pagenation pageCount={pageCount} setPage={setPage} />
+      <Pagenation
+        pageCount={pageCount}
+        setPage={setPage}
+        searchInputValue={inputRef.current?.value}
+      />
     </div>
   );
 };
