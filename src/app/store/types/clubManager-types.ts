@@ -220,11 +220,12 @@ export type UpdateNote = {
   is_selected: boolean;
 };
 
-export type AddSubCoach = {
+export type AddUser = {
   mobile: string;
   password: string;
   first_name?: string;
   last_name?: string;
+  sport?: number;
   teams?: number[];
   avatar?: string;
 };

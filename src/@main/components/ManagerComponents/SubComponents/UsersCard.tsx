@@ -94,9 +94,11 @@ const UsersCard = ({
           {type === "Coach" ? "Coaches" : type + "s"} in the system
         </h2>
         <div className="  flex flex-wrap xs:flex-nowrap gap-6 justify-center items-center">
-          {type === "Player" && <AddPlayerForm />}
-          {type === "Attendance Moderator" && <CreateUser />}
-
+          {type === "Player" ? (
+            <AddPlayerForm />
+          ) : (
+            <CreateUser userType={type} />
+          )}
           <Select
             placeholder="Filter By Sport"
             value={sport}

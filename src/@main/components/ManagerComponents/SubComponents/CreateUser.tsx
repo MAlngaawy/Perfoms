@@ -13,7 +13,10 @@ import AppUtils from "~/@main/utils/AppUtils";
 import * as yup from "yup";
 import { useUserQuery } from "~/app/store/user/userApi";
 import {
+  useAdminAddCoachMutation,
   useAdminAddSubCoachMutation,
+  useAdminAddSupervsiorMutation,
+  useAdminAddTeamAttendanceSessionMutation,
   useAdminSportsQuery,
   useAdminSubCoachQuery,
   useAdminTeamsStatisticsQuery,
@@ -21,42 +24,21 @@ import {
 // import SelectTeamsFromSportInputs from "../../shared/SelectTeamsFromSportInputs";
 import { PlayerSport, SportTeam } from "~/app/store/types/parent-types";
 
-type Props = {};
-
-const schema = yup.object().shape({
-  mobile: yup
-    .string()
-    .required("Phone number is required")
-    .length(11, "phone number must be 11 characters long")
-    .matches(/^\d+$/, "phone number must only contain numbers"),
-  first_name: yup.string().required("First name is required"),
-  last_name: yup.string().required("Last name is required"),
-  sport: yup
-    .number()
-    .required("You Must select a sport")
-    .typeError("You Have to select a sport"),
-  teams: yup.array().of(yup.number()).min(1, "At least on team is required"),
-  password: yup
-    .string()
-    .required("Password is required")
-    .min(8, "Password must be at least 8 characters long"),
-  confirmPassword: yup
-    .string()
-    .required("Please confirm your password")
-    .oneOf([yup.ref("password"), null], "Passwords must match"),
-});
+type Props = {
+  userType: "Coach" | "Supervisor" | "Attendance Moderator";
+};
 
 const formInputsDefaultValue = {
   first_name: "",
   last_name: "",
-  sport: "",
+  sport: undefined,
   teams: [],
   password: "",
   confirmPassword: "",
   mobile: "",
 };
 
-const CreateUser = (props: Props) => {
+const CreateUser = ({ userType }: Props) => {
   const [opened, { open, close }] = useDisclosure(false);
   const { data: user } = useUserQuery(null);
   const [formInputsData, setFormInputsData] = useState(formInputsDefaultValue);
@@ -81,6 +63,34 @@ const CreateUser = (props: Props) => {
       [name]: value,
     });
   };
+
+  const hasTeams = ["Coach", "Attendance Moderator"].includes(userType);
+
+  const schema = yup.object().shape({
+    mobile: yup
+      .string()
+      .required("Phone number is required")
+      .length(11, "phone number must be 11 characters long")
+      .matches(/^\d+$/, "phone number must only contain numbers"),
+    first_name: yup.string().required("First name is required"),
+    last_name: yup.string().required("Last name is required"),
+    sport: yup
+      .number()
+      .required("You Must select a sport")
+      .typeError("You Have to select a sport"),
+    teams: yup
+      .array()
+      .of(yup.number())
+      .min(hasTeams ? 1 : 0, "At least on team is required"),
+    password: yup
+      .string()
+      .required("Password is required")
+      .min(8, "Password must be at least 8 characters long"),
+    confirmPassword: yup
+      .string()
+      .required("Please confirm your password")
+      .oneOf([yup.ref("password"), null], "Passwords must match"),
+  });
 
   const [sports, setSports] = useState<any>([]);
   const [teams, setTeams] = React.useState<any>([]);
@@ -115,6 +125,8 @@ const CreateUser = (props: Props) => {
   }, [clubSports, sportTeams, selectedSport]);
 
   const [createSubCoach] = useAdminAddSubCoachMutation();
+  const [createCoach] = useAdminAddCoachMutation();
+  const [createSupervisor] = useAdminAddSupervsiorMutation();
 
   const onSubmitFun = async (e: any) => {
     e.preventDefault();
@@ -128,13 +140,12 @@ const CreateUser = (props: Props) => {
       first_name: formInputsData.first_name,
       last_name: formInputsData.last_name,
       password: formInputsData.password,
-      teams: formInputsData.teams,
+      sport: formInputsData.sport,
+      teams: hasTeams ? formInputsData.teams : undefined,
     };
 
-    try {
-      setIsLoading(true);
-      await schema.validate(formInputsData, { abortEarly: false });
-      createSubCoach(newData)
+    const handleCreate = (createFunction: any) => {
+      createFunction(newData)
         .then(() => {
           setIsLoading(false);
           close();
@@ -146,7 +157,7 @@ const CreateUser = (props: Props) => {
             "Attendance Modeartor Added Successfully"
           );
         })
-        .catch((err) => {
+        .catch((err: any) => {
           setIsLoading(false);
           console.log();
           AppUtils.showNotificationFun(
@@ -155,6 +166,18 @@ const CreateUser = (props: Props) => {
             err.response.statusText
           );
         });
+    };
+
+    try {
+      setIsLoading(true);
+      await schema.validate(formInputsData, { abortEarly: false });
+      if (userType === "Attendance Moderator") {
+        handleCreate(createSubCoach);
+      } else if (userType === "Coach") {
+        handleCreate(createCoach);
+      } else if (userType === "Supervisor") {
+        handleCreate(createSupervisor);
+      }
     } catch (error) {
       setIsLoading(false);
       const validationErrors = {};
@@ -170,7 +193,7 @@ const CreateUser = (props: Props) => {
 
   return (
     <>
-      <Modal opened={opened} onClose={close} title="Add Attendance Moderator">
+      <Modal opened={opened} onClose={close} title={`Add ${userType}`}>
         <form
           onSubmit={onSubmitFun}
           className="rounded-xl py-4 flex flex-col gap-4 justify-between"
@@ -259,36 +282,37 @@ const CreateUser = (props: Props) => {
                 }
               }}
             />
+            {hasTeams && (
+              <MultiSelect
+                id="teams"
+                error={errors.teams}
+                required
+                className="w-full"
+                label="Teams"
+                name="teams"
+                value={selectedTeam}
+                onChange={(e) => {
+                  console.log(e);
 
-            <MultiSelect
-              id="teams"
-              error={errors.teams}
-              required
-              className="w-full"
-              label="Teams"
-              name="teams"
-              value={selectedTeam}
-              onChange={(e) => {
-                console.log(e);
-
-                if (e) {
-                  setSelectedTeam(e);
-                  handleChange("teams", e);
-                }
-              }}
-              sx={{
-                ".mantine-MultiSelect-input": {
-                  background: "none",
-                  border: 0,
-                  borderBottom: "1px solid",
-                  borderRadius: 0,
-                  width: "100%",
-                },
-              }}
-              data={teams?.map((item: Partial<SportTeam>) => {
-                return { label: item.name, value: item.id };
-              })}
-            />
+                  if (e) {
+                    setSelectedTeam(e);
+                    handleChange("teams", e);
+                  }
+                }}
+                sx={{
+                  ".mantine-MultiSelect-input": {
+                    background: "none",
+                    border: 0,
+                    borderBottom: "1px solid",
+                    borderRadius: 0,
+                    width: "100%",
+                  },
+                }}
+                data={teams?.map((item: Partial<SportTeam>) => {
+                  return { label: item.name, value: item.id };
+                })}
+              />
+            )}
           </div>
 
           {/* <SelectTeamsFromSportInputs
@@ -342,7 +366,7 @@ const CreateUser = (props: Props) => {
               },
             }}
           />
-          <SubmitButton isLoading={isLoading} text="Create Att Moderator" />
+          <SubmitButton isLoading={isLoading} text={`Create ${userType}`} />
         </form>
       </Modal>
 
@@ -358,7 +382,7 @@ const CreateUser = (props: Props) => {
             className="py-1 px-4 hidden xs:block transform hover:scale-105 transition-all text-xs border border-perfGray3 text-perfGray3 rounded-3xl"
             onClick={open}
           >
-            + Add Attendance Moderator
+            + Add {userType}
           </button>
         </>
       </Group>

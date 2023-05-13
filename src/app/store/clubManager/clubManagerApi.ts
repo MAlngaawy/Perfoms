@@ -3,7 +3,7 @@ import { BASE_HEADERS, BASE_URL } from "~/app/configs/dataService";
 import {
   AddEvent,
   AddRecommendation,
-  AddSubCoach,
+  AddUser,
   AllUsers,
   ClubParents,
   CoachesRequests,
@@ -70,6 +70,7 @@ export const clubManagerApi = createApi({
     "coachUser",
     "supervisorUser",
     "subCoachesUser",
+    "parentUser",
     "pillars",
     "metrics",
     "actions",
@@ -385,13 +386,40 @@ export const clubManagerApi = createApi({
       invalidatesTags: ["subCoachesUser"],
     }),
 
-    adminAddSubCoach: mutation<AddSubCoach, AddSubCoach>({
+    adminAddSubCoach: mutation<AddUser, AddUser>({
       query: (body) => ({
         url: `users/sub-coaches/add-sub-coach/`,
         method: "POST",
         body,
       }),
       invalidatesTags: ["subCoachesUser"],
+    }),
+
+    adminAddSupervsior: mutation<AddUser, AddUser>({
+      query: (body) => ({
+        url: `users/supervisors/add-supervisor/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["supervisorUser"],
+    }),
+
+    adminAddCoach: mutation<AddUser, AddUser>({
+      query: (body) => ({
+        url: `users/coaches/add-coach/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["coachUser"],
+    }),
+
+    adminAddParent: mutation<AddUser, AddUser>({
+      query: (body) => ({
+        url: `users/parents/add-parent/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["parentUser"],
     }),
 
     adminUpdateUserType: mutation<UpdateUserType, UpdateUserType>({
@@ -886,6 +914,9 @@ export const {
   useAdminDeleteSupervisorMutation,
   useAdminDeleteSubCoachMutation,
   useAdminAddSubCoachMutation,
+  useAdminAddSupervsiorMutation,
+  useAdminAddCoachMutation,
+  useAdminAddParentMutation,
   useAdminUpdateUserTypeMutation,
   useAdminDeleteSportMutation,
   useAdminPillarsQuery,
