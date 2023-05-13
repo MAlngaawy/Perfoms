@@ -1,29 +1,27 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import TeamCard from "~/@main/components/ManagerComponents/SubComponents/TeamCard";
 import SwitchButton from "~/@main/components/SwitchButton";
 import TeamFilter from "~/@main/components/TeamFilter";
-import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
-import { useSuperTeamInfoQuery } from "~/app/store/supervisor/supervisorMainApi";
+import { useSuperTeamsQuery } from "~/app/store/supervisor/supervisorMainApi";
 import AttendanceTable from "../coachHome/components/AttendanceTable";
 import PerformanceTable from "../coachHome/components/PerformanceTable";
-import SessionsAttendanceTable from "../coachHome/components/SessionsAttendanceTable";
 
 type Props = {};
 
 const ScoringPage = (props: Props) => {
-  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
-
   const [checked, setChecked] =
     useState<"Attendance" | "Performance">("Attendance");
-  const { data: superTeam } = useSuperTeamInfoQuery(
-    { team_id: JSON.stringify(selectedPlayerTeam?.id) },
-    { skip: !selectedPlayerTeam }
-  );
 
   return (
     <div className="coach-home">
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 my-4 mx-8">
         <div className="flex items-center flex-wrap gap-1 xs:gap-4">
+          {/* <AppRadioGroub
+            values={["Attendance", "Performance", "Team info"]}
+            checked={checked}
+            setChecked={setChecked}
+          /> */}
           <SwitchButton
             checked={checked}
             setChecked={setChecked}
@@ -39,17 +37,28 @@ const ScoringPage = (props: Props) => {
       </div>
 
       <div className={checked !== "Attendance" ? "hidden" : "block"}>
-        {superTeam?.attend_per === "SESSION" ? (
-          <SessionsAttendanceTable />
-        ) : (
-          <AttendanceTable />
-        )}
+        <AttendanceTable />
       </div>
       <div className={checked !== "Performance" ? "hidden" : "block"}>
         <PerformanceTable />
       </div>
     </div>
   );
+
+  // const { data: teams } = useSuperTeamsQuery({});
+  // console.log(teams);
+
+  // return (
+  //   <div className="flex gap-4 m-4">
+  //     {teams?.results.map((team) => {
+  //       return (
+  //         <Link to={`${team.id}/scoring-tables`} key={team.id}>
+  //           <TeamCard team={team} withoutEditsOptions={true} />
+  //         </Link>
+  //       );
+  //     })}
+  //   </div>
+  // );
 };
 
 export default ScoringPage;

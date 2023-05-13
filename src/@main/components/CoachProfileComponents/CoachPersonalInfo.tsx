@@ -101,7 +101,7 @@ const CoachPersonalInfo = ({ editMode, type }: Props) => {
           </div>
           <div className="teams my-4 text-left">
             <h3 className="text-base font-medium text-perfLightBlack">Teams</h3>
-            <div className="flex gap-4 flex-wrap">
+            <div className="flex gap-4">
               {data?.teams?.map((team) => (
                 <div
                   key={team?.id}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import AppRadioGroub from "~/@main/components/AppRadioGroub";
 import Sports from "~/@main/components/ManagerComponents/Sports";
 import Teams from "~/@main/components/ManagerComponents/Teams";
@@ -8,14 +8,7 @@ import SwitchButton from "~/@main/components/SwitchButton";
 type Props = {};
 
 const SuperHome = (props: Props) => {
-  const [checked, setChecked] = useState<"Teams" | "Sports" | "Users">(
-    //@ts-ignore
-    localStorage.getItem("checked") || "Teams"
-  );
-
-  useEffect(() => {
-    localStorage.setItem("checked", checked);
-  }, [checked]);
+  const [checked, setChecked] = useState<"Teams" | "Sports">("Teams");
 
   return (
     <div className="m-6">

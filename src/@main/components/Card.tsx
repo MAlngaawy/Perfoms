@@ -24,14 +24,10 @@ import {
   useAdminPlayerKpisMetricsWeaknessScoreQuery,
 } from "~/app/store/clubManager/clubManagerApi";
 import { useUserQuery } from "~/app/store/user/userApi";
-import {
-  selectedPlayerTeamFn,
-  timeFilterFn,
-} from "~/app/store/parent/parentSlice";
+import { timeFilterFn } from "~/app/store/parent/parentSlice";
 import { useSelector } from "react-redux";
 
 const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
-  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const [data, setData] = useState<PlayerMetricScores | undefined>();
   const { data: user } = useUserQuery({});
   const timeFilter = useSelector(timeFilterFn);
@@ -42,14 +38,12 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
       player_id: player_id,
       date_from: timeFilter?.from_date,
       date_to: timeFilter?.to_date,
-      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
         !timeFilter?.from_date ||
         !timeFilter?.to_date ||
-        !selectedPlayerTeam?.id ||
         user?.user_type !== "Parent",
     }
   );
@@ -58,14 +52,12 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
       player_id: player_id,
       date_from: timeFilter?.from_date,
       date_to: timeFilter?.to_date,
-      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
         !timeFilter?.from_date ||
         !timeFilter?.to_date ||
-        !selectedPlayerTeam?.id ||
         user?.user_type !== "Parent",
     }
   );
@@ -74,14 +66,12 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
       player_id: player_id,
       date_from: timeFilter?.from_date,
       date_to: timeFilter?.to_date,
-      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
         !timeFilter?.from_date ||
         !timeFilter?.to_date ||
-        !selectedPlayerTeam?.id ||
         user?.user_type !== "Parent",
     }
   );
@@ -93,12 +83,8 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
         player_id: player_id,
         date_from: timeFilter?.from_date,
         date_to: timeFilter?.to_date,
-        team_id: selectedPlayerTeam?.id,
       },
-      {
-        skip:
-          !player_id || !selectedPlayerTeam?.id || user?.user_type !== "Coach",
-      }
+      { skip: !player_id || user?.user_type !== "Coach" }
     );
   const { data: coachPlayerStrength } =
     useCoachPlayerKpisMetricsStrengthScoreQuery(
@@ -106,12 +92,8 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
         player_id: player_id,
         date_from: timeFilter?.from_date,
         date_to: timeFilter?.to_date,
-        team_id: selectedPlayerTeam?.id,
       },
-      {
-        skip:
-          !player_id || !selectedPlayerTeam?.id || user?.user_type !== "Coach",
-      }
+      { skip: !player_id || user?.user_type !== "Coach" }
     );
   const { data: coachPlayerWeakness } =
     useCoachPlayerKpisMetricsWeaknessScoreQuery(
@@ -119,12 +101,8 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
         player_id: player_id,
         date_from: timeFilter?.from_date,
         date_to: timeFilter?.to_date,
-        team_id: selectedPlayerTeam?.id,
       },
-      {
-        skip:
-          !player_id || !selectedPlayerTeam?.id || user?.user_type !== "Coach",
-      }
+      { skip: !player_id || user?.user_type !== "Coach" }
     );
 
   // Fetch Supervisor Data
@@ -134,14 +112,8 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
         player_id: player_id,
         date_from: timeFilter?.from_date,
         date_to: timeFilter?.to_date,
-        team_id: selectedPlayerTeam?.id,
       },
-      {
-        skip:
-          !player_id ||
-          !selectedPlayerTeam?.id ||
-          user?.user_type !== "Supervisor",
-      }
+      { skip: !player_id || user?.user_type !== "Supervisor" }
     );
   const { data: superPlayerStrength } =
     useSuperPlayerKpisMetricsStrengthScoreQuery(
@@ -149,14 +121,8 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
         player_id: player_id,
         date_from: timeFilter?.from_date,
         date_to: timeFilter?.to_date,
-        team_id: selectedPlayerTeam?.id,
       },
-      {
-        skip:
-          !player_id ||
-          !selectedPlayerTeam?.id ||
-          user?.user_type !== "Supervisor",
-      }
+      { skip: !player_id || user?.user_type !== "Supervisor" }
     );
   const { data: superPlayerWeakness } =
     useSuperPlayerKpisMetricsWeaknessScoreQuery(
@@ -164,14 +130,8 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
         player_id: player_id,
         date_from: timeFilter?.from_date,
         date_to: timeFilter?.to_date,
-        team_id: selectedPlayerTeam?.id,
       },
-      {
-        skip:
-          !player_id ||
-          !selectedPlayerTeam?.id ||
-          user?.user_type !== "Supervisor",
-      }
+      { skip: !player_id || user?.user_type !== "Supervisor" }
     );
 
   // Fetch Supervisor Data
@@ -181,12 +141,8 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
         player_id: player_id,
         date_from: timeFilter?.from_date,
         date_to: timeFilter?.to_date,
-        team_id: selectedPlayerTeam?.id,
       },
-      {
-        skip:
-          !player_id || !selectedPlayerTeam?.id || user?.user_type !== "Admin",
-      }
+      { skip: !player_id || user?.user_type !== "Admin" }
     );
   const { data: adminPlayerStrength } =
     useAdminPlayerKpisMetricsStrengthScoreQuery(
@@ -194,12 +150,8 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
         player_id: player_id,
         date_from: timeFilter?.from_date,
         date_to: timeFilter?.to_date,
-        team_id: selectedPlayerTeam?.id,
       },
-      {
-        skip:
-          !player_id || !selectedPlayerTeam?.id || user?.user_type !== "Admin",
-      }
+      { skip: !player_id || user?.user_type !== "Admin" }
     );
   const { data: adminPlayerWeakness } =
     useAdminPlayerKpisMetricsWeaknessScoreQuery(
@@ -207,12 +159,8 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
         player_id: player_id,
         date_from: timeFilter?.from_date,
         date_to: timeFilter?.to_date,
-        team_id: selectedPlayerTeam?.id,
       },
-      {
-        skip:
-          !player_id || !selectedPlayerTeam?.id || user?.user_type !== "Admin",
-      }
+      { skip: !player_id || user?.user_type !== "Admin" }
     );
 
   useEffect(() => {

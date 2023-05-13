@@ -23,9 +23,7 @@ type Props = {};
 
 const TeamsComponent = (props: Props) => {
   const { data: user } = useUserQuery({});
-  const [selectedSport, setSelectedSport] = useState<string>(
-    localStorage.getItem("selectedSport") || "0"
-  );
+  const [selectedSport, setSelectedSport] = useState<string>("0");
 
   const { data: adminSports } = useAdminSportsQuery(
     { club_id: user?.club },
@@ -48,14 +46,10 @@ const TeamsComponent = (props: Props) => {
   }, [superTeams, adminTeams]);
 
   useEffect(() => {
-    if (adminSports && !localStorage.getItem("selectedSport")) {
+    if (adminSports) {
       setSelectedSport(JSON.stringify(adminSports.results[0].id));
     }
   }, [adminSports]);
-
-  useEffect(() => {
-    localStorage.setItem("selectedSport", selectedSport);
-  }, [selectedSport]);
 
   const [superDeleteTeam] = useSuperDeleteTeamMutation();
   const [adminDeleteTeam] = useAdminDeleteTeamMutation();

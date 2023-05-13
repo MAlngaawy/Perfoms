@@ -1,12 +1,15 @@
 import { useState, ReactNode, useEffect } from "react";
-import { Modal, Group, Input } from "@mantine/core";
+import { Modal, Button, Group, Input } from "@mantine/core";
 import AppIcons from "../../../core/AppIcons";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import Resizer from "react-image-file-resizer";
+import cn from "classnames";
 import SubmitButton from "../../SubmitButton";
 import PerfSelect from "../../Select";
 import { axiosInstance } from "~/app/configs/dataService";
+import { showNotification } from "@mantine/notifications";
 import { Team } from "~/app/store/types/supervisor-types";
 import { useUserQuery } from "~/app/store/user/userApi";
 import { useSuperTeamsQuery } from "~/app/store/supervisor/supervisorMainApi";
@@ -20,6 +23,8 @@ type Props = {
 };
 
 const EditButton = ({ teamData, sport_id }: Props) => {
+  console.log("teamData", teamData);
+
   const [opened, setOpened] = useState(false);
   const [userAvatar, setUserAvatar] = useState<File | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -41,7 +46,6 @@ const EditButton = ({ teamData, sport_id }: Props) => {
     from_age: yup.number(),
     to_age: yup.number(),
     gender: yup.string(),
-    attend_per: yup.string(),
   });
 
   const resetFields = () => {
@@ -53,7 +57,6 @@ const EditButton = ({ teamData, sport_id }: Props) => {
       from_age: teamData.from_age,
       to_age: teamData.to_age,
       gender: teamData.gender,
-      attend_per: teamData.attend_per,
     });
   };
 
@@ -76,7 +79,6 @@ const EditButton = ({ teamData, sport_id }: Props) => {
       from_age: teamData.from_age,
       to_age: teamData.to_age,
       gender: teamData.gender,
-      attend_per: teamData.attend_per,
     },
   });
 
@@ -186,20 +188,6 @@ const EditButton = ({ teamData, sport_id }: Props) => {
               ]}
               name="gender"
               error={errors.gender && (errors.gender.message as ReactNode)}
-            />
-
-            <PerfSelect
-              normalStyle
-              control={control}
-              placeholder="Attend Per"
-              data={[
-                { label: "DAY", value: "DAY" },
-                { label: "SESSION", value: "SESSION" },
-              ]}
-              name="attend_per"
-              error={
-                errors.attend_per && (errors.attend_per.message as ReactNode)
-              }
             />
 
             <Input.Wrapper

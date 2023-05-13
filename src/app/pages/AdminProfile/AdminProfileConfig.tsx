@@ -18,7 +18,7 @@ const AdminProfilePageConfig: PagesRouteConfig = {
       },
     },
   },
-  auth: [...authRoles.Admin, ...authRoles.SubCoach],
+  auth: authRoles.Admin,
   routes: [
     {
       path: "admin-profile",

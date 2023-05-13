@@ -2,7 +2,11 @@ import { BaseGetAllType } from "./base-types";
 import { Metric, Team } from "./supervisor-types";
 import { Event } from "./events-types";
 import { Player, PlayerCoach } from "./parent-types";
-import { TeamStatistics } from "./coach-types";
+import {
+  TeamKpiPlayersStatistics,
+  TeamKpiPlayerStatistics,
+  TeamStatistics,
+} from "./coach-types";
 
 // shaerd
 export type Statistics = {
@@ -104,24 +108,9 @@ export type TeamPlayer = {
   icon_url: string;
   name: string;
   dob: string;
-  world_weight: string;
-  olympic_weight: string;
   weight: number;
   height: number;
-  sport: string;
-  parent_name: string;
-  profile: string;
-  team: TeamShortInfo[];
-  phone: string;
-  front_leg: FrontLeg;
 };
-
-export type TeamShortInfo = {
-  id: number;
-  name: string;
-};
-
-export type FrontLeg = "NONE" | "LEFT" | "RIGHT" | "BOTH";
 
 export type plaerParent = PlayerCoach;
 
@@ -220,12 +209,11 @@ export type UpdateNote = {
   is_selected: boolean;
 };
 
-export type AddUser = {
+export type AddSubCoach = {
   mobile: string;
   password: string;
   first_name?: string;
   last_name?: string;
-  sport?: number;
   teams?: number[];
   avatar?: string;
 };

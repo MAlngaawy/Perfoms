@@ -3,7 +3,7 @@ import { BASE_HEADERS, BASE_URL } from "~/app/configs/dataService";
 import {
   AddEvent,
   AddRecommendation,
-  AddUser,
+  AddSubCoach,
   AllUsers,
   ClubParents,
   CoachesRequests,
@@ -32,7 +32,6 @@ import {
 import { TeamEvents } from "~/app/store/types/parent-types";
 import {
   AddAction,
-  AddAttendanceSession,
   AddTeamCalendar,
   Coaches,
   CoachRequests,
@@ -70,12 +69,10 @@ export const clubManagerApi = createApi({
     "coachUser",
     "supervisorUser",
     "subCoachesUser",
-    "parentUser",
     "pillars",
     "metrics",
     "actions",
     "recommendations",
-    "attendance",
   ],
   endpoints: ({ query, mutation }) => ({
     manageCoachesRequests: query<CoachRequests, { page?: number }>({
@@ -259,13 +256,8 @@ export const clubManagerApi = createApi({
     }),
 
     adminPlayers: query<
-      TeamPlayers,
-      {
-        club_id: number | undefined;
-        page?: number;
-        search?: string | null;
-        sport?: string | undefined;
-      }
+      SuperVisorPlayers,
+      { club_id: number | undefined; page?: number }
     >({
       query: ({ club_id, ...params }) => ({
         url: `users/players/${club_id}`,
@@ -286,12 +278,7 @@ export const clubManagerApi = createApi({
 
     adminCoaches: query<
       AllUsers,
-      {
-        club_id: number | undefined;
-        page?: number;
-        search?: string | null;
-        sport?: string | undefined;
-      }
+      { club_id: number | undefined; page?: number }
     >({
       query: ({ club_id, ...params }) => ({
         url: `users/coaches/${club_id}`,
@@ -302,12 +289,7 @@ export const clubManagerApi = createApi({
 
     adminSupervisors: query<
       AllUsers,
-      {
-        club_id: number | undefined;
-        page?: number;
-        search?: string | null;
-        sport?: string | undefined;
-      }
+      { club_id: number | undefined; page?: number }
     >({
       query: ({ club_id, ...params }) => ({
         url: `users/supervisors/${club_id}`,
@@ -318,34 +300,13 @@ export const clubManagerApi = createApi({
 
     adminSubCoach: query<
       AllUsers,
-      {
-        club_id: number | undefined;
-        page?: number;
-        search?: string | null;
-        sport?: string | undefined;
-      }
+      { club_id: number | undefined; page?: number }
     >({
       query: ({ club_id, ...params }) => ({
         url: `users/sub-coaches/${club_id}`,
         params,
       }),
       providesTags: ["subCoachesUser", "coachUser"],
-    }),
-
-    adminParents: query<
-      AllUsers,
-      {
-        club_id: number | undefined;
-        page?: number;
-        search?: string | null;
-        sport?: string | undefined;
-      }
-    >({
-      query: ({ club_id, ...params }) => ({
-        url: `users/parents/${club_id}`,
-        params,
-      }),
-      providesTags: ["parentUser"],
     }),
 
     adminAddTeamPlayer: mutation<TeamPlayer, {}>({
@@ -402,49 +363,13 @@ export const clubManagerApi = createApi({
       invalidatesTags: ["subCoachesUser"],
     }),
 
-    adminDeleteParent: mutation<{}, { parent_id: string }>({
-      query: ({ parent_id, ...body }) => ({
-        url: `users/parents/${parent_id}/delete/`,
-        method: "DELETE",
-        body,
-      }),
-      invalidatesTags: ["parentUser"],
-    }),
-
-    adminAddSubCoach: mutation<AddUser, AddUser>({
+    adminAddSubCoach: mutation<AddSubCoach, AddSubCoach>({
       query: (body) => ({
         url: `users/sub-coaches/add-sub-coach/`,
         method: "POST",
         body,
       }),
       invalidatesTags: ["subCoachesUser"],
-    }),
-
-    adminAddSupervsior: mutation<AddUser, AddUser>({
-      query: (body) => ({
-        url: `users/supervisors/add-supervisor/`,
-        method: "POST",
-        body,
-      }),
-      invalidatesTags: ["supervisorUser"],
-    }),
-
-    adminAddCoach: mutation<AddUser, AddUser>({
-      query: (body) => ({
-        url: `users/coaches/add-coach/`,
-        method: "POST",
-        body,
-      }),
-      invalidatesTags: ["coachUser"],
-    }),
-
-    adminAddParent: mutation<AddUser, AddUser>({
-      query: (body) => ({
-        url: `users/parents/add-parent/`,
-        method: "POST",
-        body,
-      }),
-      invalidatesTags: ["parentUser"],
     }),
 
     adminUpdateUserType: mutation<UpdateUserType, UpdateUserType>({
@@ -644,25 +569,20 @@ export const clubManagerApi = createApi({
         pages?: number;
         date_from: string;
         date_to: string;
-        team_id: number | string | undefined;
       }
     >({
-      query: ({ player_id, team_id, ...params }) => ({
-        url: `statistics/player-kpis/${player_id}/${team_id}`,
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/player-kpis/${player_id}`,
         params,
       }),
     }),
 
     adminPlayersAttendStatistics: query<
       PlayerMonthsAttendancesStatistics,
-      {
-        player_id: string | undefined;
-        pages?: number;
-        team_id: number | string | undefined;
-      }
+      { player_id: string | undefined; pages?: number }
     >({
-      query: ({ player_id, team_id, ...params }) => ({
-        url: `statistics/calendar-detailed/${player_id}/${team_id}`,
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/calendar-detailed/${player_id}/`,
         params,
       }),
     }),
@@ -674,11 +594,10 @@ export const clubManagerApi = createApi({
         date_from: string;
         date_to: string;
         pages?: number;
-        team_id: number | string | undefined;
       }
     >({
-      query: ({ player_id, team_id, ...params }) => ({
-        url: `statistics/${player_id}/${team_id}/player-kpis-metrics`,
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/${player_id}/player-kpis-metrics`,
         params,
       }),
     }),
@@ -690,11 +609,10 @@ export const clubManagerApi = createApi({
         pages?: number;
         date_from: string;
         date_to: string;
-        team_id: number | string | undefined;
       }
     >({
-      query: ({ player_id, team_id, ...params }) => ({
-        url: `statistics/${player_id}/${team_id}/metrics/scores/moderate`,
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/${player_id}/metrics/scores/moderate`,
         params,
       }),
     }),
@@ -706,11 +624,10 @@ export const clubManagerApi = createApi({
         pages?: number;
         date_from: string;
         date_to: string;
-        team_id: number | string | undefined;
       }
     >({
-      query: ({ player_id, team_id, ...params }) => ({
-        url: `statistics/${player_id}/${team_id}/metrics/scores/strength`,
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/${player_id}/metrics/scores/strength`,
         params,
       }),
     }),
@@ -722,11 +639,10 @@ export const clubManagerApi = createApi({
         pages?: number;
         date_from: string;
         date_to: string;
-        team_id: number | string | undefined;
       }
     >({
-      query: ({ player_id, team_id, ...params }) => ({
-        url: `statistics/${player_id}/${team_id}/metrics/scores/weakness`,
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/${player_id}/metrics/scores/weakness`,
         params,
       }),
     }),
@@ -738,11 +654,10 @@ export const clubManagerApi = createApi({
         pages?: number;
         date_from: string;
         date_to: string;
-        team_id: number | string | undefined;
       }
     >({
-      query: ({ player_id, team_id, ...params }) => ({
-        url: `statistics/${player_id}/${team_id}/recommendations`,
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/${player_id}/recommendations`,
         params,
       }),
     }),
@@ -754,11 +669,10 @@ export const clubManagerApi = createApi({
         pages?: number;
         date_from: string;
         date_to: string;
-        team_id: number | string | undefined;
       }
     >({
-      query: ({ player_id, team_id, ...params }) => ({
-        url: `statistics/${player_id}/${team_id}/actions`,
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/${player_id}/actions`,
         params,
       }),
     }),
@@ -770,11 +684,10 @@ export const clubManagerApi = createApi({
         pages?: number;
         date_from: string | undefined;
         date_to: string | undefined;
-        team_id: string | number | undefined;
       }
     >({
-      query: ({ player_id, team_id, ...params }) => ({
-        url: `statistics/${player_id}/calendar/${team_id}`,
+      query: ({ player_id, ...params }) => ({
+        url: `statistics/${player_id}/calendar`,
         params,
       }),
     }),
@@ -882,29 +795,6 @@ export const clubManagerApi = createApi({
       }),
       invalidatesTags: ["actions"],
     }),
-    adminAddTeamAttendanceSession: mutation<
-      AddAttendanceSession,
-      { team_id: number | string | undefined }
-    >({
-      query: ({ team_id, ...body }) => ({
-        url: `teams/add-team-attendance-session/${team_id}/`,
-        method: "POST",
-        body,
-      }),
-      invalidatesTags: ["calendar"],
-    }),
-
-    adminDeleteTeamAttendanceSession: mutation<
-      AddAttendanceSession,
-      { team_id: number | string | undefined }
-    >({
-      query: ({ team_id, ...body }) => ({
-        url: `teams/add-team-attendance-session/${team_id}/`,
-        method: "DELETE",
-        body,
-      }),
-      invalidatesTags: ["calendar"],
-    }),
   }),
 });
 
@@ -938,11 +828,7 @@ export const {
   useAdminDeleteCoachMutation,
   useAdminDeleteSupervisorMutation,
   useAdminDeleteSubCoachMutation,
-  useAdminDeleteParentMutation,
   useAdminAddSubCoachMutation,
-  useAdminAddSupervsiorMutation,
-  useAdminAddCoachMutation,
-  useAdminAddParentMutation,
   useAdminUpdateUserTypeMutation,
   useAdminDeleteSportMutation,
   useAdminPillarsQuery,
@@ -985,7 +871,4 @@ export const {
   useUpdateOneRecommendationMutation,
   useSelectRecommendationMutation,
   useSelectActionMutation,
-  useAdminAddTeamAttendanceSessionMutation,
-  useAdminDeleteTeamAttendanceSessionMutation,
-  useAdminParentsQuery,
 } = clubManagerApi;

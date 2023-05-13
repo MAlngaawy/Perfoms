@@ -1,9 +1,11 @@
-import { useState } from "react";
-import { Modal, Group, Input } from "@mantine/core";
+import { useState, ReactNode } from "react";
+import { Modal, Button, Group, Input } from "@mantine/core";
 import AppIcons from "../../../../../@main/core/AppIcons";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import Resizer from "react-image-file-resizer";
+import cn from "classnames";
 import SubmitButton from "../../../../../@main/components/SubmitButton";
 import { axiosInstance } from "~/app/configs/dataService";
 import { useParams } from "react-router-dom";
@@ -42,7 +44,12 @@ const AddMetric = (props: Props) => {
     });
   };
 
-  const { reset } = useForm({
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+    reset,
+  } = useForm({
     resolver: yupResolver(schema),
   });
 
@@ -133,32 +140,6 @@ const AddMetric = (props: Props) => {
                 id="name"
               />
             </Input.Wrapper>
-
-            <Input.Wrapper
-              id="description"
-              withAsterisk
-              // label="Name"
-              error={error}
-            >
-              <Input
-                placeholder="Description"
-                name="description"
-                sx={{
-                  ".mantine-Input-input	": {
-                    border: 0,
-                    padding: 0,
-                    borderBottom: 1,
-                    borderStyle: "solid",
-                    borderRadius: 0,
-                    minHeight: 20,
-                  },
-                }}
-                className="border-b"
-                // {...register("name")}
-                id="description"
-              />
-            </Input.Wrapper>
-
             <SubmitButton isLoading={isLoading} text="Add Metric" />
           </form>
         </Modal>

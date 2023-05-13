@@ -11,6 +11,11 @@ import { createLogger } from "redux-logger";
 import { supervisorApi } from "./supervisor/supervisorMainApi";
 import { clubManagerApi } from "./clubManager/clubManagerApi";
 
+import { healthApi } from "./health/healthApi";
+
+import { chatAiApi } from "./chatAi/chatAiApi";
+
+
 export interface SerializedError {
   name?: string;
   data: {
@@ -35,6 +40,11 @@ const middlewares: any[] = [
   parentsApi.middleware,
   supervisorApi.middleware,
   clubManagerApi.middleware,
+
+  healthApi.middleware,
+
+  chatAiApi.middleware,
+
 ];
 
 if (process.env.NODE_ENV === "development") {

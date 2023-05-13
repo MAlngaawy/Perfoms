@@ -1,16 +1,16 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import AttendanceDaysReports from "../app/pages/reports/components/AttendanceDaysReports";
+import AttendanceTable from "../app/pages/reports/components/AttendanceTable";
 
 export default {
   title: "reports/Attendance Table",
-  component: AttendanceDaysReports,
-} as ComponentMeta<typeof AttendanceDaysReports>;
+  component: AttendanceTable,
+} as ComponentMeta<typeof AttendanceTable>;
 
-const Template: ComponentStory<typeof AttendanceDaysReports> = (args) => (
+const Template: ComponentStory<typeof AttendanceTable> = (args) => (
   <div className="flex">
-    <AttendanceDaysReports {...args} />
-    <AttendanceDaysReports {...args} />
+    <AttendanceTable {...args} />
+    <AttendanceTable {...args} />
   </div>
 );
 
