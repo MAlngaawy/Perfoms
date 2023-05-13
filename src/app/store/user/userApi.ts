@@ -32,7 +32,7 @@ import {
   UserDeviceId,
   UserExperinces,
 } from "./../types/user-types";
-import AppUtils, { eventInstance } from "~/@main/utils/AppUtils";
+import { eventInstance } from "~/@main/utils/AppUtils";
 import { showNotification } from "@mantine/notifications";
 import {
   BaseQueryFn,
@@ -42,12 +42,18 @@ import {
 } from "@reduxjs/toolkit/query/react";
 import { BASE_HEADERS, BASE_URL } from "~/app/configs/dataService";
 import Cookies from "js-cookie";
-import { LoginResponse, LoginUserBody, UserSignup } from "../types/user-types";
-import { Kpis, Metrics, Pillars, Team } from "../types/supervisor-types";
-import { Sports } from "../types/clubManager-types";
+import {
+  LoginResponse,
+  LoginUserBody,
+  ProfileResponse,
+  UserSignup,
+} from "../types/user-types";
+import { ReactNode } from "react";
+import { Kpis, Metrics, Pillars } from "../types/supervisor-types";
+import { Sports, Teams } from "../types/clubManager-types";
 import { UserAchievements } from "~/app/store/types/user-types";
-import { CoachPlayerInfo, CoachTeamInfo } from "../types/coach-types";
-import { EventFiles, PlayerTeams } from "~/app/store/types/parent-types";
+import { CoachPlayerInfo } from "../types/coach-types";
+import { EventFiles } from "~/app/store/types/parent-types";
 
 export const userApi = createApi({
   reducerPath: "userApi",
@@ -87,16 +93,25 @@ export const userApi = createApi({
           //@ts-ignore
           if (error.error.status === 409)
             return window.location.replace(
-              "/coachRequestSent"
               //@ts-ignore
-              // `/verify-otp?userid=${error.error.data.id}`
+              `/verify-otp?userid=${error.error.data.id}`
             );
-          AppUtils.showNotificationFun(
-            "Error",
-            "Login Error",
+          showNotification({
+            title: "Login Error",
             //@ts-ignore
-            error.error.data
-          );
+            message: error.error.data,
+            styles: (theme) => ({
+              root: {
+                backgroundColor: theme.colors.red[6],
+                borderColor: theme.colors.red[6],
+
+                "&::before": { backgroundColor: theme.white },
+              },
+
+              title: { color: theme.white },
+              description: { color: theme.white },
+            }),
+          });
         }
       },
     }),
@@ -111,9 +126,21 @@ export const userApi = createApi({
           const { data } = await queryFulfilled;
           // eventInstance.emit("SignUp_Success");
         } catch (error: any) {
-          const errorsobject = error.error.data;
-          Object.keys(errorsobject).forEach((key) => {
-            AppUtils.showNotificationFun("Error", key, errorsobject[key]);
+          showNotification({
+            title: "Login Error",
+            //@ts-ignore
+            message: error.error.data.message,
+            styles: (theme) => ({
+              root: {
+                backgroundColor: theme.colors.red[6],
+                borderColor: theme.colors.red[6],
+
+                "&::before": { backgroundColor: theme.white },
+              },
+
+              title: { color: theme.white },
+              description: { color: theme.white },
+            }),
           });
         }
       },
@@ -188,22 +215,6 @@ export const userApi = createApi({
         url: "teams/",
       }),
     }),
-
-    clubSports: query<Sports, { club_id: number; page?: number }>({
-      query: ({ club_id, ...params }) => ({
-        url: `${club_id}/sports`,
-      }),
-    }),
-
-    sportTeams: query<
-      ClubTeams,
-      { sport_id: string | undefined; page?: number }
-    >({
-      query: ({ sport_id, ...params }) => ({
-        url: `${sport_id}/teams`,
-      }),
-    }),
-
     clubTeams: query<ClubTeams, { club_id: number | string; page?: number }>({
       query: ({ club_id, ...params }) => ({
         url: `club-teams/${club_id}`,
@@ -500,18 +511,6 @@ export const userApi = createApi({
       providesTags: ["player"],
     }),
 
-    /**Player Info */
-    getPlayerTeams: query<
-      PlayerTeams,
-      { player_id: string | number | undefined }
-    >({
-      query: ({ player_id, ...params }) => ({
-        url: `${player_id}/player-teams/`,
-        params,
-      }),
-      providesTags: ["player"],
-    }),
-
     // Player Courses
     getPlayerCourses: query<
       Courses,
@@ -647,10 +646,6 @@ export const userApi = createApi({
     getMyClub: query<MyClub, {}>({
       query: (params) => "my-club/",
     }),
-
-    getTeamInfo: query<Team, { team_id: string | number | undefined }>({
-      query: ({ team_id, ...params }) => `teams/${team_id}`,
-    }),
   }),
 });
 
@@ -716,8 +711,4 @@ export const {
   useDeleteEventVideoMutation,
   useChangePhoneMutation,
   useGetMyClubQuery,
-  useClubSportsQuery,
-  useSportTeamsQuery,
-  useGetPlayerTeamsQuery,
-  useGetTeamInfoQuery,
 } = userApi;

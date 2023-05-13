@@ -66,14 +66,12 @@ const SaleStaticChart = () => {
       player_id: id,
       date_from: timeFilter?.from_date,
       date_to: timeFilter?.to_date,
-      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !id ||
         !timeFilter?.from_date ||
         !timeFilter?.to_date ||
-        !selectedPlayerTeam?.id ||
         user?.user_type !== "Coach",
     }
   );
@@ -83,14 +81,12 @@ const SaleStaticChart = () => {
       player_id: id,
       date_from: timeFilter?.from_date,
       date_to: timeFilter?.to_date,
-      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !id ||
         !timeFilter?.from_date ||
         !timeFilter?.to_date ||
-        !selectedPlayerTeam?.id ||
         user?.user_type !== "Supervisor",
     }
   );
@@ -100,14 +96,12 @@ const SaleStaticChart = () => {
       player_id: id,
       date_from: timeFilter?.from_date,
       date_to: timeFilter?.to_date,
-      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !id ||
         !timeFilter?.from_date ||
         !timeFilter?.to_date ||
-        !selectedPlayerTeam?.id ||
         user?.user_type !== "Admin",
     }
   );
@@ -118,14 +112,12 @@ const SaleStaticChart = () => {
       player_id: selectedPlayer?.id,
       date_from: timeFilter?.from_date,
       date_to: timeFilter?.to_date,
-      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !selectedPlayer?.id ||
         !timeFilter?.from_date ||
         !timeFilter?.to_date ||
-        !selectedPlayerTeam?.id ||
         user?.user_type !== "Parent",
     }
   );
@@ -134,14 +126,12 @@ const SaleStaticChart = () => {
       player_id: selectedPlayer?.id,
       date_from: timeFilter?.from_date,
       date_to: timeFilter?.to_date,
-      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !selectedPlayer?.id ||
         !timeFilter?.from_date ||
         !timeFilter?.to_date ||
-        !selectedPlayerTeam?.id ||
         user?.user_type !== "Parent",
     }
   );
@@ -150,14 +140,12 @@ const SaleStaticChart = () => {
       id: selectedPlayer?.id,
       date_from: timeFilter?.from_date,
       date_to: timeFilter?.to_date,
-      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !selectedPlayer?.id ||
         !timeFilter?.from_date ||
         !timeFilter?.to_date ||
-        !selectedPlayerTeam?.id ||
         user?.user_type !== "Parent",
     }
   );
@@ -166,14 +154,12 @@ const SaleStaticChart = () => {
       id: selectedPlayer?.id,
       date_from: timeFilter?.from_date,
       date_to: timeFilter?.to_date,
-      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !selectedPlayer?.id ||
         !timeFilter?.from_date ||
         !timeFilter?.to_date ||
-        !selectedPlayerTeam?.id ||
         user?.user_type !== "Parent",
     }
   );

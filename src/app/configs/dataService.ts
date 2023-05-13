@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 // export const BASE_URL = "https://api.performs.app"; //* production
 
 export const BASE_URL = import.meta.env.VITE_API_URL; //! enviornment variables
-
+export const BASE_URL2 = import.meta.env.VITE_API_URL2;
 export const BASE_HEADERS = (headers: any, api: any) => {
   // headers.set("Accept", "application/json");
   // headers.set("Content-Type", "application/json");

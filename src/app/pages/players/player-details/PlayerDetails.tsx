@@ -1,5 +1,6 @@
 import React, { createContext, useState } from "react";
 import AppRadioGroub from "~/@main/components/AppRadioGroub";
+import PlayerInfo from "./Tabs/PlayerInfo/PlayerInfo";
 import PlayerBio from "./Tabs/PlayerBio/PlayerBio";
 import PlayerAlbums from "./Tabs/PlayerMedia/PlayerAlbums";
 import PrintComp from "~/@main/PrintComp";

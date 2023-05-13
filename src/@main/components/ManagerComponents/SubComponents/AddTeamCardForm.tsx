@@ -1,9 +1,11 @@
 import { useState, ReactNode, useEffect } from "react";
-import { Modal, Group, Input, Select } from "@mantine/core";
+import { Modal, Button, Group, Input, Select } from "@mantine/core";
 import AppIcons from "../../../core/AppIcons";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import Resizer from "react-image-file-resizer";
+import cn from "classnames";
 import SubmitButton from "../../SubmitButton";
 import PerfSelect from "../../Select";
 import { axiosInstance } from "~/app/configs/dataService";
@@ -52,7 +54,6 @@ const AddTeamCardForm = ({ sport_id }: Props) => {
     from_age: yup.number(),
     to_age: yup.number(),
     gender: yup.string(),
-    attend_per: yup.string(),
   });
 
   const resetFields = () => {
@@ -64,7 +65,6 @@ const AddTeamCardForm = ({ sport_id }: Props) => {
       from_age: "",
       to_age: "",
       gender: "",
-      attend_per: "",
     });
   };
 
@@ -119,7 +119,6 @@ const AddTeamCardForm = ({ sport_id }: Props) => {
             message: "Team Added",
           });
           RefetchGeneralTeams();
-          resetFields();
         })
         .catch(() => {
           setLoading(false);
@@ -239,20 +238,6 @@ const AddTeamCardForm = ({ sport_id }: Props) => {
               ]}
               name="gender"
               error={errors.gender && (errors.gender.message as ReactNode)}
-            />
-
-            <PerfSelect
-              normalStyle
-              control={control}
-              placeholder="Attend Per"
-              data={[
-                { label: "DAY", value: "DAY" },
-                { label: "SESSION", value: "SESSION" },
-              ]}
-              name="attend_per"
-              error={
-                errors.attend_per && (errors.attend_per.message as ReactNode)
-              }
             />
 
             <Input.Wrapper

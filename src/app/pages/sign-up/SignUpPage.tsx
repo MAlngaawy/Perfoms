@@ -1,49 +1,39 @@
-import { Input, Grid, MultiSelect, Select } from "@mantine/core";
+import { Input, Grid, MultiSelect, Loader } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import { PasswordInput } from "@mantine/core";
 import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { State } from "country-state-city";
 import PerfSelect, { Option } from "~/@main/components/Select";
 import { Controller } from "react-hook-form";
-import { usePublicClubsQuery } from "~/app/store/core/coreApi";
+import { usePublicClubsQuery, useTeamsQuery } from "~/app/store/core/coreApi";
 import {
-  useClubSportsQuery,
+  useClubTeamsQuery,
+  useSendOtpMutation,
   useSignupMutation,
-  useSportTeamsQuery,
 } from "~/app/store/user/userApi";
 import SubmitButton from "~/@main/components/SubmitButton";
 import AppUtils from "~/@main/utils/AppUtils";
-import { Sports } from "~/app/store/types/clubManager-types";
 
 type Props = {};
 
 const schema = yup.object().shape({
   userRole: yup.string().required(),
   firstName: yup.string().required(),
-  lastName: yup.string().required(),
+  lastName: yup.string(),
   country: yup.string().required(),
-  city: yup.string().required(),
+  city: yup.string(),
   club: yup.number().required(),
   countryCode: yup.string().required(),
   phoneNumber: yup.number().required(),
   password: yup.string().min(8).max(24).required(),
-  teams: yup.array(),
-  // teams: yup.array().when("userRole", {
-  //   is: "Coach",
-  //   then: yup.array().min(1).required(),
-  //   otherwise: yup.array().min(0),
-  // }),
+  teams: yup.array().required(),
 });
 
 const SignUpPage = (props: Props) => {
-  const [clubSports, setClubSports] = useState<Sports>();
-  const [selectedSport, setSelectedSport] = useState<string | null>();
-
-  const [signupHandler, { data, isLoading, isSuccess, isError }] =
-    useSignupMutation();
+  const [signupHandler, { data, isLoading, isSuccess }] = useSignupMutation();
   const navigator = useNavigate();
   const { data: AllClubs } = usePublicClubsQuery(null);
   const {
@@ -71,33 +61,18 @@ const SignUpPage = (props: Props) => {
   const country = watch("country");
   const userRole = watch("userRole");
   const selectedClub = watch("club");
-
-  const { data: teamsData } = useSportTeamsQuery(
-    //@ts-ignore
-    { sport_id: selectedSport },
+  const { data: teamsData } = useClubTeamsQuery(
+    { club_id: selectedClub },
     {
-      skip: userRole !== "Coach" || !selectedSport,
+      skip: userRole !== "Coach" || !selectedClub,
     }
   );
-
-  const { data: clubSportsData } = useClubSportsQuery(
-    { club_id: selectedClub },
-    { skip: !selectedClub }
-  );
-  useEffect(() => {
-    setSelectedSport(null);
-    console.log("selectedSport", selectedSport);
-
-    if (clubSportsData) setClubSports(clubSportsData);
-  }, [clubSportsData]);
-
-  useEffect(() => {
-    console.log("selectedSport", selectedSport);
-  }, [selectedSport]);
 
   useEffect(() => {
     setValue("city", "");
     setValue("teams", []);
+    console.log(selectedClub);
+    console.log(teamsData);
   }, [country, setValue, userRole, teamsData, selectedClub]);
 
   const submitFun = (data: any) => {
@@ -210,8 +185,8 @@ const SignUpPage = (props: Props) => {
                 className="w-full"
                 id="firstName"
                 withAsterisk
-                label="First Name"
-                error={errors.firstName && "Please add your First Name"}
+                label="Name"
+                error={errors.firstName && "Please add your Name"}
                 sx={{
                   ".mantine-InputWrapper-label": {
                     fontSize: 10,
@@ -244,7 +219,7 @@ const SignUpPage = (props: Props) => {
                 className="w-full"
                 id="lastName"
                 label="Last Name"
-                error={errors.lastName && "Please add your Last Name"}
+                error={errors.lastName && "Please add your Name"}
                 sx={{
                   ".mantine-InputWrapper-label": {
                     fontSize: 10,
@@ -343,84 +318,45 @@ const SignUpPage = (props: Props) => {
             )}
 
             {/* Select Teams */}
-            {userRole === "Coach" && clubSportsData && (
-              <div className="flex justify-center items-center gap-2">
-                <Select
-                  className="w-full"
-                  disabled={clubSportsData.results.length === 0}
-                  sx={{
-                    ".mantine-Select-input": {
-                      background: "none",
-                      border: 0,
-                      borderBottom: "1px solid",
-                      borderRadius: 0,
-                      minHeight: 10,
-                      fontSize: 12,
-                    },
-                    ".mantine-Select-label": {
-                      fontSize: 10,
-                    },
-                  }}
-                  value={selectedSport}
-                  //@ts-ignore
-                  data={
-                    clubSports
-                      ? clubSports?.results.map(
-                          (sport: { name: string; id: number }) => ({
-                            label: sport.name,
-                            value: sport.id,
-                          })
-                        )
-                      : ["No Value"]
-                  }
-                  label="Select Your Sport"
-                  onChange={(e: string) => setSelectedSport(e)}
-                />
-
-                <Controller
-                  {...register("teams")}
-                  render={({ field }) => (
-                    <MultiSelect
-                      disabled={!teamsData || teamsData?.results.length === 0}
-                      className="w-full"
-                      sx={{
-                        ".mantine-MultiSelect-input": {
-                          background: "none",
-                          border: 0,
-                          borderBottom: "1px solid",
-                          borderRadius: 0,
-                          minHeight: 10,
-                          fontSize: 12,
-                        },
-                        ".mantine-MultiSelect-label": {
-                          fontSize: 10,
-                        },
-                      }}
-                      //@ts-ignore
-                      data={
-                        teamsData
-                          ? teamsData.results.map(
-                              (team: { name: string; id: number }) => ({
-                                label: team.name,
-                                value: team.id,
-                              })
-                            )
-                          : ["No Data"]
-                      }
-                      label="Select Your Teams"
-                      {...field}
-                      error={errors.teams ? errors.teams.message : undefined}
-                    />
-                  )}
-                  control={control}
-                />
-              </div>
+            {userRole === "Coach" && teamsData && (
+              <Controller
+                {...register("teams")}
+                render={({ field }) => (
+                  <MultiSelect
+                    className="w-full"
+                    sx={{
+                      ".mantine-MultiSelect-input": {
+                        background: "none",
+                        border: 0,
+                        borderBottom: "1px solid",
+                        borderRadius: 0,
+                        minHeight: 10,
+                        fontSize: 12,
+                      },
+                      ".mantine-MultiSelect-label": {
+                        fontSize: 10,
+                      },
+                    }}
+                    //@ts-ignore
+                    data={teamsData.results.map(
+                      (team: { name: string; id: number }) => ({
+                        label: team.name,
+                        value: team.id,
+                      })
+                    )}
+                    label="Select Your Teams"
+                    {...field}
+                    error={errors.teams ? errors.teams.message : undefined}
+                  />
+                )}
+                control={control}
+              />
             )}
 
-            <Grid grow className="w-full">
+            <Grid grow gutter="sm" className="w-full">
               {/* Select Country code Input */}
 
-              {/* <Grid.Col span={3} className="px-0">
+              <Grid.Col span={3} className="px-0">
                 <PerfSelect
                   id="countryCode"
                   required
@@ -439,10 +375,10 @@ const SignUpPage = (props: Props) => {
                     { value: "🇯🇴 +962", label: "🇯🇴 +962" },
                   ]}
                 />
-              </Grid.Col> */}
+              </Grid.Col>
 
               {/* Mobile Number Input */}
-              <Grid.Col span={12} className="px-0">
+              <Grid.Col span={9} className="pr-0">
                 <Input.Wrapper
                   id="phoneNumber"
                   withAsterisk

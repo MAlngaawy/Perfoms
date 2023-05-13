@@ -1,5 +1,5 @@
 import { Select } from "@mantine/core";
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   useAdminSportsQuery,
   useAdminTeamsStatisticsQuery,
@@ -14,7 +14,6 @@ type Props = {
   selectedTeam: any;
   handleChange: any;
   errors: any;
-  setSelectedSportName: Dispatch<SetStateAction<string>>;
 };
 
 const SelectTeamsFromSportInputs = ({
@@ -24,7 +23,6 @@ const SelectTeamsFromSportInputs = ({
   selectedTeam,
   handleChange,
   errors,
-  setSelectedSportName,
 }: Props) => {
   const { data: user } = useUserQuery(null);
   const [sports, setSports] = useState<any>([]);
@@ -91,12 +89,9 @@ const SelectTeamsFromSportInputs = ({
               return { value: item.id, label: item.name };
             })}
             onChange={(e) => {
+              e && setSelectedSport(+e);
               if (e) {
-                setSelectedSport(+e);
                 handleChange("sport", +e);
-                let thelabel = sports.filter((sport: any) => sport.id === e);
-
-                setSelectedSportName(thelabel[0].name);
               }
             }}
           />

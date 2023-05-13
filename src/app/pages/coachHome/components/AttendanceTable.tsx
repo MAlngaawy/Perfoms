@@ -59,8 +59,6 @@ const AttendanceTable = (props: Props) => {
     );
 
   useEffect(() => {
-    console.log("superTeamAttendance", superTeamAttendance);
-    console.log("superTeamAttendanceDays", superTeamAttendanceDays);
     if (coachTeamAttendance) setTeamAttendance(coachTeamAttendance);
     if (superTeamAttendance) setTeamAttendance(superTeamAttendance);
     if (coachTeamAttendanceDays) setTeamAttendanceDays(coachTeamAttendanceDays);
@@ -71,6 +69,18 @@ const AttendanceTable = (props: Props) => {
     coachTeamAttendanceDays,
     superTeamAttendanceDays,
   ]);
+
+  // console.log("coahcTeamPlayers", coahcTeamPlayers);
+
+  // if (isCoachLoading || isSuperLoading)
+  //   return (
+  //     <Skeleton
+  //       height={200}
+  //       width="80%"
+  //       className="mx-auto my-20"
+  //       radius="lg"
+  //     />
+  //   );
 
   return (
     <>
@@ -139,54 +149,53 @@ const CreateContentTable = memo(
         horizontalSpacing={30}
       >
         <TableHead teamAttendance={teamAttendance} />
-        {teamAttendanceDays?.results &&
-        teamAttendanceDays?.results.length > 0 ? (
-          <tbody className="overflow-scroll">
-            {teamAttendanceDays?.results.map((item: any) => {
-              const thisDate = item.day;
-              return (
-                <tr key={item.day} className="">
-                  <td className="text-xs font-medium text-left px-0 sticky left-0 bg-white z-10 text-perfGray1">
-                    <p className="ml-5">{thisDate}</p>
-                    {/* {thisDate.getDate() - 1}/ {thisDate.getMonth() + 1} /
+        <tbody className="overflow-scroll">
+          {teamAttendanceDays?.results &&
+          teamAttendanceDays?.results.length > 0 ? (
+            <>
+              {teamAttendanceDays?.results.map((item: any) => {
+                const thisDate = item.day;
+                return (
+                  <tr key={item.day} className="">
+                    <td className="text-xs font-medium text-center px-0 sticky left-0 bg-white z-10 text-perfGray1">
+                      {thisDate}
+                      {/* {thisDate.getDate() - 1}/ {thisDate.getMonth() + 1} /
                   {thisDate.getFullYear()} */}
-                  </td>
-                  {teamAttendance?.results.map((player: any) => {
-                    let theDate = "";
-                    let theStatus = "";
-                    let theID = 0;
-                    for (let i of player.player_attendance) {
-                      if (i.day === thisDate) {
-                        theDate = i.day;
-                        theStatus = i.status;
-                        theID = i.id;
+                    </td>
+                    {teamAttendance?.results.map((player: any) => {
+                      let theDate = "";
+                      let theStatus = "";
+                      let theID = 0;
+                      for (let i of player.player_attendance) {
+                        if (i.day === thisDate) {
+                          theDate = i.day;
+                          theStatus = i.status;
+                          theID = i.id;
+                        }
                       }
-                    }
-                    return (
-                      <td key={player.id}>
-                        <TestCheckbox
-                          theDate={theDate}
-                          thisDate={thisDate}
-                          theStatus={theStatus}
-                          theID={theID}
-                        />
-                      </td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
-          </tbody>
-        ) : (
-          <tr className="w-full p-4 m-10 bg-white">
-            <td colSpan={100} className="bg-pagesBg p-10 w-full">
-              No attendance added for this Team in this month yet, <br />
-              if you want to add attendance you can go to the team info page
-              <br />
-              and add attendance to calendar
-            </td>
-          </tr>
-        )}
+                      return (
+                        <td key={player.id}>
+                          <TestCheckbox
+                            theDate={theDate}
+                            thisDate={thisDate}
+                            theStatus={theStatus}
+                            theID={theID}
+                          />
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+            </>
+          ) : (
+            <tr>
+              <td>
+                <NoAttendancesYet type="Attendances" />
+              </td>
+            </tr>
+          )}
+        </tbody>
       </Table>
     );
   }
@@ -194,26 +203,11 @@ const CreateContentTable = memo(
 
 const TableHead = memo(({ teamAttendance }: any) => {
   const navigate = useNavigate();
-  const { data: user } = useUserQuery({});
-
-  const isNotSubCoach = user?.user_type !== "SubCoach";
 
   return (
     <thead>
       <tr className="">
-        {teamAttendance?.results.length == 0 ? (
-          <th
-            className="w-full font-normal flex justify-center items-center p-4 text-center"
-            colSpan={100}
-          >
-            No Players in this Team, <br />
-            You can add players on the team info page first, and then add there
-            attendance from here.
-          </th>
-        ) : (
-          <th className="bg-white sticky  top-0 z-20 ">Day</th>
-        )}
-
+        <th className="bg-white sticky  top-0 z-20 ">Day</th>
         {teamAttendance?.results.map((player: Player) => (
           <th
             key={player.id}
@@ -221,12 +215,10 @@ const TableHead = memo(({ teamAttendance }: any) => {
           >
             <div className="flex  flex-col justify-center items-center">
               <Avatar
-                onClick={() =>
-                  isNotSubCoach && navigate(`/players/${player.id}`)
-                }
+                onClick={() => navigate(`/players/${player.id}`)}
                 radius={"xl"}
                 size="md"
-                className={isNotSubCoach ? "cursor-pointer" : ""}
+                className="cursor-pointer"
                 src={player.icon}
               />
               <span>{player.name}</span>

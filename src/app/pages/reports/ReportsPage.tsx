@@ -2,15 +2,12 @@ import { useEffect, useState } from "react";
 import { Grid, Menu, Button } from "@mantine/core";
 import Card from "~/@main/components/Card";
 import AppIcons from "~/@main/core/AppIcons";
-import AttendanceDaysReports from "./components/AttendanceDaysReports";
+import AttendanceTable from "./components/AttendanceTable";
 import TotalAttendance from "./components/TotalAttendance";
 import CustomCalendar from "~/@main/components/Calendar";
 import AddPlayer from "../home/molecules/AddPlayer";
 import { useSelector } from "react-redux";
-import {
-  selectedPlayerFn,
-  selectedPlayerTeamFn,
-} from "~/app/store/parent/parentSlice";
+import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 import TimeFilter from "~/@main/components/TimeFilter";
 import TeamFilter from "../../../@main/components/TeamFilter";
 import useWindowSize from "~/@main/hooks/useWindowSize";
@@ -24,20 +21,12 @@ import PrintComp from "~/@main/PrintComp";
 import Placeholders from "~/@main/components/Placeholders";
 import PlayerCertificatePage from "../player-certificate/PlayerCertificatePage";
 import { usePlayerCertificatesQuery } from "~/app/store/parent/parentApi";
-import { useGetTeamInfoQuery } from "~/app/store/user/userApi";
 
 // ==============
 const ReportPage = () => {
   const player = useSelector(selectedPlayerFn);
   const widowSize = useWindowSize();
-  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
 
-  const { data: selectedTeamInfo } = useGetTeamInfoQuery(
-    {
-      team_id: selectedPlayerTeam.id,
-    },
-    { skip: !selectedPlayerTeam.id }
-  );
   const [reportType, setReportType] =
     useState<"Performances" | "Attendances" | "Certificates">("Performances");
 
@@ -160,7 +149,7 @@ const ReportPage = () => {
                       {/* Attedance Summary Table */}
                       <Grid.Col span={12} sm={8}>
                         <div className="bg-white h-full rounded-3xl p-4">
-                          <AttendanceDaysReports />
+                          <AttendanceTable />
                         </div>
                       </Grid.Col>
 
@@ -172,9 +161,7 @@ const ReportPage = () => {
                           </div>
 
                           {/* Attendance Calendar */}
-                          {selectedTeamInfo?.attend_per === "DAY" && (
-                            <CustomCalendar pageName="reports" />
-                          )}
+                          <CustomCalendar pageName="reports" />
                         </div>
                       </Grid.Col>
                     </Grid>

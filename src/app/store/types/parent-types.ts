@@ -3,7 +3,6 @@ import { BaseGetAllType } from "./base-types";
 import { User } from "./user-types";
 import { Event } from "./events-types";
 import { Attendance } from "./attendance-types";
-import { daySessions } from "./supervisor-types";
 
 export type Subscription = {
   id: number;
@@ -33,10 +32,7 @@ export type AddPlayerType = {
   name: string;
   dob?: string;
   team: number[];
-  weight?: string;
-  world_weight?: string;
-  olympic_weight?: string;
-  front_leg?: "NONE" | "LEFT" | "RIGHT" | "BOTH";
+  weight: string;
   height: string;
   phone: string;
   icon: any;
@@ -44,11 +40,8 @@ export type AddPlayerType = {
 
 export type UpdatePlayer = {
   name: string;
-  dob?: string;
-  weight?: string;
-  world_weight?: string;
-  olympic_weight?: string;
-  front_leg?: "NONE" | "LEFT" | "RIGHT" | "BOTH";
+  dob: string;
+  weight: string;
   height: string;
   icon_url: string;
 };
@@ -213,7 +206,6 @@ export type EventFiles = {
 };
 
 export type PlayerAttendance = {
-  attendance_sessions: daySessions;
   id: number;
   day: string;
   status: "ATTENDED" | "ABSENT" | "UPCOMING";

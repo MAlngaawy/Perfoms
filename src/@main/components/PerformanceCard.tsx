@@ -1,6 +1,24 @@
+import React, { useEffect, useState } from "react";
 import { PerformanceCardProps } from "app/store/types/user-types";
 import { HoverCard, Group, Skeleton } from "@mantine/core";
 import NoReport from "~/app/pages/reports/components/NoReport";
+import { useUserQuery } from "~/app/store/user/userApi";
+// import {
+//   useCoachPlayerKpisMetricsStrengthScoreQuery,
+//   useCoachPlayerKpisMetricsWeaknessScoreQuery,
+// } from "~/app/store/coach/coachApi";
+// import {
+//   usePlayerStrengthQuery,
+//   usePlayerWeaknessQuery,
+// } from "~/app/store/parent/parentApi";
+// import {
+//   useSuperPlayerKpisMetricsStrengthScoreQuery,
+//   useSuperPlayerKpisMetricsWeaknessScoreQuery,
+// } from "~/app/store/supervisor/supervisorMainApi";
+// import {
+//   useAdminPlayerKpisMetricsStrengthScoreQuery,
+//   useAdminPlayerKpisMetricsWeaknessScoreQuery,
+// } from "~/app/store/clubManager/clubManagerApi";
 
 export const PerformanceCard = ({
   number,
@@ -8,9 +26,86 @@ export const PerformanceCard = ({
   bgColor,
   textColor,
   children,
+  powerType,
+  player_id,
   data,
 }: // data,
 PerformanceCardProps) => {
+  console.log(name, " || DATAAAAA || ", data);
+
+  // const [data, setData] = useState<any>();
+  // const { data: user } = useUserQuery({});
+
+  // Fetch data for Parent
+  // const { data: strength } = usePlayerStrengthQuery(
+  //   { player_id: player_id },
+  //   { skip: !player_id || user?.user_type !== "Parent" }
+  // );
+  // const { data: weakness } = usePlayerWeaknessQuery(
+  //   { player_id: player_id },
+  //   { skip: !player_id || user?.user_type !== "Parent" }
+  // );
+
+  // // Fetch data for coach
+  // const { data: coachPlayerStrength } =
+  //   useCoachPlayerKpisMetricsStrengthScoreQuery(
+  //     { player_id: player_id },
+  //     { skip: !player_id || user?.user_type !== "Coach" }
+  //   );
+  // const { data: coachPlayerWeakness } =
+  //   useCoachPlayerKpisMetricsWeaknessScoreQuery(
+  //     { player_id: player_id },
+  //     { skip: !player_id || user?.user_type !== "Coach" }
+  //   );
+
+  // // Fetch Supervisor Data
+  // const { data: superPlayerStrength } =
+  //   useSuperPlayerKpisMetricsStrengthScoreQuery(
+  //     { player_id: player_id },
+  //     { skip: !player_id || user?.user_type !== "Supervisor" }
+  //   );
+  // const { data: superPlayerWeakness } =
+  //   useSuperPlayerKpisMetricsWeaknessScoreQuery(
+  //     { player_id: player_id },
+  //     { skip: !player_id || user?.user_type !== "Supervisor" }
+  //   );
+
+  // // Fetch Supervisor Data
+  // const { data: adminPlayerStrength } =
+  //   useAdminPlayerKpisMetricsStrengthScoreQuery(
+  //     { player_id: player_id },
+  //     { skip: !player_id || user?.user_type !== "Admin" }
+  //   );
+  // const { data: adminPlayerWeakness } =
+  //   useAdminPlayerKpisMetricsWeaknessScoreQuery(
+  //     { player_id: player_id },
+  //     { skip: !player_id || user?.user_type !== "Admin" }
+  //   );
+
+  // useEffect(() => {
+
+  //   if (name === "Strengths") {
+  //     if (strength) setData(strength);
+  //     // if (coachPlayerStrength) setData(coachPlayerStrength);
+  //     // if (superPlayerStrength) setData(superPlayerStrength);
+  //     // if (adminPlayerStrength) setData(adminPlayerStrength);
+  //   } else if (name === "Weaknesses") {
+  //     if (weakness) setData(weakness);
+  //     // if (coachPlayerWeakness) setData(coachPlayerWeakness);
+  //     // if (superPlayerWeakness) setData(superPlayerWeakness);
+  //     // if (adminPlayerWeakness) setData(adminPlayerWeakness);
+  //   }
+  // }, [
+  //   strength,
+  //   weakness,
+  //   // coachPlayerStrength,
+  //   // coachPlayerWeakness,
+  //   // superPlayerStrength,
+  //   // superPlayerWeakness,
+  //   // adminPlayerStrength,
+  //   // adminPlayerWeakness,
+  // ]);
+
   return (
     <Group position="apart" className="rounded-sm p-0">
       <HoverCard width={300} shadow="md">

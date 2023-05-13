@@ -69,15 +69,9 @@ const CustomCalendar = ({ pageName, player_id }: Props) => {
       player_id: player_id,
       date_from: firstDay,
       date_to: lastDay,
-      team_id: selectedPlayerTeam?.id,
     },
     {
-      skip:
-        !player_id ||
-        !firstDay ||
-        !lastDay ||
-        !selectedPlayerTeam?.id ||
-        user?.user_type !== "Coach",
+      skip: !player_id || !firstDay || !lastDay || user?.user_type !== "Coach",
     }
   );
 
@@ -86,15 +80,10 @@ const CustomCalendar = ({ pageName, player_id }: Props) => {
       player_id: player_id,
       date_from: firstDay,
       date_to: lastDay,
-      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
-        !player_id ||
-        !firstDay ||
-        !lastDay ||
-        !selectedPlayerTeam?.id ||
-        user?.user_type !== "Supervisor",
+        !player_id || !firstDay || !lastDay || user?.user_type !== "Supervisor",
     }
   );
 
@@ -103,15 +92,9 @@ const CustomCalendar = ({ pageName, player_id }: Props) => {
       player_id: player_id,
       date_from: firstDay,
       date_to: lastDay,
-      team_id: selectedPlayerTeam?.id,
     },
     {
-      skip:
-        !player_id ||
-        !firstDay ||
-        !lastDay ||
-        !selectedPlayerTeam?.id ||
-        user?.user_type !== "Admin",
+      skip: !player_id || !firstDay || !lastDay || user?.user_type !== "Admin",
     }
   );
 

@@ -205,8 +205,8 @@ const AddEventForm = ({ refetch, teamID, children }: Props) => {
             ) {
               AppUtils.showNotificationFun(
                 "Error",
-                "Wrong",
-                "Please select sport and team first"
+                "Wrog",
+                "Please Select Team first"
               );
             } else {
               setOpened(true);

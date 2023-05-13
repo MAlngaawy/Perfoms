@@ -11,7 +11,7 @@ type Props = {
 const AppRadioGroub = ({ checked, setChecked, values }: Props) => {
   const screenWidth = useWindowSize().width;
 
-  const radioPadding = screenWidth < 400 ? " 5px 10px" : "10px 25px";
+  const radioPadding = screenWidth > 400 ? "10px 25px" : " 5px 10px";
 
   return (
     <div className="">
