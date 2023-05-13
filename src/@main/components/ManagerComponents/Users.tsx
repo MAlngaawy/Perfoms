@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import {
+  useAdminClubParentsQuery,
   useAdminCoachesQuery,
+  useAdminParentsQuery,
   useAdminPlayersQuery,
   useAdminSubCoachQuery,
   useAdminSupervisorsQuery,
@@ -18,18 +20,21 @@ const Users = (props: Props) => {
   const [coachSearch, setCoachSearch] = useState<string>();
   const [subCoachSearch, setSubCoachSearch] = useState<string>();
   const [superSearch, setSuperSearch] = useState<string>();
+  const [parentSearch, setParentSearch] = useState<string>();
 
   // Pagenation
   const [playersPage, setPlayersPage] = useState<number>();
   const [coachesPage, setCoachesPage] = useState<number>();
   const [subCoachesPage, setSubCoachesPage] = useState<number>();
   const [superUsersPage, setSuperUsersPage] = useState<number>();
+  const [parentUsersPage, setParentUsersPage] = useState<number>();
 
   // Sport Keyword Status
   const [playerSport, setPlayerSport] = useState<string>();
   const [coachSport, setCoachSport] = useState<string>();
   const [subCoachSport, setSubCoachSport] = useState<string>();
   const [superSport, setSuperSport] = useState<string>();
+  const [parentSport, setParentSport] = useState<string>();
 
   const { data: players, isLoading: playerLoading } = useAdminPlayersQuery(
     {
@@ -72,7 +77,16 @@ const Users = (props: Props) => {
       },
       { skip: !user?.club }
     );
-  console.log("players", players?.pages_count);
+
+  const { data: parents, isLoading: parentLoading } = useAdminParentsQuery(
+    {
+      club_id: user?.club,
+      search: parentSearch,
+      sport: parentSport,
+      page: parentUsersPage,
+    },
+    { skip: !user?.club }
+  );
 
   return (
     <div className="flex flex-col gap-6  pt-6 mb-10">
@@ -117,6 +131,16 @@ const Users = (props: Props) => {
         fetching={playerLoading}
         setSport={setPlayerSport}
         sport={playerSport}
+      />
+      <UsersCard
+        type="Parent"
+        setUserSearch={setParentSearch}
+        data={parents?.results}
+        pageCount={parents?.pages_count}
+        setPage={setParentUsersPage}
+        fetching={parentLoading}
+        setSport={setParentSport}
+        sport={parentSport}
       />
     </div>
   );

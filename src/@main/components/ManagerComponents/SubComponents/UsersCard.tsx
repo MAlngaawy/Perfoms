@@ -10,6 +10,7 @@ import {
 import AddPlayerForm from "./CreatePlayerForm";
 import {
   useAdminDeleteCoachMutation,
+  useAdminDeleteParentMutation,
   useAdminDeletePlayerMutation,
   useAdminDeleteSubCoachMutation,
   useAdminDeleteSupervisorMutation,
@@ -25,7 +26,7 @@ import { useUserQuery } from "~/app/store/user/userApi";
 import Pagenation from "../../Pagenation/Pagenation";
 
 type Props = {
-  type: "Player" | "Coach" | "Supervisor" | "Attendance Moderator";
+  type: "Player" | "Coach" | "Supervisor" | "Attendance Moderator" | "Parent";
   data: any;
   setUserSearch: Dispatch<SetStateAction<string | undefined>>;
   pageCount: number | undefined;
@@ -47,7 +48,6 @@ const UsersCard = ({
 }: Props) => {
   // const [selectedSport, setSelectedSport] = useState<string | null>();
   const safeSetSport = setSport ?? (() => {});
-  console.log("newData", data);
 
   const [sports, setSports] = useState<SelectItem[]>([
     {
@@ -99,18 +99,20 @@ const UsersCard = ({
           ) : (
             <CreateUser userType={type} />
           )}
-          <Select
-            placeholder="Filter By Sport"
-            value={sport}
-            onChange={(e: string) => {
-              if (e && e != "0") {
-                safeSetSport(e);
-              } else {
-                safeSetSport("0");
-              }
-            }}
-            data={sports}
-          />
+          {type !== "Parent" && (
+            <Select
+              placeholder="Filter By Sport"
+              value={sport}
+              onChange={(e: string) => {
+                if (e && e != "0") {
+                  safeSetSport(e);
+                } else {
+                  safeSetSport("0");
+                }
+              }}
+              data={sports}
+            />
+          )}
 
           <form
             onSubmit={handleSubmit}
@@ -182,6 +184,7 @@ const FilteredUsers = ({
   const [deleteCoach] = useAdminDeleteCoachMutation();
   const [deleteSupervisor] = useAdminDeleteSupervisorMutation();
   const [deleteSubCoach] = useAdminDeleteSubCoachMutation();
+  const [deleteParent] = useAdminDeleteParentMutation();
 
   const deleteUser = (userId: string) => {
     let deletePromise;
@@ -189,6 +192,9 @@ const FilteredUsers = ({
     switch (typeName) {
       case "player":
         deletePromise = deletePlayer({ player_id: userId });
+        break;
+      case "parent":
+        deletePromise = deleteParent({ parent_id: userId });
         break;
       case "coach":
         deletePromise = deleteCoach({ coach_id: userId });

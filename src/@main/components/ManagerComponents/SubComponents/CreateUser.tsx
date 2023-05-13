@@ -14,6 +14,7 @@ import * as yup from "yup";
 import { useUserQuery } from "~/app/store/user/userApi";
 import {
   useAdminAddCoachMutation,
+  useAdminAddParentMutation,
   useAdminAddSubCoachMutation,
   useAdminAddSupervsiorMutation,
   useAdminAddTeamAttendanceSessionMutation,
@@ -25,7 +26,7 @@ import {
 import { PlayerSport, SportTeam } from "~/app/store/types/parent-types";
 
 type Props = {
-  userType: "Coach" | "Supervisor" | "Attendance Moderator";
+  userType: "Coach" | "Supervisor" | "Attendance Moderator" | "Parent";
 };
 
 const formInputsDefaultValue = {
@@ -65,6 +66,7 @@ const CreateUser = ({ userType }: Props) => {
   };
 
   const hasTeams = ["Coach", "Attendance Moderator"].includes(userType);
+  const hasSport = userType !== "Parent";
 
   const schema = yup.object().shape({
     mobile: yup
@@ -74,10 +76,10 @@ const CreateUser = ({ userType }: Props) => {
       .matches(/^\d+$/, "phone number must only contain numbers"),
     first_name: yup.string().required("First name is required"),
     last_name: yup.string().required("Last name is required"),
-    sport: yup
-      .number()
-      .required("You Must select a sport")
-      .typeError("You Have to select a sport"),
+    sport: yup.number().when("userType", {
+      is: (userType: string) => userType !== "Parent",
+      then: yup.number().typeError("You have to select a sport"),
+    }),
     teams: yup
       .array()
       .of(yup.number())
@@ -127,6 +129,7 @@ const CreateUser = ({ userType }: Props) => {
   const [createSubCoach] = useAdminAddSubCoachMutation();
   const [createCoach] = useAdminAddCoachMutation();
   const [createSupervisor] = useAdminAddSupervsiorMutation();
+  const [createParent] = useAdminAddParentMutation();
 
   const onSubmitFun = async (e: any) => {
     e.preventDefault();
@@ -140,7 +143,7 @@ const CreateUser = ({ userType }: Props) => {
       first_name: formInputsData.first_name,
       last_name: formInputsData.last_name,
       password: formInputsData.password,
-      sport: formInputsData.sport,
+      sport: hasSport ? formInputsData.sport : undefined,
       teams: hasTeams ? formInputsData.teams : undefined,
     };
 
@@ -177,6 +180,8 @@ const CreateUser = ({ userType }: Props) => {
         handleCreate(createCoach);
       } else if (userType === "Supervisor") {
         handleCreate(createSupervisor);
+      } else if (userType === "Parent") {
+        handleCreate(createParent);
       }
     } catch (error) {
       setIsLoading(false);
@@ -255,52 +260,17 @@ const CreateUser = ({ userType }: Props) => {
           </div>
 
           {/* Sport and teams */}
-          <div className="flex flex-col gap-4 w-full my-4">
-            <Select
-              error={errors.sport}
-              id="sport"
-              required
-              className="w-full"
-              label="Sport"
-              name="sport"
-              sx={{
-                ".mantine-Select-input": {
-                  background: "none",
-                  border: 0,
-                  borderBottom: "1px solid",
-                  borderRadius: 0,
-                  width: "100%",
-                },
-              }}
-              data={sports?.map((item: Partial<PlayerSport>) => {
-                return { value: item.id, label: item.name };
-              })}
-              onChange={(e) => {
-                e && setSelectedSport(+e);
-                if (e) {
-                  handleChange("sport", +e);
-                }
-              }}
-            />
-            {hasTeams && (
-              <MultiSelect
-                id="teams"
-                error={errors.teams}
+          {hasSport && (
+            <div className="flex flex-col gap-4 w-full my-4">
+              <Select
+                error={errors.sport}
+                id="sport"
                 required
                 className="w-full"
-                label="Teams"
-                name="teams"
-                value={selectedTeam}
-                onChange={(e) => {
-                  console.log(e);
-
-                  if (e) {
-                    setSelectedTeam(e);
-                    handleChange("teams", e);
-                  }
-                }}
+                label="Sport"
+                name="sport"
                 sx={{
-                  ".mantine-MultiSelect-input": {
+                  ".mantine-Select-input": {
                     background: "none",
                     border: 0,
                     borderBottom: "1px solid",
@@ -308,12 +278,49 @@ const CreateUser = ({ userType }: Props) => {
                     width: "100%",
                   },
                 }}
-                data={teams?.map((item: Partial<SportTeam>) => {
-                  return { label: item.name, value: item.id };
+                data={sports?.map((item: Partial<PlayerSport>) => {
+                  return { value: item.id, label: item.name };
                 })}
+                onChange={(e) => {
+                  e && setSelectedSport(+e);
+                  if (e) {
+                    handleChange("sport", +e);
+                  }
+                }}
               />
-            )}
-          </div>
+              {hasTeams && (
+                <MultiSelect
+                  id="teams"
+                  error={errors.teams}
+                  required
+                  className="w-full"
+                  label="Teams"
+                  name="teams"
+                  value={selectedTeam}
+                  onChange={(e) => {
+                    console.log(e);
+
+                    if (e) {
+                      setSelectedTeam(e);
+                      handleChange("teams", e);
+                    }
+                  }}
+                  sx={{
+                    ".mantine-MultiSelect-input": {
+                      background: "none",
+                      border: 0,
+                      borderBottom: "1px solid",
+                      borderRadius: 0,
+                      width: "100%",
+                    },
+                  }}
+                  data={teams?.map((item: Partial<SportTeam>) => {
+                    return { label: item.name, value: item.id };
+                  })}
+                />
+              )}
+            </div>
+          )}
 
           {/* <SelectTeamsFromSportInputs
             errors={errors}

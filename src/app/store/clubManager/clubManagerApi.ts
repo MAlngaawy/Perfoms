@@ -332,6 +332,22 @@ export const clubManagerApi = createApi({
       providesTags: ["subCoachesUser", "coachUser"],
     }),
 
+    adminParents: query<
+      AllUsers,
+      {
+        club_id: number | undefined;
+        page?: number;
+        search?: string | null;
+        sport?: string | undefined;
+      }
+    >({
+      query: ({ club_id, ...params }) => ({
+        url: `users/parents/${club_id}`,
+        params,
+      }),
+      providesTags: ["parentUser"],
+    }),
+
     adminAddTeamPlayer: mutation<TeamPlayer, {}>({
       query: ({ ...body }) => ({
         url: `teams/add-team-player/`,
@@ -384,6 +400,15 @@ export const clubManagerApi = createApi({
         body,
       }),
       invalidatesTags: ["subCoachesUser"],
+    }),
+
+    adminDeleteParent: mutation<{}, { parent_id: string }>({
+      query: ({ parent_id, ...body }) => ({
+        url: `users/parents/${parent_id}/delete/`,
+        method: "DELETE",
+        body,
+      }),
+      invalidatesTags: ["parentUser"],
     }),
 
     adminAddSubCoach: mutation<AddUser, AddUser>({
@@ -913,6 +938,7 @@ export const {
   useAdminDeleteCoachMutation,
   useAdminDeleteSupervisorMutation,
   useAdminDeleteSubCoachMutation,
+  useAdminDeleteParentMutation,
   useAdminAddSubCoachMutation,
   useAdminAddSupervsiorMutation,
   useAdminAddCoachMutation,
@@ -961,4 +987,5 @@ export const {
   useSelectActionMutation,
   useAdminAddTeamAttendanceSessionMutation,
   useAdminDeleteTeamAttendanceSessionMutation,
+  useAdminParentsQuery,
 } = clubManagerApi;
