@@ -7,7 +7,10 @@ import TotalAttendance from "./components/TotalAttendance";
 import CustomCalendar from "~/@main/components/Calendar";
 import AddPlayer from "../home/molecules/AddPlayer";
 import { useSelector } from "react-redux";
-import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
+import {
+  selectedPlayerFn,
+  selectedPlayerTeamFn,
+} from "~/app/store/parent/parentSlice";
 import TimeFilter from "~/@main/components/TimeFilter";
 import TeamFilter from "../../../@main/components/TeamFilter";
 import useWindowSize from "~/@main/hooks/useWindowSize";
@@ -21,12 +24,20 @@ import PrintComp from "~/@main/PrintComp";
 import Placeholders from "~/@main/components/Placeholders";
 import PlayerCertificatePage from "../player-certificate/PlayerCertificatePage";
 import { usePlayerCertificatesQuery } from "~/app/store/parent/parentApi";
+import { useGetTeamInfoQuery } from "~/app/store/user/userApi";
 
 // ==============
 const ReportPage = () => {
   const player = useSelector(selectedPlayerFn);
   const widowSize = useWindowSize();
+  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
 
+  const { data: selectedTeamInfo } = useGetTeamInfoQuery(
+    {
+      team_id: selectedPlayerTeam.id,
+    },
+    { skip: !selectedPlayerTeam.id }
+  );
   const [reportType, setReportType] =
     useState<"Performances" | "Attendances" | "Certificates">("Performances");
 
@@ -161,7 +172,9 @@ const ReportPage = () => {
                           </div>
 
                           {/* Attendance Calendar */}
-                          <CustomCalendar pageName="reports" />
+                          {selectedTeamInfo?.attend_per === "DAY" && (
+                            <CustomCalendar pageName="reports" />
+                          )}
                         </div>
                       </Grid.Col>
                     </Grid>
