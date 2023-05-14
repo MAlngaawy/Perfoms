@@ -35,9 +35,9 @@ const PlayersPage = () => {
         </div>
       </div>
       <div className="players-page bg-white p-2 rounded-3xl m-2">
-        <p className="pb-2">Players</p>
+        <p className="p-2 text-center text-lg">Players</p>
         <div className="flex flex-wrap">
-          <div className="flex flex-wrap justify-center sm:justify-start gap-2 xs:gap-4  mt-4">
+          <div className="flex flex-wrap justify-center gap-2 xs:gap-4  mt-4">
             {coahcTeamPlayers &&
               coahcTeamPlayers?.results.map((player) => {
                 return (

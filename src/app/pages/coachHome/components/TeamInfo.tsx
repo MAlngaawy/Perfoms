@@ -1,12 +1,12 @@
 import { Avatar, Grid } from "@mantine/core";
-import React from "react";
-import CustomCalendar from "~/@main/components/Calendar";
-import Card from "~/@main/components/Card";
 import { useNavigate } from "react-router-dom";
 import UpcomingEventsCard from "~/@main/components/UpcomingEventsCard";
 import { useSelector } from "react-redux";
 import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
-import { useGetTeamPlayersQuery } from "~/app/store/coach/coachApi";
+import {
+  useCoachTeamInfoQuery,
+  useGetTeamPlayersQuery,
+} from "~/app/store/coach/coachApi";
 import HomeTeamInfoCard from "~/@main/components/HomeTeamInfoCard";
 import NoTeamComp from "~/@main/components/NoTeamComp";
 import TeamCalendar from "../../SubPages/SingleTeam/Components/TeamCalendar";
@@ -17,8 +17,6 @@ import { SinglePlayer } from "../../SubPages/SingleTeam/Components/TeamPlayers";
 type Props = {};
 
 const TeamInfo = (props: Props) => {
-  console.log("TEAM Info Here");
-
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const { data: user } = useUserQuery({});
 
@@ -26,8 +24,10 @@ const TeamInfo = (props: Props) => {
     { team_id: selectedPlayerTeam?.id },
     { skip: !selectedPlayerTeam || user?.user_type !== "Coach" }
   );
-
-  const navigate = useNavigate();
+  const { data: coachTeamInfoData } = useCoachTeamInfoQuery(
+    { team_id: selectedPlayerTeam?.id },
+    { skip: !selectedPlayerTeam }
+  );
 
   return (
     <>
@@ -57,23 +57,11 @@ const TeamInfo = (props: Props) => {
               } items-center flex-wrap`}
               span={12}
             >
-              <h2 className="m-4">Team Players</h2>
-              <div className="flex gap-4 flex-wrap mt-6 justify-center sm:justify-start">
+              <h2 className="p-2 text-center text-lg">Team Players</h2>
+              <div className="flex flex-wrap justify-center gap-2 xs:gap-4  mt-4">
                 {coachTeamPlayers &&
                   coachTeamPlayers?.results.map((player, idx) => {
                     return (
-                      // <div
-                      //   key={idx}
-                      //   className="shadow-xl cursor-pointer transform hover:scale-105 rounded-lg w-28 text-center bg-white flex flex-col justify-center items-center"
-                      //   onClick={() => navigate(`/players/${player.id}`)}
-                      // >
-                      //   <Avatar
-                      //     className="rounded-lg w-full h-28 object-cover"
-                      //     src={player.icon}
-                      //     alt="player Image"
-                      //   />
-                      //   <h2 className="text-sm">{player.name}</h2>
-                      // </div>
                       <SinglePlayer
                         key={player.id}
                         teamId={selectedPlayerTeam?.id}
@@ -84,6 +72,7 @@ const TeamInfo = (props: Props) => {
                     );
                   })}
                 <AddPlayer
+                  teamInfo={coachTeamInfoData}
                   teamPlayers={coachTeamPlayers}
                   coach_team_id={selectedPlayerTeam?.id}
                 />

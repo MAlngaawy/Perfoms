@@ -1,5 +1,5 @@
-import React, { useEffect, memo, useState } from "react";
-import { Table, Avatar, Skeleton } from "@mantine/core";
+import { useEffect, useState } from "react";
+import { Table, Avatar, Skeleton, HoverCard } from "@mantine/core";
 import cn from "classnames";
 import {
   useGetTeamPerformancesQuery,
@@ -9,7 +9,6 @@ import {
 import { useSelector } from "react-redux";
 import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 import classNames from "classnames";
-import NoAttendancesYet from "~/@main/components/NoAttendancesYet";
 import NoTeamComp from "~/@main/components/NoTeamComp";
 import {
   useSuperGetTeamPerformancesQuery,
@@ -104,9 +103,20 @@ const PerformanceTable = (props: Props) => {
           <Table highlightOnHover>
             <thead>
               <tr className="">
-                <th className="bg-white sticky left-0  top-0 z-50 text-center">
-                  Technique
-                </th>
+                {teamPerformance?.results.length == 0 ? (
+                  <th
+                    className="w-full font-normal flex justify-center items-center p-4 text-center"
+                    colSpan={100}
+                  >
+                    No Players in this Team, <br />
+                    You can add players on the team info page first, and then
+                    score them from here.
+                  </th>
+                ) : (
+                  <th className="bg-white sticky left-0  top-0 z-50 text-center">
+                    Technique
+                  </th>
+                )}
                 {teamPerformance?.results.map((player) => (
                   <th
                     key={player.id}
@@ -126,60 +136,77 @@ const PerformanceTable = (props: Props) => {
                 ))}
               </tr>
             </thead>
-            <tbody className="overflow-scroll">
-              {teamPerformanceMetric?.results &&
-              teamPerformanceMetric?.results.length > 0 ? (
-                <>
-                  {teamPerformanceMetric?.results.map((oneKpi) => (
-                    <>
-                      <tr>
-                        <td className="border-0 font-bold text-left text-sm sticky left-0 bg-white z-10 text-perfGray1">
-                          {oneKpi.name}
-                        </td>
-                      </tr>
-                      {oneKpi.kpi_metric.map((metric) => {
-                        return (
-                          <tr className="border-0" key={metric.id}>
-                            <td className=" text-xs sm:text-sm sticky left-0  bg-white z-10 font-medium text-perfGray1">
-                              <div className="w-20 xs:w-40 text-left">
-                                {metric.name}
-                              </div>
-                            </td>
-                            {teamPerformance?.results.map((player: any) => {
-                              let theMetric = 0;
-                              let theScore = 0;
-                              for (let i of player.player_metric) {
-                                if (
-                                  i.metric === metric.name &&
-                                  i.kpi === oneKpi.name
-                                ) {
-                                  theMetric = i.id || 0;
-                                  theScore = i.last_score || 0;
-                                }
+            {teamPerformanceMetric?.results &&
+            teamPerformanceMetric?.results.length > 0 ? (
+              <tbody className="overflow-scroll">
+                {teamPerformanceMetric?.results.map((oneKpi) => (
+                  <>
+                    <tr>
+                      <HoverCard width={200} position="top" shadow="md">
+                        <HoverCard.Target>
+                          <td className="border-0 font-bold text-left text-sm sticky left-0 bg-white z-10 text-perfGray1">
+                            <p>{oneKpi.name}</p>
+                          </td>
+                        </HoverCard.Target>
+                        <HoverCard.Dropdown className="bg-gray-100 p-2">
+                          <p className="text-xs">{oneKpi.description}</p>
+                        </HoverCard.Dropdown>
+                      </HoverCard>
+                    </tr>
+                    {oneKpi.kpi_metric.map((metric) => {
+                      return (
+                        <tr className="border-0" key={metric.id}>
+                          <td className=" text-xs sm:text-sm sticky left-0  bg-white z-10 font-medium text-perfGray1">
+                            <div className="w-20 xs:w-40 text-left">
+                              <HoverCard width={200} position="top" shadow="md">
+                                <HoverCard.Target>
+                                  <p>{metric.name}</p>
+                                </HoverCard.Target>
+                                <HoverCard.Dropdown className="bg-gray-100 p-2">
+                                  <p className="text-xs">
+                                    {metric.description}
+                                  </p>
+                                </HoverCard.Dropdown>
+                              </HoverCard>
+                            </div>
+                          </td>
+                          {teamPerformance?.results.map((player: any) => {
+                            let theMetric = 0;
+                            let theScore = 0;
+                            for (let i of player.player_metric) {
+                              if (
+                                i.metric === metric.name &&
+                                i.kpi === oneKpi.name
+                              ) {
+                                theMetric = i.id || 0;
+                                theScore = i.last_score || 0;
                               }
-                              return (
-                                <TestComponent
-                                  player={player}
-                                  firstScore={theScore}
-                                  theMetric={theMetric}
-                                  selectedPlayerTeam={selectedPlayerTeam}
-                                />
-                              );
-                            })}
-                          </tr>
-                        );
-                      })}
-                    </>
-                  ))}
-                </>
-              ) : (
-                <tr>
-                  <td>
-                    <NoAttendancesYet type="Kpis" />
-                  </td>
-                </tr>
-              )}
-            </tbody>
+                            }
+                            return (
+                              <TestComponent
+                                player={player}
+                                firstScore={theScore}
+                                theMetric={theMetric}
+                                selectedPlayerTeam={selectedPlayerTeam}
+                              />
+                            );
+                          })}
+                        </tr>
+                      );
+                    })}
+                  </>
+                ))}
+              </tbody>
+            ) : (
+              <tr className="w-full p-4 m-10 bg-white">
+                <td colSpan={100} className="bg-pagesBg p-10 w-full">
+                  No kpis added for the this team sport yet, <br />
+                  if you want to add kpis you can go to the admin home page
+                  <br />
+                  and add kpis and metrics under this team sport
+                </td>
+              </tr>
+            )}
           </Table>
         </div>
       ) : (

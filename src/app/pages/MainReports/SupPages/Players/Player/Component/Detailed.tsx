@@ -1,25 +1,18 @@
-import React, { useState, useRef } from "react";
-import { Grid, Menu, Button } from "@mantine/core";
+import { Grid } from "@mantine/core";
 import Card from "~/@main/components/Card";
-import AppIcons from "~/@main/core/AppIcons";
-import AttendanceTable from "~/app/pages/reports/components/AttendanceTable";
+import AttendanceDaysReports from "~/app/pages/reports/components/AttendanceDaysReports";
 import TotalAttendance from "~/app/pages/reports/components/TotalAttendance";
 import CustomCalendar from "~/@main/components/Calendar";
-import TimeFilter from "~/@main/components/TimeFilter";
-import useWindowSize from "~/@main/hooks/useWindowSize";
 import ActionsCard from "~/@main/components/ActionsCard";
 import RecommendationsCard from "~/@main/components/RecommendationsCard";
 import HomePlayerInfoCard from "~/@main/components/HomePlayerInfoCard";
-import ReportsPageLoading from "~/app/pages/reports/components/ReportsPageLoading";
 import PerformanceSummaryCard from "~/@main/components/PerformanceSummaryCard";
 import AttendancesSmallCards from "~/app/pages/reports/components/AttendancesSmallCards";
-import { useReactToPrint } from "react-to-print";
-import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
-import { useSelector } from "react-redux";
-import ReportPage from "~/app/pages/reports/ReportsPage";
-import TeamFilter from "~/@main/components/TeamFilter";
 import PrintComp from "~/@main/PrintComp";
 import { useParams } from "react-router-dom";
+import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
+import { useSelector } from "react-redux";
+import { useGetTeamInfoQuery } from "~/app/store/user/userApi";
 
 type Props = {
   reportType: "Performances" | "Attendances";
@@ -27,6 +20,16 @@ type Props = {
 
 const Detailed = ({ reportType }: Props) => {
   const { id } = useParams();
+  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
+
+  const { data: selectedTeamInfo } = useGetTeamInfoQuery(
+    {
+      team_id: selectedPlayerTeam.id,
+    },
+    { skip: !selectedPlayerTeam.id }
+  );
+
+  console.log("selectedTeamInfo", selectedTeamInfo);
 
   return (
     <>
@@ -106,7 +109,7 @@ const Detailed = ({ reportType }: Props) => {
                   {/* Attedance Summary Table */}
                   <Grid.Col span={12} md={8}>
                     <div className="bg-white overflow-scroll max-h-700 rounded-3xl p-4">
-                      <AttendanceTable player_id={id} />
+                      <AttendanceDaysReports player_id={id} />
                     </div>
                   </Grid.Col>
 
@@ -115,7 +118,9 @@ const Detailed = ({ reportType }: Props) => {
                       <div className="bg-white rounded-3xl">
                         <TotalAttendance player_id={id} />
                       </div>
-                      <CustomCalendar player_id={id} pageName="reports" />
+                      {selectedTeamInfo?.attend_per === "DAY" && (
+                        <CustomCalendar player_id={id} pageName="reports" />
+                      )}
                     </div>
                   </Grid.Col>
                 </Grid>

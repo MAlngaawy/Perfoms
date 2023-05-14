@@ -37,33 +37,48 @@ const MediaCard = ({ event, teamId }: props) => {
     { team_id: teamId },
     { skip: !teamId || user?.user_type !== "Admin" }
   );
+  const deleteEvent = (eventId: number) => {
+    const deleteFn =
+      user?.user_type === "Admin" ? adminDeleteEvent : superDeleteEvent;
 
-  const deleteEvent = async (eventId: number) => {
-    let deleteFn: any = superDeleteEvent;
-    if (user?.user_type === "Admin") {
-      deleteFn = adminDeleteEvent;
-    }
-
-    try {
-      const res = await deleteFn({ event_id: eventId });
-      showNotification({
-        message: "Successfully Deleted",
-        color: "green",
-        title: "Done",
-        styles: {
-          root: {
-            backgroundColor: "#27AE60",
-            borderColor: "#27AE60",
-            "&::before": { backgroundColor: "#fff" },
+    deleteFn({ event_id: eventId })
+      .then((res) => {
+        //@ts-ignore
+        if (res.error.status === 200) {
+          showNotification({
+            message: "Successfully Deleted",
+            color: "green",
+            title: "Done",
+            styles: {
+              root: {
+                backgroundColor: "#27AE60",
+                borderColor: "#27AE60",
+                "&::before": { backgroundColor: "#fff" },
+              },
+              title: { color: "#fff" },
+              description: { color: "#fff" },
+              closeButton: { color: "#fff" },
+            },
+          });
+        }
+      })
+      .catch((err) => {
+        showNotification({
+          message: "An error occurred while deleting the event.",
+          color: "red",
+          title: "Error",
+          styles: {
+            root: {
+              backgroundColor: "#FF4136",
+              borderColor: "#FF4136",
+              "&::before": { backgroundColor: "#fff" },
+            },
+            title: { color: "#fff" },
+            description: { color: "#fff" },
+            closeButton: { color: "#fff" },
           },
-          title: { color: "#fff" },
-          description: { color: "#fff" },
-          closeButton: { color: "#fff" },
-        },
+        });
       });
-    } catch (err) {
-      // handle error
-    }
   };
 
   return (
@@ -74,25 +89,28 @@ const MediaCard = ({ event, teamId }: props) => {
       radius="md"
       withBorder
     >
-      <div className="options absolute flex justify-around gap-2  top-2 right-2 z-10">
-        <div className="p-1 bg-white rounded-full">
-          <DeleteButton
-            deleteFun={() => deleteEvent(event.id)}
-            name={event.name}
-            type="event"
-          />
+      {/* @ts-ignore */}
+      {!["Parent", "Coach"].includes(user?.user_type) && (
+        <div className="options absolute flex justify-around gap-2  top-2 right-2 z-10">
+          <div className="p-1 bg-white rounded-full">
+            <DeleteButton
+              deleteFun={() => deleteEvent(event.id)}
+              name={event.name}
+              type="event"
+            />
+          </div>
+          <div className="p-1 bg-white rounded-full">
+            <EditEventForm
+              team_id={JSON.stringify(teamId)}
+              refetch={() => {
+                if (superEvents) superRefetch();
+                if (adminEvents) adminRefetch();
+              }}
+              event={event}
+            />
+          </div>
         </div>
-        <div className="p-1 bg-white rounded-full">
-          <EditEventForm
-            team_id={JSON.stringify(teamId)}
-            refetch={() => {
-              if (superEvents) superRefetch();
-              if (adminEvents) adminRefetch();
-            }}
-            event={event}
-          />
-        </div>
-      </div>
+      )}
       <Card.Section component="a">
         <Avatar
           src={event.icon_url}
