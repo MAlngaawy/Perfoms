@@ -1,6 +1,5 @@
 import { PlayerCoach, Player } from "./parent-types";
 import { BaseGetAllType } from "./base-types";
-import { TeamAttendanceDays } from "./coach-types";
 
 // Reused
 export type Metric = {
@@ -9,6 +8,7 @@ export type Metric = {
   icon: string;
   icon_url: string;
   kpi?: number;
+  description: string;
 };
 
 export type kpi = {
@@ -16,6 +16,7 @@ export type kpi = {
   name: string;
   icon: string;
   icon_url: string;
+  description: string;
 };
 
 export type Pillar = {
@@ -89,6 +90,7 @@ export type Team = {
   gender?: string;
   sport?: string;
   current_players_count: number;
+  attend_per: "DAY" | "SESSION";
 };
 
 export type Coaches = BaseGetAllType & {
@@ -151,6 +153,7 @@ export type SuperVisorTeamInfo = {
   from_age: number;
   to_age: number;
   gender: string;
+  attend_per: "DAY" | "SESSION";
 };
 
 export type SuperVisorAttendance = BaseGetAllType & {
@@ -190,10 +193,33 @@ export type CoachRequests = BaseGetAllType & {
 };
 
 export type TeamAttendance = BaseGetAllType & {
-  results: { day: string }[];
+  results: AttendanceDay[];
+};
+
+export type AttendanceDay = {
+  day: string;
+  id: number;
+  status: string;
+  attendance_sessions: daySessions;
 };
 
 export type AddTeamCalendar = {
   day: string;
   team: number;
+};
+
+export type daySession = {
+  id: number;
+  from_hour: string;
+  to_hour: string;
+  status: string;
+};
+
+export type daySessions = daySession[];
+
+export type AddAttendanceSession = {
+  from_hour: string;
+  to_hour: string;
+  day: string;
+  status: "ATTENDED" | "ABSENT" | "UPCOMING";
 };

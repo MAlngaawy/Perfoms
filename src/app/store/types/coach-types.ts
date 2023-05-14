@@ -2,7 +2,7 @@ import { string } from "yup";
 import { Attendance } from "./attendance-types";
 import { BaseGetAllType } from "./base-types";
 import { TeamPlayer } from "./clubManager-types";
-import { RatePer } from "./supervisor-types";
+import { daySessions, RatePer } from "./supervisor-types";
 
 export enum NotificationType {
   Report = "Report",
@@ -169,7 +169,12 @@ export type TeamsStatistics = BaseGetAllType & {
 // };
 
 export type TeamAttendanceDays = BaseGetAllType & {
-  results: { day: string }[];
+  results: {
+    day: string;
+    id: number;
+    status: string;
+    attendance_sessions: daySessions;
+  }[];
 };
 
 export type TeamPerformanceMetrics = BaseGetAllType & {
@@ -177,9 +182,11 @@ export type TeamPerformanceMetrics = BaseGetAllType & {
     {
       id: number;
       name: string;
+      description: string;
       kpi_metric: {
         id: number;
         name: string;
+        description: string;
       }[];
     }
   ];
@@ -262,6 +269,7 @@ export type CoachAttendance = {
     id: number;
     day: string;
     status: "ATTENDED" | "ABSENT" | "UPCOMING";
+    attendance_sessions: daySessions;
   }[];
 };
 
@@ -273,7 +281,10 @@ export type CoachPlayerInfo = {
   id: number;
   name: string;
   dob: string;
-  weight: string;
+  weight?: string;
+  world_weight?: string;
+  olympic_weight?: string;
+  front_leg?: "NONE" | "LEFT" | "RIGHT" | "BOTH";
   height: string;
   icon: string;
   icon_url: string;
@@ -281,7 +292,6 @@ export type CoachPlayerInfo = {
   parent_name: string;
   phone?: string;
   profile?: string;
-  front_leg: string;
   team?: {
     id: number;
     name: string;
@@ -301,6 +311,7 @@ export type CoachTeamInfo = {
   from_age: number;
   to_age: number;
   gender: string;
+  attend_per: "DAY" | "SESSION";
 };
 
 export type CoachTeamPerformance = BaseGetAllType & {

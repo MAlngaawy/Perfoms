@@ -125,10 +125,11 @@ export const parentsApi = createApi({
         page?: number;
         date_from: string;
         date_to: string;
+        team_id: number | string | undefined;
       }
     >({
-      query: ({ id, ...params }) => ({
-        url: `${id}/actions/`,
+      query: ({ id, team_id, ...params }) => ({
+        url: `${id}/${team_id}/actions/`,
         params,
       }),
       providesTags: ["Parent"],
@@ -190,10 +191,11 @@ export const parentsApi = createApi({
         page?: number;
         date_from: string;
         date_to: string;
+        team_id: number | string | undefined;
       }
     >({
-      query: ({ id, ...params }) => ({
-        url: `${id}/recommendations/`,
+      query: ({ id, team_id, ...params }) => ({
+        url: `${id}/${team_id}/recommendations/`,
         params,
       }),
       providesTags: ["Parent"],
@@ -302,10 +304,11 @@ export const parentsApi = createApi({
         page?: number;
         date_from: string;
         date_to: string;
+        team_id: number | string | undefined;
       }
     >({
-      query: ({ player_id, ...params }) => ({
-        url: `${player_id}/metrics/scores/moderate`,
+      query: ({ player_id, team_id, ...params }) => ({
+        url: `${player_id}/${team_id}/metrics/scores/moderate`,
         params,
       }),
       providesTags: ["Parent"],
@@ -318,10 +321,11 @@ export const parentsApi = createApi({
         page?: number;
         date_from: string;
         date_to: string;
+        team_id: number | string | undefined;
       }
     >({
-      query: ({ player_id, ...params }) => ({
-        url: `${player_id}/metrics/scores/strength`,
+      query: ({ player_id, team_id, ...params }) => ({
+        url: `${player_id}/${team_id}/metrics/scores/strength`,
         params,
       }),
       providesTags: ["Parent"],
@@ -334,10 +338,11 @@ export const parentsApi = createApi({
         page?: number;
         date_from: string;
         date_to: string;
+        team_id: number | string | undefined;
       }
     >({
-      query: ({ player_id, ...params }) => ({
-        url: `${player_id}/metrics/scores/weakness`,
+      query: ({ player_id, team_id, ...params }) => ({
+        url: `${player_id}/${team_id}/metrics/scores/weakness`,
         params,
       }),
       providesTags: ["Parent"],

@@ -14,14 +14,13 @@ type Props = {
     name: string;
     icon: string;
     icon_url: string;
+    description?: string;
   };
   apiUrl: string;
   refetchFunction: any;
 };
 
 const EditItem = ({ data, apiUrl, refetchFunction }: Props) => {
-  console.log("DATA", data);
-
   const [opened, setOpened] = useState(false);
   const [userAvatar, setUserAvatar] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -91,6 +90,29 @@ const EditItem = ({ data, apiUrl, refetchFunction }: Props) => {
               id="name"
             />
           </Input.Wrapper>
+
+          {data.description && (
+            <Input.Wrapper id="description" withAsterisk>
+              <Input
+                defaultValue={data.description}
+                name={"description"}
+                placeholder="Description"
+                sx={{
+                  ".mantine-Input-input	": {
+                    border: 0,
+                    padding: 0,
+                    borderBottom: 1,
+                    borderStyle: "solid",
+                    borderRadius: 0,
+                    minHeight: 20,
+                  },
+                }}
+                className="border-b"
+                id="description"
+              />
+            </Input.Wrapper>
+          )}
+
           <SubmitButton isLoading={isLoading} text="Edit" />
         </form>
       </Modal>

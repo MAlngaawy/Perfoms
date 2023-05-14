@@ -1,11 +1,10 @@
-import { Avatar, Progress } from "@mantine/core";
-import AppIcons from "~/@main/core/AppIcons";
 import {
   useDeleteSkillMutation,
   useDeleteUserEducationMutation,
   useGetPlayerInfoQuery,
   usePlayerEducationQuery,
   usePlayerSkillsQuery,
+  useUserQuery,
 } from "~/app/store/user/userApi";
 import AddEducation from "./Forms/AddEducation";
 import { useParams } from "react-router-dom";
@@ -15,13 +14,14 @@ import { EditModeContext } from "../../../../PlayerDetails";
 import AppUtils from "~/@main/utils/AppUtils";
 import AddSkill from "./Forms/AddSkill";
 import Info from "~/@main/components/Info";
-import AvatarWithBlueBorder from "../../../../../../../../@main/components/shared/AvatarWithBlueBorder";
+import AvatarWithBlueBorder from "~/@main/components/shared/AvatarWithBlueBorder";
 import EditPlayer from "~/app/pages/home/molecules/EditPlayer";
 
 type Props = {};
 
 const ParsonalInfo = (props: Props) => {
   const { id } = useParams();
+  const { data: user } = useUserQuery({});
   const editMode = useContext(EditModeContext);
   const [deleteEducation] = useDeleteUserEducationMutation();
   const [deleteSkill] = useDeleteSkillMutation();
@@ -35,12 +35,15 @@ const ParsonalInfo = (props: Props) => {
   return (
     <div className="flex flex-col gap-4">
       <div className="bg-white rounded-3xl p-4">
-        {editMode && (
-          <EditPlayer
-            player={playerData}
-            refetchPlayerData={refetchPlayerData}
-          />
-        )}
+        {
+          //@ts-ignore
+          editMode && ["Parent", "Admin"].includes(user?.user_type) && (
+            <EditPlayer
+              player={playerData}
+              refetchPlayerData={refetchPlayerData}
+            />
+          )
+        }
         <AvatarWithBlueBorder
           name={playerData?.name || "No Name"}
           image={playerData?.icon || "No Image"}
@@ -48,8 +51,31 @@ const ParsonalInfo = (props: Props) => {
         <div className="h2 font-medium">INFO</div>
         <div className="data flex flex-wrap jus gap-4 mt-2">
           <Info label="Age" value={playerData?.dob} />
-          <Info label="Weight" value={playerData?.weight || "NA"} />
-          <Info label="Height" value={playerData?.height || "NA"} />
+          {playerData?.sport.toLocaleLowerCase() === "taekwondo" ? (
+            <>
+              <Info label="Height" value={playerData?.height || "NA"} />
+              {playerData?.world_weight && (
+                <Info label="World Weight" value={playerData?.world_weight} />
+              )}
+              {playerData?.olympic_weight && (
+                <Info
+                  label="Olympic Weight"
+                  value={playerData?.olympic_weight}
+                />
+              )}
+              {playerData?.front_leg !== "NONE" && (
+                <Info
+                  label="Preferred Front Leg"
+                  value={playerData?.front_leg}
+                />
+              )}
+            </>
+          ) : (
+            <>
+              <Info label="Weight" value={playerData?.weight || "NA"} />
+              <Info label="Height" value={playerData?.height || "NA"} />
+            </>
+          )}
           <Info label="Phone" value={playerData?.phone || "N/A"} />
           <div className="flex flex-col items-center justify-center">
             <h3 className=" text-perfGray3 text-xs">Teams</h3>
@@ -63,9 +89,6 @@ const ParsonalInfo = (props: Props) => {
             </div>
           </div>
           <Info label="Sport" value={playerData?.sport} />
-          {playerData?.front_leg !== "NONE" && (
-            <Info label="Front Leg" value={playerData?.front_leg} />
-          )}
         </div>
       </div>
 

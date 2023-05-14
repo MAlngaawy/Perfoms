@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { Info } from "../components/OTPComponent";
 
@@ -34,9 +33,9 @@ const RequestSent = (props: Props) => {
           <h2 className="text-perfBlue text-2xl font-medium ">
             Your application was sent to the admins to be confirmed.
           </h2>
-          <p className="text-orange text-xl">you will recive an SMS</p>
+          <p className="text-orange text-xl">you will recive a SMS message</p>
           <div className="text-perfGray3 font-semibold">
-            Go to{" "}
+            Go to
             <Link className="text-perfBlue" to="/sign-in">
               Sign In
             </Link>

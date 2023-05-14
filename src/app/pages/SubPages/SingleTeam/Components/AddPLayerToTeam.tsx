@@ -7,27 +7,31 @@ import {
   useSuperPlayersQuery,
 } from "~/app/store/supervisor/supervisorMainApi";
 import { useParams } from "react-router-dom";
-import { showNotification } from "@mantine/notifications";
 import __ from "lodash";
-import { TeamPlayers } from "~/app/store/types/clubManager-types";
+import { TeamPlayers, TeamPlayer } from "~/app/store/types/clubManager-types";
 import {
   useAdminAddTeamPlayerMutation,
   useAdminPlayersQuery,
 } from "~/app/store/clubManager/clubManagerApi";
-import { SuperVisorPlayers } from "~/app/store/types/supervisor-types";
+import {
+  SuperVisorPlayers,
+  SuperVisorTeamInfo,
+} from "~/app/store/types/supervisor-types";
 import { useUserQuery } from "~/app/store/user/userApi";
 import AppUtils from "~/@main/utils/AppUtils";
 import {
   useAllClubPlayersQuery,
   useCoachAddTeamPlayerMutation,
 } from "~/app/store/coach/coachApi";
+import { CoachTeamInfo } from "~/app/store/types/coach-types";
 
 type Props = {
   teamPlayers: TeamPlayers | undefined;
   coach_team_id?: number;
+  teamInfo: SuperVisorTeamInfo | CoachTeamInfo | undefined;
 };
 
-const AddPlayer = ({ teamPlayers, coach_team_id }: Props) => {
+const AddPlayer = ({ teamPlayers, coach_team_id, teamInfo }: Props) => {
   const [opened, setOpened] = useState(false);
   const { data: user } = useUserQuery({});
   const [playersData, setPlayersData] = useState<any>([]);
@@ -55,9 +59,32 @@ const AddPlayer = ({ teamPlayers, coach_team_id }: Props) => {
     // Filter the team players vs all club players
     //to show only the not team member players in the select input
     if (players && teamPlayers) {
+      //get all club players
       const allPlayers = players?.results;
+
+      console.log("allPlayers", allPlayers);
+
+      //get selected-team players
       const teamPlayersData = teamPlayers?.results;
-      const filterdPlayers = __.xorBy(allPlayers, teamPlayersData, "id");
+
+      //filter all players to retunr just the players related to team sports
+      const filterPerTeamSport = allPlayers.filter((player) => {
+        //@ts-ignore
+        if (player?.sport) {
+          //@ts-ignore
+          return player?.sport === teamInfo?.sport;
+        } else {
+          return true;
+        }
+      });
+
+      // remove the team players from the players comes from sport filter
+      // const filterdPlayers = __.xorBy(allPlayers, teamPlayersData, "id");
+      const filterdPlayers = filterPerTeamSport.filter((player: any) => {
+        return !teamPlayersData.some((teamPlayer: any) => {
+          return teamPlayer.id === player.id;
+        });
+      });
 
       let test = filterdPlayers.map((player) => {
         return {

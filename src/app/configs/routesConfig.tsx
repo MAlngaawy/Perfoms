@@ -55,23 +55,11 @@ import Top10ClubPlayersConfig from "../pages/MainReports/SupPages/Top10/SupPages
 import Top10SportPlayersConfig from "../pages/MainReports/SupPages/Top10/SupPages/Players/Top10SportPlayers/Top10SportPlayersConig";
 import Top10KpiPlayersConfig from "../pages/MainReports/SupPages/Top10/SupPages/Players/Top10SportPlayers/Top10KpiPlayers/Top10KpiPlayersConfig";
 import SubCoachConfig from "../pages/SubCoach/SubCoachConfig";
-import HealthConfig from "../pages/health/HealthConfig";
-import HealthSignInConfig from "../pages/health/sign-in/HealthSignInConfig";
-import Oauth2callbackConfig from "../pages/health/oauth2callback/Oauth2callbackConfig";
-
-
-import HelpCenterConfig from "../pages/HelpCenter/HelpCenterConfig";
-import HelpCenterDetailsConfig from "../pages/HelpCenter/HelpCenterDetials/HelpCenterConfig";
-import SportsConfig from "../pages/Sports/SportsConfig";
-import SportsDetailsConfig from "../pages/Sports/SportsDetials/SportsDetailsConfig";
-
 
 const routeConfigs: PagesRouteConfig[] = [
   SignInConfig,
   SignUpConfig,
   HomeConfig,
-  HealthConfig,
-  HealthSignInConfig,
   MediaConfig,
   ChatConfig,
   CoachesConfig,
@@ -121,9 +109,7 @@ const routeConfigs: PagesRouteConfig[] = [
   Top10ClubPlayersConfig,
   Top10SportPlayersConfig,
   Top10KpiPlayersConfig,
-
-  SubCoachConfig,HelpCenterConfig,HelpCenterDetailsConfig,SportsConfig,SportsDetailsConfig, Oauth2callbackConfig
-
+  SubCoachConfig,
 ];
 
 const routes: AppRouteObject[] = [

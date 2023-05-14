@@ -389,6 +389,31 @@ class AppUtils {
     }
   };
 
+  static formatTime(timeString: string): string {
+    const [hours, minutes] = timeString.split(":");
+    let period = "AM";
+    let formattedHours = parseInt(hours, 10);
+
+    if (formattedHours >= 12) {
+      period = "PM";
+      if (formattedHours > 12) {
+        formattedHours -= 12;
+      }
+    } else if (formattedHours === 0) {
+      formattedHours = 12;
+    }
+
+    formattedHours = formattedHours.toString().padStart(2, "0");
+
+    return `${formattedHours}:${minutes} ${period}`;
+  }
+
+  static convertDateToString(date: Date): string {
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    return `${hours}:${minutes}`;
+  }
+
   static resizeImage = async (file: any) =>
     new Promise((resolve) => {
       Resizer.imageFileResizer(

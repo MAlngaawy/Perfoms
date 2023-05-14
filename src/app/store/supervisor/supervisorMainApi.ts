@@ -24,6 +24,7 @@ import {
 import { ParentClub } from "~/app/store/types/parent-types";
 import {
   AddAction,
+  AddAttendanceSession,
   AddEvent,
   AddRecommendation,
   AddTeamCalendar,
@@ -433,20 +434,25 @@ export const supervisorApi = createApi({
         pages?: number;
         date_from: string;
         date_to: string;
+        team_id: number | string | undefined;
       }
     >({
-      query: ({ player_id, ...params }) => ({
-        url: `statistics/player-kpis/${player_id}`,
+      query: ({ player_id, team_id, ...params }) => ({
+        url: `statistics/player-kpis/${player_id}/${team_id}`,
         params,
       }),
     }),
 
     superPlayersAttendStatistics: query<
       PlayerMonthsAttendancesStatistics,
-      { player_id: string | undefined; pages?: number }
+      {
+        player_id: string | undefined;
+        pages?: number;
+        team_id: number | string | undefined;
+      }
     >({
-      query: ({ player_id, ...params }) => ({
-        url: `statistics/calendar-detailed/${player_id}/`,
+      query: ({ player_id, team_id, ...params }) => ({
+        url: `statistics/calendar-detailed/${player_id}/${team_id}`,
         params,
       }),
     }),
@@ -458,10 +464,11 @@ export const supervisorApi = createApi({
         date_from: string;
         date_to: string;
         pages?: number;
+        team_id: number | string | undefined;
       }
     >({
-      query: ({ player_id, ...params }) => ({
-        url: `statistics/${player_id}/player-kpis-metrics`,
+      query: ({ player_id, team_id, ...params }) => ({
+        url: `statistics/${player_id}/${team_id}/player-kpis-metrics`,
         params,
       }),
     }),
@@ -473,10 +480,11 @@ export const supervisorApi = createApi({
         pages?: number;
         date_from: string;
         date_to: string;
+        team_id: number | string | undefined;
       }
     >({
-      query: ({ player_id, ...params }) => ({
-        url: `statistics/${player_id}/metrics/scores/moderate`,
+      query: ({ player_id, team_id, ...params }) => ({
+        url: `statistics/${player_id}/${team_id}/metrics/scores/moderate`,
         params,
       }),
     }),
@@ -488,10 +496,11 @@ export const supervisorApi = createApi({
         pages?: number;
         date_from: string;
         date_to: string;
+        team_id: number | string | undefined;
       }
     >({
-      query: ({ player_id, ...params }) => ({
-        url: `statistics/${player_id}/metrics/scores/strength`,
+      query: ({ player_id, team_id, ...params }) => ({
+        url: `statistics/${player_id}/${team_id}/metrics/scores/strength`,
         params,
       }),
     }),
@@ -503,10 +512,11 @@ export const supervisorApi = createApi({
         pages?: number;
         date_from: string;
         date_to: string;
+        team_id: number | string | undefined;
       }
     >({
-      query: ({ player_id, ...params }) => ({
-        url: `statistics/${player_id}/metrics/scores/weakness`,
+      query: ({ player_id, team_id, ...params }) => ({
+        url: `statistics/${player_id}/${team_id}/metrics/scores/weakness`,
         params,
       }),
     }),
@@ -518,10 +528,11 @@ export const supervisorApi = createApi({
         pages?: number;
         date_from: string;
         date_to: string;
+        team_id: number | string | undefined;
       }
     >({
-      query: ({ player_id, ...params }) => ({
-        url: `statistics/${player_id}/recommendations`,
+      query: ({ player_id, team_id, ...params }) => ({
+        url: `statistics/${player_id}/${team_id}/recommendations`,
         params,
       }),
     }),
@@ -533,10 +544,11 @@ export const supervisorApi = createApi({
         pages?: number;
         date_from: string;
         date_to: string;
+        team_id: number | string | undefined;
       }
     >({
-      query: ({ player_id, ...params }) => ({
-        url: `statistics/${player_id}/actions`,
+      query: ({ player_id, team_id, ...params }) => ({
+        url: `statistics/${player_id}/${team_id}/actions`,
         params,
       }),
     }),
@@ -548,10 +560,11 @@ export const supervisorApi = createApi({
         pages?: number;
         date_from: string | undefined;
         date_to: string | undefined;
+        team_id: string | number | undefined;
       }
     >({
-      query: ({ player_id, ...params }) => ({
-        url: `statistics/${player_id}/calendar`,
+      query: ({ player_id, team_id, ...params }) => ({
+        url: `statistics/${player_id}/calendar/${team_id}`,
         params,
       }),
     }),
@@ -585,6 +598,7 @@ export const supervisorApi = createApi({
         url: `team-attendance-days/${team_id}`,
         params,
       }),
+      providesTags: ["calendar"],
     }),
 
     superGetTeamAttendance: query<
@@ -601,6 +615,18 @@ export const supervisorApi = createApi({
     superUpdateAttendance: mutation<Attendance, UpdateAttendance>({
       query: ({ id, ...body }) => ({
         url: `update-attendance-day/${id}/`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["Attendance"],
+    }),
+
+    superUpdateAttendanceSession: mutation<
+      { status: string },
+      UpdateAttendance
+    >({
+      query: ({ id, ...body }) => ({
+        url: `update-attendance-session/${id}/`,
         method: "PATCH",
         body,
       }),
@@ -744,6 +770,29 @@ export const supervisorApi = createApi({
         url: `top-ten-kpi-players/${kpi_id}`,
       }),
     }),
+    superAddTeamAttendanceSession: mutation<
+      AddAttendanceSession,
+      { team_id: number | string | undefined }
+    >({
+      query: ({ team_id, ...body }) => ({
+        url: `teams/add-team-attendance-session/${team_id}/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["calendar"],
+    }),
+
+    superDeleteTeamAttendanceSession: mutation<
+      AddAttendanceSession,
+      { team_id: number | string | undefined }
+    >({
+      query: ({ team_id, ...body }) => ({
+        url: `teams/delete-team-attendance-session/${team_id}/`,
+        method: "DELETE",
+        body,
+      }),
+      invalidatesTags: ["calendar"],
+    }),
   }),
 });
 
@@ -801,6 +850,7 @@ export const {
   useSuperTeamAttendanceDaysQuery,
   useSuperGetTeamAttendanceQuery,
   useSuperUpdateAttendanceMutation,
+  useSuperUpdateAttendanceSessionMutation,
   useSuperGetTeamPerformancesQuery,
   useSuperUpdatePlayerPKMMutation,
   useSuperTeamPerformanceMetricsQuery,
@@ -817,4 +867,6 @@ export const {
   useSuperTopTenSportPlayersQuery,
   useSuperTopTenSportKpisQuery,
   useSuperTopTenKpiPlayersQuery,
+  useSuperAddTeamAttendanceSessionMutation,
+  useSuperDeleteTeamAttendanceSessionMutation,
 } = supervisorApi;

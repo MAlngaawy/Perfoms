@@ -18,12 +18,16 @@ import {
 import AppUtils from "~/@main/utils/AppUtils";
 import { useRemoveAddTeamPlayerMutation } from "~/app/store/coach/coachApi";
 import { Avatar } from "@mantine/core";
+import { SuperVisorTeamInfo } from "~/app/store/types/supervisor-types";
+import { CoachTeamInfo } from "~/app/store/types/coach-types";
+import TeamInfo from "../../../coachHome/components/TeamInfo";
 
 type Props = {
   teamId: string;
+  teamInfo: SuperVisorTeamInfo | CoachTeamInfo | undefined;
 };
 
-const TeamPlayersComponent = ({ teamId }: Props) => {
+const TeamPlayersComponent = ({ teamInfo, teamId }: Props) => {
   const [players, setPlayers] = useState<TeamPlayers>();
   const { data: user } = useUserQuery({});
 
@@ -43,8 +47,8 @@ const TeamPlayersComponent = ({ teamId }: Props) => {
 
   return (
     <div>
-      <h2>Players</h2>
-      <div className="flex gap-4 flex-wrap justify-center sm:justify-start mt-6">
+      <h2 className="p-2 text-center text-lg">Team Players</h2>
+      <div className="flex flex-wrap justify-center gap-2 xs:gap-4  mt-4">
         {players &&
           players.results.map((player) => {
             return (
@@ -57,7 +61,7 @@ const TeamPlayersComponent = ({ teamId }: Props) => {
               />
             );
           })}
-        <AddPlayer teamPlayers={players} />
+        <AddPlayer teamInfo={teamInfo} teamPlayers={players} />
       </div>
     </div>
   );
