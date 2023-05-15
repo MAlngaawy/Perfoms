@@ -10,9 +10,9 @@ import PerformanceSummaryCard from "~/@main/components/PerformanceSummaryCard";
 import AttendancesSmallCards from "~/app/pages/reports/components/AttendancesSmallCards";
 import PrintComp from "~/@main/PrintComp";
 import { useParams } from "react-router-dom";
-import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
-import { useSelector } from "react-redux";
-import { useGetTeamInfoQuery } from "~/app/store/user/userApi";
+// import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
+// import { useSelector } from "react-redux";
+// import { useGetTeamInfoQuery } from "~/app/store/user/userApi";
 
 type Props = {
   reportType: "Performances" | "Attendances";
@@ -20,16 +20,16 @@ type Props = {
 
 const Detailed = ({ reportType }: Props) => {
   const { id } = useParams();
-  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
+  // const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
 
-  const { data: selectedTeamInfo } = useGetTeamInfoQuery(
-    {
-      team_id: selectedPlayerTeam.id,
-    },
-    { skip: !selectedPlayerTeam.id }
-  );
+  // const { data: selectedTeamInfo } = useGetTeamInfoQuery(
+  //   {
+  //     team_id: selectedPlayerTeam.id,
+  //   },
+  //   { skip: !selectedPlayerTeam.id }
+  // );
 
-  console.log("selectedTeamInfo", selectedTeamInfo);
+  // console.log("selectedTeamInfo", selectedTeamInfo);
 
   return (
     <>
@@ -118,9 +118,9 @@ const Detailed = ({ reportType }: Props) => {
                       <div className="bg-white rounded-3xl">
                         <TotalAttendance player_id={id} />
                       </div>
-                      {selectedTeamInfo?.attend_per === "DAY" && (
+                      {/* {selectedTeamInfo?.attend_per === "DAY" && (
                         <CustomCalendar player_id={id} pageName="reports" />
-                      )}
+                      )} */}
                     </div>
                   </Grid.Col>
                 </Grid>
