@@ -50,7 +50,7 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
         !timeFilter?.from_date ||
         !timeFilter?.to_date ||
         !selectedPlayerTeam?.id ||
-        user?.user_type !== "Parent",
+        (user && !["Parent", "Player"].includes(user?.user_type)),
     }
   );
   const { data: strength } = usePlayerStrengthQuery(
@@ -66,7 +66,7 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
         !timeFilter?.from_date ||
         !timeFilter?.to_date ||
         !selectedPlayerTeam?.id ||
-        user?.user_type !== "Parent",
+        (user && !["Parent", "Player"].includes(user?.user_type)),
     }
   );
   const { data: weakness } = usePlayerWeaknessQuery(
@@ -82,7 +82,7 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
         !timeFilter?.from_date ||
         !timeFilter?.to_date ||
         !selectedPlayerTeam?.id ||
-        user?.user_type !== "Parent",
+        (user && !["Parent", "Player"].includes(user?.user_type)),
     }
   );
 

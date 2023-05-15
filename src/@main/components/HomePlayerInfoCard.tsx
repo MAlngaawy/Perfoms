@@ -24,10 +24,14 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
   const [playerInfoData, setPlayerInfoData] = useState<CoachPlayerInfo>();
   const { data: user } = useUserQuery({});
 
+  console.log("selectedPlayer", selectedPlayer);
+
   const { data: parentPlayerInfoData, refetch: refetchPlayerData } =
     useOnePlayerQuery(
       { id: selectedPlayer?.id },
-      { skip: !selectedPlayer?.id || user?.user_type !== "Parent" }
+      {
+        skip: !selectedPlayer?.id,
+      }
     );
 
   const { data: coachPlayerInfo } = useGetPlayerInfoQuery(
@@ -66,7 +70,7 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
     <div className="p-6 h-full bg-white rounded-3xl w-full">
       <div className="playerName flex justify-between  items-center">
         <h2>{playerInfoData?.name.split(" ")[0]}'s info</h2>
-        {user?.user_type === "Parent" && (
+        {user && ["Parent", "Player"].includes(user?.user_type) && (
           <EditPlayer
             player={playerInfoData}
             refetchPlayerData={refetchPlayerData}

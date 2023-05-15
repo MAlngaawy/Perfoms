@@ -37,7 +37,7 @@ const RecommendationsCard = ({ player_id }: Props) => {
         !timeFilter?.from_date ||
         !timeFilter?.to_date ||
         !selectedPlayerTeam?.id ||
-        user?.user_type !== "Parent",
+        (user && !["Parent", "Player"].includes(user?.user_type)),
     }
   );
 

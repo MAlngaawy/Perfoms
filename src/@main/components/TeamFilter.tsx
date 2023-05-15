@@ -42,7 +42,11 @@ const TeamFilter = ({ adminSportId, player_id }: Props) => {
 
   let { data: playerTeams } = usePlayerTeamsQuery(
     { id: selectedPlayer?.id },
-    { skip: !selectedPlayer || user?.user_type !== "Parent" }
+    {
+      skip:
+        !selectedPlayer ||
+        (user && !["Parent", "Player"].includes(user?.user_type)),
+    }
   );
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
 

@@ -36,10 +36,8 @@ const CoachesPage = (props: Props) => {
     { skip: !selectedPlayer }
   );
 
-  console.log(playerCoaches);
+  console.log("playerCoaches", playerCoaches);
   useEffect(() => {
-    console.log("selectedPlayer", selectedPlayer);
-
     if (playerTeams)
       dispatch(
         selectPlayerTeam(

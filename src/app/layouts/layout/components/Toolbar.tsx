@@ -97,7 +97,10 @@ const Toolbar = ({ setOpened }: Props) => {
           />
           <span
             style={{
-              color: user?.user_type === "Parent" ? "#000" : "#fff",
+              color:
+                user && ["Parent", "Player"].includes(user?.user_type)
+                  ? "#000"
+                  : "#fff",
             }}
           >
             {club?.name || "Alam alryada"}
@@ -105,7 +108,9 @@ const Toolbar = ({ setOpened }: Props) => {
         </div>
 
         {/* Select Player For the Parent */}
-        {user?.user_type === "Parent" && <SelectUser />}
+        {user && ["Parent", "Player"].includes(user?.user_type) && (
+          <SelectUser />
+        )}
       </div>
       <div className="right flex gap-2 justify-center items-center">
         {/* Messages Menu */}

@@ -10,9 +10,6 @@ import PerformanceSummaryCard from "~/@main/components/PerformanceSummaryCard";
 import AttendancesSmallCards from "~/app/pages/reports/components/AttendancesSmallCards";
 import PrintComp from "~/@main/PrintComp";
 import { useParams } from "react-router-dom";
-// import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
-// import { useSelector } from "react-redux";
-// import { useGetTeamInfoQuery } from "~/app/store/user/userApi";
 
 type Props = {
   reportType: "Performances" | "Attendances";
@@ -20,17 +17,6 @@ type Props = {
 
 const Detailed = ({ reportType }: Props) => {
   const { id } = useParams();
-  // const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
-
-  // const { data: selectedTeamInfo } = useGetTeamInfoQuery(
-  //   {
-  //     team_id: selectedPlayerTeam.id,
-  //   },
-  //   { skip: !selectedPlayerTeam.id }
-  // );
-
-  // console.log("selectedTeamInfo", selectedTeamInfo);
-
   return (
     <>
       {reportType === "Performances" ? (
@@ -87,16 +73,6 @@ const Detailed = ({ reportType }: Props) => {
               <Grid.Col span={12} sm={2.5}>
                 <div className="flex flex-col xs:flex-row md:flex-col gap-2 h-full w-full">
                   <HomePlayerInfoCard player_id={id} />
-                  {/* <div className="note bg-white rounded-3xl w-full p-4 h-full">
-                    <h2 className="text-lg font-normal text-perfGray1 pb-4">
-                      Overall notes
-                    </h2>
-                    <p className=" text-base font-normal text-perfGray3">
-                      Fitness Flexibility 10 Exercises to Improve Your
-                      Flexibility 1. Standing Quad Stretch. Stand with your feet
-                      together. ... 2. Standing Side Stretch
-                    </p>
-                  </div> */}
                 </div>
               </Grid.Col>
 
@@ -118,9 +94,7 @@ const Detailed = ({ reportType }: Props) => {
                       <div className="bg-white rounded-3xl">
                         <TotalAttendance player_id={id} />
                       </div>
-                      {/* {selectedTeamInfo?.attend_per === "DAY" && (
-                        <CustomCalendar player_id={id} pageName="reports" />
-                      )} */}
+                      {/* <CustomCalendar player_id={id} pageName="reports" /> */}
                     </div>
                   </Grid.Col>
                 </Grid>

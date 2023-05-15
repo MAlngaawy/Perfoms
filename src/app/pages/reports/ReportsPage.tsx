@@ -30,14 +30,7 @@ import { useGetTeamInfoQuery } from "~/app/store/user/userApi";
 const ReportPage = () => {
   const player = useSelector(selectedPlayerFn);
   const widowSize = useWindowSize();
-  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
 
-  const { data: selectedTeamInfo } = useGetTeamInfoQuery(
-    {
-      team_id: selectedPlayerTeam.id,
-    },
-    { skip: !selectedPlayerTeam.id }
-  );
   const [reportType, setReportType] =
     useState<"Performances" | "Attendances" | "Certificates">("Performances");
 
@@ -97,7 +90,7 @@ const ReportPage = () => {
           {reportType === "Performances" ? (
             <PrintComp>
               <div className="bg-pagesBg">
-                <Grid columns={12} gutter={"sm"}>
+                <Grid columns={12} gutter={"xs"}>
                   <Grid.Col sm={3} md={2.5} span={12}>
                     <HomePlayerInfoCard />
                   </Grid.Col>
@@ -105,7 +98,7 @@ const ReportPage = () => {
                     <PerformanceSummaryCard />
                   </Grid.Col>
                 </Grid>
-                <Grid columns={12} gutter={"sm"} className="info mt-3">
+                <Grid columns={12} gutter={"xs"} className="info mt-3">
                   <Grid.Col sm={4} span={12}>
                     <Card
                       color="text-[#27AE60]"
@@ -131,7 +124,7 @@ const ReportPage = () => {
                     />
                   </Grid.Col>
                 </Grid>
-                <Grid columns={12} gutter={"sm"} className="info mt-3">
+                <Grid columns={12} gutter={"xs"} className="info mt-3">
                   <Grid.Col sm={6} span={12}>
                     <ActionsCard player_id={player?.id} />
                   </Grid.Col>
@@ -144,7 +137,7 @@ const ReportPage = () => {
           ) : reportType === "Attendances" ? (
             <PrintComp>
               <div className="attendances">
-                <Grid gutter={"sm"}>
+                <Grid gutter={"xs"}>
                   <Grid.Col span={12} md={2.5}>
                     <div className="flex flex-col sm:flex-row md:flex-col gap-2 h-full">
                       <HomePlayerInfoCard />
@@ -153,18 +146,18 @@ const ReportPage = () => {
 
                   {/* Right Column Attendance Charts And numbers */}
                   <Grid.Col span={12} md={9.5}>
-                    <Grid gutter={"sm"}>
+                    <Grid gutter={"xs"}>
                       <Grid.Col span={12}>
                         <AttendancesSmallCards player_id={player.id} />
                       </Grid.Col>
-                      {/* Attedance Summary Table */}
-                      <Grid.Col span={12} sm={8}>
+                      {/* AtPlayerCertificatePagetedance Summary Table */}
+                      <Grid.Col span={12} sm={7}>
                         <div className="bg-white h-full rounded-3xl p-4">
                           <AttendanceDaysReports />
                         </div>
                       </Grid.Col>
 
-                      <Grid.Col span={12} sm={4}>
+                      <Grid.Col span={12} sm={5}>
                         <div className="flex flex-col gap-4">
                           {/* Total Attendace Pie Chart  */}
                           <div className="bg-white rounded-3xl">
@@ -172,9 +165,7 @@ const ReportPage = () => {
                           </div>
 
                           {/* Attendance Calendar */}
-                          {selectedTeamInfo?.attend_per === "DAY" && (
-                            <CustomCalendar pageName="reports" />
-                          )}
+                          <CustomCalendar pageName="reports" />
                         </div>
                       </Grid.Col>
                     </Grid>

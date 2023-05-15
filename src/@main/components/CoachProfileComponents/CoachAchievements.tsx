@@ -38,7 +38,7 @@ const CoachAchievements = ({ data, editMode }: Props) => {
   );
 
   useEffect(() => {
-    if (user?.user_type === "Parent") {
+    if (user && ["Parent", "Player"].includes(user?.user_type)) {
       setAchievements(coachAchievements);
     } else {
       setAchievements(userAchievements);

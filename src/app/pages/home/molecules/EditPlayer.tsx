@@ -58,7 +58,7 @@ const EditPlayer = ({ player, refetchPlayerData }: Props) => {
     }
     setError(false);
     const REQUEST_URL =
-      user?.user_type === "Parent"
+      user && ["Parent", "Player"].includes(user?.user_type)
         ? `parent/update-player/${player?.id}/`
         : `club-manager/update-player/${player?.id}/`;
 
@@ -68,7 +68,7 @@ const EditPlayer = ({ player, refetchPlayerData }: Props) => {
         .patch(REQUEST_URL, formData)
         .then((res) => {
           setIsLoading(false);
-          if (user?.user_type === "Parent") {
+          if (user && ["Parent", "Player"].includes(user?.user_type)) {
             refetch();
           }
           refetchPlayerData();

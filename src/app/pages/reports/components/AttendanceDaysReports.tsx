@@ -59,7 +59,7 @@ const AttendanceDaysReports = ({ player_id }: Props) => {
         !timeFilter?.from_date ||
         !timeFilter?.to_date ||
         !selectedPlayerTeam?.id ||
-        user?.user_type !== "Parent",
+        (user && !["Parent", "Player"].includes(user?.user_type)),
     }
   );
 
@@ -132,12 +132,12 @@ const AttendanceDaysReports = ({ player_id }: Props) => {
     playerAttendance?.results.map((day) => (
       <div
         key={day.id}
-        className="px-2 py-1 rounded-xl justify-between flex border-b border-gray-100 hover:bg-gray-50 my-1"
+        className="px-2 py-1 rounded-xl  justify-between flex border-b border-gray-100 hover:bg-gray-50 my-1"
       >
-        <div className="border-0 text-xs font-medium text-perfGray2">
+        <div className="border-0 text-xs xs:ml-12 font-medium text-perfGray2">
           {myDate(day.day)}, {day.day}
         </div>
-        <div className="border-0">
+        <div className="border-0 xs:mr-12">
           {day.status === "ABSENT" ? (
             <AppIcons
               className="w-5 h-5 text-perfSecondary"
@@ -196,8 +196,8 @@ const AttendanceDaysReports = ({ player_id }: Props) => {
   return (
     <div className="h-full">
       <div className="flex justify-between mx-2 text-xs text-gray-300 mb-4">
-        <p>{selectedTeamInfo?.attend_per}</p>
-        <p>Attendance</p>
+        <p className="xs:ml-12">{selectedTeamInfo?.attend_per}</p>
+        <p className="xs:mr-12">Attendance</p>
       </div>
       {playerAttendance && (
         <>

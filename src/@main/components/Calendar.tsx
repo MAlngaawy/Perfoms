@@ -5,23 +5,22 @@ import { useSelector } from "react-redux";
 import {
   selectedPlayerFn,
   selectedPlayerTeamFn,
-  timeFilterFn,
 } from "~/app/store/parent/parentSlice";
 import { usePlayerCalendarQuery } from "~/app/store/parent/parentApi";
 import { useEffect, useState } from "react";
 import { useCoachPlayerCalendarQuery } from "~/app/store/coach/coachApi";
 import { useSuperPlayerCalendarQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { useAdminPlayerCalendarQuery } from "~/app/store/clubManager/clubManagerApi";
-import { thisMonth } from "./TimeFilter";
 import AppUtils from "~/@main/utils/AppUtils";
-import { useUserQuery } from "~/app/store/user/userApi";
+import { useGetTeamInfoQuery, useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {
   pageName?: "reports";
   player_id?: number | string | undefined;
+  hide?: boolean | undefined;
 };
 
-const CustomCalendar = ({ pageName, player_id }: Props) => {
+const CustomCalendar = ({ pageName, player_id, hide = false }: Props) => {
   const { data: user } = useUserQuery({});
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
@@ -29,6 +28,10 @@ const CustomCalendar = ({ pageName, player_id }: Props) => {
   const [month, onMonthChange] = useState(new Date());
   const [firstDay, setFirstDay] = useState<string>();
   const [lastDay, setLastDay] = useState<string>();
+
+  const { data: teamInfo } = useGetTeamInfoQuery({
+    team_id: selectedPlayerTeam.id,
+  });
 
   useEffect(() => {
     const year = month.getFullYear();
@@ -60,7 +63,7 @@ const CustomCalendar = ({ pageName, player_id }: Props) => {
         !firstDay ||
         !lastDay ||
         !selectedPlayerTeam?.id ||
-        user?.user_type !== "Parent",
+        (user && !["Parent", "Player"].includes(user?.user_type)),
     }
   );
 
@@ -126,6 +129,8 @@ const CustomCalendar = ({ pageName, player_id }: Props) => {
     superPlayerAttendance,
     adminPlayerAttendance,
   ]);
+
+  if (teamInfo?.attend_per === "SESSION") return <></>;
 
   return (
     <div className="bg-white rounded-3xl p-4 h-full">

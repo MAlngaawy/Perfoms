@@ -11,6 +11,8 @@ export const PerformanceCard = ({
   data,
 }: // data,
 PerformanceCardProps) => {
+  console.log("DATAAAA", name, data);
+
   return (
     <Group position="apart" className="rounded-sm p-0">
       <HoverCard width={300} shadow="md">
@@ -90,7 +92,7 @@ PerformanceCardProps) => {
                     <Skeleton width={"100%"} height={"100%"} radius="lg" />
                   </div>
                 )}
-                {data && data?.results?.length < 1 && <NoReport />}
+                {data && data?.length < 1 && <NoReport />}
               </div>
             </div>
           </HoverCard.Dropdown>

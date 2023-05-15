@@ -1,5 +1,4 @@
 import { Grid } from "@mantine/core";
-import Card from "~/@main/components/Card";
 import CustomCalendar from "../../../@main/components/Calendar";
 import AddPlayer from "./molecules/AddPlayer";
 import { useSelector } from "react-redux";
@@ -7,7 +6,6 @@ import {
   selectedPlayerFn,
   selectedPlayerTeamFn,
 } from "~/app/store/parent/parentSlice";
-import { Link } from "react-router-dom";
 import { Player } from "~/app/store/types/parent-types";
 import TimeFilter from "~/@main/components/TimeFilter";
 import TeamFilter from "~/@main/components/TeamFilter";
@@ -18,8 +16,7 @@ import HomePlayerInfoCard from "../../../@main/components/HomePlayerInfoCard";
 import HomeTeamInfoCard from "../../../@main/components/HomeTeamInfoCard";
 import PerformanceSummaryCard from "~/@main/components/PerformanceSummaryCard";
 import NoPlayersComp from "~/@main/components/NoPlayersComp";
-import { useState } from "react";
-import { playerModalState } from "~/app/store/app/modalSlice";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 export type Players = {
   name: string;
@@ -29,6 +26,7 @@ const HomePage = () => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const { data: players, isLoading } = useMyPlayersQuery({});
+  const { data: user } = useUserQuery({});
 
   if (isLoading)
     return (
@@ -38,14 +36,13 @@ const HomePage = () => {
     );
 
   if (players?.results?.length === 0) {
-    console.log("players", selectedPlayer);
     return <NoPlayersComp />;
   } else {
     return (
       <div className="home-page px-5 mb-20">
         <div className="my-4 flex xs:flex-row gap-2 justify-between items-center">
           <div className="flex gap-3 items-center">
-            <AddPlayer />
+            {user?.user_type === "Parent" && <AddPlayer />}
           </div>
           <div className="flex gap-1 justify-center items-center md:pt-0">
             <TeamFilter />

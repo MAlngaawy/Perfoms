@@ -57,7 +57,7 @@ const SaleStaticChart = () => {
         !selectedPlayer?.id ||
         !timeFilter?.from_date ||
         !timeFilter?.to_date ||
-        user?.user_type !== "Parent",
+        (user && !["Parent", "Player"].includes(user?.user_type)),
     }
   );
 
@@ -126,7 +126,7 @@ const SaleStaticChart = () => {
         !timeFilter?.from_date ||
         !timeFilter?.to_date ||
         !selectedPlayerTeam?.id ||
-        user?.user_type !== "Parent",
+        (user && !["Parent", "Player"].includes(user?.user_type)),
     }
   );
   const { data: weakness } = usePlayerWeaknessQuery(
@@ -142,7 +142,7 @@ const SaleStaticChart = () => {
         !timeFilter?.from_date ||
         !timeFilter?.to_date ||
         !selectedPlayerTeam?.id ||
-        user?.user_type !== "Parent",
+        (user && !["Parent", "Player"].includes(user?.user_type)),
     }
   );
   const { data: parentPlayerActions } = usePlayerActionsQuery(
@@ -158,7 +158,7 @@ const SaleStaticChart = () => {
         !timeFilter?.from_date ||
         !timeFilter?.to_date ||
         !selectedPlayerTeam?.id ||
-        user?.user_type !== "Parent",
+        (user && !["Parent", "Player"].includes(user?.user_type)),
     }
   );
   const { data: parentPlayerRecommendations } = usePlayerRecommendationsQuery(
@@ -174,7 +174,7 @@ const SaleStaticChart = () => {
         !timeFilter?.from_date ||
         !timeFilter?.to_date ||
         !selectedPlayerTeam?.id ||
-        user?.user_type !== "Parent",
+        (user && !["Parent", "Player"].includes(user?.user_type)),
     }
   );
 

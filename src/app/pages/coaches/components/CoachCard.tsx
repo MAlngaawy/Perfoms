@@ -34,7 +34,7 @@ const CoachCard = ({
   return (
     <div
       className={classNames(
-        "coachCard h-full transition-all group flex flex-col justify-between rounded-3xl text-center p-5 font-medium",
+        "coachCard h-full transition-all group bg-perfBlue text-white flex flex-col justify-between rounded-3xl text-center p-5 font-medium",
         {
           "bg-white text-perfLightBlack":
             role && ["Coach", "SubCoach"].includes(role),

@@ -36,7 +36,10 @@ const CoachPersonalInfo = ({ editMode, type }: Props) => {
   const { data: userEducations } = useGetUserEducationsQuery({});
   const { data: playerCoach } = usePlayerCoachQuery(
     { id: coach_id },
-    { skip: !coach_id || data?.user_type !== "Parent" }
+    {
+      skip:
+        !coach_id || (data && !["Parent", "Player"].includes(data?.user_type)),
+    }
   );
   const { data: coachEducations } = useGetCoachEducationsQuery(
     { coach_id: coach_id },
@@ -46,7 +49,7 @@ const CoachPersonalInfo = ({ editMode, type }: Props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (data?.user_type === "Parent") {
+    if (data && ["Parent", "Player"].includes(data?.user_type)) {
       setEducations(coachEducations);
     } else {
       setEducations(userEducations);

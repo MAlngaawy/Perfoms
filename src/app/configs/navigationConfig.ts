@@ -101,7 +101,7 @@ const navigationConfig: NavigationConfigTypes[] = [
     type: "item",
     icon: "BanknotesIcon:outline",
     url: "subscriptions",
-    auth: authRoles.Parent,
+    auth: ["Parent"],
   },
   {
     id: "players",
