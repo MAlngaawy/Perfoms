@@ -60,6 +60,8 @@ import HelpCenterDetailsConfig from "../pages/HelpCenter/HelpCenterDetials/HelpC
 import SportsConfig from "../pages/Sports/SportsConfig";
 import SportsDetailsConfig from "../pages/Sports/SportsDetials/SportsDetailsConfig";
 import Oauth2callbackConfig from "../pages/health/oauth2callback/Oauth2callbackConfig";
+import HealthConfig from "../pages/health/HealthConfig";
+import HealthSignInConfig from "../pages/health/sign-in/HealthSignInConfig";
 
 const routeConfigs: PagesRouteConfig[] = [
   SignInConfig,
@@ -115,7 +117,7 @@ const routeConfigs: PagesRouteConfig[] = [
   Top10SportPlayersConfig,
   Top10KpiPlayersConfig,
   SubCoachConfig,
-  HelpCenterConfig,
+  HelpCenterConfig,HealthConfig,HealthSignInConfig,
   HelpCenterDetailsConfig,
   SportsConfig,
   SportsDetailsConfig,
