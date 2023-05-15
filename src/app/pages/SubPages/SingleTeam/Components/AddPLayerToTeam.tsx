@@ -70,12 +70,7 @@ const AddPlayer = ({ teamPlayers, coach_team_id, teamInfo }: Props) => {
       //filter all players to retunr just the players related to team sports
       const filterPerTeamSport = allPlayers.filter((player) => {
         //@ts-ignore
-        if (player?.sport) {
-          //@ts-ignore
-          return player?.sport === teamInfo?.sport;
-        } else {
-          return true;
-        }
+        return player?.sport === teamInfo?.sport;
       });
 
       // remove the team players from the players comes from sport filter
