@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 import AppUtils from "~/@main/utils/AppUtils";
 import DeleteButton from "./SubComponents/DeleteButton";
 import EditButton from "./SubComponents/EditTeamButton";
-import { Select } from "@mantine/core";
+import { Select, Skeleton } from "@mantine/core";
 import Placeholders from "../Placeholders";
 
 type Props = {};
@@ -33,11 +33,11 @@ const TeamsComponent = (props: Props) => {
   );
 
   const [teams, setTeams] = useState<Teams>();
-  const { data: superTeams } = useSuperTeamsQuery(
+  const { data: superTeams, isLoading: superTeamsLoading } = useSuperTeamsQuery(
     {},
     { skip: user?.user_type !== "Supervisor" }
   );
-  const { data: adminTeams } = useAdminTeamsQuery(
+  const { data: adminTeams, isLoading: adminTeamsLoading } = useAdminTeamsQuery(
     { club_id: user?.club, sport_id: +selectedSport },
     { skip: user?.user_type !== "Admin" || !user?.club }
   );
@@ -84,10 +84,27 @@ const TeamsComponent = (props: Props) => {
           />
         </div>
       )}
+      {superTeamsLoading ||
+        (adminTeamsLoading && (
+          <div className="flex flex-wrap gap-4 p-4">
+            <Skeleton width={250} height={350} radius="lg" />
+            <Skeleton width={250} height={350} radius="lg" />
+            <Skeleton width={250} height={350} radius="lg" />
+            <Skeleton width={250} height={350} radius="lg" />
+            <Skeleton width={250} height={350} radius="lg" />
+            <Skeleton width={250} height={350} radius="lg" />
+            <Skeleton width={250} height={350} radius="lg" />
+            <Skeleton width={250} height={350} radius="lg" />
+          </div>
+        ))}
       {teams?.results.map((team) => {
         return (
           <div className="relative">
-            <Link to={`teams/${team.id}`} key={team.id} className="relative">
+            <Link
+              to={`teams/${team.id}`}
+              key={team.id}
+              className="inline-block h-full"
+            >
               <TeamCard team={team} />
             </Link>
             <div className="flex absolute right-5 top-5 gap-2">

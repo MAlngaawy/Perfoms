@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import AddSport from "./SubComponents/AddSport";
 import DeleteButton from "./SubComponents/DeleteButton";
 import EditSport from "./SubComponents/EditSport";
-import { Avatar } from "@mantine/core";
+import { Avatar, Skeleton } from "@mantine/core";
 import { useSuperSportQuery } from "~/app/store/supervisor/supervisorMainApi";
 import {
   useAdminDeleteSportMutation,
@@ -16,11 +16,15 @@ type Props = {};
 const Sports = (props: Props) => {
   const { data: user } = useUserQuery({});
   console.log(user);
-  const { data: sport } = useSuperSportQuery(
+  const { data: sport, isLoading: superSportsLoading } = useSuperSportQuery(
     {},
     { skip: user?.user_type !== "Supervisor" }
   );
-  const { data: sports, refetch: adminRefetchSports } = useAdminSportsQuery(
+  const {
+    data: sports,
+    refetch: adminRefetchSports,
+    isLoading: adminSportsLoading,
+  } = useAdminSportsQuery(
     { club_id: user?.club },
     { skip: user?.user_type !== "Admin" || !user?.club }
   );
@@ -73,8 +77,23 @@ const Sports = (props: Props) => {
       });
   };
 
+  if (adminSportsLoading || superSportsLoading) {
+    return (
+      <div className="flex flex-wrap gap-4 p-4">
+        <Skeleton width={230} height={230} radius="lg" />
+        <Skeleton width={230} height={230} radius="lg" />
+        <Skeleton width={230} height={230} radius="lg" />
+        <Skeleton width={230} height={230} radius="lg" />
+        <Skeleton width={230} height={230} radius="lg" />
+        <Skeleton width={230} height={230} radius="lg" />
+        <Skeleton width={230} height={230} radius="lg" />
+        <Skeleton width={230} height={230} radius="lg" />
+      </div>
+    );
+  }
+
   return (
-    <div className="admin-teams flex flex-col xs:flex-row flex-wrap items-stretch gap-4 pt-6">
+    <div className="admin-teams flex flex-col xs:flex-row flex-wrap items-stretch gap-4 py-6">
       {sports &&
         sports?.results.map((sport) => {
           return (
