@@ -13,6 +13,7 @@ import { useSuperPlayerCalendarQuery } from "~/app/store/supervisor/supervisorMa
 import { useAdminPlayerCalendarQuery } from "~/app/store/clubManager/clubManagerApi";
 import AppUtils from "~/@main/utils/AppUtils";
 import { useGetTeamInfoQuery, useUserQuery } from "~/app/store/user/userApi";
+import { useLocation } from "react-router-dom";
 
 type Props = {
   pageName?: "reports";
@@ -28,6 +29,7 @@ const CustomCalendar = ({ pageName, player_id, hide = false }: Props) => {
   const [month, onMonthChange] = useState(new Date());
   const [firstDay, setFirstDay] = useState<string>();
   const [lastDay, setLastDay] = useState<string>();
+  const location = useLocation();
 
   const { data: teamInfo } = useGetTeamInfoQuery({
     team_id: selectedPlayerTeam.id,
@@ -130,7 +132,8 @@ const CustomCalendar = ({ pageName, player_id, hide = false }: Props) => {
     adminPlayerAttendance,
   ]);
 
-  if (teamInfo?.attend_per === "SESSION") return <></>;
+  if (teamInfo?.attend_per === "SESSION" && location.pathname !== "/home")
+    return <></>;
 
   return (
     <div className="bg-white rounded-3xl p-4 h-full">
