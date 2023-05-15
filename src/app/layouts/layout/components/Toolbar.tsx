@@ -33,10 +33,9 @@ const Toolbar = ({ setOpened }: Props) => {
   const profileRoute = () => {
     let route = "profile";
     //@ts-ignore
-    if (["Supervisor", "Coach"].includes(user?.user_type)) {
+    if (["Supervisor", "Coach", "SubCoach"].includes(user?.user_type)) {
       route = "coach-profile";
-      //@ts-ignore
-    } else if (["Admin", "SubCoach"].includes(user?.user_type)) {
+    } else if (user?.user_type === "Admin") {
       route = "admin-profile";
     }
 
@@ -113,6 +112,12 @@ const Toolbar = ({ setOpened }: Props) => {
         )}
       </div>
       <div className="right flex gap-2 justify-center items-center">
+        <Link
+          to="help-center"
+          className="flex w-full justify-center items-center p-2 hover:text-perfGray hover:underline  text-sm"
+        >
+          <span>Ask Performs...?</span>
+        </Link>
         {/* Messages Menu */}
         <Menu trigger="click" shadow="md" width={200}>
           <Menu.Target>
@@ -151,6 +156,7 @@ const Toolbar = ({ setOpened }: Props) => {
                 unreadMessagesNumber={3}
               />
             </Menu.Label> */}
+
             <Link
               to="chat"
               className="flex w-full justify-center items-center p-2 hover:bg-pagesBg text-sm"
