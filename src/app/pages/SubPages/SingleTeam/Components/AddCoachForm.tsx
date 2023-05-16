@@ -7,12 +7,13 @@ import {
   useSuperAllCoachesQuery,
 } from "~/app/store/supervisor/supervisorMainApi";
 import { showNotification } from "@mantine/notifications";
-import { useUserQuery } from "~/app/store/user/userApi";
+import { useGetTeamInfoQuery, useUserQuery } from "~/app/store/user/userApi";
 import {
   useAdminAddTeamCoachesMutation,
   useAdminAllCoachesQuery,
 } from "~/app/store/clubManager/clubManagerApi";
 import __ from "lodash";
+import { useParams } from "react-router-dom";
 
 type Props = {
   teamId: string | number;
@@ -23,6 +24,11 @@ const AddCoachForm = ({ teamId, teamCoaches }: Props) => {
   const [opened, setOpened] = useState(false);
   const [coachesData, setCoachesData] = useState<any>([]);
   const { data: user } = useUserQuery({});
+  const { team_id } = useParams();
+  const { data: teamInfo } = useGetTeamInfoQuery(
+    { team_id },
+    { skip: !team_id }
+  );
 
   const { data: superCoaches } = useSuperAllCoachesQuery({});
   const { data: adminCoaches } = useAdminAllCoachesQuery(
@@ -36,7 +42,10 @@ const AddCoachForm = ({ teamId, teamCoaches }: Props) => {
   useEffect(() => {
     if (superCoaches) {
       const filterdCoaches = __.xorBy(superCoaches.results, teamCoaches, "id");
-      let test = filterdCoaches.map((coach) => {
+      const filterCoachesByTeamSport = filterdCoaches.filter((coach) => {
+        return coach.sport === teamInfo?.sport;
+      });
+      let test = filterCoachesByTeamSport.map((coach) => {
         return {
           label: coach.first_name + " " + coach.last_name,
           image: coach.avatar,
@@ -48,7 +57,11 @@ const AddCoachForm = ({ teamId, teamCoaches }: Props) => {
     }
     if (adminCoaches) {
       const filterdCoaches = __.xorBy(adminCoaches.results, teamCoaches, "id");
-      let test = filterdCoaches.map((coach) => {
+      const filterCoachesByTeamSport = filterdCoaches.filter((coach) => {
+        return coach.sport === teamInfo?.sport;
+      });
+
+      let test = filterCoachesByTeamSport.map((coach) => {
         return {
           label: coach.first_name + " " + coach.last_name,
           image: coach.avatar,
