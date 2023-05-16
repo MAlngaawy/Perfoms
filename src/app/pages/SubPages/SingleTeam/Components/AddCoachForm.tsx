@@ -71,7 +71,7 @@ const AddCoachForm = ({ teamId, teamCoaches }: Props) => {
       });
       setCoachesData(test);
     }
-  }, [superCoaches, adminCoaches]);
+  }, [superCoaches, adminCoaches, teamInfo]);
 
   const { handleSubmit, reset, control } = useForm();
 
