@@ -30,12 +30,12 @@ const schema = yup.object().shape({
   countryCode: yup.string().required(),
   phoneNumber: yup.number().required(),
   password: yup.string().min(8).max(24).required(),
-  teams: yup.array(),
-  // teams: yup.array().when("userRole", {
-  //   is: "Coach",
-  //   then: yup.array().min(1).required(),
-  //   otherwise: yup.array().min(0),
-  // }),
+  // teams: yup.array(),
+  teams: yup.array().when("userRole", {
+    is: "Player",
+    then: yup.array().min(1).required(),
+    otherwise: yup.array(),
+  }),
 });
 
 const SignUpPage = (props: Props) => {
