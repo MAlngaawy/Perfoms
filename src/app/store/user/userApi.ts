@@ -28,6 +28,7 @@ import {
   ResetPassword,
   SendOtp,
   SignupRes,
+  updatePlayerAnalyticsData,
   User,
   UserDeviceId,
   UserExperinces,
@@ -47,7 +48,11 @@ import { Kpis, Metrics, Pillars, Team } from "../types/supervisor-types";
 import { Sports } from "../types/clubManager-types";
 import { UserAchievements } from "~/app/store/types/user-types";
 import { CoachPlayerInfo, CoachTeamInfo } from "../types/coach-types";
-import { EventFiles, PlayerTeams } from "~/app/store/types/parent-types";
+import {
+  EventFiles,
+  PlayerTeams,
+  UpdatePlayer,
+} from "~/app/store/types/parent-types";
 
 export const userApi = createApi({
   reducerPath: "userApi",
@@ -500,6 +505,18 @@ export const userApi = createApi({
       providesTags: ["player"],
     }),
 
+    updatePlayer: mutation<
+      UpdatePlayer,
+      { player_id: string | number | undefined; body: Partial<UpdatePlayer> }
+    >({
+      query: ({ player_id, body }) => ({
+        url: `update-player/${player_id}/`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["player"],
+    }),
+
     /**Player Info */
     getPlayerTeams: query<
       PlayerTeams,
@@ -720,4 +737,5 @@ export const {
   useSportTeamsQuery,
   useGetPlayerTeamsQuery,
   useGetTeamInfoQuery,
+  useUpdatePlayerMutation,
 } = userApi;

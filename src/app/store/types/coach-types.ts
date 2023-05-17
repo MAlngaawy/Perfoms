@@ -296,6 +296,7 @@ export type CoachPlayerInfo = {
     id: number;
     name: string;
   }[];
+  analytics: JSON;
 };
 
 export type CoachTeamInfo = {

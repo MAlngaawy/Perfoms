@@ -4,6 +4,7 @@ import { User } from "./user-types";
 import { Event } from "./events-types";
 import { Attendance } from "./attendance-types";
 import { daySessions } from "./supervisor-types";
+import { Data } from "~/app/pages/players/player-details/Tabs/PlayerDataAnalytics/types";
 
 export type Subscription = {
   id: number;
@@ -51,6 +52,7 @@ export type UpdatePlayer = {
   front_leg?: "NONE" | "LEFT" | "RIGHT" | "BOTH";
   height: string;
   icon_url: string;
+  analytics: Data | null;
 };
 
 export type ParentClub = {

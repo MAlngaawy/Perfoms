@@ -1,6 +1,7 @@
 import { BaseGetAllType } from "./base-types";
 import { Details, Player } from "./parent-types";
 import { Team } from "~/app/store/types/coach-types";
+import { Data } from "~/app/pages/players/player-details/Tabs/PlayerDataAnalytics/types";
 export type LoginUserBody = {
   mobile: string;
   password: string;
@@ -133,6 +134,8 @@ export type PlayerButtonProps = {
   onClick: () => void;
   active: boolean;
 };
+
+export type updatePlayerAnalyticsData = Data;
 
 export type SecondNavProps = {
   players: PlayerData[];

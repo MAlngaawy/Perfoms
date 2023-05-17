@@ -31,16 +31,12 @@ const EditPlayer = ({ player, refetchPlayerData }: Props) => {
   };
 
   useEffect(() => {
-    console.log("Efffect Player");
-
     if (player?.icon) {
       setNoImage(false);
     }
   }, [player]);
 
   useEffect(() => {
-    console.log("Efffect userAvatar");
-
     if (userAvatar) {
       setNoImage(false);
     }
