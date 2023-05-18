@@ -22,3 +22,4 @@ jobs:
     repository: 'performs/performs-fe-stg'
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
+    
