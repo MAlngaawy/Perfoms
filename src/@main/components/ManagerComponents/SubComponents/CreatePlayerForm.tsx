@@ -143,7 +143,6 @@ const AddPlayerForm = (props: Props) => {
 
     try {
       await schema.validate(formInputsData, { abortEarly: false });
-      console.log("Await Passed", formInputsData);
       //@ts-ignore
       if (userAvatar) {
         const image = await AppUtils.resizeImage(userAvatar);

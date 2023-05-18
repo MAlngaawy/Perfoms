@@ -17,12 +17,10 @@ import {
   useAdminAddParentMutation,
   useAdminAddSubCoachMutation,
   useAdminAddSupervsiorMutation,
-  useAdminAddTeamAttendanceSessionMutation,
   useAdminSportsQuery,
   useAdminSubCoachQuery,
   useAdminTeamsStatisticsQuery,
 } from "~/app/store/clubManager/clubManagerApi";
-// import SelectTeamsFromSportInputs from "../../shared/SelectTeamsFromSportInputs";
 import { PlayerSport, SportTeam } from "~/app/store/types/parent-types";
 
 type Props = {
@@ -78,7 +76,7 @@ const CreateUser = ({ userType }: Props) => {
     last_name: yup.string().required("Last name is required"),
     sport: yup.number().when("userType", {
       is: (userType: string) => userType !== "Parent",
-      then: yup.number().typeError("You have to select a sport"),
+      then: yup.number().required().typeError("You have to select a sport"),
     }),
     teams: yup
       .array()
@@ -147,28 +145,43 @@ const CreateUser = ({ userType }: Props) => {
       teams: hasTeams ? formInputsData.teams : undefined,
     };
 
-    const handleCreate = (createFunction: any) => {
-      createFunction(newData)
-        .then(() => {
-          setIsLoading(false);
-          close();
-          refetch();
-          setFormInputsData(formInputsDefaultValue);
-          AppUtils.showNotificationFun(
-            "Success",
-            "Done",
-            "Attendance Modeartor Added Successfully"
-          );
-        })
-        .catch((err: any) => {
-          setIsLoading(false);
-          console.log();
-          AppUtils.showNotificationFun(
-            "Error",
-            "Sorry",
-            err.response.statusText
-          );
-        });
+    const handleCreate = async (createFunction: any) => {
+      try {
+        await schema.validate(formInputsData, { abortEarly: false });
+
+        createFunction(newData)
+          .then(() => {
+            setIsLoading(false);
+            close();
+            refetch();
+            setFormInputsData(formInputsDefaultValue);
+            AppUtils.showNotificationFun(
+              "Success",
+              "Done",
+              `${userType} Added Successfully`
+            );
+          })
+          .catch((err: any) => {
+            setIsLoading(false);
+            console.log();
+            AppUtils.showNotificationFun(
+              "Error",
+              "Sorry",
+              err.response.statusText
+            );
+          });
+      } catch (error) {
+        console.log(error);
+
+        const validationErrors = {};
+        if (error instanceof yup.ValidationError) {
+          error.inner.forEach((error) => {
+            //@ts-ignore
+            validationErrors[error.path] = error.message;
+          });
+          setErrors(validationErrors);
+        }
+      }
     };
 
     try {
@@ -321,15 +334,6 @@ const CreateUser = ({ userType }: Props) => {
               )}
             </div>
           )}
-
-          {/* <SelectTeamsFromSportInputs
-            errors={errors}
-            formInputsData={formInputsData}
-            handleChange={handleChange}
-            selectedTeam={selectedTeam}
-            setFormInputsData={setFormInputsData}
-            setSelectedTeam={setSelectedTeam}
-          /> */}
 
           <PasswordInput
             autoComplete="new-password"
