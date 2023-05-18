@@ -28,4 +28,4 @@ jobs:
           connectionType: 'Kubernetes Service Connection'
           kubernetesServiceEndpoint: 'Digitalocean Kubernetes Stg'
           command: 'rollout'
-          arguments: 'restart deploy my_deployment'
+          arguments: 'restart deploy performs-fe-stg'
