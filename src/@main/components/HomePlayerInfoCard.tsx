@@ -91,7 +91,10 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
           <div className="flex gap-x-4 flex-wrap">
             {playerInfoData?.sport.toLocaleLowerCase() === "taekwondo" ? (
               <>
-                <Info label="Height" value={playerInfoData?.height || "NA"} />
+                {playerInfoData?.height && (
+                  <Info label="Height" value={playerInfoData?.height} />
+                )}
+
                 {playerInfoData?.world_weight && (
                   <Info
                     label="World Weight"
@@ -113,8 +116,12 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
               </>
             ) : (
               <>
-                <Info label="Weight" value={playerInfoData?.weight || "NA"} />
-                <Info label="Height" value={playerInfoData?.height || "NA"} />
+                {playerInfoData?.weight && (
+                  <Info label="Weight" value={playerInfoData?.weight} />
+                )}
+                {playerInfoData?.height && (
+                  <Info label="Height" value={playerInfoData?.height} />
+                )}
               </>
             )}
           </div>
