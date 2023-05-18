@@ -74,10 +74,7 @@ const CreateUser = ({ userType }: Props) => {
       .matches(/^\d+$/, "phone number must only contain numbers"),
     first_name: yup.string().required("First name is required"),
     last_name: yup.string().required("Last name is required"),
-    sport: yup.number().when("userType", {
-      is: (userType: string) => userType !== "Parent",
-      then: yup.number().required().typeError("You have to select a sport"),
-    }),
+    sport: hasSport ? yup.string().required("Sport is required") : yup.string(), // Optional if hasSport is false
     teams: yup
       .array()
       .of(yup.number())
@@ -131,11 +128,6 @@ const CreateUser = ({ userType }: Props) => {
 
   const onSubmitFun = async (e: any) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    for (const [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
-
     const newData = {
       mobile: "+2" + formInputsData.mobile,
       first_name: formInputsData.first_name,
@@ -146,42 +138,26 @@ const CreateUser = ({ userType }: Props) => {
     };
 
     const handleCreate = async (createFunction: any) => {
-      try {
-        await schema.validate(formInputsData, { abortEarly: false });
-
-        createFunction(newData)
-          .then(() => {
-            setIsLoading(false);
-            close();
-            refetch();
-            setFormInputsData(formInputsDefaultValue);
-            AppUtils.showNotificationFun(
-              "Success",
-              "Done",
-              `${userType} Added Successfully`
-            );
-          })
-          .catch((err: any) => {
-            setIsLoading(false);
-            console.log();
-            AppUtils.showNotificationFun(
-              "Error",
-              "Sorry",
-              err.response.statusText
-            );
-          });
-      } catch (error) {
-        console.log(error);
-
-        const validationErrors = {};
-        if (error instanceof yup.ValidationError) {
-          error.inner.forEach((error) => {
-            //@ts-ignore
-            validationErrors[error.path] = error.message;
-          });
-          setErrors(validationErrors);
-        }
-      }
+      createFunction(newData)
+        .then(() => {
+          setIsLoading(false);
+          close();
+          refetch();
+          setFormInputsData(formInputsDefaultValue);
+          AppUtils.showNotificationFun(
+            "Success",
+            "Done",
+            `${userType} Added Successfully`
+          );
+        })
+        .catch((err: any) => {
+          setIsLoading(false);
+          AppUtils.showNotificationFun(
+            "Error",
+            "Sorry",
+            err.response.statusText
+          );
+        });
     };
 
     try {
