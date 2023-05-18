@@ -16,6 +16,8 @@ jobs:
     
     steps:
       - task: Docker@2
+        env:
+          DOCKER_ENV: "staging"
         inputs:
           containerRegistry: 'Docker Hub'
           repository: 'performs/performs-fe-stg'
