@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && rm -rf /var/www/html/dist && cp -rf /root/Performs-FE-V2/dist /var/www/html",
+    "build:prod": "tsc && vite build --mode production",
+    "build:stg": "tsc && vite build --mode staging",
     "preview": "vite preview",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
