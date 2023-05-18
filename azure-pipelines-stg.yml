@@ -21,4 +21,11 @@ jobs:
           repository: 'performs/performs-fe-stg'
           command: 'buildAndPush'
           Dockerfile: '**/Dockerfile'
-    
+          tags: 'latest'
+
+      - task: Kubernetes@1
+        inputs:
+          connectionType: 'Kubernetes Service Connection'
+          kubernetesServiceEndpoint: 'Digitalocean Kubernetes Stg'
+          command: 'rollout'
+          arguments: 'restart deploy my_deployment'
