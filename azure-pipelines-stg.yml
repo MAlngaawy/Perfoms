@@ -16,15 +16,19 @@ jobs:
     
     steps:
       - task: Docker@2
-        env:
-          DOCKER_ENV: "staging"
         inputs:
           containerRegistry: 'Docker Hub'
           repository: 'performs/performs-fe-stg'
-          command: 'buildAndPush'
+          command: 'build'
           Dockerfile: '**/Dockerfile'
           tags: 'latest'
-          arguments: --build-arg DOCKER_ENV=staging
+          arguments: '--build-arg DOCKER_ENV=staging'
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'Docker Hub'
+          repository: 'performs/performs-fe-stg'
+          command: 'push'
+          tags: 'latest'
 
       - task: Kubernetes@1
         inputs:
