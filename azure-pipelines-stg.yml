@@ -24,6 +24,7 @@ jobs:
           command: 'buildAndPush'
           Dockerfile: '**/Dockerfile'
           tags: 'latest'
+          arguments: --build-arg DOCKER_ENV=staging
 
       - task: Kubernetes@1
         inputs:
