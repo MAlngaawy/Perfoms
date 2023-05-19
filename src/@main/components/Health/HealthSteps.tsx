@@ -47,7 +47,7 @@ const HealthSteps = (props: Props) => {
       )]?.reduce((a: string, b: string): number =>  Number(a) + Number(b),0);
 
 
-      const Time = ((Number(endTime) - Number(startTime)) / (1000000 * 60* 60))
+      const Time = ((Number(endTime) - Number(startTime)) / (1000000000 * 60* 60))
       const distanceKm = +steps / 1312.33595801;
       const progressValue = ((+distanceKm / 6) * 100);
 return { progressValue: +progressValue||0, steps: +steps||0, info: [{ name: "Duration", label: `${Time?.toFixed(1)||0}  h`, imgSrc: "/assets/images/time.png" }, { name: "Total Distance", label: `${distanceKm?.toFixed(1) ||0} km`, imgSrc: "/assets/images/map.png" }] }
