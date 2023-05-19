@@ -23,10 +23,12 @@ export const healthApi = createApi({
       }),
     }),
     fitData: mutation({
-      query: () => ({
-        url: `/google/fit-data`,
+      query: ({dataType,Date}) => ({
+       
+        url:(dataType&&Date)? `/google/fit-data/${dataType}?date=${Date}`:"/google/fit-data/",
       }),
     }),
+
   }),
 });
 
