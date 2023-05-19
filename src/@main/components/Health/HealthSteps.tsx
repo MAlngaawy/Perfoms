@@ -21,7 +21,7 @@ const HealthSteps = (props: Props) => {
   }, [dateValue])
   const calculateSteps = React.useCallback(
     () => {
-      const steps = DataSteps?.data?.map(
+      const steps = DataSteps?.map(
         (bucket: { dataset: [point: [{ value: [{ intVal: number }] }]] }) =>
           bucket?.dataset?.map((pointItem: any) =>
             pointItem?.point?.map((pointValue: any) =>
@@ -31,7 +31,7 @@ const HealthSteps = (props: Props) => {
       )?.reduce((a: number, b: number): number => {
         return a + b;
       },)
-      const startTime = DataSteps?.data?.map(
+      const startTime = DataSteps?.map(
         (bucket: { dataset: [point: [{ startTimeNanos: string }]] }) =>
           bucket?.dataset?.map((pointItem: any) =>
             pointItem?.point?.map((pointValue: any) =>
@@ -41,7 +41,7 @@ const HealthSteps = (props: Props) => {
       )?.reduce((a: string, b: string): number => {
         return Number(a) + Number(b);
       },)
-      const endTime = DataSteps?.data?.map(
+      const endTime = DataSteps?.map(
         (bucket: { dataset: [point: [{ endTimeNanos: string }]] }) =>
           bucket?.dataset?.map((pointItem: any) =>
             pointItem?.point?.map((pointValue: any) =>

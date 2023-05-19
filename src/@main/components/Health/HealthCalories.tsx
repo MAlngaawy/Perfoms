@@ -24,7 +24,7 @@ const [dateValue, setDateValue] = React.useState(new Date())
  }, [dateValue])
  const calculateCalories = React.useCallback(
    () => {
-     const Calories = DataCalories?.data?.map(
+     const Calories = DataCalories?.map(
        (bucket: { dataset: [point: [{ value: [{ fpVal: number }] }]] }) =>
          bucket?.dataset?.map((pointItem: any) =>
            pointItem?.point?.map((pointValue: any) =>
