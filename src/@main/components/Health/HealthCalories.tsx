@@ -1,17 +1,55 @@
 // @flow 
 import * as React from 'react';
 import { Image, RingProgress, Select } from "@mantine/core";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { DatePicker } from '@mantine/dates';
-import AppUtils from '~/@main/utils/AppUtils';
+import moment from 'moment';
+import { useFitDataMutation } from '~/app/store/health/healthApi';
 
 type Props = {
 
 };
 const HealthCalories = (props: Props) => {
 
-const data= {progressValue:90,steps:1250,}
+
+
+const [fitData, { data: DataCalories, isSuccess, isLoading, isError, error }] = useFitDataMutation()
+
 const [dateValue, setDateValue] = React.useState(new Date())
+ const [data, setData] = React.useState( {progressValue:0,Calories:0})
+
+ React.useEffect(() => {
+   fitData({ dataType: "com.google.calories.expended", Date: moment(dateValue).format('L')})
+
+
+ }, [dateValue])
+ const calculateCalories = React.useCallback(
+   () => {
+     const Calories = DataCalories?.data?.map(
+       (bucket: { dataset: [point: [{ value: [{ fpVal: number }] }]] }) =>
+         bucket?.dataset?.map((pointItem: any) =>
+           pointItem?.point?.map((pointValue: any) =>
+             pointValue.value.map((val: { fpVal: number }) => val.fpVal)
+           )
+         )
+     )?.reduce((a: number, b: number): number => {
+       return a + b;
+     },)
+     const progressValue = ((+Calories / 1000) * 100);
+return { progressValue: +progressValue||0, Calories: +Calories||0 }
+   },
+   [dateValue],
+ )
+
+ React.useEffect(() => {
+   if (isSuccess) {
+
+    setData( calculateCalories())
+
+   } 
+ }, [DataCalories, isSuccess, isLoading, isError, error])
+
+
+
 
   return (
     <div className="HealthCalories bg-white rounded-3xl w-full grid gap-9 p-4 h-full">
@@ -61,7 +99,7 @@ const [dateValue, setDateValue] = React.useState(new Date())
                 alt={'footprint'}
                 className='mx-auto'
               />
-            <div className='text-2xl text-perfGray1'>  {data.steps}  kcal
+            <div className='text-2xl text-perfGray1'>  {data.Calories}  kcal
               <p className='text-lg text-perfGray'>Burned</p></div>
             </div>
           }

@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { HeartIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
 import { Grid,LoadingOverlay } from "@mantine/core";
+import moment from "moment";
 
 
 export type Players = {
@@ -27,7 +28,7 @@ const HealthPage = () => {
   const [bool, setbool] = useState(true)
   const [auth, setauth] = useState(false)
   useEffect(() => {
-    fitData({})
+    fitData({ dataType: "com.google.step_count.delta", Date:moment(new Date()).format('L')})
   }, [])
     useEffect(() => {
   if(isSuccess)setbool(false)
