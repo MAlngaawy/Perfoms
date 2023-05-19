@@ -21,44 +21,38 @@ const HealthSteps = (props: Props) => {
   }, [dateValue])
   const calculateSteps = React.useCallback(
     () => {
-      const steps = DataSteps?.map(
+      const steps =[...DataSteps?.map(
         (bucket: { dataset: [point: [{ value: [{ intVal: number }] }]] }) =>
           bucket?.dataset?.map((pointItem: any) =>
             pointItem?.point?.map((pointValue: any) =>
               pointValue.value.map((val: { intVal: number }) => val.intVal)
             )
           )
-      )?.reduce((a: number, b: number): number => {
-        return a + b;
-      },)
-      const startTime = DataSteps?.map(
+      )]?.reduce((a: number, b: number): number =>  Number(a) + Number(b),0);
+      const startTime = [...DataSteps?.map(
         (bucket: { dataset: [point: [{ startTimeNanos: string }]] }) =>
           bucket?.dataset?.map((pointItem: any) =>
             pointItem?.point?.map((pointValue: any) =>
               pointValue.startTimeNanos
             )
           )
-      )?.reduce((a: string, b: string): number => {
-        return Number(a) + Number(b);
-      },)
-      const endTime = DataSteps?.map(
+      )]?.reduce((a: string, b: string): number =>  Number(a) + Number(b),0);
+      const endTime = [...DataSteps?.map(
         (bucket: { dataset: [point: [{ endTimeNanos: string }]] }) =>
           bucket?.dataset?.map((pointItem: any) =>
             pointItem?.point?.map((pointValue: any) =>
               pointValue.endTimeNanos
             )
           )
-      )?.reduce((a: string, b: string): number => {
-        return Number(a) + Number(b);
-      },)
+      )]?.reduce((a: string, b: string): number =>  Number(a) + Number(b),0);
 
 
-      const Time = ((((Number(endTime) - Number(startTime)) / 1000000) / 60) / 60)
+      const Time = ((Number(endTime) - Number(startTime)) / (1000000 * 60* 60))
       const distanceKm = +steps / 1312.33595801;
       const progressValue = ((+distanceKm / 6) * 100);
-return { progressValue: +progressValue||0, steps: +steps||0, info: [{ name: "Duration", label: `${Time||0}  h`, imgSrc: "/assets/images/time.png" }, { name: "Total Distance", label: `${distanceKm ||0} km`, imgSrc: "/assets/images/map.png" }] }
+return { progressValue: +progressValue||0, steps: +steps||0, info: [{ name: "Duration", label: `${Time?.toFixed(1)||0}  h`, imgSrc: "/assets/images/time.png" }, { name: "Total Distance", label: `${distanceKm?.toFixed(1) ||0} km`, imgSrc: "/assets/images/map.png" }] }
     },
-    [dateValue],
+    [dateValue,DataSteps],
   )
 
   React.useEffect(() => {
@@ -114,7 +108,7 @@ return { progressValue: +progressValue||0, steps: +steps||0, info: [{ name: "Dur
                 alt={'footprint'}
                 className='mx-auto'
               />
-              {data.steps} steps
+              {data.steps?.toFixed(0)} steps
             </div>
           }
         />

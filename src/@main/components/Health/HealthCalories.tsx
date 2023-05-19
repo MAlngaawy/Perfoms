@@ -24,20 +24,19 @@ const [dateValue, setDateValue] = React.useState(new Date())
  }, [dateValue])
  const calculateCalories = React.useCallback(
    () => {
-     const Calories = DataCalories?.map(
+     const Calories = [...DataCalories?.map(
        (bucket: { dataset: [point: [{ value: [{ fpVal: number }] }]] }) =>
          bucket?.dataset?.map((pointItem: any) =>
            pointItem?.point?.map((pointValue: any) =>
              pointValue.value.map((val: { fpVal: number }) => val.fpVal)
            )
          )
-     )?.reduce((a: number, b: number): number => {
-       return a + b;
-     },)
+     )]?.reduce((a: number, b: number): number => 
+     Number(a) + Number(b),0);
      const progressValue = ((+Calories / 1000) * 100);
 return { progressValue: +progressValue||0, Calories: +Calories||0 }
    },
-   [dateValue],
+   [dateValue,DataCalories],
  )
 
  React.useEffect(() => {
@@ -46,9 +45,9 @@ return { progressValue: +progressValue||0, Calories: +Calories||0 }
     setData( calculateCalories())
 
    } 
- }, [DataCalories, isSuccess, isLoading, isError, error])
+ }, [, isSuccess, isLoading, isError, error])
 
-
+DataCalories
 
 
   return (
@@ -99,7 +98,7 @@ return { progressValue: +progressValue||0, Calories: +Calories||0 }
                 alt={'footprint'}
                 className='mx-auto'
               />
-            <div className='text-2xl text-perfGray1'>  {data.Calories}  kcal
+            <div className='text-2xl text-perfGray1'>  {data.Calories?.toFixed(1)}  kcal
               <p className='text-lg text-perfGray'>Burned</p></div>
             </div>
           }
