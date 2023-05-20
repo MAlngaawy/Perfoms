@@ -13,7 +13,18 @@ type Props = {
 
 };
 
-
+interface InputDataItem {
+    date: string;
+    day: string;
+    value: number;
+  }
+  
+  interface OutputDataItem {
+    name: string;
+    uv: number;
+    pv: number;
+  }
+  
 const HealthProgressBar = (props: Props) => {
     const [viewChart, setViewChart] = useState(false)
     const BiggerScreen = useMediaQuery('(min-width: 1536px)');
@@ -25,11 +36,11 @@ const HealthProgressBar = (props: Props) => {
     const [FitDataActivity, { data:DataActivity, isSuccess, isLoading, isError, error }] = useFitDataActivityMutation()
 
     const [dateValue, setDateValue] = React.useState( new Date());
-    const [data, setData] = React.useState<[{day:string,value:number}]>()
+    const [data, setData] = React.useState<any>()
     const [valueProgress, setValueProgress] = React.useState<number>(1)
     const [ValueDis, setValueDis] = React.useState<number>(1)
    
-    function convertData(inputData) {
+    function convertData(inputData:InputDataItem[]): OutputDataItem[]  {
         const outputData = [
           { name: 'sun', uv: 0, pv: 0 },
           { name: 'mon', uv: 0, pv: 0 },
@@ -77,8 +88,8 @@ const HealthProgressBar = (props: Props) => {
     }, [dateValue])
   React.useEffect(() => {
       if (isSuccess) {
-  
-       setData(convertData(DataActivity));
+        const outputData: OutputDataItem[] = convertData(DataActivity);
+       setData(outputData  )
 
     
        
