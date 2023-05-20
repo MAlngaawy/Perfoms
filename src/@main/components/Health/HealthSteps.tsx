@@ -69,7 +69,7 @@ return { progressValue: +progressValue||0, steps: +steps||0, info: [{ name: "Dur
       <div className="flex justify-between items-center ">
         <h2 className="text-lg font-normal text-perfGray1 pb-4">Steps</h2>
 
-        <div className='border-none relative shadow-[0px_5px_25px_#0000001A] w-[115px] text-[#828282] rounded-md bg-white'>
+        <div className='border-none relative  shadow-[0px_5px_25px_#0000001A] w-[115px] text-[#828282] rounded-md bg-white'>
           <DatePicker
             maxDate={new Date()}
             value={dateValue}
@@ -79,8 +79,8 @@ return { progressValue: +progressValue||0, steps: +steps||0, info: [{ name: "Dur
             variant="unstyled"
             mx="auto"
             inputFormat="YYYY-MM-DD"
-
-
+            classNames={{input:'text-center'}}
+            clearable={false}
             sx={{
               ".mantine-DatePicker-input": {
                 background: "none",

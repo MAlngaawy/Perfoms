@@ -22,7 +22,7 @@ export type Players = {
 };
 
 const HealthPage = () => {
-  const [fitData, { data, isSuccess, isLoading, isError, error }] = useFitDataMutation()
+    const [fitData, { data, isSuccess, isLoading, isError, error }] = useFitDataMutation()
 
   const navigate = useNavigate();
   const [bool, setbool] = useState(true)
