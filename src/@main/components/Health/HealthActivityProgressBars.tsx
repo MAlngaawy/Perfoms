@@ -7,12 +7,13 @@ import { DatePicker} from '@mantine/dates';
 import {  useFitDataActivityMutation } from '~/app/store/health/healthApi';
 import moment from 'moment';
 import { number } from 'yup';
+import HealthActivityProgressBar from './HealthActivityProgressBar';
 
 type Props = {
 
 };
 const HealthActivityProgressBars = (props: Props) => {
-;
+
 
   const [FitDataActivity, { data:DataActivity, isSuccess, isLoading, isError, error }] = useFitDataActivityMutation()
 
@@ -74,16 +75,10 @@ const HealthActivityProgressBars = (props: Props) => {
         {data?.map(item => (
           <div key={item.day?.slice(0,3)} className="grid content-between justify-center items-center text-center gap-6 ">
             <div style={{ backgroundColor: `${(item.value/+maxValue)*100>=50  ? "#FCF5E7" :( item.value/+maxValue)*100<50&&item.value!=0  ? "#EBF3FE" : "#BDBDBD"}` }}
-              className={`w-2 h-[300px]  rounded-full rotate-180  relative mx-auto ${maxValue==item.value&& "ring-1 border-2 border-white !w-[12px] ring-[#BDBDBD]"}`}
+              className={`w-2 h-[300px]  rounded-full rotate-180  relative mx-auto ${maxValue==item.value&&item.value!=0&& "ring-1 border-2 border-white !w-[12px] ring-[#BDBDBD]"}`}
             >
-              <div
-                role="progressbar"
-                aria-valuemax={100}
-                aria-valuemin={0}
-                aria-valuenow={(item.value/maxValue)*100}
-                className={`  rounded-full  bg-[${(item.value/maxValue)*100>=50 ? "#E19809" : (item.value/maxValue)*100<50&&item.value!=0 ? "#2563EB" : "#BDBDBD"}]`}
-                style={{ height: `${(item.value/maxValue)*100}%` }}
-              />
+             <HealthActivityProgressBar value={ (item.value/maxValue)*100} dateValue={dateValue} />
+             
             </div>
             <p>{item.day?.slice(0,3)}</p>
           </div>))}

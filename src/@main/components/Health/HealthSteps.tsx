@@ -11,24 +11,24 @@ type Props = {
 const HealthSteps = (props: Props) => {
   const [fitData, { data: DataSteps, isSuccess, isLoading, isError, error }] = useFitDataMutation()
 
- const [dateValue, setDateValue] = React.useState(new Date())
-  const [data, setData] = React.useState( { progressValue: 0, steps: 0, info: [{ name: "Duration", label: "0 h", imgSrc: "/assets/images/time.png" }, { name: "Total Distance", label: "0 km", imgSrc: "/assets/images/map.png" }] })
+  const [dateValue, setDateValue] = React.useState(new Date())
+  const [data, setData] = React.useState({ progressValue: 0, steps: 0, info: [{ name: "Duration", label: "0 h", imgSrc: "/assets/images/time.png" }, { name: "Total Distance", label: "0 km", imgSrc: "/assets/images/map.png" }] })
 
   React.useEffect(() => {
-    fitData({ dataType: "com.google.step_count.delta", Date:moment(dateValue).format('L')})
+    fitData({ dataType: "com.google.step_count.delta", Date: moment(dateValue).format('L') })
 
 
   }, [dateValue])
   const calculateSteps = React.useCallback(
     () => {
-      const steps =[...DataSteps?.map(
+      const steps = [...DataSteps?.map(
         (bucket: { dataset: [point: [{ value: [{ intVal: number }] }]] }) =>
           bucket?.dataset?.map((pointItem: any) =>
             pointItem?.point?.map((pointValue: any) =>
               pointValue.value.map((val: { intVal: number }) => val.intVal)
             )
           )
-      )]?.reduce((a: number, b: number): number =>  Number(a) + Number(b),0);
+      )]?.reduce((a: number, b: number): number => Number(a) + Number(b), 0);
       const startTime = [...DataSteps?.map(
         (bucket: { dataset: [point: [{ startTimeNanos: string }]] }) =>
           bucket?.dataset?.map((pointItem: any) =>
@@ -36,7 +36,7 @@ const HealthSteps = (props: Props) => {
               pointValue.startTimeNanos
             )
           )
-      )]?.reduce((a: string, b: string): number =>  Number(a) + Number(b),0);
+      )]?.reduce((a: string, b: string): number => Number(a) + Number(b), 0);
       const endTime = [...DataSteps?.map(
         (bucket: { dataset: [point: [{ endTimeNanos: string }]] }) =>
           bucket?.dataset?.map((pointItem: any) =>
@@ -44,23 +44,23 @@ const HealthSteps = (props: Props) => {
               pointValue.endTimeNanos
             )
           )
-      )]?.reduce((a: string, b: string): number =>  Number(a) + Number(b),0);
+      )]?.reduce((a: string, b: string): number => Number(a) + Number(b), 0);
 
 
-      const Time = ((Number(endTime) - Number(startTime)) / (1000000000 * 60* 60))
+      const Time = ((Number(endTime) - Number(startTime)) / (1000000000 * 60 * 60))
       const distanceKm = +steps / 1312.33595801;
       const progressValue = ((+distanceKm / 6) * 100);
-return { progressValue: +progressValue||0, steps: +steps||0, info: [{ name: "Duration", label: `${Time?.toFixed(1)||0}  h`, imgSrc: "/assets/images/time.png" }, { name: "Total Distance", label: `${distanceKm?.toFixed(1) ||0} km`, imgSrc: "/assets/images/map.png" }] }
+      return { progressValue: +progressValue || 0, steps: +steps || 0, info: [{ name: "Duration", label: `${Time?.toFixed(1) || 0}  h`, imgSrc: "/assets/images/time.png" }, { name: "Total Distance", label: `${distanceKm?.toFixed(1) || 0} km`, imgSrc: "/assets/images/map.png" }] }
     },
-    [dateValue,DataSteps],
+    [dateValue, DataSteps],
   )
 
   React.useEffect(() => {
     if (isSuccess) {
 
-     setData( calculateSteps())
+      setData(calculateSteps())
 
-    } 
+    }
   }, [DataSteps, isSuccess, isLoading, isError, error])
 
 
@@ -79,7 +79,7 @@ return { progressValue: +progressValue||0, steps: +steps||0, info: [{ name: "Dur
             variant="unstyled"
             mx="auto"
             inputFormat="YYYY-MM-DD"
-            classNames={{input:'text-center'}}
+            classNames={{ input: 'text-center' }}
             clearable={false}
             sx={{
               ".mantine-DatePicker-input": {
@@ -91,27 +91,30 @@ return { progressValue: +progressValue||0, steps: +steps||0, info: [{ name: "Dur
         </div></div>
       <div className=" w-full flex justify-center ">
 
-        <div className='relative rounded-tl-[50%] p-5 pr-6 pb-0 rounded-tr-[50%] flex justify-center h-[152px] overflow-hidden'> <RingProgress className='-rotate-90 '
-          size={250}
-          thickness={12}
-          roundCaps
-          sections={[
-            { value: +data?.progressValue > 0 ? +data?.progressValue / 2 : 0, color: '#E19809' },
+        <div className='relative rounded-tl-[50%] p-5 pr-6 pb-0 rounded-tr-[50%] flex justify-center h-[152px] overflow-hidden'>
+          <RingProgress className='-rotate-90 '
+            size={250}
+            thickness={12}
+            roundCaps
+            classNames={{
+              root:"[&_*]:duration-1000	 [&_*]:transition-all   duration-1000  transition-all"}}
+            sections={[
+              { value: +data?.progressValue > 0 ? +data?.progressValue / 2 : 0, color: '#E19809' },
 
-          ]}
-          label={
-            <div className='rotate-90 mx-auto relative text-center grid justify-center items-center translate-x-5 text-2xl text-perfGray1'>
-              <Image
-                width={38}
-                height={38}
-                src={'/assets/images/footprint.png'}
-                alt={'footprint'}
-                className='mx-auto'
-              />
-              {data.steps?.toFixed(0)} steps
-            </div>
-          }
-        />
+            ]}
+            label={
+              <div className='rotate-90 mx-auto relative text-center grid justify-center items-center translate-x-5 text-2xl text-perfGray1'>
+                <Image
+                  width={38}
+                  height={38}
+                  src={'/assets/images/footprint.png'}
+                  alt={'footprint'}
+                  className='mx-auto'
+                />
+                {data.steps?.toFixed(0)} steps
+              </div>
+            }
+          />
           <div className='absolute bottom-0 left-0 text-[#BDBDBD] text-base'>0</div>
           <div className='absolute bottom-[35%] left-[4%] text-[#BDBDBD] text-base'>1 km</div>
           <div className='absolute bottom-[65%] left-[15%] text-[#BDBDBD] text-base'>2 km</div>

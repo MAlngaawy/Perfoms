@@ -50,13 +50,13 @@ const HealthProgressBar = (props: Props) => {
           { name: 'fri', uv: 0, pv: 0 },
           { name: 'sat', uv: 0, pv: 0 },
         ];
-      
-        for (const item of inputData) {
-          const dayIndex = getDayIndex(item.day);
-          if (dayIndex !== -1) {
-            outputData[dayIndex].uv = item.value;
-          }
+      inputData.forEach((item, index) => {
+        const dayIndex = getDayIndex(item.day);
+        if (dayIndex !== -1) {
+          index<7?(outputData[dayIndex].pv = item.value): (outputData[dayIndex].uv = item.value);
         }
+    })
+      
       
         return outputData;
       }
@@ -91,6 +91,7 @@ const HealthProgressBar = (props: Props) => {
         const outputData: OutputDataItem[] = convertData(DataActivity);
        setData(outputData  )
 
+ 
     
        
        let sumData1= DataActivity?.slice(0,6).map((i:{day:string,value:number})=>i.value).reduce((accumulator:number, currentValue:number) => accumulator + currentValue,0)
@@ -120,7 +121,7 @@ const HealthProgressBar = (props: Props) => {
                     <h3 className="text-lg text-black">
                         progress <span className="font-semibold">vs</span> last week
                     </h3>
-                    <div className={`${ValueDis>0?"text-perfBlue":"text-red"} text-lg flex items-center gap-x-1`}><ArrowDownIcon className={` h-5 ${ValueDis>0&& "rotate-180"}`} />  {ValueDis} %</div>
+                    <div className={`${ValueDis>0?"text-perfBlue":"text-red"} text-lg flex items-center gap-x-1`}><ArrowDownIcon className={` h-5 ${ValueDis>0&& "rotate-180"}`} />  {ValueDis.toFixed(0)} %</div>
                 </div>
                 <div className=" row-span-4 sm:grid flex flex-wrap gap-4 items-center content-center sm:gap-2 ">
                     <div className="flex gap-4">
@@ -175,13 +176,13 @@ const HealthProgressBar = (props: Props) => {
                     </div>):
                 (
                     <div className={`${!viewChart ? " opacity-100":" opacity-0"}    transition-opacity !duration-1000 `}>
-                        <p>{valueProgress}%</p>
+                        <p>{valueProgress.toFixed(0)}%</p>
                         <Progress
                             radius="xl"
                             size={8}
                             value={valueProgress}
                             classNames={{
-                                root: "bg-[#E19809]",
+                                root: "bg-[#E19809] [&_*]:duration-1000	[&_*]:transition-all   duration-1000  transition-all",
                                 bar: "bg-[#2563EB] rounded-r-sm",
                             }}
                         />
