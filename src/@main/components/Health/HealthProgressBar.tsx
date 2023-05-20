@@ -6,12 +6,25 @@ import React, { PureComponent, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { ArrowDownIcon } from "@heroicons/react/24/outline";
 import { useMediaQuery } from "@mantine/hooks";
+import { useFitDataActivityMutation } from "~/app/store/health/healthApi";
+import moment from "moment";
 
 type Props = {
 
 };
 
-
+interface InputDataItem {
+    date: string;
+    day: string;
+    value: number;
+  }
+  
+  interface OutputDataItem {
+    name: string;
+    uv: number;
+    pv: number;
+  }
+  
 const HealthProgressBar = (props: Props) => {
     const [viewChart, setViewChart] = useState(false)
     const BiggerScreen = useMediaQuery('(min-width: 1536px)');
@@ -20,46 +33,81 @@ const HealthProgressBar = (props: Props) => {
     const MidScreen = useMediaQuery('(min-width: 768px)');
     const SmallScreen = useMediaQuery('(max-width: 768px)');
 
-    let val = 83;
-    const data = [
-        {
-            name: 'fri',
-            uv: 4000,
-            pv: 2400,
+    const [FitDataActivity, { data:DataActivity, isSuccess, isLoading, isError, error }] = useFitDataActivityMutation()
 
-        },
-        {
-            name: 'sat',
-            uv: 3000,
-            pv: 1398,
+    const [dateValue, setDateValue] = React.useState( new Date());
+    const [data, setData] = React.useState<any>()
+    const [valueProgress, setValueProgress] = React.useState<number>(1)
+    const [ValueDis, setValueDis] = React.useState<number>(1)
+   
+    function convertData(inputData:InputDataItem[]): OutputDataItem[]  {
+        const outputData = [
+          { name: 'sun', uv: 0, pv: 0 },
+          { name: 'mon', uv: 0, pv: 0 },
+          { name: 'tue', uv: 0, pv: 0 },
+          { name: 'wed', uv: 0, pv: 0 },
+          { name: 'thu', uv: 0, pv: 0 },
+          { name: 'fri', uv: 0, pv: 0 },
+          { name: 'sat', uv: 0, pv: 0 },
+        ];
+      
+        for (const item of inputData) {
+          const dayIndex = getDayIndex(item.day);
+          if (dayIndex !== -1) {
+            outputData[dayIndex].uv = item.value;
+          }
+        }
+      
+        return outputData;
+      }
+      
+      function getDayIndex(day:string) {
+        switch (day) {
+          case 'Sunday':
+            return 0;
+          case 'Monday':
+            return 1;
+          case 'Tuesday':
+            return 2;
+          case 'Wednesday':
+            return 3;
+          case 'Thursday':
+            return 4;
+          case 'Friday':
+            return 5;
+          case 'Saturday':
+            return 6;
+          default:
+            return -1;
+        }
+      }
+    React.useEffect(() => {
+      FitDataActivity({ dataType: "activity-data",Date:moment(dateValue).format('L')})
+  
+  
+    }, [dateValue])
+  React.useEffect(() => {
+      if (isSuccess) {
+        const outputData: OutputDataItem[] = convertData(DataActivity);
+       setData(outputData  )
 
-        },
-        {
-            name: 'sun',
-            uv: 2000,
-            pv: 9800,
-        },
-        {
-            name: 'mon',
-            uv: 2780,
-            pv: 3908,
-        },
-        {
-            name: 'tue',
-            uv: 1890,
-            pv: 4800,
-        },
-        {
-            name: 'wed',
-            uv: 2390,
-            pv: 3800,
-        },
-        {
-            name: 'thu',
-            uv: 3490,
-            pv: 4300,
-        },
-    ];
+    
+       
+       let sumData1= DataActivity?.slice(0,6).map((i:{day:string,value:number})=>i.value).reduce((accumulator:number, currentValue:number) => accumulator + currentValue,0)
+       let sumData2= DataActivity?.slice(7,).map((i:{day:string,value:number})=>i.value).reduce((accumulator:number, currentValue:number) => accumulator + currentValue,0)||1
+       let sumDataAll= DataActivity?.map((i:{day:string,value:number})=>i.value).reduce((accumulator:number, currentValue:number) => accumulator + currentValue,0)||1
+       setValueProgress((sumData2/sumDataAll)*100)
+       setValueDis((((sumData2-sumData1)/sumDataAll)*100))
+   
+    
+     
+      
+      
+      } 
+    }, [DataActivity, isSuccess, isLoading, isError, error])
+  
+
+  
     return (
         <div
             className={`p-5 absolute overflow-hidden top-0 right-0 left-0 gap-4 sm:gap-5 lg:gap-x-7  xl:gap-x-10  2xl:gap-x-14 flex justify-between   shadow items-start flex-wrap !bg-white rounded-3xl w-full transition-[height] !duration-1000  ${viewChart ? "h-[400px] sm:h-[300px]  z-50" : "h-[140px]  sm:h-[75px]"
@@ -72,7 +120,7 @@ const HealthProgressBar = (props: Props) => {
                     <h3 className="text-lg text-black">
                         progress <span className="font-semibold">vs</span> last week
                     </h3>
-                    <div className="text-red text-lg flex items-center gap-x-1"><ArrowDownIcon className="h-5" />   1.3 %</div>
+                    <div className={`${ValueDis>0?"text-perfBlue":"text-red"} text-lg flex items-center gap-x-1`}><ArrowDownIcon className={` h-5 ${ValueDis>0&& "rotate-180"}`} />  {ValueDis} %</div>
                 </div>
                 <div className=" row-span-4 sm:grid flex flex-wrap gap-4 items-center content-center sm:gap-2 ">
                     <div className="flex gap-4">
@@ -127,11 +175,11 @@ const HealthProgressBar = (props: Props) => {
                     </div>):
                 (
                     <div className={`${!viewChart ? " opacity-100":" opacity-0"}    transition-opacity !duration-1000 `}>
-                        <p>{val}%</p>
+                        <p>{valueProgress}%</p>
                         <Progress
                             radius="xl"
                             size={8}
-                            value={val}
+                            value={valueProgress}
                             classNames={{
                                 root: "bg-[#E19809]",
                                 bar: "bg-[#2563EB] rounded-r-sm",

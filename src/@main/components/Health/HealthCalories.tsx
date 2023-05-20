@@ -54,7 +54,7 @@ DataCalories
     <div className="HealthCalories bg-white rounded-3xl w-full grid gap-9 p-4 h-full">
       <div className="flex justify-between items-center ">
         <h2 className="text-lg font-normal text-perfGray1 pb-4">Calories</h2>
-        <div className='border-none relative shadow-[0px_5px_25px_#0000001A] w-[115px] text-[#828282] rounded-md bg-white'>
+        <div className='border-none   relative shadow-[0px_5px_25px_#0000001A] w-[115px] text-[#828282] rounded-md bg-white'>
         <DatePicker
               maxDate={new Date()}
               value={dateValue}
@@ -64,7 +64,8 @@ DataCalories
               variant="unstyled"
               mx="auto"
               inputFormat="YYYY-MM-DD"
-             
+              classNames={{input:'text-center'}}
+              clearable={false}
             
               sx={{
                 ".mantine-DatePicker-input": {

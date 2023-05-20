@@ -25,11 +25,16 @@ export const healthApi = createApi({
     fitData: mutation({
       query: ({dataType,Date}) => ({
        
-        url:(dataType&&Date)? `/google/fit-data/${dataType}?date=${Date}`:"/google/fit-data/",
+        url:`/google/fit-data/${dataType}?date=${Date}`
       }),
     }),
-
+    fitDataActivity: mutation({
+      query: ({dataType,Date,type}) => ({
+       
+        url:`/google/${dataType}?date=${Date}${type?"&type=bars":""}`
+      }),
+    }),
   }),
 });
 
-export const { useGetUrlGoogleMutation, useAuthCallbackMutation,useFitDataMutation } = healthApi;
+export const { useGetUrlGoogleMutation, useAuthCallbackMutation,useFitDataMutation ,useFitDataActivityMutation} = healthApi;
