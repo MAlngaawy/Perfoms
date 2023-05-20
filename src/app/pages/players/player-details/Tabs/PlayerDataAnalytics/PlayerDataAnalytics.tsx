@@ -71,27 +71,32 @@ const PlayerDataAnalytics = (props: Props) => {
     <div className="">
       {/* Upload Button */}
       <div
-        className={classNames("m-4 w-full flex items-center", {
-          "justify-around": data,
-          "justify-center": !data,
-        })}
+        className={classNames(
+          "m-4 w-full flex flex-col gap-4 sm:flex-row items-center",
+          {
+            "justify-around": data,
+            "justify-center": !data,
+          }
+        )}
       >
         {data ? (
           <>
-            <UploadForm setData={setData} />
+            <div className="flex justify-center items-center gap-4">
+              <UploadForm setData={setData} />
+              <div className="transform scale-150">
+                <DeleteButton
+                  deleteFun={deleteReport}
+                  type="Player"
+                  name="Report"
+                />
+              </div>
+            </div>
             <h2>
               This Reports taked at{" "}
               <span className="font-bold text-green">
                 {data.Time.replaceAll(".", "/")}{" "}
               </span>
             </h2>
-            <div className="transform scale-150">
-              <DeleteButton
-                deleteFun={deleteReport}
-                type="Player"
-                name="Report"
-              />
-            </div>
           </>
         ) : (
           <div className="mt-32">
@@ -104,35 +109,31 @@ const PlayerDataAnalytics = (props: Props) => {
         <div className="data-show my-4">
           <Grid gutter={50}>
             <Grid.Col span={12}>
-              <h2 className="text-sm font-semibold bg-perfGray p-4 rounded-sm text-white">
+              <h2 className="text-sm font-semibold m-4">
                 Body composition analysis
               </h2>
               <Table data={data && data[BodyCompositionAnalysis]} />
             </Grid.Col>
 
             <Grid.Col span={12}>
-              <h2 className="text-sm font-semibold bg-perfGray p-4 rounded-sm text-white">
-                Muscle fat analysis
-              </h2>
+              <h2 className="text-sm font-semibold m-4">Muscle fat analysis</h2>
               <Table data={data && data[MuscleFatAnalysis]} />
             </Grid.Col>
 
             <Grid.Col span={12}>
-              <h2 className="text-sm font-semibold bg-perfGray p-4 rounded-sm text-white">
-                Obesity analysis
-              </h2>
+              <h2 className="text-sm font-semibold m-4">Obesity analysis</h2>
               <Table data={data && data[ObesityAnalysis]} />
             </Grid.Col>
 
             <Grid.Col span={12}>
-              <h2 className="text-sm font-semibold bg-perfGray p-4 rounded-sm text-white">
+              <h2 className="text-sm font-semibold m-4">
                 Segmental fat analysis
               </h2>
               <Table data={data && data[SegmentalFatAnalysis]} />
             </Grid.Col>
 
             <Grid.Col span={12}>
-              <h2 className="text-sm font-semibold bg-perfGray p-4 rounded-sm text-white">
+              <h2 className="text-sm font-semibold m-4">
                 Segmental Lean Analysis
               </h2>
               <Table data={data && data[SegmentalLeanAnalysis]} />

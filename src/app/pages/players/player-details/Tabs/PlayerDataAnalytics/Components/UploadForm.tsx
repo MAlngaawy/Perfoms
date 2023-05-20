@@ -93,10 +93,10 @@ const UploadForm = ({ setData }: { setData: any }) => {
       </Modal>
 
       <button
-        className="flex gap-4 justify-center items-center p-4 rounded-xl text-white bg-perfBlue"
+        className="flex gap-2 justify-center items-center p-3 rounded-xl text-white bg-perfBlue text-xs transform hover:scale-105"
         onClick={open}
       >
-        <AppIcons icon="ArrowUpTrayIcon:outline" className="w-6 h-6" />
+        <AppIcons icon="ArrowUpTrayIcon:outline" className="w-4 h-4" />
         <h3>Upload File or Image</h3>
       </button>
     </>

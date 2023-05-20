@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import cn from "classnames";
 interface TableProps {
   data?: any[];
 }
@@ -47,9 +47,19 @@ const Table: React.FC<TableProps> = ({ data }) => {
             {keys.map((key) => (
               <td
                 key={key}
-                className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                className={cn(
+                  "px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                )}
               >
-                {item[key]}
+                <span
+                  className={cn("py-1 px-3", {
+                    "bg-blue-100 text-blue-500 rounded-full":
+                      key === "value" || key === "Value",
+                    hidden: !item[key],
+                  })}
+                >
+                  {item[key]}
+                </span>
               </td>
             ))}
           </tr>
