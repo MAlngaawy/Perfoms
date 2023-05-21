@@ -11,6 +11,9 @@ import { useParams } from "react-router-dom";
 import Table from "./Components/Table";
 import DeleteButton from "~/@main/components/ManagerComponents/SubComponents/DeleteButton";
 import AppUtils from "~/@main/utils/AppUtils";
+import moment from "moment";
+import { CoachPlayerInfo } from "~/app/store/types/coach-types";
+import AppIcons from "~/@main/core/AppIcons";
 
 type Props = {};
 
@@ -23,17 +26,27 @@ const SegmentalLeanAnalysis = "Segmental lean analysis";
 const PlayerDataAnalytics = (props: Props) => {
   const { id: player_id } = useParams();
   const [data, setData] = useState<Data>();
+  const [playerInfo, setPlayerInfo] = useState<CoachPlayerInfo | null>(null);
   const { data: playerInfoData } = useGetPlayerInfoQuery(
     { player_id },
     { skip: !player_id }
   );
   const [updatePlayer] = useUpdatePlayerMutation();
+  function formatDate(dateString: string): string {
+    const [month, day, year] = dateString.split(".");
+    const formattedDate = moment(
+      `${month}.${day}.${year}`,
+      "MM.DD.YYYY"
+    ).format("MMM D, YYYY");
+    return formattedDate;
+  }
 
   useEffect(() => {
     if (
       playerInfoData?.analytics &&
       Object.keys(playerInfoData.analytics).length !== 0
     ) {
+      setPlayerInfo(playerInfoData);
       // The `analytics` field is not an empty JSON object
       const analytics = JSON.parse(JSON.stringify(playerInfoData?.analytics));
       setData(analytics);
@@ -72,7 +85,7 @@ const PlayerDataAnalytics = (props: Props) => {
       {/* Upload Button */}
       <div
         className={classNames(
-          "m-4 w-full flex flex-col gap-4 sm:flex-row items-center",
+          "m-4 flex flex-col gap-4 sm:flex-row items-center",
           {
             "justify-around": data,
             "justify-center": !data,
@@ -80,27 +93,34 @@ const PlayerDataAnalytics = (props: Props) => {
         )}
       >
         {data ? (
-          <>
-            <div className="flex justify-center items-center gap-4">
-              <UploadForm setData={setData} />
-              <div className="transform scale-150">
-                <DeleteButton
-                  deleteFun={deleteReport}
-                  type="Player"
-                  name="Report"
+          <div className="flex flex-col sm:flex-row gap-4 w-full items-center sm:items-start">
+            <UploadForm hasData={true} setData={setData} />
+            <div className="h-full">
+              <div className="flex flex-col justify-center items-center gap-3">
+                <AppIcons
+                  icon="DocumentTextIcon:solid"
+                  className="text-perfBlue w-10"
                 />
+                <h2>{playerInfo?.name} In Body Report</h2>
+                <h2 className="text-center text-sm ">
+                  This Reports taked at{" "}
+                  <span className="text-blue-400">
+                    {data.Time && formatDate(data.Time)}
+                  </span>
+                </h2>
               </div>
             </div>
-            <h2>
-              This Reports taked at{" "}
-              <span className="font-bold text-green">
-                {data.Time.replaceAll(".", "/")}{" "}
-              </span>
-            </h2>
-          </>
+            <div className="transform scale-150 bg-white p-1 rounded-full">
+              <DeleteButton
+                deleteFun={deleteReport}
+                type="Player"
+                name="Report"
+              />
+            </div>
+          </div>
         ) : (
-          <div className="mt-32">
-            <UploadForm setData={setData} />
+          <div className="mt-10">
+            <UploadForm hasData={false} setData={setData} />
           </div>
         )}
       </div>
