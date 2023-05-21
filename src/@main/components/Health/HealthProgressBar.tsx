@@ -111,10 +111,10 @@ const HealthProgressBar = (props: Props) => {
   
     return (
         <div
-            className={`p-5 absolute overflow-hidden top-0 right-0 left-0 gap-4 sm:gap-5 lg:gap-x-7  xl:gap-x-10  2xl:gap-x-14 flex justify-between   shadow items-start flex-wrap !bg-white rounded-3xl w-full transition-[height] !duration-1000  ${viewChart ? "h-[400px] sm:h-[300px]  z-50" : "h-[140px]  sm:h-[75px]"
+            className={`p-5 absolute overflow-hidden top-0 right-0 left-0 gap-4 sm:gap-5 lg:gap-x-7 z-50 xl:gap-x-10  2xl:gap-x-14 flex justify-between   shadow items-start flex-wrap !bg-white rounded-3xl w-full transition-[height] !duration-1000  ${viewChart ? "h-[400px] sm:h-[300px]  z-50" : "h-[140px]  sm:h-[75px]"
                 }`}
         >
-            {viewChart ? (<div className={`grid gap-4 columns-6 sm:h-full`}>
+            {viewChart ? (<div className={`grid gap-4 columns-6 !bg-white sm:h-full`}>
 
                 <div className=" row-span-2 grid  gap-4">
 
