@@ -149,6 +149,7 @@ export type Player = {
   dob: string;
   front_leg: string;
   phone: string;
+  analytics: Data | null;
 };
 
 export type AllPlayers = BaseGetAllType & {
