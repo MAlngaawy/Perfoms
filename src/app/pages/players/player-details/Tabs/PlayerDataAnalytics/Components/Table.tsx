@@ -27,7 +27,7 @@ const Table: React.FC<TableProps> = ({ data }) => {
           {keys.map((key) => (
             <th
               key={key}
-              className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              className=" w-1/3 px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
               {key}
             </th>
@@ -52,8 +52,8 @@ const Table: React.FC<TableProps> = ({ data }) => {
                 )}
               >
                 <span
-                  className={cn("py-1 px-3", {
-                    "bg-blue-100 text-blue-500 rounded-full":
+                  className={cn("py-1", {
+                    "bg-blue-100 px-3 text-blue-500 rounded-full":
                       key === "value" || key === "Value",
                     hidden: !item[key],
                   })}
