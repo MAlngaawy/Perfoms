@@ -90,6 +90,7 @@ export default memo(AttendanceTable);
 // srparate the code for performance
 const CreateContentTable = memo(
   ({ teamAttendance, teamAttendanceDays }: any) => {
+    const { data: user } = useUserQuery({});
     return (
       <Table highlightOnHover verticalSpacing={"sm"} horizontalSpacing={30}>
         <TableHead teamAttendance={teamAttendance} />
@@ -155,10 +156,15 @@ const CreateContentTable = memo(
         ) : (
           <tr className="w-full p-4 m-10 bg-white">
             <td colSpan={100} className="bg-pagesBg p-10 w-full">
-              No attendance added for this Team in this month yet, <br />
-              if you want to add attendance you can go to the team info page
-              <br />
-              and add attendance to calendar
+              No attendance added for this Team in this month yet <br />
+              {user?.user_type === "Supervisor" && (
+                <span>
+                  ,if you want to add attendance you can go to the team info
+                  page
+                  <br />
+                  and add attendance to calendar
+                </span>
+              )}
             </td>
           </tr>
         )}
