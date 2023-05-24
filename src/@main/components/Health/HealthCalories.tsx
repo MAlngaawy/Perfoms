@@ -1,12 +1,105 @@
 // @flow
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import { Image, RingProgress, Select } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import moment from "moment";
 import { useFitDataMutation } from "~/app/store/health/healthApi";
+import { useUserQuery } from "~/app/store/user/userApi";
 
-type Props = {};
-const HealthCalories = (props: Props) => {
+import { useAdminPlayerInfoQuery } from "~/app/store/clubManager/clubManagerApi";
+import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
+import { Player } from "~/app/store/types/parent-types";
+
+import { useDispatch, useSelector } from "react-redux";
+import { useOnePlayerQuery } from "~/app/store/parent/parentApi";
+import { useGetPlayerInfoQuery } from "~/app/store/coach/coachApi";
+import { useGetSuperPlayerInfoQuery } from "~/app/store/supervisor/supervisorMainApi";
+type Props = {
+  player_id?: number | string | undefined;
+};
+type Analytics = { Gender?: string | undefined;
+  Age?: number | string | undefined;}
+ type CoachPlayerInfo = {
+  id?: number;
+  world_weight?: string | undefined;
+  olympic_weight?: number | string | undefined;
+  height?: number | string | undefined;
+  analytics?: Analytics;
+}
+
+const HealthCalories = ({ player_id }: Props) => {
+  const [maxCalories, setMaxCalories] = useState(1000);
+
+  const selectedPlayer: Player = useSelector(selectedPlayerFn);
+  const [playerInfoData, setPlayerInfoData] = useState<any>({
+    olympic_weight: "70",
+    height: "170",
+    analytics: {
+      Gender: "male",
+      Age: "20"
+    },
+  });
+  const { data: user } = useUserQuery({});
+
+  const { data: parentPlayerInfoData, refetch: refetchPlayerData } =
+    useOnePlayerQuery(
+      { id: selectedPlayer?.id },
+      {
+        skip: !selectedPlayer?.id,
+      }
+    );
+
+  const { data: coachPlayerInfo } = useGetPlayerInfoQuery(
+    { player_id: player_id },
+    { skip: user?.user_type !== "Coach" }
+  );
+
+  const { data: superPlayerInfo } = useGetSuperPlayerInfoQuery(
+    { player_id: player_id },
+    { skip: !player_id || user?.user_type !== "Supervisor" }
+  );
+
+  const { data: adminPlayerInfo, refetch: refetchAdminPlayerData } =
+    useAdminPlayerInfoQuery(
+      { player_id: player_id },
+      { skip: !player_id || user?.user_type !== "Admin" }
+    );
+
+  const calculateMaxCalories = () => {
+    const weightInKg = (+playerInfoData.olympic_weight) * 0.4536;
+    const heightInCm = (+playerInfoData.height) * 2.54;
+    let bmr: number;
+    if (playerInfoData?.analytics?.Gender === "male") {
+      // Calculate BMR for men
+      bmr =
+        66 +
+        6.23 * weightInKg +
+        12.7 * heightInCm -
+        6.8 * parseFloat(playerInfoData?.analytics?.Age);
+    } else {
+      // Calculate BMR for women
+      bmr =
+        655 +
+        4.35 * weightInKg +
+        4.7 * heightInCm -
+        4.7 * parseFloat(playerInfoData?.analytics?.Age);
+    }
+
+    // Adjust BMR based on activity level
+    const activityFactor = 1.375; // Assuming lightly active
+    const tdee = bmr * activityFactor;
+
+    setMaxCalories(+tdee.toFixed(2)); // Set calculated calories with 2 decimal places
+  };
+  useEffect(() => {
+    if (parentPlayerInfoData) setPlayerInfoData(parentPlayerInfoData);
+    if (coachPlayerInfo) setPlayerInfoData(coachPlayerInfo);
+    if (superPlayerInfo) setPlayerInfoData(superPlayerInfo);
+    if (adminPlayerInfo) setPlayerInfoData(adminPlayerInfo);
+  }, [parentPlayerInfoData, coachPlayerInfo, superPlayerInfo, adminPlayerInfo]);
+  useEffect(() => {
+    calculateMaxCalories();
+  }, [playerInfoData]);
   const [
     fitData,
     { data: DataCalories, isSuccess, isLoading, isError, error },
@@ -32,7 +125,8 @@ const HealthCalories = (props: Props) => {
           )
       ),
     ]?.reduce((a: number, b: number): number => Number(a) + Number(b), 0);
-    const progressValue = (+Calories / 1000) * 100;
+
+    const progressValue = (+Calories / +maxCalories) * 100;
     return { progressValue: +progressValue || 0, Calories: +Calories || 0 };
   }, [dateValue, DataCalories]);
 
@@ -41,8 +135,6 @@ const HealthCalories = (props: Props) => {
       setData(calculateCalories());
     }
   }, [, isSuccess, isLoading, isError, error]);
-
-  DataCalories;
 
   return (
     <div className="HealthCalories bg-white rounded-3xl w-full grid gap-9 p-4 h-full">
