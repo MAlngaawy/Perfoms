@@ -5,12 +5,15 @@ import { Controller, useForm } from "react-hook-form";
 import {
   useSuperAddTeamCoachesMutation,
   useSuperAllCoachesQuery,
+  useSuperSubCoachesQuery,
 } from "~/app/store/supervisor/supervisorMainApi";
 import { showNotification } from "@mantine/notifications";
 import { useGetTeamInfoQuery, useUserQuery } from "~/app/store/user/userApi";
 import {
   useAdminAddTeamCoachesMutation,
   useAdminAllCoachesQuery,
+  useAdminCoachesQuery,
+  useAdminSubCoachQuery,
 } from "~/app/store/clubManager/clubManagerApi";
 import __ from "lodash";
 import { useParams } from "react-router-dom";
@@ -31,7 +34,12 @@ const AddCoachForm = ({ teamId, teamCoaches }: Props) => {
   );
 
   const { data: superCoaches } = useSuperAllCoachesQuery({});
+  const { data: superSubCoaches } = useSuperSubCoachesQuery({});
   const { data: adminCoaches } = useAdminAllCoachesQuery(
+    { club_id: user?.club },
+    { skip: !user?.club }
+  );
+  const { data: adminSubCoaches } = useAdminSubCoachQuery(
     { club_id: user?.club },
     { skip: !user?.club }
   );
@@ -40,8 +48,15 @@ const AddCoachForm = ({ teamId, teamCoaches }: Props) => {
   const [adminAddCoach] = useAdminAddTeamCoachesMutation();
 
   useEffect(() => {
-    if (superCoaches) {
-      const filterdCoaches = __.xorBy(superCoaches.results, teamCoaches, "id");
+    if (superCoaches && superSubCoaches) {
+      console.log("SuperCoaches", superCoaches);
+      console.log("superSubCoaches", superSubCoaches);
+
+      const filterdCoaches = __.xorBy(
+        [...superCoaches.results, ...superSubCoaches.results],
+        teamCoaches,
+        "id"
+      );
       const filterCoachesByTeamSport = filterdCoaches.filter((coach) => {
         return coach.sport === teamInfo?.sport;
       });
@@ -55,8 +70,15 @@ const AddCoachForm = ({ teamId, teamCoaches }: Props) => {
       });
       setCoachesData(test);
     }
-    if (adminCoaches) {
-      const filterdCoaches = __.xorBy(adminCoaches.results, teamCoaches, "id");
+    if (adminCoaches && adminSubCoaches) {
+      console.log("adminCoaches", adminCoaches);
+      console.log("adminCoaches", adminSubCoaches);
+
+      const filterdCoaches = __.xorBy(
+        [...adminCoaches.results, ...adminSubCoaches.results],
+        teamCoaches,
+        "id"
+      );
       const filterCoachesByTeamSport = filterdCoaches.filter((coach) => {
         return coach.sport === teamInfo?.sport;
       });
@@ -71,7 +93,7 @@ const AddCoachForm = ({ teamId, teamCoaches }: Props) => {
       });
       setCoachesData(test);
     }
-  }, [superCoaches, adminCoaches, teamInfo]);
+  }, [superCoaches, superSubCoaches, adminCoaches, adminSubCoaches, teamInfo]);
 
   const { handleSubmit, reset, control } = useForm();
 
