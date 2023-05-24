@@ -87,7 +87,8 @@ more details more details more details more details more details .` },
         {/* progress bar in top */} <LoadingOverlay visible={visible} overlayBlur={2} />
         <Grid.Col span={12} md={6} className="relative grid gap-3">
           <h2 className="text-xl text-perfGray1 font-medium">Ask Performs Anything</h2>
-          <div className="relative  flex items-stretch" ><Textarea value={chat} className="flex-1"
+          <div className="relative  flex items-stretch" >
+            <Textarea value={chat} className="flex-1"
             disabled={isLoading}
             onKeyUp={(e) => {
               if (e.key === "Enter") { useChat({ message: chat }) }
@@ -102,7 +103,7 @@ more details more details more details more details more details .` },
                 {isLoading ? "loading..." : (<> ask <PaperAirplaneIcon className="text-perfGray1 w-5 h-5 -rotate-45 " /></>)}
 
               </button>}
-            classNames={{ input: `bg-[#7B91B0]  !text-white  !h-[${height}px] rounded-[10px]`, wrapper: '!min-h-full', description: ' !text-white', root: 'relative', label: 'absolute bottom-4  right-4 !z-[50000000] min-w-[80px]  ' }}
+            classNames={{ input: `bg-[#7B91B0] text-lg !text-white  !h-[${height}px] rounded-[10px]`, wrapper: '!min-h-full', description: ' !text-white', root: 'relative', label: 'absolute bottom-4  right-4 !z-[50000000] min-w-[80px]  ' }}
           />
 
           </div>
