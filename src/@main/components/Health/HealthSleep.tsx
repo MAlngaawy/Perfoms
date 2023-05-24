@@ -65,7 +65,7 @@ const HealthSleep = (props: Props) => {
                   classNames={{
                     label:
                       "shadow bg-white h-[55%] w-[55%] text-center grid justify-center items-center rounded-full  m-auto z-0 left-auto right-auto ",
-                    root:` last:[&_circle]:!stroke-[45px] [&:nth-child(2)]:[&_circle]:!stroke-[36px] last:[&_circle]:drop-shadow-xl [&:nth-child(2)]:[&_circle]:!stroke-[36px] [&:nth-child(2)]:[&_circle]:!drop-shadow-xl drop-shadow-lg 
+                    root: ` last:[&_circle]:!stroke-[45px] [&:nth-child(2)]:[&_circle]:!stroke-[36px] last:[&_circle]:drop-shadow-xl [&:nth-child(2)]:[&_circle]:!stroke-[36px] [&:nth-child(2)]:[&_circle]:!drop-shadow-xl drop-shadow-lg 
                     first:[&_circle]:drop-shadow	first:[&_circle]:stroke-[#BDBDBD] relative flex justify-center items-center`,
                   }}
                   label={
@@ -95,17 +95,19 @@ const HealthSleep = (props: Props) => {
         {hours.map((item) => (
           <SwiperSlide
             className={`w-10 h-[110px] p-2  grid content-between justify-center  `}
-            
+
           >
-             <div
-            className={`w-10 h-[70px] p-2 rounded-[10px] text-white flex content-between justify-center
+            <div
+              className={`w-10 h-[70px] p-2 rounded-[10px] text-white flex content-between justify-center
             text-center items-center  `}
-            style={{ backgroundColor: `${parseInt(item) <= 7 ? "#2F80ED" : "#BDBDBD"}` }}
-          >
-            {item}</div>
-            <div className="w-4 h-4 rounded-full mx-auto" 
-            style={{ backgroundColor: `${parseInt(item) <= 7 ? "#2F80ED" : "#BDBDBD"}`,
-            display:[5,2,8].includes(parseInt(item))?"flex":"none" }} />
+              style={{ backgroundColor: `${parseInt(item) <= 7 ? "#2F80ED" : "#BDBDBD"}` }}
+            >
+              {item}</div>
+            <div className="w-4 h-4 rounded-full mx-auto"
+              style={{
+                backgroundColor: `${parseInt(item) <= 7 ? "#2F80ED" : "#BDBDBD"}`,
+                display: [5, 2, 8].includes(parseInt(item)) ? "flex" : "none"
+              }} />
           </SwiperSlide>
         ))}
       </Swiper>
