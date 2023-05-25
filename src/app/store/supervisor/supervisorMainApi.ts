@@ -15,6 +15,7 @@ import {
 import {
   EventFiles,
   PlayerAttendances,
+  PlayerCoaches,
   PlayerKpis,
   PlayerMetricScores,
   PlayerRecommendations,
@@ -792,6 +793,12 @@ export const supervisorApi = createApi({
       }),
       invalidatesTags: ["calendar"],
     }),
+
+    superSubCoaches: query<PlayerCoaches, {}>({
+      query: () => ({
+        url: `sub-coaches`,
+      }),
+    }),
   }),
 });
 
@@ -868,4 +875,5 @@ export const {
   useSuperTopTenKpiPlayersQuery,
   useSuperAddTeamAttendanceSessionMutation,
   useSuperDeleteTeamAttendanceSessionMutation,
+  useSuperSubCoachesQuery,
 } = supervisorApi;

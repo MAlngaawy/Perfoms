@@ -130,6 +130,14 @@ const navigationConfig: NavigationConfigTypes[] = [
     icon: "NewspaperIcon:outline",
     url: "main-reports",
     auth: [...authRoles.Admin, ...authRoles.Supervisor, ...authRoles.Coach],
+  },  {
+    id: "health-page",
+    title: "Health",
+    translate: "Health",
+    type: "item",
+    icon: "HeartIcon:outline",
+    url: "health",
+    auth: authRoles.All,
   },
 ];
 

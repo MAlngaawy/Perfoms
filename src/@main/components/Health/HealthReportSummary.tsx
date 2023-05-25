@@ -20,7 +20,7 @@ const HealthReportSummary = (props: Props) => {
   
     return (
       <div className="Health-Report-summary relative bg-white rounded-3xl w-full grid gap-4 p-4 h-full">
-   <LoadingOverlay visible={true} loader={ customLoader} overlayBlur={2} />
+   <LoadingOverlay visible={true} loader={ customLoader} overlayBlur={2} zIndex={100} />
       
       <h2 className="text-lg font-normal text-perfGray1 ">
         Health Report summary
