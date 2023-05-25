@@ -47,7 +47,12 @@ import { LoginResponse, LoginUserBody, UserSignup } from "../types/user-types";
 import { Kpis, Metrics, Pillars, Team } from "../types/supervisor-types";
 import { Sports } from "../types/clubManager-types";
 import { UserAchievements } from "~/app/store/types/user-types";
-import { CoachPlayerInfo, CoachTeamInfo } from "../types/coach-types";
+import {
+  CoachPlayerInfo,
+  CoachTeamInfo,
+  PlayerMonthsAttendancesStatistics,
+  TeamsStatistics,
+} from "../types/coach-types";
 import {
   EventFiles,
   PlayerTeams,
@@ -668,6 +673,35 @@ export const userApi = createApi({
     getTeamInfo: query<Team, { team_id: string | number | undefined }>({
       query: ({ team_id, ...params }) => `teams/${team_id}`,
     }),
+
+    userGeneralPlayerKpiStatistics: query<
+      TeamsStatistics,
+      {
+        player_id: string | undefined;
+        pages?: number;
+        date_from: string;
+        date_to: string;
+        team_id: number | string | undefined;
+      }
+    >({
+      query: ({ player_id, team_id, ...params }) => ({
+        url: `statistics/player-kpis/${player_id}/${team_id}`,
+        params,
+      }),
+    }),
+    userGeneralPlayersAttendStatistics: query<
+      PlayerMonthsAttendancesStatistics,
+      {
+        player_id: string | undefined;
+        pages?: number;
+        team_id: number | string | undefined;
+      }
+    >({
+      query: ({ player_id, team_id, ...params }) => ({
+        url: `statistics/calendar-detailed/${player_id}/${team_id}`,
+        params,
+      }),
+    }),
   }),
 });
 
@@ -738,4 +772,6 @@ export const {
   useGetPlayerTeamsQuery,
   useGetTeamInfoQuery,
   useUpdatePlayerMutation,
+  useUserGeneralPlayerKpiStatisticsQuery,
+  useUserGeneralPlayersAttendStatisticsQuery,
 } = userApi;

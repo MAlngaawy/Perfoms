@@ -365,7 +365,7 @@ export const parentsApi = createApi({
 
     playerCertificates: query<
       PlayerCertificates,
-      { player_id: number; page?: number }
+      { player_id: number | string | undefined; page?: number }
     >({
       query: ({ player_id }) => ({
         url: `/player-certificates/${player_id}`,

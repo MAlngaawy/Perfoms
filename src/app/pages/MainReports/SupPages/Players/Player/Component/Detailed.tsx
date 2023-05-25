@@ -2,7 +2,6 @@ import { Grid } from "@mantine/core";
 import Card from "~/@main/components/Card";
 import AttendanceDaysReports from "~/app/pages/reports/components/AttendanceDaysReports";
 import TotalAttendance from "~/app/pages/reports/components/TotalAttendance";
-import CustomCalendar from "~/@main/components/Calendar";
 import ActionsCard from "~/@main/components/ActionsCard";
 import RecommendationsCard from "~/@main/components/RecommendationsCard";
 import HomePlayerInfoCard from "~/@main/components/HomePlayerInfoCard";
@@ -10,13 +9,20 @@ import PerformanceSummaryCard from "~/@main/components/PerformanceSummaryCard";
 import AttendancesSmallCards from "~/app/pages/reports/components/AttendancesSmallCards";
 import PrintComp from "~/@main/PrintComp";
 import { useParams } from "react-router-dom";
+import { usePlayerCertificatesQuery } from "~/app/store/parent/parentApi";
+import PlayerCertificatePage from "~/app/pages/player-certificate/PlayerCertificatePage";
 
 type Props = {
-  reportType: "Performances" | "Attendances";
+  reportType: "Performances" | "Attendances" | "Certificates";
 };
 
 const Detailed = ({ reportType }: Props) => {
   const { id } = useParams();
+  const { data: playerCertificates } = usePlayerCertificatesQuery(
+    { player_id: id },
+    { skip: !id }
+  );
+
   return (
     <>
       {reportType === "Performances" ? (
@@ -103,7 +109,18 @@ const Detailed = ({ reportType }: Props) => {
           </div>
         </PrintComp>
       ) : (
-        "LOL"
+        // <PlayerCertificatePage />
+        <div className="m-2">
+          <div className="overflow-scroll md:overflow-hidden max-w-full">
+            {playerCertificates &&
+              playerCertificates?.results.map((certificate) => (
+                <PlayerCertificatePage
+                  key={certificate.id}
+                  certificateId={certificate.id}
+                />
+              ))}
+          </div>
+        </div>
       )}
     </>
   );

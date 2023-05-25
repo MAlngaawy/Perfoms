@@ -4,7 +4,7 @@ const authRoles = {
   Parent: ["Parent", "Player"],
   Coach: ["Coach"],
   SubCoach: ["SubCoach"],
-  All: ["Supervisor", "Parent", "Coach", "Admin"],
+  All: ["Supervisor", "Parent", "Coach", "Admin", "Player"],
   OnlyGuest: [],
 };
 

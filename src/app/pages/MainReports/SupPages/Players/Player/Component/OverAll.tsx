@@ -4,31 +4,20 @@ import { useParams } from "react-router-dom";
 import ReportsChartCard from "~/@main/components/MainReports/ReportsChartCard";
 import Info from "~/@main/components/Info";
 import PrintComp from "~/@main/PrintComp";
-import {
-  useCoachPlayerKpiStatisticsQuery,
-  useCoachPlayersAttendStatisticsQuery,
-} from "~/app/store/coach/coachApi";
 import AttendReportsChart from "~/@main/components/MainReports/AttendReportsChart";
 import {
   CoachPlayerInfo,
   PlayerMonthsAttendancesStatistics,
   TeamsStatistics,
 } from "~/app/store/types/coach-types";
-import {
-  useSuperPlayerKpiStatisticsQuery,
-  useSuperPlayersAttendStatisticsQuery,
-} from "~/app/store/supervisor/supervisorMainApi";
-import {
-  useAdminPlayerKpiStatisticsQuery,
-  useAdminPlayersAttendStatisticsQuery,
-} from "~/app/store/clubManager/clubManagerApi";
 import { useSelector } from "react-redux";
 import {
   selectedPlayerTeamFn,
   timeFilterFn,
 } from "~/app/store/parent/parentSlice";
 import {
-  useGetUserAchievementsQuery,
+  useUserGeneralPlayerKpiStatisticsQuery,
+  useUserGeneralPlayersAttendStatisticsQuery,
   useUserQuery,
 } from "~/app/store/user/userApi";
 import { axiosInstance } from "~/app/configs/dataService";
@@ -39,17 +28,18 @@ type Props = {
 };
 
 const OverAll = ({ playerInfo, reportType }: Props) => {
-  const [data, setData] = useState<TeamsStatistics>();
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const [playerTeams, setPlayerTeams] = useState<any[]>([]);
   const { data: user } = useUserQuery({});
   const timefilter = useSelector(timeFilterFn);
-  const [attendData, setAttendData] =
-    useState<PlayerMonthsAttendancesStatistics>();
   const { id } = useParams();
+  const [attendanceData, setAttendanceData] =
+    useState<PlayerMonthsAttendancesStatistics | null>(null);
+  const [performanceData, setPerformanceData] =
+    useState<TeamsStatistics | null>(null);
 
-  const { data: coachPlayerKpisStatisticsData } =
-    useCoachPlayerKpiStatisticsQuery(
+  const { data: userGeneralPerformanceData } =
+    useUserGeneralPlayerKpiStatisticsQuery(
       {
         player_id: id,
         date_from: timefilter.from_date,
@@ -61,86 +51,21 @@ const OverAll = ({ playerInfo, reportType }: Props) => {
           !id ||
           !timefilter.from_date ||
           !timefilter.to_date ||
-          !selectedPlayerTeam?.id ||
-          user?.user_type !== "Coach",
-      }
-    );
-  const { data: coachPlayerAttendancesStatistics } =
-    useCoachPlayersAttendStatisticsQuery(
-      { player_id: id, team_id: selectedPlayerTeam?.id },
-      { skip: !id || !selectedPlayerTeam?.id || user?.user_type !== "Coach" }
-    );
-
-  const { data: superPlayerKpisStatisticsData } =
-    useSuperPlayerKpiStatisticsQuery(
-      {
-        player_id: id,
-        date_from: timefilter.from_date,
-        date_to: timefilter.to_date,
-        team_id: selectedPlayerTeam?.id,
-      },
-      {
-        skip:
-          !id || !selectedPlayerTeam?.id || user?.user_type !== "Supervisor",
-      }
-    );
-  const { data: superPlayerAttendancesStatistics } =
-    useSuperPlayersAttendStatisticsQuery(
-      { player_id: id, team_id: selectedPlayerTeam?.id },
-      {
-        skip:
-          !id ||
-          !timefilter.from_date ||
-          !timefilter.to_date ||
-          !selectedPlayerTeam?.id ||
-          user?.user_type !== "Supervisor",
+          !selectedPlayerTeam?.id,
       }
     );
 
-  const { data: adminPlayerKpisStatisticsData } =
-    useAdminPlayerKpiStatisticsQuery(
-      {
-        player_id: id,
-        date_from: timefilter.from_date,
-        date_to: timefilter.to_date,
-        team_id: selectedPlayerTeam?.id,
-      },
-      {
-        skip:
-          !id ||
-          !timefilter.from_date ||
-          !timefilter.to_date ||
-          !selectedPlayerTeam?.id ||
-          user?.user_type !== "Admin",
-      }
-    );
-
-  const { data: adminPlayerAttendancesStatistics } =
-    useAdminPlayersAttendStatisticsQuery(
+  const { data: userGeneralAttendData } =
+    useUserGeneralPlayersAttendStatisticsQuery(
       { player_id: id, team_id: selectedPlayerTeam?.id },
-      { skip: !id || !selectedPlayerTeam?.id || user?.user_type !== "Admin" }
+      { skip: !id || !selectedPlayerTeam?.id }
     );
 
   useEffect(() => {
-    if (coachPlayerKpisStatisticsData) setData(coachPlayerKpisStatisticsData);
-    if (coachPlayerAttendancesStatistics)
-      setAttendData(coachPlayerAttendancesStatistics);
-
-    if (superPlayerKpisStatisticsData) setData(superPlayerKpisStatisticsData);
-    if (superPlayerAttendancesStatistics)
-      setAttendData(superPlayerAttendancesStatistics);
-
-    if (adminPlayerKpisStatisticsData) setData(adminPlayerKpisStatisticsData);
-    if (adminPlayerAttendancesStatistics)
-      setAttendData(adminPlayerAttendancesStatistics);
-  }, [
-    coachPlayerKpisStatisticsData,
-    coachPlayerAttendancesStatistics,
-    superPlayerKpisStatisticsData,
-    superPlayerAttendancesStatistics,
-    adminPlayerKpisStatisticsData,
-    adminPlayerAttendancesStatistics,
-  ]);
+    if (userGeneralPerformanceData)
+      setPerformanceData(userGeneralPerformanceData);
+    if (userGeneralAttendData) setAttendanceData(userGeneralAttendData);
+  }, [userGeneralPerformanceData, userGeneralAttendData]);
 
   const fetchData = async () => {
     axiosInstance
@@ -175,10 +100,41 @@ const OverAll = ({ playerInfo, reportType }: Props) => {
                   <Info label="Age" value={playerInfo?.dob} />
                 </div>
               </div>
-              <div className="flex  gap-6 justify-between">
-                <Info label="Weight" value={playerInfo?.weight} />
-                <Info label="Height" value={playerInfo?.height} />
-              </div>
+              {playerInfo?.sport.toLocaleLowerCase() === "taekwondo" ? (
+                <div className="flex justify-between gap-2 flex-wrap">
+                  {playerInfo?.world_weight && (
+                    <Info
+                      label="World Weight"
+                      value={playerInfo?.world_weight}
+                    />
+                  )}
+                  {playerInfo?.olympic_weight && (
+                    <Info
+                      label="Olympic Weight"
+                      value={playerInfo?.olympic_weight}
+                    />
+                  )}
+                  {playerInfo?.height && (
+                    <Info label="Height" value={playerInfo?.height} />
+                  )}
+
+                  {playerInfo?.front_leg !== "NONE" && (
+                    <Info
+                      label="Preferred Front Leg"
+                      value={playerInfo?.front_leg}
+                    />
+                  )}
+                </div>
+              ) : (
+                <>
+                  {playerInfo?.weight && (
+                    <Info label="Weight" value={playerInfo?.weight} />
+                  )}
+                  {playerInfo?.height && (
+                    <Info label="Height" value={playerInfo?.height} />
+                  )}
+                </>
+              )}
               <div className="flex flex-row justify-between">
                 <div className="flex  gap-6 justify-between">
                   <Info label="Sport" value={playerInfo?.sport} />
@@ -200,7 +156,7 @@ const OverAll = ({ playerInfo, reportType }: Props) => {
         </div>
         {reportType === "Performances" ? (
           <>
-            {data?.results?.map((kpi) => {
+            {performanceData?.results?.map((kpi) => {
               return (
                 <div key={kpi.id}>
                   <ReportsChartCard
@@ -214,7 +170,7 @@ const OverAll = ({ playerInfo, reportType }: Props) => {
           </>
         ) : (
           <>
-            {attendData?.map((attend) => {
+            {attendanceData?.map((attend) => {
               return (
                 <div key={attend.name}>
                   <AttendReportsChart

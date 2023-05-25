@@ -4,12 +4,12 @@ import { useUserQuery } from "~/app/store/user/userApi";
 import UserInfo from "./components/UserInfo";
 
 const ProfilePage = () => {
-  const { data: userData, refetch } = useUserQuery(null);
+  const { data: user } = useUserQuery(null);
   const { data: players } = useMyPlayersQuery({});
 
   return (
     <div className="flex justify-center items-center py-20 md:pt-14">
-      {userData && players && <UserInfo players={players.results} />}
+      {user && players && <UserInfo players={players.results} />}
     </div>
   );
 };

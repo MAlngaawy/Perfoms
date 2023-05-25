@@ -56,7 +56,6 @@ import {
   TeamStatistics,
   UpdatePlayerPKM,
 } from "../types/coach-types";
-import { YearPicker } from "@mantine/dates/lib/components/CalendarBase/YearPicker/YearPicker";
 import { Attendance, UpdateAttendance } from "../types/attendance-types";
 
 export const supervisorApi = createApi({

@@ -37,6 +37,8 @@ const Toolbar = ({ setOpened }: Props) => {
       route = "coach-profile";
     } else if (user?.user_type === "Admin") {
       route = "admin-profile";
+    } else if (user?.user_type === "Player") {
+      route = `/players/${selectedPlayer?.id}`;
     }
 
     return route;
@@ -44,7 +46,11 @@ const Toolbar = ({ setOpened }: Props) => {
 
   const { data: playerClub } = usePlayerClubQuery(
     { id: selectedPlayer?.id },
-    { skip: !selectedPlayer?.id || user?.user_type !== "Parent" }
+    {
+      skip:
+        //@ts-ignore
+        !selectedPlayer?.id || !["Parent", "Player"].includes(user?.user_type),
+    }
   );
 
   const { data: coachClub } = useMyClubQuery({});

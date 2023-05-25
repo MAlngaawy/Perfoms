@@ -1,5 +1,5 @@
 import React, { useState, ReactNode, useEffect } from "react";
-import { Modal, Group, Input } from "@mantine/core";
+import { Modal, Group, Input, Select } from "@mantine/core";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -19,7 +19,7 @@ const AddAchievement = (props: Props) => {
   // Form Schema
   const schema = yup.object().shape({
     type: yup.string().required(),
-    place: yup.number(),
+    place: yup.string().oneOf(["1th", "2th", "3th", "4th"], "Invalid place"),
     date: yup.string(),
     location: yup.string().required(),
   });
@@ -82,9 +82,17 @@ const AddAchievement = (props: Props) => {
             <Input placeholder="Medal Type" {...register("type")} />
           </Input.Wrapper>
 
-          <Input.Wrapper error={errors.place && "Please add your player place"}>
-            <Input placeholder="place" {...register("place")} />
-          </Input.Wrapper>
+          <Controller
+            {...register("place")}
+            render={({ field }) => (
+              <Select
+                placeholder="Place"
+                data={["1th", "2th", "3th", "4th"]}
+                {...field}
+              />
+            )}
+            control={control}
+          />
 
           <Controller
             {...register("date")}

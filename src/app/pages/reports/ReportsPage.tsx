@@ -24,12 +24,13 @@ import PrintComp from "~/@main/PrintComp";
 import Placeholders from "~/@main/components/Placeholders";
 import PlayerCertificatePage from "../player-certificate/PlayerCertificatePage";
 import { usePlayerCertificatesQuery } from "~/app/store/parent/parentApi";
-import { useGetTeamInfoQuery } from "~/app/store/user/userApi";
+import { useGetTeamInfoQuery, useUserQuery } from "~/app/store/user/userApi";
 
 // ==============
 const ReportPage = () => {
   const player = useSelector(selectedPlayerFn);
   const widowSize = useWindowSize();
+  const { data: user } = useUserQuery({});
 
   const [reportType, setReportType] =
     useState<"Performances" | "Attendances" | "Certificates">("Performances");
@@ -56,7 +57,7 @@ const ReportPage = () => {
         <div className="report-page px-5 mb-20">
           <div className="flex flex-col sm:flex-row gap-4 my-4 justify-between items-center">
             <div className="flex gap-4">
-              <AddPlayer />
+              {user?.user_type !== "Player" && <AddPlayer />}
               {widowSize.width && widowSize.width < 768 && <TimeFilter />}
             </div>
             <div className="flex gap-4">

@@ -5,13 +5,14 @@ import { Menu } from "@mantine/core";
 import AppIcons from "~/@main/core/AppIcons";
 import TimeFilter from "~/@main/components/TimeFilter";
 import OverAll from "./Component/OverAll";
-import { useGetPlayerInfoQuery } from "~/app/store/coach/coachApi";
+// import { useGetPlayerInfoQuery } from "~/app/store/coach/coachApi";
 import { useGetSuperPlayerInfoQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { CoachPlayerInfo } from "~/app/store/types/coach-types";
 import Detailed from "./Component/Detailed";
 import { useAdminPlayerInfoQuery } from "~/app/store/clubManager/clubManagerApi";
 import classNames from "classnames";
 import TeamFilter from "~/@main/components/TeamFilter";
+import { useGetPlayerInfoQuery } from "~/app/store/user/userApi";
 
 type Props = {
   asComponent?: boolean;
@@ -22,18 +23,10 @@ const Player = ({ asComponent }: Props) => {
   const [checked, setChecked] = useState(false);
   const [playerInfo, setPlayerInfo] = useState<CoachPlayerInfo>();
   const [reportType, setReportType] =
-    useState<"Performances" | "Attendances">("Performances");
+    useState<"Performances" | "Attendances" | "Certificates">("Performances");
   const { id } = useParams();
 
-  const { data: coachPlayerInfo } = useGetPlayerInfoQuery(
-    { player_id: id },
-    { skip: !id }
-  );
-  const { data: superPlayerInfo } = useGetSuperPlayerInfoQuery(
-    { player_id: id },
-    { skip: !id }
-  );
-  const { data: adminPlayerInfo } = useAdminPlayerInfoQuery(
+  const { data: generalsPlayerInfo } = useGetPlayerInfoQuery(
     { player_id: id },
     { skip: !id }
   );
@@ -47,10 +40,8 @@ const Player = ({ asComponent }: Props) => {
   }, [checked, reportType]);
 
   useEffect(() => {
-    if (coachPlayerInfo) setPlayerInfo(coachPlayerInfo);
-    if (superPlayerInfo) setPlayerInfo(superPlayerInfo);
-    if (adminPlayerInfo) setPlayerInfo(adminPlayerInfo);
-  }, [coachPlayerInfo, superPlayerInfo, adminPlayerInfo]);
+    if (generalsPlayerInfo) setPlayerInfo(generalsPlayerInfo);
+  }, [generalsPlayerInfo]);
 
   const items = [
     { title: "Reports", href: "/main-reports" },
@@ -110,6 +101,11 @@ const Player = ({ asComponent }: Props) => {
               <Menu.Item onClick={() => setReportType("Attendances")}>
                 Attendances
               </Menu.Item>
+              {!checked && (
+                <Menu.Item onClick={() => setReportType("Certificates")}>
+                  Certificates
+                </Menu.Item>
+              )}
             </Menu.Dropdown>
           </Menu>
           {showTimeFilter && <TimeFilter />}

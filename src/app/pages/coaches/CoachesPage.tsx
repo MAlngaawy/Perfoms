@@ -73,7 +73,7 @@ const CoachesPage = (props: Props) => {
           <div className="flex justify-end my-2">
             <TeamFilter />
           </div>
-          {!playerCoaches?.results.length && <NoPlayersComp />}
+          {!playerCoaches?.results.length && <NoCoachesComp />}
           <Grid gutter={10}>
             {playerCoaches?.results.map((coach) => {
               return (
@@ -103,6 +103,16 @@ const CoachesPage = (props: Props) => {
   } else {
     return <NoPlayersComp />;
   }
+};
+
+const NoCoachesComp = () => {
+  return (
+    <div className="flex justify-center items-center mt-20">
+      <div className="bg-white p-4 w-fit rounded-xl text-perfGray3">
+        No Coaches In This Team Yet
+      </div>
+    </div>
+  );
 };
 
 export default CoachesPage;

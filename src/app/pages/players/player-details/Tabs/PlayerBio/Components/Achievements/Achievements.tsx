@@ -62,7 +62,7 @@ const OneAchievement = ({ type, date, place, id, location }: any) => {
         </div>
         <div className="details break-words">
           <h2 className="type text-sm font-medium text-perfLightBlack">
-            {type}
+            <span>{type}</span> - <span>{place}</span>
           </h2>
           <p className="text-xs text-perfGray3">
             {date}, {location}
