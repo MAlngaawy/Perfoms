@@ -53,17 +53,22 @@ const CoachesPage = (props: Props) => {
 
   if (!selectedPlayer) {
     return (
-      <div className="flex flex-col items-center">
-        <Placeholders
-          img="/assets/images/nocoaches.png"
-          preText={"You Need to add a"}
-          pageName={"player"}
-          postText={"to see his"}
-        />
-        <p className="text-perfBlue font-medium mb-3">Coaches & supervisors</p>
-        <AddPlayer />
+      <div className="m-10">
+        <CoachesLoading />
       </div>
     );
+    // return (
+    //   <div className="flex flex-col items-center">
+    //     <Placeholders
+    //       img="/assets/images/nocoaches.png"
+    //       preText={"You Need to add a"}
+    //       pageName={"player"}
+    //       postText={"to see his"}
+    //     />
+    //     <p className="text-perfBlue font-medium mb-3">Coaches & supervisors</p>
+    //     <AddPlayer />
+    //   </div>
+    // );
   }
 
   if (selectedPlayer) {

@@ -45,7 +45,7 @@ const CoachCard = ({
       )}
     >
       <h3 className="text-base font-medium text-center">
-        {role ? role : "Coach"}
+        {role === "SubCoach" ? "Attendance Moderator" : role}
       </h3>
       <div className="flex justify-center items-center">
         <img
