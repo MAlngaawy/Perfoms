@@ -161,7 +161,7 @@ const SignUpPage = (props: Props) => {
           Maximize Players Full Potential.
         </div>
         <img
-          src="/assets/images/performs_signup.jpg"
+          src="/assets/images/signup.png"
           className="w-full h-full max-w-full max-h-full object-cover"
         />
       </div>
