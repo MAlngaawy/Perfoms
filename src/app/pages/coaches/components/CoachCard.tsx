@@ -64,7 +64,7 @@ const CoachCard = ({
         className={classNames(
           "text-xs",
           {
-            "text-perfBlue ": role === "Coach",
+            "text-perfBlue ": role && ["Coach", "SubCoach"].includes(role),
           },
           {
             "text-white ": role === "Supervisor",

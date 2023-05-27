@@ -80,22 +80,27 @@ const CoachesPage = (props: Props) => {
           </div>
           {!playerCoaches?.results.length && <NoCoachesComp />}
           <Grid gutter={10}>
-            {playerCoaches?.results.map((coach) => {
-              return (
-                <Grid.Col xs={6} sm={4} md={3} key={coach.id}>
-                  <CoachCard
-                    key={coach.id}
-                    id={coach.id}
-                    role={coach?.user_type}
-                    name={`${coach.first_name} ${coach.last_name}`}
-                    education={coach.details?.education?.degree || "NA"}
-                    teams={coach.teams}
-                    photo={coach.avatar}
-                    sport={coach.sport}
-                  />
-                </Grid.Col>
-              );
-            })}
+            {playerCoaches?.results
+              .filter((coach) =>
+                //@ts-ignore
+                ["Coach", "SubCoach", "Supervisor"].includes(coach.user_type)
+              )
+              .map((coach) => {
+                return (
+                  <Grid.Col xs={6} sm={4} md={3} key={coach.id}>
+                    <CoachCard
+                      key={coach.id}
+                      id={coach.id}
+                      role={coach?.user_type}
+                      name={`${coach.first_name} ${coach.last_name}`}
+                      education={coach.details?.education?.degree || "NA"}
+                      teams={coach.teams}
+                      photo={coach.avatar}
+                      sport={coach.sport}
+                    />
+                  </Grid.Col>
+                );
+              })}
           </Grid>
         </div>
       );

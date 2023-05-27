@@ -14,6 +14,7 @@ import { useUserQuery } from "~/app/store/user/userApi";
 import AppIcons from "../core/AppIcons";
 import { changemodalState } from "~/app/store/app/modalSlice";
 import EditPlayer from "~/app/pages/home/molecules/EditPlayer";
+import { useLocation, useNavigate } from "react-router-dom";
 
 type Props = {
   player_id?: number | string | undefined;
@@ -22,9 +23,10 @@ type Props = {
 const HomePlayerInfoCard = ({ player_id }: Props) => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
   const [playerInfoData, setPlayerInfoData] = useState<CoachPlayerInfo>();
-  const { data: user } = useUserQuery({});
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
 
-  console.log("selectedPlayer", selectedPlayer);
+  const { data: user } = useUserQuery({});
 
   const { data: parentPlayerInfoData, refetch: refetchPlayerData } =
     useOnePlayerQuery(
@@ -78,7 +80,12 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
         )}
       </div>
       <div className="flex flex-col xs:flex-row sm:flex-col justify-around">
-        <div className="img my-2">
+        <div
+          onClick={() => {
+            navigate(`/players/${selectedPlayer.id}`);
+          }}
+          className="img my-2 transform hover:scale-105 cursor-pointer transition-all"
+        >
           <Avatar
             src={playerInfoData?.icon}
             className=" w-full h-72 rounded-lg object-cover"
