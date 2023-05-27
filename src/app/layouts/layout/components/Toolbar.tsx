@@ -10,7 +10,7 @@ import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 import { useSelector } from "react-redux";
 import { ParentClub, Player } from "~/app/store/types/parent-types";
 import { usePlayerClubQuery } from "~/app/store/parent/parentApi";
-import { useUserQuery } from "~/app/store/user/userApi";
+import { useGetMyClubQuery, useUserQuery } from "~/app/store/user/userApi";
 import { useMyClubQuery } from "~/app/store/coach/coachApi";
 import { useEffect, useState } from "react";
 import { useSuperClubQuery } from "~/app/store/supervisor/supervisorMainApi";
@@ -25,7 +25,7 @@ type Props = {
 const Toolbar = ({ setOpened }: Props) => {
   const windowSize = useWindowSize();
   const { data: user } = useUserQuery({});
-  const [club, setClub] = useState<ParentClub>();
+  // const [club, setClub] = useState<ParentClub>();
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
   // This is for changing the toolabr color based on the user type
   const [changableColor, setChangableColor] = useState("#fff");
@@ -44,32 +44,9 @@ const Toolbar = ({ setOpened }: Props) => {
     return route;
   };
 
-  const { data: playerClub } = usePlayerClubQuery(
-    { id: selectedPlayer?.id },
-    {
-      skip:
-        //@ts-ignore
-        !selectedPlayer?.id || !["Parent", "Player"].includes(user?.user_type),
-    }
-  );
+  const { data: club } = useGetMyClubQuery({});
 
-  const { data: coachClub } = useMyClubQuery({});
-
-  const { data: superClub } = useSuperClubQuery(
-    {},
-    { skip: user?.user_type !== "Supervisor" }
-  );
-
-  const { data: adminClub } = useAdminClubQuery(
-    {},
-    { skip: user?.user_type !== "Admin" }
-  );
   useEffect(() => {
-    if (playerClub) setClub(playerClub);
-    if (coachClub) setClub(coachClub);
-    if (superClub) setClub(superClub);
-    if (adminClub) setClub(adminClub);
-
     if (user?.user_type === "Coach") {
       setChangableColor("#225161");
     } else if (user?.user_type === "Supervisor") {
@@ -77,7 +54,7 @@ const Toolbar = ({ setOpened }: Props) => {
     } else if (user?.user_type === "Admin") {
       setChangableColor("#1F2A32");
     }
-  }, [coachClub, playerClub, superClub, adminClub]);
+  }, [user]);
 
   return (
     <nav
@@ -97,7 +74,7 @@ const Toolbar = ({ setOpened }: Props) => {
           <Avatar
             radius={"xl"}
             className="w-10"
-            src={club?.icon_url}
+            src={club?.icon || club?.icon_url}
             alt="club logo"
           />
           <span
@@ -108,7 +85,7 @@ const Toolbar = ({ setOpened }: Props) => {
                   : "#fff",
             }}
           >
-            {club?.name || "Alam alryada"}
+            {club?.name}
           </span>
         </div>
 

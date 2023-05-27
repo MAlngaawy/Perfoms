@@ -22,8 +22,14 @@ type Props = {};
 
 const schema = yup.object().shape({
   userRole: yup.string().required(),
-  firstName: yup.string().required(),
-  lastName: yup.string().required(),
+  firstName: yup
+    .string()
+    .matches(/^[\w\s]*$/)
+    .required(),
+  lastName: yup
+    .string()
+    .matches(/^[\w\s]*$/)
+    .required(),
   country: yup.string().required(),
   city: yup.string().required(),
   club: yup.number().required(),
@@ -96,9 +102,11 @@ const SignUpPage = (props: Props) => {
   }, [selectedSport]);
 
   useEffect(() => {
-    setValue("city", "");
     setValue("teams", []);
   }, [country, setValue, userRole, teamsData, selectedClub]);
+  useEffect(() => {
+    setValue("city", "");
+  }, [country]);
 
   const submitFun = (data: any) => {
     // handle The request body schema
@@ -240,7 +248,7 @@ const SignUpPage = (props: Props) => {
                   className="border-b"
                   {...register("firstName")}
                   id="firstName"
-                  pattern="[a-zA-z]{1,100}"
+                  pattern="[a-zA-Z\s]{1,100}"
                   title="first name should only contains letters e.g:Ali"
                 />
               </Input.Wrapper>
@@ -273,7 +281,7 @@ const SignUpPage = (props: Props) => {
                   className="border-b"
                   {...register("lastName")}
                   id="lastName"
-                  pattern="[a-zA-z]{1,100}"
+                  pattern="[a-zA-Z\s]{1,100}"
                   title="last name should only contains letters e.g:Ali"
                 />
               </Input.Wrapper>
