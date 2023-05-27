@@ -12,9 +12,8 @@ import { useFitDataMutation } from "~/app/store/health/healthApi";
 import { useEffect, useState } from "react";
 import { HeartIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
-import { Grid,LoadingOverlay } from "@mantine/core";
+import { Grid, LoadingOverlay } from "@mantine/core";
 import moment from "moment";
-
 
 export type Players = {
   name: string;
@@ -22,44 +21,56 @@ export type Players = {
 };
 
 const HealthPage = () => {
-    const [fitData, { data, isSuccess, isLoading, isError, error }] = useFitDataMutation()
+  const [fitData, { data, isSuccess, isLoading, isError, error }] =
+    useFitDataMutation();
 
   const navigate = useNavigate();
-  const [bool, setbool] = useState(true)
-  const [auth, setauth] = useState(false)
+  const [bool, setbool] = useState(true);
+  const [auth, setauth] = useState(false);
   useEffect(() => {
-    fitData({ dataType: "com.google.step_count.delta", Date:moment(new Date()).format('L')})
-  }, [])
-    useEffect(() => {
-  if(isSuccess)setbool(false)
-  if(isError){setauth(true)
-    setTimeout(() => {
-      navigate('/health/authorize')
-    }, 3000);
-  }
-    }, [isSuccess, isLoading, isError, error, data])
-const customLoader = (
-  <div className="h-screen w-full grid justify-center items-center fixed inset-0">
-    <HeartIcon className="w-[25%] animate-ping text-red  m-auto" />
-    <h1 className="text-black text-center text-3xl font-semibold animate-bounce  "> Please Wait.... </h1>
-  </div>
-);
-const customLoader2 = (
-  <div className="h-screen w-full grid justify-center items-center fixed inset-0">
-
-    <h1 className="text-black text-center text-3xl font-semibold   "> Some things was wrong 😥
-    <br/> <br/> <br/> <br/> <br/>Please Authorize by Google
-     </h1>
-  </div>
-);
+    fitData({
+      dataType: "com.google.step_count.delta",
+      Date: moment(new Date()).format("L"),
+    });
+  }, []);
+  useEffect(() => {
+    if (isSuccess) setbool(false);
+    if (isError) {
+      setauth(true);
+      setTimeout(() => {
+        navigate("/health/authorize");
+      }, 3000);
+    }
+  }, [isSuccess, isLoading, isError, error, data]);
+  const customLoader = (
+    <div className="h-screen w-full grid justify-center items-center fixed inset-0">
+      <HeartIcon className="w-[25%] animate-ping text-red  m-auto" />
+      <h1 className="text-black text-center text-3xl font-semibold animate-bounce  ">
+        {" "}
+        Please Wait....{" "}
+      </h1>
+    </div>
+  );
+  const customLoader2 = (
+    <div className="h-screen w-full grid justify-center items-center fixed inset-0">
+      <h1 className="text-black text-center text-3xl font-semibold   ">
+        {" "}
+        Some things was wrong 😥
+        <br /> <br /> <br /> <br /> <br />
+        Please Authorize by Google
+      </h1>
+    </div>
+  );
   return (
     <div className="home-page px-5 mb-20 relative min-h-screen w-full">
-      <LoadingOverlay visible={bool} loader={ auth?  customLoader2:customLoader} overlayBlur={2} />
+      <LoadingOverlay
+        visible={bool}
+        loader={auth ? customLoader2 : customLoader}
+        overlayBlur={2}
+      />
 
       <div className="my-4 flex xs:flex-row gap-2 justify-between items-center">
-        <div className="flex gap-3 items-center">
-          <AddPlayer />
-        </div>
+        <div className="flex gap-3 items-center"></div>
         <div className="flex gap-1 justify-center items-center md:pt-0">
           <TeamFilter />
           <TimeFilter />
@@ -79,10 +90,10 @@ const customLoader2 = (
                   Fitness Flexibility 10 Exercises to Improve Your Flexibility
                   1. Standing Quad Stretch. Stand with your feet together. ...
                   2. Standing Side Stretch. Standing with your feet together,
-                  lift your arms overhead. ... 3. Seated Hamstring Stretch.
-                  ... 4. Standing Calf Stretch. ... 5. Shoulder Stretch. ...
-                  6. The Forward Hang. ... 7. Back stretch. ... 8. Butterfly
-                  Groin Stretch.
+                  lift your arms overhead. ... 3. Seated Hamstring Stretch. ...
+                  4. Standing Calf Stretch. ... 5. Shoulder Stretch. ... 6. The
+                  Forward Hang. ... 7. Back stretch. ... 8. Butterfly Groin
+                  Stretch.
                 </p>
               </div>
             </div>
@@ -90,7 +101,10 @@ const customLoader2 = (
           <Grid.Col md={10} lg={11} xl={12.5} span={15}>
             <Grid columns={15} gutter={"md"}>
               {/* progress bar in top */}
-              <Grid.Col span={15} className="relative min-h-[60px] h-[140px]  sm:h-20 sm:max-h-[100px]">
+              <Grid.Col
+                span={15}
+                className="relative min-h-[60px] h-[140px]  sm:h-20 sm:max-h-[100px]"
+              >
                 <HealthProgressBar />
               </Grid.Col>
               <Grid.Col sm={7.5} xl={5} orderXl={1} order={1} span={15}>
@@ -115,6 +129,5 @@ const customLoader2 = (
     </div>
   );
 };
-
 
 export default HealthPage;

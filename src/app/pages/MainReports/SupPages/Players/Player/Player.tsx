@@ -5,11 +5,8 @@ import { Menu } from "@mantine/core";
 import AppIcons from "~/@main/core/AppIcons";
 import TimeFilter from "~/@main/components/TimeFilter";
 import OverAll from "./Component/OverAll";
-// import { useGetPlayerInfoQuery } from "~/app/store/coach/coachApi";
-import { useGetSuperPlayerInfoQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { CoachPlayerInfo } from "~/app/store/types/coach-types";
 import Detailed from "./Component/Detailed";
-import { useAdminPlayerInfoQuery } from "~/app/store/clubManager/clubManagerApi";
 import classNames from "classnames";
 import TeamFilter from "~/@main/components/TeamFilter";
 import { useGetPlayerInfoQuery } from "~/app/store/user/userApi";
@@ -79,6 +76,7 @@ const Player = ({ asComponent }: Props) => {
             offLabel="Detailed"
             checked={checked}
             onChange={(event) => setChecked(event.currentTarget.checked)}
+            disabled={reportType === "Certificates"}
           />
         </div>
         <div className="flex gap-4 xs:justify-end items-center flex-wrap">

@@ -112,13 +112,20 @@ const Detailed = ({ reportType }: Props) => {
         // <PlayerCertificatePage />
         <div className="m-2">
           <div className="overflow-scroll md:overflow-hidden max-w-full">
-            {playerCertificates &&
+            {playerCertificates && playerCertificates?.results.length > 0 ? (
               playerCertificates?.results.map((certificate) => (
                 <PlayerCertificatePage
                   key={certificate.id}
                   certificateId={certificate.id}
                 />
-              ))}
+              ))
+            ) : (
+              <div className="flex justify-center items-center">
+                <h2 className="bg-white text-perfGray3 p-6 rounded-lg mt-10">
+                  This player has no certificates yet
+                </h2>
+              </div>
+            )}
           </div>
         </div>
       )}
