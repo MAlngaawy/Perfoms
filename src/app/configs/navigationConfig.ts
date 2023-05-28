@@ -136,7 +136,7 @@ const navigationConfig: NavigationConfigTypes[] = [
     translate: "Health",
     type: "item",
     icon: "HeartIcon:outline",
-    url: "health",
+    url: "health/authorize",
     auth: authRoles.All,
   },
 ];
