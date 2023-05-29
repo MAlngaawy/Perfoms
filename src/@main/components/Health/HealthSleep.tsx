@@ -172,7 +172,7 @@ const HealthSleep = (props: Props) => {
                       width={29}
                       height={29}
                       src={
-                        ((data[0].value / 100) * 24 < 8 || (data[1].value / 100) * 24 > 8) ? "/assets/images/GroupBadface.png" :
+                        ((data[0].value / 100) * 24 < 8 || (data[1].value / 100) * 24 > 8) ? "/assets/images/GroupBadFace.png" :
                         ((data[0].value / 100) * 24 < 8 && (data[0].value / 100) * 24 > 6 &&
                           (data[1].value / 100) * 24 < 12) && (data[1].value / 100) * 24 > 8 ? "/assets/images/Groupface.png" :
                           ((data[0].value / 100) * 24 < 8 && (data[0].value / 100) * 24 > 6 &&
