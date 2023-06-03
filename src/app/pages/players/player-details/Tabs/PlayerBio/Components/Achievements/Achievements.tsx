@@ -1,14 +1,13 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { useParams } from "react-router-dom";
-import DeleteButton from "~/@main/components/ManagerComponents/SubComponents/DeleteButton";
-import AppUtils from "~/@main/utils/AppUtils";
 import {
   useDeleteAchievementsMutation,
   useGetPlayerAchievementsQuery,
 } from "~/app/store/user/userApi";
 import { EditModeContext } from "../../../../PlayerDetails";
 import AddAchievement from "./Forms/AddAchievement";
-import { Avatar, Grid } from "@mantine/core";
+import { Grid } from "@mantine/core";
+import OneAchievement from "~/@main/components/shared/OneAchievement";
 
 type Props = {};
 
@@ -19,6 +18,8 @@ const Achievements = (props: Props) => {
     { player_id: id },
     { skip: !id }
   );
+  const [deleteAchievements] = useDeleteAchievementsMutation();
+
   return (
     <div className="bg-white rounded-3xl p-6 px-3 min-h-full">
       <div className="flex items-center justify-between mb-4">
@@ -39,6 +40,8 @@ const Achievements = (props: Props) => {
                 place={ach.place}
                 key={ach.id}
                 id={ach.id}
+                editMode={editMode}
+                deleteAchFunction={deleteAchievements}
               />
             </Grid.Col>
           );
@@ -49,51 +52,3 @@ const Achievements = (props: Props) => {
 };
 
 export default Achievements;
-
-const OneAchievement = ({ type, date, place, id, location }: any) => {
-  const editMode = useContext(EditModeContext);
-  const [deleteAchievements] = useDeleteAchievementsMutation();
-
-  return (
-    <div className="flex justify-between items-center">
-      <div className="flex gap-1">
-        <div className="icon">
-          <Avatar src="/assets/images/medal.png" size={30} alt="medal" />
-        </div>
-        <div className="details break-words">
-          <h2 className="type text-sm font-medium text-perfLightBlack">
-            <span>{type}</span> - <span>{place}</span>
-          </h2>
-          <p className="text-xs text-perfGray3">
-            {date}, {location}
-          </p>
-        </div>
-      </div>
-      {editMode && (
-        <div className="">
-          <DeleteButton
-            type=" Medal"
-            name={place + " " + type}
-            deleteFun={() => {
-              deleteAchievements({ id: id })
-                .then((res) => {
-                  AppUtils.showNotificationFun(
-                    "Success",
-                    "Done",
-                    "Successfully Deleted Achievement"
-                  );
-                })
-                .catch((err) => {
-                  AppUtils.showNotificationFun(
-                    "Error",
-                    "Sorry",
-                    "Can't Add Achievement Now"
-                  );
-                });
-            }}
-          />
-        </div>
-      )}
-    </div>
-  );
-};
