@@ -31,7 +31,7 @@ useEffect(() => {
           width={'100%'}
           height={331}
           fit="contain"
-          src="/assets/images/HealthStatus.png"
+          src="/assets/images/HealthStatus.svg"
           alt="HealthStatus"
         /></div>
         <div className="flex justify-between flex-col gap-y-3  items-center">
