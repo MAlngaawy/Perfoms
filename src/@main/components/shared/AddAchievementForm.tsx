@@ -41,7 +41,7 @@ const AddAchievementForm = ({ addAchievementsFun, setOpened }: Props) => {
     const newData = {
       ...data,
       place: placeValue,
-      date: AppUtils.formatDate(new Date(data.date)),
+      date: AppUtils.formatDate(new Date(data.date || new Date())),
     };
 
     // cahnge the request body format if the player_id is excest to know if it used in the player profile
@@ -50,13 +50,22 @@ const AddAchievementForm = ({ addAchievementsFun, setOpened }: Props) => {
       : addAchievementsFun(newData);
 
     addAchievementsPromise
-      .then(() => {
-        setOpened(false);
-        AppUtils.showNotificationFun(
-          "Success",
-          "Done",
-          "Successfully Added Achievement"
-        );
+      .then((res: any) => {
+        console.log(res);
+        if (res.status !== 200) {
+          setOpened(false);
+          AppUtils.showNotificationFun(
+            "Success",
+            "Done",
+            "Successfully Added Achievement"
+          );
+        } else {
+          AppUtils.showNotificationFun(
+            "Error",
+            "Sorry",
+            "Can't Add Achievement Now"
+          );
+        }
       })
       .catch(() => {
         AppUtils.showNotificationFun(
@@ -131,6 +140,12 @@ const AddAchievementForm = ({ addAchievementsFun, setOpened }: Props) => {
           <RadioInput
             name="3th"
             value="3th"
+            icon="/assets/images/3th.png"
+            placeValue={placeValue}
+          />
+          <RadioInput
+            name="4th"
+            value="4th"
             icon="/assets/images/3th.png"
             placeValue={placeValue}
           />

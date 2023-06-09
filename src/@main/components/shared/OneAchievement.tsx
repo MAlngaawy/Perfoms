@@ -25,6 +25,9 @@ const OneAchievement = ({
     case "3th":
       medal = "/assets/images/3th.png";
       break;
+    case "4th":
+      medal = "/assets/images/3th.png";
+      break;
   }
 
   return (
