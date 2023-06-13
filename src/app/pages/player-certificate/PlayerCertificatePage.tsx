@@ -19,7 +19,7 @@ const PlayerCertificatePage = ({ certificateId }: Props) => {
   const { data: myClub } = useGetMyClubQuery({});
   const canvasRef = useRef<any>();
   const printRef = useRef<any>();
-  const { id } = useParams();
+  // const { id } = useParams();
   const { data: certificate } = usePlayerCertificateQuery(
     certificateId as unknown as string,
     {

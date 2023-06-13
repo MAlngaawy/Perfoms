@@ -16,13 +16,18 @@ import AddSkill from "./Forms/AddSkill";
 import Info from "~/@main/components/Info";
 import AvatarWithBlueBorder from "~/@main/components/shared/AvatarWithBlueBorder";
 import EditPlayer from "~/app/pages/home/molecules/EditPlayer";
+import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
+import { useSelector } from "react-redux";
+import { Player } from "~/app/store/types/parent-types";
 
 type Props = {};
 
 const ParsonalInfo = (props: Props) => {
-  const { id } = useParams();
+  const { id: player_id } = useParams();
   const { data: user } = useUserQuery({});
   const editMode = useContext(EditModeContext);
+  const selectedPlayer: Player = useSelector(selectedPlayerFn);
+  const id = player_id || JSON.stringify(selectedPlayer.id);
   const [deleteEducation] = useDeleteUserEducationMutation();
   const [deleteSkill] = useDeleteSkillMutation();
   const { data: playerEducations, refetch: refetchEducation } =

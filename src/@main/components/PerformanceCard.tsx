@@ -56,7 +56,11 @@ PerformanceCardProps) => {
               <div className="h-44 overflow-scroll">
                 {data ? (
                   data
-                    ?.filter((item: any) => item.avg_score > 0) // Don't show the item if avg score is 0
+                    ?.filter(
+                      (item: any) =>
+                        ["Recommendations", "Actions"].includes(name) ||
+                        item.avg_score > 0
+                    ) // Don't show the item if avg score is 0
                     .map((power: any) => {
                       return (
                         <div

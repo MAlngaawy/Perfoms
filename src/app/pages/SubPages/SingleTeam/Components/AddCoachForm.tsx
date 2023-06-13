@@ -71,9 +71,6 @@ const AddCoachForm = ({ teamId, teamCoaches }: Props) => {
       setCoachesData(test);
     }
     if (adminCoaches && adminSubCoaches) {
-      console.log("adminCoaches", adminCoaches);
-      console.log("adminCoaches", adminSubCoaches);
-
       const filterdCoaches = __.xorBy(
         [...adminCoaches.results, ...adminSubCoaches.results],
         teamCoaches,

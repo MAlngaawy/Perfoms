@@ -13,7 +13,12 @@ import { usePlayerCertificatesQuery } from "~/app/store/parent/parentApi";
 import PlayerCertificatePage from "~/app/pages/player-certificate/PlayerCertificatePage";
 
 type Props = {
-  reportType: "Performances" | "Attendances" | "Certificates";
+  reportType:
+    | "Performances"
+    | "Attendances"
+    | "Certificates"
+    | "OverAll"
+    | "Health";
 };
 
 const Detailed = ({ reportType }: Props) => {

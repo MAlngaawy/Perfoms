@@ -677,7 +677,7 @@ export const userApi = createApi({
     userGeneralPlayerKpiStatistics: query<
       TeamsStatistics,
       {
-        player_id: string | undefined;
+        player_id: string | undefined | number;
         pages?: number;
         date_from: string;
         date_to: string;
@@ -692,7 +692,7 @@ export const userApi = createApi({
     userGeneralPlayersAttendStatistics: query<
       PlayerMonthsAttendancesStatistics,
       {
-        player_id: string | undefined;
+        player_id: string | undefined | number;
         pages?: number;
         team_id: number | string | undefined;
       }

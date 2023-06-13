@@ -76,15 +76,15 @@ const navigationConfig: NavigationConfigTypes[] = [
     url: "chat",
     auth: authRoles.All,
   },
-  {
-    id: "reports-page",
-    title: "Reports",
-    translate: "REPORTS",
-    type: "item",
-    icon: "NewspaperIcon:outline",
-    url: "reports",
-    auth: authRoles.Parent,
-  },
+  // {
+  //   id: "reports-page",
+  //   title: "Reports",
+  //   translate: "REPORTS",
+  //   type: "item",
+  //   icon: "NewspaperIcon:outline",
+  //   url: "reports",
+  //   auth: authRoles.Parent,
+  // },
   {
     id: "media-page",
     title: "Media",
@@ -130,7 +130,8 @@ const navigationConfig: NavigationConfigTypes[] = [
     icon: "NewspaperIcon:outline",
     url: "main-reports",
     auth: [...authRoles.Admin, ...authRoles.Supervisor, ...authRoles.Coach],
-  },  {
+  },
+  {
     id: "health-page",
     title: "Health",
     translate: "Health",

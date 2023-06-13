@@ -32,7 +32,8 @@ const OverAll = ({ playerInfo, reportType }: Props) => {
   const [playerTeams, setPlayerTeams] = useState<any[]>([]);
   const { data: user } = useUserQuery({});
   const timefilter = useSelector(timeFilterFn);
-  const { id } = useParams();
+  const { id: player_id } = useParams();
+  const id = player_id || playerInfo?.id;
   const [attendanceData, setAttendanceData] =
     useState<PlayerMonthsAttendancesStatistics | null>(null);
   const [performanceData, setPerformanceData] =
@@ -65,25 +66,28 @@ const OverAll = ({ playerInfo, reportType }: Props) => {
     if (userGeneralPerformanceData)
       setPerformanceData(userGeneralPerformanceData);
     if (userGeneralAttendData) setAttendanceData(userGeneralAttendData);
+
+    console.log("OVERALL performanceData", userGeneralPerformanceData);
+    console.log("OVERALL attendanceData", userGeneralAttendData);
   }, [userGeneralPerformanceData, userGeneralAttendData]);
 
-  const fetchData = async () => {
-    axiosInstance
-      .get(`/user-generals/player-info/${playerInfo?.id}`)
-      .then((res) => {
-        return res.data;
-      })
-      .then((data: any) => {
-        setPlayerTeams([...data.team]);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  // const fetchData = async () => {
+  //   axiosInstance
+  //     .get(`/user-generals/player-info/${playerInfo?.id}`)
+  //     .then((res) => {
+  //       return res.data;
+  //     })
+  //     .then((data: any) => {
+  //       setPlayerTeams([...data.team]);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
 
   return (
     <PrintComp>

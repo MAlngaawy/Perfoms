@@ -23,6 +23,8 @@ const ActionsCard = ({ player_id }: Props) => {
   const timeFilter = useSelector(timeFilterFn);
   const [actions, setActions] = useState<PlayerActions>();
   const { data: user } = useUserQuery({});
+  console.log("actionssssss", actions);
+  console.log("actionssssss", "TESTTTTTTTTTTTTTTTTT");
 
   const { data: parentPlayerActions } = usePlayerActionsQuery(
     {

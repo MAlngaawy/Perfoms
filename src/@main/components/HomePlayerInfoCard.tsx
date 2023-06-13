@@ -23,6 +23,7 @@ type Props = {
 const HomePlayerInfoCard = ({ player_id }: Props) => {
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
   const [playerInfoData, setPlayerInfoData] = useState<CoachPlayerInfo>();
+
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
@@ -59,6 +60,10 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
     if (adminPlayerInfo) setPlayerInfoData(adminPlayerInfo);
   }, [parentPlayerInfoData, coachPlayerInfo, superPlayerInfo, adminPlayerInfo]);
 
+  useEffect(() => {
+    console.log("playerInfoData", playerInfoData);
+  }, [playerInfoData]);
+
   if (!playerInfoData) {
     return (
       <div className="p-6 h-full bg-white rounded-3xl flex justify-center items-center">
@@ -79,7 +84,7 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
           />
         )}
       </div>
-      <div className="flex flex-col xs:flex-row sm:flex-col justify-around">
+      <div className="flex flex-col gap-x-10 xs:flex-row sm:flex-col justify-around">
         <div
           onClick={() => {
             navigate(`/players/${selectedPlayer.id}`);
@@ -96,7 +101,8 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
           <Info label="Name" value={playerInfoData?.name} />
           <Info label="Age" value={playerInfoData?.dob} />
           <div className="flex gap-x-4 flex-wrap">
-            {playerInfoData?.sport.toLocaleLowerCase() === "taekwondo" ? (
+            {playerInfoData?.sport &&
+            playerInfoData?.sport.toLocaleLowerCase() === "taekwondo" ? (
               <>
                 {playerInfoData?.height && (
                   <Info label="Height" value={playerInfoData?.height} />
