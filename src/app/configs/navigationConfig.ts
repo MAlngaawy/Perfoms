@@ -87,7 +87,7 @@ const navigationConfig: NavigationConfigTypes[] = [
   // },
   {
     id: "media-page",
-    title: "Media",
+    title: "Events",
     translate: "MEDIA",
     type: "item",
     icon: "BookmarkIcon:outline",
@@ -138,7 +138,7 @@ const navigationConfig: NavigationConfigTypes[] = [
     type: "item",
     icon: "HeartIcon:outline",
     url: "health/authorize",
-    auth: authRoles.All,
+    auth: ["Player"],
   },
 ];
 
