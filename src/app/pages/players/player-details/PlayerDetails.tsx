@@ -5,11 +5,12 @@ import PlayerAlbums from "./Tabs/PlayerMedia/PlayerAlbums";
 import PrintComp from "~/@main/PrintComp";
 import Player from "../../MainReports/SupPages/Players/Player/Player";
 import PlayerDataAnalytics from "./Tabs/PlayerDataAnalytics/PlayerDataAnalytics";
+import HealthPageContent from "../../health/content/HealthPageContent";
 
 const EditModeContext = createContext<boolean>(false);
 const PlayerDetails = () => {
   const [checked, setChecked] =
-    useState<"Reports" | "Bio" | "Media" | "Analytics">("Bio");
+    useState<"Reports" | "Bio" | "Media" | "Analytics" | "Health">("Bio");
   const [editModeState, setEditModeState] = useState(false);
 
   return (
@@ -18,7 +19,7 @@ const PlayerDetails = () => {
         <div className="flex mt-6 flex-col gap-4 sm:flex-row justify-between items-start mx-4 xs:mx-8">
           <div className=" container">
             <AppRadioGroub
-              values={["Bio", "Media", "Reports", "Analytics"]}
+              values={["Bio", "Media", "Reports", "Analytics", "Health"]}
               checked={checked}
               setChecked={setChecked}
             />
@@ -46,6 +47,10 @@ const PlayerDetails = () => {
           </div>
           <div className={checked !== "Analytics" ? "hidden" : "block px-4"}>
             <PlayerDataAnalytics />
+          </div>
+
+          <div className={checked !== "Health" ? "hidden" : "block px-4 pt-6"}>
+            <HealthPageContent />
           </div>
         </div>
       </div>

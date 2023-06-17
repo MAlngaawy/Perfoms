@@ -32,9 +32,8 @@ import Card from "~/@main/components/Card";
 import PrintComp from "~/@main/PrintComp";
 import ActionsCard from "~/@main/components/ActionsCard";
 import RecommendationsCard from "~/@main/components/RecommendationsCard";
-import Detailed from "../MainReports/SupPages/Players/Player/Component/Detailed";
 import OverAll from "../MainReports/SupPages/Players/Player/Component/OverAll";
-import HealthPage from "../health/HealthPage";
+import HealthPageContent from "../health/content/HealthPageContent";
 
 export type Players = {
   name: string;
@@ -77,7 +76,7 @@ const HomePage = () => {
   } else {
     return (
       <div className="home-page px-5 mb-20">
-        <div className="my-4 flex xs:flex-row gap-2 justify-between items-center">
+        <div className="my-4 flex xs:flex-row gap-2 justify-between items-center flex-wrap">
           <div className="flex gap-3 items-center">
             {user?.user_type === "Parent" && <AddPlayer />}
 
@@ -89,7 +88,7 @@ const HomePage = () => {
               />
             )}
           </div>
-          <div className="flex gap-1 justify-center items-center md:pt-0">
+          <div className="flex gap-1 justify-center items-center md:pt-0 flex-wrap">
             {!["Health", "OverAll"].includes(reportType) && (
               <Switch
                 size="xl"
@@ -126,9 +125,11 @@ const HomePage = () => {
                 <Menu.Item onClick={() => setReportType("Attendances")}>
                   Attendances
                 </Menu.Item>
-                <Menu.Item onClick={() => setReportType("Health")}>
-                  Health
-                </Menu.Item>
+                {user?.user_type === "Parent" && (
+                  <Menu.Item onClick={() => setReportType("Health")}>
+                    Health
+                  </Menu.Item>
+                )}
               </Menu.Dropdown>
             </Menu>
             <TeamFilter />
@@ -178,7 +179,7 @@ const HomePage = () => {
           </>
         ) : reportType === "Health" ? (
           <div>
-            <HealthPage />
+            <HealthPageContent />
           </div>
         ) : reportType === "Performances" && !detailed ? (
           <PrintComp>
