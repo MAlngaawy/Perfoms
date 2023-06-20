@@ -138,7 +138,7 @@ const navigationConfig: NavigationConfigTypes[] = [
     type: "item",
     icon: "HeartIcon:outline",
     url: "health/authorize",
-    auth: ["Player"],
+    auth: authRoles.Parent,
   },
 ];
 
