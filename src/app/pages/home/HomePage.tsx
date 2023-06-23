@@ -167,13 +167,20 @@ const HomePage = () => {
             {checked === "Bio" && <PlayerBio />}
             {checked === "Certificates" && (
               <>
-                {playerCertificates &&
-                  playerCertificates?.results.map((certificate) => (
+                {playerCertificates && playerCertificates.results.length > 0 ? (
+                  playerCertificates.results.map((certificate) => (
                     <PlayerCertificatePage
                       key={certificate.id}
                       certificateId={certificate.id}
                     />
-                  ))}
+                  ))
+                ) : (
+                  <div className="flex justify-center items-center h-full">
+                    <p className="bg-gray-200 p-4 rounded-lg mt-10">
+                      No certificates
+                    </p>
+                  </div>
+                )}
               </>
             )}
           </>

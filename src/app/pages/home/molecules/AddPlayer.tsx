@@ -15,8 +15,6 @@ import { DatePicker } from "@mantine/dates";
 import AppUtils from "~/@main/utils/AppUtils";
 import * as yup from "yup";
 import AvatarInput from "~/@main/components/shared/AvatarInput";
-// import { useForm } from "react-hook-form";
-// import { yupResolver } from "@hookform/resolvers/yup";
 
 type Props = {};
 
@@ -44,6 +42,7 @@ const schema = yup.object().shape({
     .length(11, "phone number must be 11 characters long")
     .optional()
     .matches(/^\d+$/, "phone number must only contain numbers"),
+  gender: yup.string(),
 });
 
 const formInputsDefaultValue = {
@@ -55,6 +54,7 @@ const formInputsDefaultValue = {
   height: "",
   front_leg: "",
   phoneNumber: "",
+  gender: "",
 };
 
 const AddPlayer = (props: Props) => {
@@ -78,6 +78,7 @@ const AddPlayer = (props: Props) => {
     height?: string;
     front_leg?: string;
     phoneNumber?: string;
+    gender?: string;
   }>({});
   const [selectedTeam, setSelectedTeam] = useState<any>(null);
   // fetch club sports
@@ -440,7 +441,27 @@ const AddPlayer = (props: Props) => {
           )}
 
           {/* Phone number  */}
-          <div className="w-full my-4">
+          <div className="w-full flex flex-col gap-4 my-4">
+            <Select
+              id="gender"
+              error={errors.gender}
+              className="w-full"
+              label="Gender"
+              name="gender"
+              sx={{
+                ".mantine-Select-input": {
+                  background: "none",
+                  border: 0,
+                  borderBottom: "1px solid",
+                  borderRadius: 0,
+                  width: "100%",
+                },
+              }}
+              data={[
+                { label: "Males", value: "M" },
+                { label: "Females", value: "F" },
+              ]}
+            />
             <TextInput
               id="phoneNumber"
               label="phone number"

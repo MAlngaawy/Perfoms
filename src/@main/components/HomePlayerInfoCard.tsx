@@ -100,6 +100,10 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
         <div className="infos">
           <Info label="Name" value={playerInfoData?.name} />
           <Info label="Age" value={playerInfoData?.dob} />
+          <Info
+            label="Gender"
+            value={playerInfoData.gender === "M" ? "Male" : "Female"}
+          />
           <div className="flex gap-x-4 flex-wrap">
             {playerInfoData?.sport &&
             playerInfoData?.sport.toLocaleLowerCase() === "taekwondo" ? (
@@ -107,7 +111,6 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
                 {playerInfoData?.height && (
                   <Info label="Height" value={playerInfoData?.height} />
                 )}
-
                 {playerInfoData?.world_weight && (
                   <Info
                     label="World Weight"

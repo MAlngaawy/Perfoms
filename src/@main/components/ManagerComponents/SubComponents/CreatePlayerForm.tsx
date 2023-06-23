@@ -60,6 +60,7 @@ const schema = yup.object().shape({
     .length(11, "phone number must be 11 characters long")
     .optional()
     .matches(/^\d+$/, "phone number must only contain numbers"),
+  gender: yup.string(),
 });
 
 const formInputsDefaultValue = {
@@ -71,6 +72,7 @@ const formInputsDefaultValue = {
   height: "",
   front_leg: "",
   phoneNumber: "",
+  gender: "",
 };
 
 const AddPlayerForm = (props: Props) => {
@@ -107,6 +109,7 @@ const AddPlayerForm = (props: Props) => {
     front_leg?: string;
     phoneNumber?: string;
     parent?: string;
+    gender?: string;
   }>({});
   const [selectedTeam, setSelectedTeam] = useState<any>(null);
 
@@ -405,7 +408,27 @@ const AddPlayerForm = (props: Props) => {
             )}
 
             {/* Phone number  */}
-            <div className="w-full my-4">
+            <div className="w-full flex flex-col gap-4 my-4">
+              <Select
+                id="gender"
+                error={errors.gender}
+                className="w-full"
+                label="Gender"
+                name="gender"
+                sx={{
+                  ".mantine-Select-input": {
+                    background: "none",
+                    border: 0,
+                    borderBottom: "1px solid",
+                    borderRadius: 0,
+                    width: "100%",
+                  },
+                }}
+                data={[
+                  { label: "Males", value: "M" },
+                  { label: "Females", value: "F" },
+                ]}
+              />
               <TextInput
                 id="phoneNumber"
                 label="phone number"

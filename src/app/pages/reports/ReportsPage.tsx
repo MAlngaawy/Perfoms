@@ -37,6 +37,8 @@ const ReportPage = () => {
     { skip: !player }
   );
 
+  console.log("playerCertificates", playerCertificates);
+
   if (!player) {
     return (
       <Placeholders
@@ -175,13 +177,16 @@ const ReportPage = () => {
             // <PlayerCertificatePage />
             <div className="m-2">
               <div className="overflow-scroll md:overflow-hidden max-w-full">
-                {playerCertificates &&
-                  playerCertificates?.results.map((certificate) => (
+                {playerCertificates && playerCertificates.results.length > 0 ? (
+                  playerCertificates.results.map((certificate) => (
                     <PlayerCertificatePage
                       key={certificate.id}
                       certificateId={certificate.id}
                     />
-                  ))}
+                  ))
+                ) : (
+                  <div>No certificates</div>
+                )}
               </div>
             </div>
           )}

@@ -297,6 +297,7 @@ export type CoachPlayerInfo = {
     name: string;
   }[];
   analytics: JSON;
+  gender: "M" | "F";
 };
 
 export type CoachTeamInfo = {
