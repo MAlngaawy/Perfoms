@@ -130,6 +130,7 @@ export type SuperVisorPlayer = {
   id: number;
   name: string;
   icon: string;
+  sport?: string;
 };
 
 export type SuperVisorPlayers = BaseGetAllType & {

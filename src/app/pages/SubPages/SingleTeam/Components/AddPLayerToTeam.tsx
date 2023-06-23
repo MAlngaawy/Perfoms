@@ -34,65 +34,8 @@ type Props = {
 const AddPlayer = ({ teamPlayers, coach_team_id, teamInfo }: Props) => {
   const [opened, setOpened] = useState(false);
   const { data: user } = useUserQuery({});
-  const [playersData, setPlayersData] = useState<any>([]);
-  const [players, setPlayers] = useState<SuperVisorPlayers>();
   const [loading, setLoading] = useState<boolean>(false);
-
-  // Fetch All Club Plaers to filter it
-  const { data: superPlayers } = useSuperPlayersQuery({});
-  const { data: adminPlayers } = useAdminPlayersQuery(
-    { club_id: user?.club },
-    { skip: !user?.club }
-  );
-  const { data: coachPlayers } = useAllClubPlayersQuery(
-    {},
-    { skip: user?.user_type !== "Coach" }
-  );
-
   const { team_id } = useParams();
-
-  useEffect(() => {
-    if (superPlayers) setPlayers(superPlayers);
-    if (adminPlayers) setPlayers(adminPlayers);
-    if (coachPlayers) setPlayers(coachPlayers);
-
-    // Filter the team players vs all club players
-    //to show only the not team member players in the select input
-    if (players && teamPlayers) {
-      //get all club players
-      const allPlayers = players?.results;
-
-      console.log("allPlayers", allPlayers);
-
-      //get selected-team players
-      const teamPlayersData = teamPlayers?.results;
-
-      //filter all players to retunr just the players related to team sports
-      const filterPerTeamSport = allPlayers.filter((player) => {
-        //@ts-ignore
-        return player?.sport === teamInfo?.sport;
-      });
-
-      // remove the team players from the players comes from sport filter
-      // const filterdPlayers = __.xorBy(allPlayers, teamPlayersData, "id");
-      const filterdPlayers = filterPerTeamSport.filter((player: any) => {
-        return !teamPlayersData.some((teamPlayer: any) => {
-          return teamPlayer.id === player.id;
-        });
-      });
-
-      let test = filterdPlayers.map((player) => {
-        return {
-          label: player.name,
-          image: player.icon,
-          value: player.id,
-          id: player.id,
-        };
-      });
-
-      setPlayersData(test);
-    }
-  }, [players, superPlayers, adminPlayers, coachPlayers, teamPlayers]);
 
   const {
     register,
@@ -181,6 +124,99 @@ const AddPlayer = ({ teamPlayers, coach_team_id, teamInfo }: Props) => {
     reset({ player: "" });
   };
 
+  return (
+    <div>
+      <Modal
+        opened={opened}
+        onClose={() => {
+          setOpened(false);
+          reset({ player: "" });
+        }}
+        title={`Add Player`}
+      >
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <ChoosePlayerInput
+            teamPlayers={teamPlayers}
+            teamInfo={teamInfo}
+            control={control}
+          />
+          <SubmitButton isLoading={loading} text="Add Player" />
+        </form>
+      </Modal>
+
+      <Group position="left" className="w-full h-full">
+        <button
+          className="w-full h-full p-4 bg-slate-300 text-perfGray3 rounded-lg"
+          onClick={() => setOpened(true)}
+        >
+          + Add Player
+        </button>
+      </Group>
+    </div>
+  );
+};
+
+const ChoosePlayerInput = ({ teamPlayers, teamInfo, control }: any) => {
+  const { data: user } = useUserQuery({});
+  const [players, setPlayers] = useState<SuperVisorPlayers>();
+
+  const [playersData, setPlayersData] = useState<any>([]);
+  // Fetch All Club Plaers to filter it
+  const { data: superPlayers } = useSuperPlayersQuery({});
+  const { data: adminPlayers } = useAdminPlayersQuery(
+    { club_id: user?.club, sport: teamInfo.sport },
+    { skip: !user?.club }
+  );
+  const { data: coachPlayers } = useAllClubPlayersQuery(
+    {},
+    { skip: user?.user_type !== "Coach" }
+  );
+
+  useEffect(() => {
+    if (superPlayers) setPlayers(superPlayers);
+    if (adminPlayers) setPlayers(adminPlayers);
+    if (coachPlayers) setPlayers(coachPlayers);
+
+    // Filter the team players vs all club players
+    //to show only the not team member players in the select input
+    if (players && teamPlayers) {
+      //get all club players
+      const allPlayers = players?.results;
+
+      //get selected-team players
+      const teamPlayersData = teamPlayers?.results;
+
+      //filter all players to retunr just the players related to team sports
+      const filterPerTeamSport = allPlayers.filter((player) => {
+        console.log(player.sport);
+        //@ts-ignore
+        return (
+          player?.sport?.toLocaleLowerCase() ===
+          teamInfo?.sport.toLocaleLowerCase()
+        );
+      });
+
+      // remove the team players from the players comes from sport filter
+      // const filterdPlayers = __.xorBy(allPlayers, teamPlayersData, "id");
+      const filterdPlayers = filterPerTeamSport.filter((player: any) => {
+        return !teamPlayersData.some((teamPlayer: any) => {
+          return teamPlayer.id === player.id;
+        });
+      });
+
+      let test = filterdPlayers.map((player) => {
+        return {
+          label: player.name,
+          image: player.icon,
+          value: player.id,
+          id: player.id,
+        };
+      });
+
+      setPlayersData(test);
+    }
+  }, [players, superPlayers, adminPlayers, coachPlayers, teamPlayers]);
+
   interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
     image: string;
     label: string;
@@ -199,55 +235,28 @@ const AddPlayer = ({ teamPlayers, coach_team_id, teamInfo }: Props) => {
       </div>
     )
   );
-
   return (
-    <div>
-      <>
-        <Modal
-          opened={opened}
-          onClose={() => {
-            setOpened(false);
-            reset({ player: "" });
-          }}
-          title={`Add Player`}
-        >
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Controller
-              control={control}
-              name="player"
-              render={({ field }) => (
-                <Select
-                  {...field}
-                  placeholder="Choose Player"
-                  autoFocus={true}
-                  searchable
-                  itemComponent={SelectItem}
-                  maxDropdownHeight={400}
-                  // {...register("coach")}
-                  nothingFound="No options"
-                  data={playersData}
-                  filter={(value, item) =>
-                    item.label
-                      ?.toLowerCase()
-                      .includes(value.toLowerCase().trim()) || false
-                  }
-                />
-              )}
-            />
-            <SubmitButton isLoading={loading} text="Add Player" />
-          </form>
-        </Modal>
-
-        <Group position="left" className="w-full h-full">
-          <button
-            className="w-full h-full p-4 bg-slate-300 text-perfGray3 rounded-lg"
-            onClick={() => setOpened(true)}
-          >
-            + Add Player
-          </button>
-        </Group>
-      </>
-    </div>
+    <Controller
+      control={control}
+      name="player"
+      render={({ field }) => (
+        <Select
+          {...field}
+          placeholder="Choose Player"
+          autoFocus={true}
+          searchable
+          itemComponent={SelectItem}
+          maxDropdownHeight={400}
+          // {...register("coach")}
+          nothingFound="No options"
+          data={playersData}
+          filter={(value, item) =>
+            item.label?.toLowerCase().includes(value.toLowerCase().trim()) ||
+            false
+          }
+        />
+      )}
+    />
   );
 };
 
