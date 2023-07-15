@@ -20,15 +20,15 @@ export const healthApi = createApi({
       }),
     }),
     fitData: mutation({
-      query: ({dataType,Date}) => ({
+      query: ({dataType,Date,playerId}) => ({
        
-        url:`/google/fit-data/${dataType}?date=${Date}`
+        url:`/google/fit-data/${dataType}?date=${Date}&playerId=${playerId}`
       }),
     }),
     fitDataActivity: mutation({
-      query: ({dataType,Date,type}) => ({
+      query: ({dataType,Date,type,playerId}) => ({
        
-        url:`/google/${dataType}?date=${Date}${type?"&type=bars":""}`
+        url:`/google/${dataType}?date=${Date}${type?"&type=bars":""}&playerId=${playerId}`
       }),
     }),
   }),

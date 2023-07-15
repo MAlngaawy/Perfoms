@@ -7,12 +7,17 @@ import HealthCalories from "~/@main/components/Health/HealthCalories";
 import HealthSleep from "~/@main/components/Health/HealthSleep";
 import { Grid } from "@mantine/core";
 import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
+import { Player } from "~/app/store/types/parent-types";
+import { useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {};
 
 const HealthPageContent = (props: Props) => {
   const { id: player_id } = useParams();
-
+ 
   return (
     <div className="flex flex-col gap-4">
       <Grid columns={15} gutter={"md"}>
@@ -42,22 +47,22 @@ const HealthPageContent = (props: Props) => {
               span={15}
               className="relative min-h-[60px] h-[140px]  sm:h-20 sm:max-h-[100px]"
             >
-              <HealthProgressBar />
+              <HealthProgressBar  />
             </Grid.Col>
             <Grid.Col sm={7.5} xl={5} orderXl={1} order={1} span={15}>
-              <HealthSteps />
+              <HealthSteps  />
             </Grid.Col>
             <Grid.Col sm={7.5} xl={4} orderXl={1} order={1} span={15}>
-              <HealthCalories />
+              <HealthCalories  />
             </Grid.Col>
             <Grid.Col sm={7.5} xl={6} orderXl={1} order={1} span={15}>
-              <HealthSleep />
+              <HealthSleep  />
             </Grid.Col>
             <Grid.Col xl={9} orderXl={1} order={2} span={15}>
-              <HealthActivityProgressBars />
+              <HealthActivityProgressBars  />
             </Grid.Col>
             <Grid.Col sm={7.5} xl={6} orderXl={1} order={1} span={15}>
-              <HealthReportSummary />
+              <HealthReportSummary  />
             </Grid.Col>
           </Grid>
         </Grid.Col>

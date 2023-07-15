@@ -5,10 +5,17 @@ import { DatePicker } from "@mantine/dates";
 
 import { useFitDataMutation } from "~/app/store/health/healthApi";
 import moment from "moment";
+import { useUserQuery } from "~/app/store/user/userApi";
+import { Player } from "~/app/store/types/parent-types";
+import { useSelector } from "react-redux";
+import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 type Props = {};
 const HealthSteps = (props: Props) => {
   const [fitData, { data: DataSteps, isSuccess, isLoading, isError, error }] =
     useFitDataMutation();
+  const { data: user } = useUserQuery({});
+  const selectedPlayer: Player = useSelector(selectedPlayerFn);
+
 
   const [dateValue, setDateValue] = React.useState(new Date());
   const [data, setData] = React.useState({
@@ -25,11 +32,23 @@ const HealthSteps = (props: Props) => {
   });
 
   React.useEffect(() => {
-    fitData({
-      dataType: "com.google.step_count.delta",
-      Date: moment(dateValue).format("L"),
-    });
-  }, [dateValue]);
+    if (!!user || !!selectedPlayer) {
+      if (user?.user_type === "Player") {
+        fitData({
+          dataType: "com.google.step_count.delta",
+          date: moment(dateValue).format("L"),
+          playerId: user?.id
+        })
+      } else {
+        fitData({
+          dataType: "com.google.step_count.delta",
+          date: moment(dateValue).format("L"),
+          playerId: selectedPlayer?.id
+        })
+      }
+    }
+
+  }, [dateValue,user, selectedPlayer]);
   const calculateSteps = React.useCallback(() => {
     const steps = [
       ...DataSteps?.map(
@@ -79,7 +98,7 @@ const HealthSteps = (props: Props) => {
         },
       ],
     };
-  }, [dateValue, DataSteps]);
+  }, [dateValue,user, selectedPlayer, DataSteps]);
 
   React.useEffect(() => {
     if (isSuccess) {
