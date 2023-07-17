@@ -13,6 +13,7 @@ import { usePlayerCertificatesQuery } from "~/app/store/parent/parentApi";
 import PlayerCertificatePage from "~/app/pages/player-certificate/PlayerCertificatePage";
 import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 import { useSelector } from "react-redux";
+import { useGetPlayerInfoQuery } from "~/app/store/user/userApi";
 
 type Props = {
   reportType:
@@ -25,8 +26,14 @@ type Props = {
 
 const Detailed = ({ reportType }: Props) => {
   const selectedPlayer = useSelector(selectedPlayerFn);
-  const { id } = useParams();
+  const { id: player_id } = useParams();
+  const id = player_id || JSON.stringify(selectedPlayer.id);
   const { data: playerCertificates } = usePlayerCertificatesQuery(
+    { player_id: id },
+    { skip: !id }
+  );
+
+  const { data: playerData } = useGetPlayerInfoQuery(
     { player_id: id },
     { skip: !id }
   );
@@ -34,7 +41,7 @@ const Detailed = ({ reportType }: Props) => {
   return (
     <>
       {reportType === "Performances" ? (
-        <PrintComp documentTitle={selectedPlayer.name}>
+        <PrintComp documentTitle={playerData?.name || "Player Name"}>
           <div className="bg-pagesBg">
             <Grid columns={12} gutter={"sm"}>
               <Grid.Col sm={3} md={2.5} span={12}>

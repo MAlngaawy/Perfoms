@@ -8,13 +8,21 @@ import PlayerDataAnalytics from "./Tabs/PlayerDataAnalytics/PlayerDataAnalytics"
 import HealthPageContent from "../../health/content/HealthPageContent";
 import { useSelector } from "react-redux";
 import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
+import { useGetPlayerInfoQuery } from "~/app/store/user/userApi";
+import { useParams } from "react-router-dom";
 
 const EditModeContext = createContext<boolean>(false);
 const PlayerDetails = () => {
+  const { id: player_id } = useParams();
   const selectedPlayer = useSelector(selectedPlayerFn);
+  const id = player_id || JSON.stringify(selectedPlayer.id);
   const [checked, setChecked] =
     useState<"Reports" | "Bio" | "Media" | "Analytics" | "Health">("Bio");
   const [editModeState, setEditModeState] = useState(false);
+  const { data: playerData } = useGetPlayerInfoQuery(
+    { player_id: id },
+    { skip: !id }
+  );
 
   return (
     <EditModeContext.Provider value={editModeState}>
@@ -41,7 +49,7 @@ const PlayerDetails = () => {
             <Player asComponent />
           </div>
           <div className={checked !== "Bio" ? "hidden" : "block px-4"}>
-            <PrintComp documentTitle={selectedPlayer.name}>
+            <PrintComp documentTitle={playerData?.name || "Player Name"}>
               <PlayerBio />
             </PrintComp>
           </div>
