@@ -93,7 +93,14 @@ const OneTeam = (props: Props) => {
           {items}
         </Breadcrumbs>
       </div>
-      <PrintComp>
+      <PrintComp
+        documentTitle={
+          coachTeamInfo?.name ||
+          superTeamInfo?.name ||
+          adminTeamInfo?.name ||
+          "Team Reports"
+        }
+      >
         <div className="reports items-stretch justify-center xs:justify-start flex flex-wrap gap-4 my-10">
           <div>
             <TeamInfoCard

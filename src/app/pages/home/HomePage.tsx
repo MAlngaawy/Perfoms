@@ -189,7 +189,7 @@ const HomePage = () => {
             <HealthPageContent />
           </div>
         ) : reportType === "Performances" && !detailed ? (
-          <PrintComp>
+          <PrintComp documentTitle={selectedPlayer.name}>
             <div className="bg-pagesBg">
               <Grid columns={12} gutter={"xs"}>
                 <Grid.Col sm={3} md={2.5} span={12}>
@@ -236,7 +236,7 @@ const HomePage = () => {
             </div>
           </PrintComp>
         ) : reportType === "Attendances" && !detailed ? (
-          <PrintComp>
+          <PrintComp documentTitle={selectedPlayer.name}>
             <div className="attendances">
               <Grid gutter={"xs"}>
                 <Grid.Col span={12} md={2.5}>

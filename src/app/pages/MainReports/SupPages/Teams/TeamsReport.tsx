@@ -59,7 +59,7 @@ const TeamsReports = (props: Props) => {
           {items}
         </Breadcrumbs>
       </div>
-      <PrintComp>
+      <PrintComp documentTitle="Teams Reports">
         <div className="reports flex flex-wrap gap-4 justify-center xs:justify-start items-stretch my-10">
           {data &&
             data?.results.map((team) => {

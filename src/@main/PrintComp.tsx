@@ -4,12 +4,14 @@ import AppIcons from "./core/AppIcons";
 
 type Props = {
   children: any;
+  documentTitle: string;
 };
 
 const PrintComp = (props: Props) => {
   const compRef = useRef<HTMLInputElement>(null);
   const handlePrint = useReactToPrint({
     content: (): any => compRef.current,
+    documentTitle: props.documentTitle,
     pageStyle: `
     @media print {
       @page { size: landscape; }

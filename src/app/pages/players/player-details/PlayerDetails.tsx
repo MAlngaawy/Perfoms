@@ -6,9 +6,12 @@ import PrintComp from "~/@main/PrintComp";
 import Player from "../../MainReports/SupPages/Players/Player/Player";
 import PlayerDataAnalytics from "./Tabs/PlayerDataAnalytics/PlayerDataAnalytics";
 import HealthPageContent from "../../health/content/HealthPageContent";
+import { useSelector } from "react-redux";
+import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 
 const EditModeContext = createContext<boolean>(false);
 const PlayerDetails = () => {
+  const selectedPlayer = useSelector(selectedPlayerFn);
   const [checked, setChecked] =
     useState<"Reports" | "Bio" | "Media" | "Analytics" | "Health">("Bio");
   const [editModeState, setEditModeState] = useState(false);
@@ -38,7 +41,7 @@ const PlayerDetails = () => {
             <Player asComponent />
           </div>
           <div className={checked !== "Bio" ? "hidden" : "block px-4"}>
-            <PrintComp>
+            <PrintComp documentTitle={selectedPlayer.name}>
               <PlayerBio />
             </PrintComp>
           </div>

@@ -83,7 +83,14 @@ const TeamMembersKpi = (props: Props) => {
         </Menu> */}
         <TimeFilter />
       </div>
-      <PrintComp>
+      <PrintComp
+        documentTitle={
+          coachTeamInfo?.name ||
+          superTeamInfo?.name ||
+          adminTeamInfo?.name ||
+          "Team Players Report"
+        }
+      >
         <div className="reports items-stretch justify-center xs:justify-start flex flex-wrap gap-4 my-6">
           <div>
             <TeamInfoCard

@@ -38,7 +38,7 @@ const SportsReports = (props: Props) => {
           {items}
         </Breadcrumbs>
       </div>
-      <PrintComp>
+      <PrintComp documentTitle="Sports Reports">
         <div className="reports flex flex-wrap gap-4 justify-center sm:justify-start items-center my-10">
           <>
             {sportStatistics && (
