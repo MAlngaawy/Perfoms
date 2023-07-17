@@ -10,7 +10,7 @@ import {
 import HomeTeamInfoCard from "~/@main/components/HomeTeamInfoCard";
 import NoTeamComp from "~/@main/components/NoTeamComp";
 import TeamCalendar from "../../SubPages/SingleTeam/Components/TeamCalendar";
-import { useUserQuery } from "~/app/store/user/userApi";
+import { useGetTeamInfoQuery, useUserQuery } from "~/app/store/user/userApi";
 import AddPlayer from "../../SubPages/SingleTeam/Components/AddPLayerToTeam";
 import { SinglePlayer } from "../../SubPages/SingleTeam/Components/TeamPlayers";
 
@@ -24,10 +24,10 @@ const TeamInfo = (props: Props) => {
     { team_id: selectedPlayerTeam?.id },
     { skip: !selectedPlayerTeam || user?.user_type !== "Coach" }
   );
-  const { data: coachTeamInfoData } = useCoachTeamInfoQuery(
-    { team_id: selectedPlayerTeam?.id },
-    { skip: !selectedPlayerTeam }
-  );
+
+  const { data: teamInfo } = useGetTeamInfoQuery({
+    team_id: selectedPlayerTeam?.id,
+  });
 
   return (
     <>
@@ -72,7 +72,7 @@ const TeamInfo = (props: Props) => {
                     );
                   })}
                 <AddPlayer
-                  teamInfo={coachTeamInfoData}
+                  teamInfo={teamInfo}
                   teamPlayers={coachTeamPlayers}
                   coach_team_id={selectedPlayerTeam?.id}
                 />

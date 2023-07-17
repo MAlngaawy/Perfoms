@@ -1,13 +1,11 @@
 import {
   useSuperRemoveTeamPlayerMutation,
-  useSuperTeamCoachesQuery,
   useSuperTeamPlaersQuery,
 } from "~/app/store/supervisor/supervisorMainApi";
 import AppIcons from "../../../../../@main/core/AppIcons";
 import AddPlayer from "./AddPLayerToTeam";
 import DeletePlayerFromTeam from "./DeletePlayerFromTeam";
 import { useNavigate } from "react-router-dom";
-import { showNotification } from "@mantine/notifications";
 import { useUserQuery } from "~/app/store/user/userApi";
 import { TeamPlayers } from "~/app/store/types/clubManager-types";
 import { useEffect, useState } from "react";
@@ -18,13 +16,13 @@ import {
 import AppUtils from "~/@main/utils/AppUtils";
 import { useRemoveAddTeamPlayerMutation } from "~/app/store/coach/coachApi";
 import { Avatar } from "@mantine/core";
-import { SuperVisorTeamInfo } from "~/app/store/types/supervisor-types";
+import { SuperVisorTeamInfo, Team } from "~/app/store/types/supervisor-types";
 import { CoachTeamInfo } from "~/app/store/types/coach-types";
 import TeamInfo from "../../../coachHome/components/TeamInfo";
 
 type Props = {
   teamId: string;
-  teamInfo: SuperVisorTeamInfo | CoachTeamInfo | undefined;
+  teamInfo?: Team;
 };
 
 const TeamPlayersComponent = ({ teamInfo, teamId }: Props) => {

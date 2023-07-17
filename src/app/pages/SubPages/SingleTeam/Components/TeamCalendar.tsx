@@ -8,6 +8,7 @@ import AppUtils from "~/@main/utils/AppUtils";
 import { useUserQuery } from "~/app/store/user/userApi";
 import {
   SuperVisorTeamInfo,
+  Team,
   TeamAttendance,
 } from "~/app/store/types/supervisor-types";
 import {
@@ -23,7 +24,7 @@ import { CoachTeamInfo } from "~/app/store/types/coach-types";
 
 type Props = {
   teamId: string;
-  teamInfo?: SuperVisorTeamInfo | CoachTeamInfo | undefined;
+  teamInfo?: Team;
 };
 
 const TeamCalendar = ({ teamId, teamInfo }: Props) => {

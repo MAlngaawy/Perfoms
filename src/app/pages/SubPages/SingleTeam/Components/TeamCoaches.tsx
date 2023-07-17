@@ -46,7 +46,7 @@ const TeamCoachesComp = ({ teamId }: Props) => {
   return (
     <div>
       <h2>Team Coaches</h2>
-      <div className="flex flex-col gap-2 max-h-72 mt-6">
+      <div className="flex flex-col gap-2 max-h-72 mt-6 overflow-scroll">
         {coaches?.results.map((coach) => (
           <div
             key={coach.id}

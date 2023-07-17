@@ -44,8 +44,14 @@ import {
 import { BASE_HEADERS, BASE_URL } from "~/app/configs/dataService";
 import Cookies from "js-cookie";
 import { LoginResponse, LoginUserBody, UserSignup } from "../types/user-types";
-import { Kpis, Metrics, Pillars, Team } from "../types/supervisor-types";
-import { Sports } from "../types/clubManager-types";
+import {
+  Kpis,
+  Metrics,
+  Pillars,
+  SuperVisorPlayers,
+  Team,
+} from "../types/supervisor-types";
+import { Sports, TeamPlayer } from "../types/clubManager-types";
 import { UserAchievements } from "~/app/store/types/user-types";
 import {
   CoachPlayerInfo,
@@ -702,6 +708,21 @@ export const userApi = createApi({
         params,
       }),
     }),
+
+    getFilteredPlayers: query<
+      TeamPlayer[],
+      {
+        sport_id: string | undefined | number;
+        team_id: number | string | undefined;
+        pages?: number;
+      }
+    >({
+      query: ({ sport_id, team_id, ...params }) => ({
+        url: `sports/${sport_id}/teams/${team_id}/filtered-players/`,
+        params,
+      }),
+      providesTags: ["player"],
+    }),
   }),
 });
 
@@ -774,4 +795,5 @@ export const {
   useUpdatePlayerMutation,
   useUserGeneralPlayerKpiStatisticsQuery,
   useUserGeneralPlayersAttendStatisticsQuery,
+  useGetFilteredPlayersQuery,
 } = userApi;
