@@ -69,7 +69,7 @@ const HealthPage = () => {
       <h1 className="text-black text-center text-3xl font-semibold   ">
         {" "}
     
-         😥 {error?.data?.message? error?.data?.message as string:  `Some things was wrong   \n  Please Authorize by Google `}
+         😥  Some things was wrong <br/>  <br/>  <br/>  Please Authorize by Google  
       </h1>
     </div>
   );
