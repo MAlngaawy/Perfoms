@@ -12,6 +12,7 @@ import {
 } from "~/app/store/types/coach-types";
 import { useSelector } from "react-redux";
 import {
+  selectedPlayerFn,
   selectedPlayerTeamFn,
   timeFilterFn,
 } from "~/app/store/parent/parentSlice";
@@ -71,26 +72,8 @@ const OverAll = ({ playerInfo, reportType }: Props) => {
     console.log("OVERALL attendanceData", userGeneralAttendData);
   }, [userGeneralPerformanceData, userGeneralAttendData]);
 
-  // const fetchData = async () => {
-  //   axiosInstance
-  //     .get(`/user-generals/player-info/${playerInfo?.id}`)
-  //     .then((res) => {
-  //       return res.data;
-  //     })
-  //     .then((data: any) => {
-  //       setPlayerTeams([...data.team]);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
-
   return (
-    <PrintComp>
+    <PrintComp documentTitle={playerInfo?.name || "No Name"}>
       <div className="reports flex-row items-stretch justify-center flex flex-wrap gap-4 gap-x-8 my-6">
         {/* <TeamInfoCard /> */}
         <div>

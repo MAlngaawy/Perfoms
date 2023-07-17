@@ -88,7 +88,7 @@ const ReportPage = () => {
             </div>
           </div>
           {reportType === "Performances" ? (
-            <PrintComp>
+            <PrintComp documentTitle={player.name}>
               <div className="bg-pagesBg">
                 <Grid columns={12} gutter={"xs"}>
                   <Grid.Col sm={3} md={2.5} span={12}>
@@ -135,7 +135,7 @@ const ReportPage = () => {
               </div>
             </PrintComp>
           ) : reportType === "Attendances" ? (
-            <PrintComp>
+            <PrintComp documentTitle={player.name}>
               <div className="attendances">
                 <Grid gutter={"xs"}>
                   <Grid.Col span={12} md={2.5}>

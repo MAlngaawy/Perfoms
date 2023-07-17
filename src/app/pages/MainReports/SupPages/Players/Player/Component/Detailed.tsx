@@ -11,6 +11,8 @@ import PrintComp from "~/@main/PrintComp";
 import { useParams } from "react-router-dom";
 import { usePlayerCertificatesQuery } from "~/app/store/parent/parentApi";
 import PlayerCertificatePage from "~/app/pages/player-certificate/PlayerCertificatePage";
+import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
+import { useSelector } from "react-redux";
 
 type Props = {
   reportType:
@@ -22,6 +24,7 @@ type Props = {
 };
 
 const Detailed = ({ reportType }: Props) => {
+  const selectedPlayer = useSelector(selectedPlayerFn);
   const { id } = useParams();
   const { data: playerCertificates } = usePlayerCertificatesQuery(
     { player_id: id },
@@ -31,7 +34,7 @@ const Detailed = ({ reportType }: Props) => {
   return (
     <>
       {reportType === "Performances" ? (
-        <PrintComp>
+        <PrintComp documentTitle={selectedPlayer.name}>
           <div className="bg-pagesBg">
             <Grid columns={12} gutter={"sm"}>
               <Grid.Col sm={3} md={2.5} span={12}>
@@ -78,7 +81,7 @@ const Detailed = ({ reportType }: Props) => {
           </div>
         </PrintComp>
       ) : reportType === "Attendances" ? (
-        <PrintComp>
+        <PrintComp documentTitle={selectedPlayer.name}>
           <div className="attendances">
             <Grid gutter={"sm"}>
               <Grid.Col span={12} sm={2.5}>
