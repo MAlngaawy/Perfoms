@@ -8,14 +8,21 @@ import "swiper/css/navigation";
 import moment from "moment"
 import { DatePicker } from "@mantine/dates";
 import { useFitDataMutation } from "~/app/store/health/healthApi";
-import { ChevronLeftIcon,ChevronRightIcon } from "@heroicons/react/24/solid";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
+import { useUserQuery } from "~/app/store/user/userApi";
+import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
+import { useSelector } from "react-redux";
+import { Player } from "~/app/store/types/parent-types";
 type Props = {};
 const HealthSleep = (props: Props) => {
 
   const [dateValue, setDateValue] = React.useState<Date>(new Date());
   const [data, setData] = React.useState<[{ value: number, color: "#E19809" }, { value: number, color: "#2563EB" }]>([{ value: 0, color: "#E19809" }, { value: 0, color: "#2563EB" }]);
+  const { data: user } = useUserQuery({});
+  const selectedPlayer: Player = useSelector(selectedPlayerFn);
 
-  
+
+
 
   const [
     FitDataActivity,
@@ -28,18 +35,32 @@ const HealthSleep = (props: Props) => {
 
 
   React.useEffect(() => {
-    FitDataSleep({
-      dataType: "com.google.sleep.segment",
-      Date: moment(dateValue).format("L"),
-
-    });
-    FitDataActivity({
-      dataType: "com.google.activity.segment",
-      Date: moment(dateValue).format("L"),
-
-    });
-
-  }, [dateValue]);
+    if (!!user || !!selectedPlayer) {
+      if (user?.user_type === "Player") {
+        FitDataSleep({
+          dataType: "com.google.sleep.segment",
+          Date: moment(dateValue).format("L"),
+          playerId: user?.id,
+        });
+        FitDataActivity({
+          dataType: "com.google.activity.segment",
+          Date: moment(dateValue).format("L"),
+          playerId: user?.id,
+        });
+      } else {
+        FitDataSleep({
+          dataType: "com.google.sleep.segment",
+          Date: moment(dateValue).format("L"),
+          playerId: selectedPlayer?.id,
+        });
+        FitDataActivity({
+          dataType: "com.google.activity.segment",
+          Date: moment(dateValue).format("L"),
+          playerId: selectedPlayer?.id,
+        });
+      }
+    }
+  }, [dateValue,user, selectedPlayer]);
 
   React.useEffect(() => {
     if (isSuccessActivity) {
@@ -84,7 +105,7 @@ const HealthSleep = (props: Props) => {
       ?.reduce((a: number, b: number): number => Number(a) + Number(b), 0)
       ;
     return Time
-  }, [DataActivity, dateValue, isSuccessActivity]);
+  }, [DataActivity, dateValue,user, selectedPlayer, isSuccessActivity]);
 
   const calculateSleep = React.useCallback(() => {
 
@@ -113,7 +134,7 @@ const HealthSleep = (props: Props) => {
 
 
     return Time
-  }, [DataSleep, dateValue, isSuccessSleep]);
+  }, [DataSleep, dateValue,user, selectedPlayer, isSuccessSleep]);
 
 
 
@@ -168,55 +189,57 @@ const HealthSleep = (props: Props) => {
                   }}
                   label={
                     <div className="grid justify-center items-center gap-2">
-                    <Image
-                      width={29}
-                      height={29}
-                      src={
-                        ((data[0].value / 100) * 24 < 8 || (data[1].value / 100) * 24 > 8) ? "/assets/images/GroupBadFace.png" :
-                        ((data[0].value / 100) * 24 < 8 && (data[0].value / 100) * 24 > 6 &&
-                          (data[1].value / 100) * 24 < 12) && (data[1].value / 100) * 24 > 8 ? "/assets/images/Groupface.png" :
-                          ((data[0].value / 100) * 24 < 8 && (data[0].value / 100) * 24 > 6 &&
-                            (data[1].value / 100) * 24 > 12) ? "/assets/images/GroupExcellentFace.png" : "/assets/images/Groupface.png"
-                        
+                      <Image
+                        width={29}
+                        height={29}
+                        src={
+                          ((data[0].value / 100) * 24 < 8 || (data[1].value / 100) * 24 > 8) ? "/assets/images/GroupBadFace.png" :
+                            ((data[0].value / 100) * 24 < 8 && (data[0].value / 100) * 24 > 6 &&
+                              (data[1].value / 100) * 24 < 12) && (data[1].value / 100) * 24 > 8 ? "/assets/images/Groupface.png" :
+                              ((data[0].value / 100) * 24 < 8 && (data[0].value / 100) * 24 > 6 &&
+                                (data[1].value / 100) * 24 > 12) ? "/assets/images/GroupExcellentFace.png" : "/assets/images/Groupface.png"
+
                         }
-                      alt={"footprint"}
-                      className="mx-auto"
-                    />
-                    <div className={`text-lg ${((data[0].value / 100) * 24 < 8 || (data[1].value / 100) * 24 > 8) ? "text-red" :
-                      ((data[0].value / 100) * 24 < 8 && (data[0].value / 100) * 24 > 6 &&
-                        (data[1].value / 100) * 24 < 12) && (data[1].value / 100) * 24 > 8 ? "text-green" : "text-perfGray1"}`}>
-                      {((data[0].value / 100) * 24 < 8 || (data[1].value / 100) * 24 > 8) ? "bad" :
+                        alt={"footprint"}
+                        className="mx-auto"
+                      />
+                      <div className={`text-lg ${((data[0].value / 100) * 24 < 8 || (data[1].value / 100) * 24 > 8) ? "text-red" :
                         ((data[0].value / 100) * 24 < 8 && (data[0].value / 100) * 24 > 6 &&
-                          (data[1].value / 100) * 24 < 12) && (data[1].value / 100) * 24 > 8 ? "good" :
+                          (data[1].value / 100) * 24 < 12) && (data[1].value / 100) * 24 > 8 ? "text-green" : "text-perfGray1"}`}>
+                        {((data[0].value / 100) * 24 < 8 || (data[1].value / 100) * 24 > 8) ? "bad" :
                           ((data[0].value / 100) * 24 < 8 && (data[0].value / 100) * 24 > 6 &&
-                            (data[1].value / 100) * 24 > 12) ? "Excellent" : "good"}
+                            (data[1].value / 100) * 24 < 12) && (data[1].value / 100) * 24 > 8 ? "good" :
+                            ((data[0].value / 100) * 24 < 8 && (data[0].value / 100) * 24 > 6 &&
+                              (data[1].value / 100) * 24 > 12) ? "Excellent" : "good"}
+                      </div>
                     </div>
-                  </div>
-                  
+
                   }
                 />
               </div>
             </div>
           </SwiperSlide>
         ))}
-        <div className="flex justify-between items-center absolute inset-0 z-30 slider pb-16">    
-        <ActionIcon onClick={()=>{
-            if(moment(dateValue).format("L")!==moment().format("L")) { setDateValue((prev) => {
+        <div className="flex justify-between items-center absolute inset-0 z-30 slider pb-16">
+          <ActionIcon onClick={() => {
+            if (moment(dateValue).format("L") !== moment().format("L")) {
+              setDateValue((prev) => {
                 const newDate = new Date(prev);
                 newDate.setDate(newDate.getDate() + 1);
                 return newDate;
-              });}
+              });
+            }
           }}
-         disabled={moment(dateValue).format("L")==moment().format("L")? true:false} className="slider__prev border-[.5px] border-[#99999995] rounded-full w-10 h-10  shadow-lg  text-xl !bg-white text-blue hover:!bg-white/90">
+            disabled={moment(dateValue).format("L") == moment().format("L") ? true : false} className="slider__prev border-[.5px] border-[#99999995] rounded-full w-10 h-10  shadow-lg  text-xl !bg-white text-blue hover:!bg-white/90">
             <ChevronRightIcon
               className="w-6 h-6 "
             />
-          </ActionIcon> <ActionIcon onClick={()=>{
-              setDateValue((prev) => {
-                const newDate = new Date(prev);
-                newDate.setDate(newDate.getDate() - 1);
-                return newDate;
-              });
+          </ActionIcon> <ActionIcon onClick={() => {
+            setDateValue((prev) => {
+              const newDate = new Date(prev);
+              newDate.setDate(newDate.getDate() - 1);
+              return newDate;
+            });
           }} className="slider__next  border-[.5px] border-[#99999995] rounded-full w-10 h-10  shadow-lg  text-xl !bg-white text-blue hover:!bg-white/90">
             <ChevronLeftIcon
               className="w-6 h-6 "

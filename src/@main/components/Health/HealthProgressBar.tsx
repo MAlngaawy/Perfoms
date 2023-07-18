@@ -17,6 +17,10 @@ import { ArrowDownIcon } from "@heroicons/react/24/outline";
 import { useMediaQuery } from "@mantine/hooks";
 import { useFitDataActivityMutation } from "~/app/store/health/healthApi";
 import moment from "moment";
+import { useUserQuery } from "~/app/store/user/userApi";
+import { useSelector } from "react-redux";
+import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
+import { Player } from "~/app/store/types/parent-types";
 
 type Props = {};
 
@@ -39,6 +43,8 @@ const HealthProgressBar = (props: Props) => {
   const LargeScreen = useMediaQuery("(min-width: 992px)");
   const MidScreen = useMediaQuery("(min-width: 768px)");
   const SmallScreen = useMediaQuery("(max-width: 768px)");
+  const { data: user } = useUserQuery({});
+  const selectedPlayer: Player = useSelector(selectedPlayerFn);
 
   const [
     FitDataActivity,
@@ -93,11 +99,18 @@ const HealthProgressBar = (props: Props) => {
     }
   }
   React.useEffect(() => {
-    FitDataActivity({
+    user?.user_type==="Player"?
+     FitDataActivity({
       dataType: "activity-data",
       Date: moment(dateValue).format("L"),
-    });
-  }, [dateValue]);
+      playerId:user?.id
+    }):  FitDataActivity({
+      dataType: "activity-data",
+      Date: moment(dateValue).format("L"),
+      playerId:selectedPlayer?.id
+    })
+   
+  }, [dateValue,user,selectedPlayer]);
   React.useEffect(() => {
     if (isSuccess) {
       const outputData: OutputDataItem[] = convertData(DataActivity);

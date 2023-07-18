@@ -28,8 +28,7 @@ type Analytics = { Gender?: string | undefined;
 }
 
 const HealthCalories = ({ player_id }: Props) => {
-  const [maxCalories, setMaxCalories] = useState(1000);
-
+  const [maxCalories, setMaxCalories] = useState(1000); 
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
   const [playerInfoData, setPlayerInfoData] = useState<any>({
     olympic_weight: "70",
@@ -109,11 +108,18 @@ const HealthCalories = ({ player_id }: Props) => {
   const [data, setData] = React.useState({ progressValue: 0, Calories: 0 });
 
   React.useEffect(() => {
-    fitData({
-      dataType: "com.google.calories.expended",
-      Date: moment(dateValue).format("L"),
-    });
-  }, [dateValue]);
+   
+      user?.user_type==="Player"?
+      fitData({
+     dataType: "com.google.calories.expended",
+     Date: moment(dateValue).format("L"),
+     playerId:user?.id
+   }):  fitData({
+     dataType: "com.google.calories.expended",
+     Date: moment(dateValue).format("L"),
+     playerId:selectedPlayer?.id
+   })
+  }, [dateValue,user, selectedPlayer]);
   const calculateCalories = React.useCallback(() => {
     const Calories = [
       ...DataCalories?.map(
@@ -128,7 +134,7 @@ const HealthCalories = ({ player_id }: Props) => {
 
     const progressValue = (+Calories / +maxCalories) * 100;
     return { progressValue: +progressValue || 0, Calories: +Calories || 0 };
-  }, [dateValue, DataCalories]);
+  }, [dateValue,user, selectedPlayer, DataCalories]);
 
   React.useEffect(() => {
     if (isSuccess) {

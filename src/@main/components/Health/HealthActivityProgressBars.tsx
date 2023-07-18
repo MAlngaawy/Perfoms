@@ -8,9 +8,17 @@ import { useFitDataActivityMutation } from "~/app/store/health/healthApi";
 import moment from "moment";
 import { number } from "yup";
 import HealthActivityProgressBar from "./HealthActivityProgressBar";
+import { useUserQuery } from "~/app/store/user/userApi";
+import { useSelector } from "react-redux";
+import { Player } from "~/app/store/types/parent-types";
+import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 
 type Props = {};
 const HealthActivityProgressBars = (props: Props) => {
+  const { data: user } = useUserQuery({});
+  const selectedPlayer: Player = useSelector(selectedPlayerFn);
+
+  
   const [
     FitDataActivity,
     { data: DataActivity, isSuccess, isLoading, isError, error },
@@ -21,12 +29,21 @@ const HealthActivityProgressBars = (props: Props) => {
   const [maxValue, setMaxValue] = React.useState<number>(1);
 
   React.useEffect(() => {
+
+    user?.user_type==="Player"?
     FitDataActivity({
-      dataType: "activity-data",
-      Date: moment(dateValue).format("L"),
-      type: "bar",
-    });
-  }, [dateValue]);
+     dataType: "activity-data",
+     Date: moment(dateValue).format("L"),
+     playerId:user?.id,
+     type: "bar",
+   }):  FitDataActivity({
+     dataType: "activity-data",
+     Date: moment(dateValue).format("L"),
+     playerId:selectedPlayer?.id,
+     type: "bar",
+   })
+     
+  }, [dateValue,user, selectedPlayer]);
 
   React.useEffect(() => {
     if (isSuccess) {
