@@ -1,24 +1,27 @@
-import { Avatar, Grid } from "@mantine/core";
-import { useNavigate } from "react-router-dom";
+import { Grid } from "@mantine/core";
 import UpcomingEventsCard from "~/@main/components/UpcomingEventsCard";
 import { useSelector } from "react-redux";
 import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
-import {
-  useCoachTeamInfoQuery,
-  useGetTeamPlayersQuery,
-} from "~/app/store/coach/coachApi";
+import { useGetTeamPlayersQuery } from "~/app/store/coach/coachApi";
 import HomeTeamInfoCard from "~/@main/components/HomeTeamInfoCard";
 import NoTeamComp from "~/@main/components/NoTeamComp";
 import TeamCalendar from "../../SubPages/SingleTeam/Components/TeamCalendar";
-import { useGetTeamInfoQuery, useUserQuery } from "~/app/store/user/userApi";
+import {
+  useGeneralSportsQuery,
+  useGetFilteredPlayersQuery,
+  useGetTeamInfoQuery,
+  useUserQuery,
+} from "~/app/store/user/userApi";
 import AddPlayer from "../../SubPages/SingleTeam/Components/AddPLayerToTeam";
 import { SinglePlayer } from "../../SubPages/SingleTeam/Components/TeamPlayers";
+import { useEffect, useState } from "react";
 
 type Props = {};
 
 const TeamInfo = (props: Props) => {
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const { data: user } = useUserQuery({});
+  const [sportId, setSportId] = useState(0);
 
   const { data: coachTeamPlayers } = useGetTeamPlayersQuery(
     { team_id: selectedPlayerTeam?.id },
@@ -28,6 +31,25 @@ const TeamInfo = (props: Props) => {
   const { data: teamInfo } = useGetTeamInfoQuery({
     team_id: selectedPlayerTeam?.id,
   });
+
+  const { data: sports } = useGeneralSportsQuery({});
+
+  useEffect(() => {
+    if (teamInfo) {
+      if (sports) {
+        const currentTeamSportId: number = sports?.results.filter(
+          (sport) => sport.name === teamInfo?.sport
+        )[0].id;
+        setSportId(currentTeamSportId);
+      }
+    }
+  }, [teamInfo, sports]);
+
+  const { data: filteredPlayers, refetch: refetchFilteredPlayers } =
+    useGetFilteredPlayersQuery({
+      team_id: selectedPlayerTeam.id,
+      sport_id: sportId,
+    });
 
   return (
     <>
@@ -72,6 +94,8 @@ const TeamInfo = (props: Props) => {
                     );
                   })}
                 <AddPlayer
+                  filteredPlayers={filteredPlayers}
+                  refetchFilteredPlayers={refetchFilteredPlayers}
                   teamInfo={teamInfo}
                   teamPlayers={coachTeamPlayers}
                   coach_team_id={selectedPlayerTeam?.id}

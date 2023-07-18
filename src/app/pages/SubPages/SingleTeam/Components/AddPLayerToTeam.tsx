@@ -13,56 +13,31 @@ import {
   useAdminAddTeamPlayerMutation,
   useAdminPlayersQuery,
 } from "~/app/store/clubManager/clubManagerApi";
-import {
-  SuperVisorPlayers,
-  SuperVisorTeamInfo,
-  Team,
-} from "~/app/store/types/supervisor-types";
-import {
-  useGeneralSportsQuery,
-  useGetFilteredPlayersQuery,
-  useUserQuery,
-} from "~/app/store/user/userApi";
+import { Team } from "~/app/store/types/supervisor-types";
+import { useUserQuery } from "~/app/store/user/userApi";
 import AppUtils from "~/@main/utils/AppUtils";
-import {
-  useAllClubPlayersQuery,
-  useCoachAddTeamPlayerMutation,
-} from "~/app/store/coach/coachApi";
+import { useCoachAddTeamPlayerMutation } from "~/app/store/coach/coachApi";
 import { CoachTeamInfo } from "~/app/store/types/coach-types";
 
 type Props = {
   teamPlayers: TeamPlayers | undefined;
   coach_team_id?: number;
   teamInfo?: Team;
+  filteredPlayers?: TeamPlayer[];
+  refetchFilteredPlayers: any;
 };
 
-const AddPlayer = ({ coach_team_id, teamInfo }: Props) => {
+const AddPlayer = ({
+  coach_team_id,
+  teamInfo,
+  filteredPlayers,
+  refetchFilteredPlayers,
+}: Props) => {
   const [opened, setOpened] = useState(false);
   const [filteredPlayersData, setFilteredPlayersData] = useState<any>();
   const { data: user } = useUserQuery({});
   const [loading, setLoading] = useState<boolean>(false);
   const { team_id } = useParams();
-  const [sportId, setSportId] = useState(0);
-
-  const { data: sports } = useGeneralSportsQuery({});
-
-  useEffect(() => {
-    if (teamInfo) {
-      if (sports) {
-        const currentTeamSportId: number = sports?.results.filter(
-          (sport) => sport.name === teamInfo?.sport
-        )[0].id;
-        setSportId(currentTeamSportId);
-      }
-    }
-  }, [teamInfo, sports]);
-
-  const currentTeamId = team_id;
-
-  const { data: filteredPlayers, refetch } = useGetFilteredPlayersQuery({
-    team_id: currentTeamId,
-    sport_id: sportId,
-  });
 
   useEffect(() => {
     if (filteredPlayers) {
@@ -71,7 +46,6 @@ const AddPlayer = ({ coach_team_id, teamInfo }: Props) => {
   }, [filteredPlayers]);
 
   const {
-    register,
     handleSubmit,
     formState: { errors },
     reset,
@@ -156,7 +130,7 @@ const AddPlayer = ({ coach_team_id, teamInfo }: Props) => {
     setOpened(false);
     reset({ player: "" });
     setTimeout(() => {
-      refetch();
+      refetchFilteredPlayers();
     }, 2000);
   };
 

@@ -80,7 +80,7 @@ export const userApi = createApi({
     "achievements",
     "kpis",
     "media",
-    "player",
+    "players",
   ],
   endpoints: ({ query, mutation }) => ({
     user: query<User, any>({
@@ -436,7 +436,7 @@ export const userApi = createApi({
       query: ({ player_id }) => ({
         url: `player-educations/${player_id}/`,
       }),
-      providesTags: ["player"],
+      providesTags: ["players"],
     }),
 
     addPlayerEducation: mutation<
@@ -448,14 +448,14 @@ export const userApi = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["player"],
+      invalidatesTags: ["players"],
     }),
 
     playerSkills: query<Courses, { player_id: string | undefined }>({
       query: ({ player_id }) => ({
         url: `player-skills/${player_id}/`,
       }),
-      providesTags: ["player"],
+      providesTags: ["players"],
     }),
 
     addPlayerSkills: mutation<AddCourse, { player_id: number | undefined }>({
@@ -464,7 +464,7 @@ export const userApi = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["player"],
+      invalidatesTags: ["players"],
     }),
 
     deleteSkill: mutation<Course, { id: number }>({
@@ -472,7 +472,7 @@ export const userApi = createApi({
         url: `skills/${id}/`,
         method: "DELETE",
       }),
-      invalidatesTags: ["player"],
+      invalidatesTags: ["players"],
     }),
 
     /**Player Leagues */
@@ -481,7 +481,7 @@ export const userApi = createApi({
       query: ({ player_id }) => ({
         url: `player-leagues/${player_id}/`,
       }),
-      providesTags: ["player"],
+      providesTags: ["players"],
     }),
 
     addPlayerLeague: mutation<
@@ -493,7 +493,7 @@ export const userApi = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["player"],
+      invalidatesTags: ["players"],
     }),
 
     deleteLeague: mutation<PlayerLeague, { id: number }>({
@@ -501,7 +501,7 @@ export const userApi = createApi({
         url: `leagues/${id}/`,
         method: "DELETE",
       }),
-      invalidatesTags: ["player"],
+      invalidatesTags: ["players"],
     }),
 
     /**Player Info */
@@ -513,7 +513,7 @@ export const userApi = createApi({
         url: `player-info/${player_id}/`,
         params,
       }),
-      providesTags: ["player"],
+      providesTags: ["players"],
     }),
 
     updatePlayer: mutation<
@@ -525,7 +525,7 @@ export const userApi = createApi({
         method: "PATCH",
         body,
       }),
-      invalidatesTags: ["player"],
+      invalidatesTags: ["players"],
     }),
 
     /**Player Info */
@@ -537,7 +537,7 @@ export const userApi = createApi({
         url: `${player_id}/player-teams/`,
         params,
       }),
-      providesTags: ["player"],
+      providesTags: ["players"],
     }),
 
     // Player Courses
@@ -549,7 +549,7 @@ export const userApi = createApi({
         url: `player-courses/${player_id}`,
         params,
       }),
-      providesTags: ["player", "courses"],
+      providesTags: ["players", "courses"],
     }),
 
     AddPlayerCourse: mutation<
@@ -561,7 +561,7 @@ export const userApi = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["player"],
+      invalidatesTags: ["players"],
     }),
 
     // Achievements
@@ -573,7 +573,7 @@ export const userApi = createApi({
         url: `player-achievements/${player_id}`,
         params,
       }),
-      providesTags: ["player", "achievements"],
+      providesTags: ["players", "achievements"],
     }),
     addPlayerAchievements: mutation<
       AddAchievements,
@@ -584,7 +584,7 @@ export const userApi = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["player"],
+      invalidatesTags: ["players"],
     }),
 
     // Event Queries
@@ -596,7 +596,7 @@ export const userApi = createApi({
         url: `player-events/${player_id}`,
         params,
       }),
-      providesTags: ["player"],
+      providesTags: ["players"],
     }),
 
     deleteEvent: mutation<{}, { event_id: number | string | undefined }>({
@@ -604,7 +604,7 @@ export const userApi = createApi({
         url: `events/${event_id}/delete/`,
         method: "DELETE",
       }),
-      invalidatesTags: ["player"],
+      invalidatesTags: ["players"],
     }),
 
     removeEventVideo: mutation<{}, { event_id: number | string | undefined }>({
@@ -613,7 +613,7 @@ export const userApi = createApi({
         method: "PATCH",
         body,
       }),
-      invalidatesTags: ["player"],
+      invalidatesTags: ["players"],
     }),
 
     getEventFiles: query<EventFiles, { event_id: number | string | undefined }>(
@@ -721,7 +721,7 @@ export const userApi = createApi({
         url: `sports/${sport_id}/teams/${team_id}/filtered-players/`,
         params,
       }),
-      providesTags: ["player"],
+      providesTags: ["players"],
     }),
   }),
 });

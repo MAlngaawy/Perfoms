@@ -6,7 +6,11 @@ import AppIcons from "../../../../../@main/core/AppIcons";
 import AddPlayer from "./AddPLayerToTeam";
 import DeletePlayerFromTeam from "./DeletePlayerFromTeam";
 import { useNavigate } from "react-router-dom";
-import { useUserQuery } from "~/app/store/user/userApi";
+import {
+  useGeneralSportsQuery,
+  useGetFilteredPlayersQuery,
+  useUserQuery,
+} from "~/app/store/user/userApi";
 import { TeamPlayers } from "~/app/store/types/clubManager-types";
 import { useEffect, useState } from "react";
 import {
@@ -14,11 +18,9 @@ import {
   useAdminTeamPlaersQuery,
 } from "~/app/store/clubManager/clubManagerApi";
 import AppUtils from "~/@main/utils/AppUtils";
-import { useRemoveAddTeamPlayerMutation } from "~/app/store/coach/coachApi";
+import { useRemoveTeamPlayerMutation } from "~/app/store/coach/coachApi";
 import { Avatar } from "@mantine/core";
-import { SuperVisorTeamInfo, Team } from "~/app/store/types/supervisor-types";
-import { CoachTeamInfo } from "~/app/store/types/coach-types";
-import TeamInfo from "../../../coachHome/components/TeamInfo";
+import { Team } from "~/app/store/types/supervisor-types";
 
 type Props = {
   teamId: string;
@@ -38,6 +40,27 @@ const TeamPlayersComponent = ({ teamInfo, teamId }: Props) => {
     { skip: !teamId || user?.user_type !== "Admin" }
   );
 
+  const [sportId, setSportId] = useState(0);
+
+  const { data: sports } = useGeneralSportsQuery({});
+
+  useEffect(() => {
+    if (teamInfo) {
+      if (sports) {
+        const currentTeamSportId: number = sports?.results.filter(
+          (sport) => sport.name === teamInfo?.sport
+        )[0].id;
+        setSportId(currentTeamSportId);
+      }
+    }
+  }, [teamInfo, sports]);
+
+  const { data: filteredPlayers, refetch: refetchFilteredPlayers } =
+    useGetFilteredPlayersQuery({
+      team_id: teamId,
+      sport_id: sportId,
+    });
+
   useEffect(() => {
     if (superPlayers) setPlayers(superPlayers);
     if (adminPlayers) setPlayers(adminPlayers);
@@ -56,22 +79,34 @@ const TeamPlayersComponent = ({ teamInfo, teamId }: Props) => {
                 id={player.id}
                 name={player.name}
                 image={player.icon}
+                refetchFilteredPlayers={refetchFilteredPlayers}
               />
             );
           })}
-        <AddPlayer teamInfo={teamInfo} teamPlayers={players} />
+        <AddPlayer
+          filteredPlayers={filteredPlayers}
+          refetchFilteredPlayers={refetchFilteredPlayers}
+          teamInfo={teamInfo}
+          teamPlayers={players}
+        />
       </div>
     </div>
   );
 };
 
-export const SinglePlayer = ({ id, image, name, teamId }: any) => {
+export const SinglePlayer = ({
+  id,
+  image,
+  name,
+  teamId,
+  refetchFilteredPlayers,
+}: any) => {
   const navigate = useNavigate();
   const { data: user } = useUserQuery(null);
 
   const [superRemovePlayer] = useSuperRemoveTeamPlayerMutation();
   const [adminRemovePlayer] = useAdminRemoveTeamPlayerMutation();
-  const [coachRemovePlayer] = useRemoveAddTeamPlayerMutation();
+  const [coachRemovePlayer] = useRemoveTeamPlayerMutation();
 
   const removeTeamPlayer = (teamId: number, playerId: number) => {
     if (user?.user_type === "Supervisor") {
@@ -156,6 +191,10 @@ export const SinglePlayer = ({ id, image, name, teamId }: any) => {
           );
         });
     }
+
+    setTimeout(() => {
+      refetchFilteredPlayers();
+    }, 2000);
   };
 
   return (
@@ -177,30 +216,12 @@ export const SinglePlayer = ({ id, image, name, teamId }: any) => {
           <AppIcons className="w-5 h-5 text-white" icon="UserIcon:outline" />
           <span className="text-white text-xs">View profile</span>
         </div>
-        {user?.user_type === "Admin" && (
-          <DeletePlayerFromTeam
-            deleteFun={() => removeTeamPlayer(teamId, id)}
-            id={id}
-            name={name}
-            type="player"
-          />
-        )}
-        {user?.user_type === "Supervisor" && (
-          <DeletePlayerFromTeam
-            deleteFun={() => removeTeamPlayer(teamId, id)}
-            id={id}
-            name={name}
-            type="player"
-          />
-        )}
-        {user?.user_type === "Coach" && (
-          <DeletePlayerFromTeam
-            deleteFun={() => removeTeamPlayer(teamId, id)}
-            id={id}
-            name={name}
-            type="player"
-          />
-        )}
+        <DeletePlayerFromTeam
+          deleteFun={() => removeTeamPlayer(teamId, id)}
+          id={id}
+          name={name}
+          type="player"
+        />
       </div>
       <Avatar className="w-28 h-28" src={image} alt="player Image" />
       <div className="w-28">

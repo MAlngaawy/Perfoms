@@ -64,7 +64,7 @@ const HomeTeamInfoCard = (props: Props) => {
                       case "F":
                         return "Female";
                       case "B":
-                        return "Both";
+                        return "Mixed";
                       default:
                         return "Gender";
                     }

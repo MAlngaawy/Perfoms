@@ -457,7 +457,7 @@ export const coachApi = createApi({
       invalidatesTags: ["players"],
     }),
 
-    removeAddTeamPlayer: mutation<TeamPlayer, {}>({
+    removeTeamPlayer: mutation<TeamPlayer, {}>({
       query: ({ ...body }) => ({
         url: `teams/remove-team-player/`,
         method: "POST",
@@ -508,6 +508,6 @@ export const {
   useCoachTeamCalendarQuery,
   useAllClubPlayersQuery,
   useCoachAddTeamPlayerMutation,
-  useRemoveAddTeamPlayerMutation,
+  useRemoveTeamPlayerMutation,
   useCoachUpdateAttendanceSessionMutation,
 } = coachApi;
