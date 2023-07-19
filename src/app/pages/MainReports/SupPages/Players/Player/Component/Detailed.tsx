@@ -41,7 +41,11 @@ const Detailed = ({ reportType }: Props) => {
   return (
     <>
       {reportType === "Performances" ? (
-        <PrintComp documentTitle={playerData?.name || "Player Name"}>
+        <PrintComp
+          documentTitle={
+            playerData?.name || selectedPlayer.name || "Player Name"
+          }
+        >
           <div className="bg-pagesBg">
             <Grid columns={12} gutter={"sm"}>
               <Grid.Col sm={3} md={2.5} span={12}>
@@ -88,7 +92,7 @@ const Detailed = ({ reportType }: Props) => {
           </div>
         </PrintComp>
       ) : reportType === "Attendances" ? (
-        <PrintComp documentTitle={selectedPlayer.name}>
+        <PrintComp documentTitle={playerData?.name || selectedPlayer.name}>
           <div className="attendances">
             <Grid gutter={"sm"}>
               <Grid.Col span={12} sm={2.5}>
