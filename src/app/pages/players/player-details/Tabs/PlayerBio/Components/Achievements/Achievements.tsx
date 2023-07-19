@@ -18,7 +18,7 @@ const Achievements = (props: Props) => {
   const editMode = useContext(EditModeContext);
   const { id: player_id } = useParams();
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
-  const id = player_id || JSON.stringify(selectedPlayer.id);
+  const id = player_id || JSON.stringify(selectedPlayer?.id);
 
   const { data: playerAchievements } = useGetPlayerAchievementsQuery(
     { player_id: id },

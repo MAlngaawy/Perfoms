@@ -24,9 +24,9 @@ const AttendancesSmallCards = ({ player_id }: Props) => {
 
   const { data: selectedTeamInfo } = useGetTeamInfoQuery(
     {
-      team_id: selectedPlayerTeam.id,
+      team_id: selectedPlayerTeam?.id,
     },
-    { skip: !selectedPlayerTeam.id }
+    { skip: !selectedPlayerTeam?.id }
   );
 
   const { data: parentPlayerAttendance } = usePlayerCalendarQuery(

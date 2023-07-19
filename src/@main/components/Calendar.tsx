@@ -32,7 +32,7 @@ const CustomCalendar = ({ pageName, player_id, hide = false }: Props) => {
   const location = useLocation();
 
   const { data: teamInfo } = useGetTeamInfoQuery({
-    team_id: selectedPlayerTeam.id,
+    team_id: selectedPlayerTeam?.id,
   });
 
   useEffect(() => {

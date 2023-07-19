@@ -39,9 +39,9 @@ const AttendanceDaysReports = ({ player_id }: Props) => {
   const { data: user } = useUserQuery({});
   const { data: selectedTeamInfo } = useGetTeamInfoQuery(
     {
-      team_id: selectedPlayerTeam.id,
+      team_id: selectedPlayerTeam?.id,
     },
-    { skip: !selectedPlayerTeam.id }
+    { skip: !selectedPlayerTeam?.id }
   );
 
   const [playerAttendance, setPlayerAttendance] = useState<PlayerAttendances>();

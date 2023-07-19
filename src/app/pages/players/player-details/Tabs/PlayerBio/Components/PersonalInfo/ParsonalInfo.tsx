@@ -27,7 +27,7 @@ const ParsonalInfo = (props: Props) => {
   const { data: user } = useUserQuery({});
   const editMode = useContext(EditModeContext);
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
-  const id = player_id || JSON.stringify(selectedPlayer.id);
+  const id = player_id || JSON.stringify(selectedPlayer?.id);
   const [deleteEducation] = useDeleteUserEducationMutation();
   const [deleteSkill] = useDeleteSkillMutation();
   const { data: playerEducations, refetch: refetchEducation } =

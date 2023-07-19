@@ -27,7 +27,7 @@ type Props = {
 const Detailed = ({ reportType }: Props) => {
   const selectedPlayer = useSelector(selectedPlayerFn);
   const { id: player_id } = useParams();
-  const id = player_id || JSON.stringify(selectedPlayer.id);
+  const id = player_id || JSON.stringify(selectedPlayer?.id);
   const { data: playerCertificates } = usePlayerCertificatesQuery(
     { player_id: id },
     { skip: !id }

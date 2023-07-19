@@ -47,7 +47,7 @@ const TeamInfo = (props: Props) => {
 
   const { data: filteredPlayers, refetch: refetchFilteredPlayers } =
     useGetFilteredPlayersQuery({
-      team_id: selectedPlayerTeam.id,
+      team_id: selectedPlayerTeam?.id,
       sport_id: sportId,
     });
 

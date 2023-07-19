@@ -87,7 +87,7 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
       <div className="flex flex-col gap-x-10 xs:flex-row sm:flex-col justify-around">
         <div
           onClick={() => {
-            navigate(`/players/${selectedPlayer.id}`);
+            navigate(`/players/${selectedPlayer?.id}`);
           }}
           className="img my-2 transform hover:scale-105 cursor-pointer transition-all"
         >

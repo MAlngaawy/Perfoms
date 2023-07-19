@@ -24,7 +24,7 @@ const Experiences = (props: Props) => {
 
   const { id: player_id } = useParams();
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
-  const id = player_id || JSON.stringify(selectedPlayer.id);
+  const id = player_id || JSON.stringify(selectedPlayer?.id);
   const { data: playerLeagues } = usePlayerLeagueQuery(
     { player_id: id },
     { skip: !id }

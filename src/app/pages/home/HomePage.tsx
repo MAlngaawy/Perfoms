@@ -189,7 +189,7 @@ const HomePage = () => {
             <HealthPageContent />
           </div>
         ) : reportType === "Performances" && !detailed ? (
-          <PrintComp documentTitle={selectedPlayer.name}>
+          <PrintComp documentTitle={selectedPlayer?.name}>
             <div className="bg-pagesBg">
               <Grid columns={12} gutter={"xs"}>
                 <Grid.Col sm={3} md={2.5} span={12}>
@@ -236,7 +236,7 @@ const HomePage = () => {
             </div>
           </PrintComp>
         ) : reportType === "Attendances" && !detailed ? (
-          <PrintComp documentTitle={selectedPlayer.name}>
+          <PrintComp documentTitle={selectedPlayer?.name}>
             <div className="attendances">
               <Grid gutter={"xs"}>
                 <Grid.Col span={12} md={2.5}>
@@ -249,7 +249,7 @@ const HomePage = () => {
                 <Grid.Col span={12} md={9.5}>
                   <Grid gutter={"xs"}>
                     <Grid.Col span={12}>
-                      <AttendancesSmallCards player_id={selectedPlayer.id} />
+                      <AttendancesSmallCards player_id={selectedPlayer?.id} />
                     </Grid.Col>
                     {/* AtPlayerCertificatePagetedance Summary Table */}
                     <Grid.Col span={12} sm={7}>

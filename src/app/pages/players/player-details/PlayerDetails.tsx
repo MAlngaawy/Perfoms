@@ -15,7 +15,7 @@ const EditModeContext = createContext<boolean>(false);
 const PlayerDetails = () => {
   const { id: player_id } = useParams();
   const selectedPlayer = useSelector(selectedPlayerFn);
-  const id = player_id || JSON.stringify(selectedPlayer.id);
+  const id = player_id || JSON.stringify(selectedPlayer?.id);
   const [checked, setChecked] =
     useState<"Reports" | "Bio" | "Media" | "Analytics" | "Health">("Bio");
   const [editModeState, setEditModeState] = useState(false);

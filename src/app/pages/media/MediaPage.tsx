@@ -86,7 +86,9 @@ const MediaPage = () => {
         //@ts-ignore
         ["Supervisor", "Admin"].includes(user?.user_type) ? (
           <AddEventForm
-            teamID={JSON.stringify(selectedPlayerTeam && selectedPlayerTeam.id)}
+            teamID={JSON.stringify(
+              selectedPlayerTeam && selectedPlayerTeam?.id
+            )}
             refetch={() => {
               if (superEvents) superRefetch();
               if (adminEvents) adminRefetch();
@@ -152,7 +154,7 @@ const MediaPage = () => {
               {events.results.map((data) => {
                 return (
                   <MediaCard
-                    teamId={selectedTeam || selectedPlayerTeam.id}
+                    teamId={selectedTeam || selectedPlayerTeam?.id}
                     key={data.id}
                     event={data}
                   />
