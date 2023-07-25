@@ -1,6 +1,6 @@
 import { BaseGetAllType } from "./base-types";
 import { Details, Player } from "./parent-types";
-import { Team } from "~/app/store/types/coach-types";
+import { Team } from "~/app/store/types/supervisor-types";
 import { Data } from "~/app/pages/players/player-details/Tabs/PlayerDataAnalytics/types";
 export type LoginUserBody = {
   mobile: string;

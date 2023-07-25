@@ -1,6 +1,6 @@
 import { Button } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
-import { Team } from "~/app/store/types/coach-types";
+import { Team } from "~/app/store/types/supervisor-types";
 import classNames from "classnames";
 import { useGetCoachEducationsQuery } from "~/app/store/user/userApi";
 

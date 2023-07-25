@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AppIcons from "~/@main/core/AppIcons";
 import { Menu } from "@mantine/core";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,20 +7,10 @@ import {
   selectedPlayerTeamFn,
   selectPlayerTeam,
 } from "~/app/store/parent/parentSlice";
-import {
-  usePlayerTeamsQuery,
-  useTeamEventsQuery,
-} from "~/app/store/parent/parentApi";
-import {
-  useCoachTeamEventQuery,
-  useMyTeamsQuery,
-} from "~/app/store/coach/coachApi";
-import { PlayerTeams } from "~/app/store/types/parent-types";
+import { usePlayerTeamsQuery } from "~/app/store/parent/parentApi";
+import { useMyTeamsQuery } from "~/app/store/coach/coachApi";
 import { useGetPlayerTeamsQuery, useUserQuery } from "~/app/store/user/userApi";
-import {
-  useSuperTeamsQuery,
-  useSuprtEventsQuery,
-} from "~/app/store/supervisor/supervisorMainApi";
+import { useSuperTeamsQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { Team } from "~/app/store/types/supervisor-types";
 import { useAdminTeamsQuery } from "~/app/store/clubManager/clubManagerApi";
 
@@ -68,23 +58,31 @@ const TeamFilter = ({ adminSportId, player_id }: Props) => {
   );
 
   useEffect(() => {
+    console.log("Situation Teams", teams);
+
+    if (teams) {
+      console.log("Situation Three");
+      dispatch(selectPlayerTeam(teams[0]));
+    }
+  }, [teams]);
+
+  useEffect(() => {
     if (!player_id) {
+      console.log("Situation One");
+
       if (superTeams) setTeams(superTeams.results);
       if (coachTeams) setTeams(coachTeams.results);
       if (playerTeams) setTeams(playerTeams.results);
       if (adminTeams) setTeams(adminTeams.results);
     }
 
-    if (player_id) {
-      console.log("userGetPlayerTeams", userGetPlayerTeams);
-      //@ts-ignore
+    if (player_id && userGetPlayerTeams) {
+      console.log("Situation Two");
       setTeams(userGetPlayerTeams?.results);
     }
 
-    if (teams) {
-      dispatch(selectPlayerTeam(teams[0]));
-    }
-    if (playerTeams)
+    if (playerTeams) {
+      console.log("Situation Four");
       dispatch(
         selectPlayerTeam(
           localStorage.getItem("SelectedPlayerTeam")
@@ -95,7 +93,8 @@ const TeamFilter = ({ adminSportId, player_id }: Props) => {
               }
         )
       );
-  }, [playerTeams, superTeams, coachTeams, adminTeams, teams]);
+    }
+  }, [playerTeams, superTeams, coachTeams, adminTeams, player_id]);
 
   return (
     <Menu

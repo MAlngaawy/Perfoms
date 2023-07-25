@@ -9,7 +9,6 @@ import {
   PlayerParent,
   SendBulkNotifications,
   sendNotifications,
-  Team,
   TeamAttendanceDays,
   TeamKpiPlayersStatistics,
   TeamKpisStatistics,
@@ -44,6 +43,7 @@ import {
   SuperVisorTeamPlayers,
   TeamAttendance,
   TeamPlayer,
+  Team,
 } from "../types/supervisor-types";
 
 export const coachApi = createApi({

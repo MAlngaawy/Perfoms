@@ -99,11 +99,11 @@ const TeamsComponent = (props: Props) => {
         ))}
       {teams?.results.map((team) => {
         return (
-          <div className="relative">
+          <div className="relative hover:shadow-md transition-all delay-100 ease-linear">
             <Link
               to={`teams/${team.id}`}
               key={team.id}
-              className="inline-block h-full"
+              className="inline-block h-full w-full"
             >
               <TeamCard team={team} />
             </Link>

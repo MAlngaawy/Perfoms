@@ -1,9 +1,9 @@
-import { Coach, Team } from "./coach-types";
+import { Coach } from "./coach-types";
 import { BaseGetAllType } from "./base-types";
 import { User } from "./user-types";
 import { Event } from "./events-types";
 import { Attendance } from "./attendance-types";
-import { daySessions } from "./supervisor-types";
+import { Team, daySessions } from "./supervisor-types";
 import { Data } from "~/app/pages/players/player-details/Tabs/PlayerDataAnalytics/types";
 
 export type Subscription = {
