@@ -56,33 +56,30 @@ const TeamFilter = ({ adminSportId, player_id }: Props) => {
     { club_id: user?.club, sport_id: adminSportId ? +adminSportId : 0 },
     { skip: user?.user_type !== "Admin" || !user?.club }
   );
-
-  useEffect(() => {
-    console.log("Situation Teams", teams);
-
-    if (teams) {
-      console.log("Situation Three");
-      dispatch(selectPlayerTeam(teams[0]));
-    }
-  }, [teams]);
-
   useEffect(() => {
     if (!player_id) {
-      console.log("Situation One");
-
       if (superTeams) setTeams(superTeams.results);
       if (coachTeams) setTeams(coachTeams.results);
       if (playerTeams) setTeams(playerTeams.results);
       if (adminTeams) setTeams(adminTeams.results);
-    }
-
-    if (player_id && userGetPlayerTeams) {
-      console.log("Situation Two");
+    } else if (userGetPlayerTeams) {
       setTeams(userGetPlayerTeams?.results);
+    }
+  }, [
+    playerTeams,
+    superTeams,
+    coachTeams,
+    adminTeams,
+    player_id,
+    userGetPlayerTeams,
+  ]);
+
+  useEffect(() => {
+    if (teams) {
+      dispatch(selectPlayerTeam(teams[0]));
     }
 
     if (playerTeams) {
-      console.log("Situation Four");
       dispatch(
         selectPlayerTeam(
           localStorage.getItem("SelectedPlayerTeam")
@@ -94,7 +91,7 @@ const TeamFilter = ({ adminSportId, player_id }: Props) => {
         )
       );
     }
-  }, [playerTeams, superTeams, coachTeams, adminTeams, player_id]);
+  }, [teams]);
 
   return (
     <Menu
