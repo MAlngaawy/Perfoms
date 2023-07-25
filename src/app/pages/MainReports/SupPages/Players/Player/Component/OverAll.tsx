@@ -22,6 +22,7 @@ import {
   useUserQuery,
 } from "~/app/store/user/userApi";
 import { axiosInstance } from "~/app/configs/dataService";
+import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {
   reportType: string;
@@ -84,7 +85,10 @@ const OverAll = ({ playerInfo, reportType }: Props) => {
                 <Avatar src={playerInfo?.icon} className="h-full" size="xl" />
                 <div className="flex flex-col ">
                   <Info label="name" value={playerInfo?.name} />
-                  <Info label="Age" value={playerInfo?.dob} />
+                  <Info
+                    label="Age"
+                    value={AppUtils.calculateAge(playerInfo?.dob)}
+                  />
                 </div>
               </div>
               {playerInfo?.sport.toLocaleLowerCase() === "taekwondo" ? (

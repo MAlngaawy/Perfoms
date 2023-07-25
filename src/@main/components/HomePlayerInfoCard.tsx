@@ -15,6 +15,7 @@ import AppIcons from "../core/AppIcons";
 import { changemodalState } from "~/app/store/app/modalSlice";
 import EditPlayer from "~/app/pages/home/molecules/EditPlayer";
 import { useLocation, useNavigate } from "react-router-dom";
+import AppUtils from "../utils/AppUtils";
 
 type Props = {
   player_id?: number | string | undefined;
@@ -99,7 +100,10 @@ const HomePlayerInfoCard = ({ player_id }: Props) => {
         </div>
         <div className="infos">
           <Info label="Name" value={playerInfoData?.name} />
-          <Info label="Age" value={playerInfoData?.dob} />
+          <Info
+            label="Age"
+            value={AppUtils.calculateAge(playerInfoData?.dob)}
+          />
           <Info
             label="Gender"
             value={playerInfoData.gender === "M" ? "Male" : "Female"}

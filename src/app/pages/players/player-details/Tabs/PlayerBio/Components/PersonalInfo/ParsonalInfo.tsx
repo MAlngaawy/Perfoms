@@ -55,7 +55,7 @@ const ParsonalInfo = (props: Props) => {
         />
         <div className="h2 font-medium">INFO</div>
         <div className="data flex flex-wrap jus gap-4 mt-2">
-          <Info label="Age" value={playerData?.dob} />
+          <Info label="Age" value={AppUtils.calculateAge(playerData?.dob)} />
           <Info
             label="Gender"
             value={playerData?.gender === "M" ? "Male" : "Female"}
