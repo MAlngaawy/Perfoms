@@ -89,16 +89,18 @@ const UsersCard = ({
   };
   return (
     <div className="bg-white rounded-lg p-4 pt-0 ">
-      <div className="header flex flex-col sm:flex-row justify-between items-start py-4">
-        <h2 className="text-sm sm:text-lg text-perfGray1 mb-2 sm:mb-0">
-          {type === "Coach" ? "Coaches" : type + "s"} in the system
-        </h2>
-        <div className="  flex flex-wrap xs:flex-nowrap gap-6 justify-center items-center">
+      <div className="header flex flex-col sm:flex-row justify-between items-start py-4 gap-4">
+        <div className="flex justify-between items-center w-full">
+          <h2 className="text-sm sm:text-lg text-perfGray1 mb-2 sm:mb-0">
+            {type === "Coach" ? "Coaches" : type + "s"} in the system
+          </h2>
           {type === "Player" ? (
             <AddPlayerForm />
           ) : (
             <CreateUser userType={type} />
           )}
+        </div>
+        <div className="  flex flex-wrap xs:flex-nowrap gap-6 justify-center items-center">
           {type !== "Parent" && (
             <Select
               placeholder="Filter By Sport"
