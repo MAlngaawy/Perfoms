@@ -20,7 +20,7 @@ const AppRadioGroub = ({ checked, setChecked, values }: Props) => {
         onChange={(checkedValue: string) => setChecked(checkedValue)}
         name="favoriteFramework"
         spacing="xs"
-        offset="md"
+        offset="xs"
         size="xs"
         sx={{
           ".mantine-Group-root": {

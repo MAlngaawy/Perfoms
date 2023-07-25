@@ -21,7 +21,7 @@ const AdminPage = (props: Props) => {
   }, [checked]);
 
   return (
-    <div className="mx-6 mb-10">
+    <div className="mx-2 mb-10">
       <div className="flex gap-2 xs:gap-4 p-2 sm:p-6 sm:pb-0">
         <AppRadioGroub
           values={["Teams", "Sports", "Users"]}

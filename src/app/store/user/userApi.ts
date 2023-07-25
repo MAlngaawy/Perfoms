@@ -99,19 +99,19 @@ export const userApi = createApi({
           Cookies.set("token", data.access);
           eventInstance.emit("Login_Success");
         } catch (error) {
-          console.log(error);
           //@ts-ignore
-          if (error.error.status === 409)
+          if (error.error.status === 409) {
             return window.location.replace(
               "/coachRequestSent"
               //@ts-ignore
               // `/verify-otp?userid=${error.error.data.id}`
             );
+          }
           AppUtils.showNotificationFun(
             "Error",
             "Login Error",
             //@ts-ignore
-            error.error.data
+            error.error.data.detail
           );
         }
       },
