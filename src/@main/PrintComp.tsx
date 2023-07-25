@@ -1,4 +1,4 @@
-import React, { Children, useRef } from "react";
+import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import AppIcons from "./core/AppIcons";
 
@@ -38,13 +38,13 @@ const PrintComp = (props: Props) => {
     <div className="">
       <div
         onClick={handlePrint}
-        className="z-50 flex flex-col items-center justify-center  fixed right-20 bottom-20 opacity-70 hover:opacity-100 w-20 h-20 rounded-full cursor-pointer bg-perfBlue text-white"
+        className="z-50 flex flex-col items-center justify-center  fixed right-4 bottom-4 opacity-50 hover:opacity-100 w-12 h-12 rounded-full cursor-pointer bg-perfBlue text-white"
       >
         <AppIcons
-          className="w-8 h-8 text-white"
+          className="w-5 h-5 text-white"
           icon="DocumentArrowDownIcon:outline"
         />
-        <span>PDF</span>
+        <span className=" text-xs">PDF</span>
       </div>
       <div className="bg-pagesBg" ref={compRef}>
         {props.children}
