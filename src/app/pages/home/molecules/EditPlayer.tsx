@@ -53,10 +53,7 @@ const EditPlayer = ({ player, refetchPlayerData }: Props) => {
       formData.append("icon", "");
     }
     setError(false);
-    const REQUEST_URL =
-      user && ["Parent", "Player"].includes(user?.user_type)
-        ? `parent/update-player/${player?.id}/`
-        : `club-manager/update-player/${player?.id}/`;
+    const REQUEST_URL = `user-generals/update-player/${player?.id}/`;
 
     try {
       setIsLoading(true);
