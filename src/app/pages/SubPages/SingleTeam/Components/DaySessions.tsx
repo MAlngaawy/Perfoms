@@ -1,4 +1,4 @@
-import { ActionIcon, Divider, Modal } from "@mantine/core";
+import { Divider, Modal } from "@mantine/core";
 import { TimeInput } from "@mantine/dates";
 import { useEffect, useRef, useState } from "react";
 import SubmitButton from "~/@main/components/SubmitButton";
@@ -10,14 +10,10 @@ import {
 } from "~/app/store/types/supervisor-types";
 import AppUtils from "~/@main/utils/AppUtils";
 import {
-  useSuperAddTeamAttendanceSessionMutation,
-  useSuperDeleteTeamAttendanceSessionMutation,
-} from "~/app/store/supervisor/supervisorMainApi";
-import {
-  useAdminAddTeamAttendanceSessionMutation,
-  useAdminDeleteTeamAttendanceSessionMutation,
-} from "~/app/store/clubManager/clubManagerApi";
-import { useUserQuery } from "~/app/store/user/userApi";
+  useUserGeneralsAddTeamAttendanceSessionMutation,
+  useUserGeneralsDeleteTeamAttendanceSessionMutation,
+  useUserQuery,
+} from "~/app/store/user/userApi";
 import { useParams } from "react-router-dom";
 
 type Props = {
@@ -33,16 +29,14 @@ const DaySessions = ({
   selectedDay,
   attendanceDates,
 }: Props) => {
-  const { data: user } = useUserQuery({});
   const { team_id } = useParams();
   const [selectedDaySessions, setSelectedDaySessions] = useState<daySessions>();
   const [from, setFrom] = useState<Date | null>(null);
   const [to, setTo] = useState<Date | null>(null);
   const [error, setError] = useState<boolean | string>(false);
-  const [superAddSession, { isLoading: superAddLoading }] =
-    useSuperAddTeamAttendanceSessionMutation();
-  const [adminAddSession, { isLoading: adminAddLoading }] =
-    useAdminAddTeamAttendanceSessionMutation();
+
+  const [userAddSession, { isLoading }] =
+    useUserGeneralsAddTeamAttendanceSessionMutation();
 
   useEffect(() => {
     const selectedDayData = attendanceDates?.results.find(
@@ -61,38 +55,19 @@ const DaySessions = ({
         day: selectedDay,
       };
       setError(false);
-      if (user?.user_type === "Admin") {
-        adminAddSession({ team_id, ...data })
-          .then((res: any) => {
-            if (res.error) {
-              setError(res.error.data.non_field_errors[0]);
-            } else {
-              setFrom(null);
-              setTo(null);
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      } else {
-        superAddSession({ team_id, ...data })
-          .then((res: any) => {
-            if (typeof res.error.data === "string") {
-              setError(
-                "there is a Session with the same hours and attendance day already exists"
-              );
-            }
-            if (res.error) {
-              setError("to hour must be greater than from hour");
-            } else {
-              setFrom(null);
-              setTo(null);
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
+
+      userAddSession({ team_id, ...data })
+        .then((res: any) => {
+          if (res.error) {
+            setError(res.error.data.non_field_errors[0]);
+          } else {
+            setFrom(null);
+            setTo(null);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
       setError("Please add from and to correct times");
     }
@@ -137,10 +112,7 @@ const DaySessions = ({
             withAsterisk
             format="12"
           />
-          <SubmitButton
-            isLoading={superAddLoading || adminAddLoading}
-            text="Add session"
-          />
+          <SubmitButton isLoading={isLoading} text="Add session" />
         </form>
       </Modal>
     </>
@@ -157,53 +129,34 @@ type OneSessionProps = {
 const OneSession = ({ session, selectedDay }: OneSessionProps) => {
   const { data: user } = useUserQuery({});
   const { team_id } = useParams();
-  const [superDelete] = useSuperDeleteTeamAttendanceSessionMutation();
-  const [adminDelete] = useAdminDeleteTeamAttendanceSessionMutation();
+
+  const [deleetSession] = useUserGeneralsDeleteTeamAttendanceSessionMutation();
+
   const deleteFunction = () => {
     const data = {
       from_hour: session.from_hour,
       to_hour: session.to_hour,
       day: selectedDay,
     };
-    if (user?.user_type === "Admin") {
-      adminDelete({
-        team_id,
-        ...data,
-      })
-        .then((res) =>
-          AppUtils.showNotificationFun(
-            "Success",
-            "Done",
-            "session deleted successfully"
-          )
+
+    deleetSession({
+      team_id,
+      ...data,
+    })
+      .then((res) =>
+        AppUtils.showNotificationFun(
+          "Success",
+          "Done",
+          "session deleted successfully"
         )
-        .catch((err) => {
-          AppUtils.showNotificationFun(
-            "Error",
-            "Sorry",
-            "Something went wrong while deleting session"
-          );
-        });
-    } else {
-      superDelete({
-        team_id,
-        ...data,
-      })
-        .then((res) =>
-          AppUtils.showNotificationFun(
-            "Success",
-            "Done",
-            "session deleted successfully"
-          )
-        )
-        .catch((err) => {
-          AppUtils.showNotificationFun(
-            "Error",
-            "Sorry",
-            "Something went wrong while deleting session"
-          );
-        });
-    }
+      )
+      .catch((err) => {
+        AppUtils.showNotificationFun(
+          "Error",
+          "Sorry",
+          "Something went wrong while deleting session"
+        );
+      });
   };
 
   return (

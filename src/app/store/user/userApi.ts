@@ -51,6 +51,7 @@ import {
   Team,
   AddTeamCalendar,
   TeamAttendance,
+  AddAttendanceSession,
 } from "../types/supervisor-types";
 import { Sports, TeamPlayer } from "../types/clubManager-types";
 import { UserAchievements } from "~/app/store/types/user-types";
@@ -746,6 +747,29 @@ export const userApi = createApi({
       }),
       providesTags: ["calendar"],
     }),
+    userGeneralsAddTeamAttendanceSession: mutation<
+      AddAttendanceSession,
+      { team_id: number | string | undefined }
+    >({
+      query: ({ team_id, ...body }) => ({
+        url: `teams/add-team-attendance-session/${team_id}/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["calendar"],
+    }),
+
+    userGeneralsDeleteTeamAttendanceSession: mutation<
+      AddAttendanceSession,
+      { team_id: number | string | undefined }
+    >({
+      query: ({ team_id, ...body }) => ({
+        url: `teams/delete-team-attendance-session/${team_id}/`,
+        method: "DELETE",
+        body,
+      }),
+      invalidatesTags: ["calendar"],
+    }),
   }),
 });
 
@@ -821,4 +845,6 @@ export const {
   useGetFilteredPlayersQuery,
   useAddTeamCalendarAttendDayMutation,
   useUserGeneralTeamAttendanceQuery,
+  useUserGeneralsAddTeamAttendanceSessionMutation,
+  useUserGeneralsDeleteTeamAttendanceSessionMutation,
 } = userApi;
