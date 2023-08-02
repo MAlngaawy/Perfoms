@@ -38,9 +38,10 @@ const TeamInfo = (props: Props) => {
     if (teamInfo) {
       if (sports) {
         const currentTeamSportId: number = sports?.results.filter(
-          (sport) => sport.name === teamInfo?.sport
+          (sport) => sport.name === teamInfo?.sport?.name
         )[0].id;
         setSportId(currentTeamSportId);
+        console.log("currentTeamSportId", currentTeamSportId);
       }
     }
   }, [teamInfo, sports]);

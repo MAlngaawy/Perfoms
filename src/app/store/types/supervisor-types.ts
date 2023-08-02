@@ -88,7 +88,7 @@ export type Team = {
   players_count: number;
   pillar?: number;
   gender?: string;
-  sport?: string;
+  sport?: { id: number; name: string };
   current_players_count: number;
   attend_per: "DAY" | "SESSION";
 };

@@ -48,7 +48,7 @@ const TeamPlayersComponent = ({ teamInfo, teamId }: Props) => {
     if (teamInfo) {
       if (sports) {
         const currentTeamSportId: number = sports?.results.filter(
-          (sport) => sport.name === teamInfo?.sport
+          (sport) => sport.name === teamInfo?.sport?.name
         )[0].id;
         setSportId(currentTeamSportId);
       }
