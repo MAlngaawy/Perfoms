@@ -48,8 +48,9 @@ import {
   Kpis,
   Metrics,
   Pillars,
-  SuperVisorPlayers,
   Team,
+  AddTeamCalendar,
+  TeamAttendance,
 } from "../types/supervisor-types";
 import { Sports, TeamPlayer } from "../types/clubManager-types";
 import { UserAchievements } from "~/app/store/types/user-types";
@@ -81,6 +82,7 @@ export const userApi = createApi({
     "kpis",
     "media",
     "players",
+    "calendar",
   ],
   endpoints: ({ query, mutation }) => ({
     user: query<User, any>({
@@ -723,6 +725,27 @@ export const userApi = createApi({
       }),
       providesTags: ["players"],
     }),
+
+    // add team calendar
+    addTeamCalendarAttendDay: mutation<AddTeamCalendar, {}>({
+      query: (body) => ({
+        url: `teams/add-team-calendar/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["calendar"],
+    }),
+
+    userGeneralTeamAttendance: query<
+      TeamAttendance,
+      { team_id: number; year: string; month: string; page?: number }
+    >({
+      query: ({ team_id, ...params }) => ({
+        url: `teams/${team_id}/attendance/`,
+        params,
+      }),
+      providesTags: ["calendar"],
+    }),
   }),
 });
 
@@ -796,4 +819,6 @@ export const {
   useUserGeneralPlayerKpiStatisticsQuery,
   useUserGeneralPlayersAttendStatisticsQuery,
   useGetFilteredPlayersQuery,
+  useAddTeamCalendarAttendDayMutation,
+  useUserGeneralTeamAttendanceQuery,
 } = userApi;
