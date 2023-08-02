@@ -44,7 +44,7 @@ const HomeTeamInfoCard = (props: Props) => {
           <div className="team flex flex-col gap-1">
             <h2 className="text-base font-semibold">{teamInfoData?.name}</h2>
             <h3 className=" text-perfBlue font-semibold text-sm">
-              {teamInfoData?.sport ? teamInfoData?.sport : "Sport"}
+              {teamInfoData?.sport ? teamInfoData?.sport.name : "Sport"}
             </h3>
           </div>
           <div className="age flex flex-col">

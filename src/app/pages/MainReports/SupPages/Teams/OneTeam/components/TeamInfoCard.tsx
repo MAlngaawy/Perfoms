@@ -45,7 +45,7 @@ const TeamInfoCard = ({ TeamInfoData: data }: Props) => {
           </div>
         </div>
         <div className="flex  gap-6 justify-between">
-          <Info label="Sport" value={data?.sport} />
+          <Info label="Sport" value={data?.sport?.name} />
           {/* teamInfo?.gender */}
           <Info label="Gender" value={gender()} />
         </div>

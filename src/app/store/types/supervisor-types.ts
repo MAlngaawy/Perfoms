@@ -144,7 +144,7 @@ export type SuperVisorTeams = BaseGetAllType & {
 export type SuperVisorTeamInfo = {
   id: number;
   coaches: Partial<PlayerCoach>[];
-  sport: string;
+  sport: { id: number; name: string };
   name: string;
   description: string;
   icon: string;

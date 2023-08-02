@@ -27,13 +27,15 @@ const TeamInfoCard = ({ teamId }: Props) => {
     if (adminInfo) setInfo(adminInfo);
   }, [superInfo, adminInfo]);
 
+  console.log("infoinfoinfoinfo", info);
+
   return (
     <div>
       <h2>Team Info</h2>
       {info && (
         <div className="flex flex-wrap gap-6 mt-4">
           <Schema label="Name" value={info?.name} />
-          <Schema label="Sport" value={info?.sport ? info?.sport : "NA"} />
+          <Schema label="Sport" value={info?.sport ? info?.sport.name : "NA"} />
           <Schema label="Age" value={info?.from_age + " - " + info?.to_age} />
           {/* <Schema label="Gender" value={info?.gender ? info?.gender : "NA"} /> */}
           <Schema label="Players" value={JSON.stringify(info.players_count)} />

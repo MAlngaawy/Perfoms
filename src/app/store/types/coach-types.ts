@@ -265,7 +265,10 @@ export type CoachPlayerInfo = {
 export type CoachTeamInfo = {
   id: number;
   coaches: CoachForParent[];
-  sport: string;
+  sport: {
+    id: number;
+    name: string;
+  };
   name: string;
   description: string;
   icon: string;
