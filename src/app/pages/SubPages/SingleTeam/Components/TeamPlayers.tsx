@@ -58,7 +58,7 @@ const TeamPlayersComponent = ({ teamInfo, teamId }: Props) => {
   const { data: filteredPlayers, refetch: refetchFilteredPlayers } =
     useGetFilteredPlayersQuery({
       team_id: teamId,
-      sport_id: sportId,
+      sport_id: teamInfo?.sport?.id,
     });
 
   useEffect(() => {
