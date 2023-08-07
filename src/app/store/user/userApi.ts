@@ -63,6 +63,8 @@ import {
 } from "../types/coach-types";
 import {
   EventFiles,
+  PlayerCertificate,
+  PlayerCertificates,
   PlayerTeams,
   UpdatePlayer,
 } from "~/app/store/types/parent-types";
@@ -84,6 +86,7 @@ export const userApi = createApi({
     "media",
     "players",
     "calendar",
+    "Certificates",
   ],
   endpoints: ({ query, mutation }) => ({
     user: query<User, any>({
@@ -747,6 +750,7 @@ export const userApi = createApi({
       }),
       providesTags: ["calendar"],
     }),
+
     userGeneralsAddTeamAttendanceSession: mutation<
       AddAttendanceSession,
       { team_id: number | string | undefined }
@@ -769,6 +773,23 @@ export const userApi = createApi({
         body,
       }),
       invalidatesTags: ["calendar"],
+    }),
+
+    // Certificates
+    getPlayerCertificates: query<
+      PlayerCertificates,
+      { player_id: number | string | undefined; page?: number }
+    >({
+      query: ({ player_id }) => ({
+        url: `/player-certificates/${player_id}`,
+      }),
+      providesTags: ["Certificates"],
+    }),
+    getPlayerCertificate: query<PlayerCertificate, string>({
+      query: (id) => ({
+        url: `/certificate/${id}`,
+      }),
+      providesTags: ["Certificates"],
     }),
   }),
 });
@@ -847,4 +868,6 @@ export const {
   useUserGeneralTeamAttendanceQuery,
   useUserGeneralsAddTeamAttendanceSessionMutation,
   useUserGeneralsDeleteTeamAttendanceSessionMutation,
+  useGetPlayerCertificatesQuery,
+  useGetPlayerCertificateQuery,
 } = userApi;

@@ -1,15 +1,15 @@
 import jsPDF from "jspdf";
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import AppIcons from "~/@main/core/AppIcons";
-import { usePlayerCertificateQuery } from "~/app/store/parent/parentApi";
-import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 import CertificateImage from "./components/CertificateImage";
 import CongratsCertificate from "./components/CongratsCertificateImage";
 import EncourageCertificate from "./components/EncourageCertificateImage";
 import { timeFilterFn } from "~/app/store/parent/parentSlice";
-import { useGetMyClubQuery } from "~/app/store/user/userApi";
+import {
+  useGetMyClubQuery,
+  useGetPlayerCertificateQuery,
+} from "~/app/store/user/userApi";
 
 type Props = {
   certificateId?: number;
@@ -19,8 +19,7 @@ const PlayerCertificatePage = ({ certificateId }: Props) => {
   const { data: myClub } = useGetMyClubQuery({});
   const canvasRef = useRef<any>();
   const printRef = useRef<any>();
-  // const { id } = useParams();
-  const { data: certificate } = usePlayerCertificateQuery(
+  const { data: certificate } = useGetPlayerCertificateQuery(
     certificateId as unknown as string,
     {
       skip: !certificateId,
@@ -48,6 +47,19 @@ const PlayerCertificatePage = ({ certificateId }: Props) => {
     pdf.save(`${certificate?.player.name} certificate.pdf`);
   };
 
+  const PrintIcon = () => (
+    <div
+      onClick={() => printDocument()}
+      className="z-50 flex flex-col border items-center justify-center absolute  right-0 bottom-0 opacity-70 hover:opacity-100 w-12 h-12 rounded-full cursor-pointer bg-perfBlue text-white"
+    >
+      <AppIcons
+        className="w-5 h-5 text-white"
+        icon="DocumentArrowDownIcon:outline"
+      />
+      <span className="text-xs">PDF</span>
+    </div>
+  );
+
   return (
     <div className=" relative flex flex-col gap-5 justify-center items-center h-full w-full">
       <div className="overflow-scroll md:overflow-hidden max-w-full">
@@ -55,16 +67,7 @@ const PlayerCertificatePage = ({ certificateId }: Props) => {
           dateFilter(certificate.created_at) &&
           (certificate.type === "Encouragement" ? (
             <div className="my-6">
-              <div
-                onClick={() => printDocument()}
-                className="z-50 flex flex-col border items-center justify-center absolute  right-0 bottom-0 opacity-70 hover:opacity-100 w-20 h-20 rounded-full cursor-pointer bg-perfBlue text-white"
-              >
-                <AppIcons
-                  className="w-8 h-8 text-white"
-                  icon="DocumentArrowDownIcon:outline"
-                />
-                <span>PDF</span>
-              </div>
+              <PrintIcon />
               <div>
                 <EncourageCertificate
                   clubLogo={myClub?.icon}
@@ -84,16 +87,7 @@ const PlayerCertificatePage = ({ certificateId }: Props) => {
             </div>
           ) : certificate.type === "Congratulations" ? (
             <div className="my-6">
-              <div
-                onClick={() => printDocument()}
-                className="z-50 flex flex-col border items-center justify-center absolute  right-0 bottom-0 opacity-70 hover:opacity-100 w-20 h-20 rounded-full cursor-pointer bg-perfBlue text-white"
-              >
-                <AppIcons
-                  className="w-8 h-8 text-white"
-                  icon="DocumentArrowDownIcon:outline"
-                />
-                <span>PDF</span>
-              </div>
+              <PrintIcon />
               <div>
                 <CongratsCertificate
                   clubLogo={myClub?.icon}
@@ -113,16 +107,7 @@ const PlayerCertificatePage = ({ certificateId }: Props) => {
             </div>
           ) : (
             <div className="my-6">
-              <div
-                onClick={() => printDocument()}
-                className="z-50 flex flex-col border items-center justify-center absolute  right-0 bottom-0 opacity-70 hover:opacity-100 w-20 h-20 rounded-full cursor-pointer bg-perfBlue text-white"
-              >
-                <AppIcons
-                  className="w-8 h-8 text-white"
-                  icon="DocumentArrowDownIcon:outline"
-                />
-                <span>PDF</span>
-              </div>
+              <PrintIcon />
               <div>
                 <CertificateImage
                   clubLogo={myClub?.icon}

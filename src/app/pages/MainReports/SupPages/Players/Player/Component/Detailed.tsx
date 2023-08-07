@@ -13,7 +13,10 @@ import { usePlayerCertificatesQuery } from "~/app/store/parent/parentApi";
 import PlayerCertificatePage from "~/app/pages/player-certificate/PlayerCertificatePage";
 import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 import { useSelector } from "react-redux";
-import { useGetPlayerInfoQuery } from "~/app/store/user/userApi";
+import {
+  useGetPlayerCertificatesQuery,
+  useGetPlayerInfoQuery,
+} from "~/app/store/user/userApi";
 
 type Props = {
   reportType:
@@ -28,7 +31,7 @@ const Detailed = ({ reportType }: Props) => {
   const selectedPlayer = useSelector(selectedPlayerFn);
   const { id: player_id } = useParams();
   const id = player_id || JSON.stringify(selectedPlayer?.id);
-  const { data: playerCertificates } = usePlayerCertificatesQuery(
+  const { data: playerCertificates } = useGetPlayerCertificatesQuery(
     { player_id: id },
     { skip: !id }
   );

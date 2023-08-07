@@ -21,7 +21,7 @@ export type CoachForParent = {
 export type GenerateCertification = {
   player: number;
   club: number;
-  team: number;
+  team?: number;
   type: "Performance" | "Congratulations" | "Encouragement" | "Other";
 };
 
