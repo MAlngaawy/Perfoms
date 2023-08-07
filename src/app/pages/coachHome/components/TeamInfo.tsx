@@ -63,6 +63,7 @@ const TeamInfo = (props: Props) => {
             <Grid.Col span={12} xs={8} sm={4}>
               <div className="bg-white p-4 rounded-3xl min-h-full">
                 <TeamCalendar
+                  teamInfo={teamInfo}
                   teamId={
                     selectedPlayerTeam?.id !== undefined
                       ? JSON.stringify(selectedPlayerTeam?.id)

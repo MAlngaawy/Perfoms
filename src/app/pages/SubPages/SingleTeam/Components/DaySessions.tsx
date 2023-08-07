@@ -15,6 +15,8 @@ import {
   useUserQuery,
 } from "~/app/store/user/userApi";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 
 type Props = {
   close: () => void;
@@ -30,6 +32,8 @@ const DaySessions = ({
   attendanceDates,
 }: Props) => {
   const { team_id } = useParams();
+  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
+
   const [selectedDaySessions, setSelectedDaySessions] = useState<daySessions>();
   const [from, setFrom] = useState<Date | null>(null);
   const [to, setTo] = useState<Date | null>(null);
@@ -56,7 +60,7 @@ const DaySessions = ({
       };
       setError(false);
 
-      userAddSession({ team_id, ...data })
+      userAddSession({ team_id: team_id || selectedPlayerTeam.id, ...data })
         .then((res: any) => {
           if (res.error) {
             setError(res.error.data.non_field_errors[0]);
