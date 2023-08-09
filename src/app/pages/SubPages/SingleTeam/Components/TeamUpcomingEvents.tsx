@@ -15,23 +15,29 @@ import {
   useAdminTeamEventsQuery,
 } from "~/app/store/clubManager/clubManagerApi";
 import AppUtils from "~/@main/utils/AppUtils";
+import { useParams } from "react-router-dom";
+import { useCoachTeamEventQuery } from "~/app/store/coach/coachApi";
 
-type Props = {
-  teamId: string;
-};
+type Props = {};
 
-const TeamUpcomingEvents = ({ teamId }: Props) => {
+const TeamUpcomingEvents = () => {
+  const { team_id } = useParams();
   const [events, setEvents] = useState<TeamEvents>();
   const { data: user } = useUserQuery({});
 
   const { data: superEvents, refetch: superRefetch } = useSuperTeamEventsQuery(
-    { team_id: teamId },
-    { skip: !teamId }
+    { team_id },
+    { skip: !team_id }
   );
 
   const { data: adminEvents, refetch: adminRefetch } = useAdminTeamEventsQuery(
-    { team_id: teamId },
-    { skip: !teamId }
+    { team_id },
+    { skip: !team_id }
+  );
+
+  const { data: coachEvents, refetch: caochRefecth } = useCoachTeamEventQuery(
+    { team_id },
+    { skip: !team_id }
   );
 
   useEffect(() => {
@@ -106,10 +112,16 @@ const TeamUpcomingEvents = ({ teamId }: Props) => {
                   type="event"
                 />
                 <EditEventForm
-                  team_id={teamId}
+                  team_id={team_id}
                   refetch={() => {
-                    if (superEvents) superRefetch();
-                    if (adminEvents) adminRefetch();
+                    switch (user?.user_type) {
+                      case "Coach":
+                        return caochRefecth();
+                      case "Admin":
+                        return adminRefetch();
+                      case "Supervisor":
+                        return superRefetch();
+                    }
                   }}
                   event={event}
                 />

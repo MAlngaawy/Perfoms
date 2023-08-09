@@ -52,7 +52,7 @@ export const coachApi = createApi({
     baseUrl: `${BASE_URL}/coach`,
     prepareHeaders: BASE_HEADERS,
   }),
-  tagTypes: ["Attendance", "performances", "calendar", "players"],
+  tagTypes: ["Attendance", "performances", "calendar", "players", "events"],
   endpoints: ({ query, mutation }) => ({
     coaches: query<AllCoachesType, { page: number }>({
       query: (params) => ({ url: "all-coaches/", params }),
@@ -190,11 +190,15 @@ export const coachApi = createApi({
       }),
     }),
 
-    coachTeamEvent: query<TeamEvents, { team_id: number; pages?: number }>({
+    coachTeamEvent: query<
+      TeamEvents,
+      { team_id: number | string | undefined; pages?: number }
+    >({
       query: ({ team_id, ...params }) => ({
         url: `${team_id}/events/`,
         params,
       }),
+      providesTags: ["events"],
     }),
 
     coachTeamEventFiles: query<
@@ -465,6 +469,15 @@ export const coachApi = createApi({
       }),
       invalidatesTags: ["players"],
     }),
+
+    coachDeleteEvent: mutation<{}, { event_id: number }>({
+      query: ({ event_id, ...body }) => ({
+        url: `events/${event_id}/delete/`,
+        method: "DELETE",
+        body,
+      }),
+      invalidatesTags: ["events"],
+    }),
   }),
 });
 
@@ -510,4 +523,5 @@ export const {
   useCoachAddTeamPlayerMutation,
   useRemoveTeamPlayerMutation,
   useCoachUpdateAttendanceSessionMutation,
+  useCoachDeleteEventMutation,
 } = coachApi;

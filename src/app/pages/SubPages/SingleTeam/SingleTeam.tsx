@@ -42,7 +42,7 @@ const SingleTeam = (props: Props) => {
         </Grid.Col>
         <Grid.Col span={12} sm={7} lg={3}>
           <CardDiv>
-            <TeamUpcomingEvents teamId={team_id !== undefined ? team_id : ""} />
+            <TeamUpcomingEvents />
           </CardDiv>
         </Grid.Col>
         <Grid.Col span={12} sm={5} lg={2}>

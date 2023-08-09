@@ -15,6 +15,10 @@ import {
   useAdminTeamEventsQuery,
 } from "~/app/store/clubManager/clubManagerApi";
 import { useUserQuery } from "~/app/store/user/userApi";
+import {
+  useCoachDeleteEventMutation,
+  useCoachTeamEventQuery,
+} from "~/app/store/coach/coachApi";
 
 type props = {
   event: TeamEvent;
@@ -27,6 +31,7 @@ const MediaCard = ({ event, teamId }: props) => {
 
   const [superDeleteEvent] = useSuperDeleteEventMutation();
   const [adminDeleteEvent] = useAdminDeleteEventMutation();
+  const [coachDeleteEvent] = useCoachDeleteEventMutation();
 
   const { data: superEvents, refetch: superRefetch } = useSuprtEventsQuery(
     { team_id: +teamId },
@@ -37,9 +42,19 @@ const MediaCard = ({ event, teamId }: props) => {
     { team_id: teamId },
     { skip: !teamId || user?.user_type !== "Admin" }
   );
+
+  const { data: coachEvents, refetch: caochRefecth } = useCoachTeamEventQuery(
+    { team_id: teamId },
+    { skip: !teamId || user?.user_type !== "Coach" }
+  );
+
   const deleteEvent = (eventId: number) => {
     const deleteFn =
-      user?.user_type === "Admin" ? adminDeleteEvent : superDeleteEvent;
+      user?.user_type === "Admin"
+        ? adminDeleteEvent
+        : user?.user_type === "Coach"
+        ? coachDeleteEvent
+        : superDeleteEvent;
 
     deleteFn({ event_id: eventId })
       .then((res) => {
@@ -90,7 +105,7 @@ const MediaCard = ({ event, teamId }: props) => {
       withBorder
     >
       {/* @ts-ignore */}
-      {!["Parent", "Coach"].includes(user?.user_type) && (
+      {!["Parent"].includes(user?.user_type) && (
         <div className="options absolute flex justify-around gap-2  top-2 right-2 z-10">
           <div className="p-1 bg-white rounded-full">
             <DeleteButton
@@ -103,8 +118,14 @@ const MediaCard = ({ event, teamId }: props) => {
             <EditEventForm
               team_id={JSON.stringify(teamId)}
               refetch={() => {
-                if (superEvents) superRefetch();
-                if (adminEvents) adminRefetch();
+                switch (user?.user_type) {
+                  case "Coach":
+                    return caochRefecth();
+                  case "Admin":
+                    return adminRefetch();
+                  case "Supervisor":
+                    return superRefetch();
+                }
               }}
               event={event}
             />

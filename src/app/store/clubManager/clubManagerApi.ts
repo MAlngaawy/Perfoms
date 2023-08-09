@@ -209,7 +209,7 @@ export const clubManagerApi = createApi({
 
     adminTeamEvents: query<
       TeamEvents,
-      { team_id: string | number; page?: number }
+      { team_id: string | number | undefined; page?: number }
     >({
       query: ({ team_id, ...params }) => ({
         url: `teams/${team_id}/events/`,

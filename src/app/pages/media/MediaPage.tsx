@@ -21,9 +21,8 @@ import { Select } from "@mantine/core";
 const MediaPage = () => {
   const [events, setEvents] = useState<TeamEvents | undefined>();
   const { data: user } = useUserQuery(null);
-
   const [selectedSport, setSelectedSport] = useState<string>("0");
-  const [selectedTeam, setSelectedTeam] = useState<string>("0");
+  const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
 
   const [teamId, setTeamId] = useState<string>();
 
@@ -43,7 +42,7 @@ const MediaPage = () => {
     { skip: !selectedPlayerTeam || user?.user_type !== "Parent" }
   );
 
-  const { data: coachEvents } = useCoachTeamEventQuery(
+  const { data: coachEvents, refetch: coachRefetch } = useCoachTeamEventQuery(
     { team_id: selectedPlayerTeam?.id },
     { skip: !selectedPlayerTeam || user?.user_type !== "Coach" }
   );
@@ -53,13 +52,15 @@ const MediaPage = () => {
   );
 
   const { data: adminEvents, refetch: adminRefetch } = useAdminTeamEventsQuery(
-    { team_id: selectedTeam },
+    { team_id: selectedTeam || selectedPlayerTeam?.id },
     { skip: user?.user_type !== "Admin" }
   );
 
   useEffect(() => {
     if (user?.user_type === "Admin") {
-      setTeamId(selectedTeam);
+      if (selectedTeam) {
+        setTeamId(selectedTeam);
+      }
     } else {
       setTeamId(JSON.stringify(selectedPlayerTeam?.id));
     }
@@ -84,7 +85,7 @@ const MediaPage = () => {
         {events &&
         events?.results.length > 0 &&
         //@ts-ignore
-        ["Supervisor", "Admin"].includes(user?.user_type) ? (
+        ["Supervisor", "Admin", "Coach"].includes(user?.user_type) ? (
           <AddEventForm
             teamID={JSON.stringify(
               selectedPlayerTeam && selectedPlayerTeam?.id
@@ -92,6 +93,7 @@ const MediaPage = () => {
             refetch={() => {
               if (superEvents) superRefetch();
               if (adminEvents) adminRefetch();
+              if (coachEvents) coachRefetch();
             }}
           >
             <button className=" px-4 py-2 bg-slate-300 text-perfGray3 rounded-full">
