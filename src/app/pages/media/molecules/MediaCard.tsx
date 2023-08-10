@@ -6,19 +6,10 @@ import DeleteButton from "~/@main/components/ManagerComponents/SubComponents/Del
 import EditEventForm from "../../SubPages/SingleTeam/Components/EditEventForm";
 import { showNotification } from "@mantine/notifications";
 import {
-  useSuperDeleteEventMutation,
-  useSuperTeamEventsQuery,
-  useSuprtEventsQuery,
-} from "~/app/store/supervisor/supervisorMainApi";
-import {
-  useAdminDeleteEventMutation,
-  useAdminTeamEventsQuery,
-} from "~/app/store/clubManager/clubManagerApi";
-import { useUserQuery } from "~/app/store/user/userApi";
-import {
-  useCoachDeleteEventMutation,
-  useCoachTeamEventQuery,
-} from "~/app/store/coach/coachApi";
+  useDeleteEventMutation,
+  useUserGetTeamEventsQuery,
+  useUserQuery,
+} from "~/app/store/user/userApi";
 
 type props = {
   event: TeamEvent;
@@ -29,53 +20,31 @@ const MediaCard = ({ event, teamId }: props) => {
   const navigate = useNavigate();
   const { data: user } = useUserQuery({});
 
-  const [superDeleteEvent] = useSuperDeleteEventMutation();
-  const [adminDeleteEvent] = useAdminDeleteEventMutation();
-  const [coachDeleteEvent] = useCoachDeleteEventMutation();
+  const [userDeleteEvent] = useDeleteEventMutation();
 
-  const { data: superEvents, refetch: superRefetch } = useSuprtEventsQuery(
-    { team_id: +teamId },
-    { skip: !teamId || user?.user_type !== "Supervisor" }
-  );
-
-  const { data: adminEvents, refetch: adminRefetch } = useAdminTeamEventsQuery(
-    { team_id: teamId },
-    { skip: !teamId || user?.user_type !== "Admin" }
-  );
-
-  const { data: coachEvents, refetch: caochRefecth } = useCoachTeamEventQuery(
-    { team_id: teamId },
-    { skip: !teamId || user?.user_type !== "Coach" }
-  );
+  const { data: userGetTeamEvents, refetch: refetchUserGetTeamEvents } =
+    useUserGetTeamEventsQuery({
+      team_id: teamId,
+    });
 
   const deleteEvent = (eventId: number) => {
-    const deleteFn =
-      user?.user_type === "Admin"
-        ? adminDeleteEvent
-        : user?.user_type === "Coach"
-        ? coachDeleteEvent
-        : superDeleteEvent;
-
-    deleteFn({ event_id: eventId })
+    userDeleteEvent({ event_id: eventId })
       .then((res) => {
-        //@ts-ignore
-        if (res.error.status === 200) {
-          showNotification({
-            message: "Successfully Deleted",
-            color: "green",
-            title: "Done",
-            styles: {
-              root: {
-                backgroundColor: "#27AE60",
-                borderColor: "#27AE60",
-                "&::before": { backgroundColor: "#fff" },
-              },
-              title: { color: "#fff" },
-              description: { color: "#fff" },
-              closeButton: { color: "#fff" },
+        showNotification({
+          message: "Successfully Deleted",
+          color: "green",
+          title: "Done",
+          styles: {
+            root: {
+              backgroundColor: "#27AE60",
+              borderColor: "#27AE60",
+              "&::before": { backgroundColor: "#fff" },
             },
-          });
-        }
+            title: { color: "#fff" },
+            description: { color: "#fff" },
+            closeButton: { color: "#fff" },
+          },
+        });
       })
       .catch((err) => {
         showNotification({
@@ -118,14 +87,7 @@ const MediaCard = ({ event, teamId }: props) => {
             <EditEventForm
               team_id={JSON.stringify(teamId)}
               refetch={() => {
-                switch (user?.user_type) {
-                  case "Coach":
-                    return caochRefecth();
-                  case "Admin":
-                    return adminRefetch();
-                  case "Supervisor":
-                    return superRefetch();
-                }
+                refetchUserGetTeamEvents();
               }}
               event={event}
             />

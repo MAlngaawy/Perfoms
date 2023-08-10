@@ -5,7 +5,10 @@ import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 import MediaCard from "./molecules/MediaCard";
 import TeamFilter from "~/@main/components/TeamFilter";
 import MediaPageLoading from "./molecules/MediaPageLoading";
-import { useUserQuery } from "~/app/store/user/userApi";
+import {
+  useUserGetTeamEventsQuery,
+  useUserQuery,
+} from "~/app/store/user/userApi";
 import { TeamEvents } from "~/app/store/types/parent-types";
 import { useCoachTeamEventQuery } from "~/app/store/coach/coachApi";
 import { useSuprtEventsQuery } from "~/app/store/supervisor/supervisorMainApi";
@@ -42,19 +45,10 @@ const MediaPage = () => {
     { skip: !selectedPlayerTeam || user?.user_type !== "Parent" }
   );
 
-  const { data: coachEvents, refetch: coachRefetch } = useCoachTeamEventQuery(
-    { team_id: selectedPlayerTeam?.id },
-    { skip: !selectedPlayerTeam || user?.user_type !== "Coach" }
-  );
-  const { data: superEvents, refetch: superRefetch } = useSuprtEventsQuery(
-    { team_id: selectedPlayerTeam?.id },
-    { skip: !selectedPlayerTeam || user?.user_type !== "Supervisor" }
-  );
-
-  const { data: adminEvents, refetch: adminRefetch } = useAdminTeamEventsQuery(
-    { team_id: selectedTeam || selectedPlayerTeam?.id },
-    { skip: user?.user_type !== "Admin" }
-  );
+  const { data: userGetTeamEvents, refetch: refetchUserGetTeamEvents } =
+    useUserGetTeamEventsQuery({
+      team_id: selectedTeam || selectedPlayerTeam?.id,
+    });
 
   useEffect(() => {
     if (user?.user_type === "Admin") {
@@ -65,16 +59,12 @@ const MediaPage = () => {
       setTeamId(JSON.stringify(selectedPlayerTeam?.id));
     }
 
-    if (superEvents) setEvents(superEvents);
-    if (coachEvents) setEvents(coachEvents);
+    if (userGetTeamEvents) setEvents(userGetTeamEvents);
     if (parentEvents) setEvents(parentEvents);
-    if (adminEvents) setEvents(adminEvents);
   }, [
     setEvents,
-    superEvents,
-    coachEvents,
+    userGetTeamEvents,
     parentEvents,
-    adminEvents,
     selectedTeam,
     selectedPlayerTeam,
   ]);
@@ -91,9 +81,7 @@ const MediaPage = () => {
               selectedPlayerTeam && selectedPlayerTeam?.id
             )}
             refetch={() => {
-              if (superEvents) superRefetch();
-              if (adminEvents) adminRefetch();
-              if (coachEvents) coachRefetch();
+              refetchUserGetTeamEvents();
             }}
           >
             <button className=" px-4 py-2 bg-slate-300 text-perfGray3 rounded-full">
@@ -174,12 +162,15 @@ const MediaPage = () => {
               pageName={"events"}
               postText={"here yet, come again later OR choose another team."}
             />
-            {["Supervisor", "Admin"].includes(user?.user_type || "No User") ? (
+            {["Supervisor", "Admin", "Coach"].includes(
+              user?.user_type || "No User"
+            ) ? (
               <AddEventForm
-                teamID={teamId}
+                teamID={JSON.stringify(
+                  selectedPlayerTeam && selectedPlayerTeam?.id
+                )}
                 refetch={() => {
-                  if (superEvents) superRefetch();
-                  if (adminEvents) adminRefetch();
+                  refetchUserGetTeamEvents();
                 }}
               >
                 <button className=" w-60 h-full bg-slate-300 text-perfGray3 rounded-xl p-4">

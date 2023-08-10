@@ -66,6 +66,7 @@ import {
   PlayerCertificate,
   PlayerCertificates,
   PlayerTeams,
+  TeamEvents,
   UpdatePlayer,
 } from "~/app/store/types/parent-types";
 
@@ -87,6 +88,7 @@ export const userApi = createApi({
     "players",
     "calendar",
     "Certificates",
+    "events",
   ],
   endpoints: ({ query, mutation }) => ({
     user: query<User, any>({
@@ -610,7 +612,7 @@ export const userApi = createApi({
         url: `events/${event_id}/delete/`,
         method: "DELETE",
       }),
-      invalidatesTags: ["players"],
+      invalidatesTags: ["players", "events"],
     }),
 
     removeEventVideo: mutation<{}, { event_id: number | string | undefined }>({
@@ -791,6 +793,17 @@ export const userApi = createApi({
       }),
       providesTags: ["Certificates"],
     }),
+
+    userGetTeamEvents: query<
+      TeamEvents,
+      { team_id: string | number | undefined; page?: number }
+    >({
+      query: ({ team_id, ...params }) => ({
+        url: `${team_id}/events/`,
+        params,
+      }),
+      providesTags: ["events"],
+    }),
   }),
 });
 
@@ -870,4 +883,5 @@ export const {
   useUserGeneralsDeleteTeamAttendanceSessionMutation,
   useGetPlayerCertificatesQuery,
   useGetPlayerCertificateQuery,
+  useUserGetTeamEventsQuery,
 } = userApi;
