@@ -1,5 +1,5 @@
 import { memo, useEffect, useState } from "react";
-import { Table, Checkbox, Avatar, Loader } from "@mantine/core";
+import { Table, Checkbox, Avatar, Loader, Button } from "@mantine/core";
 import {
   useCoachUpdateAttendanceSessionMutation,
   useGetTeamAttendanceQuery,
@@ -23,9 +23,11 @@ import { Player } from "~/app/store/types/parent-types";
 import { AttendanceDay } from "~/app/store/types/supervisor-types";
 import AppUtils from "~/@main/utils/AppUtils";
 
-type Props = {};
+type Props = {
+  setChecked?: any;
+};
 
-const AttendanceTable = (props: Props) => {
+const AttendanceTable = ({ setChecked }: Props) => {
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const { data: user } = useUserQuery({});
   const [teamAttendance, setTeamAttendance] = useState<CoachTeamAttendance>();
@@ -75,6 +77,7 @@ const AttendanceTable = (props: Props) => {
       {selectedPlayerTeam ? (
         <div className="tableWrapper overflow-scroll relative m-6 bg-white rounded-lg text-center">
           <CreateContentTable
+            setChecked={setChecked}
             teamAttendance={teamAttendance}
             teamAttendanceDays={teamAttendanceDays}
           />
@@ -89,7 +92,7 @@ export default memo(AttendanceTable);
 
 // srparate the code for performance
 const CreateContentTable = memo(
-  ({ teamAttendance, teamAttendanceDays }: any) => {
+  ({ teamAttendance, teamAttendanceDays, setChecked }: any) => {
     const { data: user } = useUserQuery({});
     return (
       <Table highlightOnHover verticalSpacing={"sm"} horizontalSpacing={30}>
@@ -164,6 +167,14 @@ const CreateContentTable = memo(
                   <br />
                   and add attendance to calendar
                 </span>
+              )}
+              {setChecked && (
+                <button
+                  onClick={() => setChecked("Team info")}
+                  className="py-2 px-4 my-4 rounded-md bg-perfBlue text-white hover:bg-perfBlue2"
+                >
+                  Add Attendance Sessions
+                </button>
               )}
             </td>
           </tr>

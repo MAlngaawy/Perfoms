@@ -22,9 +22,11 @@ import {
 import { useNavigate } from "react-router-dom";
 import { Player } from "~/app/store/types/parent-types";
 
-type Props = {};
+type Props = {
+  setChecked?: any;
+};
 
-const AttendanceTable = (props: Props) => {
+const AttendanceTable = ({ setChecked }: Props) => {
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   console.log("selectedPlayerTeam", selectedPlayerTeam);
   const { data: user } = useUserQuery({});
@@ -77,6 +79,7 @@ const AttendanceTable = (props: Props) => {
       {selectedPlayerTeam ? (
         <div className="tableWrapper overflow-scroll relative m-6 bg-white rounded-lg text-center">
           <CreateContentTable
+            setChecked={setChecked}
             teamAttendance={teamAttendance}
             teamAttendanceDays={teamAttendanceDays}
           />
@@ -130,7 +133,7 @@ const TestCheckbox = memo(({ theDate, thisDate, theStatus, theID }: any) => {
 
 // srparate the code for performance
 const CreateContentTable = memo(
-  ({ teamAttendance, teamAttendanceDays }: any) => {
+  ({ teamAttendance, teamAttendanceDays, setChecked }: any) => {
     const { data: user } = useUserQuery({});
     return (
       <Table
@@ -182,13 +185,22 @@ const CreateContentTable = memo(
           <tr className="w-full p-4 m-10 bg-white">
             <td colSpan={100} className="bg-pagesBg p-10 w-full">
               No attendance added for this Team in this month yet <br />
-              {user?.user_type === "Supervisor" && (
-                <span>
-                  ,if you want to add attendance you can go to the team info
-                  page
-                  <br />
-                  and add attendance to calendar
-                </span>
+              {user?.user_type &&
+                ["Supervisor", "Coach"].includes(user?.user_type) && (
+                  <span>
+                    ,if you want to add attendance you can go to the team info
+                    page
+                    <br />
+                    and add attendance to calendar
+                  </span>
+                )}
+              {setChecked && (
+                <button
+                  onClick={() => setChecked("Team info")}
+                  className="py-2 px-4 my-4 rounded-md bg-perfBlue text-white hover:bg-perfBlue2"
+                >
+                  Add Attendance Days
+                </button>
               )}
             </td>
           </tr>

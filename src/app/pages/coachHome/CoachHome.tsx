@@ -36,9 +36,9 @@ const CoachHome = (props: Props) => {
         return (
           <Suspense fallback={<SkelatonComponent />}>
             {coachTeamInfoData?.attend_per === "SESSION" ? (
-              <LazySessionsAttendanceTable />
+              <LazySessionsAttendanceTable setChecked={setChecked} />
             ) : (
-              <LazyAttendanceTable />
+              <LazyAttendanceTable setChecked={setChecked} />
             )}
           </Suspense>
         );
