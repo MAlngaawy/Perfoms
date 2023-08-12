@@ -28,17 +28,6 @@ const PlayerCertificatePage = ({ certificateId }: Props) => {
 
   const timeFilter = useSelector(timeFilterFn);
 
-  const dateFilter = (date: Date): boolean => {
-    let theDate = new Date(date).getTime();
-    let toDate = new Date(timeFilter.to_date).getTime();
-    let fromDate = new Date(timeFilter.from_date).getTime();
-
-    if (theDate > fromDate && theDate < toDate) {
-      return true;
-    }
-    return false;
-  };
-
   const printDocument = () => {
     //@ts-ignore
     const imgData = printRef?.current.toDataURL("image/png");
@@ -64,7 +53,8 @@ const PlayerCertificatePage = ({ certificateId }: Props) => {
     <div className=" relative flex flex-col gap-5 justify-center items-center h-full w-full">
       <div className="overflow-scroll md:overflow-hidden max-w-full">
         {certificate &&
-          dateFilter(certificate.created_at) &&
+          certificate.created_at.getMonth() === +timeFilter.month &&
+          certificate.created_at.getFullYear() === +timeFilter.year &&
           (certificate.type === "Encouragement" ? (
             <div className="my-6">
               <PrintIcon />
