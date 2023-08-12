@@ -233,8 +233,8 @@ export const coachApi = createApi({
       {
         team_id: string | undefined;
         kpi_id: string | undefined;
-        date_from: string;
-        date_to: string;
+        month: string;
+        year: string;
         pages?: number;
       }
     >({
@@ -248,8 +248,8 @@ export const coachApi = createApi({
       TeamPlayersAttendStatistics,
       {
         team_id: string | undefined;
-        date_from: string;
-        date_to: string;
+        month: string;
+        year: string;
         pages?: number;
       }
     >({
@@ -294,8 +294,8 @@ export const coachApi = createApi({
       {
         player_id: string | undefined;
         pages?: number;
-        date_from: string;
-        date_to: string;
+        month: string;
+        year: string;
         team_id: number | string | undefined;
       }
     >({
@@ -309,8 +309,8 @@ export const coachApi = createApi({
       PlayerKpis,
       {
         player_id: string | undefined;
-        date_from: string;
-        date_to: string;
+        month: string;
+        year: string;
         pages?: number;
         team_id: number | string | undefined;
       }
@@ -326,8 +326,8 @@ export const coachApi = createApi({
       {
         player_id: string | number | undefined;
         pages?: number;
-        date_from: string;
-        date_to: string;
+        month: string;
+        year: string;
         team_id: number | string | undefined;
       }
     >({
@@ -342,8 +342,8 @@ export const coachApi = createApi({
       {
         player_id: string | number | undefined;
         pages?: number;
-        date_from: string;
-        date_to: string;
+        month: string;
+        year: string;
         team_id: number | string | undefined;
       }
     >({
@@ -358,8 +358,8 @@ export const coachApi = createApi({
       {
         player_id: string | number | undefined;
         pages?: number;
-        date_from: string;
-        date_to: string;
+        month: string;
+        year: string;
         team_id: number | string | undefined;
       }
     >({
@@ -374,8 +374,8 @@ export const coachApi = createApi({
       {
         player_id: string | number | undefined;
         pages?: number;
-        date_from: string;
-        date_to: string;
+        month: string;
+        year: string;
         team_id: number | string | undefined;
       }
     >({
@@ -390,8 +390,8 @@ export const coachApi = createApi({
       {
         player_id: string | number | undefined;
         pages?: number;
-        date_from: string;
-        date_to: string;
+        month: string;
+        year: string;
         team_id: number | string | undefined;
       }
     >({
@@ -419,8 +419,8 @@ export const coachApi = createApi({
       PlayerAttendances,
       {
         player_id: string | number | undefined;
-        date_from: string | undefined;
-        date_to: string | undefined;
+        month: string | undefined;
+        year: string | undefined;
         team_id: string | number | undefined;
         pages?: number;
       }

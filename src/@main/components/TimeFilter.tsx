@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { RangeCalendar } from "@mantine/dates";
+import { Calendar, RangeCalendar } from "@mantine/dates";
 import { Menu, Button } from "@mantine/core";
 import AppIcons from "./../../@main/core/AppIcons";
 import useWindowSize from "../hooks/useWindowSize";
@@ -118,10 +118,7 @@ const formatDate = (date: Date | null) => {
 };
 
 const TimeFilter = (props: Props) => {
-  const [value, setValue] = useState<[Date | null, Date | null]>([
-    thisMonth().firstday,
-    thisMonth().lastday,
-  ]);
+  const [value, setValue] = useState<Date | null>(new Date());
   const [opened, setOpened] = useState(false);
   const [textValue, setTextValue] = useState<string>("This Month");
   const [teamInfoData, setTeamInfoData] = useState<CoachTeamInfo>();
@@ -145,30 +142,31 @@ const TimeFilter = (props: Props) => {
     if (coachTeamInfoData) setTeamInfoData(coachTeamInfoData);
   }, [parentTeamInfoData, coachTeamInfoData]);
 
-  dispatch(
-    timeFilter(
-      localStorage.getItem("TimeFilter")
-        ? JSON.parse(localStorage.getItem("TimeFilter") || "")
-        : {
-            from_date: formatDate(value[0]),
-            to_date: formatDate(value[1]),
-          }
-    )
-  );
-
   useEffect(() => {
-    if (value[1] && value[0]) {
-      // setTextValue(`${formatDate(value[0])} - ${formatDate(value[1])}`);
-      // setOpened(false);
-      console.log(value);
-      dispatch(
-        timeFilter({
-          from_date: formatDate(value[0]),
-          to_date: formatDate(value[1]),
-        })
-      );
-    }
+    dispatch(
+      timeFilter({
+        month: Number(value?.getMonth()) + 1,
+        year: value?.getFullYear(),
+      })
+    );
   }, [value]);
+
+  const timefilter = useSelector(timeFilterFn);
+  console.log("timefilter", timefilter);
+
+  // useEffect(() => {
+  //   if (value[1] && value[0]) {
+  //     // setTextValue(`${formatDate(value[0])} - ${formatDate(value[1])}`);
+  //     // setOpened(false);
+  //     console.log(value);
+  //     dispatch(
+  //       timeFilter({
+  //         from_date: formatDate(value[0]),
+  //         to_date: formatDate(value[1]),
+  //       })
+  //     );
+  //   }
+  // }, [value]);
 
   return (
     <div>
@@ -193,7 +191,7 @@ const TimeFilter = (props: Props) => {
 
         <Menu.Dropdown>
           <div className="flex flex-col xs:flex-row gap-2 border-r border-gray-500">
-            <div className="dates flex flex-col items-center justify-center gap-2">
+            {/* <div className="dates flex flex-col items-center justify-center gap-2">
               {teamInfoData?.rate_per === "Week" && (
                 <>
                   <FilterType
@@ -252,13 +250,18 @@ const TimeFilter = (props: Props) => {
                 textValue={textValue}
                 filterFun={lastYear}
               />
-            </div>
+            </div> */}
 
             <div className="calendar">
-              <RangeCalendar
-                amountOfMonths={
-                  windwSize.width && windwSize.width > 768 ? 2 : 1
-                }
+              <Calendar
+                sx={{
+                  ".mantine-Calendar-monthPickerControlActive": {
+                    backgroundColor: "#1c7ed6",
+                  },
+                }}
+                // amountOfMonths={
+                //   windwSize.width && windwSize.width > 768 ? 2 : 1
+                // }
                 value={value}
                 onChange={setValue}
               />

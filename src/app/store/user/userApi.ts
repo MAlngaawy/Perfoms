@@ -693,8 +693,8 @@ export const userApi = createApi({
       {
         player_id: string | undefined | number;
         pages?: number;
-        date_from: string;
-        date_to: string;
+        month: string;
+        year: string;
         team_id: number | string | undefined;
       }
     >({

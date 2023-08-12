@@ -32,15 +32,15 @@ const AttendancesSmallCards = ({ player_id }: Props) => {
   const { data: parentPlayerAttendance } = usePlayerCalendarQuery(
     {
       id: selectedPlayer?.id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
       team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !selectedPlayer?.id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
+        !timeFilter?.month ||
+        !timeFilter?.year ||
         !selectedPlayerTeam?.id ||
         (user && !["Parent", "Player"].includes(user?.user_type)),
     }
@@ -48,15 +48,15 @@ const AttendancesSmallCards = ({ player_id }: Props) => {
   const { data: coachPlayerAttendance } = useCoachPlayerCalendarQuery(
     {
       player_id: player_id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
       team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
+        !timeFilter?.month ||
+        !timeFilter?.year ||
         !selectedPlayerTeam?.id ||
         user?.user_type !== "Coach",
     }
@@ -65,15 +65,15 @@ const AttendancesSmallCards = ({ player_id }: Props) => {
   const { data: superPlayerAttendance } = useSuperPlayerCalendarQuery(
     {
       player_id: player_id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
       team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
+        !timeFilter?.month ||
+        !timeFilter?.year ||
         !selectedPlayerTeam?.id ||
         user?.user_type !== "Supervisor",
     }
@@ -82,15 +82,15 @@ const AttendancesSmallCards = ({ player_id }: Props) => {
   const { data: adminPlayerAttendance } = useAdminPlayerCalendarQuery(
     {
       player_id: player_id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
       team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
+        !timeFilter?.month ||
+        !timeFilter?.year ||
         !selectedPlayerTeam?.id ||
         user?.user_type !== "Admin",
     }

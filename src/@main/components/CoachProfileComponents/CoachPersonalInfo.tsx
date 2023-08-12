@@ -50,12 +50,12 @@ const CoachPersonalInfo = ({ editMode, type }: Props) => {
 
   useEffect(() => {
     //@ts-ignore
-    if (!["Coach", "SubCoach"].includes(data?.user_type)) {
+    if (!["Coach", "SubCoach", "Supervisor"].includes(data?.user_type)) {
       setShared(playerCoach);
     } else {
       setShared(data);
     }
-    console.log("data data", data);
+    console.log("sharedsharedshared", shared);
     console.log("data playerCoach", playerCoach);
 
     if (data && ["Parent", "Player"].includes(data?.user_type)) {

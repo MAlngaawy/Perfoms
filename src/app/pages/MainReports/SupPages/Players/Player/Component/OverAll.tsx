@@ -45,15 +45,15 @@ const OverAll = ({ playerInfo, reportType }: Props) => {
     useUserGeneralPlayerKpiStatisticsQuery(
       {
         player_id: id,
-        date_from: timefilter.from_date,
-        date_to: timefilter.to_date,
+        month: timefilter.month,
+        year: timefilter.year,
         team_id: selectedPlayerTeam?.id,
       },
       {
         skip:
           !id ||
-          !timefilter.from_date ||
-          !timefilter.to_date ||
+          !timefilter.month ||
+          !timefilter.year ||
           !selectedPlayerTeam?.id,
       }
     );

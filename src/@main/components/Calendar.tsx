@@ -31,6 +31,10 @@ const CustomCalendar = ({ pageName, player_id, hide = false }: Props) => {
   const [lastDay, setLastDay] = useState<string>();
   const location = useLocation();
 
+  const newDate = new Date();
+  const currentMonth = JSON.stringify(newDate.getMonth());
+  const currentYear = JSON.stringify(newDate.getFullYear());
+
   const { data: teamInfo } = useGetTeamInfoQuery({
     team_id: selectedPlayerTeam?.id,
   });
@@ -55,15 +59,15 @@ const CustomCalendar = ({ pageName, player_id, hide = false }: Props) => {
   const { data: parentPlayerAttendance } = usePlayerCalendarQuery(
     {
       id: selectedPlayer?.id,
-      date_from: firstDay,
-      date_to: lastDay,
+      month: currentMonth,
+      year: currentYear,
       team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !selectedPlayer?.id ||
-        !firstDay ||
-        !lastDay ||
+        !currentMonth ||
+        !currentYear ||
         !selectedPlayerTeam?.id ||
         (user && !["Parent", "Player"].includes(user?.user_type)),
     }
@@ -72,15 +76,15 @@ const CustomCalendar = ({ pageName, player_id, hide = false }: Props) => {
   const { data: coachPlayerAttendance } = useCoachPlayerCalendarQuery(
     {
       player_id: player_id,
-      date_from: firstDay,
-      date_to: lastDay,
+      month: currentMonth,
+      year: currentYear,
       team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
-        !firstDay ||
-        !lastDay ||
+        !currentMonth ||
+        !currentYear ||
         !selectedPlayerTeam?.id ||
         user?.user_type !== "Coach",
     }
@@ -89,15 +93,15 @@ const CustomCalendar = ({ pageName, player_id, hide = false }: Props) => {
   const { data: superPlayerAttendance } = useSuperPlayerCalendarQuery(
     {
       player_id: player_id,
-      date_from: firstDay,
-      date_to: lastDay,
+      month: currentMonth,
+      year: currentYear,
       team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
-        !firstDay ||
-        !lastDay ||
+        !currentMonth ||
+        !currentYear ||
         !selectedPlayerTeam?.id ||
         user?.user_type !== "Supervisor",
     }
@@ -106,15 +110,15 @@ const CustomCalendar = ({ pageName, player_id, hide = false }: Props) => {
   const { data: adminPlayerAttendance } = useAdminPlayerCalendarQuery(
     {
       player_id: player_id,
-      date_from: firstDay,
-      date_to: lastDay,
+      month: currentMonth,
+      year: currentYear,
       team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
-        !firstDay ||
-        !lastDay ||
+        !currentMonth ||
+        !currentYear ||
         !selectedPlayerTeam?.id ||
         user?.user_type !== "Admin",
     }

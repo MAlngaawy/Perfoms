@@ -29,15 +29,15 @@ const ActionsCard = ({ player_id }: Props) => {
   const { data: parentPlayerActions } = usePlayerActionsQuery(
     {
       id: player_id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
       team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
+        !timeFilter?.month ||
+        !timeFilter?.year ||
         !selectedPlayerTeam?.id ||
         (user && !["Parent", "Player"].includes(user?.user_type)),
     }
@@ -46,15 +46,15 @@ const ActionsCard = ({ player_id }: Props) => {
   const { data: coachPlayerActions } = useCoachPlayerActionsQuery(
     {
       player_id: player_id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
       team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
+        !timeFilter?.month ||
+        !timeFilter?.year ||
         !selectedPlayerTeam?.id ||
         user?.user_type !== "Coach",
     }
@@ -63,15 +63,15 @@ const ActionsCard = ({ player_id }: Props) => {
   const { data: superPlayerActions } = useSuperPlayerActionsQuery(
     {
       player_id: player_id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
       team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
+        !timeFilter?.month ||
+        !timeFilter?.year ||
         !selectedPlayerTeam?.id ||
         user?.user_type !== "Supervisor",
     }
@@ -80,15 +80,15 @@ const ActionsCard = ({ player_id }: Props) => {
   const { data: adminPlayerActions } = useAdminPlayerActionsQuery(
     {
       player_id: player_id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
       team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
+        !timeFilter?.month ||
+        !timeFilter?.year ||
         !selectedPlayerTeam?.id ||
         user?.user_type !== "Admin",
     }

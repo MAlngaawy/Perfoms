@@ -40,15 +40,15 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
   const { data: moderate } = usePlayerModerateQuery(
     {
       player_id: player_id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
       team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
+        !timeFilter?.month ||
+        !timeFilter?.year ||
         !selectedPlayerTeam?.id ||
         (user && !["Parent", "Player"].includes(user?.user_type)),
     }
@@ -56,15 +56,15 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
   const { data: strength } = usePlayerStrengthQuery(
     {
       player_id: player_id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
       team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
+        !timeFilter?.month ||
+        !timeFilter?.year ||
         !selectedPlayerTeam?.id ||
         (user && !["Parent", "Player"].includes(user?.user_type)),
     }
@@ -72,15 +72,15 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
   const { data: weakness } = usePlayerWeaknessQuery(
     {
       player_id: player_id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
       team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
+        !timeFilter?.month ||
+        !timeFilter?.year ||
         !selectedPlayerTeam?.id ||
         (user && !["Parent", "Player"].includes(user?.user_type)),
     }
@@ -91,8 +91,8 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
     useCoachPlayerKpisMetricsModerateScoreQuery(
       {
         player_id: player_id,
-        date_from: timeFilter?.from_date,
-        date_to: timeFilter?.to_date,
+        month: timeFilter?.month,
+        year: timeFilter?.year,
         team_id: selectedPlayerTeam?.id,
       },
       {
@@ -104,8 +104,8 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
     useCoachPlayerKpisMetricsStrengthScoreQuery(
       {
         player_id: player_id,
-        date_from: timeFilter?.from_date,
-        date_to: timeFilter?.to_date,
+        month: timeFilter?.month,
+        year: timeFilter?.year,
         team_id: selectedPlayerTeam?.id,
       },
       {
@@ -117,8 +117,8 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
     useCoachPlayerKpisMetricsWeaknessScoreQuery(
       {
         player_id: player_id,
-        date_from: timeFilter?.from_date,
-        date_to: timeFilter?.to_date,
+        month: timeFilter?.month,
+        year: timeFilter?.year,
         team_id: selectedPlayerTeam?.id,
       },
       {
@@ -132,8 +132,8 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
     useSuperPlayerKpisMetricsModerateScoreQuery(
       {
         player_id: player_id,
-        date_from: timeFilter?.from_date,
-        date_to: timeFilter?.to_date,
+        month: timeFilter?.month,
+        year: timeFilter?.year,
         team_id: selectedPlayerTeam?.id,
       },
       {
@@ -147,8 +147,8 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
     useSuperPlayerKpisMetricsStrengthScoreQuery(
       {
         player_id: player_id,
-        date_from: timeFilter?.from_date,
-        date_to: timeFilter?.to_date,
+        month: timeFilter?.month,
+        year: timeFilter?.year,
         team_id: selectedPlayerTeam?.id,
       },
       {
@@ -162,8 +162,8 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
     useSuperPlayerKpisMetricsWeaknessScoreQuery(
       {
         player_id: player_id,
-        date_from: timeFilter?.from_date,
-        date_to: timeFilter?.to_date,
+        month: timeFilter?.month,
+        year: timeFilter?.year,
         team_id: selectedPlayerTeam?.id,
       },
       {
@@ -179,8 +179,8 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
     useAdminPlayerKpisMetricsModerateScoreQuery(
       {
         player_id: player_id,
-        date_from: timeFilter?.from_date,
-        date_to: timeFilter?.to_date,
+        month: timeFilter?.month,
+        year: timeFilter?.year,
         team_id: selectedPlayerTeam?.id,
       },
       {
@@ -192,8 +192,8 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
     useAdminPlayerKpisMetricsStrengthScoreQuery(
       {
         player_id: player_id,
-        date_from: timeFilter?.from_date,
-        date_to: timeFilter?.to_date,
+        month: timeFilter?.month,
+        year: timeFilter?.year,
         team_id: selectedPlayerTeam?.id,
       },
       {
@@ -205,8 +205,8 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
     useAdminPlayerKpisMetricsWeaknessScoreQuery(
       {
         player_id: player_id,
-        date_from: timeFilter?.from_date,
-        date_to: timeFilter?.to_date,
+        month: timeFilter?.month,
+        year: timeFilter?.year,
         team_id: selectedPlayerTeam?.id,
       },
       {

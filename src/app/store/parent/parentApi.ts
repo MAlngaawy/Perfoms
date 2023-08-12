@@ -123,8 +123,8 @@ export const parentsApi = createApi({
       {
         id: number | string | undefined;
         page?: number;
-        date_from: string;
-        date_to: string;
+        month: string;
+        year: string;
         team_id: number | string | undefined;
       }
     >({
@@ -141,13 +141,13 @@ export const parentsApi = createApi({
         id: number;
         team_id: number;
         page?: number;
-        date_from?: string;
-        date_to?: string;
+        month?: string;
+        year?: string;
       }
     >({
-      query: ({ date_from, date_to, id, team_id }) => ({
+      query: ({ month, year, id, team_id }) => ({
         url: `${id}/calendar/${team_id}`,
-        params: { date_from, date_to },
+        params: { month, year },
       }),
       providesTags: ["Parent"],
     }),
@@ -189,8 +189,8 @@ export const parentsApi = createApi({
       {
         id: number | string | undefined;
         page?: number;
-        date_from: string;
-        date_to: string;
+        month: string;
+        year: string;
         team_id: number | string | undefined;
       }
     >({
@@ -224,11 +224,11 @@ export const parentsApi = createApi({
 
     playerKpisMetrics: query<
       PlayerKpis,
-      { player_id: number; team_id: number; date_from: string; date_to: string }
+      { player_id: number; team_id: number; month: string; year: string }
     >({
-      query: ({ player_id, team_id, date_from, date_to }) => ({
+      query: ({ player_id, team_id, month, year }) => ({
         url: `${player_id}/${team_id}/player-kpis-metrics/`,
-        params: { date_from, date_to },
+        params: { month, year },
       }),
       providesTags: ["Parent"],
     }),
@@ -302,8 +302,8 @@ export const parentsApi = createApi({
       {
         player_id: number | string | undefined;
         page?: number;
-        date_from: string;
-        date_to: string;
+        month: string;
+        year: string;
         team_id: number | string | undefined;
       }
     >({
@@ -319,8 +319,8 @@ export const parentsApi = createApi({
       {
         player_id: number | string | undefined;
         page?: number;
-        date_from: string;
-        date_to: string;
+        month: string;
+        year: string;
         team_id: number | string | undefined;
       }
     >({
@@ -336,8 +336,8 @@ export const parentsApi = createApi({
       {
         player_id: number | string | undefined;
         page?: number;
-        date_from: string;
-        date_to: string;
+        month: string;
+        year: string;
         team_id: number | string | undefined;
       }
     >({
