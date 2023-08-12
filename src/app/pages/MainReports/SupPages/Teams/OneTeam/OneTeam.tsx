@@ -37,7 +37,7 @@ const OneTeam = (props: Props) => {
 
   const { data: superTeamKpisStatistics, isLoading: superLoading } =
     useSuperTeamKpisStatisticsQuery(
-      { team_id: team_id },
+      { team_id, sport_id },
       { skip: !team_id || user?.user_type !== "Supervisor" }
     );
 
