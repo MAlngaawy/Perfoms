@@ -14,7 +14,12 @@ import {
 import { TeamCoaches } from "~/app/store/types/parent-types";
 import { useEffect } from "react";
 import { useState } from "react";
-import { useUserQuery } from "~/app/store/user/userApi";
+import {
+  useGetFilteredCoachesQuery,
+  useGetTeamInfoQuery,
+  useUserQuery,
+} from "~/app/store/user/userApi";
+import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {
   teamId: string;
@@ -33,6 +38,21 @@ const TeamCoachesComp = ({ teamId }: Props) => {
   const { data: adminCoaches } = useAdminTeamCoachesQuery(
     { team_id: teamIdFromParams ? teamIdFromParams : teamId },
     { skip: !teamId || user?.user_type !== "Admin" }
+  );
+
+  const { data: teamInfo } = useGetTeamInfoQuery(
+    { team_id: teamId },
+    { skip: !teamId }
+  );
+
+  const { refetch: refetchFilteredCoaches } = useGetFilteredCoachesQuery(
+    {
+      team_id: teamId,
+      sport_id: teamInfo?.sport?.id,
+    },
+    {
+      skip: !teamInfo || !teamId,
+    }
   );
 
   const [superRemoveCoach] = useSuperRemoveTeamCoachMutation();
@@ -59,55 +79,29 @@ const TeamCoachesComp = ({ teamId }: Props) => {
               </h3>
             </div>
             <DeleteButton
-              deleteFun={() => {
-                if (user?.user_type === "Supervisor") {
-                  superRemoveCoach({
+              deleteFun={async () => {
+                const deleteCoachFun =
+                  user?.user_type === "Supervisor"
+                    ? superRemoveCoach
+                    : adminRemoveCoach;
+
+                try {
+                  await deleteCoachFun({
                     coach_id: coach.id,
                     team_id: teamId,
-                  }).then(() => {
-                    showNotification({
-                      message: "Successfully Deleted",
-                      color: "green",
-                      title: "Done",
-                      styles: {
-                        root: {
-                          backgroundColor: "#27AE60",
-                          borderColor: "#27AE60",
-                          "&::before": { backgroundColor: "#fff" },
-                        },
-
-                        title: { color: "#fff" },
-                        description: { color: "#fff" },
-                        closeButton: {
-                          color: "#fff",
-                        },
-                      },
-                    });
                   });
-                } else if (user?.user_type === "Admin") {
-                  adminRemoveCoach({
-                    coach_id: coach.id,
-                    team_id: teamId,
-                  }).then(() => {
-                    showNotification({
-                      message: "Successfully Deleted",
-                      color: "green",
-                      title: "Done",
-                      styles: {
-                        root: {
-                          backgroundColor: "#27AE60",
-                          borderColor: "#27AE60",
-                          "&::before": { backgroundColor: "#fff" },
-                        },
-
-                        title: { color: "#fff" },
-                        description: { color: "#fff" },
-                        closeButton: {
-                          color: "#fff",
-                        },
-                      },
-                    });
-                  });
+                  refetchFilteredCoaches();
+                  AppUtils.showNotificationFun(
+                    "Success",
+                    "Done",
+                    "Successfully Deleted Coaches"
+                  );
+                } catch {
+                  AppUtils.showNotificationFun(
+                    "Error",
+                    "Sorry",
+                    "Something went wrong while deleteing coach, please try again later"
+                  );
                 }
               }}
               type="Coach"

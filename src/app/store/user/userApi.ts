@@ -56,6 +56,7 @@ import {
 import { Sports, TeamPlayer } from "../types/clubManager-types";
 import { UserAchievements } from "~/app/store/types/user-types";
 import {
+  Coach,
   CoachPlayerInfo,
   CoachTeamInfo,
   PlayerMonthsAttendancesStatistics,
@@ -89,6 +90,7 @@ export const userApi = createApi({
     "calendar",
     "Certificates",
     "events",
+    "coaches",
   ],
   endpoints: ({ query, mutation }) => ({
     user: query<User, any>({
@@ -732,6 +734,21 @@ export const userApi = createApi({
       providesTags: ["players"],
     }),
 
+    getFilteredCoaches: query<
+      Coach[],
+      {
+        sport_id: string | undefined | number;
+        team_id: number | string | undefined;
+        pages?: number;
+      }
+    >({
+      query: ({ sport_id, team_id, ...params }) => ({
+        url: `sports/${sport_id}/teams/${team_id}/filtered-coaches/`,
+        params,
+      }),
+      providesTags: ["coaches"],
+    }),
+
     // add team calendar
     addTeamCalendarAttendDay: mutation<AddTeamCalendar, {}>({
       query: (body) => ({
@@ -877,6 +894,7 @@ export const {
   useUserGeneralPlayerKpiStatisticsQuery,
   useUserGeneralPlayersAttendStatisticsQuery,
   useGetFilteredPlayersQuery,
+  useGetFilteredCoachesQuery,
   useAddTeamCalendarAttendDayMutation,
   useUserGeneralTeamAttendanceQuery,
   useUserGeneralsAddTeamAttendanceSessionMutation,
