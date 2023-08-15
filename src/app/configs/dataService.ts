@@ -2,9 +2,9 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 // export const BASE_URL = "https://staging-api.performs.app/"; //* Staging
-export const BASE_URL = "https://api.performs.app"; //* production
+// export const BASE_URL = "https://api.performs.app"; //* production
 
-// export const BASE_URL = import.meta.env.VITE_API_URL; //! enviornment variables
+export const BASE_URL = import.meta.env.VITE_API_URL; //! enviornment variables
 export const BASE_URL2 = "https://fit-stg.performs.app";
 export const BASE_HEADERS = (headers: any, api: any) => {
   // headers.set("Accept", "application/json");

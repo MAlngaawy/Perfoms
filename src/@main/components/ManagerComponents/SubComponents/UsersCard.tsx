@@ -34,6 +34,7 @@ type Props = {
   fetching: boolean;
   sport: string | undefined;
   setSport: Dispatch<SetStateAction<string | undefined>>;
+  count: number | undefined;
 };
 
 const UsersCard = ({
@@ -45,7 +46,10 @@ const UsersCard = ({
   fetching,
   sport,
   setSport,
+  count,
 }: Props) => {
+  console.log("TESTSEXRSJKN", type, data);
+
   // const [selectedSport, setSelectedSport] = useState<string | null>();
   const safeSetSport = setSport ?? (() => {});
 
@@ -93,6 +97,7 @@ const UsersCard = ({
         <div className="flex justify-between items-center w-full">
           <h2 className="text-sm sm:text-lg text-perfGray1 mb-2 sm:mb-0">
             {type === "Coach" ? "Coaches" : type + "s"} in the system
+            <span className="mx-2 font-bold text-perfBlue">({count})</span>
           </h2>
           {type === "Player" ? (
             <AddPlayerForm />

@@ -99,6 +99,7 @@ const Users = (props: Props) => {
         fetching={coachLoading}
         setSport={setCoachSport}
         sport={coachSport}
+        count={coaches?.count}
       />
       {subCoaches && (
         <UsersCard
@@ -110,6 +111,7 @@ const Users = (props: Props) => {
           fetching={subCoachLoading}
           setSport={setSubCoachSport}
           sport={subCoachSport}
+          count={subCoaches?.count}
         />
       )}
       <UsersCard
@@ -121,6 +123,7 @@ const Users = (props: Props) => {
         fetching={superLoading}
         setSport={setSuperSport}
         sport={superSport}
+        count={supervisors?.count}
       />
       <UsersCard
         type="Player"
@@ -131,6 +134,7 @@ const Users = (props: Props) => {
         fetching={playerLoading}
         setSport={setPlayerSport}
         sport={playerSport}
+        count={players?.count}
       />
       <UsersCard
         type="Parent"
@@ -141,6 +145,7 @@ const Users = (props: Props) => {
         fetching={parentLoading}
         setSport={setParentSport}
         sport={parentSport}
+        count={parents?.count}
       />
     </div>
   );
