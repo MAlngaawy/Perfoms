@@ -347,7 +347,7 @@ const SaleStaticChart = () => {
                   fill={
                     metric.score_avg >= 60
                       ? "#00E096" // green more than 60
-                      : metric.score_avg <= 30
+                      : metric.score_avg < 30
                       ? "#EB5757" // red less than 30
                       : "#F2C94C" // yallow
                   }

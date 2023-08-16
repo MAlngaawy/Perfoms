@@ -25,7 +25,7 @@ const SignInPage = (props: Props) => {
     formState: { errors },
     control,
   } = useForm({
-    defaultValues: { countryCode: "+20", phoneNumber: "", password: "" },
+    defaultValues: { countryCode: "+2", phoneNumber: "", password: "" },
     resolver: yupResolver(schema),
   });
 
