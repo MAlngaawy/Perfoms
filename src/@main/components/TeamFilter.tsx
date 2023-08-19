@@ -105,7 +105,8 @@ const TeamFilter = ({ adminSportId, player_id }: Props) => {
         }
       }}
       shadow="md"
-      width={user?.user_type === "Admin" ? 300 : 200}
+      //@ts-ignore
+      className="w-full xs:w-auto"
     >
       <Menu.Target>
         <button className="flex gap-2 text-sm justify-center items-center  py-2 px-6 rounded-3xl border bg-white ">
@@ -113,7 +114,7 @@ const TeamFilter = ({ adminSportId, player_id }: Props) => {
           <AppIcons className="inline w-3 h-3" icon="ChevronDownIcon:outline" />
         </button>
       </Menu.Target>
-      <Menu.Dropdown>
+      <Menu.Dropdown className="w-9/10 xs:w-auto">
         {teams &&
           teams.map((value) => (
             <Menu.Item

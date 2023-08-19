@@ -27,7 +27,7 @@ const PlayerDetails = () => {
   return (
     <EditModeContext.Provider value={editModeState}>
       <div>
-        <div className="flex mt-6 flex-col gap-4 sm:flex-row justify-between items-start mx-4 xs:mx-8">
+        <div className="flex mt-6 flex-col gap-4 sm:flex-row justify-between items-end mx-4 xs:mx-8">
           <div className=" container">
             <AppRadioGroub
               values={["Bio", "Media", "Reports", "Analytics", "Health"]}
@@ -37,7 +37,7 @@ const PlayerDetails = () => {
           </div>
           {checked === "Bio" && (
             <div
-              className="edit border border-perfBlue mb-2 sm:m-0 text-perfBlue py-1 px-4 rounded-lg cursor-pointer hover:bg-perfBlue hover:text-white transform transition-all hover:scale-105 "
+              className="edit border w-full sm:w-auto text-center border-perfBlue mb-2 sm:m-0 text-perfBlue py-1 px-4 rounded-lg cursor-pointer hover:bg-perfBlue hover:text-white transform transition-all hover:scale-105 "
               onClick={() => setEditModeState(!editModeState)}
             >
               {editModeState ? "Done" : "Edit"}
