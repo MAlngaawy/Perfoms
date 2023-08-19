@@ -11,7 +11,7 @@ type Props = {
 const AppRadioGroub = ({ checked, setChecked, values }: Props) => {
   const screenWidth = useWindowSize().width;
 
-  const radioPadding = screenWidth < 400 ? " 5px 10px" : "10px 25px";
+  const radioPadding = screenWidth < 400 ? " 7px 10px" : "10px 25px";
 
   return (
     <div className="">
@@ -23,8 +23,13 @@ const AppRadioGroub = ({ checked, setChecked, values }: Props) => {
         offset="xs"
         size="xs"
         sx={{
-          ".mantine-Group-root": {
-            paddingTop: 0,
+          "@media (max-width: 768px)": {
+            // Adjust the screen width as needed
+            ".mantine-Group-root": {
+              paddingTop: 0,
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+            },
           },
         }}
         className="flex-wrap justify-center p-0"
@@ -36,6 +41,7 @@ const AppRadioGroub = ({ checked, setChecked, values }: Props) => {
               sx={{
                 ".mantine-Radio-body": {
                   backgroundColor: "#fff",
+                  width: "100%",
                   alignItems: "baseline",
                   padding: radioPadding,
                   borderRadius: "50px",

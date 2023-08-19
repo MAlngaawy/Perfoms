@@ -31,7 +31,7 @@ const OneTeam = (props: Props) => {
   // Fetch Kpis Statistics Data
   const { data: coachTeamKpisStatistics, isLoading } =
     useCoachTeamKpisStatisticsQuery(
-      { team_id: team_id },
+      { team_id, sport_id },
       { skip: !team_id || user?.user_type !== "Coach" }
     );
 

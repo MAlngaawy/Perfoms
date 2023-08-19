@@ -220,10 +220,14 @@ export const coachApi = createApi({
 
     coachTeamKpisStatistics: query<
       TeamKpisStatistics,
-      { team_id: string | undefined; pages?: number }
+      {
+        team_id: string | undefined;
+        sport_id: string | undefined;
+        pages?: number;
+      }
     >({
-      query: ({ team_id, ...params }) => ({
-        url: `statistics/teams/kpis/${team_id}`,
+      query: ({ team_id, sport_id, ...params }) => ({
+        url: `statistics/sports/teams/kpis/${sport_id}/${team_id}/`,
         params,
       }),
     }),

@@ -184,8 +184,8 @@ const CreateContentTable = memo(
         ) : (
           <tr className="w-full p-4 m-10 bg-white">
             <td colSpan={100} className="bg-pagesBg p-10 w-full">
-              No attendance added for this Team in this month yet <br />
-              {user?.user_type &&
+              No attendance added yet <br />
+              {/* {user?.user_type &&
                 ["Supervisor", "Coach"].includes(user?.user_type) && (
                   <span>
                     ,if you want to add attendance you can go to the team info
@@ -193,7 +193,7 @@ const CreateContentTable = memo(
                     <br />
                     and add attendance to calendar
                   </span>
-                )}
+                )} */}
               {setChecked && (
                 <button
                   onClick={() => setChecked("Team info")}
