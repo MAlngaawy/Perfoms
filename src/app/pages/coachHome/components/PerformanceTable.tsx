@@ -7,7 +7,10 @@ import {
   useUpdatePlayerPKMMutation,
 } from "~/app/store/coach/coachApi";
 import { useSelector } from "react-redux";
-import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
+import {
+  selectedPlayerTeamFn,
+  timeFilterFn,
+} from "~/app/store/parent/parentSlice";
 import classNames from "classnames";
 import NoTeamComp from "~/@main/components/NoTeamComp";
 import {

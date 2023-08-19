@@ -32,6 +32,8 @@ const TimeFilter = (props: Props) => {
   return (
     <div>
       <Menu
+        //@ts-ignore
+        className="w-full xs:w-auto"
         transition="rotate-right"
         transitionDuration={150}
         opened={opened}

@@ -593,7 +593,7 @@ export const supervisorApi = createApi({
     // Attedance and reports
     superTeamAttendanceDays: query<
       TeamAttendanceDays,
-      { team_id: number; page?: number }
+      { team_id: number; month: string; year: string; page?: number }
     >({
       query: ({ team_id, ...params }) => ({
         url: `team-attendance-days/${team_id}`,
@@ -604,7 +604,7 @@ export const supervisorApi = createApi({
 
     superGetTeamAttendance: query<
       CoachTeamAttendance,
-      { team_id: number; page?: number }
+      { team_id: number; month: string; year: string; page?: number }
     >({
       query: ({ team_id, ...params }) => ({
         url: `team-attendance/${team_id}`,

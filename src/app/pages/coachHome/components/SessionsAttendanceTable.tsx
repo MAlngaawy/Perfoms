@@ -6,7 +6,10 @@ import {
   useTeamAttendanceDaysQuery,
 } from "~/app/store/coach/coachApi";
 import { useSelector } from "react-redux";
-import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
+import {
+  selectedPlayerTeamFn,
+  timeFilterFn,
+} from "~/app/store/parent/parentSlice";
 import NoTeamComp from "~/@main/components/NoTeamComp";
 import { useUserQuery } from "~/app/store/user/userApi";
 import {
@@ -28,6 +31,7 @@ type Props = {
 };
 
 const AttendanceTable = ({ setChecked }: Props) => {
+  const timeFilter = useSelector(timeFilterFn);
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const { data: user } = useUserQuery({});
   const [teamAttendance, setTeamAttendance] = useState<CoachTeamAttendance>();
@@ -35,29 +39,57 @@ const AttendanceTable = ({ setChecked }: Props) => {
     useState<TeamAttendanceDays>();
 
   const { data: coachTeamAttendance } = useGetTeamAttendanceQuery(
-    { team_id: selectedPlayerTeam?.id },
     {
-      skip: !selectedPlayerTeam,
+      team_id: selectedPlayerTeam?.id,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
+    },
+    {
+      skip: !selectedPlayerTeam || !timeFilter?.month || !timeFilter?.year,
     }
   );
 
   const { data: superTeamAttendance } = useSuperGetTeamAttendanceQuery(
-    { team_id: selectedPlayerTeam?.id },
-    { skip: !selectedPlayerTeam || user?.user_type !== "Supervisor" }
+    {
+      team_id: selectedPlayerTeam?.id,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
+    },
+    {
+      skip:
+        !selectedPlayerTeam ||
+        !timeFilter?.month ||
+        !timeFilter?.year ||
+        user?.user_type !== "Supervisor",
+    }
   );
 
   const { data: coachTeamAttendanceDays, isLoading: isCoachLoading } =
     useTeamAttendanceDaysQuery(
-      { team_id: selectedPlayerTeam?.id },
       {
-        skip: !selectedPlayerTeam,
+        team_id: selectedPlayerTeam?.id,
+        month: timeFilter?.month,
+        year: timeFilter?.year,
+      },
+      {
+        skip: !selectedPlayerTeam || !timeFilter?.month || !timeFilter?.year,
       }
     );
 
   const { data: superTeamAttendanceDays, isLoading: isSuperLoading } =
     useSuperTeamAttendanceDaysQuery(
-      { team_id: selectedPlayerTeam?.id },
-      { skip: !selectedPlayerTeam || user?.user_type !== "Supervisor" }
+      {
+        team_id: selectedPlayerTeam?.id,
+        month: timeFilter?.month,
+        year: timeFilter?.year,
+      },
+      {
+        skip:
+          !selectedPlayerTeam ||
+          !timeFilter?.month ||
+          !timeFilter?.year ||
+          user?.user_type !== "Supervisor",
+      }
     );
 
   useEffect(() => {

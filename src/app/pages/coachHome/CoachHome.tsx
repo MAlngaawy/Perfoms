@@ -7,6 +7,7 @@ import { useCoachTeamInfoQuery } from "~/app/store/coach/coachApi";
 import { useSelector } from "react-redux";
 import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 import classNames from "classnames";
+import TimeFilter from "~/@main/components/TimeFilter";
 
 const LazyAttendanceTable = lazy(() => import("./components/AttendanceTable"));
 const LazySessionsAttendanceTable = lazy(
@@ -83,7 +84,10 @@ const CoachHome = (props: Props) => {
             Certificate
           </Link>
         </div>
-        <TeamFilter />
+        <div className="flex flex-col xs:flex-row gap-2">
+          {checked === "Attendance" && <TimeFilter />}
+          <TeamFilter />
+        </div>
       </div>
 
       {renderTable()}
