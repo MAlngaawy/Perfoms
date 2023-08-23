@@ -98,6 +98,13 @@ class AppUtils {
     return false;
   }
 
+  static scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   static searchInString(value, searchText) {
     return value.toLowerCase().includes(searchText);
   }

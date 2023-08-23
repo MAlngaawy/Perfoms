@@ -11,7 +11,7 @@ import {
   useGetFilteredPlayersQuery,
   useUserQuery,
 } from "~/app/store/user/userApi";
-import { TeamPlayers } from "~/app/store/types/clubManager-types";
+import { TeamPlayer, TeamPlayers } from "~/app/store/types/clubManager-types";
 import { useEffect, useState } from "react";
 import {
   useAdminRemoveTeamPlayerMutation,
@@ -19,8 +19,9 @@ import {
 } from "~/app/store/clubManager/clubManagerApi";
 import AppUtils from "~/@main/utils/AppUtils";
 import { useRemoveTeamPlayerMutation } from "~/app/store/coach/coachApi";
-import { Avatar } from "@mantine/core";
+import { Avatar, Loader } from "@mantine/core";
 import { Team } from "~/app/store/types/supervisor-types";
+import { useInView } from "react-intersection-observer";
 
 type Props = {
   teamId: string;
@@ -28,32 +29,22 @@ type Props = {
 };
 
 const TeamPlayersComponent = ({ teamInfo, teamId }: Props) => {
-  const [players, setPlayers] = useState<TeamPlayers>();
+  const { ref, inView } = useInView();
+  const [nextPage, setNextPage] = useState<number>(2);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [stillHavePages, setStillHavePages] = useState<boolean>(false);
+
+  const [players, setPlayers] = useState<TeamPlayer[]>([]);
   const { data: user } = useUserQuery({});
 
   const { data: superPlayers } = useSuperTeamPlaersQuery(
-    { team_id: teamId },
+    { team_id: teamId, page: currentPage },
     { skip: !teamId || user?.user_type !== "Supervisor" }
   );
   const { data: adminPlayers } = useAdminTeamPlaersQuery(
-    { team_id: teamId },
+    { team_id: teamId, page: currentPage },
     { skip: !teamId || user?.user_type !== "Admin" }
   );
-
-  const [sportId, setSportId] = useState(0);
-
-  const { data: sports } = useGeneralSportsQuery({});
-
-  useEffect(() => {
-    if (teamInfo) {
-      if (sports) {
-        const currentTeamSportId: number = sports?.results.filter(
-          (sport) => sport.name === teamInfo?.sport?.name
-        )[0].id;
-        setSportId(currentTeamSportId);
-      }
-    }
-  }, [teamInfo, sports]);
 
   const { data: filteredPlayers, refetch: refetchFilteredPlayers } =
     useGetFilteredPlayersQuery({
@@ -62,34 +53,99 @@ const TeamPlayersComponent = ({ teamInfo, teamId }: Props) => {
     });
 
   useEffect(() => {
-    if (superPlayers) setPlayers(superPlayers);
-    if (adminPlayers) setPlayers(adminPlayers);
+    if (superPlayers) {
+      if (currentPage === 1) {
+        setPlayers(superPlayers?.results);
+      } else {
+        setPlayers([...players, ...superPlayers?.results]);
+      }
+      if (superPlayers?.pages_count && superPlayers?.pages_count >= nextPage) {
+        setStillHavePages(true);
+      } else {
+        setStillHavePages(false);
+      }
+    }
+    if (adminPlayers) {
+      if (currentPage === 1) {
+        setPlayers(adminPlayers?.results);
+      } else {
+        setPlayers([...players, ...adminPlayers?.results]);
+      }
+      if (adminPlayers?.pages_count && adminPlayers?.pages_count >= nextPage) {
+        setStillHavePages(true);
+      } else {
+        setStillHavePages(false);
+      }
+    }
   }, [superPlayers, adminPlayers]);
+
+  const resetAllData = () => {
+    // setPlayers([]);
+    setCurrentPage(1);
+    setNextPage(2);
+  };
+
+  useEffect(() => {
+    if (inView) {
+      if (superPlayers) {
+        if (
+          superPlayers?.pages_count &&
+          superPlayers?.pages_count >= nextPage
+        ) {
+          setCurrentPage(nextPage);
+          setNextPage(nextPage + 1);
+        } else {
+          return;
+        }
+      }
+      if (adminPlayers) {
+        if (
+          adminPlayers?.pages_count &&
+          adminPlayers?.pages_count >= nextPage
+        ) {
+          setCurrentPage(nextPage);
+          setNextPage(nextPage + 1);
+        } else {
+          return;
+        }
+      }
+    }
+  }, [inView]);
 
   return (
     <div>
       <h2 className="p-2 text-center text-lg">Team Players</h2>
       <div className="flex flex-wrap justify-center gap-2 xs:gap-4  mt-4">
-        {players &&
-          players.results.map((player) => {
-            return (
-              <SinglePlayer
-                key={player.id}
-                teamId={teamId}
-                id={player.id}
-                name={player.name}
-                image={player.icon}
-                refetchFilteredPlayers={refetchFilteredPlayers}
-              />
-            );
-          })}
+        {players.map((player) => {
+          return (
+            <SinglePlayer
+              resetAllData={resetAllData}
+              key={player.id}
+              teamId={teamId}
+              id={player.id}
+              name={player.name}
+              image={player.icon}
+              refetchFilteredPlayers={refetchFilteredPlayers}
+            />
+          );
+        })}
         <AddPlayer
+          resetAllData={resetAllData}
           filteredPlayers={filteredPlayers}
           refetchFilteredPlayers={refetchFilteredPlayers}
           teamInfo={teamInfo}
-          teamPlayers={players}
         />
       </div>
+
+      {stillHavePages && (
+        <div
+          className="bg-perfBlue mx-auto my-4 rounded-2xl flex gap-2 w-fit py-2 items-center justify-center px-6 text-white text-sm"
+          ref={ref}
+        >
+          <span>Loading Players</span>{" "}
+          <Loader color="white" size="md" variant="dots" />
+        </div>
+      )}
     </div>
   );
 };
@@ -100,6 +156,7 @@ export const SinglePlayer = ({
   name,
   teamId,
   refetchFilteredPlayers,
+  resetAllData,
 }: any) => {
   const navigate = useNavigate();
   const { data: user } = useUserQuery(null);
@@ -192,7 +249,9 @@ export const SinglePlayer = ({
         });
     }
 
+    AppUtils.scrollToTop();
     setTimeout(() => {
+      resetAllData();
       refetchFilteredPlayers();
     }, 2000);
   };

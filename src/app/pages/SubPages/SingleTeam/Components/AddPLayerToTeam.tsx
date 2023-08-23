@@ -2,29 +2,22 @@ import React, { useState, forwardRef, useEffect } from "react";
 import { Modal, Group, Avatar, Text, Select } from "@mantine/core";
 import SubmitButton from "../../../../../@main/components/SubmitButton";
 import { Controller, useForm } from "react-hook-form";
-import {
-  useSuperAddTeamPlayerMutation,
-  useSuperPlayersQuery,
-} from "~/app/store/supervisor/supervisorMainApi";
+import { useSuperAddTeamPlayerMutation } from "~/app/store/supervisor/supervisorMainApi";
 import { useParams } from "react-router-dom";
 import __ from "lodash";
 import { TeamPlayers, TeamPlayer } from "~/app/store/types/clubManager-types";
-import {
-  useAdminAddTeamPlayerMutation,
-  useAdminPlayersQuery,
-} from "~/app/store/clubManager/clubManagerApi";
+import { useAdminAddTeamPlayerMutation } from "~/app/store/clubManager/clubManagerApi";
 import { Team } from "~/app/store/types/supervisor-types";
 import { useUserQuery } from "~/app/store/user/userApi";
 import AppUtils from "~/@main/utils/AppUtils";
 import { useCoachAddTeamPlayerMutation } from "~/app/store/coach/coachApi";
-import { CoachTeamInfo } from "~/app/store/types/coach-types";
 
 type Props = {
-  teamPlayers: TeamPlayers | undefined;
   coach_team_id?: number;
   teamInfo?: Team;
   filteredPlayers?: TeamPlayer[];
   refetchFilteredPlayers: any;
+  resetAllData: any;
 };
 
 const AddPlayer = ({
@@ -32,6 +25,7 @@ const AddPlayer = ({
   teamInfo,
   filteredPlayers,
   refetchFilteredPlayers,
+  resetAllData,
 }: Props) => {
   const [opened, setOpened] = useState(false);
   const [filteredPlayersData, setFilteredPlayersData] = useState<any>();
@@ -129,7 +123,9 @@ const AddPlayer = ({
     addPlayerFunc(data);
     setOpened(false);
     reset({ player: "" });
+    AppUtils.scrollToTop();
     setTimeout(() => {
+      resetAllData();
       refetchFilteredPlayers();
     }, 2000);
   };

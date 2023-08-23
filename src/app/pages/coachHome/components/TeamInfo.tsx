@@ -1,4 +1,4 @@
-import { Grid } from "@mantine/core";
+import { Grid, Loader } from "@mantine/core";
 import UpcomingEventsCard from "~/@main/components/UpcomingEventsCard";
 import { useSelector } from "react-redux";
 import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
@@ -15,18 +15,64 @@ import {
 import AddPlayer from "../../SubPages/SingleTeam/Components/AddPLayerToTeam";
 import { SinglePlayer } from "../../SubPages/SingleTeam/Components/TeamPlayers";
 import { useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
+import { TeamPlayer } from "~/app/store/types/clubManager-types";
 
 type Props = {};
 
 const TeamInfo = (props: Props) => {
+  const { ref, inView } = useInView();
+  const [nextPage, setNextPage] = useState<number>(2);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalData, setTotalData] = useState<TeamPlayer[]>([]);
+  const [stillHavePages, setStillHavePages] = useState<boolean>(false);
+
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const { data: user } = useUserQuery({});
   const [sportId, setSportId] = useState(0);
 
   const { data: coachTeamPlayers } = useGetTeamPlayersQuery(
-    { team_id: selectedPlayerTeam?.id },
+    { team_id: selectedPlayerTeam?.id, page: currentPage },
     { skip: !selectedPlayerTeam || user?.user_type !== "Coach" }
   );
+
+  useEffect(() => {
+    if (coachTeamPlayers) {
+      if (currentPage === 1) {
+        setTotalData(coachTeamPlayers?.results);
+      } else {
+        setTotalData([...totalData, ...coachTeamPlayers?.results]);
+      }
+      if (
+        coachTeamPlayers?.pages_count &&
+        coachTeamPlayers?.pages_count >= nextPage
+      ) {
+        setStillHavePages(true);
+      } else {
+        setStillHavePages(false);
+      }
+    }
+  }, [coachTeamPlayers]);
+
+  const resetAllData = () => {
+    // setTotalData([]);
+    setCurrentPage(1);
+    setNextPage(2);
+  };
+
+  useEffect(() => {
+    if (inView) {
+      if (
+        coachTeamPlayers?.pages_count &&
+        coachTeamPlayers?.pages_count >= nextPage
+      ) {
+        setCurrentPage(nextPage);
+        setNextPage(nextPage + 1);
+      } else {
+        return;
+      }
+    }
+  }, [inView]);
 
   const { data: teamInfo } = useGetTeamInfoQuery({
     team_id: selectedPlayerTeam?.id,
@@ -83,26 +129,36 @@ const TeamInfo = (props: Props) => {
             >
               <h2 className="p-2 text-center text-lg">Team Players</h2>
               <div className="flex flex-wrap justify-center gap-2 xs:gap-4  mt-4">
-                {coachTeamPlayers &&
-                  coachTeamPlayers?.results.map((player, idx) => {
-                    return (
-                      <SinglePlayer
-                        key={player.id}
-                        teamId={selectedPlayerTeam?.id}
-                        id={player.id}
-                        name={player.name}
-                        image={player.icon}
-                      />
-                    );
-                  })}
+                {totalData.map((player, idx) => {
+                  return (
+                    <SinglePlayer
+                      resetAllData={resetAllData}
+                      key={player.id}
+                      teamId={selectedPlayerTeam?.id}
+                      id={player.id}
+                      name={player.name}
+                      image={player.icon}
+                    />
+                  );
+                })}
                 <AddPlayer
+                  resetAllData={resetAllData}
                   filteredPlayers={filteredPlayers}
                   refetchFilteredPlayers={refetchFilteredPlayers}
                   teamInfo={teamInfo}
-                  teamPlayers={coachTeamPlayers}
                   coach_team_id={selectedPlayerTeam?.id}
                 />
               </div>
+
+              {stillHavePages && (
+                <div
+                  className="bg-perfBlue mx-auto my-4 rounded-2xl flex gap-2 w-fit py-2 items-center justify-center px-6 text-white text-sm"
+                  ref={ref}
+                >
+                  <span>Loading Players</span>{" "}
+                  <Loader color="white" size="md" variant="dots" />
+                </div>
+              )}
 
               <>
                 {!coachTeamPlayers?.results.length && (
