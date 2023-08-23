@@ -5,9 +5,15 @@ type PagenationProps = {
   pageCount: number | undefined;
   setPage: Dispatch<SetStateAction<number | undefined>>;
   searchInputValue?: string;
+  sport?: string;
 };
 
-function Pagenation({ pageCount, searchInputValue, setPage }: PagenationProps) {
+function Pagenation({
+  pageCount,
+  searchInputValue,
+  setPage,
+  sport,
+}: PagenationProps) {
   const [currentSearchInputValue, setCurrentSearchInputValue] = useState("");
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
 
@@ -15,7 +21,7 @@ function Pagenation({ pageCount, searchInputValue, setPage }: PagenationProps) {
     // Reset the current page to 1 when the search input value changes
     setCurrentPage(1);
     setCurrentSearchInputValue(searchInputValue || "");
-  }, [searchInputValue]);
+  }, [searchInputValue, sport]);
 
   const handlePageClick = (event: { selected: number }) => {
     setPage(event.selected + 1);

@@ -3,6 +3,7 @@ import {
   Avatar,
   Grid,
   Loader,
+  LoadingOverlay,
   Select,
   SelectItem,
   TextInput,
@@ -48,7 +49,7 @@ const UsersCard = ({
   setSport,
   count,
 }: Props) => {
-  console.log("TESTSEXRSJKN", type, data);
+  console.log("fetching", fetching);
 
   // const [selectedSport, setSelectedSport] = useState<string | null>();
   const safeSetSport = setSport ?? (() => {});
@@ -113,6 +114,7 @@ const UsersCard = ({
               onChange={(e: string) => {
                 if (e && e != "0") {
                   safeSetSport(e);
+                  setPage(1);
                 } else {
                   safeSetSport("0");
                 }
@@ -150,11 +152,8 @@ const UsersCard = ({
         </div>
       </div>
       <div className="h-60 overflow-y-scroll">
-        {fetching ? (
-          <div className="flex justify-center items-center w-full h-full">
-            <Loader />
-          </div>
-        ) : (
+        <div className="relative">
+          <LoadingOverlay visible={fetching} overlayBlur={2} />
           <Grid className="w-full" gutter={"sm"}>
             {data && data.length > 0 ? (
               <FilteredUsers
@@ -168,10 +167,11 @@ const UsersCard = ({
               </div>
             )}
           </Grid>
-        )}
+        </div>
       </div>
       <Pagenation
         pageCount={pageCount}
+        sport={sport}
         setPage={setPage}
         searchInputValue={inputRef.current?.value}
       />

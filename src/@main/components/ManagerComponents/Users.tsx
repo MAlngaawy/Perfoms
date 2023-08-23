@@ -36,7 +36,7 @@ const Users = (props: Props) => {
   const [superSport, setSuperSport] = useState<string>();
   const [parentSport, setParentSport] = useState<string>();
 
-  const { data: players, isLoading: playerLoading } = useAdminPlayersQuery(
+  const { data: players, isFetching: playerLoading } = useAdminPlayersQuery(
     {
       club_id: user?.club,
       search: playerSearch,
@@ -46,7 +46,7 @@ const Users = (props: Props) => {
     { skip: !user?.club }
   );
 
-  const { data: coaches, isLoading: coachLoading } = useAdminCoachesQuery(
+  const { data: coaches, isFetching: coachLoading } = useAdminCoachesQuery(
     {
       club_id: user?.club,
       search: coachSearch,
@@ -56,7 +56,7 @@ const Users = (props: Props) => {
     { skip: !user?.club }
   );
 
-  const { data: supervisors, isLoading: superLoading } =
+  const { data: supervisors, isFetching: superLoading } =
     useAdminSupervisorsQuery(
       {
         club_id: user?.club,
@@ -67,7 +67,7 @@ const Users = (props: Props) => {
       { skip: !user?.club }
     );
 
-  const { data: subCoaches, isLoading: subCoachLoading } =
+  const { data: subCoaches, isFetching: subCoachLoading } =
     useAdminSubCoachQuery(
       {
         club_id: user?.club,
@@ -78,7 +78,7 @@ const Users = (props: Props) => {
       { skip: !user?.club }
     );
 
-  const { data: parents, isLoading: parentLoading } = useAdminParentsQuery(
+  const { data: parents, isFetching: parentLoading } = useAdminParentsQuery(
     {
       club_id: user?.club,
       search: parentSearch,
