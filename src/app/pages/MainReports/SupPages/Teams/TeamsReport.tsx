@@ -12,6 +12,7 @@ import { useCoachTeamStatisticsQuery } from "~/app/store/coach/coachApi";
 import { useUserQuery } from "~/app/store/user/userApi";
 import { TeamsStatistics } from "~/app/store/types/coach-types";
 import { useAdminTeamsStatisticsQuery } from "~/app/store/clubManager/clubManagerApi";
+import CardsWrapper from "~/@main/components/MainReports/CardsWrapper";
 
 type Props = {};
 
@@ -60,7 +61,7 @@ const TeamsReports = (props: Props) => {
         </Breadcrumbs>
       </div>
       <PrintComp documentTitle="Teams Reports">
-        <div className="reports flex flex-wrap gap-4 justify-center xs:justify-start items-stretch my-10">
+        <CardsWrapper>
           {data &&
             data?.results.map((team) => {
               return (
@@ -73,7 +74,7 @@ const TeamsReports = (props: Props) => {
                 </div>
               );
             })}
-        </div>
+        </CardsWrapper>
       </PrintComp>
     </div>
   );

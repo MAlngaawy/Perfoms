@@ -19,6 +19,7 @@ import {
   useAdminTeamInfoQuery,
   useAdminTeamKpisStatisticsQuery,
 } from "~/app/store/clubManager/clubManagerApi";
+import CardsWrapper from "~/@main/components/MainReports/CardsWrapper";
 
 type Props = {};
 
@@ -101,12 +102,10 @@ const OneTeam = (props: Props) => {
           "Team Reports"
         }
       >
-        <div className="reports items-stretch justify-center xs:justify-start flex flex-wrap gap-4 my-10">
-          <div>
-            <TeamInfoCard
-              TeamInfoData={coachTeamInfo || superTeamInfo || adminTeamInfo}
-            />
-          </div>
+        <CardsWrapper>
+          <TeamInfoCard
+            TeamInfoData={coachTeamInfo || superTeamInfo || adminTeamInfo}
+          />
           {isLoading ||
             (superLoading && (
               <>
@@ -131,7 +130,7 @@ const OneTeam = (props: Props) => {
               </div>
             );
           })}
-        </div>
+        </CardsWrapper>
       </PrintComp>
     </div>
   );

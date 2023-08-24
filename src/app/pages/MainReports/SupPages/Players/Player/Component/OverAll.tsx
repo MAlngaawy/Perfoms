@@ -23,6 +23,7 @@ import {
 } from "~/app/store/user/userApi";
 import { axiosInstance } from "~/app/configs/dataService";
 import AppUtils from "~/@main/utils/AppUtils";
+import CardsWrapper from "~/@main/components/MainReports/CardsWrapper";
 
 type Props = {
   reportType: string;
@@ -75,10 +76,10 @@ const OverAll = ({ playerInfo, reportType }: Props) => {
 
   return (
     <PrintComp documentTitle={playerInfo?.name || "No Name"}>
-      <div className="reports flex-row items-stretch justify-center flex flex-wrap gap-4 gap-x-8 my-6">
+      <CardsWrapper>
         {/* <TeamInfoCard /> */}
         <div>
-          <div className="teamInfoCard shadow-lg bg-white h-full flex-col gap-4 rounded-xl p-4 flex w-64">
+          <div className="teamInfoCard shadow-lg bg-white h-full flex-col gap-4 rounded-xl p-4 flex w-full">
             <h2> {playerInfo?.name} </h2>
             <div className="flex flex-col gap-6">
               <div className="flex justify-between gap-6">
@@ -146,24 +147,22 @@ const OverAll = ({ playerInfo, reportType }: Props) => {
           </div>
         </div>
         {reportType === "Performances" ? (
-          <>
-            {performanceData?.results?.map((kpi) => {
-              return (
-                <div key={kpi.id}>
-                  <ReportsChartCard
-                    clickable={false}
-                    name={kpi.name}
-                    statistics={kpi.statistics}
-                  />
-                </div>
-              );
-            })}
-          </>
+          performanceData?.results?.map((kpi) => {
+            return (
+              <div key={kpi.id}>
+                <ReportsChartCard
+                  clickable={false}
+                  name={kpi.name}
+                  statistics={kpi.statistics}
+                />
+              </div>
+            );
+          })
         ) : (
           <>
             {attendanceData?.map((attend) => {
               return (
-                <div key={attend.name}>
+                <div className="w-full" key={attend.name}>
                   <AttendReportsChart
                     player_attendance={attend.statistics}
                     name={attend.name}
@@ -173,7 +172,7 @@ const OverAll = ({ playerInfo, reportType }: Props) => {
             })}
           </>
         )}
-      </div>
+      </CardsWrapper>
     </PrintComp>
   );
 };

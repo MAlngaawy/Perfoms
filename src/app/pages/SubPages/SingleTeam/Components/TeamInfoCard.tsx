@@ -27,8 +27,6 @@ const TeamInfoCard = ({ teamId }: Props) => {
     if (adminInfo) setInfo(adminInfo);
   }, [superInfo, adminInfo]);
 
-  console.log("infoinfoinfoinfo", info);
-
   return (
     <div>
       <h2>Team Info</h2>

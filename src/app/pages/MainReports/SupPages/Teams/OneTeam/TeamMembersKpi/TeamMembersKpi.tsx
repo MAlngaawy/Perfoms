@@ -11,6 +11,7 @@ import { useUserQuery } from "~/app/store/user/userApi";
 import { useAdminTeamInfoQuery } from "~/app/store/clubManager/clubManagerApi";
 import PerformancesCards from "./SupComponents/PerformancesCards";
 import AttendancesCards from "./SupComponents/AttendancesCards";
+import CardsWrapper from "~/@main/components/MainReports/CardsWrapper";
 
 type Props = {};
 
@@ -81,7 +82,9 @@ const TeamMembersKpi = (props: Props) => {
             </Menu.Item>
           </Menu.Dropdown>
         </Menu> */}
-        <TimeFilter />
+        <div className="mb-2">
+          <TimeFilter />
+        </div>
       </div>
       <PrintComp
         documentTitle={
@@ -91,19 +94,17 @@ const TeamMembersKpi = (props: Props) => {
           "Team Players Report"
         }
       >
-        <div className="reports items-stretch justify-center xs:justify-start flex flex-wrap gap-4 my-6">
-          <div>
-            <TeamInfoCard
-              TeamInfoData={coachTeamInfo || superTeamInfo || adminTeamInfo}
-            />
-          </div>
+        <CardsWrapper>
+          <TeamInfoCard
+            TeamInfoData={coachTeamInfo || superTeamInfo || adminTeamInfo}
+          />
 
           {reportType === "Performances" ? (
             <PerformancesCards setKpiName={setKpiName} />
           ) : (
             <AttendancesCards />
           )}
-        </div>
+        </CardsWrapper>
       </PrintComp>
     </div>
   );

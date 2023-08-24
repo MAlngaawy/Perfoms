@@ -19,6 +19,7 @@ import {
   useSuperTopTenSportKpisQuery,
   useSuperTopTenSportPlayersQuery,
 } from "~/app/store/supervisor/supervisorMainApi";
+import CardsWrapper from "~/@main/components/MainReports/CardsWrapper";
 
 type Props = {};
 
@@ -134,7 +135,7 @@ const Top10SportPlayersPage = (props: Props) => {
       </div>
 
       {selectedValue2 === "Kpi" ? (
-        <div className="flex gap-4 flex-wrap my-4 justify-center lg:justify-start">
+        <CardsWrapper>
           {top10SportKpis && top10SportKpis.length ? (
             top10SportKpis.map((data, index: any) => {
               return (
@@ -158,7 +159,7 @@ const Top10SportPlayersPage = (props: Props) => {
               <p className="text-xl">This Sport Has No Kpis Yet</p>
             </div>
           )}
-        </div>
+        </CardsWrapper>
       ) : (
         <Grid gutter={12}>
           {top10SportPlayersData && top10SportPlayersData.length ? (

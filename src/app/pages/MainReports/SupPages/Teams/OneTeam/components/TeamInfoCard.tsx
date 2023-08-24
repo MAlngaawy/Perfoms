@@ -31,7 +31,7 @@ const TeamInfoCard = ({ TeamInfoData: data }: Props) => {
   };
 
   return (
-    <div className="teamInfoCard bg-white h-full flex-col gap-4 rounded-xl p-4 flex w-64">
+    <div className="teamInfoCard bg-white h-full flex-col gap-4 rounded-xl p-4 flex w-full">
       <h2>Team Info</h2>
       <div className="flex flex-col gap-2">
         <div className="flex justify-between gap-6">
