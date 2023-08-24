@@ -31,6 +31,9 @@ const AddEventForm = ({ refetch, teamID, children }: Props) => {
   const { data: user } = useUserQuery({});
   const { pathname } = useLocation();
 
+  useEffect(() => {
+    console.log("teamID Addddddddddd", teamID);
+  }, [teamID]);
   const schema = yup.object().shape({
     eventName: yup.string().required("please add the Event name"),
     eventDate: yup.date().required("Please add the event date"),

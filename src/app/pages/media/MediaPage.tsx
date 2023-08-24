@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useTeamEventsQuery } from "~/app/store/parent/parentApi";
 import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 import MediaCard from "./molecules/MediaCard";
@@ -10,11 +10,8 @@ import {
   useUserQuery,
 } from "~/app/store/user/userApi";
 import { TeamEvents } from "~/app/store/types/parent-types";
-import { useCoachTeamEventQuery } from "~/app/store/coach/coachApi";
-import { useSuprtEventsQuery } from "~/app/store/supervisor/supervisorMainApi";
 import Placeholders from "~/@main/components/Placeholders";
 import {
-  useAdminTeamEventsQuery,
   useAdminSportsQuery,
   useAdminTeamsStatisticsQuery,
 } from "~/app/store/clubManager/clubManagerApi";
@@ -77,9 +74,7 @@ const MediaPage = () => {
         //@ts-ignore
         ["Supervisor", "Admin", "Coach"].includes(user?.user_type) ? (
           <AddEventForm
-            teamID={JSON.stringify(
-              selectedPlayerTeam && selectedPlayerTeam?.id
-            )}
+            teamID={teamId}
             refetch={() => {
               refetchUserGetTeamEvents();
             }}
@@ -166,9 +161,7 @@ const MediaPage = () => {
               user?.user_type || "No User"
             ) ? (
               <AddEventForm
-                teamID={JSON.stringify(
-                  selectedPlayerTeam && selectedPlayerTeam?.id
-                )}
+                teamID={teamId}
                 refetch={() => {
                   refetchUserGetTeamEvents();
                 }}
