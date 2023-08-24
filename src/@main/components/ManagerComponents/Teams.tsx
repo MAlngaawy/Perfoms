@@ -61,7 +61,7 @@ const TeamsComponent = (props: Props) => {
   const [adminDeleteTeam] = useAdminDeleteTeamMutation();
 
   return (
-    <div className="admin-teams flex flex-col xs:flex-row flex-wrap items-stretch gap-4 pt-4">
+    <div className="admin-teams pt-4">
       {user?.user_type === "Admin" && (
         <div className=" w-full flex justify-end">
           <Select
@@ -97,83 +97,85 @@ const TeamsComponent = (props: Props) => {
             <Skeleton width={250} height={350} radius="lg" />
           </div>
         ))}
-      {teams?.results.map((team) => {
-        return (
-          <div className="relative hover:shadow-md transition-all delay-100 ease-linear">
-            <Link
-              to={`teams/${team.id}`}
-              key={team.id}
-              className="inline-block h-full w-full"
-            >
-              <TeamCard team={team} />
-            </Link>
-            <div className="flex absolute right-5 top-5 gap-2">
-              <EditButton sport_id={selectedSport} teamData={team} />
-              <DeleteButton
-                deleteFun={() => {
-                  if (team.current_players_count > 0) {
-                    AppUtils.showNotificationFun(
-                      "Error",
-                      "Sorry",
-                      "You can't delete a team that has players"
-                    );
-                    return;
-                  }
-                  if (user?.user_type === "Supervisor") {
-                    superDeleteTeam({
-                      team_id: team.id,
-                    })
-                      .then(() => {
-                        AppUtils.showNotificationFun(
-                          "Success",
-                          "Done",
-                          "Team Deleted"
-                        );
+      <div className="grid xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 m-4">
+        {teams?.results.map((team) => {
+          return (
+            <div className="relative hover:shadow-md transition-all delay-100 ease-linear">
+              <Link
+                to={`teams/${team.id}`}
+                key={team.id}
+                className="inline-block h-full w-full"
+              >
+                <TeamCard team={team} />
+              </Link>
+              <div className="flex absolute right-5 top-5 gap-2">
+                <EditButton sport_id={selectedSport} teamData={team} />
+                <DeleteButton
+                  deleteFun={() => {
+                    if (team.current_players_count > 0) {
+                      AppUtils.showNotificationFun(
+                        "Error",
+                        "Sorry",
+                        "You can't delete a team that has players"
+                      );
+                      return;
+                    }
+                    if (user?.user_type === "Supervisor") {
+                      superDeleteTeam({
+                        team_id: team.id,
                       })
-                      .catch(() => {
-                        AppUtils.showNotificationFun(
-                          "Error",
-                          "Wrong",
-                          "Something wend wrong, try again later"
-                        );
-                      });
-                  } else if (user?.user_type === "Admin") {
-                    adminDeleteTeam({
-                      team_id: team.id,
-                    })
-                      .then(() => {
-                        AppUtils.showNotificationFun(
-                          "Success",
-                          "Done",
-                          "Team Deleted"
-                        );
+                        .then(() => {
+                          AppUtils.showNotificationFun(
+                            "Success",
+                            "Done",
+                            "Team Deleted"
+                          );
+                        })
+                        .catch(() => {
+                          AppUtils.showNotificationFun(
+                            "Error",
+                            "Wrong",
+                            "Something wend wrong, try again later"
+                          );
+                        });
+                    } else if (user?.user_type === "Admin") {
+                      adminDeleteTeam({
+                        team_id: team.id,
                       })
-                      .catch(() => {
-                        AppUtils.showNotificationFun(
-                          "Error",
-                          "Wrong",
-                          "Something wend wrong, try again later"
-                        );
-                      });
-                  }
-                }}
-                name={team.name}
-                type="Team"
-              />
+                        .then(() => {
+                          AppUtils.showNotificationFun(
+                            "Success",
+                            "Done",
+                            "Team Deleted"
+                          );
+                        })
+                        .catch(() => {
+                          AppUtils.showNotificationFun(
+                            "Error",
+                            "Wrong",
+                            "Something wend wrong, try again later"
+                          );
+                        });
+                    }
+                  }}
+                  name={team.name}
+                  type="Team"
+                />
+              </div>
             </div>
-          </div>
-        );
-      })}
-      {user?.user_type === "Admin" && selectedSport === "0" ? (
-        <Placeholders
-          img="/assets/images/novideo.png"
-          preText={"Please select"}
-          pageName={"Sport"}
-          postText={"To Get it's teams"}
-        />
-      ) : (
-        <AddTeamCardForm sport_id={selectedSport} />
-      )}
+          );
+        })}
+        {user?.user_type === "Admin" && selectedSport === "0" ? (
+          <Placeholders
+            img="/assets/images/novideo.png"
+            preText={"Please select"}
+            pageName={"Sport"}
+            postText={"To Get it's teams"}
+          />
+        ) : (
+          <AddTeamCardForm sport_id={selectedSport} />
+        )}
+      </div>
     </div>
   );
 };

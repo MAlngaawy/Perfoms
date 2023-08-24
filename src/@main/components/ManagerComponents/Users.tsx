@@ -89,7 +89,7 @@ const Users = (props: Props) => {
   );
 
   return (
-    <div className="flex flex-col gap-6  pt-6 mb-10">
+    <div className="flex flex-col gap-6 m-2  sm:m-4">
       <UsersCard
         setUserSearch={setCoachSearch}
         type="Coach"

@@ -14,51 +14,50 @@ const AppRadioGroub = ({ checked, setChecked, values }: Props) => {
   const radioPadding = screenWidth < 400 ? " 7px 10px" : "10px 25px";
 
   return (
-    <div className="">
-      <Radio.Group
-        value={checked}
-        onChange={(checkedValue: string) => setChecked(checkedValue)}
-        name="favoriteFramework"
-        spacing="xs"
-        offset="xs"
-        size="xs"
-        sx={{
-          "@media (max-width: 768px)": {
-            // Adjust the screen width as needed
-            ".mantine-Group-root": {
-              paddingTop: 0,
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-            },
+    <Radio.Group
+      value={checked}
+      onChange={(checkedValue: string) => setChecked(checkedValue)}
+      name="favoriteFramework"
+      spacing="xs"
+      offset="xs"
+      size="xs"
+      sx={{
+        "@media (max-width: 768px)": {
+          // Adjust the screen width as needed
+          ".mantine-Group-root": {
+            paddingTop: 0,
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
           },
-        }}
-        className="flex-wrap justify-center p-0"
-      >
-        {values.map((value, ids) => {
-          return (
-            <Radio
-              key={ids}
-              sx={{
-                ".mantine-Radio-body": {
-                  backgroundColor: "#fff",
-                  width: "100%",
-                  alignItems: "baseline",
-                  padding: radioPadding,
-                  borderRadius: "50px",
-                },
-                ".mantine-Radio-label": {
-                  cursor: "pointer",
-                },
-                " .mantine-Radio-radio": {
-                  cursor: "pointer",
-                },
-              }}
-              value={value}
-              label={value}
-            />
-          );
-        })}
-        {/* <Radio
+        },
+      }}
+      className="w-full p-0"
+    >
+      {values.map((value, ids) => {
+        return (
+          <Radio
+            key={ids}
+            sx={{
+              ".mantine-Radio-body": {
+                backgroundColor: "#fff",
+                width: "100%",
+                alignItems: "baseline",
+                padding: radioPadding,
+                borderRadius: "50px",
+              },
+              ".mantine-Radio-label": {
+                cursor: "pointer",
+              },
+              " .mantine-Radio-radio": {
+                cursor: "pointer",
+              },
+            }}
+            value={value}
+            label={value}
+          />
+        );
+      })}
+      {/* <Radio
           sx={{
             ".mantine-Radio-body": {
               backgroundColor: "#fff",
@@ -112,8 +111,7 @@ const AppRadioGroub = ({ checked, setChecked, values }: Props) => {
           value="Team info"
           label="Team info"
         /> */}
-      </Radio.Group>
-    </div>
+    </Radio.Group>
   );
 };
 

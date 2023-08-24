@@ -169,12 +169,14 @@ const UsersCard = ({
           </Grid>
         </div>
       </div>
-      <Pagenation
-        pageCount={pageCount}
-        sport={sport}
-        setPage={setPage}
-        searchInputValue={inputRef.current?.value}
-      />
+      <div className=" overflow-scroll py-2">
+        <Pagenation
+          pageCount={pageCount}
+          sport={sport}
+          setPage={setPage}
+          searchInputValue={inputRef.current?.value}
+        />
+      </div>
     </div>
   );
 };
@@ -227,24 +229,6 @@ const FilteredUsers = ({
         AppUtils.showNotificationFun("Error", "Wrong", "err.message");
       });
   };
-
-  // const filteredData = newData.filter((user: any) => {
-  //   if (!selectedSport || selectedSport === "All") {
-  //     return true;
-  //   } else {
-  //     return user.sport === selectedSport;
-  //   }
-  // });
-
-  // if (filteredData.length === 0) {
-  //   return (
-  //     <div className="flex w-full items-center justify-center pt-10">
-  //       <h1 className="bg-pagesBg p-6">
-  //         {selectedSport} Sport doesn't have any {type}
-  //       </h1>
-  //     </div>
-  //   );
-  // }
 
   return newData.map((user: any) => {
     return (

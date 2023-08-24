@@ -93,7 +93,7 @@ const Sports = (props: Props) => {
   }
 
   return (
-    <div className="admin-teams flex flex-col xs:flex-row flex-wrap items-stretch gap-4 py-6">
+    <div className="grid xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 m-4">
       {sports &&
         sports?.results.map((sport) => {
           return (

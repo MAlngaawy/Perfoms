@@ -7,7 +7,7 @@ type TeamPropsType = {
 
 const TeamCard = ({ team }: TeamPropsType) => {
   return (
-    <div className="team-card relative w-full xs:w-64 bg-white p-8 rounded-xl flex flex-col justify-center items-center gap-4 h-full">
+    <div className="team-card relative w-full bg-white p-8 rounded-xl flex flex-col justify-center items-center gap-4 h-full">
       <div className="bg-pagesBg rounded-full w-32 h-32 flex justify-center items-center">
         <Avatar size={"xl"} src={team.icon_url} alt="icon" />
       </div>
