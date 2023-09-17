@@ -156,7 +156,7 @@ export type NotificationsType = {
       message: string;
       created_at: Date;
       notification_type: "Report" | "Certificate" | "Complement" | "Permission";
-      player: number;
+      player: null | { id: number; name: string };
     }
   ];
 };
@@ -166,7 +166,7 @@ export type Notifications = BaseGetAllType & {
     message: string;
     notification_type: "Report" | "Certificate" | "Complement" | "Permission";
     created_at: Date;
-    player: number;
+    player: null | { id: number; name: string };
     sender: {
       id: number;
       full_name: string;
