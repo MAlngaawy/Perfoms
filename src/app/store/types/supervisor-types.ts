@@ -11,6 +11,13 @@ export type Metric = {
   description: string;
 };
 
+export type SubervisorSport = {
+  icon: string;
+  icon_url: string;
+  id: number;
+  name: string;
+}[];
+
 export type kpi = {
   id: number;
   name: string;

@@ -1,7 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BASE_HEADERS, BASE_URL } from "~/app/configs/dataService";
 import {
-  ClubManagerSport,
   CoachesRequests,
   MetricNotes,
   TeamPlayers,
@@ -35,6 +34,7 @@ import {
   Kpis,
   Metrics,
   Pillars,
+  SubervisorSport,
   SuperVisorPlayers,
   SuperVisorTeamInfo,
   Team,
@@ -139,7 +139,7 @@ export const supervisorApi = createApi({
     superClub: query<ParentClub, { pages?: number }>({
       query: (params) => "my-club/",
     }),
-    superSport: query<ClubManagerSport, { page?: number }>({
+    superSport: query<SubervisorSport, { page?: number }>({
       query: (params) => ({ url: "my-sport/", params }),
     }),
 

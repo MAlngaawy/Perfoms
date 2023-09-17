@@ -63,8 +63,13 @@ const Top10SportPlayersPage = (props: Props) => {
   );
 
   const { data: superTop10SportKpis } = useSuperTopTenSportKpisQuery(
-    { sport_id: supervisorSport?.id },
-    { skip: !supervisorSport?.id || user?.user_type !== "Supervisor" }
+    { sport_id: supervisorSport && supervisorSport[0]?.id },
+    {
+      skip:
+        !supervisorSport ||
+        !supervisorSport[0]?.id ||
+        user?.user_type !== "Supervisor",
+    }
   );
 
   useEffect(() => {
