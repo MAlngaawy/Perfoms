@@ -40,12 +40,15 @@ const ParsonalInfo = (props: Props) => {
   return (
     <div className="flex flex-col gap-4">
       <div className="bg-white rounded-3xl p-4">
-        {editMode && (
-          <EditPlayer
-            player={playerData}
-            refetchPlayerData={refetchPlayerData}
-          />
-        )}
+        {
+          //@ts-ignore
+          editMode && ["Parent", "Admin"].includes(user?.user_type) && (
+            <EditPlayer
+              player={playerData}
+              refetchPlayerData={refetchPlayerData}
+            />
+          )
+        }
         <AvatarWithBlueBorder
           name={playerData?.name || "No Name"}
           image={playerData?.icon || "No Image"}
