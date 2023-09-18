@@ -25,6 +25,8 @@ import { useNavigate } from "react-router-dom";
 import CreateUser from "./CreateUser";
 import { useUserQuery } from "~/app/store/user/userApi";
 import Pagenation from "../../Pagenation/Pagenation";
+import AssignParentToPlayerForm from "./AssignParentToPlayerForm";
+import { User } from "~/app/store/types/user-types";
 
 type Props = {
   type: "Player" | "Coach" | "Supervisor" | "Attendance Moderator" | "Parent";
@@ -49,8 +51,6 @@ const UsersCard = ({
   setSport,
   count,
 }: Props) => {
-  console.log("fetching", fetching);
-
   // const [selectedSport, setSelectedSport] = useState<string | null>();
   const safeSetSport = setSport ?? (() => {});
 
@@ -230,10 +230,10 @@ const FilteredUsers = ({
       });
   };
 
-  return newData.map((user: any) => {
+  return newData.map((user: User) => {
     return (
       <Grid.Col key={user.id} className="w-fit h-fit" span={12} xs={6} sm={4}>
-        <div className="flex justify-between rounded-3xl mr-10 items-center p-1  hover:bg-pagesBg transition-all">
+        <div className="flex justify-between rounded-3xl mr-2 items-center p-1  hover:bg-pagesBg transition-all">
           <div
             onClick={() => type === "Player" && navigate(`/players/${user.id}`)}
             style={{
@@ -247,11 +247,14 @@ const FilteredUsers = ({
                 user.name}
             </h3>
           </div>
-          <DeleteButton
-            deleteFun={() => deleteUser(JSON.stringify(user.id))}
-            type={type}
-            name={user.first_name || user.name}
-          />
+          <div className="flex gap-2 items-center justify-center">
+            {type === "Player" && <AssignParentToPlayerForm player={user} />}
+            <DeleteButton
+              deleteFun={() => deleteUser(JSON.stringify(user.id))}
+              type={type}
+              name={user.first_name || user.name}
+            />
+          </div>
         </div>
       </Grid.Col>
     );

@@ -165,7 +165,7 @@ const AddPlayer = ({
   );
 };
 
-const ChoosePlayerInput = ({ control, filteredPlayers }: any) => {
+export const ChoosePlayerInput = ({ control, filteredPlayers }: any) => {
   const [formatedFilteredPlayers, setFormatedFilteredPlayers] = useState();
 
   useEffect(() => {

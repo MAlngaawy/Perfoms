@@ -29,6 +29,7 @@ export type playerEvents = BaseGetAllType & {
 
 export type User = {
   id: number;
+  icon?: string;
   country: string;
   last_login: string;
   first_name: string;
@@ -47,6 +48,11 @@ export type User = {
   club: number;
   full_name?: string;
   teams?: Partial<Team>[];
+};
+
+export type AssignParentToPlayer = {
+  parent: number;
+  player: number;
 };
 
 export type UpdateProfile = Partial<User>;

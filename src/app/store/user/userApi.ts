@@ -8,6 +8,7 @@ import {
   AddExperince,
   AddPlayerLeague,
   AddQualification,
+  AssignParentToPlayer,
   ChangePassword,
   ChangePhone,
   ClubTeams,
@@ -821,6 +822,15 @@ export const userApi = createApi({
       }),
       providesTags: ["events"],
     }),
+
+    assignParentToPlayer: mutation<AssignParentToPlayer, AssignParentToPlayer>({
+      query: ({ ...body }) => ({
+        url: `assign-parent-to-player/`,
+        body,
+        method: "PUT",
+      }),
+      invalidatesTags: ["players"],
+    }),
   }),
 });
 
@@ -902,4 +912,5 @@ export const {
   useGetPlayerCertificatesQuery,
   useGetPlayerCertificateQuery,
   useUserGetTeamEventsQuery,
+  useAssignParentToPlayerMutation,
 } = userApi;

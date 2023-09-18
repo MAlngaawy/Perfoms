@@ -91,6 +91,17 @@ const Users = (props: Props) => {
   return (
     <div className="flex flex-col gap-6 m-2  sm:m-4">
       <UsersCard
+        type="Player"
+        setUserSearch={setPlayerSearch}
+        data={players?.results}
+        pageCount={players?.pages_count}
+        setPage={setPlayersPage}
+        fetching={playerLoading}
+        setSport={setPlayerSport}
+        sport={playerSport}
+        count={players?.count}
+      />
+      <UsersCard
         setUserSearch={setCoachSearch}
         type="Coach"
         data={coaches?.results}
@@ -124,17 +135,6 @@ const Users = (props: Props) => {
         setSport={setSuperSport}
         sport={superSport}
         count={supervisors?.count}
-      />
-      <UsersCard
-        type="Player"
-        setUserSearch={setPlayerSearch}
-        data={players?.results}
-        pageCount={players?.pages_count}
-        setPage={setPlayersPage}
-        fetching={playerLoading}
-        setSport={setPlayerSport}
-        sport={playerSport}
-        count={players?.count}
       />
       <UsersCard
         type="Parent"
