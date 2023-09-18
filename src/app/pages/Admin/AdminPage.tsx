@@ -8,6 +8,7 @@ const Sports = lazy(
   () => import("~/@main/components/ManagerComponents/Sports")
 );
 const Users = lazy(() => import("~/@main/components/ManagerComponents/Users"));
+import { Skeleton } from "@mantine/core";
 
 const AdminPage = (props: Props) => {
   const [checked, setChecked] = useState<"Teams" | "Sports" | "Users">(
@@ -20,8 +21,8 @@ const AdminPage = (props: Props) => {
   }, [checked]);
 
   return (
-    <div className="mx-6">
-      <div className="flex gap-2 xs:gap-4  p-2 sm:p-6 sm:pb-0">
+    <div className="mx-2 mb-10">
+      <div className="flex gap-2 xs:gap-4 p-2 sm:p-6 sm:pb-0">
         <AppRadioGroub
           values={["Teams", "Sports", "Users"]}
           checked={checked}
@@ -29,16 +30,16 @@ const AdminPage = (props: Props) => {
         />
       </div>
 
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense
+        fallback={
+          <div className=" h-screen m-4">
+            <Skeleton width={"100%"} height={"100%"} radius="lg" />
+          </div>
+        }
+      >
         {checked === "Teams" && <Teams />}
         {checked === "Sports" && <Sports />}
-        {checked === "Users" && (
-          <div>
-            <h1>
-              <Users />
-            </h1>
-          </div>
-        )}
+        {checked === "Users" && <Users />}
       </Suspense>
     </div>
   );

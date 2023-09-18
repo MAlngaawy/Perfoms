@@ -16,13 +16,18 @@ import AddSkill from "./Forms/AddSkill";
 import Info from "~/@main/components/Info";
 import AvatarWithBlueBorder from "~/@main/components/shared/AvatarWithBlueBorder";
 import EditPlayer from "~/app/pages/home/molecules/EditPlayer";
+import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
+import { useSelector } from "react-redux";
+import { Player } from "~/app/store/types/parent-types";
 
 type Props = {};
 
 const ParsonalInfo = (props: Props) => {
-  const { id } = useParams();
+  const { id: player_id } = useParams();
   const { data: user } = useUserQuery({});
   const editMode = useContext(EditModeContext);
+  const selectedPlayer: Player = useSelector(selectedPlayerFn);
+  const id = player_id || JSON.stringify(selectedPlayer?.id);
   const [deleteEducation] = useDeleteUserEducationMutation();
   const [deleteSkill] = useDeleteSkillMutation();
   const { data: playerEducations, refetch: refetchEducation } =
@@ -50,9 +55,42 @@ const ParsonalInfo = (props: Props) => {
         />
         <div className="h2 font-medium">INFO</div>
         <div className="data flex flex-wrap jus gap-4 mt-2">
-          <Info label="Age" value={playerData?.dob} />
-          <Info label="Weight" value={playerData?.weight || "NA"} />
-          <Info label="Height" value={playerData?.height || "NA"} />
+          <Info label="Age" value={AppUtils.calculateAge(playerData?.dob)} />
+          <Info
+            label="Gender"
+            value={playerData?.gender === "M" ? "Male" : "Female"}
+          />
+          {playerData?.sport.toLocaleLowerCase() === "taekwondo" ? (
+            <>
+              {playerData?.height && (
+                <Info label="Height" value={playerData?.height} />
+              )}
+              {playerData?.world_weight && (
+                <Info label="World Weight" value={playerData?.world_weight} />
+              )}
+              {playerData?.olympic_weight && (
+                <Info
+                  label="Olympic Weight"
+                  value={playerData?.olympic_weight}
+                />
+              )}
+              {playerData?.front_leg !== "NONE" && (
+                <Info
+                  label="Preferred Front Leg"
+                  value={playerData?.front_leg}
+                />
+              )}
+            </>
+          ) : (
+            <>
+              {playerData?.weight && (
+                <Info label="Weight" value={playerData?.weight} />
+              )}
+              {playerData?.height && (
+                <Info label="Height" value={playerData?.height} />
+              )}
+            </>
+          )}
           <Info label="Phone" value={playerData?.phone || "N/A"} />
           <div className="flex flex-col items-center justify-center">
             <h3 className=" text-perfGray3 text-xs">Teams</h3>
@@ -66,9 +104,6 @@ const ParsonalInfo = (props: Props) => {
             </div>
           </div>
           <Info label="Sport" value={playerData?.sport} />
-          {playerData?.front_leg !== "NONE" && (
-            <Info label="Preferred Front Leg" value={playerData?.front_leg} />
-          )}
         </div>
       </div>
 

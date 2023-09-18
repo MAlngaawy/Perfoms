@@ -6,6 +6,8 @@ import SwitchButton from "~/@main/components/SwitchButton";
 import { useCoachTeamInfoQuery } from "~/app/store/coach/coachApi";
 import { useSelector } from "react-redux";
 import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
+import classNames from "classnames";
+import TimeFilter from "~/@main/components/TimeFilter";
 
 const LazyAttendanceTable = lazy(() => import("./components/AttendanceTable"));
 const LazySessionsAttendanceTable = lazy(
@@ -35,9 +37,9 @@ const CoachHome = (props: Props) => {
         return (
           <Suspense fallback={<SkelatonComponent />}>
             {coachTeamInfoData?.attend_per === "SESSION" ? (
-              <LazySessionsAttendanceTable />
+              <LazySessionsAttendanceTable setChecked={setChecked} />
             ) : (
-              <LazyAttendanceTable />
+              <LazyAttendanceTable setChecked={setChecked} />
             )}
           </Suspense>
         );
@@ -73,15 +75,19 @@ const CoachHome = (props: Props) => {
             setChecked={setChecked}
             type={"Team info"}
           />
-          <Button
-            className="border text-perfBlue border-perfBlue hover:text-white bg-transparent hover:bg-perfBlue text-xs sm:text-sm p-1 md:px-2 rounded-xl "
-            component={Link}
+          <Link
+            className={classNames(
+              " text-xs sm:text-sm p-1 md:px-2 border border-perfBlue font-medium rounded-md text-perfBlue hover:text-white hover:bg-perfBlue"
+            )}
             to="/certificate"
           >
             Certificate
-          </Button>
+          </Link>
         </div>
-        <TeamFilter />
+        <div className="flex flex-col xs:flex-row gap-2">
+          {checked === "Attendance" && <TimeFilter />}
+          <TeamFilter />
+        </div>
       </div>
 
       {renderTable()}

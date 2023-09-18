@@ -1,16 +1,13 @@
-import { useState, ReactNode } from "react";
-import { Modal, Button, Group, Input } from "@mantine/core";
-import AppIcons from "../../../../../@main/core/AppIcons";
+import { useState } from "react";
+import { Modal, Group, Input } from "@mantine/core";
+import AppIcons from "~/@main/core/AppIcons";
 import { useForm } from "react-hook-form";
-import Resizer from "react-image-file-resizer";
-import cn from "classnames";
-import SubmitButton from "../../../../../@main/components/SubmitButton";
+import SubmitButton from "~/@main/components/SubmitButton";
 import { axiosInstance } from "../../../../configs/dataService";
 import { useGeneralKpisQuery, useUserQuery } from "~/app/store/user/userApi";
 import { useParams } from "react-router-dom";
 import { useAdminKpisQuery } from "~/app/store/clubManager/clubManagerApi";
 import { useSuperKpisQuery } from "~/app/store/supervisor/supervisorMainApi";
-import { showNotification } from "@mantine/notifications";
 import AppUtils from "~/@main/utils/AppUtils";
 import AvatarInput from "~/@main/components/shared/AvatarInput";
 
@@ -135,6 +132,31 @@ const AddKpi = (props: Props) => {
                 id="name"
               />
             </Input.Wrapper>
+
+            <Input.Wrapper
+              id="description"
+              withAsterisk
+              // label="Name"
+              error={error}
+            >
+              <Input
+                placeholder="Description"
+                name="description"
+                sx={{
+                  ".mantine-Input-input	": {
+                    border: 0,
+                    padding: 0,
+                    borderBottom: 1,
+                    borderStyle: "solid",
+                    borderRadius: 0,
+                    minHeight: 20,
+                  },
+                }}
+                className="border-b"
+                id="description"
+              />
+            </Input.Wrapper>
+
             <SubmitButton isLoading={isLoading} text="Add Kpi" />
           </form>
         </Modal>

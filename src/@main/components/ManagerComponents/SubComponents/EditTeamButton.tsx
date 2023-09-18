@@ -182,7 +182,7 @@ const EditButton = ({ teamData, sport_id }: Props) => {
               data={[
                 { label: "Males", value: "M" },
                 { label: "Females", value: "F" },
-                { label: "Both", value: "B" },
+                { label: "Mixed", value: "B" },
               ]}
               name="gender"
               error={errors.gender && (errors.gender.message as ReactNode)}

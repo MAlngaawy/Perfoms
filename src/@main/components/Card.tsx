@@ -24,10 +24,14 @@ import {
   useAdminPlayerKpisMetricsWeaknessScoreQuery,
 } from "~/app/store/clubManager/clubManagerApi";
 import { useUserQuery } from "~/app/store/user/userApi";
-import { timeFilterFn } from "~/app/store/parent/parentSlice";
+import {
+  selectedPlayerTeamFn,
+  timeFilterFn,
+} from "~/app/store/parent/parentSlice";
 import { useSelector } from "react-redux";
 
 const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
+  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const [data, setData] = useState<PlayerMetricScores | undefined>();
   const { data: user } = useUserQuery({});
   const timeFilter = useSelector(timeFilterFn);
@@ -36,43 +40,49 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
   const { data: moderate } = usePlayerModerateQuery(
     {
       player_id: player_id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
+      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
-        user?.user_type !== "Parent",
+        !timeFilter?.month ||
+        !timeFilter?.year ||
+        !selectedPlayerTeam?.id ||
+        (user && !["Parent", "Player"].includes(user?.user_type)),
     }
   );
   const { data: strength } = usePlayerStrengthQuery(
     {
       player_id: player_id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
+      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
-        user?.user_type !== "Parent",
+        !timeFilter?.month ||
+        !timeFilter?.year ||
+        !selectedPlayerTeam?.id ||
+        (user && !["Parent", "Player"].includes(user?.user_type)),
     }
   );
   const { data: weakness } = usePlayerWeaknessQuery(
     {
       player_id: player_id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
+      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
-        user?.user_type !== "Parent",
+        !timeFilter?.month ||
+        !timeFilter?.year ||
+        !selectedPlayerTeam?.id ||
+        (user && !["Parent", "Player"].includes(user?.user_type)),
     }
   );
 
@@ -81,28 +91,40 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
     useCoachPlayerKpisMetricsModerateScoreQuery(
       {
         player_id: player_id,
-        date_from: timeFilter?.from_date,
-        date_to: timeFilter?.to_date,
+        month: timeFilter?.month,
+        year: timeFilter?.year,
+        team_id: selectedPlayerTeam?.id,
       },
-      { skip: !player_id || user?.user_type !== "Coach" }
+      {
+        skip:
+          !player_id || !selectedPlayerTeam?.id || user?.user_type !== "Coach",
+      }
     );
   const { data: coachPlayerStrength } =
     useCoachPlayerKpisMetricsStrengthScoreQuery(
       {
         player_id: player_id,
-        date_from: timeFilter?.from_date,
-        date_to: timeFilter?.to_date,
+        month: timeFilter?.month,
+        year: timeFilter?.year,
+        team_id: selectedPlayerTeam?.id,
       },
-      { skip: !player_id || user?.user_type !== "Coach" }
+      {
+        skip:
+          !player_id || !selectedPlayerTeam?.id || user?.user_type !== "Coach",
+      }
     );
   const { data: coachPlayerWeakness } =
     useCoachPlayerKpisMetricsWeaknessScoreQuery(
       {
         player_id: player_id,
-        date_from: timeFilter?.from_date,
-        date_to: timeFilter?.to_date,
+        month: timeFilter?.month,
+        year: timeFilter?.year,
+        team_id: selectedPlayerTeam?.id,
       },
-      { skip: !player_id || user?.user_type !== "Coach" }
+      {
+        skip:
+          !player_id || !selectedPlayerTeam?.id || user?.user_type !== "Coach",
+      }
     );
 
   // Fetch Supervisor Data
@@ -110,28 +132,46 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
     useSuperPlayerKpisMetricsModerateScoreQuery(
       {
         player_id: player_id,
-        date_from: timeFilter?.from_date,
-        date_to: timeFilter?.to_date,
+        month: timeFilter?.month,
+        year: timeFilter?.year,
+        team_id: selectedPlayerTeam?.id,
       },
-      { skip: !player_id || user?.user_type !== "Supervisor" }
+      {
+        skip:
+          !player_id ||
+          !selectedPlayerTeam?.id ||
+          user?.user_type !== "Supervisor",
+      }
     );
   const { data: superPlayerStrength } =
     useSuperPlayerKpisMetricsStrengthScoreQuery(
       {
         player_id: player_id,
-        date_from: timeFilter?.from_date,
-        date_to: timeFilter?.to_date,
+        month: timeFilter?.month,
+        year: timeFilter?.year,
+        team_id: selectedPlayerTeam?.id,
       },
-      { skip: !player_id || user?.user_type !== "Supervisor" }
+      {
+        skip:
+          !player_id ||
+          !selectedPlayerTeam?.id ||
+          user?.user_type !== "Supervisor",
+      }
     );
   const { data: superPlayerWeakness } =
     useSuperPlayerKpisMetricsWeaknessScoreQuery(
       {
         player_id: player_id,
-        date_from: timeFilter?.from_date,
-        date_to: timeFilter?.to_date,
+        month: timeFilter?.month,
+        year: timeFilter?.year,
+        team_id: selectedPlayerTeam?.id,
       },
-      { skip: !player_id || user?.user_type !== "Supervisor" }
+      {
+        skip:
+          !player_id ||
+          !selectedPlayerTeam?.id ||
+          user?.user_type !== "Supervisor",
+      }
     );
 
   // Fetch Supervisor Data
@@ -139,28 +179,40 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
     useAdminPlayerKpisMetricsModerateScoreQuery(
       {
         player_id: player_id,
-        date_from: timeFilter?.from_date,
-        date_to: timeFilter?.to_date,
+        month: timeFilter?.month,
+        year: timeFilter?.year,
+        team_id: selectedPlayerTeam?.id,
       },
-      { skip: !player_id || user?.user_type !== "Admin" }
+      {
+        skip:
+          !player_id || !selectedPlayerTeam?.id || user?.user_type !== "Admin",
+      }
     );
   const { data: adminPlayerStrength } =
     useAdminPlayerKpisMetricsStrengthScoreQuery(
       {
         player_id: player_id,
-        date_from: timeFilter?.from_date,
-        date_to: timeFilter?.to_date,
+        month: timeFilter?.month,
+        year: timeFilter?.year,
+        team_id: selectedPlayerTeam?.id,
       },
-      { skip: !player_id || user?.user_type !== "Admin" }
+      {
+        skip:
+          !player_id || !selectedPlayerTeam?.id || user?.user_type !== "Admin",
+      }
     );
   const { data: adminPlayerWeakness } =
     useAdminPlayerKpisMetricsWeaknessScoreQuery(
       {
         player_id: player_id,
-        date_from: timeFilter?.from_date,
-        date_to: timeFilter?.to_date,
+        month: timeFilter?.month,
+        year: timeFilter?.year,
+        team_id: selectedPlayerTeam?.id,
       },
-      { skip: !player_id || user?.user_type !== "Admin" }
+      {
+        skip:
+          !player_id || !selectedPlayerTeam?.id || user?.user_type !== "Admin",
+      }
     );
 
   useEffect(() => {
@@ -197,11 +249,9 @@ const Card = ({ powerType, scores, bg, color, player_id }: CardProps) => {
 
   return (
     <div className="flex flex-col pdf-print bg-white py-2 min-h-fit overflow-hidden rounded-3xl">
-      <div className="power_type px-5 py-2 flex flex-row justify-between items-center">
+      <div className="power_type px-5 py-2 flex flex-row justify-between flex-wrap items-center">
         <span className={` text-lg ${color}`}>{powerType}</span>
-        {/* <p className="text-sm text-perfGray3">
-          Score is out of {data?.results?.length}
-        </p> */}
+        <p className="text-sm text-perfGray3">Score is out of 5</p>
       </div>
       <div
         className={`power_header ${bg}  px-5 py-2 bg-white flex flex-row justify-between`}

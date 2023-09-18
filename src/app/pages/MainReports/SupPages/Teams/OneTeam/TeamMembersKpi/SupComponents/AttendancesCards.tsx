@@ -22,14 +22,14 @@ const AttendancesCards = (props: Props) => {
     useCoachTeamPlayersAttendancesStatisticsQuery(
       {
         team_id: team_id,
-        date_from: timeFilter?.from_date,
-        date_to: timeFilter?.to_date,
+        month: timeFilter?.month,
+        year: timeFilter?.year,
       },
       {
         skip:
           !team_id ||
-          !timeFilter?.from_date ||
-          !timeFilter?.to_date ||
+          !timeFilter?.month ||
+          !timeFilter?.year ||
           user?.user_type !== "Coach",
       }
     );
@@ -41,15 +41,15 @@ const AttendancesCards = (props: Props) => {
       {
         team_id: team_id,
         sport_id: sport_id,
-        date_from: timeFilter?.from_date,
-        date_to: timeFilter?.to_date,
+        month: timeFilter?.month,
+        year: timeFilter?.year,
       },
       {
         skip:
           !team_id ||
           !sport_id ||
-          !timeFilter?.from_date ||
-          !timeFilter?.to_date ||
+          !timeFilter?.month ||
+          !timeFilter?.year ||
           user?.user_type !== "Supervisor",
       }
     );
@@ -61,15 +61,15 @@ const AttendancesCards = (props: Props) => {
       {
         team_id: team_id,
         sport_id: sport_id,
-        date_from: timeFilter?.from_date,
-        date_to: timeFilter?.to_date,
+        month: timeFilter?.month,
+        year: timeFilter?.year,
       },
       {
         skip:
           !team_id ||
           !sport_id ||
-          !timeFilter?.from_date ||
-          !timeFilter?.to_date ||
+          !timeFilter?.month ||
+          !timeFilter?.year ||
           user?.user_type !== "Admin",
       }
     );

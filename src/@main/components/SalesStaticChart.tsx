@@ -47,31 +47,33 @@ const SaleStaticChart = () => {
     {
       team_id: selectedPlayerTeam?.id,
       player_id: selectedPlayer?.id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
     },
 
     {
       skip:
         !selectedPlayerTeam?.id ||
         !selectedPlayer?.id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
-        user?.user_type !== "Parent",
+        !timeFilter?.month ||
+        !timeFilter?.year ||
+        (user && !["Parent", "Player"].includes(user?.user_type)),
     }
   );
 
   const { data: coachPlayerKpis } = useCoachPlayerKpisMetricsStatisticsQuery(
     {
       player_id: id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
+      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
+        !timeFilter?.month ||
+        !timeFilter?.year ||
+        !selectedPlayerTeam?.id ||
         user?.user_type !== "Coach",
     }
   );
@@ -79,14 +81,16 @@ const SaleStaticChart = () => {
   const { data: superPlayerKpis } = useSuperPlayerKpisMetricsStatisticsQuery(
     {
       player_id: id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
+      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
+        !timeFilter?.month ||
+        !timeFilter?.year ||
+        !selectedPlayerTeam?.id ||
         user?.user_type !== "Supervisor",
     }
   );
@@ -94,14 +98,16 @@ const SaleStaticChart = () => {
   const { data: adminPlayerKpis } = useAdminPlayerKpisMetricsStatisticsQuery(
     {
       player_id: id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
+      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
+        !timeFilter?.month ||
+        !timeFilter?.year ||
+        !selectedPlayerTeam?.id ||
         user?.user_type !== "Admin",
     }
   );
@@ -110,57 +116,65 @@ const SaleStaticChart = () => {
   const { data: strength } = usePlayerStrengthQuery(
     {
       player_id: selectedPlayer?.id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
+      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !selectedPlayer?.id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
-        user?.user_type !== "Parent",
+        !timeFilter?.month ||
+        !timeFilter?.year ||
+        !selectedPlayerTeam?.id ||
+        (user && !["Parent", "Player"].includes(user?.user_type)),
     }
   );
   const { data: weakness } = usePlayerWeaknessQuery(
     {
       player_id: selectedPlayer?.id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
+      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !selectedPlayer?.id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
-        user?.user_type !== "Parent",
+        !timeFilter?.month ||
+        !timeFilter?.year ||
+        !selectedPlayerTeam?.id ||
+        (user && !["Parent", "Player"].includes(user?.user_type)),
     }
   );
   const { data: parentPlayerActions } = usePlayerActionsQuery(
     {
       id: selectedPlayer?.id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
+      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !selectedPlayer?.id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
-        user?.user_type !== "Parent",
+        !timeFilter?.month ||
+        !timeFilter?.year ||
+        !selectedPlayerTeam?.id ||
+        (user && !["Parent", "Player"].includes(user?.user_type)),
     }
   );
   const { data: parentPlayerRecommendations } = usePlayerRecommendationsQuery(
     {
       id: selectedPlayer?.id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
+      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !selectedPlayer?.id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
-        user?.user_type !== "Parent",
+        !timeFilter?.month ||
+        !timeFilter?.year ||
+        !selectedPlayerTeam?.id ||
+        (user && !["Parent", "Player"].includes(user?.user_type)),
     }
   );
 
@@ -331,10 +345,10 @@ const SaleStaticChart = () => {
                 <Cell
                   key={index}
                   fill={
-                    metric.score_avg > 60
+                    metric.score_avg >= 60
                       ? "#00E096" // green more than 60
-                      : metric.score_avg <= 40
-                      ? "#EB5757" // red less than 40
+                      : metric.score_avg < 30
+                      ? "#EB5757" // red less than 30
                       : "#F2C94C" // yallow
                   }
                 />

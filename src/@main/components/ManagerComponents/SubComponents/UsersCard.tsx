@@ -1,35 +1,65 @@
 import DeleteButton from "./DeleteButton";
-import { Avatar, Grid, Menu, Select, TextInput } from "@mantine/core";
+import {
+  Avatar,
+  Grid,
+  Loader,
+  LoadingOverlay,
+  Select,
+  SelectItem,
+  TextInput,
+} from "@mantine/core";
 import AddPlayerForm from "./CreatePlayerForm";
-// import { PlayerCoach } from "~/app/store/types/parent-types";
-// import { showNotification } from "@mantine/notifications";
 import {
   useAdminDeleteCoachMutation,
+  useAdminDeleteParentMutation,
   useAdminDeletePlayerMutation,
   useAdminDeleteSubCoachMutation,
   useAdminDeleteSupervisorMutation,
   useAdminSportsQuery,
 } from "~/app/store/clubManager/clubManagerApi";
 import __ from "lodash";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import AppIcons from "~/@main/core/AppIcons";
 import AppUtils from "~/@main/utils/AppUtils";
 import { useNavigate } from "react-router-dom";
-import AddSubCoachForm from "./AddSubCoachForm";
+import CreateUser from "./CreateUser";
 import { useUserQuery } from "~/app/store/user/userApi";
+import Pagenation from "../../Pagenation/Pagenation";
+import AssignParentToPlayerForm from "./AssignParentToPlayerForm";
+import { User } from "~/app/store/types/user-types";
 
 type Props = {
-  type: "Player" | "Coach" | "Supervisor" | "Attendance Moderator";
+  type: "Player" | "Coach" | "Supervisor" | "Attendance Moderator" | "Parent";
   data: any;
+  setUserSearch: Dispatch<SetStateAction<string | undefined>>;
+  pageCount: number | undefined;
+  setPage: Dispatch<SetStateAction<number | undefined>>;
+  fetching: boolean;
+  sport: string | undefined;
+  setSport: Dispatch<SetStateAction<string | undefined>>;
+  count: number | undefined;
 };
 
-const UsersCard = ({ type, data }: Props) => {
-  const [searchKeyword, setSearchKeyword] = useState<string>("");
+const UsersCard = ({
+  type,
+  data,
+  setUserSearch,
+  pageCount,
+  setPage,
+  fetching,
+  sport,
+  setSport,
+  count,
+}: Props) => {
+  // const [selectedSport, setSelectedSport] = useState<string | null>();
+  const safeSetSport = setSport ?? (() => {});
 
-  const [newData, setNewData] = useState<any>(data);
-  const [selectedSport, setSelectedSport] = useState<string | null>();
-
-  const [sports, setSports] = useState<string[]>(["All"]);
+  const [sports, setSports] = useState<SelectItem[]>([
+    {
+      label: "All",
+      value: "0",
+    },
+  ]);
   const {
     //@ts-ignore
     data: user,
@@ -39,79 +69,113 @@ const UsersCard = ({ type, data }: Props) => {
 
   useEffect(() => {
     if (clubSports) {
-      let newSportSData = ["All"];
+      let newSportSData = [
+        {
+          label: "All",
+          value: "0",
+        },
+      ];
       for (let sport of clubSports.results) {
-        newSportSData.push(sport.name);
+        newSportSData.push({
+          label: sport.name,
+          value: JSON.stringify(sport.id),
+        });
       }
       setSports(newSportSData);
     }
   }, [clubSports]);
 
-  useEffect(() => {
-    if (searchKeyword.length > 0) {
-      let test;
-      if (type === "Player") {
-        test = __.filter(data, (user) =>
-          user.name?.toLowerCase().includes(searchKeyword.toLocaleLowerCase())
-        );
-      } else {
-        test = __.filter(data, (user) => {
-          let name = user.first_name + user.last_name;
-          return name
-            ?.toLowerCase()
-            .includes(searchKeyword.toLocaleLowerCase());
-        });
-      }
-      setNewData(test);
-    } else {
-      setNewData(data);
-    }
-  }, [searchKeyword, data]);
-
+  const inputRef = useRef<HTMLInputElement>(null);
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const inputValue = inputRef.current?.value;
+    setUserSearch(inputValue);
+    setPage(undefined);
+  };
   return (
     <div className="bg-white rounded-lg p-4 pt-0 ">
-      <div className="header flex flex-col sm:flex-row justify-between items-start py-4">
-        <h2 className="text-sm sm:text-lg text-perfGray1 mb-2 sm:mb-0">
-          {type === "Coach" ? "Coaches" : type + "s"} in the system
-        </h2>
-        <div className="flex gap-6 justify-center items-center">
-          {type === "Player" && <AddPlayerForm />}
-          {type === "Attendance Moderator" && <AddSubCoachForm />}
+      <div className="header flex flex-col sm:flex-row justify-between items-start py-4 gap-4">
+        <div className="flex justify-between items-center w-full">
+          <h2 className="text-sm sm:text-lg text-perfGray1 mb-2 sm:mb-0">
+            {type === "Coach" ? "Coaches" : type + "s"} in the system
+            <span className="mx-2 font-bold text-perfBlue">({count})</span>
+          </h2>
+          {type === "Player" ? (
+            <AddPlayerForm />
+          ) : (
+            <CreateUser userType={type} />
+          )}
+        </div>
+        <div className="  flex flex-wrap xs:flex-nowrap gap-6 justify-center items-center">
+          {type !== "Parent" && (
+            <Select
+              placeholder="Filter By Sport"
+              value={sport}
+              onChange={(e: string) => {
+                if (e && e != "0") {
+                  safeSetSport(e);
+                  setPage(1);
+                } else {
+                  safeSetSport("0");
+                }
+              }}
+              data={sports}
+            />
+          )}
 
-          <Select
-            placeholder="Filter By Sport"
-            value={selectedSport}
-            onChange={(e: string) => setSelectedSport(e)}
-            data={sports}
-          />
-
-          <TextInput
-            onChange={(e) => setSearchKeyword(e.target.value)}
-            value={searchKeyword}
-            icon={
+          <form
+            onSubmit={handleSubmit}
+            className={"flex justify-center items-center gap-2"}
+          >
+            <TextInput
+              onChange={(e) => {
+                if (e.target.value.length === 0) {
+                  setUserSearch(undefined);
+                }
+              }}
+              ref={inputRef}
+              icon={
+                <AppIcons
+                  className="w-5 h-5 pointer"
+                  icon="MagnifyingGlassIcon:outline"
+                />
+              }
+              placeholder="Search"
+            />
+            <button type="submit" className="p-2 rounded-md bg-perfBlue">
               <AppIcons
-                className="w-5 h-5"
+                className="w-5 h-5 pointer text-white"
                 icon="MagnifyingGlassIcon:outline"
               />
-            }
-            placeholder="Search"
-          />
+            </button>
+          </form>
         </div>
       </div>
       <div className="h-60 overflow-y-scroll">
-        <Grid className="w-full" gutter={"sm"}>
-          {newData && newData.length > 0 ? (
-            <FilteredUsers
-              newData={newData}
-              selectedSport={selectedSport}
-              type={type}
-            />
-          ) : (
-            <div className="flex w-full items-center justify-center pt-10">
-              <h1 className="bg-pagesBg p-6">No {type} In this Club</h1>
-            </div>
-          )}
-        </Grid>
+        <div className="relative">
+          <LoadingOverlay visible={fetching} overlayBlur={2} />
+          <Grid className="w-full" gutter={"sm"}>
+            {data && data.length > 0 ? (
+              <FilteredUsers
+                newData={data}
+                // selectedSport={selectedSport}
+                type={type}
+              />
+            ) : (
+              <div className="flex w-full items-center justify-center pt-10">
+                <h1 className="bg-pagesBg p-6">No {type} In this Club</h1>
+              </div>
+            )}
+          </Grid>
+        </div>
+      </div>
+      <div className=" overflow-scroll py-2">
+        <Pagenation
+          pageCount={pageCount}
+          sport={sport}
+          setPage={setPage}
+          searchInputValue={inputRef.current?.value}
+        />
       </div>
     </div>
   );
@@ -119,13 +183,13 @@ const UsersCard = ({ type, data }: Props) => {
 
 type FilteredUsersProps = {
   newData: any;
-  selectedSport: string | null | undefined;
+  // selectedSport: string | null | undefined;
   type: string;
 };
 
 const FilteredUsers = ({
   newData,
-  selectedSport,
+  // selectedSport,
   type,
 }: FilteredUsersProps) => {
   const navigate = useNavigate();
@@ -133,6 +197,7 @@ const FilteredUsers = ({
   const [deleteCoach] = useAdminDeleteCoachMutation();
   const [deleteSupervisor] = useAdminDeleteSupervisorMutation();
   const [deleteSubCoach] = useAdminDeleteSubCoachMutation();
+  const [deleteParent] = useAdminDeleteParentMutation();
 
   const deleteUser = (userId: string) => {
     let deletePromise;
@@ -140,6 +205,9 @@ const FilteredUsers = ({
     switch (typeName) {
       case "player":
         deletePromise = deletePlayer({ player_id: userId });
+        break;
+      case "parent":
+        deletePromise = deleteParent({ parent_id: userId });
         break;
       case "coach":
         deletePromise = deleteCoach({ coach_id: userId });
@@ -162,28 +230,10 @@ const FilteredUsers = ({
       });
   };
 
-  const filteredData = newData.filter((user: any) => {
-    if (!selectedSport || selectedSport === "All") {
-      return true;
-    } else {
-      return user.sport === selectedSport;
-    }
-  });
-
-  if (filteredData.length === 0) {
-    return (
-      <div className="flex w-full items-center justify-center pt-10">
-        <h1 className="bg-pagesBg p-6">
-          {selectedSport} Sport doesn't have any {type}
-        </h1>
-      </div>
-    );
-  }
-
-  return filteredData.map((user: any) => {
+  return newData.map((user: User) => {
     return (
       <Grid.Col key={user.id} className="w-fit h-fit" span={12} xs={6} sm={4}>
-        <div className="flex justify-between rounded-3xl mr-10 items-center p-1  hover:bg-pagesBg transition-all">
+        <div className="flex justify-between rounded-3xl mr-2 items-center p-1  hover:bg-pagesBg transition-all">
           <div
             onClick={() => type === "Player" && navigate(`/players/${user.id}`)}
             style={{
@@ -197,11 +247,14 @@ const FilteredUsers = ({
                 user.name}
             </h3>
           </div>
-          <DeleteButton
-            deleteFun={() => deleteUser(JSON.stringify(user.id))}
-            type={type}
-            name={user.first_name || user.name}
-          />
+          <div className="flex gap-2 items-center justify-center">
+            {type === "Player" && <AssignParentToPlayerForm player={user} />}
+            <DeleteButton
+              deleteFun={() => deleteUser(JSON.stringify(user.id))}
+              type={type}
+              name={user.first_name || user.name}
+            />
+          </div>
         </div>
       </Grid.Col>
     );

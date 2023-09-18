@@ -13,13 +13,18 @@ import { EditModeContext } from "../../../../PlayerDetails";
 import AppUtils from "~/@main/utils/AppUtils";
 import AddLeagueForm from "./Forms/AddLeagueForm";
 import AddPlayerCourse from "./Forms/AddPlayerCourse";
+import { Player } from "~/app/store/types/parent-types";
+import { useSelector } from "react-redux";
+import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 
 type Props = {};
 
 const Experiences = (props: Props) => {
   const editMode = useContext(EditModeContext);
 
-  const { id } = useParams();
+  const { id: player_id } = useParams();
+  const selectedPlayer: Player = useSelector(selectedPlayerFn);
+  const id = player_id || JSON.stringify(selectedPlayer?.id);
   const { data: playerLeagues } = usePlayerLeagueQuery(
     { player_id: id },
     { skip: !id }

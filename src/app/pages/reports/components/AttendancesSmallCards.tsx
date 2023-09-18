@@ -1,5 +1,5 @@
 import React from "react";
-import { Player } from "~/app/store/types/parent-types";
+import { Player, PlayerAttendances } from "~/app/store/types/parent-types";
 import { useSelector } from "react-redux";
 import {
   selectedPlayerFn,
@@ -10,7 +10,7 @@ import { usePlayerCalendarQuery } from "~/app/store/parent/parentApi";
 import { useCoachPlayerCalendarQuery } from "~/app/store/coach/coachApi";
 import { useSuperPlayerCalendarQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { useAdminPlayerCalendarQuery } from "~/app/store/clubManager/clubManagerApi";
-import { useUserQuery } from "~/app/store/user/userApi";
+import { useGetTeamInfoQuery, useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {
   player_id?: number | string | undefined;
@@ -22,35 +22,42 @@ const AttendancesSmallCards = ({ player_id }: Props) => {
   const timeFilter = useSelector(timeFilterFn);
   const { data: user } = useUserQuery({});
 
-  console.log("selectedPlayerTeam", selectedPlayerTeam);
+  const { data: selectedTeamInfo } = useGetTeamInfoQuery(
+    {
+      team_id: selectedPlayerTeam?.id,
+    },
+    { skip: !selectedPlayerTeam?.id }
+  );
 
   const { data: parentPlayerAttendance } = usePlayerCalendarQuery(
     {
       id: selectedPlayer?.id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
       team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !selectedPlayer?.id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
+        !timeFilter?.month ||
+        !timeFilter?.year ||
         !selectedPlayerTeam?.id ||
-        user?.user_type !== "Parent",
+        (user && !["Parent", "Player"].includes(user?.user_type)),
     }
   );
   const { data: coachPlayerAttendance } = useCoachPlayerCalendarQuery(
     {
       player_id: player_id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
+      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
+        !timeFilter?.month ||
+        !timeFilter?.year ||
+        !selectedPlayerTeam?.id ||
         user?.user_type !== "Coach",
     }
   );
@@ -58,14 +65,16 @@ const AttendancesSmallCards = ({ player_id }: Props) => {
   const { data: superPlayerAttendance } = useSuperPlayerCalendarQuery(
     {
       player_id: player_id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
+      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
+        !timeFilter?.month ||
+        !timeFilter?.year ||
+        !selectedPlayerTeam?.id ||
         user?.user_type !== "Supervisor",
     }
   );
@@ -73,60 +82,57 @@ const AttendancesSmallCards = ({ player_id }: Props) => {
   const { data: adminPlayerAttendance } = useAdminPlayerCalendarQuery(
     {
       player_id: player_id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
+      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
+        !timeFilter?.month ||
+        !timeFilter?.year ||
+        !selectedPlayerTeam?.id ||
         user?.user_type !== "Admin",
     }
   );
-
   const newData = [0, 0];
 
-  if (parentPlayerAttendance) {
-    for (let i = 0; i < parentPlayerAttendance?.results?.length; i++) {
-      if (parentPlayerAttendance?.results[i].status === "ATTENDED") {
-        newData[0] += 1;
-      } else if (parentPlayerAttendance?.results[i].status === "ABSENT") {
-        newData[1] += 1;
+  function updateAttendanceData(attendance: any) {
+    if (attendance) {
+      for (let i = 0; i < attendance.results?.length; i++) {
+        //!This is for sessions
+        if (selectedTeamInfo?.attend_per === "SESSION") {
+          console.log("ATT SESSIONS");
+
+          const sessionList = attendance.results[i].attendance_sessions;
+          if (sessionList) {
+            for (let j = 0; j < sessionList.length; j++) {
+              if (sessionList[j].status === "ATTENDED") {
+                newData[0] += 1;
+              } else if (sessionList[j].status === "ABSENT") {
+                newData[1] += 1;
+              }
+            }
+          }
+        } else {
+          console.log("ATT DAYES");
+
+          //! this is for dayes
+          if (attendance.results[i].status === "ATTENDED") {
+            newData[0] += 1;
+          } else if (attendance.results[i].status === "ABSENT") {
+            newData[1] += 1;
+          }
+        }
       }
     }
   }
 
-  if (coachPlayerAttendance) {
-    for (let i = 0; i < coachPlayerAttendance?.results?.length; i++) {
-      if (coachPlayerAttendance?.results[i].status === "ATTENDED") {
-        newData[0] += 1;
-      } else if (coachPlayerAttendance?.results[i].status === "ABSENT") {
-        newData[1] += 1;
-      }
-    }
-  }
-
-  if (superPlayerAttendance) {
-    for (let i = 0; i < superPlayerAttendance?.results?.length; i++) {
-      if (superPlayerAttendance?.results[i].status === "ATTENDED") {
-        newData[0] += 1;
-      } else if (superPlayerAttendance?.results[i].status === "ABSENT") {
-        newData[1] += 1;
-      }
-    }
-  }
-
-  if (adminPlayerAttendance) {
-    for (let i = 0; i < adminPlayerAttendance?.results?.length; i++) {
-      if (adminPlayerAttendance?.results[i].status === "ATTENDED") {
-        newData[0] += 1;
-      } else if (adminPlayerAttendance?.results[i].status === "ABSENT") {
-        newData[1] += 1;
-      }
-    }
-  }
-
+  // Usage:
+  updateAttendanceData(parentPlayerAttendance);
+  updateAttendanceData(coachPlayerAttendance);
+  updateAttendanceData(superPlayerAttendance);
+  updateAttendanceData(adminPlayerAttendance);
   return (
     <div className="main-teams bg-white p-4 rounded-3xl">
       <h2 className="text-sm mb-4">Attendance Report summary - main team</h2>

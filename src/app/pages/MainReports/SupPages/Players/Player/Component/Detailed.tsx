@@ -2,7 +2,6 @@ import { Grid } from "@mantine/core";
 import Card from "~/@main/components/Card";
 import AttendanceDaysReports from "~/app/pages/reports/components/AttendanceDaysReports";
 import TotalAttendance from "~/app/pages/reports/components/TotalAttendance";
-import CustomCalendar from "~/@main/components/Calendar";
 import ActionsCard from "~/@main/components/ActionsCard";
 import RecommendationsCard from "~/@main/components/RecommendationsCard";
 import HomePlayerInfoCard from "~/@main/components/HomePlayerInfoCard";
@@ -10,18 +9,46 @@ import PerformanceSummaryCard from "~/@main/components/PerformanceSummaryCard";
 import AttendancesSmallCards from "~/app/pages/reports/components/AttendancesSmallCards";
 import PrintComp from "~/@main/PrintComp";
 import { useParams } from "react-router-dom";
+import { usePlayerCertificatesQuery } from "~/app/store/parent/parentApi";
+import PlayerCertificatePage from "~/app/pages/player-certificate/PlayerCertificatePage";
+import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
+import { useSelector } from "react-redux";
+import {
+  useGetPlayerCertificatesQuery,
+  useGetPlayerInfoQuery,
+} from "~/app/store/user/userApi";
 
 type Props = {
-  reportType: "Performances" | "Attendances";
+  reportType:
+    | "Performances"
+    | "Attendances"
+    | "Certificates"
+    | "OverAll"
+    | "Health";
 };
 
 const Detailed = ({ reportType }: Props) => {
-  const { id } = useParams();
+  const selectedPlayer = useSelector(selectedPlayerFn);
+  const { id: player_id } = useParams();
+  const id = player_id || JSON.stringify(selectedPlayer?.id);
+  const { data: playerCertificates } = useGetPlayerCertificatesQuery(
+    { player_id: id },
+    { skip: !id }
+  );
+
+  const { data: playerData } = useGetPlayerInfoQuery(
+    { player_id: id },
+    { skip: !id }
+  );
 
   return (
     <>
       {reportType === "Performances" ? (
-        <PrintComp>
+        <PrintComp
+          documentTitle={
+            playerData?.name || selectedPlayer?.name || "Player Name"
+          }
+        >
           <div className="bg-pagesBg">
             <Grid columns={12} gutter={"sm"}>
               <Grid.Col sm={3} md={2.5} span={12}>
@@ -68,22 +95,14 @@ const Detailed = ({ reportType }: Props) => {
           </div>
         </PrintComp>
       ) : reportType === "Attendances" ? (
-        <PrintComp>
+        <PrintComp
+          documentTitle={playerData?.name || selectedPlayer?.name || "No Name"}
+        >
           <div className="attendances">
             <Grid gutter={"sm"}>
               <Grid.Col span={12} sm={2.5}>
                 <div className="flex flex-col xs:flex-row md:flex-col gap-2 h-full w-full">
                   <HomePlayerInfoCard player_id={id} />
-                  {/* <div className="note bg-white rounded-3xl w-full p-4 h-full">
-                    <h2 className="text-lg font-normal text-perfGray1 pb-4">
-                      Overall notes
-                    </h2>
-                    <p className=" text-base font-normal text-perfGray3">
-                      Fitness Flexibility 10 Exercises to Improve Your
-                      Flexibility 1. Standing Quad Stretch. Stand with your feet
-                      together. ... 2. Standing Side Stretch
-                    </p>
-                  </div> */}
                 </div>
               </Grid.Col>
 
@@ -105,7 +124,7 @@ const Detailed = ({ reportType }: Props) => {
                       <div className="bg-white rounded-3xl">
                         <TotalAttendance player_id={id} />
                       </div>
-                      <CustomCalendar player_id={id} pageName="reports" />
+                      {/* <CustomCalendar player_id={id} pageName="reports" /> */}
                     </div>
                   </Grid.Col>
                 </Grid>
@@ -114,7 +133,25 @@ const Detailed = ({ reportType }: Props) => {
           </div>
         </PrintComp>
       ) : (
-        "LOL"
+        // <PlayerCertificatePage />
+        <div className="m-2">
+          <div className="overflow-scroll md:overflow-hidden max-w-full">
+            {playerCertificates && playerCertificates?.results.length > 0 ? (
+              playerCertificates?.results.map((certificate) => (
+                <PlayerCertificatePage
+                  key={certificate.id}
+                  certificateId={certificate.id}
+                />
+              ))
+            ) : (
+              <div className="flex justify-center items-center">
+                <h2 className="bg-white text-perfGray3 p-6 rounded-lg mt-10">
+                  This player has no certificates yet
+                </h2>
+              </div>
+            )}
+          </div>
+        </div>
       )}
     </>
   );

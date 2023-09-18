@@ -1,8 +1,10 @@
-import { Coach, Team } from "./coach-types";
+import { Coach } from "./coach-types";
 import { BaseGetAllType } from "./base-types";
 import { User } from "./user-types";
 import { Event } from "./events-types";
 import { Attendance } from "./attendance-types";
+import { Team, daySessions } from "./supervisor-types";
+import { Data } from "~/app/pages/players/player-details/Tabs/PlayerDataAnalytics/types";
 
 export type Subscription = {
   id: number;
@@ -32,7 +34,10 @@ export type AddPlayerType = {
   name: string;
   dob?: string;
   team: number[];
-  weight: string;
+  weight?: string;
+  world_weight?: string;
+  olympic_weight?: string;
+  front_leg?: "NONE" | "LEFT" | "RIGHT" | "BOTH";
   height: string;
   phone: string;
   icon: any;
@@ -40,10 +45,14 @@ export type AddPlayerType = {
 
 export type UpdatePlayer = {
   name: string;
-  dob: string;
-  weight: string;
+  dob?: string;
+  weight?: string;
+  world_weight?: string;
+  olympic_weight?: string;
+  front_leg?: "NONE" | "LEFT" | "RIGHT" | "BOTH";
   height: string;
   icon_url: string;
+  analytics: Data | null;
 };
 
 export type ParentClub = {
@@ -140,6 +149,7 @@ export type Player = {
   dob: string;
   front_leg: string;
   phone: string;
+  analytics: Data | null;
 };
 
 export type AllPlayers = BaseGetAllType & {
@@ -206,6 +216,7 @@ export type EventFiles = {
 };
 
 export type PlayerAttendance = {
+  attendance_sessions: daySessions;
   id: number;
   day: string;
   status: "ATTENDED" | "ABSENT" | "UPCOMING";

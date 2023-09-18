@@ -60,18 +60,6 @@ const PlayerInfo = (props: Props) => {
 
   return (
     <div className="mb-10">
-      {/* <CustomBreadCrumbs
-        items={[
-          {
-            title: user?.user_type === "Supervisor" ? "Team" : "Players",
-            href:
-              user?.user_type === "Supervisor"
-                ? `/supervisor/teams/${status.teamId}`
-                : "/players",
-          },
-          { title: playerData?.name || "No name", href: "" },
-        ]}
-      /> */}
       <Grid columns={12}>
         <Grid.Col md={6} span={12}>
           <PlayerInfoCard playerData={playerData} />

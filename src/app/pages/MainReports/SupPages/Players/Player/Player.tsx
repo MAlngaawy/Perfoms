@@ -5,12 +5,11 @@ import { Menu } from "@mantine/core";
 import AppIcons from "~/@main/core/AppIcons";
 import TimeFilter from "~/@main/components/TimeFilter";
 import OverAll from "./Component/OverAll";
-import { useGetPlayerInfoQuery } from "~/app/store/coach/coachApi";
-import { useGetSuperPlayerInfoQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { CoachPlayerInfo } from "~/app/store/types/coach-types";
 import Detailed from "./Component/Detailed";
-import { useAdminPlayerInfoQuery } from "~/app/store/clubManager/clubManagerApi";
 import classNames from "classnames";
+import TeamFilter from "~/@main/components/TeamFilter";
+import { useGetPlayerInfoQuery } from "~/app/store/user/userApi";
 
 type Props = {
   asComponent?: boolean;
@@ -21,18 +20,10 @@ const Player = ({ asComponent }: Props) => {
   const [checked, setChecked] = useState(false);
   const [playerInfo, setPlayerInfo] = useState<CoachPlayerInfo>();
   const [reportType, setReportType] =
-    useState<"Performances" | "Attendances">("Performances");
+    useState<"Performances" | "Attendances" | "Certificates">("Performances");
   const { id } = useParams();
 
-  const { data: coachPlayerInfo } = useGetPlayerInfoQuery(
-    { player_id: id },
-    { skip: !id }
-  );
-  const { data: superPlayerInfo } = useGetSuperPlayerInfoQuery(
-    { player_id: id },
-    { skip: !id }
-  );
-  const { data: adminPlayerInfo } = useAdminPlayerInfoQuery(
+  const { data: generalsPlayerInfo } = useGetPlayerInfoQuery(
     { player_id: id },
     { skip: !id }
   );
@@ -46,10 +37,8 @@ const Player = ({ asComponent }: Props) => {
   }, [checked, reportType]);
 
   useEffect(() => {
-    if (coachPlayerInfo) setPlayerInfo(coachPlayerInfo);
-    if (superPlayerInfo) setPlayerInfo(superPlayerInfo);
-    if (adminPlayerInfo) setPlayerInfo(adminPlayerInfo);
-  }, [coachPlayerInfo, superPlayerInfo, adminPlayerInfo]);
+    if (generalsPlayerInfo) setPlayerInfo(generalsPlayerInfo);
+  }, [generalsPlayerInfo]);
 
   const items = [
     { title: "Reports", href: "/main-reports" },
@@ -74,43 +63,60 @@ const Player = ({ asComponent }: Props) => {
           </Breadcrumbs>
         </div>
       )}
-      <div className="flex flex-col my-4 xs:flex-row items-center gap-4 justify-between">
-        <div className="switch flex ">
+      <div className="xs:flex justify-between xs:m-4 my-4">
+        <div className="xs:flex my-4 xs:my-auto items-center">
           <Switch
             size="xl"
             sx={{
               ".mantine-Switch-track": {
                 cursor: "pointer",
               },
+              "@media (max-width: 575px)": {
+                ".mantine-Switch-body": {
+                  width: "100%",
+                },
+                ".mantine-Switch-track": {
+                  width: "100%",
+                },
+              },
             }}
             onLabel="Overall"
             offLabel="Detailed"
             checked={checked}
             onChange={(event) => setChecked(event.currentTarget.checked)}
+            disabled={reportType === "Certificates"}
           />
         </div>
-        <div className="flex gap-4 xs:justify-end items-center">
-          <Menu shadow="md" width={200}>
-            <Menu.Target>
-              <button className="flex gap-2 text-xs h-fit sm:text-sm justify-center items-center text-white bg-perfBlue py-2 px-2 xs:px-4 rounded-3xl">
-                <span>{reportType}</span>
-                <AppIcons
-                  className="w-3 h-3"
-                  icon="ChevronDownIcon:outline"
-                />{" "}
-              </button>
-            </Menu.Target>
+        <div className="xs:flex gap-4 xs:justify-end items-center flex-wrap">
+          <TeamFilter player_id={id} />
+          <div className="flex justify-center items-center gap-2 my-2">
+            <Menu shadow="md" width={200}>
+              <Menu.Target>
+                <button className="flex gap-2 text-xs h-fit sm:text-sm justify-center items-center text-white bg-perfBlue py-2 px-2 xs:px-4 rounded-3xl">
+                  <span>{reportType}</span>
+                  <AppIcons
+                    className="w-3 h-3"
+                    icon="ChevronDownIcon:outline"
+                  />{" "}
+                </button>
+              </Menu.Target>
 
-            <Menu.Dropdown>
-              <Menu.Item onClick={() => setReportType("Performances")}>
-                Performances
-              </Menu.Item>
-              <Menu.Item onClick={() => setReportType("Attendances")}>
-                Attendances
-              </Menu.Item>
-            </Menu.Dropdown>
-          </Menu>
-          {showTimeFilter && <TimeFilter />}
+              <Menu.Dropdown>
+                <Menu.Item onClick={() => setReportType("Performances")}>
+                  Performances
+                </Menu.Item>
+                <Menu.Item onClick={() => setReportType("Attendances")}>
+                  Attendances
+                </Menu.Item>
+                {!checked && (
+                  <Menu.Item onClick={() => setReportType("Certificates")}>
+                    Certificates
+                  </Menu.Item>
+                )}
+              </Menu.Dropdown>
+            </Menu>
+            {showTimeFilter && <TimeFilter />}
+          </div>
         </div>
       </div>
       <div className="my-6">

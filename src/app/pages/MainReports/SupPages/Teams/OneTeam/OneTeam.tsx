@@ -19,6 +19,7 @@ import {
   useAdminTeamInfoQuery,
   useAdminTeamKpisStatisticsQuery,
 } from "~/app/store/clubManager/clubManagerApi";
+import CardsWrapper from "~/@main/components/MainReports/CardsWrapper";
 
 type Props = {};
 
@@ -31,13 +32,13 @@ const OneTeam = (props: Props) => {
   // Fetch Kpis Statistics Data
   const { data: coachTeamKpisStatistics, isLoading } =
     useCoachTeamKpisStatisticsQuery(
-      { team_id: team_id },
+      { team_id, sport_id },
       { skip: !team_id || user?.user_type !== "Coach" }
     );
 
   const { data: superTeamKpisStatistics, isLoading: superLoading } =
     useSuperTeamKpisStatisticsQuery(
-      { team_id: team_id },
+      { team_id, sport_id },
       { skip: !team_id || user?.user_type !== "Supervisor" }
     );
 
@@ -93,13 +94,18 @@ const OneTeam = (props: Props) => {
           {items}
         </Breadcrumbs>
       </div>
-      <PrintComp>
-        <div className="reports items-stretch justify-center xs:justify-start flex flex-wrap gap-4 my-10">
-          <div>
-            <TeamInfoCard
-              TeamInfoData={coachTeamInfo || superTeamInfo || adminTeamInfo}
-            />
-          </div>
+      <PrintComp
+        documentTitle={
+          coachTeamInfo?.name ||
+          superTeamInfo?.name ||
+          adminTeamInfo?.name ||
+          "Team Reports"
+        }
+      >
+        <CardsWrapper>
+          <TeamInfoCard
+            TeamInfoData={coachTeamInfo || superTeamInfo || adminTeamInfo}
+          />
           {isLoading ||
             (superLoading && (
               <>
@@ -124,7 +130,7 @@ const OneTeam = (props: Props) => {
               </div>
             );
           })}
-        </div>
+        </CardsWrapper>
       </PrintComp>
     </div>
   );

@@ -12,7 +12,7 @@ import { usePlayerCalendarQuery } from "~/app/store/parent/parentApi";
 import { useCoachPlayerCalendarQuery } from "~/app/store/coach/coachApi";
 import { useSuperPlayerCalendarQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { useAdminPlayerCalendarQuery } from "~/app/store/clubManager/clubManagerApi";
-import { useUserQuery } from "~/app/store/user/userApi";
+import { useGetTeamInfoQuery, useUserQuery } from "~/app/store/user/userApi";
 
 type Props = {
   player_id?: number | string | undefined;
@@ -25,34 +25,43 @@ const TotalAttendance = ({ player_id }: Props) => {
   const timeFilter = useSelector(timeFilterFn);
   const { data: user } = useUserQuery({});
 
+  const { data: selectedTeamInfo } = useGetTeamInfoQuery(
+    {
+      team_id: selectedPlayerTeam?.id,
+    },
+    { skip: !selectedPlayerTeam?.id }
+  );
+
   const { data: parentPlayerAttendance } = usePlayerCalendarQuery(
     {
       id: selectedPlayer?.id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
       team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !selectedPlayer?.id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
+        !timeFilter?.month ||
+        !timeFilter?.year ||
         !selectedPlayerTeam?.id ||
-        user?.user_type !== "Parent",
+        (user && !["Parent", "Player"].includes(user?.user_type)),
     }
   );
 
   const { data: coachPlayerAttendance } = useCoachPlayerCalendarQuery(
     {
       player_id: player_id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
+      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
+        !timeFilter?.month ||
+        !timeFilter?.year ||
+        !selectedPlayerTeam?.id ||
         user?.user_type !== "Coach",
     }
   );
@@ -60,14 +69,16 @@ const TotalAttendance = ({ player_id }: Props) => {
   const { data: superPlayerAttendance } = useSuperPlayerCalendarQuery(
     {
       player_id: player_id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
+      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
+        !timeFilter?.month ||
+        !timeFilter?.year ||
+        !selectedPlayerTeam?.id ||
         user?.user_type !== "Supervisor",
     }
   );
@@ -75,14 +86,16 @@ const TotalAttendance = ({ player_id }: Props) => {
   const { data: adminPlayerAttendance } = useAdminPlayerCalendarQuery(
     {
       player_id: player_id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
+      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
+        !timeFilter?.month ||
+        !timeFilter?.year ||
+        !selectedPlayerTeam?.id ||
         user?.user_type !== "Admin",
     }
   );
@@ -104,11 +117,24 @@ const TotalAttendance = ({ player_id }: Props) => {
   ];
 
   if (playerAttendance) {
-    for (let i = 0; i < playerAttendance?.results?.length; i++) {
-      if (playerAttendance?.results[i].status === "ATTENDED") {
-        newData[0].value += 1;
-      } else if (playerAttendance?.results[i].status === "ABSENT") {
-        newData[1].value += 1;
+    if (selectedTeamInfo?.attend_per === "SESSION") {
+      for (let i = 0; i < playerAttendance?.results?.length; i++) {
+        const sessions = playerAttendance?.results[i].attendance_sessions;
+        for (let j = 0; j < sessions?.length; j++) {
+          if (sessions[j].status === "ATTENDED") {
+            newData[0].value += 1;
+          } else if (sessions[j].status === "ABSENT") {
+            newData[1].value += 1;
+          }
+        }
+      }
+    } else {
+      for (let i = 0; i < playerAttendance?.results?.length; i++) {
+        if (playerAttendance?.results[i].status === "ATTENDED") {
+          newData[0].value += 1;
+        } else if (playerAttendance?.results[i].status === "ABSENT") {
+          newData[1].value += 1;
+        }
       }
     }
   }
@@ -134,7 +160,9 @@ const TotalAttendance = ({ player_id }: Props) => {
     <div className="bg-white rounded-3xl p-6 flex sm:flex-col xl:flex-row justify-around items-center">
       <div className="data flex flex-col sm:flex-row xl:flex-col justify-center items-start gap-4">
         <div>
-          <h3 className=" text-lg font-medium text-perfGray1">Total Days</h3>
+          <h3 className=" text-lg font-medium text-perfGray1">
+            Total {selectedTeamInfo?.attend_per === "DAY" ? "Days" : "Sessions"}
+          </h3>
           <h1 className="text-5xl w-full text-left font-bold text-perfGray1">
             {newData[0].value + newData[1].value}
           </h1>
@@ -143,14 +171,20 @@ const TotalAttendance = ({ player_id }: Props) => {
           <div className="info flex justify-center gap-1 items-start">
             <div className="color w-6 h-4 mt-1 rounded-md bg-perfBlue"></div>
             <div className="flex flex-col">
-              <h2 className="text-base">{newData[0].value} Days</h2>
+              <h2 className="text-base">
+                {newData[0].value}{" "}
+                {selectedTeamInfo?.attend_per === "DAY" ? "Days" : "Sessions"}
+              </h2>
               <p className="text-sm text-perfGray3">Attendence</p>
             </div>
           </div>
           <div className="info flex justify-center gap-1 items-start">
             <div className="color w-6 h-4 mt-1 rounded-md bg-perfSecondary"></div>
             <div className="flex flex-col">
-              <h2 className="text-base">{newData[1].value} Days</h2>
+              <h2 className="text-base">
+                {newData[1].value}{" "}
+                {selectedTeamInfo?.attend_per === "DAY" ? "Days" : "Sessions"}
+              </h2>
               <p className="text-sm text-perfGray3">Absence</p>
             </div>
           </div>

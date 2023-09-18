@@ -8,7 +8,10 @@ import { useSuperPlayerActionsQuery } from "~/app/store/supervisor/supervisorMai
 import { Skeleton } from "@mantine/core";
 import { useAdminPlayerActionsQuery } from "~/app/store/clubManager/clubManagerApi";
 import { useUserQuery } from "~/app/store/user/userApi";
-import { timeFilterFn } from "~/app/store/parent/parentSlice";
+import {
+  selectedPlayerTeamFn,
+  timeFilterFn,
+} from "~/app/store/parent/parentSlice";
 import { useSelector } from "react-redux";
 
 type Props = {
@@ -16,36 +19,43 @@ type Props = {
 };
 
 const ActionsCard = ({ player_id }: Props) => {
+  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const timeFilter = useSelector(timeFilterFn);
   const [actions, setActions] = useState<PlayerActions>();
   const { data: user } = useUserQuery({});
+  console.log("actionssssss", actions);
+  console.log("actionssssss", "TESTTTTTTTTTTTTTTTTT");
 
   const { data: parentPlayerActions } = usePlayerActionsQuery(
     {
       id: player_id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
+      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
-        user?.user_type !== "Parent",
+        !timeFilter?.month ||
+        !timeFilter?.year ||
+        !selectedPlayerTeam?.id ||
+        (user && !["Parent", "Player"].includes(user?.user_type)),
     }
   );
 
   const { data: coachPlayerActions } = useCoachPlayerActionsQuery(
     {
       player_id: player_id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
+      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
+        !timeFilter?.month ||
+        !timeFilter?.year ||
+        !selectedPlayerTeam?.id ||
         user?.user_type !== "Coach",
     }
   );
@@ -53,14 +63,16 @@ const ActionsCard = ({ player_id }: Props) => {
   const { data: superPlayerActions } = useSuperPlayerActionsQuery(
     {
       player_id: player_id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
+      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
+        !timeFilter?.month ||
+        !timeFilter?.year ||
+        !selectedPlayerTeam?.id ||
         user?.user_type !== "Supervisor",
     }
   );
@@ -68,14 +80,16 @@ const ActionsCard = ({ player_id }: Props) => {
   const { data: adminPlayerActions } = useAdminPlayerActionsQuery(
     {
       player_id: player_id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
+      team_id: selectedPlayerTeam?.id,
     },
     {
       skip:
         !player_id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
+        !timeFilter?.month ||
+        !timeFilter?.year ||
+        !selectedPlayerTeam?.id ||
         user?.user_type !== "Admin",
     }
   );

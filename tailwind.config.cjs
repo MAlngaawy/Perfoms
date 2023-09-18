@@ -58,6 +58,7 @@ module.exports = {
         loginBlue: "#2D4377",
         perfGreen: "#219653",
         perfBlue3: "#56CCF2",
+        blueGray: "#7B91B0",
       },
       screens: {
         xs: "576px",

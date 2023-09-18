@@ -9,7 +9,6 @@ import {
   PlayerParent,
   SendBulkNotifications,
   sendNotifications,
-  Team,
   TeamAttendanceDays,
   TeamKpiPlayersStatistics,
   TeamKpisStatistics,
@@ -44,6 +43,7 @@ import {
   SuperVisorTeamPlayers,
   TeamAttendance,
   TeamPlayer,
+  Team,
 } from "../types/supervisor-types";
 
 export const coachApi = createApi({
@@ -52,7 +52,7 @@ export const coachApi = createApi({
     baseUrl: `${BASE_URL}/coach`,
     prepareHeaders: BASE_HEADERS,
   }),
-  tagTypes: ["Attendance", "performances", "calendar", "players"],
+  tagTypes: ["Attendance", "performances", "calendar", "players", "events"],
   endpoints: ({ query, mutation }) => ({
     coaches: query<AllCoachesType, { page: number }>({
       query: (params) => ({ url: "all-coaches/", params }),
@@ -129,7 +129,7 @@ export const coachApi = createApi({
 
     GetTeamAttendance: query<
       CoachTeamAttendance,
-      { team_id: number; page?: number }
+      { team_id: number; month: string; year: string; page?: number }
     >({
       query: ({ team_id, ...params }) => ({
         url: `team-attendance/${team_id}`,
@@ -172,7 +172,7 @@ export const coachApi = createApi({
 
     teamAttendanceDays: query<
       TeamAttendanceDays,
-      { team_id: number; page?: number }
+      { team_id: number; month: string; year: string; page?: number }
     >({
       query: ({ team_id, ...params }) => ({
         url: `team-attendance-days/${team_id}`,
@@ -190,11 +190,15 @@ export const coachApi = createApi({
       }),
     }),
 
-    coachTeamEvent: query<TeamEvents, { team_id: number; pages?: number }>({
+    coachTeamEvent: query<
+      TeamEvents,
+      { team_id: number | string | undefined; pages?: number }
+    >({
       query: ({ team_id, ...params }) => ({
         url: `${team_id}/events/`,
         params,
       }),
+      providesTags: ["events"],
     }),
 
     coachTeamEventFiles: query<
@@ -216,10 +220,14 @@ export const coachApi = createApi({
 
     coachTeamKpisStatistics: query<
       TeamKpisStatistics,
-      { team_id: string | undefined; pages?: number }
+      {
+        team_id: string | undefined;
+        sport_id: string | undefined;
+        pages?: number;
+      }
     >({
-      query: ({ team_id, ...params }) => ({
-        url: `statistics/teams/kpis/${team_id}`,
+      query: ({ team_id, sport_id, ...params }) => ({
+        url: `statistics/sports/teams/kpis/${sport_id}/${team_id}/`,
         params,
       }),
     }),
@@ -229,8 +237,8 @@ export const coachApi = createApi({
       {
         team_id: string | undefined;
         kpi_id: string | undefined;
-        date_from: string;
-        date_to: string;
+        month: string;
+        year: string;
         pages?: number;
       }
     >({
@@ -244,8 +252,8 @@ export const coachApi = createApi({
       TeamPlayersAttendStatistics,
       {
         team_id: string | undefined;
-        date_from: string;
-        date_to: string;
+        month: string;
+        year: string;
         pages?: number;
       }
     >({
@@ -290,12 +298,13 @@ export const coachApi = createApi({
       {
         player_id: string | undefined;
         pages?: number;
-        date_from: string;
-        date_to: string;
+        month: string;
+        year: string;
+        team_id: number | string | undefined;
       }
     >({
-      query: ({ player_id, ...params }) => ({
-        url: `statistics/player-kpis/${player_id}`,
+      query: ({ player_id, team_id, ...params }) => ({
+        url: `statistics/player-kpis/${player_id}/${team_id}`,
         params,
       }),
     }),
@@ -304,13 +313,14 @@ export const coachApi = createApi({
       PlayerKpis,
       {
         player_id: string | undefined;
-        date_from: string;
-        date_to: string;
+        month: string;
+        year: string;
         pages?: number;
+        team_id: number | string | undefined;
       }
     >({
-      query: ({ player_id, ...params }) => ({
-        url: `${player_id}/player-kpis-metrics`,
+      query: ({ player_id, team_id, ...params }) => ({
+        url: `${player_id}/${team_id}/player-kpis-metrics`,
         params,
       }),
     }),
@@ -320,12 +330,13 @@ export const coachApi = createApi({
       {
         player_id: string | number | undefined;
         pages?: number;
-        date_from: string;
-        date_to: string;
+        month: string;
+        year: string;
+        team_id: number | string | undefined;
       }
     >({
-      query: ({ player_id, ...params }) => ({
-        url: `${player_id}/metrics/scores/moderate`,
+      query: ({ player_id, team_id, ...params }) => ({
+        url: `${player_id}/${team_id}/metrics/scores/moderate`,
         params,
       }),
     }),
@@ -335,12 +346,13 @@ export const coachApi = createApi({
       {
         player_id: string | number | undefined;
         pages?: number;
-        date_from: string;
-        date_to: string;
+        month: string;
+        year: string;
+        team_id: number | string | undefined;
       }
     >({
-      query: ({ player_id, ...params }) => ({
-        url: `${player_id}/metrics/scores/strength`,
+      query: ({ player_id, team_id, ...params }) => ({
+        url: `${player_id}/${team_id}/metrics/scores/strength`,
         params,
       }),
     }),
@@ -350,12 +362,13 @@ export const coachApi = createApi({
       {
         player_id: string | number | undefined;
         pages?: number;
-        date_from: string;
-        date_to: string;
+        month: string;
+        year: string;
+        team_id: number | string | undefined;
       }
     >({
-      query: ({ player_id, ...params }) => ({
-        url: `${player_id}/metrics/scores/weakness`,
+      query: ({ player_id, team_id, ...params }) => ({
+        url: `${player_id}/${team_id}/metrics/scores/weakness`,
         params,
       }),
     }),
@@ -365,12 +378,13 @@ export const coachApi = createApi({
       {
         player_id: string | number | undefined;
         pages?: number;
-        date_from: string;
-        date_to: string;
+        month: string;
+        year: string;
+        team_id: number | string | undefined;
       }
     >({
-      query: ({ player_id, ...params }) => ({
-        url: `${player_id}/recommendations`,
+      query: ({ player_id, team_id, ...params }) => ({
+        url: `${player_id}/${team_id}/recommendations`,
         params,
       }),
     }),
@@ -380,22 +394,27 @@ export const coachApi = createApi({
       {
         player_id: string | number | undefined;
         pages?: number;
-        date_from: string;
-        date_to: string;
+        month: string;
+        year: string;
+        team_id: number | string | undefined;
       }
     >({
-      query: ({ player_id, ...params }) => ({
-        url: `${player_id}/actions`,
+      query: ({ player_id, team_id, ...params }) => ({
+        url: `${player_id}/${team_id}/actions`,
         params,
       }),
     }),
 
     coachPlayersAttendStatistics: query<
       PlayerMonthsAttendancesStatistics,
-      { player_id: string | undefined; pages?: number }
+      {
+        player_id: string | undefined;
+        pages?: number;
+        team_id: number | string | undefined;
+      }
     >({
-      query: ({ player_id, ...params }) => ({
-        url: `calendar-detailed/${player_id}/`,
+      query: ({ player_id, team_id, ...params }) => ({
+        url: `calendar-detailed/${player_id}/${team_id}`,
         params,
       }),
     }),
@@ -404,13 +423,14 @@ export const coachApi = createApi({
       PlayerAttendances,
       {
         player_id: string | number | undefined;
-        date_from: string | undefined;
-        date_to: string | undefined;
+        month: string | undefined;
+        year: string | undefined;
+        team_id: string | number | undefined;
         pages?: number;
       }
     >({
-      query: ({ player_id, ...params }) => ({
-        url: `${player_id}/calendar`,
+      query: ({ player_id, team_id, ...params }) => ({
+        url: `${player_id}/calendar/${team_id}`,
         params,
       }),
     }),
@@ -445,13 +465,22 @@ export const coachApi = createApi({
       invalidatesTags: ["players"],
     }),
 
-    removeAddTeamPlayer: mutation<TeamPlayer, {}>({
+    removeTeamPlayer: mutation<TeamPlayer, {}>({
       query: ({ ...body }) => ({
         url: `teams/remove-team-player/`,
         method: "POST",
         body,
       }),
       invalidatesTags: ["players"],
+    }),
+
+    coachDeleteEvent: mutation<{}, { event_id: number }>({
+      query: ({ event_id, ...body }) => ({
+        url: `events/${event_id}/delete/`,
+        method: "DELETE",
+        body,
+      }),
+      invalidatesTags: ["events"],
     }),
   }),
 });
@@ -496,6 +525,7 @@ export const {
   useCoachTeamCalendarQuery,
   useAllClubPlayersQuery,
   useCoachAddTeamPlayerMutation,
-  useRemoveAddTeamPlayerMutation,
+  useRemoveTeamPlayerMutation,
   useCoachUpdateAttendanceSessionMutation,
+  useCoachDeleteEventMutation,
 } = coachApi;

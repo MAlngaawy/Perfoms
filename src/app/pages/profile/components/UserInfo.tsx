@@ -53,19 +53,6 @@ const UserInfo = ({ players }: Props) => {
       <h2 className="w-full text-center my-4 text-xl">{`${user?.first_name} ${user?.last_name}`}</h2>
       <div className="w-full flex flex-col justify-start ml-10">
         <div className="flex gap-4 text-left w-full sm:gap-12">
-          {/* <div className="age">
-          <p className="title text-sm text-perfGray3">Age</p>
-          <h2 className="val text-xl text-perfGray1">
-          {user.dob}{" "}
-          <span className="ml-2 text-sm text-perfGray3">
-              ( {new Date().getFullYear() - +user.dob?.split("-")?.[0] || 0})
-            </span>
-          </h2>
-        </div> */}
-          {/* <div className="job">
-          <p className="title text-sm text-perfGray3">Job</p>
-          <h2 className="val text-xl text-perfGray1">{user.job || "NA"}</h2>
-        </div> */}
           <div className="subscription">
             <p className="title text-sm text-perfGray3">Subscription</p>
             <h2 className="val text-xl text-perfGray1">Golden</h2>

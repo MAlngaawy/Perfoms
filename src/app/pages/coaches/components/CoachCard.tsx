@@ -1,6 +1,6 @@
 import { Button } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
-import { Team } from "~/app/store/types/coach-types";
+import { Team } from "~/app/store/types/supervisor-types";
 import classNames from "classnames";
 import { useGetCoachEducationsQuery } from "~/app/store/user/userApi";
 
@@ -34,7 +34,7 @@ const CoachCard = ({
   return (
     <div
       className={classNames(
-        "coachCard h-full transition-all group flex flex-col justify-between rounded-3xl text-center p-5 font-medium",
+        "coachCard h-full transition-all group bg-perfBlue text-white flex flex-col justify-between rounded-3xl text-center p-5 font-medium",
         {
           "bg-white text-perfLightBlack":
             role && ["Coach", "SubCoach"].includes(role),
@@ -45,7 +45,7 @@ const CoachCard = ({
       )}
     >
       <h3 className="text-base font-medium text-center">
-        {role ? role : "Coach"}
+        {role === "SubCoach" ? "Attendance Moderator" : role}
       </h3>
       <div className="flex justify-center items-center">
         <img
@@ -64,7 +64,7 @@ const CoachCard = ({
         className={classNames(
           "text-xs",
           {
-            "text-perfBlue ": role === "Coach",
+            "text-perfBlue ": role && ["Coach", "SubCoach"].includes(role),
           },
           {
             "text-white ": role === "Supervisor",

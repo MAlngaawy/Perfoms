@@ -60,6 +60,7 @@ const schema = yup.object().shape({
     .length(11, "phone number must be 11 characters long")
     .optional()
     .matches(/^\d+$/, "phone number must only contain numbers"),
+  gender: yup.string(),
 });
 
 const formInputsDefaultValue = {
@@ -71,9 +72,11 @@ const formInputsDefaultValue = {
   height: "",
   front_leg: "",
   phoneNumber: "",
+  gender: "",
 };
 
 const AddPlayerForm = (props: Props) => {
+  const [selectedSportName, setSelectedSportName] = useState<string>("");
   const { data: userData } = useUserQuery(null);
   const { refetch } = useAdminPlayersQuery(
     { club_id: userData?.club },
@@ -106,6 +109,7 @@ const AddPlayerForm = (props: Props) => {
     front_leg?: string;
     phoneNumber?: string;
     parent?: string;
+    gender?: string;
   }>({});
   const [selectedTeam, setSelectedTeam] = useState<any>(null);
 
@@ -142,12 +146,14 @@ const AddPlayerForm = (props: Props) => {
 
     try {
       await schema.validate(formInputsData, { abortEarly: false });
-      console.log("Await Passed", formInputsData);
       //@ts-ignore
       if (userAvatar) {
         const image = await AppUtils.resizeImage(userAvatar);
         formData.append("icon", image as string);
       }
+
+      formData.set("phone", "+2" + formData.get("phone"));
+
       try {
         setIsLoading(true);
         axiosInstance
@@ -274,70 +280,155 @@ const AddPlayerForm = (props: Props) => {
               selectedTeam={selectedTeam}
               setFormInputsData={setFormInputsData}
               setSelectedTeam={setSelectedTeam}
+              setSelectedSportName={setSelectedSportName}
             />
 
-            {/* Weight & Height */}
-            <div className="flex gap-4 my-4">
-              <div className="w-1/2">
-                <TextInput
-                  id="weight"
-                  label="Weight"
-                  error={errors.weight}
-                  name="weight"
-                  onChange={(e) => handleChange("weight", e.target.value)}
-                  sx={{
-                    ".mantine-TextInput-input": {
-                      background: "none",
-                      border: 0,
-                      borderBottom: "1px solid",
-                      borderRadius: 0,
-                    },
-                  }}
-                />
-              </div>
-              <div className="w-1/2">
-                <TextInput
-                  id="height"
-                  label="Height"
-                  name="height"
-                  error={errors.height}
-                  onChange={(e) => handleChange("height", e.target.value)}
-                  sx={{
-                    ".mantine-TextInput-input": {
-                      background: "none",
-                      border: 0,
-                      borderBottom: "1px solid",
-                      borderRadius: 0,
-                    },
-                  }}
-                />
-              </div>
-            </div>
+            {selectedSportName.toLocaleLowerCase() === "taekwondo" ? (
+              <>
+                <div className="flex gap-4 my-2">
+                  <div className="w-1/2">
+                    <TextInput
+                      id="world_weight"
+                      label="World Weight"
+                      error={errors.weight}
+                      name="world_weight"
+                      onChange={(e) =>
+                        handleChange("world_weight", e.target.value)
+                      }
+                      sx={{
+                        ".mantine-TextInput-input": {
+                          background: "none",
+                          border: 0,
+                          borderBottom: "1px solid",
+                          borderRadius: 0,
+                        },
+                      }}
+                    />
+                  </div>
 
-            <Select
-              id="front_leg"
-              error={errors.front_leg}
-              className="w-full"
-              label="Preferred Front Leg"
-              name="front_leg"
-              sx={{
-                ".mantine-Select-input": {
-                  background: "none",
-                  border: 0,
-                  borderBottom: "1px solid",
-                  borderRadius: 0,
-                  width: "100%",
-                },
-              }}
-              data={[
-                { value: "LEFT", label: "Left" },
-                { value: "RIGHT", label: "Right" },
-                { value: "BOTH", label: "Both" },
-              ]}
-            />
+                  <div className="w-1/2">
+                    <TextInput
+                      id="olympic_weight"
+                      label="Olympic Weight"
+                      error={errors.weight}
+                      name="olympic_weight"
+                      onChange={(e) =>
+                        handleChange("olympic_weight", e.target.value)
+                      }
+                      sx={{
+                        ".mantine-TextInput-input": {
+                          background: "none",
+                          border: 0,
+                          borderBottom: "1px solid",
+                          borderRadius: 0,
+                        },
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <div className="my-2">
+                  <Select
+                    id="front_leg"
+                    error={errors.front_leg}
+                    className="w-full"
+                    label="Preferred Front Leg"
+                    name="front_leg"
+                    sx={{
+                      ".mantine-Select-input": {
+                        background: "none",
+                        border: 0,
+                        borderBottom: "1px solid",
+                        borderRadius: 0,
+                        width: "100%",
+                      },
+                    }}
+                    data={[
+                      { value: "LEFT", label: "Left" },
+                      { value: "RIGHT", label: "Right" },
+                      { value: "BOTH", label: "Both" },
+                    ]}
+                  />
+                </div>
+                <div className="my-2">
+                  <TextInput
+                    id="height"
+                    label="Height"
+                    name="height"
+                    error={errors.height}
+                    onChange={(e) => handleChange("height", e.target.value)}
+                    sx={{
+                      ".mantine-TextInput-input": {
+                        background: "none",
+                        border: 0,
+                        borderBottom: "1px solid",
+                        borderRadius: 0,
+                      },
+                    }}
+                  />
+                </div>
+              </>
+            ) : (
+              <div className="flex gap-4 my-4">
+                <div className="w-1/2">
+                  <TextInput
+                    id="weight"
+                    label="Weight"
+                    error={errors.weight}
+                    name="weight"
+                    onChange={(e) => handleChange("weight", e.target.value)}
+                    sx={{
+                      ".mantine-TextInput-input": {
+                        background: "none",
+                        border: 0,
+                        borderBottom: "1px solid",
+                        borderRadius: 0,
+                      },
+                    }}
+                  />
+                </div>
+                <div className="w-1/2">
+                  <TextInput
+                    id="height"
+                    label="Height"
+                    name="height"
+                    error={errors.height}
+                    onChange={(e) => handleChange("height", e.target.value)}
+                    sx={{
+                      ".mantine-TextInput-input": {
+                        background: "none",
+                        border: 0,
+                        borderBottom: "1px solid",
+                        borderRadius: 0,
+                      },
+                    }}
+                  />
+                </div>
+              </div>
+            )}
 
             {/* Phone number  */}
-            <div className="w-full my-4">
+            <div className="w-full flex flex-col gap-4 my-4">
+              <Select
+                id="gender"
+                error={errors.gender}
+                className="w-full"
+                label="Gender"
+                name="gender"
+                sx={{
+                  ".mantine-Select-input": {
+                    background: "none",
+                    border: 0,
+                    borderBottom: "1px solid",
+                    borderRadius: 0,
+                    width: "100%",
+                  },
+                }}
+                data={[
+                  { label: "Males", value: "M" },
+                  { label: "Females", value: "F" },
+                ]}
+              />
               <TextInput
                 id="phoneNumber"
                 label="phone number"

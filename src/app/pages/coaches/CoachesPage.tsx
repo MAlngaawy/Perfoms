@@ -36,10 +36,8 @@ const CoachesPage = (props: Props) => {
     { skip: !selectedPlayer }
   );
 
-  console.log(playerCoaches);
+  console.log("playerCoaches", playerCoaches);
   useEffect(() => {
-    console.log("selectedPlayer", selectedPlayer);
-
     if (playerTeams)
       dispatch(
         selectPlayerTeam(
@@ -55,17 +53,22 @@ const CoachesPage = (props: Props) => {
 
   if (!selectedPlayer) {
     return (
-      <div className="flex flex-col items-center">
-        <Placeholders
-          img="/assets/images/nocoaches.png"
-          preText={"You Need to add a"}
-          pageName={"player"}
-          postText={"to see his"}
-        />
-        <p className="text-perfBlue font-medium mb-3">Coaches & supervisors</p>
-        <AddPlayer />
+      <div className="m-10">
+        <CoachesLoading />
       </div>
     );
+    // return (
+    //   <div className="flex flex-col items-center">
+    //     <Placeholders
+    //       img="/assets/images/nocoaches.png"
+    //       preText={"You Need to add a"}
+    //       pageName={"player"}
+    //       postText={"to see his"}
+    //     />
+    //     <p className="text-perfBlue font-medium mb-3">Coaches & supervisors</p>
+    //     <AddPlayer />
+    //   </div>
+    // );
   }
 
   if (selectedPlayer) {
@@ -75,24 +78,29 @@ const CoachesPage = (props: Props) => {
           <div className="flex justify-end my-2">
             <TeamFilter />
           </div>
-          {!playerCoaches?.results.length && <NoPlayersComp />}
+          {!playerCoaches?.results.length && <NoCoachesComp />}
           <Grid gutter={10}>
-            {playerCoaches?.results.map((coach) => {
-              return (
-                <Grid.Col xs={6} sm={4} md={3} key={coach.id}>
-                  <CoachCard
-                    key={coach.id}
-                    id={coach.id}
-                    role={coach?.user_type}
-                    name={`${coach.first_name} ${coach.last_name}`}
-                    education={coach.details?.education?.degree || "NA"}
-                    teams={coach.teams}
-                    photo={coach.avatar}
-                    sport={coach.sport}
-                  />
-                </Grid.Col>
-              );
-            })}
+            {playerCoaches?.results
+              .filter((coach) =>
+                //@ts-ignore
+                ["Coach", "SubCoach", "Supervisor"].includes(coach.user_type)
+              )
+              .map((coach) => {
+                return (
+                  <Grid.Col xs={6} sm={4} md={3} key={coach.id}>
+                    <CoachCard
+                      key={coach.id}
+                      id={coach.id}
+                      role={coach?.user_type}
+                      name={`${coach.first_name} ${coach.last_name}`}
+                      education={coach.details?.education?.degree || "NA"}
+                      teams={coach.teams}
+                      photo={coach.avatar}
+                      sport={coach.sport}
+                    />
+                  </Grid.Col>
+                );
+              })}
           </Grid>
         </div>
       );
@@ -105,6 +113,16 @@ const CoachesPage = (props: Props) => {
   } else {
     return <NoPlayersComp />;
   }
+};
+
+const NoCoachesComp = () => {
+  return (
+    <div className="flex justify-center items-center mt-20">
+      <div className="bg-white p-4 w-fit rounded-xl text-perfGray3">
+        No Coaches In This Team Yet
+      </div>
+    </div>
+  );
 };
 
 export default CoachesPage;

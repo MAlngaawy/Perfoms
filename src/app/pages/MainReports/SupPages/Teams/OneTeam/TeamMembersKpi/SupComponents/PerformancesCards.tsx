@@ -22,15 +22,15 @@ const PerformancesCards = ({ setKpiName }: any) => {
       {
         team_id: team_id,
         kpi_id: kpi_id,
-        date_from: timeFilter?.from_date,
-        date_to: timeFilter?.to_date,
+        month: timeFilter?.month,
+        year: timeFilter?.year,
       },
       {
         skip:
           !team_id ||
           !kpi_id ||
-          !timeFilter?.from_date ||
-          !timeFilter?.to_date ||
+          !timeFilter?.month ||
+          !timeFilter?.year ||
           user?.user_type !== "Coach",
       }
     );
@@ -40,15 +40,15 @@ const PerformancesCards = ({ setKpiName }: any) => {
     {
       team_id: team_id,
       kpi_id: kpi_id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
     },
     {
       skip:
         !team_id ||
         !kpi_id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
+        !timeFilter?.month ||
+        !timeFilter?.year ||
         user?.user_type !== "Supervisor",
     }
   );
@@ -58,15 +58,15 @@ const PerformancesCards = ({ setKpiName }: any) => {
     {
       team_id: team_id,
       kpi_id: kpi_id,
-      date_from: timeFilter?.from_date,
-      date_to: timeFilter?.to_date,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
     },
     {
       skip:
         !team_id ||
         !kpi_id ||
-        !timeFilter?.from_date ||
-        !timeFilter?.to_date ||
+        !timeFilter?.month ||
+        !timeFilter?.year ||
         user?.user_type !== "Admin",
     }
   );

@@ -2,17 +2,17 @@ import React, { useState, forwardRef, useEffect } from "react";
 import { Modal, Group, Avatar, Text, Select } from "@mantine/core";
 import SubmitButton from "../../../../../@main/components/SubmitButton";
 import { Controller, useForm } from "react-hook-form";
-import {
-  useSuperAddTeamCoachesMutation,
-  useSuperAllCoachesQuery,
-} from "~/app/store/supervisor/supervisorMainApi";
+import { useSuperAddTeamCoachesMutation } from "~/app/store/supervisor/supervisorMainApi";
 import { showNotification } from "@mantine/notifications";
-import { useUserQuery } from "~/app/store/user/userApi";
 import {
-  useAdminAddTeamCoachesMutation,
-  useAdminAllCoachesQuery,
-} from "~/app/store/clubManager/clubManagerApi";
+  useGetFilteredCoachesQuery,
+  useGetTeamInfoQuery,
+  useUserQuery,
+} from "~/app/store/user/userApi";
+import { useAdminAddTeamCoachesMutation } from "~/app/store/clubManager/clubManagerApi";
 import __ from "lodash";
+import { useParams } from "react-router-dom";
+import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {
   teamId: string | number;
@@ -23,20 +23,29 @@ const AddCoachForm = ({ teamId, teamCoaches }: Props) => {
   const [opened, setOpened] = useState(false);
   const [coachesData, setCoachesData] = useState<any>([]);
   const { data: user } = useUserQuery({});
-
-  const { data: superCoaches } = useSuperAllCoachesQuery({});
-  const { data: adminCoaches } = useAdminAllCoachesQuery(
-    { club_id: user?.club },
-    { skip: !user?.club }
+  const { team_id } = useParams();
+  const { data: teamInfo } = useGetTeamInfoQuery(
+    { team_id },
+    { skip: !team_id }
   );
+
+  const { data: filteredCoaches, refetch: refetchFilteredCoaches } =
+    useGetFilteredCoachesQuery(
+      {
+        team_id,
+        sport_id: teamInfo?.sport?.id,
+      },
+      {
+        skip: !teamInfo || !teamId,
+      }
+    );
 
   const [superAddCoach] = useSuperAddTeamCoachesMutation();
   const [adminAddCoach] = useAdminAddTeamCoachesMutation();
 
   useEffect(() => {
-    if (superCoaches) {
-      const filterdCoaches = __.xorBy(superCoaches.results, teamCoaches, "id");
-      let test = filterdCoaches.map((coach) => {
+    if (filteredCoaches) {
+      let filteredCoachesOptions = filteredCoaches.map((coach) => {
         return {
           label: coach.first_name + " " + coach.last_name,
           image: coach.avatar,
@@ -44,69 +53,27 @@ const AddCoachForm = ({ teamId, teamCoaches }: Props) => {
           id: coach.id,
         };
       });
-      setCoachesData(test);
+      setCoachesData(filteredCoachesOptions);
     }
-    if (adminCoaches) {
-      const filterdCoaches = __.xorBy(adminCoaches.results, teamCoaches, "id");
-      let test = filterdCoaches.map((coach) => {
-        return {
-          label: coach.first_name + " " + coach.last_name,
-          image: coach.avatar,
-          value: coach.id,
-          id: coach.id,
-        };
-      });
-      setCoachesData(test);
-    }
-  }, [superCoaches, adminCoaches]);
+  }, [filteredCoaches]);
 
   const { handleSubmit, reset, control } = useForm();
 
-  const onSubmit = (data: any) => {
-    if (user?.user_type === "Supervisor") {
-      superAddCoach({ coach_id: data.coach, team_id: +teamId }).then(() => {
-        showNotification({
-          message: "Successfully Added Coach",
-          color: "green",
-          title: "Done",
-          styles: {
-            root: {
-              backgroundColor: "#27AE60",
-              borderColor: "#27AE60",
-              "&::before": { backgroundColor: "#fff" },
-            },
+  const onSubmit = async (data: any) => {
+    const addCoachFunction =
+      user?.user_type === "Supervisor" ? superAddCoach : adminAddCoach;
 
-            title: { color: "#fff" },
-            description: { color: "#fff" },
-            closeButton: {
-              color: "#fff",
-            },
-          },
-        });
-      });
-    }
-
-    if (user?.user_type === "Admin") {
-      adminAddCoach({ coach_id: data.coach, team_id: +teamId }).then(() => {
-        showNotification({
-          message: "Successfully Added Coach",
-          color: "green",
-          title: "Done",
-          styles: {
-            root: {
-              backgroundColor: "#27AE60",
-              borderColor: "#27AE60",
-              "&::before": { backgroundColor: "#fff" },
-            },
-
-            title: { color: "#fff" },
-            description: { color: "#fff" },
-            closeButton: {
-              color: "#fff",
-            },
-          },
-        });
-      });
+    try {
+      await addCoachFunction({ coach_id: data.coach, team_id: +teamId });
+      refetchFilteredCoaches();
+      AppUtils.showNotificationFun(
+        "Success",
+        "Done",
+        "Successfully Added Coach"
+      );
+    } catch (error) {
+      // Handle error here
+      console.error("Error adding coach:", error);
     }
 
     setOpened(false);

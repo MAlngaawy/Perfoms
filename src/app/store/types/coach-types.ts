@@ -2,7 +2,7 @@ import { string } from "yup";
 import { Attendance } from "./attendance-types";
 import { BaseGetAllType } from "./base-types";
 import { TeamPlayer } from "./clubManager-types";
-import { daySessions, RatePer } from "./supervisor-types";
+import { daySessions, RatePer, Team } from "./supervisor-types";
 
 export enum NotificationType {
   Report = "Report",
@@ -21,7 +21,7 @@ export type CoachForParent = {
 export type GenerateCertification = {
   player: number;
   club: number;
-  team: number;
+  team?: number;
   type: "Performance" | "Congratulations" | "Encouragement" | "Other";
 };
 
@@ -145,29 +145,6 @@ export type TeamsStatistics = BaseGetAllType & {
   results: TeamStatistics[];
 };
 
-// export type Team = {
-//   id: number;
-//   players: string;
-//   events: string;
-//   attendances: string;
-//   coaches: string;
-//   players_kpi_metrics: string;
-//   created_at: Date;
-//   updated_at: Date;
-//   order: number;
-//   name: string;
-//   description: string;
-//   icon: string;
-//   icon_url: string;
-//   score: number;
-//   max_score: number;
-//   coverage: number;
-//   from_age: number;
-//   to_age: number;
-//   pillar: number;
-//   sport: number;
-// };
-
 export type TeamAttendanceDays = BaseGetAllType & {
   results: {
     day: string;
@@ -182,27 +159,14 @@ export type TeamPerformanceMetrics = BaseGetAllType & {
     {
       id: number;
       name: string;
+      description: string;
       kpi_metric: {
         id: number;
         name: string;
+        description: string;
       }[];
     }
   ];
-};
-
-export type Team = {
-  id: number;
-  coaches: CoachForParent[];
-  sport: string;
-  name: string;
-  description: string;
-  icon: string;
-  icon_url: string;
-  rate_per: RatePer;
-  players_count: number;
-  from_age: number;
-  to_age: number;
-  gender: string;
 };
 
 export type GetMyTeams = BaseGetAllType & {
@@ -279,7 +243,10 @@ export type CoachPlayerInfo = {
   id: number;
   name: string;
   dob: string;
-  weight: string;
+  weight?: string;
+  world_weight?: string;
+  olympic_weight?: string;
+  front_leg?: "NONE" | "LEFT" | "RIGHT" | "BOTH";
   height: string;
   icon: string;
   icon_url: string;
@@ -287,17 +254,21 @@ export type CoachPlayerInfo = {
   parent_name: string;
   phone?: string;
   profile?: string;
-  front_leg: string;
   team?: {
     id: number;
     name: string;
   }[];
+  analytics: JSON;
+  gender: "M" | "F";
 };
 
 export type CoachTeamInfo = {
   id: number;
   coaches: CoachForParent[];
-  sport: string;
+  sport: {
+    id: number;
+    name: string;
+  };
   name: string;
   description: string;
   icon: string;

@@ -10,34 +10,27 @@ import AppIcons from "../../../../../@main/core/AppIcons";
 import { DatePicker } from "@mantine/dates";
 import AppUtils from "~/@main/utils/AppUtils";
 import { axiosInstance } from "~/app/configs/dataService";
-import { showNotification } from "@mantine/notifications";
 import { useParams } from "react-router-dom";
-import { useSuperClubQuery } from "~/app/store/supervisor/supervisorMainApi";
-import { useAdminClubQuery } from "~/app/store/clubManager/clubManagerApi";
-import { ParentClub, TeamEvent } from "~/app/store/types/parent-types";
-import { useUserQuery } from "~/app/store/user/userApi";
+import { TeamEvent } from "~/app/store/types/parent-types";
+import { useGetMyClubQuery, useUserQuery } from "~/app/store/user/userApi";
 import AvatarInput from "~/@main/components/shared/AvatarInput";
+import { useSelector } from "react-redux";
+import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 
 type Props = {
   event: TeamEvent;
   refetch: any;
-  team_id: string;
+  team_id: string | number | undefined;
 };
 
 const EditEventForm = ({ event, refetch, team_id }: Props) => {
+  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
+  const { team_id: teamID } = useParams();
   const [opened, setOpened] = useState(false);
   const [loading, setLoading] = useState(false);
   const [userAvatar, setUserAvatar] = useState<File | null>(null);
-  const [clubData, setclubData] = useState<ParentClub>();
-  // const { team_id } = useParams();
-  const { data: superClubData } = useSuperClubQuery({});
-  const { data: adminClubData } = useAdminClubQuery({});
   const { data: user } = useUserQuery({});
-
-  useEffect(() => {
-    if (superClubData) setclubData(superClubData);
-    if (adminClubData) setclubData(adminClubData);
-  }, [superClubData, adminClubData]);
+  const { data: clubData } = useGetMyClubQuery({});
 
   const schema = yup.object().shape({
     eventName: yup.string().required("please add the Event name"),
@@ -60,13 +53,10 @@ const EditEventForm = ({ event, refetch, team_id }: Props) => {
     e.preventDefault();
     setLoading(true);
 
-    const paramData = {
-      team: team_id,
-      club: clubData?.id,
-    };
-    console.log(paramData);
+    const theTeamId = teamID || selectedPlayerTeam.id;
+
     const formData = new FormData(e.currentTarget);
-    formData.append("team", team_id || "0");
+    formData.append("team", JSON.stringify(theTeamId));
     formData.append("club", JSON.stringify(clubData?.id));
     if (userAvatar) {
       const image = await AppUtils.resizeImage(userAvatar);
@@ -77,6 +67,8 @@ const EditEventForm = ({ event, refetch, team_id }: Props) => {
       .patch(
         user?.user_type === "Supervisor"
           ? `supervisor/events/${event.id}/update/`
+          : user?.user_type === "Coach"
+          ? `coach/events/${event.id}/update/`
           : `club-manager/teams/events/${event.id}/update/`,
         formData
       )

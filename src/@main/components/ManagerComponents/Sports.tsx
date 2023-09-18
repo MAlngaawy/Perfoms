@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import AddSport from "./SubComponents/AddSport";
 import DeleteButton from "./SubComponents/DeleteButton";
 import EditSport from "./SubComponents/EditSport";
-import { Avatar } from "@mantine/core";
+import { Avatar, Skeleton } from "@mantine/core";
 import { useSuperSportQuery } from "~/app/store/supervisor/supervisorMainApi";
 import {
   useAdminDeleteSportMutation,
@@ -16,11 +16,15 @@ type Props = {};
 const Sports = (props: Props) => {
   const { data: user } = useUserQuery({});
   console.log(user);
-  const { data: sport } = useSuperSportQuery(
+  const { data: sport, isLoading: superSportsLoading } = useSuperSportQuery(
     {},
     { skip: user?.user_type !== "Supervisor" }
   );
-  const { data: sports, refetch: adminRefetchSports } = useAdminSportsQuery(
+  const {
+    data: sports,
+    refetch: adminRefetchSports,
+    isLoading: adminSportsLoading,
+  } = useAdminSportsQuery(
     { club_id: user?.club },
     { skip: user?.user_type !== "Admin" || !user?.club }
   );
@@ -73,8 +77,23 @@ const Sports = (props: Props) => {
       });
   };
 
+  if (adminSportsLoading || superSportsLoading) {
+    return (
+      <div className="flex flex-wrap gap-4 p-4">
+        <Skeleton width={230} height={230} radius="lg" />
+        <Skeleton width={230} height={230} radius="lg" />
+        <Skeleton width={230} height={230} radius="lg" />
+        <Skeleton width={230} height={230} radius="lg" />
+        <Skeleton width={230} height={230} radius="lg" />
+        <Skeleton width={230} height={230} radius="lg" />
+        <Skeleton width={230} height={230} radius="lg" />
+        <Skeleton width={230} height={230} radius="lg" />
+      </div>
+    );
+  }
+
   return (
-    <div className="admin-teams flex flex-col xs:flex-row flex-wrap items-stretch gap-4 pt-6">
+    <div className="grid xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 m-4">
       {sports &&
         sports?.results.map((sport) => {
           return (
@@ -107,14 +126,14 @@ const Sports = (props: Props) => {
       {sport && (
         <div className="sport-card relative bg-white rounded-3xl p-12 flex flex-col justify-center items-center gap-4">
           <Link
-            to={`sports/${sport.id}/pillars`}
-            state={{ sportName: sport.name }}
+            to={`sports/${sport[0].id}/pillars`}
+            state={{ sportName: sport[0].name }}
             className="bg-pagesBg rounded-full w-24 h-24 flex justify-center items-center"
           >
-            <Avatar size={"xl"} src={sport?.icon_url} alt="icon" />
+            <Avatar size={"xl"} src={sport[0]?.icon_url} alt="icon" />
           </Link>
           <h2 className="text-xl w-40 text-center text-perfBlue">
-            {sport?.name}
+            {sport[0]?.name}
           </h2>
         </div>
       )}

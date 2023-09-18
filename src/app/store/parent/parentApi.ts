@@ -123,12 +123,13 @@ export const parentsApi = createApi({
       {
         id: number | string | undefined;
         page?: number;
-        date_from: string;
-        date_to: string;
+        month: string;
+        year: string;
+        team_id: number | string | undefined;
       }
     >({
-      query: ({ id, ...params }) => ({
-        url: `${id}/actions/`,
+      query: ({ id, team_id, ...params }) => ({
+        url: `${id}/${team_id}/actions/`,
         params,
       }),
       providesTags: ["Parent"],
@@ -140,13 +141,13 @@ export const parentsApi = createApi({
         id: number;
         team_id: number;
         page?: number;
-        date_from?: string;
-        date_to?: string;
+        month?: string;
+        year?: string;
       }
     >({
-      query: ({ date_from, date_to, id, team_id }) => ({
+      query: ({ month, year, id, team_id }) => ({
         url: `${id}/calendar/${team_id}`,
-        params: { date_from, date_to },
+        params: { month, year },
       }),
       providesTags: ["Parent"],
     }),
@@ -188,12 +189,13 @@ export const parentsApi = createApi({
       {
         id: number | string | undefined;
         page?: number;
-        date_from: string;
-        date_to: string;
+        month: string;
+        year: string;
+        team_id: number | string | undefined;
       }
     >({
-      query: ({ id, ...params }) => ({
-        url: `${id}/recommendations/`,
+      query: ({ id, team_id, ...params }) => ({
+        url: `${id}/${team_id}/recommendations/`,
         params,
       }),
       providesTags: ["Parent"],
@@ -222,11 +224,11 @@ export const parentsApi = createApi({
 
     playerKpisMetrics: query<
       PlayerKpis,
-      { player_id: number; team_id: number; date_from: string; date_to: string }
+      { player_id: number; team_id: number; month: string; year: string }
     >({
-      query: ({ player_id, team_id, date_from, date_to }) => ({
+      query: ({ player_id, team_id, month, year }) => ({
         url: `${player_id}/${team_id}/player-kpis-metrics/`,
-        params: { date_from, date_to },
+        params: { month, year },
       }),
       providesTags: ["Parent"],
     }),
@@ -300,12 +302,13 @@ export const parentsApi = createApi({
       {
         player_id: number | string | undefined;
         page?: number;
-        date_from: string;
-        date_to: string;
+        month: string;
+        year: string;
+        team_id: number | string | undefined;
       }
     >({
-      query: ({ player_id, ...params }) => ({
-        url: `${player_id}/metrics/scores/moderate`,
+      query: ({ player_id, team_id, ...params }) => ({
+        url: `${player_id}/${team_id}/metrics/scores/moderate`,
         params,
       }),
       providesTags: ["Parent"],
@@ -316,12 +319,13 @@ export const parentsApi = createApi({
       {
         player_id: number | string | undefined;
         page?: number;
-        date_from: string;
-        date_to: string;
+        month: string;
+        year: string;
+        team_id: number | string | undefined;
       }
     >({
-      query: ({ player_id, ...params }) => ({
-        url: `${player_id}/metrics/scores/strength`,
+      query: ({ player_id, team_id, ...params }) => ({
+        url: `${player_id}/${team_id}/metrics/scores/strength`,
         params,
       }),
       providesTags: ["Parent"],
@@ -332,12 +336,13 @@ export const parentsApi = createApi({
       {
         player_id: number | string | undefined;
         page?: number;
-        date_from: string;
-        date_to: string;
+        month: string;
+        year: string;
+        team_id: number | string | undefined;
       }
     >({
-      query: ({ player_id, ...params }) => ({
-        url: `${player_id}/metrics/scores/weakness`,
+      query: ({ player_id, team_id, ...params }) => ({
+        url: `${player_id}/${team_id}/metrics/scores/weakness`,
         params,
       }),
       providesTags: ["Parent"],
@@ -360,7 +365,7 @@ export const parentsApi = createApi({
 
     playerCertificates: query<
       PlayerCertificates,
-      { player_id: number; page?: number }
+      { player_id: number | string | undefined; page?: number }
     >({
       query: ({ player_id }) => ({
         url: `/player-certificates/${player_id}`,

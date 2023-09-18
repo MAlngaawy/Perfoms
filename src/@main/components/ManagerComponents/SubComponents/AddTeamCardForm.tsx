@@ -88,8 +88,8 @@ const AddTeamCardForm = ({ sport_id }: Props) => {
       formData.append("icon", image as string);
     }
     try {
-      const theSport = formData.get("sport");
-      if (!theSport && user?.user_type === "Admin") {
+      const selectedSport = localStorage.getItem("selectedSport");
+      if (selectedSport === "0" && user?.user_type === "Admin") {
         setLoading(false);
         return AppUtils.showNotificationFun(
           "Error",
@@ -102,7 +102,7 @@ const AddTeamCardForm = ({ sport_id }: Props) => {
         .post(
           user?.user_type === "Supervisor"
             ? "supervisor/add-team/"
-            : `club-manager/teams/${formData.get("sport")}/add-team/`,
+            : `club-manager/teams/${selectedSport}/add-team/`,
           formData
         )
         .then((res) => {
@@ -191,7 +191,7 @@ const AddTeamCardForm = ({ sport_id }: Props) => {
               />
             </Input.Wrapper>
 
-            {user?.user_type === "Admin" && sports ? (
+            {/* {user?.user_type === "Admin" && sports ? (
               <PerfSelect
                 control={control}
                 placeholder="Sport"
@@ -226,7 +226,7 @@ const AddTeamCardForm = ({ sport_id }: Props) => {
                 }}
                 data={["No Sports"]}
               />
-            )}
+            )} */}
 
             <PerfSelect
               normalStyle
@@ -235,7 +235,7 @@ const AddTeamCardForm = ({ sport_id }: Props) => {
               data={[
                 { label: "Males", value: "M" },
                 { label: "Females", value: "F" },
-                { label: "Both", value: "B" },
+                { label: "Mixed", value: "B" },
               ]}
               name="gender"
               error={errors.gender && (errors.gender.message as ReactNode)}

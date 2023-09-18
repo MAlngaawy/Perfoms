@@ -9,7 +9,7 @@ import { useLocation, useParams } from "react-router-dom";
 import { useSuperClubQuery } from "~/app/store/supervisor/supervisorMainApi";
 import AppUtils from "~/@main/utils/AppUtils";
 import { axiosInstance } from "~/app/configs/dataService";
-import { useUserQuery } from "~/app/store/user/userApi";
+import { useGetMyClubQuery, useUserQuery } from "~/app/store/user/userApi";
 import { useAdminClubQuery } from "~/app/store/clubManager/clubManagerApi";
 import { ParentClub } from "~/app/store/types/parent-types";
 import AvatarInput from "~/@main/components/shared/AvatarInput";
@@ -25,19 +25,15 @@ const AddEventForm = ({ refetch, teamID, children }: Props) => {
   const [opened, setOpened] = useState(false);
   const [userAvatar, setUserAvatar] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [clubData, setclubData] = useState<ParentClub>();
   const { team_id: selectedTeam } = useParams();
   const team_id = selectedTeam || teamID;
-  const { data: superClubData } = useSuperClubQuery({});
-  const { data: adminClubData } = useAdminClubQuery({});
+  const { data: clubData } = useGetMyClubQuery({});
   const { data: user } = useUserQuery({});
   const { pathname } = useLocation();
 
   useEffect(() => {
-    if (superClubData) setclubData(superClubData);
-    if (adminClubData) setclubData(adminClubData);
-  }, [superClubData, adminClubData]);
-
+    console.log("teamID Addddddddddd", teamID);
+  }, [teamID]);
   const schema = yup.object().shape({
     eventName: yup.string().required("please add the Event name"),
     eventDate: yup.date().required("Please add the event date"),
@@ -74,6 +70,8 @@ const AddEventForm = ({ refetch, teamID, children }: Props) => {
       const endpoint =
         user?.user_type === "Supervisor"
           ? "supervisor/add-event/"
+          : user?.user_type === "Coach"
+          ? "coach/add-event/"
           : "club-manager/teams/events/add-event/";
 
       await axiosInstance.post(endpoint, formData);

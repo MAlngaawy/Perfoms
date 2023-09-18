@@ -7,6 +7,7 @@ import { useSuperTeamInfoQuery } from "~/app/store/supervisor/supervisorMainApi"
 import AttendanceTable from "../coachHome/components/AttendanceTable";
 import PerformanceTable from "../coachHome/components/PerformanceTable";
 import SessionsAttendanceTable from "../coachHome/components/SessionsAttendanceTable";
+import TimeFilter from "~/@main/components/TimeFilter";
 
 type Props = {};
 
@@ -35,7 +36,10 @@ const ScoringPage = (props: Props) => {
             type={"Performance"}
           />
         </div>
-        <TeamFilter />
+        <div className="flex flex-col xs:flex-row gap-2">
+          {checked === "Attendance" && <TimeFilter />}
+          <TeamFilter />
+        </div>
       </div>
 
       <div className={checked !== "Attendance" ? "hidden" : "block"}>

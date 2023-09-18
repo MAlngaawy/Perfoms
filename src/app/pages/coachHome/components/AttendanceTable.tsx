@@ -1,14 +1,16 @@
 import { memo, useEffect, useState } from "react";
-import { Table, Checkbox, Avatar, Skeleton, Loader } from "@mantine/core";
+import { Table, Checkbox, Avatar, Loader } from "@mantine/core";
 import {
   useCoachUpdateAttendanceMutation,
   useGetTeamAttendanceQuery,
   useTeamAttendanceDaysQuery,
 } from "~/app/store/coach/coachApi";
 import { useSelector } from "react-redux";
-import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
+import {
+  selectedPlayerTeamFn,
+  timeFilterFn,
+} from "~/app/store/parent/parentSlice";
 import NoTeamComp from "~/@main/components/NoTeamComp";
-import NoAttendancesYet from "~/@main/components/NoAttendancesYet";
 import { useUserQuery } from "~/app/store/user/userApi";
 import {
   useSuperGetTeamAttendanceQuery,
@@ -22,45 +24,73 @@ import {
 import { useNavigate } from "react-router-dom";
 import { Player } from "~/app/store/types/parent-types";
 
-type Props = {};
+type Props = {
+  setChecked?: any;
+};
 
-const AttendanceTable = (props: Props) => {
+const AttendanceTable = ({ setChecked }: Props) => {
+  const timeFilter = useSelector(timeFilterFn);
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
-  console.log("selectedPlayerTeam", selectedPlayerTeam);
   const { data: user } = useUserQuery({});
   const [teamAttendance, setTeamAttendance] = useState<CoachTeamAttendance>();
   const [teamAttendanceDays, setTeamAttendanceDays] =
     useState<TeamAttendanceDays>();
 
   const { data: coachTeamAttendance } = useGetTeamAttendanceQuery(
-    { team_id: selectedPlayerTeam?.id },
     {
-      skip: !selectedPlayerTeam,
+      team_id: selectedPlayerTeam?.id,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
+    },
+    {
+      skip: !selectedPlayerTeam || !timeFilter?.month || !timeFilter?.year,
     }
   );
 
   const { data: superTeamAttendance } = useSuperGetTeamAttendanceQuery(
-    { team_id: selectedPlayerTeam?.id },
-    { skip: !selectedPlayerTeam || user?.user_type !== "Supervisor" }
+    {
+      team_id: selectedPlayerTeam?.id,
+      month: timeFilter?.month,
+      year: timeFilter?.year,
+    },
+    {
+      skip:
+        !selectedPlayerTeam ||
+        !timeFilter?.month ||
+        !timeFilter?.year ||
+        user?.user_type !== "Supervisor",
+    }
   );
 
   const { data: coachTeamAttendanceDays, isLoading: isCoachLoading } =
     useTeamAttendanceDaysQuery(
-      { team_id: selectedPlayerTeam?.id },
       {
-        skip: !selectedPlayerTeam,
+        team_id: selectedPlayerTeam?.id,
+        month: timeFilter?.month,
+        year: timeFilter?.year,
+      },
+      {
+        skip: !selectedPlayerTeam || !timeFilter?.month || !timeFilter?.year,
       }
     );
 
   const { data: superTeamAttendanceDays, isLoading: isSuperLoading } =
     useSuperTeamAttendanceDaysQuery(
-      { team_id: selectedPlayerTeam?.id },
-      { skip: !selectedPlayerTeam || user?.user_type !== "Supervisor" }
+      {
+        team_id: selectedPlayerTeam?.id,
+        month: timeFilter?.month,
+        year: timeFilter?.year,
+      },
+      {
+        skip:
+          !selectedPlayerTeam ||
+          !timeFilter?.month ||
+          !timeFilter?.year ||
+          user?.user_type !== "Supervisor",
+      }
     );
 
   useEffect(() => {
-    console.log("superTeamAttendance", superTeamAttendance);
-    console.log("superTeamAttendanceDays", superTeamAttendanceDays);
     if (coachTeamAttendance) setTeamAttendance(coachTeamAttendance);
     if (superTeamAttendance) setTeamAttendance(superTeamAttendance);
     if (coachTeamAttendanceDays) setTeamAttendanceDays(coachTeamAttendanceDays);
@@ -77,6 +107,7 @@ const AttendanceTable = (props: Props) => {
       {selectedPlayerTeam ? (
         <div className="tableWrapper overflow-scroll relative m-6 bg-white rounded-lg text-center">
           <CreateContentTable
+            setChecked={setChecked}
             teamAttendance={teamAttendance}
             teamAttendanceDays={teamAttendanceDays}
           />
@@ -130,7 +161,7 @@ const TestCheckbox = memo(({ theDate, thisDate, theStatus, theID }: any) => {
 
 // srparate the code for performance
 const CreateContentTable = memo(
-  ({ teamAttendance, teamAttendanceDays }: any) => {
+  ({ teamAttendance, teamAttendanceDays, setChecked }: any) => {
     return (
       <Table
         withBorder
@@ -146,8 +177,8 @@ const CreateContentTable = memo(
               const thisDate = item.day;
               return (
                 <tr key={item.day} className="">
-                  <td className="text-xs font-medium text-center px-0 sticky left-0 bg-white z-10 text-perfGray1">
-                    {thisDate}
+                  <td className="text-xs font-medium text-left px-0 sticky left-0 bg-white z-10 text-perfGray1">
+                    <p className="ml-5">{thisDate}</p>
                     {/* {thisDate.getDate() - 1}/ {thisDate.getMonth() + 1} /
                   {thisDate.getFullYear()} */}
                   </td>
@@ -180,10 +211,15 @@ const CreateContentTable = memo(
         ) : (
           <tr className="w-full p-4 m-10 bg-white">
             <td colSpan={100} className="bg-pagesBg p-10 w-full">
-              No attendance added for this Team in this month yet, <br />
-              if you want to add attendance you can go to the team info page
-              <br />
-              and add attendance to calendar
+              No attendance added yet <br />
+              {setChecked && (
+                <button
+                  onClick={() => setChecked("Team info")}
+                  className="py-2 px-4 my-4 rounded-md bg-perfBlue text-white hover:bg-perfBlue2"
+                >
+                  Add Attendance Days
+                </button>
+              )}
             </td>
           </tr>
         )}
