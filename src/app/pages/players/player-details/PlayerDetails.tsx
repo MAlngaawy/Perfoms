@@ -1,43 +1,30 @@
 import React, { createContext, useState } from "react";
 import AppRadioGroub from "~/@main/components/AppRadioGroub";
+import PlayerInfo from "./Tabs/PlayerInfo/PlayerInfo";
 import PlayerBio from "./Tabs/PlayerBio/PlayerBio";
 import PlayerAlbums from "./Tabs/PlayerMedia/PlayerAlbums";
 import PrintComp from "~/@main/PrintComp";
 import Player from "../../MainReports/SupPages/Players/Player/Player";
-import PlayerDataAnalytics from "./Tabs/PlayerDataAnalytics/PlayerDataAnalytics";
-import HealthPageContent from "../../health/content/HealthPageContent";
-import { useSelector } from "react-redux";
-import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
-import { useGetPlayerInfoQuery } from "~/app/store/user/userApi";
-import { useParams } from "react-router-dom";
 
 const EditModeContext = createContext<boolean>(false);
 const PlayerDetails = () => {
-  const { id: player_id } = useParams();
-  const selectedPlayer = useSelector(selectedPlayerFn);
-  const id = player_id || JSON.stringify(selectedPlayer?.id);
-  const [checked, setChecked] =
-    useState<"Reports" | "Bio" | "Media" | "Analytics" | "Health">("Bio");
+  const [checked, setChecked] = useState<"Reports" | "Bio" | "Media">("Bio");
   const [editModeState, setEditModeState] = useState(false);
-  const { data: playerData } = useGetPlayerInfoQuery(
-    { player_id: id },
-    { skip: !id }
-  );
 
   return (
     <EditModeContext.Provider value={editModeState}>
       <div>
-        <div className="flex mt-6 flex-col gap-4 sm:flex-row justify-between items-end mx-4 xs:mx-8">
+        <div className="flex mt-6 flex-col gap-4 sm:flex-row justify-between items-start mx-4 xs:mx-8">
           <div className=" container">
             <AppRadioGroub
-              values={["Bio", "Media", "Reports", "Analytics", "Health"]}
+              values={["Bio", "Media", "Reports"]}
               checked={checked}
               setChecked={setChecked}
             />
           </div>
           {checked === "Bio" && (
             <div
-              className="edit border w-full sm:w-auto text-center border-perfBlue mb-2 sm:m-0 text-perfBlue py-1 px-4 rounded-lg cursor-pointer hover:bg-perfBlue hover:text-white transform transition-all hover:scale-105 "
+              className="edit border border-perfBlue mb-2 sm:m-0 text-perfBlue py-1 px-4 rounded-lg cursor-pointer hover:bg-perfBlue hover:text-white transform transition-all hover:scale-105 "
               onClick={() => setEditModeState(!editModeState)}
             >
               {editModeState ? "Done" : "Edit"}
@@ -49,19 +36,12 @@ const PlayerDetails = () => {
             <Player asComponent />
           </div>
           <div className={checked !== "Bio" ? "hidden" : "block px-4"}>
-            <PrintComp documentTitle={playerData?.name || "Player Name"}>
+            <PrintComp>
               <PlayerBio />
             </PrintComp>
           </div>
           <div className={checked !== "Media" ? "hidden" : "block px-4"}>
             <PlayerAlbums />
-          </div>
-          <div className={checked !== "Analytics" ? "hidden" : "block px-4"}>
-            <PlayerDataAnalytics />
-          </div>
-
-          <div className={checked !== "Health" ? "hidden" : "block px-4 pt-6"}>
-            <HealthPageContent />
           </div>
         </div>
       </div>

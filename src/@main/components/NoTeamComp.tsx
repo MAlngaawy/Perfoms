@@ -81,7 +81,7 @@ const NoTeamComp = (props: Props) => {
                 <h2 className="text-xl font-semibold text-perfGray1">
                   {team.name}
                 </h2>
-                <h3 className="text-sm text-perfBlue">{team?.sport?.name}</h3>
+                <h3 className="text-sm text-perfBlue">{team.sport}</h3>
               </div>
             );
           })

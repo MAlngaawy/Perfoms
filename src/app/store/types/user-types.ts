@@ -1,7 +1,6 @@
 import { BaseGetAllType } from "./base-types";
 import { Details, Player } from "./parent-types";
-import { Team } from "~/app/store/types/supervisor-types";
-import { Data } from "~/app/pages/players/player-details/Tabs/PlayerDataAnalytics/types";
+import { Team } from "~/app/store/types/coach-types";
 export type LoginUserBody = {
   mobile: string;
   password: string;
@@ -29,7 +28,6 @@ export type playerEvents = BaseGetAllType & {
 
 export type User = {
   id: number;
-  icon?: string;
   country: string;
   last_login: string;
   first_name: string;
@@ -48,11 +46,6 @@ export type User = {
   club: number;
   full_name?: string;
   teams?: Partial<Team>[];
-};
-
-export type AssignParentToPlayer = {
-  parent: number;
-  player: number;
 };
 
 export type UpdateProfile = Partial<User>;
@@ -141,8 +134,6 @@ export type PlayerButtonProps = {
   active: boolean;
 };
 
-export type updatePlayerAnalyticsData = Data;
-
 export type SecondNavProps = {
   players: PlayerData[];
   selectedplayer: any;
@@ -162,7 +153,7 @@ export type NotificationsType = {
       message: string;
       created_at: Date;
       notification_type: "Report" | "Certificate" | "Complement" | "Permission";
-      player: null | { id: number; name: string };
+      player: number;
     }
   ];
 };
@@ -172,7 +163,7 @@ export type Notifications = BaseGetAllType & {
     message: string;
     notification_type: "Report" | "Certificate" | "Complement" | "Permission";
     created_at: Date;
-    player: null | { id: number; name: string };
+    player: number;
     sender: {
       id: number;
       full_name: string;

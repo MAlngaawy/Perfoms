@@ -8,7 +8,6 @@ import {
   AddExperince,
   AddPlayerLeague,
   AddQualification,
-  AssignParentToPlayer,
   ChangePassword,
   ChangePhone,
   ClubTeams,
@@ -29,7 +28,6 @@ import {
   ResetPassword,
   SendOtp,
   SignupRes,
-  updatePlayerAnalyticsData,
   User,
   UserDeviceId,
   UserExperinces,
@@ -45,32 +43,11 @@ import {
 import { BASE_HEADERS, BASE_URL } from "~/app/configs/dataService";
 import Cookies from "js-cookie";
 import { LoginResponse, LoginUserBody, UserSignup } from "../types/user-types";
-import {
-  Kpis,
-  Metrics,
-  Pillars,
-  Team,
-  AddTeamCalendar,
-  TeamAttendance,
-  AddAttendanceSession,
-} from "../types/supervisor-types";
-import { Sports, TeamPlayer } from "../types/clubManager-types";
+import { Kpis, Metrics, Pillars } from "../types/supervisor-types";
+import { Sports } from "../types/clubManager-types";
 import { UserAchievements } from "~/app/store/types/user-types";
-import {
-  Coach,
-  CoachPlayerInfo,
-  CoachTeamInfo,
-  PlayerMonthsAttendancesStatistics,
-  TeamsStatistics,
-} from "../types/coach-types";
-import {
-  EventFiles,
-  PlayerCertificate,
-  PlayerCertificates,
-  PlayerTeams,
-  TeamEvents,
-  UpdatePlayer,
-} from "~/app/store/types/parent-types";
+import { CoachPlayerInfo } from "../types/coach-types";
+import { EventFiles } from "~/app/store/types/parent-types";
 
 export const userApi = createApi({
   reducerPath: "userApi",
@@ -87,11 +64,7 @@ export const userApi = createApi({
     "achievements",
     "kpis",
     "media",
-    "players",
-    "calendar",
-    "Certificates",
-    "events",
-    "coaches",
+    "player",
   ],
   endpoints: ({ query, mutation }) => ({
     user: query<User, any>({
@@ -110,19 +83,19 @@ export const userApi = createApi({
           Cookies.set("token", data.access);
           eventInstance.emit("Login_Success");
         } catch (error) {
+          console.log(error);
           //@ts-ignore
-          if (error.error.status === 409) {
+          if (error.error.status === 409)
             return window.location.replace(
               "/coachRequestSent"
               //@ts-ignore
               // `/verify-otp?userid=${error.error.data.id}`
             );
-          }
           AppUtils.showNotificationFun(
             "Error",
             "Login Error",
             //@ts-ignore
-            error.error.data.detail
+            error.error.data
           );
         }
       },
@@ -447,7 +420,7 @@ export const userApi = createApi({
       query: ({ player_id }) => ({
         url: `player-educations/${player_id}/`,
       }),
-      providesTags: ["players"],
+      providesTags: ["player"],
     }),
 
     addPlayerEducation: mutation<
@@ -459,14 +432,14 @@ export const userApi = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["players"],
+      invalidatesTags: ["player"],
     }),
 
     playerSkills: query<Courses, { player_id: string | undefined }>({
       query: ({ player_id }) => ({
         url: `player-skills/${player_id}/`,
       }),
-      providesTags: ["players"],
+      providesTags: ["player"],
     }),
 
     addPlayerSkills: mutation<AddCourse, { player_id: number | undefined }>({
@@ -475,7 +448,7 @@ export const userApi = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["players"],
+      invalidatesTags: ["player"],
     }),
 
     deleteSkill: mutation<Course, { id: number }>({
@@ -483,7 +456,7 @@ export const userApi = createApi({
         url: `skills/${id}/`,
         method: "DELETE",
       }),
-      invalidatesTags: ["players"],
+      invalidatesTags: ["player"],
     }),
 
     /**Player Leagues */
@@ -492,7 +465,7 @@ export const userApi = createApi({
       query: ({ player_id }) => ({
         url: `player-leagues/${player_id}/`,
       }),
-      providesTags: ["players"],
+      providesTags: ["player"],
     }),
 
     addPlayerLeague: mutation<
@@ -504,7 +477,7 @@ export const userApi = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["players"],
+      invalidatesTags: ["player"],
     }),
 
     deleteLeague: mutation<PlayerLeague, { id: number }>({
@@ -512,7 +485,7 @@ export const userApi = createApi({
         url: `leagues/${id}/`,
         method: "DELETE",
       }),
-      invalidatesTags: ["players"],
+      invalidatesTags: ["player"],
     }),
 
     /**Player Info */
@@ -524,31 +497,7 @@ export const userApi = createApi({
         url: `player-info/${player_id}/`,
         params,
       }),
-      providesTags: ["players"],
-    }),
-
-    updatePlayer: mutation<
-      UpdatePlayer,
-      { player_id: string | number | undefined; body: Partial<UpdatePlayer> }
-    >({
-      query: ({ player_id, body }) => ({
-        url: `update-player/${player_id}/`,
-        method: "PATCH",
-        body,
-      }),
-      invalidatesTags: ["players"],
-    }),
-
-    /**Player Info */
-    getPlayerTeams: query<
-      PlayerTeams,
-      { player_id: string | number | undefined }
-    >({
-      query: ({ player_id, ...params }) => ({
-        url: `${player_id}/player-teams/`,
-        params,
-      }),
-      providesTags: ["players"],
+      providesTags: ["player"],
     }),
 
     // Player Courses
@@ -560,7 +509,7 @@ export const userApi = createApi({
         url: `player-courses/${player_id}`,
         params,
       }),
-      providesTags: ["players", "courses"],
+      providesTags: ["player", "courses"],
     }),
 
     AddPlayerCourse: mutation<
@@ -572,7 +521,7 @@ export const userApi = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["players"],
+      invalidatesTags: ["player"],
     }),
 
     // Achievements
@@ -584,7 +533,7 @@ export const userApi = createApi({
         url: `player-achievements/${player_id}`,
         params,
       }),
-      providesTags: ["players", "achievements"],
+      providesTags: ["player", "achievements"],
     }),
     addPlayerAchievements: mutation<
       AddAchievements,
@@ -595,7 +544,7 @@ export const userApi = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["players"],
+      invalidatesTags: ["player"],
     }),
 
     // Event Queries
@@ -607,7 +556,7 @@ export const userApi = createApi({
         url: `player-events/${player_id}`,
         params,
       }),
-      providesTags: ["players"],
+      providesTags: ["player"],
     }),
 
     deleteEvent: mutation<{}, { event_id: number | string | undefined }>({
@@ -615,7 +564,7 @@ export const userApi = createApi({
         url: `events/${event_id}/delete/`,
         method: "DELETE",
       }),
-      invalidatesTags: ["players", "events"],
+      invalidatesTags: ["player"],
     }),
 
     removeEventVideo: mutation<{}, { event_id: number | string | undefined }>({
@@ -624,7 +573,7 @@ export const userApi = createApi({
         method: "PATCH",
         body,
       }),
-      invalidatesTags: ["players"],
+      invalidatesTags: ["player"],
     }),
 
     getEventFiles: query<EventFiles, { event_id: number | string | undefined }>(
@@ -685,151 +634,6 @@ export const userApi = createApi({
     }),
     getMyClub: query<MyClub, {}>({
       query: (params) => "my-club/",
-    }),
-
-    getTeamInfo: query<Team, { team_id: string | number | undefined }>({
-      query: ({ team_id, ...params }) => `teams/${team_id}`,
-    }),
-
-    userGeneralPlayerKpiStatistics: query<
-      TeamsStatistics,
-      {
-        player_id: string | undefined | number;
-        pages?: number;
-        month: string;
-        year: string;
-        team_id: number | string | undefined;
-      }
-    >({
-      query: ({ player_id, team_id, ...params }) => ({
-        url: `statistics/player-kpis/${player_id}/${team_id}`,
-        params,
-      }),
-    }),
-    userGeneralPlayersAttendStatistics: query<
-      PlayerMonthsAttendancesStatistics,
-      {
-        player_id: string | undefined | number;
-        pages?: number;
-        team_id: number | string | undefined;
-      }
-    >({
-      query: ({ player_id, team_id, ...params }) => ({
-        url: `statistics/calendar-detailed/${player_id}/${team_id}`,
-        params,
-      }),
-    }),
-
-    getFilteredPlayers: query<
-      TeamPlayer[],
-      {
-        sport_id: string | undefined | number;
-        team_id: number | string | undefined;
-        pages?: number;
-      }
-    >({
-      query: ({ sport_id, team_id, ...params }) => ({
-        url: `sports/${sport_id}/teams/${team_id}/filtered-players/`,
-        params,
-      }),
-      providesTags: ["players"],
-    }),
-
-    getFilteredCoaches: query<
-      Coach[],
-      {
-        sport_id: string | undefined | number;
-        team_id: number | string | undefined;
-        pages?: number;
-      }
-    >({
-      query: ({ sport_id, team_id, ...params }) => ({
-        url: `sports/${sport_id}/teams/${team_id}/filtered-coaches/`,
-        params,
-      }),
-      providesTags: ["coaches"],
-    }),
-
-    // add team calendar
-    addTeamCalendarAttendDay: mutation<AddTeamCalendar, {}>({
-      query: (body) => ({
-        url: `teams/add-team-calendar/`,
-        method: "POST",
-        body,
-      }),
-      invalidatesTags: ["calendar"],
-    }),
-
-    userGeneralTeamAttendance: query<
-      TeamAttendance,
-      { team_id: number; year: string; month: string; page?: number }
-    >({
-      query: ({ team_id, ...params }) => ({
-        url: `teams/${team_id}/attendance/`,
-        params,
-      }),
-      providesTags: ["calendar"],
-    }),
-
-    userGeneralsAddTeamAttendanceSession: mutation<
-      AddAttendanceSession,
-      { team_id: number | string | undefined }
-    >({
-      query: ({ team_id, ...body }) => ({
-        url: `teams/add-team-attendance-session/${team_id}/`,
-        method: "POST",
-        body,
-      }),
-      invalidatesTags: ["calendar"],
-    }),
-
-    userGeneralsDeleteTeamAttendanceSession: mutation<
-      AddAttendanceSession,
-      { team_id: number | string | undefined }
-    >({
-      query: ({ team_id, ...body }) => ({
-        url: `teams/delete-team-attendance-session/${team_id}/`,
-        method: "DELETE",
-        body,
-      }),
-      invalidatesTags: ["calendar"],
-    }),
-
-    // Certificates
-    getPlayerCertificates: query<
-      PlayerCertificates,
-      { player_id: number | string | undefined; page?: number }
-    >({
-      query: ({ player_id }) => ({
-        url: `/player-certificates/${player_id}`,
-      }),
-      providesTags: ["Certificates"],
-    }),
-    getPlayerCertificate: query<PlayerCertificate, string>({
-      query: (id) => ({
-        url: `/certificate/${id}`,
-      }),
-      providesTags: ["Certificates"],
-    }),
-
-    userGetTeamEvents: query<
-      TeamEvents,
-      { team_id: string | number | undefined; page?: number }
-    >({
-      query: ({ team_id, ...params }) => ({
-        url: `${team_id}/events/`,
-        params,
-      }),
-      providesTags: ["events"],
-    }),
-
-    assignParentToPlayer: mutation<AssignParentToPlayer, AssignParentToPlayer>({
-      query: ({ ...body }) => ({
-        url: `assign-parent-to-player/`,
-        body,
-        method: "PUT",
-      }),
-      invalidatesTags: ["players"],
     }),
   }),
 });
@@ -898,19 +702,4 @@ export const {
   useGetMyClubQuery,
   useClubSportsQuery,
   useSportTeamsQuery,
-  useGetPlayerTeamsQuery,
-  useGetTeamInfoQuery,
-  useUpdatePlayerMutation,
-  useUserGeneralPlayerKpiStatisticsQuery,
-  useUserGeneralPlayersAttendStatisticsQuery,
-  useGetFilteredPlayersQuery,
-  useGetFilteredCoachesQuery,
-  useAddTeamCalendarAttendDayMutation,
-  useUserGeneralTeamAttendanceQuery,
-  useUserGeneralsAddTeamAttendanceSessionMutation,
-  useUserGeneralsDeleteTeamAttendanceSessionMutation,
-  useGetPlayerCertificatesQuery,
-  useGetPlayerCertificateQuery,
-  useUserGetTeamEventsQuery,
-  useAssignParentToPlayerMutation,
 } = userApi;

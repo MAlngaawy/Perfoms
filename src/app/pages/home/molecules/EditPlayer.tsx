@@ -16,7 +16,9 @@ type Props = {
 };
 
 const EditPlayer = ({ player, refetchPlayerData }: Props) => {
-  const playerSport = player?.sport;
+  console.log("player?.icon", player?.icon);
+  console.log("player?.icon_url", player?.icon_url);
+
   const { refetch } = useMyPlayersQuery({});
   const { data: user } = useUserQuery({});
   const [userAvatar, setUserAvatar] = useState<File | null>(null);
@@ -31,12 +33,16 @@ const EditPlayer = ({ player, refetchPlayerData }: Props) => {
   };
 
   useEffect(() => {
+    console.log("Efffect Player");
+
     if (player?.icon) {
       setNoImage(false);
     }
   }, [player]);
 
   useEffect(() => {
+    console.log("Efffect userAvatar");
+
     if (userAvatar) {
       setNoImage(false);
     }
@@ -53,7 +59,10 @@ const EditPlayer = ({ player, refetchPlayerData }: Props) => {
       formData.append("icon", "");
     }
     setError(false);
-    const REQUEST_URL = `user-generals/update-player/${player?.id}/`;
+    const REQUEST_URL =
+      user?.user_type === "Parent"
+        ? `parent/update-player/${player?.id}/`
+        : `club-manager/update-player/${player?.id}/`;
 
     try {
       setIsLoading(true);
@@ -61,7 +70,7 @@ const EditPlayer = ({ player, refetchPlayerData }: Props) => {
         .patch(REQUEST_URL, formData)
         .then((res) => {
           setIsLoading(false);
-          if (user && ["Parent", "Player"].includes(user?.user_type)) {
+          if (user?.user_type === "Parent") {
             refetch();
           }
           refetchPlayerData();
@@ -162,120 +171,64 @@ const EditPlayer = ({ player, refetchPlayerData }: Props) => {
             </div>
           </div>
 
-          {playerSport?.toLocaleLowerCase() === "taekwondo" ? (
-            <>
-              <div className="flex gap-4 my-2">
-                <div className="w-1/2">
-                  <TextInput
-                    id="world_weight"
-                    label="World Weight"
-                    name="world_weight"
-                    defaultValue={player?.world_weight}
-                    sx={{
-                      ".mantine-TextInput-input": {
-                        background: "none",
-                        border: 0,
-                        borderBottom: "1px solid",
-                        borderRadius: 0,
-                      },
-                    }}
-                  />
-                </div>
-
-                <div className="w-1/2">
-                  <TextInput
-                    id="olympic_weight"
-                    label="Olympic Weight"
-                    name="olympic_weight"
-                    defaultValue={player?.olympic_weight}
-                    sx={{
-                      ".mantine-TextInput-input": {
-                        background: "none",
-                        border: 0,
-                        borderBottom: "1px solid",
-                        borderRadius: 0,
-                      },
-                    }}
-                  />
-                </div>
-              </div>
-
-              <div className="my-2">
-                <Select
-                  id="front_leg"
-                  defaultValue={player?.front_leg}
-                  className="w-full"
-                  label="Preferred Front Leg"
-                  name="front_leg"
-                  sx={{
-                    ".mantine-Select-input": {
-                      background: "none",
-                      border: 0,
-                      borderBottom: "1px solid",
-                      borderRadius: 0,
-                      width: "100%",
-                    },
-                  }}
-                  data={[
-                    { value: "LEFT", label: "Left" },
-                    { value: "RIGHT", label: "Right" },
-                    { value: "BOTH", label: "Both" },
-                  ]}
-                />
-              </div>
-              <div className="my-2">
-                <TextInput
-                  id="height"
-                  label="Height"
-                  name="height"
-                  defaultValue={player?.height}
-                  sx={{
-                    ".mantine-TextInput-input": {
-                      background: "none",
-                      border: 0,
-                      borderBottom: "1px solid",
-                      borderRadius: 0,
-                    },
-                  }}
-                />
-              </div>
-            </>
-          ) : (
-            <div className="flex gap-4 my-4">
-              <div className="w-1/2">
-                <TextInput
-                  id="weight"
-                  label="Weight"
-                  name="weight"
-                  defaultValue={player?.weight}
-                  sx={{
-                    ".mantine-TextInput-input": {
-                      background: "none",
-                      border: 0,
-                      borderBottom: "1px solid",
-                      borderRadius: 0,
-                    },
-                  }}
-                />
-              </div>
-              <div className="w-1/2">
-                <TextInput
-                  id="height"
-                  label="Height"
-                  name="height"
-                  defaultValue={player?.height}
-                  sx={{
-                    ".mantine-TextInput-input": {
-                      background: "none",
-                      border: 0,
-                      borderBottom: "1px solid",
-                      borderRadius: 0,
-                    },
-                  }}
-                />
-              </div>
+          {/* Weight & Height */}
+          <div className="flex gap-4 my-4">
+            <div className="w-1/2">
+              <TextInput
+                id="weight"
+                label="Weight"
+                name="weight"
+                defaultValue={player?.weight}
+                sx={{
+                  ".mantine-TextInput-input": {
+                    background: "none",
+                    border: 0,
+                    borderBottom: "1px solid",
+                    borderRadius: 0,
+                  },
+                }}
+              />
             </div>
-          )}
+            <div className="w-1/2">
+              <TextInput
+                id="height"
+                label="Height"
+                name="height"
+                defaultValue={player?.height}
+                sx={{
+                  ".mantine-TextInput-input": {
+                    background: "none",
+                    border: 0,
+                    borderBottom: "1px solid",
+                    borderRadius: 0,
+                  },
+                }}
+              />
+            </div>
+          </div>
+
+          <Select
+            id="front_leg"
+            required
+            className="w-full"
+            label="Preferred Front Leg"
+            name="front_leg"
+            defaultValue={player?.front_leg}
+            sx={{
+              ".mantine-Select-input": {
+                background: "none",
+                border: 0,
+                borderBottom: "1px solid",
+                borderRadius: 0,
+                width: "100%",
+              },
+            }}
+            data={[
+              { value: "LEFT", label: "Left" },
+              { value: "RIGHT", label: "Right" },
+              { value: "BOTH", label: "Both" },
+            ]}
+          />
 
           {/* Phone number  */}
           <div className="w-full my-4">

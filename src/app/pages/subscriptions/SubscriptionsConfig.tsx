@@ -18,7 +18,7 @@ const SubscriptionsConfig: PagesRouteConfig = {
       },
     },
   },
-  auth: ["Parent"],
+  auth: authRoles.Parent,
   routes: [
     {
       path: "subscriptions",

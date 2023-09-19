@@ -11,8 +11,6 @@ export const PerformanceCard = ({
   data,
 }: // data,
 PerformanceCardProps) => {
-  console.log("DATAAAA", name, data);
-
   return (
     <Group position="apart" className="rounded-sm p-0">
       <HoverCard width={300} shadow="md">
@@ -56,11 +54,7 @@ PerformanceCardProps) => {
               <div className="h-44 overflow-scroll">
                 {data ? (
                   data
-                    ?.filter(
-                      (item: any) =>
-                        ["Recommendations", "Actions"].includes(name) ||
-                        item.avg_score > 0
-                    ) // Don't show the item if avg score is 0
+                    ?.filter((item: any) => item.avg_score > 0) // Don't show the item if avg score is 0
                     .map((power: any) => {
                       return (
                         <div
@@ -96,7 +90,7 @@ PerformanceCardProps) => {
                     <Skeleton width={"100%"} height={"100%"} radius="lg" />
                   </div>
                 )}
-                {data && data?.length < 1 && <NoReport />}
+                {data && data?.results?.length < 1 && <NoReport />}
               </div>
             </div>
           </HoverCard.Dropdown>

@@ -25,7 +25,7 @@ const SignInPage = (props: Props) => {
     formState: { errors },
     control,
   } = useForm({
-    defaultValues: { countryCode: "+2", phoneNumber: "", password: "" },
+    defaultValues: { countryCode: "+20", phoneNumber: "", password: "" },
     resolver: yupResolver(schema),
   });
 
@@ -57,7 +57,7 @@ const SignInPage = (props: Props) => {
         </div>
         <img
           className="object-cover h-full w-full max-h-full min-h-0"
-          src="/assets/images/signin.png"
+          src="/assets/images/loginImage.png"
           alt="Sign in"
         />
       </div>

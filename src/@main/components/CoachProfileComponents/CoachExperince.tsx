@@ -79,7 +79,7 @@ const CoachExperince = ({ data, editMode }: Props) => {
   const [deleteCourse] = useDeleteCourseMutation();
 
   useEffect(() => {
-    if (user && ["Parent", "Player"].includes(user?.user_type)) {
+    if (user?.user_type === "Parent") {
       setExperiences(coachExperiences);
       setQualifications(coachQualifications);
       setCourses(coachCourses);

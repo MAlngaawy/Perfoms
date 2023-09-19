@@ -10,7 +10,7 @@ import { selectedPlayerFn } from "~/app/store/parent/parentSlice";
 import { useSelector } from "react-redux";
 import { ParentClub, Player } from "~/app/store/types/parent-types";
 import { usePlayerClubQuery } from "~/app/store/parent/parentApi";
-import { useGetMyClubQuery, useUserQuery } from "~/app/store/user/userApi";
+import { useUserQuery } from "~/app/store/user/userApi";
 import { useMyClubQuery } from "~/app/store/coach/coachApi";
 import { useEffect, useState } from "react";
 import { useSuperClubQuery } from "~/app/store/supervisor/supervisorMainApi";
@@ -25,7 +25,7 @@ type Props = {
 const Toolbar = ({ setOpened }: Props) => {
   const windowSize = useWindowSize();
   const { data: user } = useUserQuery({});
-  // const [club, setClub] = useState<ParentClub>();
+  const [club, setClub] = useState<ParentClub>();
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
   // This is for changing the toolabr color based on the user type
   const [changableColor, setChangableColor] = useState("#fff");
@@ -33,20 +33,38 @@ const Toolbar = ({ setOpened }: Props) => {
   const profileRoute = () => {
     let route = "profile";
     //@ts-ignore
-    if (["Supervisor", "Coach", "SubCoach"].includes(user?.user_type)) {
+    if (["Supervisor", "Coach"].includes(user?.user_type)) {
       route = "coach-profile";
-    } else if (user?.user_type === "Admin") {
+      //@ts-ignore
+    } else if (["Admin", "SubCoach"].includes(user?.user_type)) {
       route = "admin-profile";
-    } else if (user?.user_type === "Player") {
-      route = `/players/${selectedPlayer?.id}`;
     }
 
     return route;
   };
 
-  const { data: club } = useGetMyClubQuery({});
+  const { data: playerClub } = usePlayerClubQuery(
+    { id: selectedPlayer?.id },
+    { skip: !selectedPlayer?.id || user?.user_type !== "Parent" }
+  );
 
+  const { data: coachClub } = useMyClubQuery({});
+
+  const { data: superClub } = useSuperClubQuery(
+    {},
+    { skip: user?.user_type !== "Supervisor" }
+  );
+
+  const { data: adminClub } = useAdminClubQuery(
+    {},
+    { skip: user?.user_type !== "Admin" }
+  );
   useEffect(() => {
+    if (playerClub) setClub(playerClub);
+    if (coachClub) setClub(coachClub);
+    if (superClub) setClub(superClub);
+    if (adminClub) setClub(adminClub);
+
     if (user?.user_type === "Coach") {
       setChangableColor("#225161");
     } else if (user?.user_type === "Supervisor") {
@@ -54,7 +72,7 @@ const Toolbar = ({ setOpened }: Props) => {
     } else if (user?.user_type === "Admin") {
       setChangableColor("#1F2A32");
     }
-  }, [user]);
+  }, [coachClub, playerClub, superClub, adminClub]);
 
   return (
     <nav
@@ -74,33 +92,22 @@ const Toolbar = ({ setOpened }: Props) => {
           <Avatar
             radius={"xl"}
             className="w-10"
-            src={club?.icon || club?.icon_url}
+            src={club?.icon_url}
             alt="club logo"
           />
           <span
             style={{
-              color:
-                user && ["Parent", "Player"].includes(user?.user_type)
-                  ? "#000"
-                  : "#fff",
+              color: user?.user_type === "Parent" ? "#000" : "#fff",
             }}
           >
-            {club?.name}
+            {club?.name || "Alam alryada"}
           </span>
         </div>
 
         {/* Select Player For the Parent */}
-        {user && ["Parent", "Player"].includes(user?.user_type) && (
-          <SelectUser />
-        )}
+        {user?.user_type === "Parent" && <SelectUser />}
       </div>
       <div className="right flex gap-2 justify-center items-center">
-        <Link
-          to="help-center"
-          className="flex w-full justify-center items-center p-2 hover:text-perfGray hover:underline  text-sm"
-        >
-          <span>Ask Performs...?</span>
-        </Link>
         {/* Messages Menu */}
         <Menu trigger="click" shadow="md" width={200}>
           <Menu.Target>
@@ -139,7 +146,6 @@ const Toolbar = ({ setOpened }: Props) => {
                 unreadMessagesNumber={3}
               />
             </Menu.Label> */}
-
             <Link
               to="chat"
               className="flex w-full justify-center items-center p-2 hover:bg-pagesBg text-sm"

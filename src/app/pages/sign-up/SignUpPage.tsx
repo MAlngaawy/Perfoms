@@ -22,26 +22,20 @@ type Props = {};
 
 const schema = yup.object().shape({
   userRole: yup.string().required(),
-  firstName: yup
-    .string()
-    .matches(/^[\w\s]*$/)
-    .required(),
-  lastName: yup
-    .string()
-    .matches(/^[\w\s]*$/)
-    .required(),
+  firstName: yup.string().required(),
+  lastName: yup.string().required(),
   country: yup.string().required(),
   city: yup.string().required(),
   club: yup.number().required(),
   countryCode: yup.string().required(),
   phoneNumber: yup.number().required(),
   password: yup.string().min(8).max(24).required(),
-  // teams: yup.array(),
-  teams: yup.array().when("userRole", {
-    is: "Player",
-    then: yup.array().min(1).required(),
-    otherwise: yup.array(),
-  }),
+  teams: yup.array(),
+  // teams: yup.array().when("userRole", {
+  //   is: "Coach",
+  //   then: yup.array().min(1).required(),
+  //   otherwise: yup.array().min(0),
+  // }),
 });
 
 const SignUpPage = (props: Props) => {
@@ -82,7 +76,7 @@ const SignUpPage = (props: Props) => {
     //@ts-ignore
     { sport_id: selectedSport },
     {
-      skip: !selectedSport,
+      skip: userRole !== "Coach" || !selectedSport,
     }
   );
 
@@ -102,11 +96,9 @@ const SignUpPage = (props: Props) => {
   }, [selectedSport]);
 
   useEffect(() => {
+    setValue("city", "");
     setValue("teams", []);
   }, [country, setValue, userRole, teamsData, selectedClub]);
-  useEffect(() => {
-    setValue("city", "");
-  }, [country]);
 
   const submitFun = (data: any) => {
     // handle The request body schema
@@ -169,7 +161,7 @@ const SignUpPage = (props: Props) => {
           Maximize Players Full Potential.
         </div>
         <img
-          src="/assets/images/signup.png"
+          src="/assets/images/performs_signup.jpg"
           className="w-full h-full max-w-full max-h-full object-cover"
         />
       </div>
@@ -205,12 +197,6 @@ const SignUpPage = (props: Props) => {
                   image:
                     "https://cdn-icons-png.flaticon.com/512/3564/3564504.png",
                   label: "🏋️ Coach",
-                },
-                {
-                  value: "Player",
-                  image:
-                    "https://cdn-icons-png.flaticon.com/512/3564/3564504.png",
-                  label: "🤽‍♀️Player",
                 },
               ]}
               name="userRole"
@@ -248,7 +234,7 @@ const SignUpPage = (props: Props) => {
                   className="border-b"
                   {...register("firstName")}
                   id="firstName"
-                  pattern="[a-zA-Z\s]{1,100}"
+                  pattern="[a-zA-z]{1,100}"
                   title="first name should only contains letters e.g:Ali"
                 />
               </Input.Wrapper>
@@ -281,7 +267,7 @@ const SignUpPage = (props: Props) => {
                   className="border-b"
                   {...register("lastName")}
                   id="lastName"
-                  pattern="[a-zA-Z\s]{1,100}"
+                  pattern="[a-zA-z]{1,100}"
                   title="last name should only contains letters e.g:Ali"
                 />
               </Input.Wrapper>
@@ -357,7 +343,7 @@ const SignUpPage = (props: Props) => {
             )}
 
             {/* Select Teams */}
-            {["Coach", "Player"].includes(userRole) && clubSportsData && (
+            {userRole === "Coach" && clubSportsData && (
               <div className="flex justify-center items-center gap-2">
                 <Select
                   className="w-full"

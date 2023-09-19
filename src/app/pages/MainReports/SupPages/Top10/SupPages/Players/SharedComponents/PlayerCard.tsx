@@ -1,7 +1,6 @@
 import Info from "~/@main/components/Info";
 import AvatarWithBlueBorder from "~/@main/components/shared/AvatarWithBlueBorder";
 import CardWithTwoSides from "~/@main/components/TopTenComponents/CardWithTwoSides/CardWithTwoSides";
-import AppUtils from "~/@main/utils/AppUtils";
 import { Top10ClubPlayer } from "~/app/store/types/clubManager-types";
 
 type Props = {
@@ -36,7 +35,7 @@ const PlayerCard = ({ data, index, title }: Props) => {
               );
             })}
           </div>
-          <Info label="Age" value={AppUtils.calculateAge(data.dob)} />
+          <Info label="Age" value={data.dob} />
           <Info label="Parent" value={data.parent} />
           <Info label="Weight" value={data.weight} />
           <Info label="Height" value={data.height} />

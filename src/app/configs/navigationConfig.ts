@@ -76,18 +76,18 @@ const navigationConfig: NavigationConfigTypes[] = [
     url: "chat",
     auth: authRoles.All,
   },
-  // {
-  //   id: "reports-page",
-  //   title: "Reports",
-  //   translate: "REPORTS",
-  //   type: "item",
-  //   icon: "NewspaperIcon:outline",
-  //   url: "reports",
-  //   auth: authRoles.Parent,
-  // },
+  {
+    id: "reports-page",
+    title: "Reports",
+    translate: "REPORTS",
+    type: "item",
+    icon: "NewspaperIcon:outline",
+    url: "reports",
+    auth: authRoles.Parent,
+  },
   {
     id: "media-page",
-    title: "Events",
+    title: "Media",
     translate: "MEDIA",
     type: "item",
     icon: "BookmarkIcon:outline",
@@ -101,7 +101,7 @@ const navigationConfig: NavigationConfigTypes[] = [
     type: "item",
     icon: "BanknotesIcon:outline",
     url: "subscriptions",
-    auth: ["Parent"],
+    auth: authRoles.Parent,
   },
   {
     id: "players",
@@ -130,15 +130,6 @@ const navigationConfig: NavigationConfigTypes[] = [
     icon: "NewspaperIcon:outline",
     url: "main-reports",
     auth: [...authRoles.Admin, ...authRoles.Supervisor, ...authRoles.Coach],
-  },
-  {
-    id: "health-page",
-    title: "Health",
-    translate: "Health",
-    type: "item",
-    icon: "HeartIcon:outline",
-    url: "health",
-    auth: authRoles.Parent,
   },
 ];
 

@@ -4,26 +4,31 @@ import { useParams } from "react-router-dom";
 import ReportsChartCard from "~/@main/components/MainReports/ReportsChartCard";
 import Info from "~/@main/components/Info";
 import PrintComp from "~/@main/PrintComp";
+import {
+  useCoachPlayerKpiStatisticsQuery,
+  useCoachPlayersAttendStatisticsQuery,
+} from "~/app/store/coach/coachApi";
 import AttendReportsChart from "~/@main/components/MainReports/AttendReportsChart";
 import {
   CoachPlayerInfo,
   PlayerMonthsAttendancesStatistics,
   TeamsStatistics,
 } from "~/app/store/types/coach-types";
+import {
+  useSuperPlayerKpiStatisticsQuery,
+  useSuperPlayersAttendStatisticsQuery,
+} from "~/app/store/supervisor/supervisorMainApi";
+import {
+  useAdminPlayerKpiStatisticsQuery,
+  useAdminPlayersAttendStatisticsQuery,
+} from "~/app/store/clubManager/clubManagerApi";
 import { useSelector } from "react-redux";
+import { timeFilterFn } from "~/app/store/parent/parentSlice";
 import {
-  selectedPlayerFn,
-  selectedPlayerTeamFn,
-  timeFilterFn,
-} from "~/app/store/parent/parentSlice";
-import {
-  useUserGeneralPlayerKpiStatisticsQuery,
-  useUserGeneralPlayersAttendStatisticsQuery,
+  useGetUserAchievementsQuery,
   useUserQuery,
 } from "~/app/store/user/userApi";
 import { axiosInstance } from "~/app/configs/dataService";
-import AppUtils from "~/@main/utils/AppUtils";
-import CardsWrapper from "~/@main/components/MainReports/CardsWrapper";
 
 type Props = {
   reportType: string;
@@ -31,102 +36,136 @@ type Props = {
 };
 
 const OverAll = ({ playerInfo, reportType }: Props) => {
-  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
+  const [data, setData] = useState<TeamsStatistics>();
   const [playerTeams, setPlayerTeams] = useState<any[]>([]);
   const { data: user } = useUserQuery({});
   const timefilter = useSelector(timeFilterFn);
-  const { id: player_id } = useParams();
-  const id = player_id || playerInfo?.id;
-  const [attendanceData, setAttendanceData] =
-    useState<PlayerMonthsAttendancesStatistics | null>(null);
-  const [performanceData, setPerformanceData] =
-    useState<TeamsStatistics | null>(null);
+  const [attendData, setAttendData] =
+    useState<PlayerMonthsAttendancesStatistics>();
+  const { id } = useParams();
 
-  const { data: userGeneralPerformanceData } =
-    useUserGeneralPlayerKpiStatisticsQuery(
+  const { data: coachPlayerKpisStatisticsData } =
+    useCoachPlayerKpiStatisticsQuery(
       {
         player_id: id,
-        month: timefilter.month,
-        year: timefilter.year,
-        team_id: selectedPlayerTeam?.id,
+        date_from: timefilter.from_date,
+        date_to: timefilter.to_date,
       },
       {
         skip:
           !id ||
-          !timefilter.month ||
-          !timefilter.year ||
-          !selectedPlayerTeam?.id,
+          !timefilter.from_date ||
+          !timefilter.to_date ||
+          user?.user_type !== "Coach",
+      }
+    );
+  const { data: coachPlayerAttendancesStatistics } =
+    useCoachPlayersAttendStatisticsQuery(
+      { player_id: id },
+      { skip: !id || user?.user_type !== "Coach" }
+    );
+
+  const { data: superPlayerKpisStatisticsData } =
+    useSuperPlayerKpiStatisticsQuery(
+      {
+        player_id: id,
+        date_from: timefilter.from_date,
+        date_to: timefilter.to_date,
+      },
+      { skip: !id || user?.user_type !== "Supervisor" }
+    );
+  const { data: superPlayerAttendancesStatistics } =
+    useSuperPlayersAttendStatisticsQuery(
+      { player_id: id },
+      {
+        skip:
+          !id ||
+          !timefilter.from_date ||
+          !timefilter.to_date ||
+          user?.user_type !== "Supervisor",
       }
     );
 
-  const { data: userGeneralAttendData } =
-    useUserGeneralPlayersAttendStatisticsQuery(
-      { player_id: id, team_id: selectedPlayerTeam?.id },
-      { skip: !id || !selectedPlayerTeam?.id }
+  const { data: adminPlayerKpisStatisticsData } =
+    useAdminPlayerKpiStatisticsQuery(
+      {
+        player_id: id,
+        date_from: timefilter.from_date,
+        date_to: timefilter.to_date,
+      },
+      {
+        skip:
+          !id ||
+          !timefilter.from_date ||
+          !timefilter.to_date ||
+          user?.user_type !== "Admin",
+      }
+    );
+
+  const { data: adminPlayerAttendancesStatistics } =
+    useAdminPlayersAttendStatisticsQuery(
+      { player_id: id },
+      { skip: !id || user?.user_type !== "Admin" }
     );
 
   useEffect(() => {
-    if (userGeneralPerformanceData)
-      setPerformanceData(userGeneralPerformanceData);
-    if (userGeneralAttendData) setAttendanceData(userGeneralAttendData);
+    if (coachPlayerKpisStatisticsData) setData(coachPlayerKpisStatisticsData);
+    if (coachPlayerAttendancesStatistics)
+      setAttendData(coachPlayerAttendancesStatistics);
 
-    console.log("OVERALL performanceData", userGeneralPerformanceData);
-    console.log("OVERALL attendanceData", userGeneralAttendData);
-  }, [userGeneralPerformanceData, userGeneralAttendData]);
+    if (superPlayerKpisStatisticsData) setData(superPlayerKpisStatisticsData);
+    if (superPlayerAttendancesStatistics)
+      setAttendData(superPlayerAttendancesStatistics);
+
+    if (adminPlayerKpisStatisticsData) setData(adminPlayerKpisStatisticsData);
+    if (adminPlayerAttendancesStatistics)
+      setAttendData(adminPlayerAttendancesStatistics);
+  }, [
+    coachPlayerKpisStatisticsData,
+    coachPlayerAttendancesStatistics,
+    superPlayerKpisStatisticsData,
+    superPlayerAttendancesStatistics,
+    adminPlayerKpisStatisticsData,
+    adminPlayerAttendancesStatistics,
+  ]);
+
+  const fetchData = async () => {
+    axiosInstance
+      .get(`/user-generals/player-info/${playerInfo?.id}`)
+      .then((res) => {
+        return res.data;
+      })
+      .then((data: any) => {
+        setPlayerTeams([...data.team]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
-    <PrintComp documentTitle={playerInfo?.name || "No Name"}>
-      <CardsWrapper>
+    <PrintComp>
+      <div className="reports flex-row items-stretch justify-center flex flex-wrap gap-4 my-6">
         {/* <TeamInfoCard /> */}
         <div>
-          <div className="teamInfoCard shadow-lg bg-white h-full flex-col gap-4 rounded-xl p-4 flex w-full">
+          <div className="teamInfoCard shadow-lg bg-white h-full flex-col gap-4 rounded-xl p-4 flex w-64">
             <h2> {playerInfo?.name} </h2>
             <div className="flex flex-col gap-6">
               <div className="flex justify-between gap-6">
                 <Avatar src={playerInfo?.icon} className="h-full" size="xl" />
                 <div className="flex flex-col ">
                   <Info label="name" value={playerInfo?.name} />
-                  <Info
-                    label="Age"
-                    value={AppUtils.calculateAge(playerInfo?.dob)}
-                  />
+                  <Info label="Age" value={playerInfo?.dob} />
                 </div>
               </div>
-              {playerInfo?.sport.toLocaleLowerCase() === "taekwondo" ? (
-                <div className="flex justify-between gap-2 flex-wrap">
-                  {playerInfo?.world_weight && (
-                    <Info
-                      label="World Weight"
-                      value={playerInfo?.world_weight}
-                    />
-                  )}
-                  {playerInfo?.olympic_weight && (
-                    <Info
-                      label="Olympic Weight"
-                      value={playerInfo?.olympic_weight}
-                    />
-                  )}
-                  {playerInfo?.height && (
-                    <Info label="Height" value={playerInfo?.height} />
-                  )}
-
-                  {playerInfo?.front_leg !== "NONE" && (
-                    <Info
-                      label="Preferred Front Leg"
-                      value={playerInfo?.front_leg}
-                    />
-                  )}
-                </div>
-              ) : (
-                <>
-                  {playerInfo?.weight && (
-                    <Info label="Weight" value={playerInfo?.weight} />
-                  )}
-                  {playerInfo?.height && (
-                    <Info label="Height" value={playerInfo?.height} />
-                  )}
-                </>
-              )}
+              <div className="flex  gap-6 justify-between">
+                <Info label="Weight" value={playerInfo?.weight} />
+                <Info label="Height" value={playerInfo?.height} />
+              </div>
               <div className="flex flex-row justify-between">
                 <div className="flex  gap-6 justify-between">
                   <Info label="Sport" value={playerInfo?.sport} />
@@ -147,22 +186,24 @@ const OverAll = ({ playerInfo, reportType }: Props) => {
           </div>
         </div>
         {reportType === "Performances" ? (
-          performanceData?.results?.map((kpi) => {
-            return (
-              <div key={kpi.id}>
-                <ReportsChartCard
-                  clickable={false}
-                  name={kpi.name}
-                  statistics={kpi.statistics}
-                />
-              </div>
-            );
-          })
+          <>
+            {data?.results?.map((kpi) => {
+              return (
+                <div key={kpi.id}>
+                  <ReportsChartCard
+                    clickable={false}
+                    name={kpi.name}
+                    statistics={kpi.statistics}
+                  />
+                </div>
+              );
+            })}
+          </>
         ) : (
           <>
-            {attendanceData?.map((attend) => {
+            {attendData?.map((attend) => {
               return (
-                <div className="w-full" key={attend.name}>
+                <div key={attend.name}>
                   <AttendReportsChart
                     player_attendance={attend.statistics}
                     name={attend.name}
@@ -172,7 +213,7 @@ const OverAll = ({ playerInfo, reportType }: Props) => {
             })}
           </>
         )}
-      </CardsWrapper>
+      </div>
     </PrintComp>
   );
 };

@@ -1,24 +1,36 @@
 import { useEffect, useState } from "react";
 import { Calendar } from "@mantine/dates";
-import AppUtils from "~/@main/utils/AppUtils";
 import {
-  useAddTeamCalendarAttendDayMutation,
-  useUserGeneralTeamAttendanceQuery,
-} from "~/app/store/user/userApi";
-import { Team } from "~/app/store/types/supervisor-types";
+  useSuperAddTeamCalendarMutation,
+  useSuperTeamAttendanceQuery,
+} from "~/app/store/supervisor/supervisorMainApi";
+import AppUtils from "~/@main/utils/AppUtils";
+import { useUserQuery } from "~/app/store/user/userApi";
+import {
+  SuperVisorTeamInfo,
+  TeamAttendance,
+} from "~/app/store/types/supervisor-types";
+import {
+  useAdminAddTeamCalendarMutation,
+  useAdminTeamAttendanceQuery,
+} from "~/app/store/clubManager/clubManagerApi";
+import { useCoachTeamCalendarQuery } from "~/app/store/coach/coachApi";
 import { Group, Menu } from "@mantine/core";
 import AppIcons from "~/@main/core/AppIcons";
 import DaySessions from "./DaySessions";
 import { useDisclosure } from "@mantine/hooks";
+import { CoachTeamInfo } from "~/app/store/types/coach-types";
 
 type Props = {
   teamId: string;
-  teamInfo?: Team;
+  teamInfo?: SuperVisorTeamInfo | CoachTeamInfo | undefined;
 };
 
 const TeamCalendar = ({ teamId, teamInfo }: Props) => {
   const [opened, { open, close }] = useDisclosure(false);
   const [selectedDay, setSelectedDay] = useState<string>("");
+  const { data: user } = useUserQuery({});
+  const [attDates, setAttDates] = useState<TeamAttendance>();
   const [month, onMonthChange] = useState(new Date());
   const [requestYear, setRequestYear] = useState<string>("");
   const [requestMonth, setRequestMonth] = useState<string>("");
@@ -28,33 +40,82 @@ const TeamCalendar = ({ teamId, teamInfo }: Props) => {
     setRequestYear(JSON.stringify(month.getFullYear()));
   }, [month]);
 
-  const { data: attDates } = useUserGeneralTeamAttendanceQuery(
+  const { data: superAttDates } = useSuperTeamAttendanceQuery(
     { team_id: +teamId, year: requestYear, month: requestMonth },
     {
-      skip: !teamId || !requestYear || !requestMonth,
+      skip:
+        !teamId ||
+        user?.user_type !== "Supervisor" ||
+        !requestYear ||
+        !requestMonth,
     }
   );
 
-  const [addTeamCalendarDay] = useAddTeamCalendarAttendDayMutation();
+  const { data: adminAttDates } = useAdminTeamAttendanceQuery(
+    { team_id: +teamId, year: requestYear, month: requestMonth },
+    {
+      skip:
+        !teamId || user?.user_type !== "Admin" || !requestYear || !requestMonth,
+    }
+  );
+
+  const { data: coachAttDates } = useCoachTeamCalendarQuery(
+    { team_id: +teamId, year: requestYear, month: requestMonth },
+    {
+      skip:
+        !teamId || user?.user_type !== "Coach" || !requestYear || !requestMonth,
+    }
+  );
+
+  useEffect(() => {
+    console.log("attDates", attDates);
+    if (superAttDates) setAttDates(superAttDates);
+    if (adminAttDates) setAttDates(adminAttDates);
+    if (coachAttDates) setAttDates(coachAttDates);
+  }, [superAttDates, adminAttDates, coachAttDates]);
+
+  //useGetTeamAttendanceQuery
+  const [adminAddDay] = useAdminAddTeamCalendarMutation();
+  const [superAddDay] = useSuperAddTeamCalendarMutation();
 
   const addAndRemoveDayAttendance = (date: Date) => {
-    addTeamCalendarDay({
-      day: AppUtils.formatDate(date),
-      team: +teamId,
-    })
-      .then((res) => {
-        //@ts-ignore
-        if (res.error.status === 409) {
-          AppUtils.showNotificationFun(
-            "Error",
-            "Can't add",
-            "Please add players first"
-          );
-        }
+    if (user?.user_type === "Supervisor") {
+      superAddDay({
+        day: AppUtils.formatDate(date),
+        team: +teamId,
       })
-      .catch((err) => {
-        console.log(err);
-      });
+        .then((res) => {
+          //@ts-ignore
+          if (res.error.status === 409) {
+            AppUtils.showNotificationFun(
+              "Error",
+              "Can't add",
+              "Please add players first"
+            );
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else if (user?.user_type === "Admin") {
+      adminAddDay({
+        day: AppUtils.formatDate(date),
+        team: +teamId,
+      })
+        .then((res) => {
+          //@ts-ignore
+          if (res.error.status === 409) {
+            AppUtils.showNotificationFun(
+              "Error",
+              "Can't add",
+              "Please add players first"
+            );
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   return (
@@ -201,3 +262,13 @@ const checkTheDay = (selectedDate: Date, compareDay: string) => {
     return false;
   }
 };
+
+/**
+
+
+ return (
+            
+            );
+
+
+ */

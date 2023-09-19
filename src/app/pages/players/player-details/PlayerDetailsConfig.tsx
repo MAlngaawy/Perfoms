@@ -18,7 +18,7 @@ const PlayerCardConfig: PagesRouteConfig = {
       },
     },
   },
-  auth: authRoles.All,
+  auth: [...authRoles.Coach, ...authRoles.Supervisor, ...authRoles.Admin],
   routes: [
     {
       path: "/players/:id",
