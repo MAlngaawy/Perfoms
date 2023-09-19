@@ -5,7 +5,6 @@ import { PerformanceCard } from "~/@main/components/PerformanceCard";
 import { CoachPlayerInfo } from "~/app/store/types/coach-types";
 import { Avatar } from "@mantine/core";
 import OneTeam from "../../MainReports/SupPages/Teams/OneTeam/OneTeam";
-import AppUtils from "~/@main/utils/AppUtils";
 
 interface PlayerInfoCardProps {
   playerData: any;
@@ -29,7 +28,7 @@ const PlayerInfoCard = ({ playerData }: PlayerInfoCardProps) => {
         </div>
         <div>
           <Info label="Name" value={playerData?.name} />
-          <Info label="Age" value={AppUtils.calculateAge(playerData?.dob)} />
+          <Info label="Age" value={playerData?.dob} />
           <div className="flex flex-row justify-between gap-10 w-full">
             <div className="flex flex-col justify-center">
               <Info label="Weight" value={`${playerData?.weight} kgm`} />

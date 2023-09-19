@@ -2,44 +2,105 @@ import React, { useState, forwardRef, useEffect } from "react";
 import { Modal, Group, Avatar, Text, Select } from "@mantine/core";
 import SubmitButton from "../../../../../@main/components/SubmitButton";
 import { Controller, useForm } from "react-hook-form";
-import { useSuperAddTeamPlayerMutation } from "~/app/store/supervisor/supervisorMainApi";
+import {
+  useSuperAddTeamPlayerMutation,
+  useSuperPlayersQuery,
+} from "~/app/store/supervisor/supervisorMainApi";
 import { useParams } from "react-router-dom";
 import __ from "lodash";
 import { TeamPlayers, TeamPlayer } from "~/app/store/types/clubManager-types";
-import { useAdminAddTeamPlayerMutation } from "~/app/store/clubManager/clubManagerApi";
-import { Team } from "~/app/store/types/supervisor-types";
+import {
+  useAdminAddTeamPlayerMutation,
+  useAdminPlayersQuery,
+} from "~/app/store/clubManager/clubManagerApi";
+import {
+  SuperVisorPlayers,
+  SuperVisorTeamInfo,
+} from "~/app/store/types/supervisor-types";
 import { useUserQuery } from "~/app/store/user/userApi";
 import AppUtils from "~/@main/utils/AppUtils";
-import { useCoachAddTeamPlayerMutation } from "~/app/store/coach/coachApi";
+import {
+  useAllClubPlayersQuery,
+  useCoachAddTeamPlayerMutation,
+} from "~/app/store/coach/coachApi";
+import { CoachTeamInfo } from "~/app/store/types/coach-types";
 
 type Props = {
+  teamPlayers: TeamPlayers | undefined;
   coach_team_id?: number;
-  teamInfo?: Team;
-  filteredPlayers?: TeamPlayer[];
-  refetchFilteredPlayers: any;
-  resetAllData: any;
+  teamInfo: SuperVisorTeamInfo | CoachTeamInfo | undefined;
 };
 
-const AddPlayer = ({
-  coach_team_id,
-  teamInfo,
-  filteredPlayers,
-  refetchFilteredPlayers,
-  resetAllData,
-}: Props) => {
+const AddPlayer = ({ teamPlayers, coach_team_id, teamInfo }: Props) => {
   const [opened, setOpened] = useState(false);
-  const [filteredPlayersData, setFilteredPlayersData] = useState<any>();
   const { data: user } = useUserQuery({});
+  const [playersData, setPlayersData] = useState<any>([]);
+  const [players, setPlayers] = useState<SuperVisorPlayers>();
   const [loading, setLoading] = useState<boolean>(false);
+
+  // Fetch All Club Plaers to filter it
+  const { data: superPlayers } = useSuperPlayersQuery({});
+  const { data: adminPlayers } = useAdminPlayersQuery(
+    { club_id: user?.club },
+    { skip: !user?.club }
+  );
+  const { data: coachPlayers } = useAllClubPlayersQuery(
+    {},
+    { skip: user?.user_type !== "Coach" }
+  );
+
   const { team_id } = useParams();
 
   useEffect(() => {
-    if (filteredPlayers) {
-      setFilteredPlayersData(filteredPlayers);
+    if (superPlayers) setPlayers(superPlayers);
+    if (adminPlayers) setPlayers(adminPlayers);
+    if (coachPlayers) setPlayers(coachPlayers);
+
+    // Filter the team players vs all club players
+    //to show only the not team member players in the select input
+    if (players && teamPlayers) {
+      //get all club players
+      const allPlayers = players?.results;
+
+      console.log("allPlayers", allPlayers);
+
+      //get selected-team players
+      const teamPlayersData = teamPlayers?.results;
+
+      //filter all players to retunr just the players related to team sports
+      const filterPerTeamSport = allPlayers.filter((player) => {
+        //@ts-ignore
+        if (player?.sport) {
+          //@ts-ignore
+          return player?.sport === teamInfo?.sport;
+        } else {
+          return true;
+        }
+      });
+
+      // remove the team players from the players comes from sport filter
+      // const filterdPlayers = __.xorBy(allPlayers, teamPlayersData, "id");
+      const filterdPlayers = filterPerTeamSport.filter((player: any) => {
+        return !teamPlayersData.some((teamPlayer: any) => {
+          return teamPlayer.id === player.id;
+        });
+      });
+
+      let test = filterdPlayers.map((player) => {
+        return {
+          label: player.name,
+          image: player.icon,
+          value: player.id,
+          id: player.id,
+        };
+      });
+
+      setPlayersData(test);
     }
-  }, [filteredPlayers]);
+  }, [players, superPlayers, adminPlayers, coachPlayers, teamPlayers]);
 
   const {
+    register,
     handleSubmit,
     formState: { errors },
     reset,
@@ -123,65 +184,7 @@ const AddPlayer = ({
     addPlayerFunc(data);
     setOpened(false);
     reset({ player: "" });
-    AppUtils.scrollToTop();
-    setTimeout(() => {
-      resetAllData();
-      refetchFilteredPlayers();
-    }, 2000);
   };
-
-  if (!teamInfo) {
-    return <h1>LOADING...</h1>;
-  }
-
-  return (
-    <div>
-      <Modal
-        opened={opened}
-        onClose={() => {
-          setOpened(false);
-          reset({ player: "" });
-        }}
-        title={`Add Player`}
-      >
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <ChoosePlayerInput
-            control={control}
-            filteredPlayers={filteredPlayersData}
-          />
-          <SubmitButton isLoading={loading} text="Add Player" />
-        </form>
-      </Modal>
-
-      <Group position="left" className="w-full h-full">
-        <button
-          className="w-full h-full p-4 bg-slate-300 text-perfGray3 rounded-lg"
-          onClick={() => setOpened(true)}
-        >
-          + Add Player
-        </button>
-      </Group>
-    </div>
-  );
-};
-
-export const ChoosePlayerInput = ({ control, filteredPlayers }: any) => {
-  const [formatedFilteredPlayers, setFormatedFilteredPlayers] = useState();
-
-  useEffect(() => {
-    const test =
-      filteredPlayers && filteredPlayers.length > 0
-        ? filteredPlayers?.map((player: any) => {
-            return {
-              label: player.name,
-              value: JSON.stringify(player.id),
-              image: player.icon,
-            };
-          })
-        : [];
-
-    setFormatedFilteredPlayers(test);
-  }, [filteredPlayers]);
 
   interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
     image: string;
@@ -201,28 +204,55 @@ export const ChoosePlayerInput = ({ control, filteredPlayers }: any) => {
       </div>
     )
   );
+
   return (
-    <Controller
-      control={control}
-      name="player"
-      render={({ field }) => (
-        <Select
-          {...field}
-          placeholder="Choose Player"
-          autoFocus={true}
-          searchable
-          itemComponent={SelectItem}
-          maxDropdownHeight={400}
-          // {...register("coach")}
-          nothingFound="No options"
-          data={formatedFilteredPlayers || []}
-          filter={(value, item) =>
-            item.label?.toLowerCase().includes(value.toLowerCase().trim()) ||
-            false
-          }
-        />
-      )}
-    />
+    <div>
+      <>
+        <Modal
+          opened={opened}
+          onClose={() => {
+            setOpened(false);
+            reset({ player: "" });
+          }}
+          title={`Add Player`}
+        >
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Controller
+              control={control}
+              name="player"
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  placeholder="Choose Player"
+                  autoFocus={true}
+                  searchable
+                  itemComponent={SelectItem}
+                  maxDropdownHeight={400}
+                  // {...register("coach")}
+                  nothingFound="No options"
+                  data={playersData}
+                  filter={(value, item) =>
+                    item.label
+                      ?.toLowerCase()
+                      .includes(value.toLowerCase().trim()) || false
+                  }
+                />
+              )}
+            />
+            <SubmitButton isLoading={loading} text="Add Player" />
+          </form>
+        </Modal>
+
+        <Group position="left" className="w-full h-full">
+          <button
+            className="w-full h-full p-4 bg-slate-300 text-perfGray3 rounded-lg"
+            onClick={() => setOpened(true)}
+          >
+            + Add Player
+          </button>
+        </Group>
+      </>
+    </div>
   );
 };
 

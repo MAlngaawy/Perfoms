@@ -4,23 +4,41 @@ import TeamCoaches from "./Components/TeamCoaches";
 import TeamInfoCard from "./Components/TeamInfoCard";
 import TeamPlayers from "./Components/TeamPlayers";
 import TeamUpcomingEvents from "./Components/TeamUpcomingEvents";
-import { useGetTeamInfoQuery, useUserQuery } from "~/app/store/user/userApi";
+import { useUserQuery } from "~/app/store/user/userApi";
 import { useParams } from "react-router-dom";
 import SharedBreadCrumbs from "~/@main/components/shared/SharedBreadCrumbs";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useSuperTeamInfoQuery } from "~/app/store/supervisor/supervisorMainApi";
+import { useAdminTeamInfoQuery } from "~/app/store/clubManager/clubManagerApi";
+import { SuperVisorTeamInfo } from "~/app/store/types/supervisor-types";
+import { useCoachTeamInfoQuery } from "~/app/store/coach/coachApi";
+import { CoachTeamInfo } from "~/app/store/types/coach-types";
 
 type Props = {};
 
 const SingleTeam = (props: Props) => {
+  const { data: user } = useUserQuery(null);
+  const [selectedDay, setSelectedDay] = useState<string>("");
   const { team_id } = useParams();
-
-  const { data: teamInfo } = useGetTeamInfoQuery({ team_id });
-
+  const [teamInfo, setTeamInfo] =
+    useState<SuperVisorTeamInfo | CoachTeamInfo>();
+  const { data: superTeam } = useSuperTeamInfoQuery(
+    { team_id },
+    { skip: !team_id }
+  );
+  const { data: adminTeam } = useAdminTeamInfoQuery(
+    { team_id },
+    { skip: !team_id }
+  );
+  const { data: coachTeamInfo } = useCoachTeamInfoQuery(
+    { team_id },
+    { skip: !team_id }
+  );
   useEffect(() => {
-    if (teamInfo) {
-      console.log("userteamInfo", teamInfo);
-    }
-  }, [teamInfo]);
+    if (superTeam) setTeamInfo(superTeam);
+    if (adminTeam) setTeamInfo(adminTeam);
+    if (coachTeamInfo) setTeamInfo(coachTeamInfo);
+  }, [superTeam, adminTeam, coachTeamInfo]);
 
   return (
     <div className="p-2">
@@ -34,6 +52,18 @@ const SingleTeam = (props: Props) => {
               teamId={team_id !== undefined ? team_id : ""}
             />
           </CardDiv>
+          {/* {teamInfo && teamInfo?.attend_per === "DAY" ? (
+            <CardDiv>
+              <TeamCalendar teamId={team_id !== undefined ? team_id : ""} />
+            </CardDiv>
+          ) : (
+            <CardDiv>
+              <TeamSessionAttCalendar
+                selectedDay={selectedDay}
+                setSelectedDay={setSelectedDay}
+              />
+            </CardDiv>
+          )} */}
         </Grid.Col>
         <Grid.Col span={12} sm={5} lg={3}>
           <CardDiv>
@@ -42,7 +72,7 @@ const SingleTeam = (props: Props) => {
         </Grid.Col>
         <Grid.Col span={12} sm={7} lg={3}>
           <CardDiv>
-            <TeamUpcomingEvents />
+            <TeamUpcomingEvents teamId={team_id !== undefined ? team_id : ""} />
           </CardDiv>
         </Grid.Col>
         <Grid.Col span={12} sm={5} lg={2}>

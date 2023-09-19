@@ -13,6 +13,8 @@ import { useParams } from "react-router-dom";
 import __ from "lodash";
 
 const SingleCoachPage = () => {
+  const [data, setData] = useState<User | PlayerCoach>();
+
   const { coach_id } = useParams();
 
   const { data: coachData } = usePlayerCoachQuery(

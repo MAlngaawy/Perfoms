@@ -55,13 +55,6 @@ import Top10ClubPlayersConfig from "../pages/MainReports/SupPages/Top10/SupPages
 import Top10SportPlayersConfig from "../pages/MainReports/SupPages/Top10/SupPages/Players/Top10SportPlayers/Top10SportPlayersConig";
 import Top10KpiPlayersConfig from "../pages/MainReports/SupPages/Top10/SupPages/Players/Top10SportPlayers/Top10KpiPlayers/Top10KpiPlayersConfig";
 import SubCoachConfig from "../pages/SubCoach/SubCoachConfig";
-import HelpCenterConfig from "../pages/HelpCenter/HelpCenterConfig";
-import HelpCenterDetailsConfig from "../pages/HelpCenter/HelpCenterDetials/HelpCenterConfig";
-import SportsConfig from "../pages/Sports/SportsConfig";
-import SportsDetailsConfig from "../pages/Sports/SportsDetials/SportsDetailsConfig";
-import Oauth2callbackConfig from "../pages/health/oauth2callback/Oauth2callbackConfig";
-import HealthConfig from "../pages/health/HealthConfig";
-import HealthSignInConfig from "../pages/health/sign-in/HealthSignInConfig";
 
 const routeConfigs: PagesRouteConfig[] = [
   SignInConfig,
@@ -117,11 +110,6 @@ const routeConfigs: PagesRouteConfig[] = [
   Top10SportPlayersConfig,
   Top10KpiPlayersConfig,
   SubCoachConfig,
-  HelpCenterConfig,HealthConfig,HealthSignInConfig,
-  HelpCenterDetailsConfig,
-  SportsConfig,
-  SportsDetailsConfig,
-  Oauth2callbackConfig,
 ];
 
 const routes: AppRouteObject[] = [

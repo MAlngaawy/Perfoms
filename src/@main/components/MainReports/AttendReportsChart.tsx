@@ -19,7 +19,7 @@ const AttendReportsChart = ({ name, icon, player_attendance }: Props) => {
   return (
     <div
       className={classNames(
-        "bg-white  flex-col gap-3 rounded-xl shadow-md p-4 flex h-fit w-full"
+        "bg-white  flex-col gap-3 rounded-xl shadow-md p-4 flex h-fit w-60"
       )}
     >
       <h2 className="w-full text-left">{name}</h2>

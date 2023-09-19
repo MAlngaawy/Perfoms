@@ -1,17 +1,17 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useTeamEventsQuery } from "~/app/store/parent/parentApi";
 import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 import MediaCard from "./molecules/MediaCard";
 import TeamFilter from "~/@main/components/TeamFilter";
 import MediaPageLoading from "./molecules/MediaPageLoading";
-import {
-  useUserGetTeamEventsQuery,
-  useUserQuery,
-} from "~/app/store/user/userApi";
+import { useUserQuery } from "~/app/store/user/userApi";
 import { TeamEvents } from "~/app/store/types/parent-types";
+import { useCoachTeamEventQuery } from "~/app/store/coach/coachApi";
+import { useSuprtEventsQuery } from "~/app/store/supervisor/supervisorMainApi";
 import Placeholders from "~/@main/components/Placeholders";
 import {
+  useAdminTeamEventsQuery,
   useAdminSportsQuery,
   useAdminTeamsStatisticsQuery,
 } from "~/app/store/clubManager/clubManagerApi";
@@ -21,8 +21,9 @@ import { Select } from "@mantine/core";
 const MediaPage = () => {
   const [events, setEvents] = useState<TeamEvents | undefined>();
   const { data: user } = useUserQuery(null);
+
   const [selectedSport, setSelectedSport] = useState<string>("0");
-  const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
+  const [selectedTeam, setSelectedTeam] = useState<string>("0");
 
   const [teamId, setTeamId] = useState<string>();
 
@@ -42,26 +43,37 @@ const MediaPage = () => {
     { skip: !selectedPlayerTeam || user?.user_type !== "Parent" }
   );
 
-  const { data: userGetTeamEvents, refetch: refetchUserGetTeamEvents } =
-    useUserGetTeamEventsQuery({
-      team_id: selectedTeam || selectedPlayerTeam?.id,
-    });
+  const { data: coachEvents } = useCoachTeamEventQuery(
+    { team_id: selectedPlayerTeam?.id },
+    { skip: !selectedPlayerTeam || user?.user_type !== "Coach" }
+  );
+  const { data: superEvents, refetch: superRefetch } = useSuprtEventsQuery(
+    { team_id: selectedPlayerTeam?.id },
+    { skip: !selectedPlayerTeam || user?.user_type !== "Supervisor" }
+  );
+
+  const { data: adminEvents, refetch: adminRefetch } = useAdminTeamEventsQuery(
+    { team_id: selectedTeam },
+    { skip: user?.user_type !== "Admin" }
+  );
 
   useEffect(() => {
     if (user?.user_type === "Admin") {
-      if (selectedTeam) {
-        setTeamId(selectedTeam);
-      }
+      setTeamId(selectedTeam);
     } else {
       setTeamId(JSON.stringify(selectedPlayerTeam?.id));
     }
 
-    if (userGetTeamEvents) setEvents(userGetTeamEvents);
+    if (superEvents) setEvents(superEvents);
+    if (coachEvents) setEvents(coachEvents);
     if (parentEvents) setEvents(parentEvents);
+    if (adminEvents) setEvents(adminEvents);
   }, [
     setEvents,
-    userGetTeamEvents,
+    superEvents,
+    coachEvents,
     parentEvents,
+    adminEvents,
     selectedTeam,
     selectedPlayerTeam,
   ]);
@@ -72,11 +84,12 @@ const MediaPage = () => {
         {events &&
         events?.results.length > 0 &&
         //@ts-ignore
-        ["Supervisor", "Admin", "Coach"].includes(user?.user_type) ? (
+        ["Supervisor", "Admin"].includes(user?.user_type) ? (
           <AddEventForm
-            teamID={teamId}
+            teamID={JSON.stringify(selectedPlayerTeam && selectedPlayerTeam.id)}
             refetch={() => {
-              refetchUserGetTeamEvents();
+              if (superEvents) superRefetch();
+              if (adminEvents) adminRefetch();
             }}
           >
             <button className=" px-4 py-2 bg-slate-300 text-perfGray3 rounded-full">
@@ -139,7 +152,7 @@ const MediaPage = () => {
               {events.results.map((data) => {
                 return (
                   <MediaCard
-                    teamId={selectedTeam || selectedPlayerTeam?.id}
+                    teamId={selectedTeam || selectedPlayerTeam.id}
                     key={data.id}
                     event={data}
                   />
@@ -157,13 +170,12 @@ const MediaPage = () => {
               pageName={"events"}
               postText={"here yet, come again later OR choose another team."}
             />
-            {["Supervisor", "Admin", "Coach"].includes(
-              user?.user_type || "No User"
-            ) ? (
+            {["Supervisor", "Admin"].includes(user?.user_type || "No User") ? (
               <AddEventForm
                 teamID={teamId}
                 refetch={() => {
-                  refetchUserGetTeamEvents();
+                  if (superEvents) superRefetch();
+                  if (adminEvents) adminRefetch();
                 }}
               >
                 <button className=" w-60 h-full bg-slate-300 text-perfGray3 rounded-xl p-4">

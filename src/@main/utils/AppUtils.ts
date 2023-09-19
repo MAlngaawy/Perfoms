@@ -98,13 +98,6 @@ class AppUtils {
     return false;
   }
 
-  static scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-
   static searchInString(value, searchText) {
     return value.toLowerCase().includes(searchText);
   }
@@ -436,31 +429,6 @@ class AppUtils {
         "file"
       );
     });
-
-  static calculateAge(dateOfBirth) {
-    try {
-      // Split the input string into year, month, and day components
-      const [year, month, day] = dateOfBirth.split("-").map(Number);
-
-      // Get the current date
-      const currentDate = new Date();
-
-      // Calculate the difference between current date and date of birth
-      let age = currentDate.getFullYear() - year;
-
-      // Adjust age based on month and day
-      if (
-        currentDate.getMonth() < month - 1 ||
-        (currentDate.getMonth() === month - 1 && currentDate.getDate() < day)
-      ) {
-        age--;
-      }
-
-      return age;
-    } catch (error) {
-      return "Invalid date format. Please use 'YYYY-MM-DD'.";
-    }
-  }
 
   static hasPermission(authArr, userRole) {
     if (authArr === null || authArr === undefined) {

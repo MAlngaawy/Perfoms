@@ -10,29 +10,30 @@ import AppUtils from "~/@main/utils/AppUtils";
 
 type Props = {};
 
+const formatDate = (date: Date | null) => {
+  if (date) {
+    const today = date;
+    const yyyy = today.getFullYear();
+    let mm: string | number = today.getMonth() + 1; // Months start at 0!
+    let dd: string | number = today.getDate();
+
+    if (dd < 10) dd = "0" + dd;
+    if (mm < 10) mm = "0" + mm;
+
+    return yyyy + "-" + mm + "-" + dd;
+  } else {
+    return "NA";
+  }
+};
+
 const NotificationsPage = (props: Props) => {
   const { data: notifications } = useNotificationsQuery({});
-  const [selectedPlayerName, setSelectedPlayerName] = useState<string>("");
+  const [selectedPlayerName, setSelectedPlayerName] = useState("");
   const selectedPlayer: Player = useSelector(selectedPlayerFn);
 
   useEffect(() => {
     setSelectedPlayerName(selectedPlayer?.name);
   }, [selectedPlayer]);
-
-  const [notificationsData, setNotificationsData] = useState<any[]>([]);
-
-  useEffect(() => {
-    if (notifications) {
-      const filteredNotifications = notifications?.results.filter(
-        (notifi: any) => {
-          return notifi?.player?.name === selectedPlayerName;
-        }
-      );
-      if (filteredNotifications) {
-        setNotificationsData(filteredNotifications);
-      }
-    }
-  }, [notifications, selectedPlayerName]);
 
   if (!notifications?.results.length) {
     return (
@@ -47,8 +48,11 @@ const NotificationsPage = (props: Props) => {
 
   return (
     <div className="p-6 flex flex-col gap-4">
-      {notificationsData.length ? (
-        notificationsData.map((oneNot) => (
+      {notifications?.results
+        .filter((not: any) => {
+          return not?.player === selectedPlayerName;
+        })
+        .map((oneNot) => (
           <OneNotification
             key={oneNot.id}
             created_at={
@@ -62,15 +66,7 @@ const NotificationsPage = (props: Props) => {
             }
             message={oneNot.message}
           />
-        ))
-      ) : (
-        <Placeholders
-          img="/assets/images/nonotification.png"
-          preText={"This Player Has No"}
-          pageName={"Notifications"}
-          postText={" yet."}
-        />
-      )}
+        ))}
     </div>
   );
 };

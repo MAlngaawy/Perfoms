@@ -20,7 +20,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import AvatarInput from "../shared/AvatarInput";
 import { usePlayerCoachQuery } from "~/app/store/parent/parentApi";
-import { PlayerCoach } from "~/app/store/types/parent-types";
 
 // Props Types
 type Props = {
@@ -31,34 +30,23 @@ type Props = {
 const CoachPersonalInfo = ({ editMode, type }: Props) => {
   const [educations, setEducations] = useState<Educations>();
   const [coachName, setCoachName] = useState<string | undefined>();
-  const [shared, setShared] = useState<User | PlayerCoach>();
+  // const selectedPlayer: Player = useSelector(selectedPlayerFn);
   const { coach_id } = useParams();
   const { data, refetch } = useUserQuery({});
   const { data: userEducations } = useGetUserEducationsQuery({});
   const { data: playerCoach } = usePlayerCoachQuery(
     { id: coach_id },
-    {
-      skip:
-        !coach_id || (data && !["Parent", "Player"].includes(data?.user_type)),
-    }
+    { skip: !coach_id || data?.user_type !== "Parent" }
   );
   const { data: coachEducations } = useGetCoachEducationsQuery(
     { coach_id: coach_id },
     { skip: !coach_id }
   );
   const [deleteEducation] = useDeleteUserEducationMutation();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    //@ts-ignore
-    if (!["Coach", "SubCoach", "Supervisor"].includes(data?.user_type)) {
-      setShared(playerCoach);
-    } else {
-      setShared(data);
-    }
-    console.log("sharedsharedshared", shared);
-    console.log("data playerCoach", playerCoach);
-
-    if (data && ["Parent", "Player"].includes(data?.user_type)) {
+    if (data?.user_type === "Parent") {
       setEducations(coachEducations);
     } else {
       setEducations(userEducations);
@@ -74,15 +62,13 @@ const CoachPersonalInfo = ({ editMode, type }: Props) => {
   return (
     <div className="bg-white flex flex-col gap-4 h-full rounded-lg md:rounded-2xl p-4">
       <h3 className="text-base font-medium text-center">
-        {shared?.user_type === "SubCoach"
-          ? "Attendance Moderator"
-          : shared?.user_type}
+        {playerCoach ? "Coach" : data?.user_type}
       </h3>
       <div className="flex flex-col justify-center items-center gap-4">
         <div className="flex justify-center items-center">
           <Avatar
             className="object-cover transition-all delay-75 rounded-lg group-hover:border border-white box-border"
-            src={shared?.avatar}
+            src={playerCoach?.avatar || data?.avatar}
             alt="Profile_Picture"
             size={200}
           />
@@ -90,8 +76,16 @@ const CoachPersonalInfo = ({ editMode, type }: Props) => {
         <div className="flex flex-col justify-center items-center gap-2">
           <h2 className="text-xl ">{coachName}</h2>
           <h4 className="text-perfBlue group-hover:text-white text-xs">
-            {shared?.job}
+            {playerCoach?.job || data?.job}
           </h4>
+          {/* {data?.user_type == "Parent" && (
+            <Button
+              onClick={() => navigate("/chat")}
+              className=" border border-perfBlue rounded-lg font-normal text-perfBlue hover:text-white"
+            >
+              Send Message
+            </Button>
+          )} */}
         </div>
       </div>
 
@@ -102,13 +96,13 @@ const CoachPersonalInfo = ({ editMode, type }: Props) => {
               Profile
             </h3>
             <p className="font-normal text-perfGray3 text-sm">
-              {shared?.bio || "No Bio"}
+              {data?.bio ? data?.bio : "No Bio"}
             </p>
           </div>
           <div className="teams my-4 text-left">
             <h3 className="text-base font-medium text-perfLightBlack">Teams</h3>
             <div className="flex gap-4 flex-wrap">
-              {shared?.teams?.map((team) => (
+              {data?.teams?.map((team) => (
                 <div
                   key={team?.id}
                   className="font-normal text-perfGray3 text-sm"

@@ -19,7 +19,6 @@ import {
   useSuperTopTenSportKpisQuery,
   useSuperTopTenSportPlayersQuery,
 } from "~/app/store/supervisor/supervisorMainApi";
-import CardsWrapper from "~/@main/components/MainReports/CardsWrapper";
 
 type Props = {};
 
@@ -63,13 +62,8 @@ const Top10SportPlayersPage = (props: Props) => {
   );
 
   const { data: superTop10SportKpis } = useSuperTopTenSportKpisQuery(
-    { sport_id: supervisorSport && supervisorSport[0]?.id },
-    {
-      skip:
-        !supervisorSport ||
-        !supervisorSport[0]?.id ||
-        user?.user_type !== "Supervisor",
-    }
+    { sport_id: supervisorSport?.id },
+    { skip: !supervisorSport?.id || user?.user_type !== "Supervisor" }
   );
 
   useEffect(() => {
@@ -140,7 +134,7 @@ const Top10SportPlayersPage = (props: Props) => {
       </div>
 
       {selectedValue2 === "Kpi" ? (
-        <CardsWrapper>
+        <div className="flex gap-4 flex-wrap my-4 justify-center lg:justify-start">
           {top10SportKpis && top10SportKpis.length ? (
             top10SportKpis.map((data, index: any) => {
               return (
@@ -164,7 +158,7 @@ const Top10SportPlayersPage = (props: Props) => {
               <p className="text-xl">This Sport Has No Kpis Yet</p>
             </div>
           )}
-        </CardsWrapper>
+        </div>
       ) : (
         <Grid gutter={12}>
           {top10SportPlayersData && top10SportPlayersData.length ? (

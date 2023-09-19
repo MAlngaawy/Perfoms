@@ -8,17 +8,13 @@ import { useSuperPlayerRecommendationsQuery } from "~/app/store/supervisor/super
 import { useAdminPlayerRecommendationsQuery } from "~/app/store/clubManager/clubManagerApi";
 import { useUserQuery } from "~/app/store/user/userApi";
 import { useSelector } from "react-redux";
-import {
-  selectedPlayerTeamFn,
-  timeFilterFn,
-} from "~/app/store/parent/parentSlice";
+import { timeFilterFn } from "~/app/store/parent/parentSlice";
 
 type Props = {
   player_id: number | string | undefined;
 };
 
 const RecommendationsCard = ({ player_id }: Props) => {
-  const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const timeFilter = useSelector(timeFilterFn);
   const [recommendations, setRecommendations] =
     useState<PlayerRecommendations>();
@@ -27,17 +23,15 @@ const RecommendationsCard = ({ player_id }: Props) => {
   const { data: parentPlayerRecommendations } = usePlayerRecommendationsQuery(
     {
       id: player_id,
-      month: timeFilter?.month,
-      year: timeFilter?.year,
-      team_id: selectedPlayerTeam?.id,
+      date_from: timeFilter?.from_date,
+      date_to: timeFilter?.to_date,
     },
     {
       skip:
         !player_id ||
-        !timeFilter?.month ||
-        !timeFilter?.year ||
-        !selectedPlayerTeam?.id ||
-        (user && !["Parent", "Player"].includes(user?.user_type)),
+        !timeFilter?.from_date ||
+        !timeFilter?.to_date ||
+        user?.user_type !== "Parent",
     }
   );
 
@@ -45,16 +39,14 @@ const RecommendationsCard = ({ player_id }: Props) => {
     useCoachPlayerRecommendationsQuery(
       {
         player_id: player_id,
-        month: timeFilter?.month,
-        year: timeFilter?.year,
-        team_id: selectedPlayerTeam?.id,
+        date_from: timeFilter?.from_date,
+        date_to: timeFilter?.to_date,
       },
       {
         skip:
           !player_id ||
-          !timeFilter?.month ||
-          !timeFilter?.year ||
-          !selectedPlayerTeam?.id ||
+          !timeFilter?.from_date ||
+          !timeFilter?.to_date ||
           user?.user_type !== "Coach",
       }
     );
@@ -63,16 +55,14 @@ const RecommendationsCard = ({ player_id }: Props) => {
     useSuperPlayerRecommendationsQuery(
       {
         player_id: player_id,
-        month: timeFilter?.month,
-        year: timeFilter?.year,
-        team_id: selectedPlayerTeam?.id,
+        date_from: timeFilter?.from_date,
+        date_to: timeFilter?.to_date,
       },
       {
         skip:
           !player_id ||
-          !timeFilter?.month ||
-          !timeFilter?.year ||
-          !selectedPlayerTeam?.id ||
+          !timeFilter?.from_date ||
+          !timeFilter?.to_date ||
           user?.user_type !== "Supervisor",
       }
     );
@@ -81,16 +71,14 @@ const RecommendationsCard = ({ player_id }: Props) => {
     useAdminPlayerRecommendationsQuery(
       {
         player_id: player_id,
-        month: timeFilter?.month,
-        year: timeFilter?.year,
-        team_id: selectedPlayerTeam?.id,
+        date_from: timeFilter?.from_date,
+        date_to: timeFilter?.to_date,
       },
       {
         skip:
           !player_id ||
-          !timeFilter?.month ||
-          !timeFilter?.year ||
-          !selectedPlayerTeam?.id ||
+          !timeFilter?.from_date ||
+          !timeFilter?.to_date ||
           user?.user_type !== "Admin",
       }
     );
@@ -116,7 +104,7 @@ const RecommendationsCard = ({ player_id }: Props) => {
       <h2 className="pdf-print text-perfGray1 text-base font-semibold ">
         Recommendations
       </h2>
-      <div className="flex flex-col gap-4 h-80 overflow-scroll">
+      <div className="flex flex-col gap-4 h-80">
         {recommendations ? (
           <>
             {recommendations.results.length < 1 ? (

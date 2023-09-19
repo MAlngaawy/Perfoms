@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import AppIcons from "~/@main/core/AppIcons";
 import { Menu } from "@mantine/core";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,37 +7,36 @@ import {
   selectedPlayerTeamFn,
   selectPlayerTeam,
 } from "~/app/store/parent/parentSlice";
-import { usePlayerTeamsQuery } from "~/app/store/parent/parentApi";
-import { useMyTeamsQuery } from "~/app/store/coach/coachApi";
-import { useGetPlayerTeamsQuery, useUserQuery } from "~/app/store/user/userApi";
-import { useSuperTeamsQuery } from "~/app/store/supervisor/supervisorMainApi";
+import {
+  usePlayerTeamsQuery,
+  useTeamEventsQuery,
+} from "~/app/store/parent/parentApi";
+import {
+  useCoachTeamEventQuery,
+  useMyTeamsQuery,
+} from "~/app/store/coach/coachApi";
+import { PlayerTeams } from "~/app/store/types/parent-types";
+import { useUserQuery } from "~/app/store/user/userApi";
+import {
+  useSuperTeamsQuery,
+  useSuprtEventsQuery,
+} from "~/app/store/supervisor/supervisorMainApi";
 import { Team } from "~/app/store/types/supervisor-types";
 import { useAdminTeamsQuery } from "~/app/store/clubManager/clubManagerApi";
 
 type Props = {
   adminSportId?: string;
-  player_id?: string;
 };
 
-const TeamFilter = ({ adminSportId, player_id }: Props) => {
+const TeamFilter = ({ adminSportId }: Props) => {
   const { data: user } = useUserQuery(null);
   const [teams, setTeams] = useState<Team[]>();
   const dispatch = useDispatch();
   const selectedPlayer = useSelector(selectedPlayerFn);
-  const [opened, setOpened] = useState(false);
-
-  const { data: userGetPlayerTeams } = useGetPlayerTeamsQuery(
-    { player_id },
-    { skip: !player_id }
-  );
 
   let { data: playerTeams } = usePlayerTeamsQuery(
     { id: selectedPlayer?.id },
-    {
-      skip:
-        !selectedPlayer ||
-        (user && !["Parent", "Player"].includes(user?.user_type)),
-    }
+    { skip: !selectedPlayer || user?.user_type !== "Parent" }
   );
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
 
@@ -56,30 +55,19 @@ const TeamFilter = ({ adminSportId, player_id }: Props) => {
     { club_id: user?.club, sport_id: adminSportId ? +adminSportId : 0 },
     { skip: user?.user_type !== "Admin" || !user?.club }
   );
-  useEffect(() => {
-    if (!player_id) {
-      if (superTeams) setTeams(superTeams.results);
-      if (coachTeams) setTeams(coachTeams.results);
-      if (playerTeams) setTeams(playerTeams.results);
-      if (adminTeams) setTeams(adminTeams.results);
-    } else if (userGetPlayerTeams) {
-      setTeams(userGetPlayerTeams?.results);
-    }
-  }, [
-    playerTeams,
-    superTeams,
-    coachTeams,
-    adminTeams,
-    player_id,
-    userGetPlayerTeams,
-  ]);
+
+  // if (!selectedPlayer) playerTeams = coachTeams as PlayerTeams | undefined;
 
   useEffect(() => {
+    if (superTeams) setTeams(superTeams.results);
+    if (coachTeams) setTeams(coachTeams.results);
+    if (playerTeams) setTeams(playerTeams.results);
+    if (adminTeams) setTeams(adminTeams.results);
+
     if (teams) {
       dispatch(selectPlayerTeam(teams[0]));
     }
-
-    if (playerTeams) {
+    if (playerTeams)
       dispatch(
         selectPlayerTeam(
           localStorage.getItem("SelectedPlayerTeam")
@@ -90,31 +78,17 @@ const TeamFilter = ({ adminSportId, player_id }: Props) => {
               }
         )
       );
-    }
-  }, [teams]);
+  }, [playerTeams, superTeams, coachTeams, adminTeams, teams]);
 
   return (
-    <Menu
-      opened={opened}
-      onChange={() => {
-        if (teams && teams?.length > 1) {
-          setOpened(true);
-        }
-        if (opened) {
-          setOpened(false);
-        }
-      }}
-      shadow="md"
-      //@ts-ignore
-      className="w-full xs:w-auto"
-    >
+    <Menu shadow="md" width={user?.user_type === "Admin" ? 300 : 200}>
       <Menu.Target>
         <button className="flex gap-2 text-sm justify-center items-center  py-2 px-6 rounded-3xl border bg-white ">
           <span> Team {selectedPlayerTeam?.name}</span>
           <AppIcons className="inline w-3 h-3" icon="ChevronDownIcon:outline" />
         </button>
       </Menu.Target>
-      <Menu.Dropdown className="w-9/10 xs:w-auto">
+      <Menu.Dropdown>
         {teams &&
           teams.map((value) => (
             <Menu.Item

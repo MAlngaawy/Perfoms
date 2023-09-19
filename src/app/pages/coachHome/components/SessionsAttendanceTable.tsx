@@ -1,15 +1,12 @@
 import { memo, useEffect, useState } from "react";
-import { Table, Checkbox, Avatar, Loader, Button } from "@mantine/core";
+import { Table, Checkbox, Avatar, Loader } from "@mantine/core";
 import {
   useCoachUpdateAttendanceSessionMutation,
   useGetTeamAttendanceQuery,
   useTeamAttendanceDaysQuery,
 } from "~/app/store/coach/coachApi";
 import { useSelector } from "react-redux";
-import {
-  selectedPlayerTeamFn,
-  timeFilterFn,
-} from "~/app/store/parent/parentSlice";
+import { selectedPlayerTeamFn } from "~/app/store/parent/parentSlice";
 import NoTeamComp from "~/@main/components/NoTeamComp";
 import { useUserQuery } from "~/app/store/user/userApi";
 import {
@@ -26,12 +23,9 @@ import { Player } from "~/app/store/types/parent-types";
 import { AttendanceDay } from "~/app/store/types/supervisor-types";
 import AppUtils from "~/@main/utils/AppUtils";
 
-type Props = {
-  setChecked?: any;
-};
+type Props = {};
 
-const AttendanceTable = ({ setChecked }: Props) => {
-  const timeFilter = useSelector(timeFilterFn);
+const AttendanceTable = (props: Props) => {
   const selectedPlayerTeam = useSelector(selectedPlayerTeamFn);
   const { data: user } = useUserQuery({});
   const [teamAttendance, setTeamAttendance] = useState<CoachTeamAttendance>();
@@ -39,57 +33,29 @@ const AttendanceTable = ({ setChecked }: Props) => {
     useState<TeamAttendanceDays>();
 
   const { data: coachTeamAttendance } = useGetTeamAttendanceQuery(
+    { team_id: selectedPlayerTeam?.id },
     {
-      team_id: selectedPlayerTeam?.id,
-      month: timeFilter?.month,
-      year: timeFilter?.year,
-    },
-    {
-      skip: !selectedPlayerTeam || !timeFilter?.month || !timeFilter?.year,
+      skip: !selectedPlayerTeam,
     }
   );
 
   const { data: superTeamAttendance } = useSuperGetTeamAttendanceQuery(
-    {
-      team_id: selectedPlayerTeam?.id,
-      month: timeFilter?.month,
-      year: timeFilter?.year,
-    },
-    {
-      skip:
-        !selectedPlayerTeam ||
-        !timeFilter?.month ||
-        !timeFilter?.year ||
-        user?.user_type !== "Supervisor",
-    }
+    { team_id: selectedPlayerTeam?.id },
+    { skip: !selectedPlayerTeam || user?.user_type !== "Supervisor" }
   );
 
   const { data: coachTeamAttendanceDays, isLoading: isCoachLoading } =
     useTeamAttendanceDaysQuery(
+      { team_id: selectedPlayerTeam?.id },
       {
-        team_id: selectedPlayerTeam?.id,
-        month: timeFilter?.month,
-        year: timeFilter?.year,
-      },
-      {
-        skip: !selectedPlayerTeam || !timeFilter?.month || !timeFilter?.year,
+        skip: !selectedPlayerTeam,
       }
     );
 
   const { data: superTeamAttendanceDays, isLoading: isSuperLoading } =
     useSuperTeamAttendanceDaysQuery(
-      {
-        team_id: selectedPlayerTeam?.id,
-        month: timeFilter?.month,
-        year: timeFilter?.year,
-      },
-      {
-        skip:
-          !selectedPlayerTeam ||
-          !timeFilter?.month ||
-          !timeFilter?.year ||
-          user?.user_type !== "Supervisor",
-      }
+      { team_id: selectedPlayerTeam?.id },
+      { skip: !selectedPlayerTeam || user?.user_type !== "Supervisor" }
     );
 
   useEffect(() => {
@@ -109,7 +75,6 @@ const AttendanceTable = ({ setChecked }: Props) => {
       {selectedPlayerTeam ? (
         <div className="tableWrapper overflow-scroll relative m-6 bg-white rounded-lg text-center">
           <CreateContentTable
-            setChecked={setChecked}
             teamAttendance={teamAttendance}
             teamAttendanceDays={teamAttendanceDays}
           />
@@ -124,8 +89,7 @@ export default memo(AttendanceTable);
 
 // srparate the code for performance
 const CreateContentTable = memo(
-  ({ teamAttendance, teamAttendanceDays, setChecked }: any) => {
-    const { data: user } = useUserQuery({});
+  ({ teamAttendance, teamAttendanceDays }: any) => {
     return (
       <Table highlightOnHover verticalSpacing={"sm"} horizontalSpacing={30}>
         <TableHead teamAttendance={teamAttendance} />
@@ -145,12 +109,10 @@ const CreateContentTable = memo(
 
                   {item.attendance_sessions.map((session) => (
                     <tr key={session.id} className="">
-                      <td className="text-xs tracking-wider font-medium text-left px-0 sticky left-0 bg-white z-10 text-perfGray1">
-                        <p className="ml-8">
-                          {AppUtils.formatTime(session.from_hour)}
-                          <br />
-                          {AppUtils.formatTime(session.to_hour)}
-                        </p>
+                      <td className="text-xs tracking-wider font-medium text-center px-0 sticky left-0 bg-white z-10 text-perfGray1">
+                        {AppUtils.formatTime(session.from_hour)}
+                        <br />
+                        {AppUtils.formatTime(session.to_hour)}
                       </td>
                       {teamAttendance?.results.map((player: any) => {
                         let from = "";
@@ -191,15 +153,10 @@ const CreateContentTable = memo(
         ) : (
           <tr className="w-full p-4 m-10 bg-white">
             <td colSpan={100} className="bg-pagesBg p-10 w-full">
-              No attendance sessions added yet <br />
-              {setChecked && (
-                <button
-                  onClick={() => setChecked("Team info")}
-                  className="py-2 px-4 my-4 rounded-md bg-perfBlue text-white hover:bg-perfBlue2"
-                >
-                  Add Attendance Sessions
-                </button>
-              )}
+              No attendance added for this Team in this month yet, <br />
+              if you want to add attendance you can go to the team info page
+              <br />
+              and add attendance to calendar
             </td>
           </tr>
         )}

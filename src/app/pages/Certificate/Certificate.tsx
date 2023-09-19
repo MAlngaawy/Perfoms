@@ -68,23 +68,15 @@ const Certificate = (props: Props) => {
       player: +data.player,
       type: data.type,
       club: myClub ? myClub?.id : 0,
+      team: 1, // This Team ID Need to change (call Ali)
     })
-      .then((res) => {
-        //@ts-ignore
-        if (res?.error) {
-          showNotification({
-            title: "Sorry",
-            message: "Something Went Wrong",
-            color: "red",
-          });
-        } else {
-          showNotification({
-            title: "Done",
-            color: "green",
-            message: "Certificate Sent",
-          });
-          reset({ player: "", type: "" });
-        }
+      .then(() => {
+        showNotification({
+          title: "Done",
+          color: "green",
+          message: "Certificate Sent",
+        });
+        reset({ player: "", type: "" });
       })
       .catch((err) => {
         showNotification({

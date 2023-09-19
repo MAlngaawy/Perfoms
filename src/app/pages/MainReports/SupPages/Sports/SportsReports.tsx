@@ -6,7 +6,6 @@ import PrintComp from "~/@main/PrintComp";
 import { useSuperSportStatisticsQuery } from "~/app/store/supervisor/supervisorMainApi";
 import { useAdminSportStatisticsQuery } from "~/app/store/clubManager/clubManagerApi";
 import { useUserQuery } from "~/app/store/user/userApi";
-import CardsWrapper from "~/@main/components/MainReports/CardsWrapper";
 
 type Props = {};
 
@@ -39,27 +38,29 @@ const SportsReports = (props: Props) => {
           {items}
         </Breadcrumbs>
       </div>
-      <PrintComp documentTitle="Sports Reports">
-        <CardsWrapper>
-          {sportStatistics && (
-            <ReportsChartCard
-              onClickFun={() => navigate(`${sportStatistics.id}/teams`)}
-              name={sportStatistics?.name}
-              statistics={sportStatistics?.statistics}
-            />
-          )}
-          {adminSportsStatistics &&
-            adminSportsStatistics.results.map((sport) => {
-              return (
-                <ReportsChartCard
-                  key={sport.id}
-                  onClickFun={() => navigate(`${sport.id}/teams`)}
-                  name={sport?.name}
-                  statistics={sport?.statistics}
-                />
-              );
-            })}
-        </CardsWrapper>
+      <PrintComp>
+        <div className="reports flex flex-wrap gap-4 justify-center sm:justify-start items-center my-10">
+          <>
+            {sportStatistics && (
+              <ReportsChartCard
+                onClickFun={() => navigate(`${sportStatistics.id}/teams`)}
+                name={sportStatistics?.name}
+                statistics={sportStatistics?.statistics}
+              />
+            )}
+            {adminSportsStatistics &&
+              adminSportsStatistics.results.map((sport) => {
+                return (
+                  <ReportsChartCard
+                    key={sport.id}
+                    onClickFun={() => navigate(`${sport.id}/teams`)}
+                    name={sport?.name}
+                    statistics={sport?.statistics}
+                  />
+                );
+              })}
+          </>
+        </div>
       </PrintComp>
     </div>
   );

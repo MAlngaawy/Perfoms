@@ -32,6 +32,7 @@ export const selectedPlayerFn = (state: any): Player =>
   state.parent.selectedPlayer;
 export const selectedPlayerTeamFn = (state: any): Player =>
   state.parent.selectedTeam;
-export const timeFilterFn = (state: any): { month: string; year: string } =>
-  state.parent.timeFilter;
+export const timeFilterFn = (
+  state: any
+): { from_date: string; to_date: string } => state.parent.timeFilter;
 export default parentSlice.reducer;

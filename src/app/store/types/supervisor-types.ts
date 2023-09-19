@@ -8,22 +8,13 @@ export type Metric = {
   icon: string;
   icon_url: string;
   kpi?: number;
-  description: string;
 };
-
-export type SubervisorSport = {
-  icon: string;
-  icon_url: string;
-  id: number;
-  name: string;
-}[];
 
 export type kpi = {
   id: number;
   name: string;
   icon: string;
   icon_url: string;
-  description: string;
 };
 
 export type Pillar = {
@@ -95,7 +86,7 @@ export type Team = {
   players_count: number;
   pillar?: number;
   gender?: string;
-  sport?: { id: number; name: string };
+  sport?: string;
   current_players_count: number;
   attend_per: "DAY" | "SESSION";
 };
@@ -137,7 +128,6 @@ export type SuperVisorPlayer = {
   id: number;
   name: string;
   icon: string;
-  sport?: string;
 };
 
 export type SuperVisorPlayers = BaseGetAllType & {
@@ -151,7 +141,7 @@ export type SuperVisorTeams = BaseGetAllType & {
 export type SuperVisorTeamInfo = {
   id: number;
   coaches: Partial<PlayerCoach>[];
-  sport: { id: number; name: string };
+  sport: string;
   name: string;
   description: string;
   icon: string;
@@ -229,5 +219,4 @@ export type AddAttendanceSession = {
   from_hour: string;
   to_hour: string;
   day: string;
-  status: "ATTENDED" | "ABSENT" | "UPCOMING";
 };

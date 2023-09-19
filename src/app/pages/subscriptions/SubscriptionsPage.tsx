@@ -11,11 +11,11 @@ const SubscriptionsPage = () => {
   const [currentPlan, setCurrentPlan] = useState("");
   const { data: subscriptions } = useParentSubscriptionsQuery({});
 
-  const [selectPlan, { data, isSuccess }] = useSelectSubscriptionMutation();
+  const [selectPlan, { data, isError, isLoading, isSuccess }] =
+    useSelectSubscriptionMutation();
 
   useEffect(() => {
     if (data && isSuccess) window.location.replace(data.data);
-    console.log();
   }, [data, isSuccess]);
 
   return (
