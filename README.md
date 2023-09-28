@@ -54,30 +54,30 @@ I will list some user's features here
 
 Supervisor
 
-number: 01234567890
+number: 01111875321 
 
-password: hasan@1234
+password:  team@1234
 <hr />
 
 Coach
 
-number: 01234567891
+number: 01068916606
 
-password: hasan@1234
+password: coach@1234
 <hr />
 
 Parent
 
-number: 01234567892
+number: 01063204965 
 
-password: hasan@1234
+password: parent@1234
 <hr />
 
-Admin
+Player
 
-number: 01234567895
+number: 01120488310 
 
-password: admin@1234
+password: player@1234
 
 
 
